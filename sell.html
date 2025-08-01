@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sell Your Property | Virtue Capital Group</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {--navy: #0A2240;--gold: #C5A465;--white: #FFFFFF;--light-gray: #f8f9fa;--charcoal: #343a40;--text-light: #6c757d;}
+        * {margin: 0;padding: 0;box-sizing: border-box;}
+        html {scroll-behavior: smooth;}
+        body {font-family: 'Lato', sans-serif;color: var(--charcoal);background-color: var(--white);line-height: 1.6;font-size: 16px;}
+        body.nav-open {overflow: hidden;}
+        h1, h2, h3, h4 {font-weight: 700;color: var(--navy);}
+        h1 { font-size: 2.8rem; line-height: 1.2; }
+        h2 { font-size: 2.2rem; margin-bottom: 2rem; }
+        h3 { font-size: 1.4rem; margin-bottom: 0.75rem; }
+        p {margin-bottom: 1rem;}
+        a {text-decoration: none;color: var(--gold);transition: color 0.3s ease;}
+        a:hover {color: var(--navy);}
+        .container {width: 100%;max-width: 1140px;margin: 0 auto;padding: 0 20px;}
+        section {padding: 80px 0;}
+        .page-header {background-color: var(--navy);color: var(--white);padding: 80px 0; text-align: center;}
+        .page-header h1 {color: var(--white);}
+        .page-header p {color: rgba(255,255,255,0.8); font-size: 1.2rem; max-width: 700px; margin: 1rem auto 0 auto;}
+        .btn {display: inline-block;padding: 12px 28px;border-radius: 50px;font-weight: 700;text-transform: uppercase;font-size: 0.9rem;letter-spacing: 1px;text-align: center;border: 2px solid transparent;cursor: pointer;transition: all 0.3s ease;}
+        .btn-primary {background-color: var(--navy);color: var(--white);border-color: var(--navy);}
+        .btn-primary:hover {background-color: var(--gold);color: var(--navy);border-color: var(--gold);}
+        .header {background-color: var(--white);padding: 15px 0;position: sticky;top: 0;width: 100%;z-index: 1000;box-shadow: 0 2px 10px rgba(0,0,0,0.05);}
+        .header-container {display: flex;justify-content: space-between;align-items: center;}
+        .logo {font-size: 1.5rem;font-weight: 900;color: var(--navy);text-transform: uppercase;letter-spacing: 1px;}
+        .main-nav ul {list-style: none;display: flex;gap: 30px;}
+        .main-nav a {color: var(--navy);font-weight: 700;font-size: 1rem;padding-bottom: 5px;position: relative;}
+        .main-nav a::after {content: '';position: absolute;bottom: 0;left: 0;width: 0;height: 2px;background-color: var(--gold);transition: width 0.3s ease;}
+        .main-nav a:hover::after, .main-nav a.active::after {width: 100%;}
+        .mobile-menu-toggle {display: none;background: none;border: none;cursor: pointer;font-size: 1.8rem;color: var(--navy);}
+        .content-split {display: grid;grid-template-columns: 1fr 2fr;gap: 50px;align-items: flex-start;}
+        .info-list {list-style: none; padding-left: 0;}
+        .info-list li {margin-bottom: 1rem; font-size: 1.1rem; display: flex; align-items: center;}
+        .info-list i {color: var(--gold); margin-right: 15px; font-size: 1.2rem;}
+        .form-container {background-color: var(--white);padding: 40px;border-radius: 8px; box-shadow: 0 5px 25px rgba(0,0,0,0.08);}
+        .form-group {margin-bottom: 1.5rem;}
+        .form-group label {display: block;font-weight: 700;color: var(--navy);margin-bottom: 8px;}
+        .form-group input, .form-group textarea {width: 100%;padding: 12px;border: 1px solid #ccc;border-radius: 5px;font-size: 1rem;font-family: 'Lato', sans-serif;}
+        .form-group input:focus, .form-group textarea:focus {outline: none;border-color: var(--gold);}
+        .upload-field label {background-color: var(--light-gray); border: 2px dashed #ccc; text-align: center; padding: 20px; cursor: pointer; display: block; border-radius: 5px;}
+        .upload-field label:hover {border-color: var(--gold);}
+        .upload-field input[type="file"] {display: none;}
+        .footer {background-color: var(--navy);color: rgba(255, 255, 255, 0.7);padding: 60px 0 20px 0;}
+        .footer-grid {display: grid;grid-template-columns: 2fr 1fr 1fr;gap: 40px;margin-bottom: 40px;}
+        .footer h4 {color: var(--white);margin-bottom: 1.5rem;font-size: 1.1rem;}
+        .footer p, .footer a {color: rgba(255, 255, 255, 0.7);margin-bottom: 0.5rem;}
+        .footer ul {list-style: none;}
+        .footer ul li {margin-bottom: 0.5rem;}
+        .footer a:hover {color: var(--gold);}
+        .footer-bottom {border-top: 1px solid rgba(255, 255, 255, 0.2);text-align: center;padding-top: 20px;font-size: 0.9rem;}
+        @media (max-width: 992px) {.content-split { grid-template-columns: 1fr; } .footer-grid { grid-template-columns: 1fr 1fr; }}
+        @media (max-width: 768px) {body { font-size: 15px; } .main-nav { display: none; } .mobile-menu-toggle { display: block; } .main-nav {position: fixed;top: 76px;left: 0;width: 100%;height: calc(100vh - 76px);background-color: var(--navy);flex-direction: column;justify-content: center;align-items: center;transform: translateX(100%);transition: transform 0.3s ease-in-out;} .main-nav.active {display: flex;transform: translateX(0);} .main-nav ul {flex-direction: column;gap: 20px;text-align: center;} .main-nav a {color: var(--white);font-size: 1.5rem;} .main-nav a:hover::after, .main-nav a.active::after {background-color: var(--gold);} h1 { font-size: 2rem; } section { padding: 60px 0; } .footer-grid { grid-template-columns: 1fr; text-align: center; }}
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <div class="container header-container">
+            <a href="index.html" class="logo">Virtue Capital</a>
+            <nav class="main-nav" id="main-nav">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="sell.html" class="active">Sell Your Property</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="contact.html">Contact Us</a></li>
+                </ul>
+            </nav>
+            <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Open navigation menu"><i class="fas fa-bars"></i></button>
+        </div>
+    </header>
+
+    <main>
+        <section class="page-header">
+            <div class="container">
+                <h1>Sell Your Property Directly</h1>
+                <p>Selling your home doesn't need to be complicated. We make the process clear, fast, and professional from the start.</p>
+            </div>
+        </section>
+
+        <section id="sell-content" style="background-color: var(--light-gray);">
+            <div class="container content-split">
+                <div class="info-content">
+                    <h2>What We Buy</h2>
+                    <p>We purchase a wide range of residential properties directly from owners. This allows you to avoid listings, agent fees, and months of uncertainty.</p>
+                    <ul class="info-list">
+                        <li><i class="fas fa-check-circle"></i>Single-family homes</li>
+                        <li><i class="fas fa-check-circle"></i>Rentals with or without tenants</li>
+                        <li><i class="fas fa-check-circle"></i>Inherited or vacant houses</li>
+                        <li><i class="fas fa-check-circle"></i>Properties needing any level of repairs</li>
+                    </ul>
+                    <hr style="margin: 2rem 0; border-color: #eee;">
+                    <h2>Our Timeline</h2>
+                    <p>We can close in as little as 7 days or take more time if needed. Our process is built around your schedule. We cover all standard closing costs.</p>
+                    <hr style="margin: 2rem 0; border-color: #eee;">
+                    <h2>What to Expect</h2>
+                     <ul class="info-list">
+                        <li><i class="fas fa-thumbs-up"></i>A confirmation message right away.</li>
+                        <li><i class="fas fa-user-tie"></i>A real person will contact you within 24 hours.</li>
+                        <li><i class="fas fa-file-alt"></i>A written, no-obligation offer if we move forward.</li>
+                        <li><i class="fas fa-handshake"></i>We handle all paperwork and title processes.</li>
+                    </ul>
+                </div>
+                <div class="form-container">
+                    <h2>Get Your No-Obligation Cash Offer</h2>
+                    <p>Fill out the form below to get started. It's fast, free, and completely private.</p>
+                    <form action="#" method="POST">
+                        <div class="form-group">
+                            <label for="property-address">Property Address</label>
+                            <input type="text" id="property-address" name="property_address" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="full-name">Full Name</label>
+                            <input type="text" id="full-name" name="full_name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone Number</label>
+                            <input type="tel" id="phone" name="phone" required>
+                        </div>
+                        <div class="form-group">
+                             <label for="photos" class="upload-field">
+                                <span><i class="fas fa-camera"></i> Upload Photos or Videos of the Property (Optional)</span>
+                                <input type="file" id="photos" name="photos[]" multiple accept="image/*,video/*">
+                            </label>
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">Get My Fair Cash Offer</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col"><h4>Virtue Capital Group</h4><p>A private real estate investment firm acquiring residential properties across the U.S. We operate with integrity and a commitment to clear, professional solutions.</p></div>
+                <div class="footer-col"><h4>Contact Info</h4><p><i class="fas fa-envelope" style="margin-right: 8px; color: var(--gold);"></i>info@virtuecapitalre.com</p><p><i class="fas fa-map-marker-alt" style="margin-right: 8px; color: var(--gold);"></i>Mount Laurel, NJ</p></div>
+                <div class="footer-col"><h4>Legal</h4><ul><li><a href="privacy.html">Privacy Policy</a></li><li><a href="terms.html">Terms of Use</a></li><li><a href="disclaimer.html">Disclaimer</a></li></ul></div>
+            </div>
+            <div class="footer-bottom"><p>© 2024 Virtue Capital Group. All Rights Reserved.</p></div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {const menuToggle = document.getElementById('mobile-menu-toggle');const mainNav = document.getElementById('main-nav');const body = document.body;menuToggle.addEventListener('click', function() {mainNav.classList.toggle('active');body.classList.toggle('nav-open');const icon = menuToggle.querySelector('i');if (mainNav.classList.contains('active')) {icon.classList.remove('fa-bars');icon.classList.add('fa-times');} else {icon.classList.remove('fa-times');icon.classList.add('fa-bars');}});});
+    </script>
+</body>
+</html>
