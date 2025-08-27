@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shadow Blade - 2D Action Platformer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #ff00ff; /* Neon Pink */
+            --secondary-color: #00ffff; /* Neon Cyan */
+            --dark-blue: #0d0221;
+            --light-blue: #24243e;
+            --text-color: #ffffff;
+            --pixel-border: 4px solid var(--primary-color);
+            --pixel-border-inset: inset 0 0 0 4px var(--primary-color);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            scroll-behavior: smooth;
+        }
+
+        html, body {
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        body {
+            font-family: 'Press Start 2P', cursive;
+            background-color: var(--dark-blue);
+            color: var(--text-color);
+            line-height: 1.8;
+            image-rendering: pixelated;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 0 20px;
+        }
+
+        h1, h2, h3 {
+            text-transform: uppercase;
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 15px 20px;
+            background-color: rgba(13, 2, 33, 0.95);
+            border-bottom: var(--pixel-border);
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.2rem;
+            color: var(--secondary-color);
+            text-shadow: 2px 2px var(--primary-color);
+        }
+
+        /* Hamburger Menu */
+        .hamburger {
+            display: none;
+            cursor: pointer;
+            padding: 10px;
+        }
+
+        .hamburger .bar {
+            display: block;
+            width: 25px;
+            height: 3px;
+            margin: 5px auto;
+            background-color: var(--text-color);
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Nav Menu */
+        .nav-menu {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .nav-menu a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-size: 1rem;
+        }
+
+        .nav-menu a:hover {
+            color: var(--secondary-color);
+        }
+
+        /* Hero Section */
+        #hero {
+            padding-top: 80px;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            border-bottom: var(--pixel-border);
+        }
+
+        #hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://img.itch.zone/aW1hZ2UvMTMwMDU2MS83NjE2MTA0LnBuZw==/original/8%2BawYk.png') repeat-x;
+            background-size: contain;
+            animation: scroll-bg 10s linear infinite;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            background-color: rgba(13, 2, 33, 0.7);
+            padding: 2rem;
+            border: var(--pixel-border);
+            box-shadow: var(--pixel-border-inset);
+        }
+
+        #hero h1 {
+            font-size: 4rem;
+            color: var(--secondary-color);
+            text-shadow: 4px 4px var(--primary-color);
+        }
+
+        #hero p {
+            font-size: 1.2rem;
+            margin: 1rem 0 2rem;
+        }
+        
+        .hero-cta-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            color: var(--text-color);
+            background-color: var(--primary-color);
+            border: none;
+            text-decoration: none;
+            transition: all 0.2s ease-in-out;
+            box-shadow: inset -4px -4px 0px 0px #800080;
+        }
+        
+        #sliding-character-container {
+            width: 100px;
+            height: 100px;
+        }
+
+        #sliding-character {
+            width: 100%;
+            height: 100%;
+        }
+
+
+        /* General Section Styling */
+        section {
+            padding: 100px 0;
+            border-bottom: var(--pixel-border);
+            position: relative;
+            z-index: 1;
+        }
+        
+        #about p {
+            background-color: var(--light-blue);
+            padding: 2rem;
+            border: var(--pixel-border);
+            box-shadow: var(--pixel-border-inset);
+        }
+
+        /* Gameplay Section */
+        .video-placeholder {
+            width: 100%;
+            max-width: 800px;
+            aspect-ratio: 16 / 9;
+            background-color: #000;
+            margin: auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: var(--pixel-border);
+        }
+        
+        .play-icon {
+            font-size: 5rem;
+            color: var(--primary-color);
+            cursor: pointer;
+        }
+
+        /* Screenshots Section */
+        .carousel-container {
+            position: relative;
+            max-width: 800px;
+            margin: auto;
+            overflow: hidden;
+            border: var(--pixel-border);
+        }
+
+        .carousel-slide {
+            display: flex;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .carousel-slide img {
+            width: 100%;
+            flex-shrink: 0;
+        }
+
+        .carousel-prev,
+        .carousel-next {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 1.5rem;
+        }
+
+        .carousel-prev { left: 0; }
+        .carousel-next { right: 0; }
+
+        /* Styling for RANDOM character animations */
+        .game-character-animation {
+            position: absolute;
+            width: 120px;
+            height: 120px;
+            z-index: 50;
+            pointer-events: none;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* QR Codes Section */
+        #qr-codes .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .qr-container {
+            display: flex;
+            justify-content: center;
+            gap: 50px;
+            flex-wrap: wrap;
+            width: 100%;
+            margin-bottom: 30px;
+        }
+
+        .qr-code img {
+            width: 200px;
+            height: 200px;
+            border: var(--pixel-border);
+        }
+        
+        .app-store-logos {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .app-store-logos img {
+            width: 150px;
+            transition: transform 0.2s;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--dark-blue);
+            padding: 50px 0;
+            text-align: center;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+        
+        .footer-section h3 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+        
+        .footer-section a {
+            color: var(--text-color);
+            text-decoration: none;
+        }
+
+        .footer-section a:hover {
+            color: var(--secondary-color);
+        }
+        
+        .social-icons img {
+            width: 48px;
+            height: 48px;
+            margin: 0 10px;
+        }
+
+
+        /* ---- MOBILE RESPONSIVENESS (< 768px) ---- */
+        @media (max-width: 768px) {
+            .nav-menu {
+                position: fixed;
+                left: -100%;
+                top: 70px;
+                flex-direction: column;
+                background-color: var(--dark-blue);
+                width: 100%;
+                height: 100vh;
+                text-align: center;
+                transition: 0.3s;
+                gap: 20px;
+                padding-top: 2rem;
+            }
+
+            .nav-menu.active { left: 0; }
+            .hamburger { display: block; }
+
+            .hamburger.active .bar:nth-child(2) { opacity: 0; }
+            .hamburger.active .bar:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+            .hamburger.active .bar:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+
+            body { line-height: 1.6; }
+            h2 { font-size: 1.8rem; }
+            #hero { padding-top: 70px; }
+            #hero h1 { font-size: 2rem; }
+            #hero p { font-size: 0.9rem; }
+            #about p { padding: 1.5rem; }
+            
+            .qr-container { 
+                flex-direction: column; 
+                align-items: center; 
+                gap: 40px;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                align-items: center;
+            }
+              .footer-section a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-size: 10px;
+        }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">Shadow Blade</div>
+        <div class="hamburger">
+            <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+        </div>
+        <nav class="nav-menu">
+            <a href="#about">About</a>
+            <a href="#gameplay">Gameplay</a>
+            <a href="#screenshots">Screenshots</a>
+        </nav>
+    </header>
+
+    <main>
+        <section id="hero">
+            <div id="hero-bg"></div>
+            <div class="hero-content">
+                <h1>Shadow Blade</h1>
+                <p>Unleash the Kunoichi Within</p>
+                <div class="hero-cta-wrapper">
+                    <a href="#qr-codes" class="cta-button">Download Soon!</a>
+                    <div id="sliding-character-container">
+                        <img id="sliding-character" src="png/Slide__000.png" alt="Sliding Ninja Animation">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="about">
+            <div class="container">
+                <h2>About The Game</h2>
+                <p>Prepare to step into the shadows with the deadliest guardian of light. In this electrifying new action-2D platformer, a fierce kunoichi girl ninja warrior must harness her ancient clan's techniques to battle a relentless onslaught of evil. Master a fluid combat system, unleashing dazzling combos, shuriken storms, and silent takedowns against hordes of cunning baddies. Each level builds toward an epic confrontation with a unique, monstrous boss, testing your skill and strategy to the limit. The balance between good and evil rests in your hands. Sharpen your blades and steady your resolve—the fight for justice arrives soon on mobile app stores.</p>
+            </div>
+        </section>
+
+        <section id="gameplay">
+            <div class="container">
+                <h2>Gameplay</h2>
+                <!-- Video placeholder: Replace with your actual video embed code later -->
+                <div class="video-placeholder">
+                    <div class="play-icon">&#9658;</div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="screenshots">
+            <div class="container">
+                <h2>Screenshots</h2>
+                <div class="carousel-container">
+                    <div class="carousel-slide">
+                        <!-- Screenshot placeholders: Replace with your actual screenshot images -->
+                        <img src="https://www.gameart2d.com/uploads/3/0/9/1/30917885/4977155.jpg?661" alt="Screenshot 1">
+                        <img src="https://plays.org/screenshots/ninja-girl-escape.png" alt="Screenshot 2">
+                        <img src="https://www.gameart2d.com/uploads/3/0/9/1/30917885/preview2_38.jpg" alt="Screenshot 3">
+                    </div>
+                    <button class="carousel-prev">&lt;</button>
+                    <button class="carousel-next">&gt;</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="qr-codes">
+            <div class="container">
+                <h2>Get Ready!</h2>
+                <div class="qr-container">
+                    <div class="qr-code">
+                        <!-- QR Code placeholder: Replace with your actual Android QR code URL -->
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=Example-Android" alt="Android QR Code">
+                        <p>Android</p>
+                    </div>
+                    <div class="qr-code">
+                        <!-- QR Code placeholder: Replace with your actual iOS QR code URL -->
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=Example-iOS" alt="iOS QR Code">
+                        <p>iOS</p>
+                    </div>
+                </div>
+                 <div class="app-store-logos">
+                    <!-- Replace # with your actual app store links -->
+                    <a href="#"><img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Google Play Store"></a>
+                    <a href="#"><img src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Download_on_the_App_Store_Badge.svg" alt="Apple App Store"></a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container footer-content">
+            <div class="footer-section">
+                <h3>Address</h3>
+                <p>123 Ninja Way<br>Pixelburg, 1337</p>
+            </div>
+            <div class="footer-section">
+                <h3>Email</h3>
+                <p><a href="mailto:contact@shadowbladegame.com">contact@shadowbladegame.com</a></p>
+            </div>
+            <div class="footer-section">
+                <h3>Socials</h3>
+                <div class="social-icons">
+                    <!-- Social media placeholders: Replace # with your links and update icons if needed -->
+                    <a href="#"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAABaklEQVR42u2WwQ3CMAxF/8cE2AAbYANYgA1gA2AENsAG2AAbYAMYgA1gA8IEchKlpGuTpPSTxCX/pd/7cpd2Y2Z+X/AAMAAbYARsABPAaR8+AIbAY+AEOAcmfIQPwBngDDgDloA34A04AyY8A/fAY+AVcAaMge/AfeA6OIZvA2DBP/A/eA0uAY8gB0y4D7gEToFL4BhwBRwAF54BzwBzwA5wB+xlTvge3AIvQE/gGHgELgHn3gG/gL/gDfgGvALWgH/gPvgd3ANKfE8BBDx/dJ6AF+ASMOHPAUfAIfAIOAMmPDjwBjwCvQGvQK/AcuAWOAFGfFlgG5wA7wFpwC5wD/wFXgE7wBK4B5x4BzwHfwA/wDvgFngCXgGHgDNgBsz4u8ApcAicAofAIfAOOAGcAU6AHeAFGAI/gPvgL/gDbgEzwAsw4X0AM/MX4g24Dk6BaeAauA6uA/8e/AeO4XvgLjgGZwA3YJJ/AbwTfD4YcE3qAAAAAElFTSuQmCC" alt="Twitter"></a>
+                    <a href="#"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAABYUlEQVR42u2WwQnCMBBE/zMJbIAbwAbsABvABnACcoIcwAm4gA2gA2xgA6gBG8AGHCLOQkdxJI1un4Q/mLD3f7v/9nKHFU3T/yU4AAzAAjAAI8AAzMAnvgFMAN+AN8AZ4As4A84AMz4DzwBvgC/gDdgDfgFvgDPgzPgcPAPeAF+AN+ANeAM+AWeAM8CYvAs8CzwDPgG/gF/gL3gGvAHeAMPAGfAOmPEc8Ax4BnwCvgB/gD/gGfAHeANMA2fAH2DG04BnwDPgG/gGfAM+A3+AN+AbMA2cAS+AGc+BZ8A74A/wDXgD3gGvgDvgD3gG/ge/gF/gF/gEnAHPgDNgxtOAN+AN8Ab4AnwBvgC/gCfgD/gG/gT/gH/gH/gL/AROwGewBFwCR8AZMMZnwTNgBrwBvgDfgC/AF+AL8AX4AvwBvwF/wH/gH/gH/gL/gK/gNfAcmPEHwP0Yx/Ab8LzRAAAAAElFTSuQmCC" alt="Facebook"></a>
+                    <a href="#"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAABh0lEQVR42u2WwQ3CMAxF/+ME2AAbYAMYaANsAAbQBjZCG8AG2AAbwAYwARvABhAmchKlpEtyUp+EP8mX/pd+78td2pVly/8lcAAMwAkwAiaACfC0j18AB8BT4Am4BCY8xA/gCbgEnoA54A04A854hhwBT4Gb4BNwCRwD34BPwBvgzDeBw+ApuAQuAafAOfAGvAHOeAacAE/AIfAEPAEngWvgGfAKeOOZ8Az4A3wBnoAn4AlwDTwBnoBWvAK+gefgL/gDfgOfgW/gF/gEvgCfeAa8AyY8dOAEeAI8AV+BG+ASeASeAU94LPAU3AK3gCfgGbgEbgFvgBNvA8/AH/AP/AN+gY/gY/gb/A3+gT/gD/gH7gFL4BUwwqMBp8Ap8BQ4BY7AW+AWeAOccMaLAi/BTfAJuASOQAPwCPgCbgHPgA/gG/gGfAM+A5+AKeANKPFPQJblz1gDfgGfwDvgEbgGbgHbgHbgE3gG/ge/gX/gLzgG/wBOwDkw4R+AZuE6mPEFwwAAAABJRU5ErkJggg==" alt="Instagram"></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Hamburger Menu Functionality
+        const hamburger = document.querySelector(".hamburger");
+        const navMenu = document.querySelector(".nav-menu");
+        hamburger.addEventListener("click", () => {
+            hamburger.classList.toggle("active");
+            navMenu.classList.toggle("active");
+        });
+        document.querySelectorAll(".nav-menu a").forEach(n => n.addEventListener("click", () => {
+            hamburger.classList.remove("active");
+            navMenu.classList.remove("active");
+        }));
+        
+        // Carousel Functionality
+        const carouselSlide = document.querySelector('.carousel-slide');
+        const carouselImages = document.querySelectorAll('.carousel-slide img');
+        const prevBtn = document.querySelector('.carousel-prev');
+        const nextBtn = document.querySelector('.carousel-next');
+
+        let carouselCounter = 0;
+        
+        function updateCarousel() {
+            const size = carouselImages.length > 0 ? carouselSlide.clientWidth : 0;
+            if (size > 0) {
+                carouselSlide.style.transform = 'translateX(' + (-size * carouselCounter) + 'px)';
+            }
+        }
+
+        if (carouselImages.length > 0) {
+            nextBtn.addEventListener('click', () => {
+                carouselCounter = (carouselCounter + 1) % carouselImages.length;
+                updateCarousel();
+            });
+
+            prevBtn.addEventListener('click', () => {
+                carouselCounter = (carouselCounter - 1 + carouselImages.length) % carouselImages.length;
+                updateCarousel();
+            });
+
+            window.addEventListener('resize', updateCarousel);
+            updateCarousel();
+        }
+
+
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // --- PERMANENT SLIDING ANIMATION ---
+            const slidingCharElement = document.getElementById('sliding-character');
+            let slideFrame = 0;
+            const totalSlideFrames = 10; // Slide__000 to Slide__009
+            const slideFrameRate = 100; 
+
+            function animateSlidingCharacter() {
+                slideFrame = (slideFrame + 1) % totalSlideFrames;
+                const frameNumber = `00${slideFrame}`.slice(-3);
+                slidingCharElement.src = `png/Slide__${frameNumber}.png`;
+            }
+            setInterval(animateSlidingCharacter, slideFrameRate);
+
+
+            // --- RANDOM CHARACTER ANIMATION SPAWNER ---
+            const animationSequences = {
+                'Attack__': 8, 'Dead__': 10, 'Idle__': 10, 'Jump__': 10,
+                'Jump_Attack__': 10, 'Jump_Throw__': 10, 'Run__': 10, 'Throw__': 10
+            };
+            const sequenceKeys = Object.keys(animationSequences);
+            const spawnInterval = 1500;
+            const randomFrameRate = 80;
+            const charWidth = 120;
+            const charHeight = 120;
+
+            function spawnRandomAnimation() {
+                const char = document.createElement('img');
+                char.classList.add('game-character-animation');
+
+                const randomSequenceKey = sequenceKeys[Math.floor(Math.random() * sequenceKeys.length)];
+                const totalFrames = animationSequences[randomSequenceKey];
+
+                const spawnableTop = window.scrollY;
+                const spawnableHeight = window.innerHeight;
+                const randomTop = spawnableTop + (Math.random() * (spawnableHeight - charHeight));
+                const randomLeft = Math.random() * (window.innerWidth - charWidth);
+
+                char.style.top = `${randomTop}px`;
+                char.style.left = `${randomLeft}px`;
+
+                if (Math.random() > 0.5) {
+                    char.style.transform = 'scaleX(-1)';
+                }
+
+                document.body.appendChild(char);
+
+                let currentFrame = 0;
+                const animationInterval = setInterval(() => {
+                    if (currentFrame >= totalFrames) {
+                        clearInterval(animationInterval);
+                        if (char.parentNode) {
+                            char.parentNode.removeChild(char);
+                        }
+                        return;
+                    }
+                    const frameNumber = `00${currentFrame}`.slice(-3);
+                    char.src = `png/${randomSequenceKey}${frameNumber}.png`;
+                    currentFrame++;
+                }, randomFrameRate);
+            }
+            setInterval(spawnRandomAnimation, spawnInterval);
+        });
+
+    </script>
+</body>
+</html>
