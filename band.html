@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HERNANDEZ BAND | Official Website</title>
+    <style>
+        /* FONT IMPORT */
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Oswald:wght@500;700&display=swap');
+
+        /* CSS RESET & ROOT VARIABLES */
+        :root {
+            --primary-color: #8CC63E; /* Hernandez Band Logo Green */
+            --primary-color-hover: #79ab34; /* Darker green for hover */
+            --background-color: #121212;
+            --surface-color: #1e1e1e;
+            --text-color: #e0e0e0;
+            --text-muted-color: #888;
+            --font-display: 'Oswald', sans-serif;
+            --font-body: 'Montserrat', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 80px; /* Offset for fixed header */
+        }
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        /* GENERAL STYLING */
+        h1, h2, h3, h4 {
+            font-family: var(--font-display);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: white;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 60px;
+            position: relative;
+        }
+        
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background-color: var(--primary-color);
+        }
+
+        h3 {
+             font-size: 1.8rem;
+             margin-bottom: 20px;
+             color: var(--primary-color);
+        }
+
+        section {
+            padding: 100px 5%;
+            border-bottom: 1px solid #333;
+            opacity: 0; /* For fade-in animation */
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        section:last-of-type {
+            border-bottom: none;
+        }
+
+        section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* HEADER & NAVIGATION */
+        .main-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 5%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            transition: background 0.3s;
+            height: 80px;
+        }
+
+        .logo img {
+            max-height: 60px;
+            transition: transform 0.3s;
+        }
+
+        .logo img:hover {
+            transform: scale(1.05);
+        }
+
+        .main-nav {
+            display: flex;
+        }
+
+        .main-nav a {
+            color: var(--text-color);
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: bold;
+            transition: color 0.3s;
+            position: relative;
+            padding-bottom: 5px;
+        }
+
+        .main-nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary-color);
+            transition: width 0.3s ease;
+        }
+
+        .main-nav a:hover::after,
+        .main-nav a.active::after {
+            width: 100%;
+        }
+
+        .main-nav a:hover,
+        .main-nav a.active {
+            color: white;
+        }
+
+        /* MOBILE NAV BURGER */
+        .burger-menu {
+            display: none;
+            cursor: pointer;
+            z-index: 1001;
+            background: none;
+            border: none;
+        }
+
+        .burger-menu .bar {
+            display: block;
+            width: 25px;
+            height: 3px;
+            margin: 5px auto;
+            background-color: white;
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* HERO SECTION */
+        #home {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            background: url('https://images.unsplash.com/photo-1516222338279-6962de0b4b8f?auto=format&fit=crop&q=80&w=2070') no-repeat center center/cover;
+            background-attachment: fixed;
+            position: relative;
+        }
+
+        #home::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+        }
+        
+        .hero-content {
+            z-index: 1;
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        .hero-subtitle {
+            font-size: 1rem;
+            font-family: var(--font-body);
+            letter-spacing: 5px;
+            text-transform: uppercase;
+        }
+
+        .hero-title {
+            font-size: 6rem;
+            margin: 10px 0;
+            line-height: 1;
+            text-shadow: 0 0 15px rgba(140, 198, 62, 0.6); /* Updated shadow color */
+        }
+
+        .hero-tagline {
+            font-size: 1.5rem;
+            font-weight: 400;
+            margin-bottom: 20px;
+        }
+
+        .hero-text {
+            max-width: 600px;
+            margin: 0 auto 30px;
+        }
+        
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        /* CUSTOM AUDIO PLAYER */
+        .audio-player {
+            background: var(--surface-color); padding: 15px; border-radius: 10px; display: flex; align-items: center; justify-content: center; max-width: 500px; margin: 20px auto 0; box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+        .play-btn {
+            background: var(--primary-color); border: none; color: white; width: 50px; height: 50px; border-radius: 50%; font-size: 1.5rem; cursor: pointer; margin-right: 15px; transition: background 0.3s;
+        }
+        .play-btn:hover { background: var(--primary-color-hover); }
+        .timeline-container { flex-grow: 1; display: flex; align-items: center; gap: 10px; }
+        .timeline { flex-grow: 1; height: 5px; background: #444; cursor: pointer; position: relative; }
+        .progress { width: 0; height: 100%; background: var(--primary-color); }
+        .time { font-size: 0.9rem; }
+
+        /* REPERTOIRE & SCHEDULE SECTION */
+        .repertoire-list {
+            background: var(--surface-color); padding: 30px; border-radius: 8px; columns: 3; column-gap: 40px; list-style: none; margin-bottom: 60px;
+        }
+        .repertoire-list li { margin-bottom: 10px; color: var(--text-muted-color); transition: color 0.3s; }
+        .repertoire-list li:hover { color: var(--text-color); }
+        .schedule-table { width: 100%; border-collapse: collapse; text-align: left; }
+        .schedule-table th, .schedule-table td { padding: 15px; border-bottom: 1px solid #333; }
+        .schedule-table th { color: var(--primary-color); font-family: var(--font-display); font-size: 1.2rem; }
+        .schedule-table .date { font-weight: bold; color: white; }
+        .schedule-table tr:hover { background-color: var(--surface-color); }
+
+        /* ABOUT US SECTION */
+        .members-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 30px; margin-bottom: 60px;
+        }
+        .member-card {
+            background-color: var(--surface-color); border-radius: 8px; overflow: hidden; text-align: center; transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .member-card:hover { transform: translateY(-10px); box-shadow: 0 10px 20px rgba(0,0,0,0.4); }
+        .member-card img { width: 100%; height: 250px; object-fit: cover; object-position: top; }
+        .member-info { padding: 20px; }
+        .member-info h4 { font-size: 1.2rem; color: white; }
+        .member-info p { color: var(--primary-color); font-size: 0.9rem; }
+
+        .history-section {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: center; margin-bottom: 60px;
+        }
+        .history-section p { color: var(--text-muted-color); }
+        .history-gallery { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
+        .history-gallery img { width: 100%; border-radius: 8px; transition: transform 0.3s; }
+        .history-gallery img:hover { transform: scale(1.05); }
+
+        /* CONTACT SECTION */
+        .contact-form { max-width: 700px; margin: 0 auto; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 5px; color: var(--text-muted-color); }
+        .form-group input, .form-group textarea {
+            width: 100%; padding: 12px; background: var(--surface-color); border: 1px solid #333; border-radius: 5px; color: var(--text-color); font-family: var(--font-body);
+        }
+        .form-group input:focus, .form-group textarea:focus { outline: none; border-color: var(--primary-color); }
+        .submit-btn {
+            display: inline-block; background: var(--primary-color); color: white; padding: 12px 30px; border: none; border-radius: 5px; cursor: pointer; font-size: 1rem; font-weight: bold; text-transform: uppercase; transition: background 0.3s, transform 0.2s;
+        }
+        .submit-btn:hover { background: var(--primary-color-hover); transform: translateY(-2px); }
+
+        /* FOOTER */
+        .main-footer { padding: 40px 5%; background: #0a0a0a; text-align: center; }
+        .footer-nav { margin-bottom: 20px; }
+        .footer-nav a { color: var(--text-muted-color); text-decoration: none; margin: 0 10px; transition: color 0.3s; }
+        .footer-nav a:hover { color: var(--primary-color); }
+
+        /* RESPONSIVE DESIGN & MOBILE NAV STYLES */
+        @media (max-width: 850px) {
+            .main-nav {
+                position: fixed;
+                left: -100%;
+                top: 0;
+                width: 100%;
+                height: 100vh;
+                background-color: rgba(0, 0, 0, 0.95);
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                transition: left 0.3s ease-in-out;
+            }
+
+            .main-nav.nav-open {
+                left: 0;
+            }
+
+            .main-nav a {
+                font-size: 2rem;
+                margin: 20px 0;
+            }
+
+            .burger-menu {
+                display: block;
+            }
+
+            .burger-menu.toggle .bar:nth-child(1) {
+                transform: rotate(-45deg) translate(-5px, 6px);
+            }
+            .burger-menu.toggle .bar:nth-child(2) {
+                opacity: 0;
+            }
+            .burger-menu.toggle .bar:nth-child(3) {
+                transform: rotate(45deg) translate(-5px, -6px);
+            }
+            
+            .history-section { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 768px) {
+            h2 { font-size: 2rem; }
+            .hero-title { font-size: 4rem; }
+            .repertoire-list { columns: 2; }
+            .members-grid { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
+        }
+        
+        @media (max-width: 480px) {
+            .hero-title { font-size: 3rem; }
+            .repertoire-list { columns: 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="main-header">
+        <a href="#home" class="logo">
+            <img src="logo.png" alt="Hernandez Band Logo">
+        </a>
+        <nav class="main-nav" id="mainNav">
+            <a href="#home" class="active">Home</a>
+            <a href="#repertoire">Repertoire & Schedule</a>
+            <a href="#about">About Us</a>
+            <a href="#contact">Contact</a>
+        </nav>
+        <button class="burger-menu" id="burgerMenu">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </button>
+    </header>
+
+    <main>
+        <!-- HOME SECTION -->
+        <section id="home">
+            <div class="hero-content">
+                <p class="hero-subtitle">Buffalo Music Hall of Fame</p>
+                <h1 class="hero-title">HERNANDEZ</h1>
+                <p class="hero-tagline">Feel the Rhythms. Experience the Sound.</p>
+                <p class="hero-text">Welcome to our official website — where passion meets performance. We're a Buffalo-based band blending rock, soul, and Latin influences into unforgettable live shows and original music. Whether you're here to book the band, stream our latest tracks, or catch our next gig, you're in the right place.</p>
+                
+                <div class="audio-player">
+                    <audio id="band-audio" src="https://www.hernandez-band.com/_downloads/35a98daf2e91a5d75c34cbfbc575c44a" preload="metadata"></audio>
+                    <button class="play-btn" id="playPauseBtn">▶</button>
+                    <div class="timeline-container">
+                        <span class="time" id="currentTime">00:00</span>
+                        <div class="timeline" id="timeline">
+                            <div class="progress" id="progress"></div>
+                        </div>
+                        <span class="time" id="duration">00:00</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- REPERTOIRE & SCHEDULE SECTION -->
+        <section id="repertoire">
+            <div class="container">
+                <h2>Repertoire & Schedule</h2>
+                <h3>Cover List</h3>
+                <ul class="repertoire-list">
+                    <li>Hernandez</li> <li>Earth, Wind & Fire</li> <li>The Eagles</li> <li>Chicago</li> <li>Billy Joel</li> <li>Prince</li> <li>Sly & the Family Stone</li> <li>Rick James</li> <li>Kool & the Gang</li> <li>War</li> <li>Tower of Power</li> <li>KC & The Sunshine Band</li> <li>The Beatles</li> <li>Bruno Mars</li> <li>Grass Roots</li> <li>Four Tops</li> <li>Cortez Greer</li> <li>Doobie Brothers</li> <li>Wild Cherry</li> <li>Santana</li> <li>Average White Band</li> <li>Neil Diamond</li> <li>Spiral Staircase</li> <li>Steelers Wheel</li> <li>Tito Nieves</li> <li>Van Morrison</li> <li>Huey Lewis</li> <li>Marc Anthony</li> <li>Marvin Gaye</li> <li>Los Lonely Boys</li> <li>Deodato</li> <li>Carl Carlton</li> <li>Justin Timberlake</li> <li>Phil Collins</li> <li>Ed Sheeran</li>
+                </ul>
+
+                <h3>Gig Schedule: Make table reservations early</h3>
+                <table class="schedule-table">
+                    <thead> <tr> <th>Date & Time</th> <th>Venue</th> <th>Details</th> </tr> </thead>
+                    <tbody>
+                        <tr> <td class="date">Saturday, September 20, 2025</td> <td>Grandma Mora</td> <td>7:30-10:30 PM | 1465 Hertel Ave. Buffalo, NY | (716) 837-6703</td> </tr>
+                        <tr> <td class="date">Saturday, September 27, 2025</td> <td>Grandma Mora</td> <td>7:30-10:30 PM | 1465 Hertel Ave. Buffalo, NY | (716) 837-6703</td> </tr>
+                        <tr> <td class="date">2026</td> <td>-</td> <td>More dates coming soon...</td> </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- ABOUT US SECTION -->
+        <section id="about">
+            <div class="container">
+                <h2>About Us</h2>
+                <h3>Meet The Band</h3>
+                <div class="members-grid">
+                    <div class="member-card"> <img src="https://primary.jwwb.nl/public/j/r/i/temp-delbnepsxhpofulklast/image-high-gg9os2.png?enable-io=true&enable=upscale&crop=987%2C987%2Cx0%2Cy0%2Csafe&width=481&height=575" alt="David Hernandez"> <div class="member-info"> <h4>David Hernandez</h4> <p>Guitar, Vocals</p> </div> </div>
+                    <div class="member-card"> <img src="https://primary.jwwb.nl/public/j/r/i/temp-delbnepsxhpofulklast/juan1-high.png?enable-io=true&enable=upscale&crop=181%2C282%2Cx0%2Cy14%2Csafe&width=181&height=282" alt="JC"> <div class="member-info"> <h4>JC</h4> <p>Bass, Vocals</p> </div> </div>
+                    <div class="member-card"> <img src="https://primary.jwwb.nl/public/j/r/i/temp-delbnepsxhpofulklast/robert-photo-high.jpg?enable-io=true&enable=upscale&crop=481%2C575%2Cx0%2Cy33%2Csafe&width=481&height=575" alt="Robert Hernandez"> <div class="member-info"> <h4>Robert Hernandez</h4> <p>Drums, Vocals</p> </div> </div>
+                    <div class="member-card"> <img src="https://primary.jwwb.nl/public/j/r/i/temp-delbnepsxhpofulklast/ryan6-standard.jpg" alt="Ryan Gentner"> <div class="member-info"> <h4>Ryan Gentner</h4> <p>Keyboards, Lead Vocals</p> </div> </div>
+                    <div class="member-card"> <img src="https://primary.jwwb.nl/public/j/r/i/temp-delbnepsxhpofulklast/image-standard-88w7f2.png" alt="Ralph Hernandez"> <div class="member-info"> <h4>Ralph Hernandez</h4> <p>Congas, Vocals</p> </div> </div>
+                </div>
+
+                <div class="history-section">
+                    <div class="history-text">
+                        <h3>Our Story</h3> <p>Hernandez, a band from the '70s, skillfully combines Anglo and Hispanic styles, reflecting their Puerto Rican roots and the influence of their guitarist father, Rafael Hernandez. In 1999, Hernandez was proud to be inducted into the Buffalo Music Hall of Fame, an honor shared with the Buffalo Philharmonic Orchestra and The Scinta Brothers, celebrating their significant musical journey.</p> <br>
+                        <h3>Our History</h3> <p>It all began in Spanish Harlem. Starting from humble roots, we have steadily grown thanks to our unwavering dedication and constant desire to improve. We're truly passionate about our music, and we're eager to share our journey with you.</p>
+                    </div>
+                    <div class="history-gallery">
+                        <h3>From The Archives</h3>
+                        <img src="https://primary.jwwb.nl/public/j/r/i/temp-delbnepsxhpofulklast/hernandez-1974-standard-k7umkl.jpg" alt="Hernandez Band in 1974">
+                        <img src="https://primary.jwwb.nl/public/j/r/i/temp-delbnepsxhpofulklast/hernandez1-standard.jpg" alt="Hernandez Band early photo">
+                        <img src="https://primary.jwwb.nl/public/j/r/i/temp-delbnepsxhpofulklast/los-hermanos-hernandez-high.jpg?enable-io=true&enable=upscale&crop=1920%2C1407%2Cx0%2Cy17%2Csafe&width=800&height=586" alt="Los Hermanos Hernandez">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CONTACT SECTION -->
+        <section id="contact">
+            <div class="container">
+                <h2>Contact Us</h2>
+                <form action="#" class="contact-form" onsubmit="alert('Thank you for your message!'); this.reset(); return false;">
+                    <div class="form-group"> <label for="name">Name *</label> <input type="text" id="name" name="name" required> </div>
+                    <div class="form-group"> <label for="email">Email address *</label> <input type="email" id="email" name="email" required> </div>
+                    <div class="form-group"> <label for="message">Message *</label> <textarea id="message" name="message" rows="5" required></textarea> </div>
+                    <button type="submit" class="submit-btn">Submit Form</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer class="main-footer">
+        <div class="footer-nav">
+             <a href="#home">Home</a> <a href="#repertoire">Repertoire & Schedule</a> <a href="#about">About Us</a> <a href="#contact">Contact</a>
+        </div>
+        <p>© 2025 hernandez-band.com</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            // --- MOBILE NAV ---
+            const burgerMenu = document.getElementById('burgerMenu');
+            const mainNav = document.getElementById('mainNav');
+            const navLinks = document.querySelectorAll('.main-nav a');
+
+            burgerMenu.addEventListener('click', () => {
+                mainNav.classList.toggle('nav-open');
+                burgerMenu.classList.toggle('toggle');
+            });
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    mainNav.classList.remove('nav-open');
+                    burgerMenu.classList.remove('toggle');
+                });
+            });
+
+            // --- INTERSECTION OBSERVER FOR NAV & FADE-IN ANIMATIONS ---
+            const sections = document.querySelectorAll('section');
+            const desktopNavLinks = document.querySelectorAll('.main-nav a');
+
+            const observerOptions = { root: null, rootMargin: '0px', threshold: 0.4 };
+
+            const sectionObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) entry.target.classList.add('visible');
+                    
+                    if (entry.isIntersecting && entry.intersectionRatio >= 0.4) {
+                        const id = entry.target.getAttribute('id');
+                        desktopNavLinks.forEach(link => {
+                            link.classList.remove('active');
+                            if (link.getAttribute('href') === `#${id}`) {
+                                link.classList.add('active');
+                            }
+                        });
+                    }
+                });
+            }, observerOptions);
+
+            sections.forEach(section => sectionObserver.observe(section));
+
+            // --- CUSTOM AUDIO PLAYER ---
+            const audio = document.getElementById('band-audio');
+            const playPauseBtn = document.getElementById('playPauseBtn');
+            const timeline = document.getElementById('timeline');
+            const progress = document.getElementById('progress');
+            const currentTimeEl = document.getElementById('currentTime');
+            const durationEl = document.getElementById('duration');
+
+            const formatTime = (seconds) => {
+                if (isNaN(seconds)) return '00:00';
+                const minutes = Math.floor(seconds / 60);
+                const secs = Math.floor(seconds % 60);
+                return `${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+            };
+
+            playPauseBtn.addEventListener('click', () => {
+                if (audio.paused) { audio.play(); playPauseBtn.innerHTML = '❚❚'; } 
+                else { audio.pause(); playPauseBtn.innerHTML = '▶'; }
+            });
+            
+            audio.addEventListener('ended', () => {
+                playPauseBtn.innerHTML = '▶'; progress.style.width = '0%'; audio.currentTime = 0;
+            });
+
+            audio.addEventListener('timeupdate', () => {
+                if(audio.duration){
+                    const percent = (audio.currentTime / audio.duration) * 100;
+                    progress.style.width = `${percent}%`;
+                    currentTimeEl.textContent = formatTime(audio.currentTime);
+                }
+            });
+
+            audio.addEventListener('loadedmetadata', () => {
+                durationEl.textContent = formatTime(audio.duration);
+            });
+
+            timeline.addEventListener('click', (e) => {
+                if (audio.duration) {
+                    const timelineWidth = timeline.offsetWidth;
+                    const clickX = e.offsetX;
+                    audio.currentTime = (clickX / timelineWidth) * audio.duration;
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
