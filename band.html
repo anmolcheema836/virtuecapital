@@ -179,11 +179,27 @@
             justify-content: center;
             text-align: center;
             color: white;
-            background: url('https://images.unsplash.com/photo-1516222338279-6962de0b4b8f?auto=format&fit=crop&q=80&w=2070') no-repeat center center/cover;
-            background-attachment: fixed;
             position: relative;
+            overflow: hidden; /* Ensures video does not spill out */
+        }
+        
+        /* Video Background Styling */
+        .video-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
         }
 
+        .video-background video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Covers the entire area without stretching */
+        }
+
+        /* Dark Overlay */
         #home::before {
             content: '';
             position: absolute;
@@ -192,10 +208,11 @@
             width: 100%;
             height: 100%;
             background: rgba(0, 0, 0, 0.7);
+            z-index: 2; /* Sits on top of the video */
         }
         
         .hero-content {
-            z-index: 1;
+            z-index: 3; /* Sits on top of the overlay */
             animation: fadeIn 2s ease-in-out;
         }
 
@@ -367,6 +384,12 @@
     <main>
         <!-- HOME SECTION -->
         <section id="home">
+            <div class="video-background">
+                <video autoplay loop muted playsinline>
+                    <source src="https://cdn.pixabay.com/video/2017/08/30/11720-231759062_large.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
             <div class="hero-content">
                 <p class="hero-subtitle">Buffalo Music Hall of Fame</p>
                 <h1 class="hero-title">HERNANDEZ</h1>
@@ -414,11 +437,11 @@
                 <h2>About Us</h2>
                 <h3>Meet The Band</h3>
                 <div class="members-grid">
-                    <div class="member-card"> <img src="https://primary.jwwb.nl/public/j/r/i/temp-delbnepsxhpofulklast/image-high-gg9os2.png?enable-io=true&enable=upscale&crop=987%2C987%2Cx0%2Cy0%2Csafe&width=481&height=575" alt="David Hernandez"> <div class="member-info"> <h4>David Hernandez</h4> <p>Guitar, Vocals</p> </div> </div>
+                    <div class="member-card"> <img src="https://primary.jwwb.nl/public/j/r/i/temp-delbnepsxhpofulklast/image-high-gg9os2.png?enable-io=true&enable=upscale&crop=987%2C987%2Cx0%2Cy0%2Csafe&width=481&height=575" alt="Ralph Hernandez"> <div class="member-info"> <h4>Ralph Hernandez</h4> <p>Guitar, Vocals</p> </div> </div>
                     <div class="member-card"> <img src="https://primary.jwwb.nl/public/j/r/i/temp-delbnepsxhpofulklast/juan1-high.png?enable-io=true&enable=upscale&crop=181%2C282%2Cx0%2Cy14%2Csafe&width=181&height=282" alt="JC"> <div class="member-info"> <h4>JC</h4> <p>Bass, Vocals</p> </div> </div>
                     <div class="member-card"> <img src="https://primary.jwwb.nl/public/j/r/i/temp-delbnepsxhpofulklast/robert-photo-high.jpg?enable-io=true&enable=upscale&crop=481%2C575%2Cx0%2Cy33%2Csafe&width=481&height=575" alt="Robert Hernandez"> <div class="member-info"> <h4>Robert Hernandez</h4> <p>Drums, Vocals</p> </div> </div>
                     <div class="member-card"> <img src="https://primary.jwwb.nl/public/j/r/i/temp-delbnepsxhpofulklast/ryan6-standard.jpg" alt="Ryan Gentner"> <div class="member-info"> <h4>Ryan Gentner</h4> <p>Keyboards, Lead Vocals</p> </div> </div>
-                    <div class="member-card"> <img src="https://primary.jwwb.nl/public/j/r/i/temp-delbnepsxhpofulklast/image-standard-88w7f2.png" alt="Ralph Hernandez"> <div class="member-info"> <h4>Ralph Hernandez</h4> <p>Congas, Vocals</p> </div> </div>
+                    <div class="member-card"> <img src="https://primary.jwwb.nl/public/j/r/i/temp-delbnepsxhpofulklast/image-standard-88w7f2.png" alt="David Hernandez"> <div class="member-info"> <h4>David Hernandez</h4> <p>Congas, Vocals</p> </div> </div>
                 </div>
 
                 <div class="history-section">
