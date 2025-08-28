@@ -504,12 +504,17 @@
             const sections = document.querySelectorAll('section');
             const desktopNavLinks = document.querySelectorAll('.main-nav a');
 
-            const observerOptions = { root: null, rootMargin: '0px', threshold: 0.4 };
+            // ***** FIX: Changed threshold from 0.4 to 0.1 for better mobile reliability *****
+            const observerOptions = { root: null, rootMargin: '0px', threshold: 0.1 };
 
             const sectionObserver = new IntersectionObserver((entries, observer) => {
                 entries.forEach(entry => {
-                    if (entry.isIntersecting) entry.target.classList.add('visible');
+                    // When the section starts to become visible, add the 'visible' class
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
                     
+                    // This part updates the active link in the navigation
                     if (entry.isIntersecting && entry.intersectionRatio >= 0.4) {
                         const id = entry.target.getAttribute('id');
                         desktopNavLinks.forEach(link => {
