@@ -1,0 +1,1782 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Better Way Passage (BWP) | Empowering Healthcare Innovators</title>
+    <meta name="description" content="Better Way Passage is a nonprofit supporting clinicians and private practice owners with research, resources, and tech tools to foster equitable and efficient healthcare.">
+    <meta name="keywords" content="nonprofit, healthcare, clinicians, private practice, medical resources, mentorship, healthcare technology, BWP">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://betterwaypassage.org/">
+    <meta property="og:title" content="Better Way Passage (BWP) | Empowering Healthcare Innovators">
+    <meta property="og:description" content="Supporting clinicians and private practice owners with research, resources, and tech tools.">
+    <meta property="og:image" content="https://betterwaypassage.org/og-image.jpg"> <!-- TODO: Replace with an actual URL to an image -->
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://betterwaypassage.org/">
+    <meta property="twitter:title" content="Better Way Passage (BWP) | Empowering Healthcare Innovators">
+    <meta property="twitter:description" content="Supporting clinicians and private practice owners with research, resources, and tech tools.">
+    <meta property="twitter:image" content="https://betterwaypassage.org/twitter-image.jpg"> <!-- TODO: Replace with an actual URL to an image -->
+
+    <style>
+        /* CSS Reset and Global Styles */
+        :root {
+            --bg: #f7f7f6;
+            --surface: #ffffff;
+            --ink: #1c1c1c;
+            --muted: #6b6b6b;
+            --peach: #ffc7ab;
+            --peach-600: #ff9f7a;
+            --accent: var(--peach);
+            --border-color: #e5e7eb;
+            --focus-ring: 0 0 0 3px rgba(255, 159, 122, 0.6);
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+            --header-height: 70px;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: var(--header-height);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+            background-color: var(--bg);
+            color: var(--ink);
+            line-height: 1.6;
+            font-size: 16px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        h1, h2, h3 {
+            font-family: "Brush Script MT", "Lucida Handwriting", "Papyrus", cursive;
+            font-weight: 500;
+            line-height: 1.2;
+            color: var(--ink);
+        }
+        
+        h1 { font-size: 2.5rem; }
+        h2 { font-size: 2rem; }
+        h3 { font-size: 1.5rem; }
+        
+        @media (min-width: 768px) {
+            h1 { font-size: 3.5rem; }
+            h2 { font-size: 2.75rem; }
+        }
+
+        p {
+            margin-bottom: 1rem;
+            color: var(--muted);
+            max-width: 75ch;
+        }
+
+        a {
+            color: var(--peach-600);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+        a:hover { color: var(--ink); }
+
+        img, svg {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        section {
+            padding: 4rem 0;
+        }
+        
+        @media (min-width: 768px) {
+            section { padding: 6rem 0; }
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            margin-top: -2.5rem;
+            margin-bottom: 3rem;
+            color: var(--muted);
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            border-radius: 9999px;
+            font-weight: 700;
+            text-align: center;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+            font-size: 1rem;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+        .btn:focus-visible {
+            outline: none;
+            box-shadow: var(--focus-ring);
+        }
+
+        .btn-primary {
+            background-color: var(--peach);
+            color: var(--ink);
+        }
+        .btn-primary:hover {
+            background-color: var(--peach-600);
+        }
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--ink);
+            border-color: var(--border-color);
+        }
+        .btn-secondary:hover {
+            background-color: var(--surface);
+            border-color: var(--ink);
+        }
+        
+        /* Reduced Motion */
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto; }
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+            .fade-in-up { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Skip to content link */
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            background: var(--peach);
+            color: var(--ink);
+            padding: 8px;
+            z-index: 10000;
+            transition: top 0.3s;
+        }
+        .skip-link:focus {
+            top: 0;
+        }
+
+        /* Header */
+        .main-header {
+            position: sticky;
+            top: 0;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            z-index: 1000;
+            height: var(--header-height);
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--ink);
+        }
+        .main-nav ul {
+            display: none;
+            list-style: none;
+        }
+        .main-nav ul li {
+            margin-left: 1.5rem;
+        }
+        .main-nav ul a {
+            color: var(--ink);
+            font-weight: 500;
+            padding: 0.5rem 0;
+            border-bottom: 2px solid transparent;
+            transition: border-color 0.2s ease;
+        }
+        .main-nav ul a:hover, .main-nav ul a.active {
+            border-color: var(--peach);
+        }
+        .nav-actions {
+            display: none;
+        }
+        .mobile-menu-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+            z-index: 1002;
+        }
+        .mobile-menu-btn .icon-bar {
+            display: block;
+            width: 25px;
+            height: 2px;
+            background-color: var(--ink);
+            margin: 5px 0;
+            transition: transform 0.3s ease;
+        }
+        .mobile-nav {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 80%;
+            max-width: 300px;
+            height: 100vh;
+            background-color: var(--surface);
+            box-shadow: var(--shadow-lg);
+            transition: right 0.3s ease-in-out;
+            padding-top: 5rem;
+            z-index: 1001;
+        }
+        .mobile-nav.open {
+            right: 0;
+        }
+        .mobile-nav ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .mobile-nav ul li {
+            margin-bottom: 2rem;
+            width: 100%;
+            text-align: center;
+        }
+        .mobile-nav ul a {
+            font-size: 1.2rem;
+            font-weight: 500;
+            color: var(--ink);
+            padding: 0.5rem;
+        }
+        .mobile-nav-actions {
+            text-align: center;
+            margin-top: 2rem;
+            padding: 1rem;
+            border-top: 1px solid var(--border-color);
+        }
+        .mobile-nav-actions .btn {
+            display: block;
+            width: 100%;
+            margin-bottom: 1rem;
+        }
+        .menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0s 0.3s;
+        }
+        .menu-overlay.open {
+            opacity: 1;
+            visibility: visible;
+            transition: opacity 0.3s ease;
+        }
+        @media (min-width: 1024px) {
+            .mobile-menu-btn { display: none; }
+            .main-nav ul { display: flex; }
+            .nav-actions { display: block; }
+        }
+        
+        /* Hero Section */
+        #home {
+            padding-top: 4rem;
+            padding-bottom: 4rem;
+        }
+        .hero-content {
+            text-align: center;
+        }
+        .hero-content h1 {
+            margin-bottom: 1rem;
+        }
+        .hero-content .subhead {
+            font-size: 1.25rem;
+            max-width: 700px;
+            margin: 0 auto 2rem;
+        }
+        .hero-ctas {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .impact-stats {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 3rem;
+            flex-wrap: wrap;
+        }
+        .stat {
+            text-align: center;
+        }
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--peach-600);
+        }
+        .stat-label {
+            color: var(--muted);
+        }
+        .hero-media {
+            margin-top: 4rem;
+            position: relative;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            cursor: pointer;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+        }
+        .hero-media img {
+            width: 100%;
+            height: auto;
+        }
+        .play-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80px;
+            height: 80px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s ease, background-color 0.2s ease;
+        }
+        .hero-media:hover .play-button {
+            transform: translate(-50%, -50%) scale(1.1);
+            background-color: white;
+        }
+        .play-button svg {
+            width: 40px;
+            height: 40px;
+            fill: var(--peach-600);
+            margin-left: 5px;
+        }
+        
+        /* Initiatives Section */
+        .initiatives-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+        @media (min-width: 768px) {
+            .initiatives-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+        .initiative-card {
+            background-color: var(--surface);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow-md);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .initiative-card .icon {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 1.5rem;
+            color: var(--peach-600);
+        }
+        .initiative-card h3 {
+            margin-bottom: 1rem;
+        }
+        .initiative-card .impact-story {
+            font-style: italic;
+            margin: 1rem 0;
+            color: var(--muted);
+        }
+        .initiative-card .impact-story a {
+            font-weight: 500;
+            cursor: pointer;
+        }
+        .initiative-card .btn {
+            margin-top: 1.5rem;
+        }
+
+        /* Services Section */
+        .services-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+        @media (min-width: 640px) {
+            .services-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (min-width: 1024px) {
+            .services-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+        .service-card {
+            background-color: var(--surface);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+        .service-card h4 {
+            font-family: inherit;
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        .service-tags {
+            margin-bottom: 1rem;
+        }
+        .tag {
+            display: inline-block;
+            background-color: #f0f0f0;
+            color: var(--muted);
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            margin-right: 0.5rem;
+        }
+        .tag.premium {
+            background-color: var(--peach);
+            color: var(--ink);
+        }
+        .service-card .btn {
+            margin-top: auto;
+            width: 100%;
+        }
+
+        /* About Us Section */
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 3rem;
+        }
+        @media (min-width: 992px) {
+            .about-content {
+                grid-template-columns: 2fr 1fr;
+                gap: 5rem;
+            }
+        }
+        .about-story h3 {
+            margin-bottom: 1.5rem;
+        }
+        .values-list {
+            list-style: none;
+            margin-top: 1.5rem;
+        }
+        .values-list li {
+            padding-left: 2rem;
+            position: relative;
+            margin-bottom: 0.75rem;
+        }
+        .values-list li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 6px;
+            width: 20px;
+            height: 20px;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23ff9f7a"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>');
+            background-size: contain;
+        }
+        .team-list {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+        .team-member {
+            background: var(--surface);
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+        }
+        .team-member img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin: 0 auto 1rem;
+            background: var(--bg);
+        }
+        .team-member h4 { font-family: inherit; font-size: 1.1rem; }
+        .team-member .role { font-style: italic; color: var(--muted); }
+        .team-member .bio { font-size: 0.9rem; margin-top: 0.5rem; }
+        .team-member .social-link svg {
+            width: 24px;
+            height: 24px;
+            margin: 0.5rem auto 0;
+            color: var(--muted);
+        }
+        .team-member .social-link:hover svg { color: var(--ink); }
+        .partners-strip {
+            margin-top: 4rem;
+            filter: grayscale(100%);
+            opacity: 0.6;
+        }
+        .partners-logos {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+        .partners-logos svg {
+            height: 40px;
+            width: auto;
+        }
+
+        /* Donate Section */
+        .donate-container {
+            max-width: 800px;
+            margin: auto;
+            background: var(--surface);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow-lg);
+        }
+        @media (min-width: 768px) {
+            .donate-container { padding: 3rem; }
+        }
+        .frequency-toggle {
+            display: flex;
+            border: 1px solid var(--border-color);
+            border-radius: 9999px;
+            overflow: hidden;
+            width: fit-content;
+            margin: 1.5rem auto;
+        }
+        .frequency-toggle button {
+            background: transparent;
+            border: none;
+            padding: 0.5rem 1.5rem;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--muted);
+        }
+        .frequency-toggle button.active {
+            background: var(--peach);
+            color: var(--ink);
+        }
+        .amount-selection {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+        @media (min-width: 640px) {
+            .amount-selection { grid-template-columns: repeat(4, 1fr); }
+        }
+        .amount-btn {
+            padding: 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+        .amount-btn.active {
+            background: var(--peach);
+            border-color: var(--peach-600);
+        }
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        @media (min-width: 640px) {
+            .form-grid.two-col { grid-template-columns: repeat(2, 1fr); }
+            .form-grid .full-width { grid-column: 1 / -1; }
+        }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        .form-group label {
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: var(--peach-600);
+            box-shadow: var(--focus-ring);
+        }
+        #donate-form button { width: 100%; }
+        .payment-gateways {
+            margin-top: 2rem;
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+        .gateway-btn {
+            flex: 1;
+            max-width: 200px;
+        }
+        .privacy-note {
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--muted);
+            margin-top: 1.5rem;
+        }
+        .thank-you-message {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+            border: 2px dashed var(--peach-600);
+            border-radius: 12px;
+        }
+        
+        /* Contact & Survey Section */
+        #contact { background-color: var(--surface); }
+        .contact-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 3rem;
+        }
+        @media (min-width: 992px) {
+            .contact-container { grid-template-columns: 1fr 1fr; }
+        }
+        .survey-block, .contact-block {
+            padding: 2rem;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+        }
+        .survey-block iframe {
+            width: 100%;
+            height: 400px;
+            border: none;
+            border-radius: 8px;
+        }
+        #contact-form .btn { width: 100%; }
+
+        /* FAQ Accordion */
+        .faq-accordion .faq-item {
+            border-bottom: 1px solid var(--border-color);
+        }
+        .faq-accordion .faq-question {
+            width: 100%;
+            background: none;
+            border: none;
+            text-align: left;
+            padding: 1.5rem 0;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .faq-accordion .faq-question .icon {
+            transition: transform 0.3s ease;
+            width: 20px;
+            height: 20px;
+        }
+        .faq-accordion .faq-question[aria-expanded="true"] .icon {
+            transform: rotate(45deg);
+        }
+        .faq-accordion .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-in-out;
+        }
+        .faq-accordion .faq-answer p {
+            padding-bottom: 1.5rem;
+        }
+        
+        /* Footer */
+        .main-footer {
+            background-color: var(--ink);
+            color: #ccc;
+            padding: 4rem 0 2rem;
+        }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+            text-align: center;
+        }
+        @media (min-width: 640px) {
+            .footer-grid {
+                grid-template-columns: repeat(2, 1fr);
+                text-align: left;
+            }
+        }
+        @media (min-width: 992px) {
+            .footer-grid { grid-template-columns: 2fr 1fr 1fr 1fr; }
+        }
+        .footer-col h4 {
+            font-family: inherit;
+            color: white;
+            margin-bottom: 1rem;
+        }
+        .footer-col ul { list-style: none; }
+        .footer-col ul li { margin-bottom: 0.5rem; }
+        .footer-col a { color: #ccc; }
+        .footer-col a:hover { color: white; }
+        .footer-socials {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+        @media (min-width: 640px) {
+            .footer-socials { justify-content: flex-start; }
+        }
+        .footer-socials a svg {
+            width: 24px;
+            height: 24px;
+        }
+        .footer-bottom {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid #444;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+        
+        /* Modal */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(28, 28, 28, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0s 0.3s;
+        }
+        .modal.is-visible {
+            opacity: 1;
+            visibility: visible;
+            transition-delay: 0s;
+        }
+        .modal-content {
+            background: var(--surface);
+            padding: 2rem;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            transform: scale(0.95);
+            transition: transform 0.3s ease;
+        }
+        .modal.is-visible .modal-content {
+            transform: scale(1);
+        }
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+        .modal-close svg {
+            width: 24px;
+            height: 24px;
+            color: var(--muted);
+        }
+        .modal-video-container {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 */
+            height: 0;
+        }
+        .modal-video-container iframe, .modal-video-container video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Toast Notifications */
+        .toast {
+            position: fixed;
+            bottom: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            color: white;
+            z-index: 3000;
+            transition: bottom 0.5s ease-in-out;
+        }
+        .toast.show {
+            bottom: 20px;
+        }
+        .toast.success { background-color: #28a745; }
+        .toast.error { background-color: #dc3545; }
+        
+        /* Utility */
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .fade-in-up.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+
+    <!-- JSON-LD Schema -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Organization",
+          "name": "Better Way Passage",
+          "alternateName": "BWP",
+          "url": "https://betterwaypassage.org/",
+          "logo": "https://betterwaypassage.org/logo.png",
+          "sameAs": [
+            "https://www.linkedin.com/company/better-way-passage"
+          ],
+          "description": "A nonprofit healthcare organization dedicated to empowering healthcare professionals and private practice owners through research, resources, and technology tools.",
+          "contactPoint": {
+            "@type": "ContactPoint",
+            "contactType": "customer support",
+            "email": "contact@betterwaypassage.org"
+          }
+        },
+        {
+          "@type": "WebSite",
+          "url": "https://betterwaypassage.org/",
+          "name": "Better Way Passage",
+          "publisher": {
+            "@type": "Organization",
+            "name": "Better Way Passage"
+          }
+        },
+        {
+          "@type": "FAQPage",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "How are donations used?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Donations directly fund our core initiatives: developing educational resources, expanding our mentorship program, and funding independent research to create better technology tools for clinicians. We are committed to financial transparency."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "I have donated. How do I access premium resources?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "After a successful donation, our system automatically grants you 'Donor Access'. Simply revisit the Resources page, and all premium content will be unlocked for download. If you donated through a different channel, you may receive an access code to enter when prompted."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "How is the data from the clinician survey used?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "All survey responses are anonymized and aggregated to identify key challenges and opportunities in private practice. This data informs our research, helps us develop relevant resources, and allows us to advocate for better tools and policies on behalf of clinicians."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Do you partner with other organizations?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes, we actively partner with healthcare software companies, universities, and other nonprofits to amplify our impact. If you're interested in partnership opportunities, please reach out to us via the contact form."
+              }
+            }
+          ]
+        }
+      ]
+    }
+    </script>
+</head>
+<body>
+
+    <!-- SVG Icon Definitions -->
+    <svg width="0" height="0" style="position:absolute">
+        <defs>
+            <symbol id="icon-stethoscope" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 10.5c-3.33 1.67-3.33 5.83 0 7.5a4.34 4.34 0 0 0 6 0l1.5-1.5a4.34 4.34 0 0 0 0-6l-1.5-1.5a4.34 4.34 0 0 0-6 0z"></path><path d="M15 17.5c-3.33-1.67-3.33-5.83 0-7.5a4.34 4.34 0 0 1 6 0l1.5 1.5c3.33 1.67 3.33 5.83 0 7.5a4.34 4.34 0 0 1-6 0l-1.5-1.5z"></path><path d="M12 14.5V19a2 2 0 0 1-2 2H8"></path><path d="m17 2-3 3"></path><path d="m22 7-3-3"></path></symbol>
+            <symbol id="icon-grad-cap" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c3.33 1.67 6.67 1.67 10 0v-5"></path></symbol>
+            <symbol id="icon-handshake" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m11 17 2 2a1 1 0 1 0 1.4-1.4l-2-2a1 1 0 1 0-1.4 1.4z"></path><path d="M8 14 5 11l-1 4 4-1 3 3"></path><path d="m14 8 3-3 4 1-1 4-3-3"></path><path d="m2 22 5.5-1.5L20.5 8 16 3.5 3.5 16.5.5 22"></path></symbol>
+            <symbol id="icon-certificate" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"></path><path d="M7 13l3 3 7-7"></path></symbol>
+            <symbol id="icon-download" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></symbol>
+            <symbol id="icon-play" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></symbol>
+            <symbol id="icon-heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></symbol>
+            <symbol id="icon-survey" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect><line x1="12" y1="16" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></symbol>
+            <symbol id="icon-linkedin" viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></symbol>
+            <symbol id="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></symbol>
+            <symbol id="icon-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></symbol>
+        </defs>
+    </svg>
+
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    
+    <!-- START: header -->
+    <header class="main-header">
+        <div class="container header-container">
+            <a href="#home" class="logo">
+      <img src="betterway.png" alt="Better Way Passage Logo" class="logo-img" width="250px">
+    </a>
+            
+            <nav class="main-nav" id="main-nav">
+                <ul>
+                    <li><a href="#home" class="nav-link active">Home</a></li>
+                    <li><a href="#initiatives" class="nav-link">Initiatives</a></li>
+                    <li><a href="#services" class="nav-link">Services</a></li>
+                    <li><a href="#about" class="nav-link">About</a></li>
+                    <li><a href="#contact" class="nav-link">Contact</a></li>
+                </ul>
+            </nav>
+            
+            <div class="nav-actions">
+                <a href="#contact" class="btn btn-secondary survey-cta">Take Survey</a>
+                <a href="#donate" class="btn btn-primary">Donate</a>
+            </div>
+
+            <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-nav">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+    </header>
+    <!-- END: header -->
+
+    <nav class="mobile-nav" id="mobile-nav" aria-hidden="true">
+        <ul>
+            <li><a href="#home" class="nav-link">Home</a></li>
+            <li><a href="#initiatives" class="nav-link">Initiatives</a></li>
+            <li><a href="#services" class="nav-link">Services</a></li>
+            <li><a href="#about" class="nav-link">About</a></li>
+            <li><a href="#contact" class="nav-link">Contact</a></li>
+        </ul>
+        <div class="mobile-nav-actions">
+            <a href="#contact" class="btn btn-secondary survey-cta">Take Survey</a>
+            <a href="#donate" class="btn btn-primary">Donate</a>
+        </div>
+    </nav>
+    <div class="menu-overlay" id="menu-overlay"></div>
+
+    <main id="main-content">
+        <!-- START: home -->
+        <section id="home">
+            <div class="container">
+                <div class="hero-content fade-in-up">
+                    <h1>A Better Way Forward for Healthcare</h1>
+                    <p class="subhead">Empowering healthcare professionals and private practice owners through research, resources, and technology tools.</p>
+                    <div class="hero-ctas">
+                        <a href="#contact" class="btn btn-secondary btn-lg survey-cta">Take The Clinician Survey</a>
+                        <a href="#donate" class="btn btn-primary btn-lg">Support Our Mission</a>
+                    </div>
+                    <div class="impact-stats">
+                        <div class="stat">
+                            <div class="stat-number">1,200+</div>
+                            <div class="stat-label">Clinicians Surveyed</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">3</div>
+                            <div class="stat-label">Active Initiatives</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">8</div>
+                            <div class="stat-label">Partner Orgs</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="hero-media fade-in-up" id="video-trigger" role="button" tabindex="0" aria-label="Play introduction video">
+                    <picture>
+                        <source srcset="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 9' fill='none'%3E%3Crect width='16' height='9' fill='%23f7f7f6'/%3E%3C/svg%3E" media="(prefers-reduced-motion: reduce)">
+                        <img src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 450' fill='none'%3E%3Crect width='800' height='450' fill='%23e0e0e0'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='32' fill='%23aaa'%3EVideo Placeholder%3C/text%3E%3C/svg%3E" alt="A diverse group of healthcare professionals collaborating" loading="lazy">
+                    </picture>
+                    <div class="play-button">
+                        <svg><use xlink:href="#icon-play"></use></svg>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- END: home -->
+
+        <!-- START: initiatives -->
+        <section id="initiatives">
+            <div class="container">
+                <h2 class="section-title">Our Core Initiatives</h2>
+                <p class="section-subtitle">We focus on three key areas to provide tangible support and drive meaningful change for clinicians in private practice.</p>
+                <div class="initiatives-grid">
+                    <div class="initiative-card fade-in-up">
+                        <svg class="icon"><use xlink:href="#icon-grad-cap"></use></svg>
+                        <h3>Education</h3>
+                        <p>We conduct and publish independent research to create actionable guides, toolkits, and best-practice resources, helping clinicians navigate the complexities of modern practice management.</p>
+                        <p class="impact-story">"The BWP readiness toolkit saved me weeks of work when starting my practice." <a role="button" tabindex="0" class="story-trigger" data-story="education">Read Sarah's Story</a></p>
+                        <a href="#services" class="btn btn-secondary">Explore Resources</a>
+                    </div>
+                    <div class="initiative-card fade-in-up" style="animation-delay: 0.2s;">
+                        <svg class="icon"><use xlink:href="#icon-handshake"></use></svg>
+                        <h3>Mentorship</h3>
+                        <p>Our mentorship program connects experienced practice owners with early-career clinicians, fostering a supportive community for knowledge sharing, guidance, and professional growth.</p>
+                        <p class="impact-story">"My mentor helped me avoid critical early mistakes and build a sustainable practice." <a role="button" tabindex="0" class="story-trigger" data-story="mentorship">Read David's Story</a></p>
+                        <a href="#" class="btn btn-primary join-mentorship-cta">Join Mentorship</a>
+                    </div>
+                    <div class="initiative-card fade-in-up" style="animation-delay: 0.4s;">
+                        <svg class="icon"><use xlink:href="#icon-certificate"></use></svg>
+                        <h3>Certification & Training</h3>
+                        <p>We are developing a certification program to recognize practices that meet high standards in technology adoption, patient care, and operational efficiency, promoting excellence across the field.</p>
+                        <p class="impact-story">"Preparing for BWP certification streamlined our entire office workflow." <a role="button" tabindex="0" class="story-trigger" data-story="certification">Read Maria's Story</a></p>
+                        <a href="#" class="btn btn-secondary disabled" aria-disabled="true">Coming Soon</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- END: initiatives -->
+
+        <!-- START: services -->
+        <section id="services" style="background-color: var(--surface);">
+            <div class="container">
+                <h2 class="section-title">Services & Resources</h2>
+                <p class="section-subtitle">Practical tools and expert guidance designed for clinicians. Donor support helps us keep most resources free.</p>
+                <div class="services-grid">
+                    <!-- Example service cards -->
+                    <div class="service-card fade-in-up">
+                        <h4>Practice Readiness Toolkit</h4>
+                        <div class="service-tags"><span class="tag">Free</span></div>
+                        <p>A comprehensive package of checklists, templates, and guides for starting a new private practice.</p>
+                        <a href="#" class="btn btn-secondary download-btn" data-file="toolkit.zip">
+                            <svg width="18" height="18" style="vertical-align: middle; margin-right: 8px;"><use xlink:href="#icon-download"></use></svg>
+                            Download
+                        </a>
+                    </div>
+                    <div class="service-card fade-in-up">
+                        <h4>Billing & Compliance Checklist (PDF)</h4>
+                        <div class="service-tags"><span class="tag premium">Premium</span></div>
+                        <p>An in-depth checklist covering the latest in billing codes and compliance standards to maximize revenue.</p>
+                        <button class="btn btn-primary download-btn" data-file="billing.pdf" data-premium="true">
+                            <svg width="18" height="18" style="vertical-align: middle; margin-right: 8px;"><use xlink:href="#icon-download"></use></svg>
+                            Access
+                        </button>
+                    </div>
+                    <div class="service-card fade-in-up">
+                        <h4>EHR Integration Guide</h4>
+                        <div class="service-tags"><span class="tag">Free</span></div>
+                        <p>Vendor-neutral advice on selecting and integrating an Electronic Health Record system smoothly.</p>
+                        <a href="#" class="btn btn-secondary download-btn" data-file="ehr-guide.pdf">
+                            <svg width="18" height="18" style="vertical-align: middle; margin-right: 8px;"><use xlink:href="#icon-download"></use></svg>
+                            Download
+                        </a>
+                    </div>
+                    <div class="service-card fade-in-up">
+                        <h4>Research Briefs</h4>
+                        <div class="service-tags"><span class="tag">Free</span></div>
+                        <p>Monthly summaries of the latest healthcare technology and practice management research.</p>
+                        <a href="#" class="btn btn-secondary download-btn" data-file="research.zip">
+                             <svg width="18" height="18" style="vertical-align: middle; margin-right: 8px;"><use xlink:href="#icon-download"></use></svg>
+                            Access Briefs
+                        </a>
+                    </div>
+                    <div class="service-card fade-in-up">
+                        <h4>Vendor Matchmaking Service</h4>
+                        <div class="service-tags"><span class="tag premium">Premium</span></div>
+                        <p>Personalized recommendations for software and service vendors based on your practice's unique needs.</p>
+                        <button class="btn btn-primary download-btn" data-file="matchmaking" data-premium="true">
+                             <svg width="18" height="18" style="vertical-align: middle; margin-right: 8px;"><use xlink:href="#icon-heart"></use></svg>
+                            Unlock Service
+                        </button>
+                    </div>
+                     <div class="service-card fade-in-up">
+                        <h4>Annual Operations Report</h4>
+                        <div class="service-tags"><span class="tag premium">Premium</span></div>
+                        <p>An exclusive, data-rich report on private practice benchmarks, trends, and financial performance.</p>
+                        <button class="btn btn-primary download-btn" data-file="annual-report.pdf" data-premium="true">
+                            <svg width="18" height="18" style="vertical-align: middle; margin-right: 8px;"><use xlink:href="#icon-download"></use></svg>
+                            Download Report
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- END: services -->
+
+        <!-- START: about -->
+        <section id="about">
+            <div class="container">
+                <div class="about-content">
+                    <div class="about-story fade-in-up">
+                        <h2 class="section-title" style="text-align: left;">Our Story</h2>
+                        <h3>Founded by clinicians, for clinicians.</h3>
+                        <p>Better Way Passage was born from a simple observation: the clinicians most dedicated to patient care are often the most burdened by the business of healthcare. We saw brilliant practitioners struggling with administrative overhead, technology choices, and the isolation of private practice.</p>
+                        <p>We decided to build a nonprofit to bridge that gap. BWP is a community and a resource hub, committed to making private practice sustainable and rewarding, which we believe is essential for a more equitable and effective healthcare system.</p>
+                        <h4>Our Values:</h4>
+                        <ul class="values-list">
+                            <li><strong>Clinician-Centric:</strong> Our work is guided by the real-world needs of practitioners.</li>
+                            <li><strong>Data-Driven:</strong> We use rigorous research to create tools that work.</li>
+                            <li><strong>Collaborative:</strong> We believe in the power of partnership to drive change.</li>
+                            <li><strong>Accessible:</strong> We strive to make our resources available to all who need them.</li>
+                        </ul>
+                    </div>
+                    <div class="team fade-in-up" style="animation-delay: 0.2s;">
+                        <h3 style="text-align: center; margin-bottom: 2rem;">Our Team</h3>
+                        <div class="team-list">
+                            <div class="team-member">
+                                <img src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23e0e0e0'/%3E%3C/svg%3E" alt="Headshot of Dr. Eleanor Vance">
+                                <h4>Dr. Eleanor Vance</h4>
+                                <div class="role">Founder & Executive Director</div>
+                                <p class="bio">A physician with 15 years in private practice, passionate about improving clinician workflows.</p>
+                                <a href="#" class="social-link" aria-label="LinkedIn profile of Dr. Eleanor Vance"><svg><use xlink:href="#icon-linkedin"></use></svg></a>
+                            </div>
+                            <div class="team-member">
+                                <img src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23e0e0e0'/%3E%3C/svg%3E" alt="Headshot of Ben Carter">
+                                <h4>Ben Carter, M.P.H.</h4>
+                                <div class="role">Director of Research</div>
+                                <p class="bio">Health-tech researcher focused on the intersection of technology and clinical practice.</p>
+                                <a href="#" class="social-link" aria-label="LinkedIn profile of Ben Carter"><svg><use xlink:href="#icon-linkedin"></use></svg></a>
+                            </div>
+                             <div class="team-member">
+                                <img src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23e0e0e0'/%3E%3C/svg%3E" alt="Headshot of Aisha Khan">
+                                <h4>Aisha Khan</h4>
+                                <div class="role">Community & Partnerships Lead</div>
+                                <p class="bio">Builds relationships with partners and manages the BWP mentorship network.</p>
+                                <a href="#" class="social-link" aria-label="LinkedIn profile of Aisha Khan"><svg><use xlink:href="#icon-linkedin"></use></svg></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="partners-strip fade-in-up">
+                    <h3 style="text-align: center; color: var(--muted); margin-bottom: 2rem; font-family: inherit; font-size: 1.1rem;">Trusted by our partners</h3>
+                    <div class="partners-logos">
+                        <!-- Placeholder SVGs -->
+                        <svg width="158" height="48" viewBox="0 0 158 48" fill="none" xmlns="http://www.w3.org/2000/svg"><text x="10" y="30" font-family="sans-serif" font-size="20" fill="#6b6b6b">Partner One</text></svg>
+                        <svg width="158" height="48" viewBox="0 0 158 48" fill="none" xmlns="http://www.w3.org/2000/svg"><text x="10" y="30" font-family="sans-serif" font-size="20" fill="#6b6b6b">HealthTech Inc</text></svg>
+                        <svg width="158" height="48" viewBox="0 0 158 48" fill="none" xmlns="http://www.w3.org/2000/svg"><text x="10" y="30" font-family="sans-serif" font-size="20" fill="#6b6b6b">University Med</text></svg>
+                        <svg width="158" height="48" viewBox="0 0 158 48" fill="none" xmlns="http://www.w3.org/2000/svg"><text x="10" y="30" font-family="sans-serif" font-size="20" fill="#6b6b6b">CareForward</text></svg>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- END: about -->
+
+        <!-- START: donate -->
+        <section id="donate">
+            <div class="container">
+                <div class="donate-container fade-in-up">
+                    <div id="donate-flow-start">
+                        <h2 class="section-title">Support Our Work</h2>
+                        <p class="section-subtitle" style="margin-top: -1rem;">Your contribution fuels independent research and the development of free resources for clinicians everywhere. Help us build a better way forward.</p>
+                        
+                        <form id="donate-form" novalidate>
+                            <div class="frequency-toggle">
+                                <button type="button" class="active" data-frequency="one-time">One-time</button>
+                                <button type="button" data-frequency="monthly">Monthly</button>
+                            </div>
+                            
+                            <div class="amount-selection">
+                                <button type="button" class="amount-btn active" data-amount="25">$25</button>
+                                <button type="button" class="amount-btn" data-amount="50">$50</button>
+                                <button type="button" class="amount-btn" data-amount="100">$100</button>
+                                <button type="button" class="amount-btn" data-amount="custom">Custom</button>
+                            </div>
+                            
+                            <div class="form-grid two-col" style="margin-top: 2rem;">
+                                <div class="form-group full-width" id="custom-amount-group" style="display: none;">
+                                    <label for="custom-amount">Custom Amount ($)</label>
+                                    <input type="number" id="custom-amount" name="custom-amount" min="1" placeholder="Enter amount">
+                                </div>
+                                <div class="form-group">
+                                    <label for="first-name">First Name</label>
+                                    <input type="text" id="first-name" name="first-name" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="last-name">Last Name</label>
+                                    <input type="text" id="last-name" name="last-name" required>
+                                </div>
+                                <div class="form-group full-width">
+                                    <label for="email">Email</label>
+                                    <input type="email" id="email" name="email" required>
+                                </div>
+                            </div>
+                            
+                            <!-- Placeholder buttons for payment gateways -->
+                            <p style="text-align: center; margin-top: 2rem; font-weight: 500;">Complete your donation via:</p>
+                            <div class="payment-gateways">
+                                <button type="submit" class="btn btn-primary gateway-btn" data-gateway="stripe">Pay with Stripe</button>
+                                <button type="submit" class="btn btn-secondary gateway-btn" data-gateway="paypal">PayPal</button>
+                            </div>
+                            
+                            <p class="privacy-note">Better Way Passage is a 501(c)(3) nonprofit organization. Your donation is tax-deductible to the extent allowed by law. We respect your privacy.</p>
+                        </form>
+                    </div>
+                    <div id="thank-you-message" class="thank-you-message">
+                        <h3>Thank You!</h3>
+                        <p>Your generous support makes our work possible. You now have access to all premium resources across the site.</p>
+                        <a href="#services" class="btn btn-primary">Explore Resources</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- END: donate -->
+
+        <!-- START: contact -->
+        <section id="contact" style="background-color: var(--surface);">
+            <div class="container">
+                <h2 class="section-title">Get Involved</h2>
+                <div class="contact-container">
+                    <div class="survey-block fade-in-up">
+                        <h3>Take the Clinician Survey</h3>
+                        <p>Your insights are invaluable. Help us understand the challenges you face and what resources would best support you. The survey takes about 5 minutes.</p>
+                        <!-- 
+                            TODO: Replace the src attribute with your actual survey link from Typeform or Google Forms.
+                            Example: src="https://yourform.typeform.com/to/ABCDE"
+                         -->
+                        <iframe src="about:blank" title="Clinician Survey" loading="lazy" id="survey-iframe-embed"></iframe>
+                         <noscript>
+                            <p>Please enable JavaScript to view the survey, or <a href="https://yourform.typeform.com/to/ABCDE" target="_blank">open it in a new tab</a>.</p>
+                        </noscript>
+                        <button class="btn btn-secondary survey-modal-trigger" style="margin-top: 1rem;">Open Survey in Modal</button>
+                    </div>
+                    <div class="contact-block fade-in-up" style="animation-delay: 0.2s;">
+                        <h3>Contact Us or Partner With Us</h3>
+                        <p>Have questions, or interested in partnering? We collaborate with healthcare software companies, universities, and other organizations. Let's connect.</p>
+                        <form id="contact-form" novalidate>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="contact-name">Name</label>
+                                    <input type="text" id="contact-name" name="name" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="contact-email">Email</label>
+                                    <input type="email" id="contact-email" name="email" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="contact-role">I am a...</label>
+                                    <select id="contact-role" name="role" required>
+                                        <option value="">Select your role</option>
+                                        <option value="clinician">Clinician / Practice Owner</option>
+                                        <option value="donor">Potential Donor</option>
+                                        <option value="partner">Potential Partner</option>
+                                        <option value="patient">Patient</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="contact-message">Message</label>
+                                    <textarea id="contact-message" name="message" rows="4" required></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Send Message</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                
+                <!-- FAQ Section -->
+                <div class="faq-section" style="margin-top: 5rem;">
+                     <h2 class="section-title">Frequently Asked Questions</h2>
+                     <div class="faq-accordion">
+                        <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+                            <h3 itemprop="name">
+                                <button class="faq-question" aria-expanded="false">
+                                    How are donations used?
+                                    <svg class="icon"><use xlink:href="#icon-plus"></use></svg>
+                                </button>
+                            </h3>
+                            <div class="faq-answer" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+                                <div itemprop="text">
+                                    <p>Donations directly fund our core initiatives: developing educational resources, expanding our mentorship program, and funding independent research to create better technology tools for clinicians. We are committed to financial transparency.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+                            <h3 itemprop="name">
+                                <button class="faq-question" aria-expanded="false">
+                                    I have donated. How do I access premium resources?
+                                    <svg class="icon"><use xlink:href="#icon-plus"></use></svg>
+                                </button>
+                            </h3>
+                            <div class="faq-answer" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+                                <div itemprop="text">
+                                    <p>After a successful donation, our system automatically grants you 'Donor Access'. Simply revisit the Resources page, and all premium content will be unlocked for download. If you donated through a different channel, you may receive an access code to enter when prompted.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+                             <h3 itemprop="name">
+                                <button class="faq-question" aria-expanded="false">
+                                    How is the data from the clinician survey used?
+                                    <svg class="icon"><use xlink:href="#icon-plus"></use></svg>
+                                </button>
+                            </h3>
+                            <div class="faq-answer" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+                                <div itemprop="text">
+                                    <p>All survey responses are anonymized and aggregated to identify key challenges and opportunities in private practice. This data informs our research, helps us develop relevant resources, and allows us to advocate for better tools and policies on behalf of clinicians.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+                            <h3 itemprop="name">
+                                <button class="faq-question" aria-expanded="false">
+                                    Do you partner with other organizations?
+                                    <svg class="icon"><use xlink:href="#icon-plus"></use></svg>
+                                </button>
+                            </h3>
+                            <div class="faq-answer" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+                                <div itemprop="text">
+                                    <p>Yes, we actively partner with healthcare software companies, universities, and other nonprofits to amplify our impact. If you're interested in partnership opportunities, please reach out to us via the contact form.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- END: contact -->
+    </main>
+
+    <!-- START: footer -->
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h4>Better Way Passage</h4>
+                    <p>A nonprofit supporting clinicians and private practice owners with research, resources, and tech tools.</p>
+                    <div class="footer-socials" style="margin-top: 1rem;">
+                        <a href="#" aria-label="LinkedIn"><svg><use xlink:href="#icon-linkedin"></use></svg></a>
+                        <!-- Add other social links here -->
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#about">About Us</a></li>
+                        <li><a href="#initiatives">Initiatives</a></li>
+                        <li><a href="#services">Resources</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Get Involved</h4>
+                    <ul>
+                        <li><a href="#donate">Donate</a></li>
+                        <li><a href="#contact">Take the Survey</a></li>
+                        <li><a href="#contact">Partner With Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Contact</h4>
+                    <p>123 Health St.<br>Innovate City, HC 45678</p>
+                    <p><a href="mailto:contact@betterwaypassage.org">contact@betterwaypassage.org</a></p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                &copy; <span id="current-year"></span> Better Way Passage. All rights reserved. | <a href="#">Privacy Policy</a>
+            </div>
+        </div>
+    </footer>
+    <!-- END: footer -->
+
+    <!-- START: Modals -->
+    <div id="modal-container" class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" style="display: none;">
+        <div class="modal-content">
+            <button class="modal-close" aria-label="Close modal">
+                <svg><use xlink:href="#icon-close"></use></svg>
+            </button>
+            <h3 id="modal-title" style="margin-bottom: 1rem;">Modal Title</h3>
+            <div id="modal-body">
+                <!-- Modal content goes here -->
+            </div>
+        </div>
+    </div>
+    <!-- END: Modals -->
+    
+    <div id="toast-container" class="toast"></div>
+
+    <script defer>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // --- ANALYTICS PLACEHOLDER ---
+            function track(eventName, properties) {
+                console.log(`Analytics Event: ${eventName}`, properties);
+                // In a real application, you would send this to an analytics service.
+                // Example: window.plausible(eventName, { props: properties });
+            }
+
+            // --- GLOBAL STATE & CONFIG ---
+            const state = {
+                isDonor: localStorage.getItem('bwp_donor') === 'true',
+                prefersReducedMotion: window.matchMedia('(prefers-reduced-motion: reduce)').matches
+            };
+            const SURVEY_URL = "https://forms.gle/your-survey-id"; // TODO: Replace with your real survey URL
+
+            // --- CORE UI INTERACTIONS ---
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const mobileNav = document.getElementById('mobile-nav');
+            const menuOverlay = document.getElementById('menu-overlay');
+            const navLinks = document.querySelectorAll('.nav-link');
+            
+            function toggleMenu() {
+                const isExpanded = mobileMenuBtn.getAttribute('aria-expanded') === 'true';
+                mobileMenuBtn.setAttribute('aria-expanded', !isExpanded);
+                mobileNav.classList.toggle('open');
+                menuOverlay.classList.toggle('open');
+                document.body.style.overflow = isExpanded ? '' : 'hidden';
+                track('nav_click', { label: isExpanded ? 'close_menu' : 'open_menu' });
+            }
+
+            mobileMenuBtn.addEventListener('click', toggleMenu);
+            menuOverlay.addEventListener('click', toggleMenu);
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (mobileNav.classList.contains('open')) {
+                        toggleMenu();
+                    }
+                });
+            });
+
+            // --- HASH-BASED ROUTING & SCROLLSPY ---
+            function updateActiveNavLink() {
+                const sections = document.querySelectorAll('main section');
+                let currentSectionId = '';
+
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop - (window.innerHeight / 2); // Adjust for better trigger point
+                    if (window.scrollY >= sectionTop) {
+                        currentSectionId = section.id;
+                    }
+                });
+                
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === `#${currentSectionId}`) {
+                        link.classList.add('active');
+                    }
+                });
+            }
+            
+            window.addEventListener('scroll', updateActiveNavLink);
+            updateActiveNavLink(); // Initial check
+
+            // --- FADE-IN ON SCROLL ---
+            if (!state.prefersReducedMotion) {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('is-visible');
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.1 });
+
+                document.querySelectorAll('.fade-in-up').forEach(el => observer.observe(el));
+            } else {
+                 document.querySelectorAll('.fade-in-up').forEach(el => el.classList.add('is-visible'));
+            }
+
+            // --- MODAL SYSTEM ---
+            const modalContainer = document.getElementById('modal-container');
+            const modalContent = modalContainer.querySelector('.modal-content');
+            const modalTitle = document.getElementById('modal-title');
+            const modalBody = document.getElementById('modal-body');
+            let lastFocusedElement;
+
+            function openModal(title, content, type = 'default') {
+                lastFocusedElement = document.activeElement;
+                modalTitle.textContent = title;
+                modalBody.innerHTML = content;
+                modalContainer.style.display = 'flex';
+                setTimeout(() => {
+                    modalContainer.classList.add('is-visible');
+                    const focusable = modalContent.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+                    if(focusable.length) focusable[0].focus();
+                }, 10);
+                document.addEventListener('keydown', handleModalKeydown);
+            }
+
+            function closeModal() {
+                modalContainer.classList.remove('is-visible');
+                setTimeout(() => {
+                    modalContainer.style.display = 'none';
+                    modalBody.innerHTML = '';
+                }, 300);
+                if (lastFocusedElement) lastFocusedElement.focus();
+                document.removeEventListener('keydown', handleModalKeydown);
+            }
+
+            function handleModalKeydown(e) {
+                if (e.key === 'Escape') closeModal();
+                if (e.key === 'Tab') {
+                     const focusable = Array.from(modalContent.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'));
+                     const first = focusable[0];
+                     const last = focusable[focusable.length - 1];
+                     if(e.shiftKey && document.activeElement === first) {
+                         e.preventDefault();
+                         last.focus();
+                     } else if (!e.shiftKey && document.activeElement === last) {
+                         e.preventDefault();
+                         first.focus();
+                     }
+                }
+            }
+
+            modalContainer.addEventListener('click', (e) => {
+                if (e.target === modalContainer || e.target.closest('.modal-close')) {
+                    closeModal();
+                }
+            });
+
+            // Video Modal
+            document.getElementById('video-trigger').addEventListener('click', () => {
+                const videoContent = state.prefersReducedMotion
+                    ? `<img src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 450' fill='none'%3E%3Crect width='800' height='450' fill='%23e0e0e0'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='32' fill='%23aaa'%3EImage Fallback%3C/text%3E%3C/svg%3E" alt="A diverse group of healthcare professionals collaborating">`
+                    : `<div class="modal-video-container"><video src="#" controls autoplay muted loop playsinline>Your browser does not support the video tag.</video></div>`; // TODO: Replace # with placeholder MP4 link
+                openModal('Introduction to Better Way Passage', videoContent, 'video');
+                track('cta_click', { label: 'open_video_modal' });
+            });
+
+            // Impact Story Modals
+            const storyContent = {
+                education: { title: "Sarah's Story", content: "<p>Dr. Sarah Chen was overwhelmed opening her pediatric practice. 'I was an expert in medicine, not business,' she says. 'The BWP Practice Readiness Toolkit was my roadmap. It provided checklists for everything from licensing to hiring. It didn't just save me time; it gave me the confidence that I wasn't missing a critical step.' Today, her practice is thriving and serves over 500 families in her community.</p>" },
+                mentorship: { title: "David's Story", content: "<p>Dr. David Lee, a physical therapist, felt isolated after starting his own clinic. Through BWP's mentorship program, he connected with a seasoned practitioner in another state. 'My mentor was invaluable. We spoke weekly about everything from negotiating with insurance companies to managing staff,' David recalls. 'That guidance helped me double my patient load in the first year and build a truly sustainable business model.'</p>" },
+                certification: { title: "Maria's Story", content: "<p>Dr. Maria Garcia's established dermatology practice wanted to modernize. 'We knew our workflows were inefficient, but didn't know where to start,' she explains. 'Going through the BWP certification pilot program forced us to re-evaluate every process. We implemented a new patient portal and streamlined our billing, which cut down on administrative time by 20%. Our staff is happier, and we can focus more on our patients.'</p>" }
+            };
+            document.querySelectorAll('.story-trigger').forEach(trigger => {
+                trigger.addEventListener('click', () => {
+                    const storyKey = trigger.dataset.story;
+                    openModal(storyContent[storyKey].title, storyContent[storyKey].content);
+                    track('cta_click', { label: `open_story_${storyKey}` });
+                });
+            });
+
+            // Survey Modal
+            document.querySelectorAll('.survey-modal-trigger').forEach(trigger => {
+                trigger.addEventListener('click', () => {
+                    openModal('Clinician Survey', `<iframe src="${SURVEY_URL}" style="width:100%; height: 70vh; border:0;" title="Clinician Survey"></iframe>`);
+                    track('survey_open', { label: 'modal' });
+                });
+            });
+            // Lazy load iframe embed on contact page
+             const surveyIframeObserver = new IntersectionObserver((entries) => {
+                if (entries[0].isIntersecting) {
+                    const iframe = document.getElementById('survey-iframe-embed');
+                    if (iframe && !iframe.src.startsWith('http')) {
+                         iframe.src = SURVEY_URL;
+                    }
+                    surveyIframeObserver.unobserve(entries[0].target);
+                }
+             }, { rootMargin: '200px' });
+             surveyIframeObserver.observe(document.getElementById('contact'));
+
+
+            // --- PREMIUM CONTENT & DONOR STATE ---
+            function updateUIForDonor() {
+                if (state.isDonor) {
+                    document.body.classList.add('is-donor');
+                    document.querySelectorAll('.download-btn[data-premium="true"]').forEach(btn => {
+                        btn.innerHTML = btn.innerHTML.replace('Unlock', 'Download').replace('Access', 'Download');
+                        const heartIcon = btn.querySelector('svg use[xlink:href="#icon-heart"]');
+                        if (heartIcon) {
+                             const newIcon = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+                             newIcon.innerHTML = `<use xlink:href="#icon-download"></use>`;
+                             newIcon.setAttribute('width', '18');
+                             newIcon.setAttribute('height', '18');
+                             newIcon.setAttribute('style', 'vertical-align: middle; margin-right: 8px;');
+                             btn.replaceChild(newIcon, btn.querySelector('svg'));
+                        }
+                    });
+                    document.querySelectorAll('.tag.premium').forEach(tag => {
+                        tag.textContent = 'Donor Access';
+                    });
+                    
+                    // Update donate section if user returns
+                    const donateFlow = document.getElementById('donate-flow-start');
+                    const thankYouMessage = document.getElementById('thank-you-message');
+                    if (donateFlow && thankYouMessage) {
+                        donateFlow.style.display = 'none';
+                        thankYouMessage.style.display = 'block';
+                    }
+                }
+            }
+
+            document.querySelectorAll('.download-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const isPremium = btn.dataset.premium === 'true';
+                    track('download_attempt', { label: btn.dataset.file, premium: isPremium });
+                    
+                    if (isPremium && !state.isDonor) {
+                        const content = `<p>This is a premium resource available exclusively to our donors.</p><p>Your support helps us create more valuable content like this for the healthcare community.</p><a href="#donate" class="btn btn-primary" style="margin-top: 1rem; display: block; text-align: center;">Donate to Access</a>`;
+                        openModal('Donor Access Required', content);
+                        document.querySelector('#modal-container a[href="#donate"]').addEventListener('click', closeModal);
+                    } else {
+                        // Simulate file download
+                        showToast(`Downloading ${btn.dataset.file}...`, 'success');
+                        // In a real app: window.location.href = `/path/to/${btn.dataset.file}`;
+                    }
+                });
+            });
+            
+            updateUIForDonor(); // Initial check on page load
+
+            // --- DONATION FORM ---
+            const donateForm = document.getElementById('donate-form');
+            if (donateForm) {
+                const frequencyBtns = donateForm.querySelectorAll('.frequency-toggle button');
+                const amountBtns = donateForm.querySelectorAll('.amount-btn');
+                const customAmountGroup = document.getElementById('custom-amount-group');
+                const customAmountInput = document.getElementById('custom-amount');
+
+                frequencyBtns.forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        frequencyBtns.forEach(b => b.classList.remove('active'));
+                        btn.classList.add('active');
+                    });
+                });
+                amountBtns.forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        amountBtns.forEach(b => b.classList.remove('active'));
+                        btn.classList.add('active');
+                        if (btn.dataset.amount === 'custom') {
+                            customAmountGroup.style.display = 'block';
+                            customAmountInput.focus();
+                        } else {
+                            customAmountGroup.style.display = 'none';
+                        }
+                    });
+                });
+
+                donateForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    if (!validateForm(donateForm)) return;
+                    
+                    const gateway = e.submitter.dataset.gateway;
+                    track('donate_start', { gateway: gateway });
+
+                    // --- MOCK PAYMENT & STATE UPDATE ---
+                    // TODO: Replace this block with actual Stripe Checkout or PayPal SDK calls.
+                    console.log(`Processing payment with ${gateway}...`);
+                    setTimeout(() => {
+                        localStorage.setItem('bwp_donor', 'true');
+                        state.isDonor = true;
+                        track('donate_success', { gateway: gateway });
+                        updateUIForDonor();
+                        showToast('Thank you for your generous donation!', 'success');
+                    }, 1000);
+                });
+            }
+
+            // --- CONTACT FORM ---
+            const contactForm = document.getElementById('contact-form');
+            if (contactForm) {
+                contactForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    if (validateForm(contactForm)) {
+                        showToast('Message sent successfully!', 'success');
+                        contactForm.reset();
+                    }
+                });
+            }
+
+            // --- GENERIC FORM VALIDATION ---
+            function validateForm(form) {
+                let isValid = true;
+                form.querySelectorAll('[required]').forEach(input => {
+                    if (!input.value.trim() || (input.type === 'email' && !/\S+@\S+\.\S+/.test(input.value))) {
+                        isValid = false;
+                        input.style.borderColor = '#dc3545'; // Error color
+                    } else {
+                        input.style.borderColor = ''; // Reset
+                    }
+                });
+                if (!isValid) {
+                    showToast('Please fill out all required fields.', 'error');
+                }
+                return isValid;
+            }
+
+            // --- TOAST NOTIFICATION ---
+            const toastContainer = document.getElementById('toast-container');
+            function showToast(message, type = 'success') {
+                toastContainer.textContent = message;
+                toastContainer.className = `toast show ${type}`;
+                setTimeout(() => {
+                    toastContainer.className = 'toast';
+                }, 3000);
+            }
+
+            // --- FAQ ACCORDION ---
+            const faqItems = document.querySelectorAll('.faq-item');
+            faqItems.forEach(item => {
+                const question = item.querySelector('.faq-question');
+                const answer = item.querySelector('.faq-answer');
+                question.addEventListener('click', () => {
+                    const isExpanded = question.getAttribute('aria-expanded') === 'true';
+                    question.setAttribute('aria-expanded', !isExpanded);
+                    if (!isExpanded) {
+                        answer.style.maxHeight = answer.scrollHeight + 'px';
+                    } else {
+                        answer.style.maxHeight = '0';
+                    }
+                });
+            });
+
+            // --- FOOTER YEAR ---
+            document.getElementById('current-year').textContent = new Date().getFullYear();
+        });
+    </script>
+    
+    <noscript>
+      <p>This website requires JavaScript to function fully. Please enable it to access all features, including the survey and resource downloads.</p>
+      <style>
+          .fade-in-up { opacity: 1; transform: translateY(0); }
+      </style>
+    </noscript>
+
+</body>
+</html>
