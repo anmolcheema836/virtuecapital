@@ -1,0 +1,773 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Shaping Skylines — Services & Careers</title>
+  <meta name="description" content="Shaping Skylines. Premium construction services and careers — Join our team of builders." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- Luxury fonts: Playfair Display (headlines) + Inter (body) -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Playfair+Display:wght@600;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --deep-blue: #0b2340;
+      --mid-blue: #133a63;
+      --silver: #c7d2da;
+      --accent: #b9c7d8;
+      --gold: #d4af37;
+      --bg: #f6f7f9;
+      --glass: rgba(255,255,255,0.07);
+      --glass-2: rgba(255,255,255,0.03);
+      --radius-lg: 14px;
+      --radius-sm: 8px;
+      --max-width: 1200px;
+      --transition: 300ms cubic-bezier(.2,.9,.3,1);
+    }
+
+    /* Basic reset */
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      color:#0f1724;
+      background:linear-gradient(180deg,#f6f7f9 0%, #eef3f7 100%);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.45;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* Layout container */
+    .container{max-width:var(--max-width);margin:0 auto;padding:1rem;}
+
+    header.site-header{
+      position:fixed;top:0;left:0;right:0;z-index:60;
+      background:linear-gradient(180deg, rgba(11,35,64,0.86), rgba(11,35,64,0.6));
+      backdrop-filter: blur(6px);
+      border-bottom: 1px solid rgba(255,255,255,0.03);
+    }
+    .header-inner{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:0.8rem 1rem;}
+    .brand{display:flex;align-items:center;gap:0.8rem;color:#fff;text-decoration:none}
+    .brand h1{font-family:"Playfair Display";font-weight:700;margin:0;font-size:1.05rem;letter-spacing:0.2px}
+    .brand .tag{font-size:0.75rem;color:var(--accent);opacity:0.95}
+    nav.main-nav{display:flex;gap:0.75rem;align-items:center}
+    nav.main-nav a{color:var(--silver);text-decoration:none;padding:0.5rem 0.6rem;border-radius:8px;font-weight:600;font-size:0.95rem}
+    nav.main-nav a:hover{color:white;background:rgba(255,255,255,0.03);}
+
+    /* Mobile menu */
+    .mobile-toggle{display:none;background:none;border:0;color:white;font-size:1.1rem;padding:0.5rem;border-radius:8px}
+    @media (max-width:900px){
+      nav.main-nav{display:none}
+      .mobile-toggle{display:inline-flex}
+    }
+
+    /* HERO */
+    .hero{
+      margin-top:72px;
+      min-height:76vh;
+      display:grid;
+      align-items:center;
+      position:relative;
+      overflow:hidden;
+      border-bottom-left-radius:24px;
+      border-bottom-right-radius:24px;
+      box-shadow: 0 8px 40px rgba(9,18,33,0.12);
+    }
+    .hero-media{
+      position:absolute;inset:0;z-index:0;pointer-events:none;
+      display:block;width:100%;height:100%;object-fit:cover;
+    }
+    /* overlay gradient for legibility */
+    .hero::after{
+      content:"";position:absolute;inset:0;background:linear-gradient(180deg, rgba(11,35,64,0.35), rgba(11,35,64,0.6));
+      z-index:1;
+    }
+    .hero-content{position:relative;z-index:2;padding:3.5rem 1rem;display:flex;align-items:center;justify-content:center;}
+    .hero-card{max-width:1100px;width:100%;display:grid;grid-template-columns:1fr 420px;gap:2rem;align-items:center;color:white}
+    .hero-left h2{font-family:"Playfair Display";font-size:2.4rem;margin:0 0 0.5rem;letter-spacing:-0.4px}
+    .hero-left p{opacity:0.95;margin:0 0 1.25rem;font-size:1.05rem}
+    .cta-row{display:flex;gap:0.75rem;flex-wrap:wrap}
+    .btn{
+      display:inline-flex;align-items:center;gap:0.6rem;padding:0.9rem 1.2rem;border-radius:12px;border:0;font-weight:700;cursor:pointer;text-decoration:none;
+      transition:all var(--transition);
+      box-shadow: 0 6px 18px rgba(11,35,64,0.25);
+    }
+    .btn-primary{background:linear-gradient(90deg,var(--mid-blue),var(--deep-blue));color:white}
+    .btn-primary:hover{transform:translateY(-3px);box-shadow: 0 12px 30px rgba(11,35,64,0.35)}
+    .btn-ghost{background:transparent;border:1px solid rgba(255,255,255,0.12);color:var(--silver)}
+    .hero-right{
+      background:rgba(255,255,255,0.03);padding:1.2rem;border-radius:12px;border:1px solid rgba(255,255,255,0.04);
+      display:flex;flex-direction:column;gap:0.8rem;
+    }
+    .kpi{display:flex;gap:1rem;align-items:center}
+    .kpi strong{font-size:1.4rem;font-family:"Playfair Display";display:block}
+    .kpi span{font-size:0.85rem;color:var(--accent)}
+
+    @media (max-width:900px){
+      .hero-card{grid-template-columns:1fr;gap:1.1rem}
+      .hero-left h2{font-size:1.6rem}
+      .hero-right{order:2}
+      .hero{min-height:68vh;border-radius:0}
+    }
+
+    /* SERVICES GRID */
+    section.services{padding:3.25rem 1rem;}
+    .services-inner{display:grid;gap:2rem;grid-template-columns:1fr;align-items:start;max-width:var(--max-width);margin:0 auto}
+    .services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem}
+    .service-card{
+      position:relative;background:white;border-radius:12px;overflow:hidden;min-height:160px;padding:0;
+      box-shadow: 0 10px 30px rgba(11,35,64,0.06);transition:transform var(--transition), box-shadow var(--transition);
+      display:flex;flex-direction:column;
+    }
+    .service-media{height:110px;background-size:cover;background-position:center;filter:saturate(0.95);transform-origin:center;transition:transform var(--transition)}
+    .service-body{padding:1rem;display:flex;gap:0.8rem;align-items:flex-start}
+    .service-icon{width:48px;height:48px;border-radius:10px;background:var(--glass);display:grid;place-items:center;border:1px solid rgba(11,35,64,0.06)}
+    .service-body h3{margin:0;font-size:1.02rem}
+    .service-body p{margin:0;font-size:0.9rem;color:#475569}
+    .service-card:hover{transform:translateY(-8px)}
+    .service-card:hover .service-media{transform:scale(1.06)}
+    .service-cta{padding:1rem;text-align:center}
+    .service-cta .btn{width:220px;margin:0 auto}
+
+    @media (max-width:1100px){.services-grid{grid-template-columns:repeat(2,1fr)}}
+    @media (max-width:700px){.services-grid{grid-template-columns:1fr}}
+
+    /* JOBS / CAREERS */
+    section.jobs{padding:3rem 1rem;background:linear-gradient(180deg, rgba(11,35,64,0.03), transparent);}
+    .jobs-inner{max-width:var(--max-width);margin:0 auto;display:grid;gap:1rem}
+    .jobs-grid{display:grid;grid-template-columns:1fr 420px;gap:1.25rem;align-items:start}
+    .job-list{display:flex;flex-direction:column;gap:0.9rem}
+    .job-card{
+      background:white;border-radius:12px;padding:1rem;border:1px solid rgba(11,35,64,0.03);box-shadow:0 10px 24px rgba(11,35,64,0.04);
+      display:flex;flex-direction:column;gap:0.6rem;transition:transform var(--transition);
+    }
+    .job-card:hover{transform:translateY(-6px)}
+    .job-card .meta{display:flex;gap:0.6rem;align-items:center;justify-content:space-between}
+    .job-title{font-weight:700;font-size:1.05rem}
+    .job-summary{color:#374151;font-size:0.95rem}
+    .job-tags{display:flex;gap:0.5rem;flex-wrap:wrap}
+    .tag{background:var(--glass-2);padding:0.35rem 0.6rem;border-radius:999px;font-weight:600;font-size:0.82rem;border:1px solid rgba(11,35,64,0.04)}
+    .apply-btn{align-self:flex-start;margin-top:0.35rem}
+
+    /* ACCORDION for mobile */
+    .accordion-trigger{display:flex;justify-content:space-between;align-items:center;padding:0.8rem;border-radius:10px;background:linear-gradient(180deg,white, #fbfdff);border:1px solid rgba(11,35,64,0.03);cursor:pointer}
+    .accordion-content{padding:0.85rem 0.75rem;display:none;animation:fadeSlide .26s ease both}
+    @keyframes fadeSlide{from{opacity:0;transform:translateY(-6px)} to{opacity:1;transform:translateY(0)}}
+
+    /* WHY WORK WITH US */
+    .why{padding:2.5rem 1rem}
+    .why-inner{max-width:var(--max-width);margin:0 auto;display:grid;grid-template-columns:1fr 380px;gap:1.25rem;align-items:start}
+    .benefits{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem}
+    .benefit{background:white;border-radius:12px;padding:1rem;display:flex;gap:0.8rem;align-items:flex-start;border:1px solid rgba(11,35,64,0.03)}
+    .benefit h4{margin:0;font-size:1rem}
+    .team-quote{background:linear-gradient(90deg,#fff 0%, #f8fcff 100%);padding:1rem;border-radius:12px;border:1px solid rgba(11,35,64,0.03);}
+
+    @media (max-width:900px){
+      .jobs-grid{grid-template-columns:1fr}
+      .why-inner{grid-template-columns:1fr}
+    }
+
+    /* BOTTOM CTA */
+    .bottom-banner{margin-top:2.25rem;padding:2rem;border-radius:14px;background:linear-gradient(90deg,var(--mid-blue),var(--deep-blue));color:white;display:flex;align-items:center;justify-content:space-between;gap:1rem}
+    .bottom-banner h3{font-family:"Playfair Display";margin:0;font-size:1.4rem}
+    .bottom-actions{display:flex;gap:0.8rem;flex-wrap:wrap}
+
+    /* FOOTER */
+    footer.site-footer{padding:2rem 1rem;margin-top:2.5rem;background:#071426;color:var(--silver)}
+    footer .foot-inner{max-width:var(--max-width);margin:0 auto;display:flex;justify-content:space-between;align-items:center;gap:1rem}
+    footer a{color:var(--silver);text-decoration:none;font-weight:600}
+
+    /* Utilities */
+    .muted{color:#64748b}
+    .shadow-soft{box-shadow:0 10px 30px rgba(11,35,64,0.06)}
+    .pill{padding:0.4rem 0.7rem;border-radius:999px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.03);font-weight:700}
+
+    /* small tweaks */
+    img{max-width:100%;height:auto;display:block}
+    .visually-hidden{position:absolute!important;height:1px;width:1px;overflow:hidden;clip:rect(1px,1px,1px,1px);white-space:nowrap}
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="site-header" role="banner" aria-label="Top Navigation">
+    <div class="header-inner container">
+      <a href="#home" class="brand" aria-label="Shaping Skylines Home">
+        <!-- logo symbol -->
+        <svg width="42" height="42" viewBox="0 0 24 24" fill="none" aria-hidden focusable="false">
+          <rect x="2" y="14" width="4" height="8" rx="1" fill="#d4af37"/>
+          <rect x="9" y="9" width="4" height="13" rx="1" fill="#b9c7d8"/>
+          <rect x="16" y="4" width="4" height="18" rx="1" fill="#c7d2da"/>
+        </svg>
+        <div>
+          <h1>Shaping Skylines</h1>
+          <div class="tag">Construction • Infrastructure • Careers</div>
+        </div>
+      </a>
+
+      <nav class="main-nav" role="navigation" aria-label="Main Navigation">
+        <a href="#services">Services</a>
+        <a href="#jobs">Careers</a>
+        <a href="#why">Why Us</a>
+        <a href="#contact" class="pill">Contact</a>
+      </nav>
+
+      <button class="mobile-toggle" id="mobileToggle" aria-expanded="false" aria-controls="mobileMenu">
+        ☰ <span class="visually-hidden">Open menu</span>
+      </button>
+    </div>
+
+    <!-- Mobile menu -->
+    <div id="mobileMenu" style="display:none;background:linear-gradient(180deg,#07172a,#0b2340);padding:0.75rem;border-top:1px solid rgba(255,255,255,0.03)">
+      <div class="container" style="display:flex;flex-direction:column;gap:0.6rem">
+        <a href="#services" style="color:var(--silver);text-decoration:none;padding:0.6rem;border-radius:8px">Services</a>
+        <a href="#jobs" style="color:var(--silver);text-decoration:none;padding:0.6rem;border-radius:8px">Careers</a>
+        <a href="#why" style="color:var(--silver);text-decoration:none;padding:0.6rem;border-radius:8px">Why Us</a>
+        <a href="#contact" style="color:var(--silver);text-decoration:none;padding:0.6rem;border-radius:8px">Contact</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <main id="home" class="hero" role="main">
+    <!-- background media: use video if available; else fallback to image -->
+    <!-- Replace src with your hosted video/mp4. Keep 'muted autoplay loop playsinline' for hero ambience. -->
+    <video class="hero-media" autoplay muted loop playsinline poster="https://media.istockphoto.com/id/506351726/photo/recruiter-advertising-for-job-vacancies-searching-candidates-to-hire.jpg?s=1024x1024&w=0&k=20&c=9mZD15PyA2oV91sn442jCaNN1dR-72lRJbXXyv9d360=">
+      <source src="https://cdn.coverr.co/videos/coverr-construction-workers-on-site-1598?token=eyJhbGci..." type="video/mp4">
+      <!-- Fallback image -->
+      <img src="https://media.istockphoto.com/id/506351726/photo/recruiter-advertising-for-job-vacancies-searching-candidates-to-hire.jpg?s=1024x1024&w=0&k=20&c=9mZD15PyA2oV91sn442jCaNN1dR-72lRJbXXyv9d360=" alt="Construction site background" style="width:100%;height:100%;object-fit:cover;">
+    </video>
+
+    <div class="hero-content container">
+      <div class="hero-card">
+        <div class="hero-left">
+          <h2>Shaping Skylines, Empowering Careers</h2>
+          <p>We build landmark residential, commercial and infrastructure projects—delivering excellence, safety, and sustainable innovation at scale.</p>
+          <div class="cta-row" role="group" aria-label="Primary actions">
+            <a class="btn btn-primary" href="#services" data-scroll>Explore Our Services →</a>
+            <a class="btn btn-ghost" href="#jobs" data-scroll>Apply Now</a>
+          </div>
+          <div style="margin-top:1.25rem;display:flex;gap:0.8rem;align-items:center">
+            <div class="pill">ISO 9001 • Safety Certified</div>
+            <div class="muted" style="font-weight:700">Global Projects • 20+ Countries</div>
+          </div>
+        </div>
+
+        <aside class="hero-right" aria-label="Quick facts">
+          <div class="kpi">
+            <div>
+              <strong>8,500+</strong>
+              <span>Projects Delivered</span>
+            </div>
+            <div>
+              <strong>12,000+</strong>
+              <span>Skilled Professionals</span>
+            </div>
+          </div>
+          <div style="height:1px;background:rgba(255,255,255,0.03);margin:0.75rem 0;border-radius:2px"></div>
+          <div style="display:flex;gap:0.6rem;align-items:center;justify-content:space-between">
+            <div style="font-size:0.95rem">
+              <div class="muted" style="font-weight:700">Request a Quote</div>
+              <div class="muted" style="font-size:0.9rem">Fast estimates for your next project.</div>
+            </div>
+            <a href="#contact" class="btn btn-primary" data-scroll style="font-size:0.95rem">Request a Quote</a>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </main>
+
+  <!-- SERVICES -->
+  <section id="services" class="services" aria-labelledby="servicesHeading">
+    <div class="container services-inner">
+      <header style="display:flex;justify-content:space-between;align-items:flex-start;gap:1rem">
+        <div>
+          <h2 id="servicesHeading" style="font-family:'Playfair Display';margin:0;font-size:1.4rem">Our Services</h2>
+          <p class="muted" style="margin:0.5rem 0 0">End-to-end capability across building, infrastructure and sustainability.</p>
+        </div>
+        <div class="muted" style="align-self:center">Quality • Safety • Sustainability</div>
+      </header>
+
+      <div class="services-grid" style="margin-top:1rem;">
+        <!-- Service Card template - replace background-image url with a real photo -->
+        <article class="service-card" aria-labelledby="svc-res">
+          <div class="service-media" style="background-image:url('https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=1200&q=70')" role="img" aria-label="Residential construction"></div>
+          <div class="service-body">
+            <div class="service-icon" aria-hidden>
+              <!-- minimalist home icon -->
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M3 11.5L12 4l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1V11.5z" fill="#0b2340" opacity="0.9"/></svg>
+            </div>
+            <div>
+              <h3 id="svc-res">Residential Development</h3>
+              <p>Luxury & affordable housing — complete architectural, structural & interior delivery.</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="service-card" aria-labelledby="svc-com">
+          <div class="service-media" style="background-image:url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRGaLFRkDYTgr4UcmUTK9unvoeenchTeARiEA&s')" role="img" aria-label="Commercial construction"></div>
+          <div class="service-body">
+            <div class="service-icon" aria-hidden>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="4" y="5" width="16" height="14" rx="1.2" fill="#0b2340"/></svg>
+            </div>
+            <div>
+              <h3 id="svc-com">Commercial Buildings</h3>
+              <p>Office towers, retail & mixed-use spaces with performance-driven design & delivery.</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="service-card" aria-labelledby="svc-ind">
+          <div class="service-media" style="background-image:url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSV-O5n4AxL8NaCywokqUKYxJ3URSKwcsalYA&s')" role="img" aria-label="Industrial construction"></div>
+          <div class="service-body">
+            <div class="service-icon" aria-hidden>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M3 21h18v-6L13 9V3H3v18z" fill="#0b2340"/></svg>
+            </div>
+            <div>
+              <h3 id="svc-ind">Industrial & Logistics</h3>
+              <p>Warehousing, factories, and logistics hubs engineered for scale and efficiency.</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="service-card" aria-labelledby="svc-inf">
+          <div class="service-media" style="background-image:url('https://www.brookings.edu/wp-content/uploads/2021/03/Federal-infrastructure_header3.jpg?quality=75&w=1500')" role="img" aria-label="Infrastructure"></div>
+          <div class="service-body">
+            <div class="service-icon" aria-hidden>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="5" rx="0.8" fill="#0b2340" /></svg>
+            </div>
+            <div>
+              <h3 id="svc-inf">Infrastructure</h3>
+              <p>Roads, bridges, rail and utilities delivered with public-sector and private collaboration.</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="service-card" aria-labelledby="svc-ren">
+          <div class="service-media" style="background-image:url('https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1200&q=70')" role="img" aria-label="Renovation"></div>
+          <div class="service-body">
+            <div class="service-icon" aria-hidden>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 20h16v-2H4v2zM6 8h12v6H6V8z" fill="#0b2340"/></svg>
+            </div>
+            <div>
+              <h3 id="svc-ren">Renovation & Retrofit</h3>
+              <p>Modernize existing assets for longevity, compliance and environmental performance.</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="service-card" aria-labelledby="svc-green">
+          <div class="service-media" style="background-image:url('https://images.unsplash.com/photo-1509395176047-4a66953fd231?auto=format&fit=crop&w=1200&q=70')" role="img" aria-label="Green building"></div>
+          <div class="service-body">
+            <div class="service-icon" aria-hidden>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 2l3 6 6 1-4.5 4.2L18 21l-6-3-6 3 1.5-7.8L3 9l6-1 3-6z" fill="#0b2340"/></svg>
+            </div>
+            <div>
+              <h3 id="svc-green">Green Building</h3>
+              <p>Net-zero design, energy modeling and circular-material strategies for future-ready assets.</p>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <div class="service-cta" style="margin-top:1.1rem;text-align:center">
+        <a class="btn btn-primary" href="#contact" data-scroll>Request a Quote</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- JOBS / CAREERS -->
+  <section id="jobs" class="jobs" aria-labelledby="jobsHeading">
+    <div class="container jobs-inner">
+      <header style="display:flex;align-items:flex-start;justify-content:space-between;gap:1rem">
+        <div>
+          <h2 id="jobsHeading" style="font-family:'Playfair Display';margin:0;font-size:1.4rem">Join Our Team of Builders</h2>
+          <p class="muted" style="margin:0.5rem 0 0">Grow your career across on-site, field, technical and corporate roles — safety and development first.</p>
+        </div>
+        <div class="muted" style="align-self:center">Open Positions: <strong>14</strong></div>
+      </header>
+
+      <div class="jobs-grid" style="margin-top:1rem;">
+        <!-- Left: job list -->
+        <div class="job-list" id="jobList">
+          <!-- Job card (desktop) -->
+          <article class="job-card" data-role="job" aria-labelledby="j1">
+            <div class="meta">
+              <div>
+                <div id="j1" class="job-title">Site Engineer — MEP</div>
+                <div class="job-tags" style="margin-top:0.4rem">
+                  <span class="tag">Mumbai</span><span class="tag">Full-time</span>
+                </div>
+              </div>
+              <div class="muted">Ref: SE-MEP-0925</div>
+            </div>
+            <p class="job-summary">Lead mechanical, electrical & plumbing coordination on large mixed-use projects. 5+ years experience preferred.</p>
+            <div style="display:flex;gap:0.6rem;align-items:center;margin-top:0.6rem">
+              <a class="btn btn-ghost apply-btn" href="#applyModal" data-job="Site Engineer — MEP">Apply</a>
+              <a class="muted" href="#" style="text-decoration:underline">View details</a>
+            </div>
+          </article>
+
+          <!-- Job card (desktop) -->
+          <article class="job-card" data-role="job" aria-labelledby="j2">
+            <div class="meta">
+              <div>
+                <div id="j2" class="job-title">Project Manager — Infrastructure</div>
+                <div class="job-tags" style="margin-top:0.4rem">
+                  <span class="tag">Chennai</span><span class="tag">Full-time</span><span class="tag">Hybrid</span>
+                </div>
+              </div>
+              <div class="muted">Ref: PM-INF-0919</div>
+            </div>
+            <p class="job-summary">Manage multi-discipline teams across highways and bridge construction. PMP preferred.</p>
+            <div style="display:flex;gap:0.6rem;align-items:center;margin-top:0.6rem">
+              <a class="btn btn-ghost apply-btn" href="#applyModal" data-job="Project Manager — Infrastructure">Apply</a>
+              <a class="muted" href="#" style="text-decoration:underline">View details</a>
+            </div>
+          </article>
+
+          <!-- More sample roles -->
+          <article class="job-card" data-role="job" aria-labelledby="j3">
+            <div class="meta">
+              <div>
+                <div id="j3" class="job-title">Sustainability Lead</div>
+                <div class="job-tags" style="margin-top:0.4rem">
+                  <span class="tag">Remote</span><span class="tag">Full-time</span>
+                </div>
+              </div>
+              <div class="muted">Ref: SL-0911</div>
+            </div>
+            <p class="job-summary">Drive net-zero roadmaps and green-material initiatives across design and delivery portfolios.</p>
+            <div style="display:flex;gap:0.6rem;align-items:center;margin-top:0.6rem">
+              <a class="btn btn-ghost apply-btn" href="#applyModal" data-job="Sustainability Lead">Apply</a>
+              <a class="muted" href="#" style="text-decoration:underline">View details</a>
+            </div>
+          </article>
+
+          <!-- Accordion variant for mobile (auto visible on small screens via script) -->
+          <div style="display:none" id="mobileAccordionContainer">
+            <!-- Accordion items will be cloned here by JS for better mobile UX -->
+          </div>
+        </div>
+
+        <!-- Right: hiring perks / filters -->
+        <aside style="display:flex;flex-direction:column;gap:0.9rem">
+          <div class="team-quote">
+            <strong>Why work with us</strong>
+            <p class="muted" style="margin:0.6rem 0 0">We invest in our people — continuous training, safety-first culture, competitive compensation and global exposure.</p>
+          </div>
+
+          <div style="background:white;padding:1rem;border-radius:12px;border:1px solid rgba(11,35,64,0.03)">
+            <h4 style="margin:0 0 0.6rem">Perks & Programmes</h4>
+            <ul style="margin:0;padding:0 0 0 1.1rem;color:#475569">
+              <li>Dedicated training academy</li>
+              <li>Global mobility & project rotations</li>
+              <li>Health, wellness & safety program</li>
+              <li>Performance-linked bonuses</li>
+            </ul>
+            <div style="margin-top:0.8rem;text-align:center">
+              <a class="btn btn-primary" href="#applyModal" data-job="General Application">Apply Now</a>
+            </div>
+          </div>
+
+          <div class="benefit" style="align-items:center">
+            <svg width="34" height="34" viewBox="0 0 24 24" fill="none" aria-hidden><path d="M12 2l3 6 6 1-4.5 4.2L18 21l-6-3-6 3 1.5-7.8L3 9l6-1 3-6z" fill="#0b2340"/></svg>
+            <div>
+              <div style="font-weight:800">Safety First</div>
+              <div class="muted" style="font-size:0.9rem">Zero-harm policy, site audits & training.</div>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY WORK WITH US -->
+  <section id="why" class="why" aria-labelledby="whyHeading">
+    <div class="why-inner container">
+      <div>
+        <h2 id="whyHeading" style="font-family:'Playfair Display';margin:0;font-size:1.35rem">Why Work With Us</h2>
+        <p class="muted" style="margin:0.5rem 0 1rem">We combine industry-leading safety, development and global exposure to accelerate careers.</p>
+
+        <div class="benefits">
+          <div class="benefit">
+            <div style="width:44px;height:44px;border-radius:10px;background:var(--glass);display:grid;place-items:center"><svg width="20" height="20" viewBox="0 0 24 24"><path d="M12 2v6l4 2" fill="#0b2340"/></svg></div>
+            <div><h4>Safety First</h4><div class="muted">Rigorous PPE, audits and training programs.</div></div>
+          </div>
+
+          <div class="benefit">
+            <div style="width:44px;height:44px;border-radius:10px;background:var(--glass);display:grid;place-items:center"><svg width="20" height="20" viewBox="0 0 24 24"><path d="M3 13h18" fill="#0b2340"/></svg></div>
+            <div><h4>Career Growth</h4><div class="muted">Clear progression and mentorship.</div></div>
+          </div>
+
+          <div class="benefit">
+            <div style="width:44px;height:44px;border-radius:10px;background:var(--glass);display:grid;place-items:center"><svg width="20" height="20" viewBox="0 0 24 24"><path d="M4 12h16" fill="#0b2340"/></svg></div>
+            <div><h4>Training Academy</h4><div class="muted">Classroom & on-site technical programs.</div></div>
+          </div>
+
+          <div class="benefit">
+            <div style="width:44px;height:44px;border-radius:10px;background:var(--glass);display:grid;place-items:center"><svg width="20" height="20" viewBox="0 0 24 24"><path d="M12 3v18" fill="#0b2340"/></svg></div>
+            <div><h4>Competitive Pay</h4><div class="muted">Market-aligned compensation & benefits.</div></div>
+          </div>
+        </div>
+      </div>
+
+      <aside>
+        <div style="background:white;border-radius:12px;padding:1rem;border:1px solid rgba(11,35,64,0.03)">
+          <h3 style="margin:0 0 0.6rem">Employee testimonials</h3>
+          <blockquote style="margin:0;font-style:italic;color:#374151">"Working here gave me exposure to global projects and real ownership. Training invests in your growth." — <strong>R. Singh</strong></blockquote>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- BOTTOM CTA -->
+  <section class="container" style="margin-top:1.5rem">
+    <div class="bottom-banner">
+      <div>
+        <h3>Build Your Future With Us</h3>
+        <p class="muted" style="margin:0.5rem 0 0">Apply to a role or get in touch to discuss projects and partnerships.</p>
+      </div>
+      <div class="bottom-actions">
+        <a class="btn btn-primary" href="#applyModal" data-job="General Application">Apply Now</a>
+        <a class="btn btn-ghost" href="#contact" data-scroll>Contact Us</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" class="container" style="padding:2rem 1rem 3rem" aria-labelledby="contactHeading">
+    <h2 id="contactHeading" style="font-family:'Playfair Display';margin:0 0 0.6rem">Get in touch</h2>
+    <div style="display:grid;grid-template-columns:1fr 440px;gap:1rem;align-items:start">
+      <form id="contactForm" style="background:white;padding:1rem;border-radius:12px;border:1px solid rgba(11,35,64,0.03)" aria-label="Contact form">
+        <div style="display:grid;gap:0.6rem">
+          <label for="name">Full name</label>
+          <input id="name" name="name" required placeholder="Your name" style="padding:0.8rem;border-radius:8px;border:1px solid #e6eef6">
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" required placeholder="you@company.com" style="padding:0.8rem;border-radius:8px;border:1px solid #e6eef6">
+          <label for="message">Message</label>
+          <textarea id="message" name="message" rows="5" placeholder="Tell us about your project or role interest" style="padding:0.8rem;border-radius:8px;border:1px solid #e6eef6"></textarea>
+          <div style="display:flex;gap:0.6rem;align-items:center">
+            <button type="submit" class="btn btn-primary">Send message</button>
+            <div class="muted" style="font-size:0.9rem">Or email: <a href="mailto:careers@shapingskylines.example" style="color:inherit;text-decoration:underline">careers@shapingskylines.example</a></div>
+          </div>
+        </div>
+      </form>
+
+      <aside style="display:flex;flex-direction:column;gap:0.8rem">
+        <div style="background:white;padding:1rem;border-radius:12px;border:1px solid rgba(11,35,64,0.03)">
+          <h4 style="margin:0 0 0.5rem">Office</h4>
+          <div class="muted">Plot 12, Skyline Towers, Business Bay, Mumbai</div>
+          <div style="margin-top:0.6rem;font-weight:700">+91 22 4000 1234</div>
+        </div>
+
+        <div style="background:white;padding:1rem;border-radius:12px;border:1px solid rgba(11,35,64,0.03)">
+          <h4 style="margin:0 0 0.5rem">Careers</h4>
+          <div class="muted">Join our talent network — upload CV or send a mail to <strong>careers@shapingskylines.example</strong></div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="site-footer" role="contentinfo">
+    <div class="foot-inner">
+      <div>&copy; <strong>Shaping Skylines</strong> <span class="muted">2025</span></div>
+      <div style="display:flex;gap:0.9rem;align-items:center">
+        <a href="#" aria-label="LinkedIn">LinkedIn</a>
+        <a href="#" aria-label="Instagram">Instagram</a>
+        <a href="#" aria-label="Twitter">Twitter</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Apply Modal (lightweight) -->
+  <div id="applyModal" role="dialog" aria-modal="true" aria-hidden="true" style="position:fixed;inset:0;display:none;align-items:center;justify-content:center;z-index:120">
+    <div style="position:absolute;inset:0;background:rgba(3,10,20,0.6)" data-close></div>
+    <div style="width:calc(100% - 2rem);max-width:720px;background:white;border-radius:14px;padding:1.2rem;z-index:121;box-shadow:0 20px 60px rgba(3,10,20,0.4)">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:1rem">
+        <h3 style="margin:0">Apply for role</h3>
+        <button aria-label="Close" data-close style="background:none;border:0;font-size:1.2rem;cursor:pointer">✕</button>
+      </div>
+
+      <form id="applyForm" style="margin-top:0.8rem;display:grid;gap:0.6rem" enctype="multipart/form-data">
+        <label for="appRole">Role</label>
+        <input id="appRole" name="role" readonly style="padding:0.75rem;border-radius:8px;border:1px solid #e6eef6">
+        <label for="appName">Full name</label>
+        <input id="appName" name="name" required style="padding:0.75rem;border-radius:8px;border:1px solid #e6eef6">
+        <label for="appEmail">Email</label>
+        <input id="appEmail" name="email" type="email" required style="padding:0.75rem;border-radius:8px;border:1px solid #e6eef6">
+        <label for="appCv">Upload CV</label>
+        <input id="appCv" name="cv" type="file" accept=".pdf,.doc,.docx" style="padding:0.2rem">
+        <div style="display:flex;gap:0.6rem;align-items:center;margin-top:0.6rem">
+          <button class="btn btn-primary" type="submit">Submit Application</button>
+          <button type="button" class="btn btn-ghost" data-close>Cancel</button>
+        </div>
+        <div id="applyStatus" class="muted" style="font-size:0.9rem"></div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // Smooth scroll for in-page anchors with [data-scroll]
+    document.querySelectorAll('[data-scroll]').forEach(btn => {
+      btn.addEventListener('click', function(e){
+        e.preventDefault();
+        const href = this.getAttribute('href') || this.dataset.href;
+        if(!href) return;
+        const target = document.querySelector(href);
+        if(target){
+          window.scrollTo({top: target.getBoundingClientRect().top + window.scrollY - 72, behavior: 'smooth'});
+        } else {
+          window.location = href;
+        }
+      });
+    });
+
+    // Mobile menu toggle
+    const mobileToggle = document.getElementById('mobileToggle');
+    const mobileMenu = document.getElementById('mobileMenu');
+    mobileToggle.addEventListener('click', () => {
+      const expanded = mobileToggle.getAttribute('aria-expanded') === 'true';
+      mobileToggle.setAttribute('aria-expanded', String(!expanded));
+      mobileMenu.style.display = expanded ? 'none' : 'block';
+    });
+
+    // Modal behavior
+    const applyModal = document.getElementById('applyModal');
+    const applyForm = document.getElementById('applyForm');
+    const applyStatus = document.getElementById('applyStatus');
+    function openApplyModal(role){
+      applyModal.style.display = 'flex';
+      applyModal.setAttribute('aria-hidden','false');
+      document.getElementById('appRole').value = role || '';
+      document.getElementById('appName').focus();
+    }
+    function closeApplyModal(){
+      applyModal.style.display = 'none';
+      applyModal.setAttribute('aria-hidden','true');
+      applyForm.reset();
+      applyStatus.textContent = '';
+    }
+    document.querySelectorAll('[data-job]').forEach(el=>{
+      el.addEventListener('click', (e)=>{
+        e.preventDefault();
+        openApplyModal(el.getAttribute('data-job'));
+      });
+    });
+    // close buttons/overlay
+    applyModal.querySelectorAll('[data-close]').forEach(btn => btn.addEventListener('click', closeApplyModal));
+
+    // handle apply submit (placeholder - wire to backend)
+    applyForm.addEventListener('submit', (e)=> {
+      e.preventDefault();
+      applyStatus.textContent = 'Submitting — preparing your application...';
+      // Basic client-side validation
+      const name = document.getElementById('appName').value.trim();
+      const email = document.getElementById('appEmail').value.trim();
+      if(!name || !email){
+        applyStatus.textContent = 'Please provide name and email.';
+        return;
+      }
+      // Simulated async submission (replace with fetch to your API)
+      setTimeout(()=> {
+        applyStatus.textContent = 'Application received. We will contact you within 7 business days.';
+        applyForm.reset();
+      }, 700);
+    });
+
+    // Contact form submit placeholder
+    document.getElementById('contactForm').addEventListener('submit', function(e){
+      e.preventDefault();
+      alert('Thanks — your message has been noted. Replace this client code with a real API call.');
+      this.reset();
+    });
+
+    // Mobile accordion: clone job cards into accordion container for small screens
+    function setupMobileAccordion(){
+      const container = document.getElementById('mobileAccordionContainer');
+      container.innerHTML = '';
+      const jobCards = Array.from(document.querySelectorAll('#jobList > .job-card'));
+      jobCards.forEach((card, i)=>{
+        const title = card.querySelector('.job-title')?.textContent || ('Role ' + (i+1));
+        const summary = card.querySelector('.job-summary')?.textContent || '';
+        const refs = card.querySelector('.muted')?.textContent || '';
+        const jobDiv = document.createElement('div');
+        jobDiv.className = 'accordion-item';
+        jobDiv.innerHTML = `
+          <button class="accordion-trigger" aria-expanded="false">
+            <span style="font-weight:700">${title}</span>
+            <span class="muted">${refs}</span>
+          </button>
+          <div class="accordion-content">
+            <p class="muted">${summary}</p>
+            <div style="display:flex;gap:0.6rem;margin-top:0.6rem">
+              <button class="btn btn-ghost apply-btn" data-job="${title}">Apply</button>
+              <a class="muted" href="#" style="align-self:center;text-decoration:underline">View details</a>
+            </div>
+          </div>
+        `;
+        container.appendChild(jobDiv);
+      });
+
+      // wire accordion toggles and apply buttons
+      container.querySelectorAll('.accordion-trigger').forEach(btn=>{
+        btn.addEventListener('click', ()=>{
+          const expanded = btn.getAttribute('aria-expanded') === 'true';
+          btn.setAttribute('aria-expanded', String(!expanded));
+          const content = btn.nextElementSibling;
+          if(!expanded){
+            content.style.display = 'block';
+          } else {
+            content.style.display = 'none';
+          }
+        });
+      });
+      container.querySelectorAll('[data-job]').forEach(el=>{
+        el.addEventListener('click', (e)=>{
+          e.preventDefault();
+          openApplyModal(el.getAttribute('data-job'));
+        });
+      });
+    }
+    // enable accordion on small screens only
+    function handleResponsiveAccordion(){ 
+      if(window.innerWidth <= 900){
+        const left = document.getElementById('jobList');
+        const mobileContainer = document.getElementById('mobileAccordionContainer');
+        if(!mobileContainer.hasChildNodes()){
+          setupMobileAccordion();
+        }
+        // hide original list and show mobile container
+        left.style.display = 'none';
+        mobWrap = mobileContainer;
+        mobWrap.style.display = 'block';
+        // insert mobile container in DOM where left was
+        left.parentNode.insertBefore(mobileContainer, left);
+      }else{
+        // restore
+        const mobileContainer = document.getElementById('mobileAccordionContainer');
+        if(mobileContainer) mobileContainer.style.display = 'none';
+        document.getElementById('jobList').style.display = 'flex';
+      }
+    }
+    window.addEventListener('resize', handleResponsiveAccordion);
+    window.addEventListener('load', handleResponsiveAccordion);
+
+    // Accessibility: close modal on ESC
+    document.addEventListener('keydown', (e)=>{
+      if(e.key === 'Escape'){
+        if(applyModal.style.display === 'flex') closeApplyModal();
+        if(mobileMenu.style.display === 'block'){ mobileMenu.style.display = 'none'; mobileToggle.setAttribute('aria-expanded','false');}
+      }
+    });
+
+    // progressive enhancement: remove video element if not supported
+    document.addEventListener('DOMContentLoaded', ()=>{
+      // if video fails to load, ensure fallback image visible (handled by <video> default)
+    });
+  </script>
+</body>
+</html>
