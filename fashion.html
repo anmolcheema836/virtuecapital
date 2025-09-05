@@ -1,0 +1,1268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StyleSync - Your AI Fashion Advisor</title>
+
+    <style>
+        /* --- CSS RESET & DEFAULTS --- */
+        :root {
+            --color-primary: #6a11cb;
+            --color-primary-light: #904ce4;
+            --color-secondary: #2575fc;
+            --color-background: #f8f9fa;
+            --color-surface: #ffffff;
+            --color-text: #212529;
+            --color-text-muted: #6c757d;
+            --color-border: #dee2e6;
+            --color-success: #198754;
+            --color-error: #dc3545;
+
+            --font-family-system: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            --font-size-base: 16px;
+            --line-height-base: 1.6;
+            
+            --spacing-xs: 4px;
+            --spacing-sm: 8px;
+            --spacing-md: 16px;
+            --spacing-lg: 24px;
+            --spacing-xl: 32px;
+            
+            --border-radius: 8px;
+            --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.1);
+            
+            --transition-speed: 0.2s ease-in-out;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-family-system);
+            font-size: var(--font-size-base);
+            line-height: var(--line-height-base);
+            color: var(--color-text);
+            background-color: var(--color-background);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        h1, h2, h3 {
+            line-height: 1.2;
+            margin-bottom: var(--spacing-md);
+            font-weight: 600;
+        }
+        h1 { font-size: 2.5rem; }
+        h2 { font-size: 2rem; }
+        h3 { font-size: 1.5rem; }
+
+        p { margin-bottom: var(--spacing-md); }
+        a { color: var(--color-primary); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+
+        img { max-width: 100%; height: auto; display: block; }
+        
+        button, input, select { font-family: inherit; font-size: 1rem; }
+
+        /* --- UTILITY CLASSES --- */
+        .hidden { display: none !important; }
+        .container {
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 0 var(--spacing-lg);
+        }
+
+        /* --- GLOBAL COMPONENTS --- */
+        .btn {
+            display: inline-block;
+            padding: var(--spacing-sm) var(--spacing-lg);
+            font-weight: 600;
+            text-align: center;
+            border-radius: var(--border-radius);
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all var(--transition-speed);
+            user-select: none;
+        }
+        .btn-primary {
+            background-image: linear-gradient(to right, var(--color-primary) 0%, var(--color-secondary) 100%);
+            color: white;
+            box-shadow: var(--shadow-sm);
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+        .btn-secondary {
+            background-color: var(--color-surface);
+            color: var(--color-primary);
+            border-color: var(--color-border);
+        }
+        .btn-secondary:hover {
+            background-color: #f1f3f5;
+            border-color: #ced4da;
+        }
+        .btn-sm {
+            padding: var(--spacing-xs) var(--spacing-md);
+            font-size: 0.875rem;
+        }
+        .icon-btn {
+            background: none;
+            border: none;
+            padding: var(--spacing-sm);
+            cursor: pointer;
+            line-height: 0;
+            border-radius: 50%;
+        }
+        .icon-btn:hover {
+            background-color: rgba(0,0,0,0.05);
+        }
+
+        /* --- ACCESSIBILITY --- */
+        :focus-visible {
+            outline: 3px solid var(--color-secondary);
+            outline-offset: 2px;
+            border-radius: var(--border-radius);
+        }
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        /* --- HEADER & NAVIGATION --- */
+        .app-header {
+            background-color: var(--color-surface);
+            box-shadow: var(--shadow-sm);
+            padding: var(--spacing-md) 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .app-header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--color-text);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+        .logo svg { color: var(--color-primary); }
+        
+        .main-nav { display: none; }
+        .nav-links { list-style: none; display: flex; gap: var(--spacing-lg); }
+        .nav-links a { font-weight: 500; color: var(--color-text-muted); }
+        .nav-links a:hover, .nav-links a.active { color: var(--color-primary); }
+        
+        .header-actions { display: flex; align-items: center; gap: var(--spacing-md); }
+        .signin-prompt { background-color: #fff3cd; padding: var(--spacing-sm); border-radius: var(--border-radius); font-size: 0.9rem; }
+        
+        .mobile-menu-btn { display: block; z-index: 101; }
+        .mobile-nav {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 80%;
+            max-width: 300px;
+            height: 100vh;
+            background-color: var(--color-surface);
+            box-shadow: var(--shadow-md);
+            transition: right var(--transition-speed);
+            padding: calc(var(--spacing-xl) * 2) var(--spacing-lg);
+        }
+        .mobile-nav.open { right: 0; }
+        .mobile-nav .nav-links { flex-direction: column; align-items: center; font-size: 1.2rem; }
+        
+        @media (min-width: 768px) {
+            .main-nav { display: block; }
+            .mobile-menu-btn { display: none; }
+        }
+
+        /* --- FOOTER --- */
+        .app-footer {
+            background-color: var(--color-surface);
+            border-top: 1px solid var(--color-border);
+            padding: var(--spacing-xl) 0;
+            margin-top: var(--spacing-xl);
+            text-align: center;
+            color: var(--color-text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* --- SCREEN STYLES --- */
+        main {
+            padding-top: var(--spacing-xl);
+            padding-bottom: var(--spacing-xl);
+        }
+
+        /* Home Screen */
+        .hero {
+            text-align: center;
+            padding: var(--spacing-xl) 0;
+        }
+        .hero h1 {
+            background: linear-gradient(to right, var(--color-primary), var(--color-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hero p {
+            max-width: 600px;
+            margin: 0 auto var(--spacing-lg);
+            font-size: 1.1rem;
+            color: var(--color-text-muted);
+        }
+
+        /* Upload Control */
+        .upload-area {
+            max-width: 600px;
+            margin: 0 auto;
+            border: 3px dashed var(--color-border);
+            border-radius: var(--border-radius);
+            padding: var(--spacing-xl);
+            text-align: center;
+            background-color: var(--color-surface);
+            transition: all var(--transition-speed);
+        }
+        .upload-area.drag-over {
+            border-color: var(--color-primary);
+            background-color: #f0eaff;
+        }
+        .upload-icon { color: var(--color-primary); margin-bottom: var(--spacing-md); }
+        .upload-area p { margin-bottom: var(--spacing-sm); }
+        .upload-area .help-text { font-size: 0.875rem; color: var(--color-text-muted); }
+        .upload-preview { margin-top: var(--spacing-lg); }
+        .upload-preview img {
+            max-width: 200px;
+            max-height: 200px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-md);
+            margin: 0 auto var(--spacing-md);
+        }
+
+        /* Analysis Screen */
+        #analysis-screen {
+            text-align: center;
+            padding: var(--spacing-xl) 0;
+        }
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 6px solid #f3f3f3;
+            border-top: 6px solid var(--color-primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto var(--spacing-lg);
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .analysis-text {
+            font-size: 1.2rem;
+            font-weight: 500;
+            color: var(--color-text-muted);
+        }
+
+        /* Recommendations Screen */
+        .recommendations-layout {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: var(--spacing-xl);
+        }
+        @media (min-width: 992px) {
+            .recommendations-layout { grid-template-columns: 300px 1fr; }
+        }
+
+        .style-blocks-panel {
+            background-color: var(--color-surface);
+            padding: var(--spacing-lg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-sm);
+            align-self: start; /* Sticky behavior */
+            position: sticky;
+            top: 100px; /* Header height + spacing */
+        }
+        .style-blocks-panel h3 {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .style-block-list {
+            list-style: none;
+            margin-top: var(--spacing-md);
+        }
+        .style-block-item {
+            padding: var(--spacing-md);
+            border: 1px solid var(--color-border);
+            border-radius: var(--border-radius);
+            margin-bottom: var(--spacing-md);
+            cursor: pointer;
+            transition: all var(--transition-speed);
+        }
+        .style-block-item:hover {
+            border-color: var(--color-primary);
+            box-shadow: var(--shadow-sm);
+        }
+        .style-block-item.active {
+            border-color: var(--color-primary);
+            background-color: #f0eaff;
+            font-weight: 600;
+        }
+        .style-block-item h4 { font-size: 1.1rem; margin-bottom: var(--spacing-sm); }
+        .style-block-item p { font-size: 0.9rem; color: var(--color-text-muted); margin: 0; }
+
+        .recommendations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: var(--spacing-lg);
+        }
+        .rec-card {
+            background-color: var(--color-surface);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+            transition: all var(--transition-speed);
+            display: flex;
+            flex-direction: column;
+        }
+        .rec-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+        }
+        .rec-card-image {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            background-color: #eee;
+        }
+        .rec-card-content {
+            padding: var(--spacing-md);
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .rec-card-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-md);
+        }
+        .tag {
+            background-color: #e9ecef;
+            color: var(--color-text-muted);
+            padding: var(--spacing-xs) var(--spacing-sm);
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        .rec-card-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: var(--spacing-sm);
+        }
+        .rec-card-description {
+            font-size: 0.9rem;
+            color: var(--color-text-muted);
+            margin-bottom: var(--spacing-lg);
+            flex-grow: 1;
+        }
+        .rec-card-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--spacing-sm);
+            margin-top: auto;
+        }
+
+        /* --- MODAL STYLES --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all var(--transition-speed);
+        }
+        .modal-overlay.open {
+            opacity: 1;
+            visibility: visible;
+        }
+        .modal {
+            background-color: var(--color-surface);
+            padding: var(--spacing-lg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-md);
+            max-width: 90vw;
+            width: 500px;
+            transform: scale(0.95);
+            transition: all var(--transition-speed);
+        }
+        .modal-overlay.open .modal {
+            transform: scale(1);
+        }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--color-border);
+            padding-bottom: var(--spacing-md);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        /* Try On Modal */
+        .try-on-container {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 3 / 4;
+            background-color: #e9ecef;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+        }
+        #try-on-user-photo, #try-on-outfit-photo {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        #try-on-outfit-photo {
+            object-fit: contain; /* Or 'cover' depending on assets */
+        }
+        
+        /* Style Block Form */
+        .form-group {
+            margin-bottom: var(--spacing-md);
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: var(--spacing-sm);
+            font-weight: 500;
+        }
+        .form-control {
+            width: 100%;
+            padding: var(--spacing-sm) var(--spacing-md);
+            border: 1px solid var(--color-border);
+            border-radius: var(--border-radius);
+            transition: border-color var(--transition-speed);
+        }
+        .form-control:focus {
+            border-color: var(--color-primary);
+            outline: none;
+        }
+        .color-chips {
+            display: flex;
+            gap: var(--spacing-sm);
+            flex-wrap: wrap;
+        }
+        .color-chip {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: transform var(--transition-speed);
+        }
+        .color-chip:hover {
+            transform: scale(1.1);
+        }
+        .color-chip.selected {
+            border-color: var(--color-primary);
+        }
+        
+        /* --- TOAST NOTIFICATIONS --- */
+        #toast-container {
+            position: fixed;
+            bottom: var(--spacing-lg);
+            right: var(--spacing-lg);
+            z-index: 2000;
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-md);
+        }
+        .toast {
+            background-color: var(--color-surface);
+            color: white;
+            padding: var(--spacing-md) var(--spacing-lg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-md);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            opacity: 0;
+            transform: translateX(100%);
+            animation: slideIn 0.3s forwards;
+        }
+        .toast.success { background-color: var(--color-success); }
+        .toast.error { background-color: var(--color-error); }
+        @keyframes slideIn {
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        .toast button {
+            background: none;
+            border: none;
+            color: white;
+            opacity: 0.7;
+            cursor: pointer;
+            margin-left: auto;
+            padding: var(--spacing-xs);
+        }
+        .toast button:hover { opacity: 1; }
+        
+        /* --- DEV PANEL --- */
+        .dev-panel {
+            background-color: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--border-radius);
+            margin-top: var(--spacing-xl);
+            padding: var(--spacing-lg);
+        }
+        .dev-panel details { cursor: pointer; }
+        .component-set {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: var(--spacing-lg);
+            margin-top: var(--spacing-md);
+            align-items: start;
+        }
+        .component-set > div {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-md);
+        }
+
+    </style>
+</head>
+<body>
+
+    <header class="app-header" id="app-header">
+        <div class="container">
+            <a href="#" class="logo" onclick="location.reload()">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                StyleSync
+            </a>
+            <nav class="main-nav">
+                <ul class="nav-links">
+                    <li><a href="#" class="active">Home</a></li>
+                    <li><a href="#">Inspiration</a></li>
+                    <li><a href="#">My Wardrobe</a></li>
+                </ul>
+            </nav>
+            <div class="header-actions">
+                <div id="signin-prompt" class="signin-prompt hidden">
+                    <a href="#">Sign in</a> to save your style!
+                </div>
+                <!-- <span id="user-info">Welcome, <!-- replace with {{ current_user.name }} -- ></span> -->
+                <button class="btn btn-secondary btn-sm" id="sign-in-btn">Sign In</button>
+            </div>
+            <button class="icon-btn mobile-menu-btn" id="mobile-menu-btn" aria-label="Open menu">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+            </button>
+        </div>
+    </header>
+    
+    <nav class="mobile-nav" id="mobile-nav">
+        <ul class="nav-links">
+            <li><a href="#" class="active">Home</a></li>
+            <li><a href="#">Inspiration</a></li>
+            <li><a href="#">My Wardrobe</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <!-- HOME SCREEN -->
+        <section id="home-screen">
+            <div class="container">
+                <div class="hero">
+                    <h1>Discover Your Perfect Style</h1>
+                    <p>Upload a photo of yourself, and our AI will curate fashion recommendations tailored just for you.</p>
+                </div>
+
+                <form id="upload-form" method="POST" action="/upload" enctype="multipart/form-data">
+                    <div id="upload-area" class="upload-area">
+                        <div class="upload-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                        </div>
+                        <p><strong>Drag & drop your photo here</strong></p>
+                        <p>or</p>
+                        <label for="file-input" class="btn btn-secondary">Choose a file</label>
+                        <input type="file" id="file-input" name="user_photo" accept="image/png, image/jpeg, image/webp" class="sr-only">
+                        <p class="help-text">Supports: JPG, PNG, WEBP. Max 8MB.</p>
+                        <noscript>
+                            <p style="color: var(--color-error); margin-top: var(--spacing-md);">JavaScript is needed for the full experience. Please submit your file using the button below.</p>
+                            <button type="submit" class="btn btn-primary" style="margin-top: var(--spacing-sm);">Upload and Analyze</button>
+                        </noscript>
+                    </div>
+                </form>
+
+                <div id="upload-preview" class="upload-preview hidden">
+                    <img id="preview-image" src="" alt="Your uploaded photo preview">
+                    <p id="preview-filename" style="text-align:center; color: var(--color-text-muted);"></p>
+                    <div style="text-align:center; margin-top: var(--spacing-lg); display: flex; justify-content: center; gap: var(--spacing-md);">
+                        <button id="analyze-btn" class="btn btn-primary">Analyze My Style</button>
+                        <button id="change-photo-btn" class="btn btn-secondary">Change Photo</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ANALYSIS SCREEN -->
+        <section id="analysis-screen" class="hidden">
+            <div class="container">
+                <div class="spinner"></div>
+                <p class="analysis-text" id="analysis-text">That's a great shot! Analyzing your style now...</p>
+            </div>
+        </section>
+
+        <!-- RECOMMENDATIONS SCREEN -->
+        <section id="recommendations-screen" class="hidden">
+            <div class="container">
+                <header style="margin-bottom: var(--spacing-xl); text-align:center;">
+                    <h2>Your Style Recommendations</h2>
+                    <p>Based on your photo, here are some outfits we think you'll love.</p>
+                </header>
+                <div class="recommendations-layout">
+                    <aside class="style-blocks-panel">
+                        <h3>
+                            Style Blocks
+                            <button class="icon-btn" id="create-style-block-btn" aria-label="Create new Style Block">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                            </button>
+                        </h3>
+                        <p style="font-size: 0.9rem; color: var(--color-text-muted); margin-top: -8px; margin-bottom: 16px;">Think of these like playlists for your outfits. Click to apply.</p>
+                        <ul class="style-block-list" id="style-block-list">
+                            <!-- Style blocks will be rendered here -->
+                        </ul>
+                         <div style="margin-top: 24px; display: flex; gap: 8px;">
+                            <button class="btn btn-secondary btn-sm" id="export-blocks-btn">Export</button>
+                            <button class="btn btn-secondary btn-sm" id="import-blocks-btn">Import</button>
+                        </div>
+                    </aside>
+                    <div class="recommendations-grid" id="recommendations-grid">
+                        <!-- Recommendation cards will be rendered here -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- DEV PANEL -->
+        <section class="container">
+            <div class="dev-panel">
+                <details>
+                    <summary><strong>UI Component Set & Dev Tools</strong></summary>
+                    <div class="component-set">
+                        <div>
+                            <h4>Buttons</h4>
+                            <button class="btn btn-primary">Primary Button</button>
+                            <button class="btn btn-secondary">Secondary Button</button>
+                            <button class="btn btn-primary btn-sm">Primary Small</button>
+                            <button class="btn btn-secondary btn-sm">Secondary Small</button>
+                        </div>
+                        <div>
+                            <h4>Form Input</h4>
+                            <div class="form-group">
+                                <label for="dev-input">Text Input</label>
+                                <input type="text" id="dev-input" class="form-control" placeholder="Enter text...">
+                            </div>
+                        </div>
+                        <div>
+                            <h4>Toast/Alerts</h4>
+                            <button class="btn btn-sm" onclick="app.ui.showToast('Success message!', 'success')">Show Success</button>
+                            <button class="btn btn-sm" onclick="app.ui.showToast('This is an error.', 'error')">Show Error</button>
+                        </div>
+                         <div>
+                            <h4>Reset App State</h4>
+                            <button class="btn btn-sm" style="background-color: var(--color-error); color: white;" onclick="localStorage.clear(); location.reload();">Clear localStorage</button>
+                        </div>
+                    </div>
+                </details>
+            </div>
+        </section>
+
+    </main>
+    
+    <footer class="app-footer">
+        <div class="container">
+            <p>&copy; 2025 StyleSync. All Rights Reserved. For demonstration purposes only.</p>
+        </div>
+    </footer>
+
+    <!-- MODALS & OVERLAYS -->
+    <div id="try-on-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="try-on-title" aria-hidden="true">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 id="try-on-title">Virtual Try-On</h3>
+                <button class="icon-btn close-modal-btn" aria-label="Close modal">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </button>
+            </div>
+            <div class="try-on-container">
+                <img id="try-on-user-photo" src="" alt="Your photo">
+                <img id="try-on-outfit-photo" src="" alt="Outfit preview">
+            </div>
+            <p style="text-align:center; margin-top:var(--spacing-md); color: var(--color-text-muted);">This is a mock-up. The final feature will have precise fitting.</p>
+        </div>
+    </div>
+    
+    <div id="style-block-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="style-block-title" aria-hidden="true">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 id="style-block-title">Create a New Style Block</h3>
+                <button class="icon-btn close-modal-btn" aria-label="Close modal">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </button>
+            </div>
+            <form id="style-block-form">
+                <div class="form-group">
+                    <label for="block-name">Style Block Name</label>
+                    <input type="text" id="block-name" class="form-control" placeholder="e.g., Weekend Casual, Office Chic" required>
+                </div>
+                <div class="form-group">
+                    <label>Preferred Colors</label>
+                    <div class="color-chips" id="color-chips-container">
+                        <!-- Colors will be rendered here -->
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="block-cuts">Cuts & Fits</label>
+                    <input type="text" id="block-cuts" class="form-control" placeholder="e.g., Slim Fit, A-Line, High-Waist">
+                    <small>Separate with commas.</small>
+                </div>
+                <div class="form-group">
+                    <label for="block-keywords">Keywords / Tags</label>
+                    <input type="text" id="block-keywords" class="form-control" placeholder="e.g., Monochrome, Bold, Minimalist">
+                    <small>Separate with commas.</small>
+                </div>
+                <div style="text-align: right;">
+                    <button type="submit" class="btn btn-primary">Save Style Block</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- TOAST CONTAINER -->
+    <div id="toast-container" aria-live="assertive" aria-atomic="true"></div>
+
+    <script>
+        // --- QA/TESTING INSTRUCTIONS ---
+        // 1. **Upload Flow**:
+        //    - Drag & drop a JPG or PNG file onto the upload area. See it turn blue.
+        //    - Alternatively, click "Choose a file" and select one.
+        //    - Verify the image preview appears with the filename.
+        //    - Try uploading a file > 8MB or a non-image file (e.g., .txt) -> see an error toast.
+        // 2. **Analysis & Recommendations**:
+        //    - Click "Analyze My Style".
+        //    - Verify the "Analyzing..." screen appears for ~2 seconds.
+        //    - Verify the Recommendations screen appears with a grid of items.
+        // 3. **Style Blocks**:
+        //    - Click the "+" button in the "Style Blocks" panel.
+        //    - Fill out the form in the modal and click "Save Style Block".
+        //    - Verify a success toast appears and the new block is in the list. It should persist on page reload.
+        //    - Click on a pre-made style block (e.g., "Monochrome"). Verify some recommendation cards are filtered out (their opacity changes).
+        //    - Click the active style block again to clear the filter.
+        // 4. **Other Features**:
+        //    - Click "Try On" on a recommendation card. Verify the modal appears with your uploaded photo and the outfit. Click 'X' to close.
+        //    - Test the mobile view by resizing the browser. Click the hamburger icon to open/close the mobile nav.
+        //    - Use the Dev Panel buttons to test toasts and local storage reset.
+        //    - Use the Export/Import buttons to save and load your Style Blocks as a JSON file.
+
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // --- CONSTANTS & CONFIG ---
+            const MAX_FILE_SIZE_MB = 8;
+            const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024;
+            const ANALYSIS_DELAY_MS = 2000;
+            const AVAILABLE_COLORS = ['#000000', '#FFFFFF', '#343a40', '#adb5bd', '#007bff', '#28a745', '#dc3545', '#ffc107', '#d2b48c', '#800080'];
+
+            // --- APPLICATION STATE ---
+            const app = {
+                state: {
+                    currentScreen: 'home', // home, analysis, recommendations
+                    uploadedImage: localStorage.getItem('uploadedImage'),
+                    styleBlocks: JSON.parse(localStorage.getItem('styleBlocks')) || [],
+                    activeStyleBlockId: null,
+                },
+
+                // --- DOM ELEMENTS ---
+                elements: {
+                    header: document.getElementById('app-header'),
+                    screens: {
+                        home: document.getElementById('home-screen'),
+                        analysis: document.getElementById('analysis-screen'),
+                        recommendations: document.getElementById('recommendations-screen'),
+                    },
+                    upload: {
+                        form: document.getElementById('upload-form'),
+                        area: document.getElementById('upload-area'),
+                        input: document.getElementById('file-input'),
+                        previewContainer: document.getElementById('upload-preview'),
+                        previewImage: document.getElementById('preview-image'),
+                        previewFilename: document.getElementById('preview-filename'),
+                        analyzeBtn: document.getElementById('analyze-btn'),
+                        changePhotoBtn: document.getElementById('change-photo-btn'),
+                    },
+                    nav: {
+                        mobileMenuBtn: document.getElementById('mobile-menu-btn'),
+                        mobileNav: document.getElementById('mobile-nav'),
+                    },
+                    styleBlocks: {
+                        panel: document.querySelector('.style-blocks-panel'),
+                        list: document.getElementById('style-block-list'),
+                        createBtn: document.getElementById('create-style-block-btn'),
+                        exportBtn: document.getElementById('export-blocks-btn'),
+                        importBtn: document.getElementById('import-blocks-btn'),
+                    },
+                    recommendations: {
+                        grid: document.getElementById('recommendations-grid'),
+                    },
+                    modals: {
+                        tryOn: document.getElementById('try-on-modal'),
+                        styleBlock: document.getElementById('style-block-modal'),
+                    },
+                    forms: {
+                        styleBlock: document.getElementById('style-block-form'),
+                    },
+                    toastContainer: document.getElementById('toast-container'),
+                    signInBtn: document.getElementById('sign-in-btn'),
+                    signInPrompt: document.getElementById('signin-prompt'),
+                },
+
+                // --- UI MANIPULATION ---
+                ui: {
+                    showScreen(screenName) {
+                        Object.values(app.elements.screens).forEach(screen => screen.classList.add('hidden'));
+                        if (app.elements.screens[screenName]) {
+                            app.elements.screens[screenName].classList.remove('hidden');
+                            app.state.currentScreen = screenName;
+                            window.scrollTo(0, 0);
+                        }
+                    },
+
+                    toggleModal(modal, show) {
+                        if (show) {
+                            modal.classList.add('open');
+                            modal.setAttribute('aria-hidden', 'false');
+                        } else {
+                            modal.classList.remove('open');
+                            modal.setAttribute('aria-hidden', 'true');
+                        }
+                    },
+                    
+                    showToast(message, type = 'success') {
+                        const toast = document.createElement('div');
+                        toast.className = `toast ${type}`;
+                        toast.setAttribute('role', 'alert');
+                        
+                        const text = document.createElement('span');
+                        text.textContent = message;
+                        
+                        const closeBtn = document.createElement('button');
+                        closeBtn.innerHTML = '&times;';
+                        closeBtn.setAttribute('aria-label', 'Close notification');
+                        closeBtn.onclick = () => toast.remove();
+                        
+                        toast.appendChild(text);
+                        toast.appendChild(closeBtn);
+                        
+                        app.elements.toastContainer.appendChild(toast);
+                        
+                        setTimeout(() => toast.remove(), 5000);
+                    },
+                    
+                    renderStyleBlocks() {
+                        const list = app.elements.styleBlocks.list;
+                        list.innerHTML = '';
+                        
+                        const allBlocks = [...mockData.premadeStyleBlocks, ...app.state.styleBlocks];
+
+                        if (allBlocks.length === 0) {
+                            list.innerHTML = `<p style="font-size: 0.9rem; color: var(--color-text-muted);">No style blocks created yet. Click '+' to add one!</p>`;
+                            return;
+                        }
+
+                        allBlocks.forEach(block => {
+                            const li = document.createElement('li');
+                            li.className = 'style-block-item';
+                            li.dataset.id = block.id;
+                            if (block.id === app.state.activeStyleBlockId) {
+                                li.classList.add('active');
+                            }
+                            
+                            const keywords = [...block.colors, ...block.cuts, ...block.keywords].slice(0, 3).join(', ');
+
+                            li.innerHTML = `
+                                <h4>${block.name}</h4>
+                                <p>${keywords}${block.colors.length + block.cuts.length + block.keywords.length > 3 ? '...' : ''}</p>
+                            `;
+                            li.addEventListener('click', () => app.actions.toggleStyleBlock(block.id));
+                            list.appendChild(li);
+                        });
+                    },
+
+                    renderRecommendations() {
+                        const grid = app.elements.recommendations.grid;
+                        grid.innerHTML = '';
+                        mockData.recommendations.forEach(rec => {
+                            const card = document.createElement('div');
+                            card.className = 'rec-card';
+                            card.dataset.tags = rec.tags.join(',').toLowerCase();
+                            
+                            card.innerHTML = `
+                                <img src="${rec.image}" alt="${rec.title}" class="rec-card-image" loading="lazy">
+                                <div class="rec-card-content">
+                                    <div class="rec-card-tags">
+                                        ${rec.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                                    </div>
+                                    <h4 class="rec-card-title">${rec.title}</h4>
+                                    <p class="rec-card-description">${rec.description}</p>
+                                    <div class="rec-card-actions">
+                                        <button class="btn btn-primary try-on-btn" data-outfit-img="${rec.outfitImage}">Try On</button>
+                                        <button class="btn btn-secondary shop-btn">Shop</button>
+                                    </div>
+                                </div>
+                            `;
+                            grid.appendChild(card);
+                        });
+                    },
+                    
+                    applyStyleBlockFilter() {
+                        const allBlocks = [...mockData.premadeStyleBlocks, ...app.state.styleBlocks];
+                        const activeBlock = allBlocks.find(b => b.id === app.state.activeStyleBlockId);
+                        const recCards = document.querySelectorAll('.rec-card');
+                        
+                        recCards.forEach(card => {
+                            if (!activeBlock) {
+                                card.style.opacity = '1';
+                                card.style.transition = 'opacity 0.3s';
+                                return;
+                            }
+                            
+                            const cardTags = card.dataset.tags.split(',');
+                            const blockCriteria = [
+                                ...activeBlock.cuts.map(c => c.toLowerCase()),
+                                ...activeBlock.keywords.map(k => k.toLowerCase())
+                            ];
+
+                            const isMatch = blockCriteria.some(criterion => cardTags.includes(criterion));
+                            
+                            card.style.opacity = isMatch ? '1' : '0.3';
+                        });
+                    },
+                },
+
+                // --- CORE LOGIC & ACTIONS ---
+                actions: {
+                    handleFileUpload(file) {
+                        if (!file) return;
+
+                        // 1. Validation
+                        if (!file.type.startsWith('image/')) {
+                            app.ui.showToast('Invalid file type. Please upload an image.', 'error');
+                            return;
+                        }
+                        if (file.size > MAX_FILE_SIZE_BYTES) {
+                            app.ui.showToast(`File is too large. Max size is ${MAX_FILE_SIZE_MB}MB.`, 'error');
+                            return;
+                        }
+
+                        // 2. Read file and show preview
+                        const reader = new FileReader();
+                        reader.onload = (e) => {
+                            app.state.uploadedImage = e.target.result;
+                            localStorage.setItem('uploadedImage', app.state.uploadedImage); // Persist image
+                            
+                            app.elements.upload.previewImage.src = app.state.uploadedImage;
+                            app.elements.upload.previewFilename.textContent = file.name;
+                            app.elements.upload.form.classList.add('hidden');
+                            app.elements.upload.previewContainer.classList.remove('hidden');
+                        };
+                        reader.readAsDataURL(file);
+                    },
+
+                    startAnalysis() {
+                        app.ui.showScreen('analysis');
+                        app.elements.signInPrompt.classList.remove('hidden');
+
+                        // --- Flask Integration Point ---
+                        // To wire this up with a real backend:
+                        // 1. Get the file object from the input.
+                        // const file = app.elements.upload.input.files[0];
+                        // const formData = new FormData();
+                        // formData.append('user_photo', file);
+                        //
+                        // 2. Uncomment and use the fetch call below.
+                        // fetch('/api/analyze', {
+                        //     method: 'POST',
+                        //     body: formData
+                        // })
+                        // .then(response => response.json())
+                        // .then(data => {
+                        //     // `data` would be your recommendation results from the server
+                        //     console.log('Analysis complete:', data);
+                        //     // Use `data` to populate the recommendations instead of mockData
+                        //     app.ui.renderRecommendations(data.recommendations); 
+                        //     app.ui.showScreen('recommendations');
+                        // })
+                        // .catch(error => {
+                        //     console.error('Error during analysis:', error);
+                        //     app.ui.showToast('Analysis failed. Please try again.', 'error');
+                        //     app.ui.showScreen('home');
+                        // });
+                        
+                        // 3. For now, we mock the API call with a timeout.
+                        setTimeout(() => {
+                            app.ui.renderRecommendations();
+                            app.ui.renderStyleBlocks();
+                            app.ui.showScreen('recommendations');
+                        }, ANALYSIS_DELAY_MS);
+                    },
+
+                    resetUpload() {
+                        app.elements.upload.form.reset();
+                        app.elements.upload.form.classList.remove('hidden');
+                        app.elements.upload.previewContainer.classList.add('hidden');
+                        app.elements.upload.previewImage.src = "";
+                    },
+                    
+                    saveStyleBlock(e) {
+                        e.preventDefault();
+                        const form = e.target;
+                        const name = form.querySelector('#block-name').value;
+                        const selectedColors = [...form.querySelectorAll('.color-chip.selected')].map(c => c.dataset.color);
+                        const cuts = form.querySelector('#block-cuts').value.split(',').map(s => s.trim()).filter(Boolean);
+                        const keywords = form.querySelector('#block-keywords').value.split(',').map(s => s.trim()).filter(Boolean);
+                        
+                        if (!name) {
+                            app.ui.showToast('Please give your Style Block a name.', 'error');
+                            return;
+                        }
+                        
+                        const newBlock = {
+                            id: `user_${Date.now()}`,
+                            name,
+                            colors: selectedColors,
+                            cuts,
+                            keywords
+                        };
+                        
+                        app.state.styleBlocks.push(newBlock);
+                        localStorage.setItem('styleBlocks', JSON.stringify(app.state.styleBlocks));
+                        
+                        app.ui.renderStyleBlocks();
+                        app.ui.toggleModal(app.elements.modals.styleBlock, false);
+                        form.reset();
+                        app.ui.showToast('Style Block saved!', 'success');
+                    },
+
+                    toggleStyleBlock(blockId) {
+                        if (app.state.activeStyleBlockId === blockId) {
+                            app.state.activeStyleBlockId = null; // Deselect
+                        } else {
+                            app.state.activeStyleBlockId = blockId;
+                        }
+                        app.ui.renderStyleBlocks(); // Re-render to show active state
+                        app.ui.applyStyleBlockFilter();
+                    },
+
+                    exportStyleBlocks() {
+                        if (app.state.styleBlocks.length === 0) {
+                            app.ui.showToast("No custom style blocks to export.", "error");
+                            return;
+                        }
+                        const dataStr = JSON.stringify(app.state.styleBlocks, null, 2);
+                        const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+                        const exportFileDefaultName = 'stylesync_blocks.json';
+                        const linkElement = document.createElement('a');
+                        linkElement.setAttribute('href', dataUri);
+                        linkElement.setAttribute('download', exportFileDefaultName);
+                        linkElement.click();
+                        app.ui.showToast("Style blocks exported.", "success");
+                    },
+
+                    importStyleBlocks() {
+                        const input = document.createElement('input');
+                        input.type = 'file';
+                        input.accept = '.json';
+                        input.onchange = e => {
+                            const file = e.target.files[0];
+                            const reader = new FileReader();
+                            reader.readAsText(file, 'UTF-8');
+                            reader.onload = readerEvent => {
+                                try {
+                                    const content = readerEvent.target.result;
+                                    const importedBlocks = JSON.parse(content);
+                                    // Basic validation
+                                    if (Array.isArray(importedBlocks) && importedBlocks.every(b => b.id && b.name)) {
+                                        app.state.styleBlocks = [...app.state.styleBlocks, ...importedBlocks];
+                                        localStorage.setItem('styleBlocks', JSON.stringify(app.state.styleBlocks));
+                                        app.ui.renderStyleBlocks();
+                                        app.ui.showToast("Style blocks imported successfully!", "success");
+                                    } else {
+                                        throw new Error("Invalid file format.");
+                                    }
+                                } catch (err) {
+                                    app.ui.showToast("Failed to import. Invalid JSON file.", "error");
+                                }
+                            }
+                        };
+                        input.click();
+                    }
+                },
+
+                // --- EVENT LISTENERS ---
+                init() {
+                    const { upload, nav, styleBlocks, recommendations, modals, forms } = app.elements;
+
+                    // Upload drag & drop
+                    upload.area.addEventListener('dragover', (e) => {
+                        e.preventDefault();
+                        upload.area.classList.add('drag-over');
+                    });
+                    upload.area.addEventListener('dragleave', () => upload.area.classList.remove('drag-over'));
+                    upload.area.addEventListener('drop', (e) => {
+                        e.preventDefault();
+                        upload.area.classList.remove('drag-over');
+                        const file = e.dataTransfer.files[0];
+                        app.actions.handleFileUpload(file);
+                    });
+
+                    // Upload click
+                    upload.input.addEventListener('change', (e) => app.actions.handleFileUpload(e.target.files[0]));
+
+                    // Upload actions
+                    upload.analyzeBtn.addEventListener('click', app.actions.startAnalysis);
+                    upload.changePhotoBtn.addEventListener('click', app.actions.resetUpload);
+                    
+                    // Nav
+                    nav.mobileMenuBtn.addEventListener('click', () => nav.mobileNav.classList.toggle('open'));
+                    
+                    // Style Blocks
+                    styleBlocks.createBtn.addEventListener('click', () => {
+                        app.ui.toggleModal(modals.styleBlock, true);
+                        modals.styleBlock.querySelector('input').focus();
+                    });
+                    forms.styleBlock.addEventListener('submit', app.actions.saveStyleBlock);
+                    styleBlocks.exportBtn.addEventListener('click', app.actions.exportStyleBlocks);
+                    styleBlocks.importBtn.addEventListener('click', app.actions.importStyleBlocks);
+                    
+                    // Modal closing
+                    document.querySelectorAll('.close-modal-btn').forEach(btn => {
+                        btn.addEventListener('click', () => {
+                            app.ui.toggleModal(modals.tryOn, false);
+                            app.ui.toggleModal(modals.styleBlock, false);
+                        });
+                    });
+                    document.querySelectorAll('.modal-overlay').forEach(overlay => {
+                        overlay.addEventListener('click', (e) => {
+                            if (e.target === overlay) {
+                                app.ui.toggleModal(overlay, false);
+                            }
+                        });
+                    });
+                    
+                    // Try On & Shop buttons (event delegation)
+                    recommendations.grid.addEventListener('click', e => {
+                        if (e.target.classList.contains('try-on-btn')) {
+                            const outfitImg = e.target.dataset.outfitImg;
+                            document.getElementById('try-on-user-photo').src = app.state.uploadedImage;
+                            document.getElementById('try-on-outfit-photo').src = outfitImg;
+                            app.ui.toggleModal(modals.tryOn, true);
+                        }
+                        if (e.target.classList.contains('shop-btn')) {
+                            app.ui.showToast('Shopify integration coming soon!', 'success');
+                        }
+                    });
+
+                    // Populate color chips in form
+                    const colorChipsContainer = document.getElementById('color-chips-container');
+                    AVAILABLE_COLORS.forEach(color => {
+                        const chip = document.createElement('div');
+                        chip.className = 'color-chip';
+                        chip.style.backgroundColor = color;
+                        chip.dataset.color = color;
+                        chip.setAttribute('role', 'checkbox');
+                        chip.setAttribute('aria-checked', 'false');
+                        chip.addEventListener('click', () => {
+                           chip.classList.toggle('selected');
+                           chip.setAttribute('aria-checked', chip.classList.contains('selected'));
+                        });
+                        colorChipsContainer.appendChild(chip);
+                    });
+                    
+                    // Initial load
+                    if (app.state.uploadedImage) {
+                        app.elements.upload.previewImage.src = app.state.uploadedImage;
+                        app.elements.upload.previewFilename.textContent = "Previously uploaded photo";
+                        app.elements.upload.form.classList.add('hidden');
+                        app.elements.upload.previewContainer.classList.remove('hidden');
+                    }
+                }
+            };
+
+            // --- MOCK DATA ---
+            const mockData = {
+                recommendations: [
+                    {
+                        id: 1, title: 'Urban Explorer', description: 'A comfortable yet stylish look for your city adventures. Pairs well with white sneakers.',
+                        tags: ['Casual', 'Urban', 'Comfort'], image: 'data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22400%22%20height%3D%22300%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%3Crect%20width%3D%22400%22%20height%3D%22300%22%20fill%3D%22%236c757d%22%3E%3C/rect%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20font-family%3D%22Arial%22%20font-size%3D%2220%22%20fill%3D%22%23fff%22%20dominant-baseline%3D%22middle%22%20text-anchor%3D%22middle%22%3EOutfit%201%3C/text%3E%3C/svg%3E',
+                        outfitImage: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAUAAAAGACAMAAAC246cHAAAAA1BMVEX///+nxBvIAAAASElEQVR4nO3BMQEAAADCoPVPbQwfoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD+BsYAAAFD1gZtAAAAAElFTkSuQmCC' // transparent placeholder
+                    },
+                    {
+                        id: 2, title: 'Monochrome Power', description: 'A sharp, minimalist outfit that makes a statement. Perfect for creative meetings.',
+                        tags: ['Minimalist', 'Monochrome', 'Bold', 'Slim Fit'], image: 'data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22400%22%20height%3D%22300%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%3Crect%20width%3D%22400%22%20height%3D%22300%22%20fill%3D%22%23343a40%22%3E%3C/rect%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20font-family%3D%22Arial%22%20font-size%3D%2220%22%20fill%3D%22%23fff%22%20dominant-baseline%3D%22middle%22%20text-anchor%3D%22middle%22%3EOutfit%202%3C/text%3E%3C/svg%3E',
+                        outfitImage: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAUAAAAGACAMAAAC246cHAAAAA1BMVEX///+nxBvIAAAASElEQVR4nO3BMQEAAADCoPVPbQwfoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD+BsYAAAFD1gZtAAAAAElFTkSuQmCC'
+                    },
+                    {
+                        id: 3, title: 'Weekend Getaway', description: 'Relaxed and ready for anything. The perfect companion for a spontaneous road trip.',
+                        tags: ['Casual', 'Relaxed', 'High-Waist'], image: 'data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22400%22%20height%3D%22300%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%3Crect%20width%3D%22400%22%20height%3D%22300%22%20fill%3D%22%23adb5bd%22%3E%3C/rect%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20font-family%3D%22Arial%22%20font-size%3D%2220%22%20fill%3D%22%23fff%22%20dominant-baseline%3D%22middle%22%20text-anchor%3D%22middle%22%3EOutfit%203%3C/text%3E%3C/svg%3E',
+                        outfitImage: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAUAAAAGACAMAAAC246cHAAAAA1BMVEX///+nxBvIAAAASElEQVR4nO3BMQEAAADCoPVPbQwfoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD+BsYAAAFD1gZtAAAAAElFTkSuQmCC'
+                    },
+                    {
+                        id: 4, title: 'Bold & Bright', description: 'Don\'t be afraid to stand out. This vibrant piece is a true conversation starter.',
+                        tags: ['Bold', 'Vibrant', 'A-Line'], image: 'data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22400%22%20height%3D%22300%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%3Crect%20width%3D%22400%22%20height%3D%22300%22%20fill%3D%22%23dc3545%22%3E%3C/rect%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20font-family%3D%22Arial%22%20font-size%3D%2220%22%20fill%3D%22%23fff%22%20dominant-baseline%3D%22middle%22%20text-anchor%3D%22middle%22%3EOutfit%204%3C/text%3E%3C/svg%3E',
+                        outfitImage: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAUAAAAGACAMAAAC246cHAAAAA1BMVEX///+nxBvIAAAASElEQVR4nO3BMQEAAADCoPVPbQwfoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD+BsYAAAFD1gZtAAAAAElFTkSuQmCC'
+                    },
+                ],
+                premadeStyleBlocks: [
+                    { id: 'premade_1', name: 'Monochrome Looks', colors: ['#000000', '#FFFFFF', '#343a40'], cuts: ['Slim Fit'], keywords: ['Minimalist', 'Monochrome'] },
+                    { id: 'premade_2', name: 'Casual & Comfy', colors: [], cuts: ['Relaxed Fit', 'High-Waist'], keywords: ['Casual', 'Comfort'] }
+                ]
+            };
+            
+            window.app = app; // Expose to global scope for dev panel
+            app.init();
+        });
+    </script>
+</body>
+</html>
