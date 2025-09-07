@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aenco Holdings</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        /* CSS RESET & DEFAULTS */
+        :root {
+            --brand-red: #c40000;
+            --dark-charcoal: #1a1a1a;
+            --soft-gray: #f4f4f4;
+            --text-light: #ffffff;
+            --text-dark: #333333;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background-color: var(--text-light);
+            overflow-x: hidden;
+        }
+
+        /* TYPOGRAPHY & HELPERS */
+        h1, h2, h3 {
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 900;
+        }
+
+        h2 {
+            font-size: 2.25rem;
+            margin-bottom: 2rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 3px;
+            background-color: var(--brand-red);
+        }
+
+        section {
+            padding: 5rem 2rem;
+            text-align: center;
+            overflow: hidden; /* For animations */
+        }
+        
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            background-color: var(--brand-red);
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 700;
+            text-transform: uppercase;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        /* ANIMATIONS ON SCROLL */
+        .reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* SECTION 1: HERO HEADER */
+        #hero {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--text-light);
+            position: relative;
+            padding: 0 2rem;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.7);
+        }
+
+        #hero-video {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            transform: translateX(-50%) translateY(-50%);
+            z-index: -2;
+            object-fit: cover;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.884);
+            z-index: -1;
+        }
+        
+        .hero-content {
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        #hero h1 {
+            margin-bottom: 1.5rem;
+        }
+        
+        #hero .subheader p {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+
+        #hero .btn {
+            margin-top: 2rem;
+            padding: 1.25rem 3rem;
+            font-size: 1.1rem;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* SECTION 2: WHAT WE DO */
+        #what-we-do {
+            background-color: var(--soft-gray);
+        }
+
+        .services-list {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .service-item {
+            flex-basis: 300px;
+        }
+
+        .service-item .icon {
+            font-size: 3rem;
+            color: var(--brand-red);
+            margin-bottom: 1rem;
+        }
+
+        .service-item h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        #what-we-do .subtext {
+            max-width: 700px;
+            margin: 3rem auto 0 auto;
+            font-size: 1.1rem;
+        }
+
+        /* SECTION 3: WHY IT WORKS */
+        #why-it-works {
+            background-color: var(--dark-charcoal);
+            color: var(--text-light);
+            position: relative;
+            background-image: url('https://www.constructionbusinessowner.com/sites/default/files/main_image/e-droneboys.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed; /* Parallax effect */
+        }
+
+        #why-it-works .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(26, 26, 26, 0.9);
+            z-index: 1;
+        }
+        
+        #why-it-works .container {
+            position: relative;
+            z-index: 2;
+        }
+
+        #why-it-works p {
+            max-width: 800px;
+            margin: 0 auto;
+            font-size: 1.25rem;
+            line-height: 1.8;
+        }
+
+        #why-it-works p:last-child {
+            margin-top: 1.5rem;
+            font-weight: 700;
+        }
+
+        /* SECTION 4: BUILT FOR LONGEVITY */
+        #longevity {
+            background-color: #ffffff;
+            background-image: linear-gradient(rgba(255,255,255,0.95), rgba(255,255,255,0.95)), url('https://images.unsplash.com/photo-1505691938895-1758d7FEB511?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80');
+            background-size: cover;
+            background-position: center;
+        }
+
+        #longevity p {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-top: 1rem;
+            max-width: 600px;
+            margin: 1.5rem auto 0 auto;
+            line-height: 1.5;
+        }
+        
+        /* SECTION 5: WORKING WITH AENCO */
+        #working-with-aenco {
+            background-color: var(--soft-gray);
+        }
+        
+        #working-with-aenco .container {
+            max-width: 900px;
+            text-align: left;
+        }
+        
+        #working-with-aenco h3 {
+            font-size: 1.5rem;
+            color: var(--brand-red);
+            text-transform: none;
+            margin-bottom: 0.5rem;
+        }
+
+        #working-with-aenco p {
+            margin-bottom: 1.5rem;
+        }
+        
+        .vendor-info {
+            margin-top: 3rem;
+            font-size: 0.9rem;
+            text-align: center;
+            color: #666;
+        }
+
+        .vendor-info a {
+            color: var(--brand-red);
+            font-weight: bold;
+            text-decoration: none;
+        }
+        
+        /* SECTION 6: CONTACT */
+        #contact {
+            background-color: #ffffff;
+        }
+
+        .contact-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 3rem;
+            justify-content: center;
+            align-items: flex-start;
+            margin-top: 3rem;
+        }
+
+        .contact-info, .contact-form-container {
+            flex: 1;
+            min-width: 300px;
+            text-align: left;
+        }
+
+        .contact-info p {
+            margin-bottom: 1.5rem;
+        }
+
+        .contact-info strong {
+            display: block;
+            color: var(--brand-red);
+            margin-bottom: 0.25rem;
+        }
+        
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .contact-form input, .contact-form textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 1px solid #ccc;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1rem;
+        }
+
+        .contact-form input:focus, .contact-form textarea:focus {
+            outline: 2px solid var(--brand-red);
+            border-color: transparent;
+        }
+
+        .contact-form .btn {
+            align-self: flex-start;
+        }
+
+        /* SECTION 7: FOOTER */
+        footer {
+            background-color: var(--dark-charcoal);
+            color: #aaa;
+            padding: 2rem;
+            text-align: center;
+            font-size: 0.8rem;
+        }
+        
+        footer .container {
+            max-width: 800px;
+        }
+
+        /* RESPONSIVE DESIGN */
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5rem; }
+            h2 { font-size: 1.8rem; }
+            section { padding: 4rem 1rem; }
+            
+            #hero .subheader p {
+                font-size: 1.1rem;
+            }
+            
+            .services-list {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .contact-grid {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .contact-info, .contact-form-container {
+                width: 100%;
+                max-width: 500px;
+                text-align: center;
+            }
+            
+            .contact-form .btn {
+                align-self: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- SECTION 1 – Hero Header -->
+    <section id="hero">
+        <div class="hero-overlay"></div>
+        <video playsinline autoplay muted loop id="hero-video">
+            <!-- Using a placeholder video. Replace with your actual video file. -->
+            <source src="https://videos.pexels.com/video-files/855271/855271-hd_1920_1080_25fps.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <div class="container hero-content">
+            <h1>BUILDING VALUE FROM THE GROUND UP</h1>
+            <div class="subheader">
+                <p>We buy distressed properties.</p>
+                <p>We build them back stronger.</p>
+                <p>We hold for the long term.</p>
+            </div>
+            <a href="#contact" class="btn">GET IN TOUCH</a>
+        </div>
+    </section>
+
+    <main>
+        <!-- SECTION 2 – What We Do -->
+        <section id="what-we-do" class="reveal">
+            <div class="container">
+                <h2>AENCO IS A U.S. HOLDING COMPANY SPECIALIZING IN:</h2>
+                <ul class="services-list">
+                    <li class="service-item">
+                        <div class="icon">&#127970;</div>
+                        <h3>Real Estate Investment</h3>
+                    </li>
+                    <li class="service-item">
+                        <div class="icon">&#128736;</div>
+                        <h3>Self-Performed Construction</h3>
+                    </li>
+                    <li class="service-item">
+                        <div class="icon">&#128221;</div>
+                        <h3>Structural & Systems Engineering</h3>
+                    </li>
+                </ul>
+                <p class="subtext">
+                    We acquire undervalued real estate, rebuild it through our operating companies, and engineer the solutions that make it last.
+                </p>
+            </div>
+        </section>
+
+        <!-- SECTION 3 – Why It Works -->
+        <section id="why-it-works" class="reveal">
+            <div class="overlay"></div>
+            <div class="container">
+                <h2>WE DON’T OUTSOURCE RESULTS.</h2>
+                <p>From steel to subfloors, every phase is self-performed by our operating companies — faster, better, and fully under our control.</p>
+                <p>No middlemen. No excuses. Just execution.</p>
+            </div>
+        </section>
+
+        <!-- SECTION 4 – Built for Longevity -->
+        <section id="longevity" class="reveal">
+            <div class="container">
+                <h2>LONG-TERM HOLD. NOT A FLIP.</h2>
+                <p>
+                    We don’t sell quick.<br>
+                    We build rental portfolios designed to last — structurally, financially, and operationally.
+                </p>
+            </div>
+        </section>
+
+        <!-- SECTION 5 – Working With Aenco -->
+        <section id="working-with-aenco" class="reveal">
+            <div class="container">
+                <h2 style="text-align:center;">WORKING WITH AENCO</h2>
+                <h3>Initial Orders</h3>
+                <p>
+                    We issue clean POs with defined quantities, specs, and delivery terms — paid in full by card, wire, or certified check.
+                    We coordinate freight, finalize scope quickly, and expect precision in return.
+                </p>
+                <p>
+                    All operations are U.S.-based. No credit requested. No ambiguity in scope.
+                    If you value clarity, execution, and accountability — we’re ready to work.
+                </p>
+                <div class="vendor-info">
+                    Need vendor setup info? <a href="mailto:info@aencous.com">Email info@aencous.com to request our onboarding packet.</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 6 – Contact / CTA -->
+        <section id="contact" class="reveal">
+            <div class="container">
+                <h2>Ready to Connect?</h2>
+                <p>Got a property? Supplying materials? Want to collaborate?</p>
+                <div class="contact-grid">
+                    <div class="contact-info">
+                        <h3>Contact Info</h3>
+                        <p>
+                            <strong>Email:</strong>
+                            <a href="mailto:info@aencous.com">info@aencous.com</a>
+                        </p>
+                        <p>
+                            <strong>Address:</strong>
+                            1309 Coffeen Ave, Unit 1200, Sheridan, WY 82801
+                        </p>
+                    </div>
+                    <div class="contact-form-container">
+                        <h3>Send a Message</h3>
+                        <form id="main-contact-form" class="contact-form" action="mailto:info@aencous.com" method="post" enctype="text/plain">
+                            <input type="text" id="name" name="name" placeholder="Your Name" required>
+                            <input type="email" id="email" name="email" placeholder="Your Email" required>
+                            <textarea id="message" name="message" rows="5" placeholder="Your Message" required></textarea>
+                            <button type="submit" class="btn">SEND A MESSAGE</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- SECTION 7 – Footer / Disclaimer -->
+    <footer>
+        <div class="container">
+            <p>
+                Aenco Holdings LLC is a privately held U.S. entity headquartered at 1309 Coffeen Ave, Unit 1200, Sheridan, WY 82801. All operations, procurement, and payments are managed exclusively within the United States.
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            // SMOOTH SCROLL FOR NAV LINKS
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+
+            // SCROLL REVEAL ANIMATION
+            const revealElements = document.querySelectorAll('.reveal');
+            
+            const revealOnScroll = () => {
+                const windowHeight = window.innerHeight;
+                revealElements.forEach(el => {
+                    const elementTop = el.getBoundingClientRect().top;
+                    const elementVisible = 150; // Distance from bottom of viewport to trigger animation
+
+                    if (elementTop < windowHeight - elementVisible) {
+                        el.classList.add('visible');
+                    }
+                });
+            };
+
+            window.addEventListener('scroll', revealOnScroll);
+            revealOnScroll(); // Initial check on page load
+
+            // CONTACT FORM VALIDATION FEEDBACK
+            const form = document.getElementById('main-contact-form');
+            form.addEventListener('submit', function(e) {
+                // The form's action is a mailto link, which JS cannot reliably track.
+                // We'll rely on HTML5 validation. This block is for potential future enhancements.
+                if (!form.checkValidity()) {
+                    e.preventDefault();
+                    // You could add custom validation messages here.
+                    alert('Please fill out all required fields correctly.');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
