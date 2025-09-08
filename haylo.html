@@ -1,0 +1,511 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Haylo — Portfolio</title>
+  <meta name="description" content="Haylo — personal CV portfolio for marketing & sales leadership" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    /* ------------------- */
+    /*   Global Styles     */
+    /* ------------------- */
+    :root{
+      --bg: #ffffff;
+      --accent-1: #FFD6C2; /* Light Pink/Orange */
+      --accent-2: #CFF5E1; /* Pastel Green */
+      --accent-3: #7A5A44; /* Warm Brown */
+      --text-dark: #333333;
+      --muted: #6b6b6b;
+      --radius: 14px;
+      --max-width: 1100px;
+      --container-padding: 24px;
+      font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+    *{box-sizing:border-box}
+    html,body{
+        height:100%;
+        margin:0;
+        background:var(--bg);
+        color: var(--text-dark);
+        scroll-behavior: smooth;
+    }
+    .wrap{
+        max-width:var(--max-width);
+        margin:0 auto;
+        padding: 48px var(--container-padding);
+    }
+    h1, h2, h3 {
+        color: var(--accent-3);
+        font-weight: 700;
+    }
+
+    /* ------------------- */
+    /*      HEADER         */
+    /* ------------------- */
+    header{
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        padding:12px 0;
+    }
+    .logo{
+        display:flex;
+        gap:12px;
+        align-items:center;
+    }
+    .logo img{
+        height:56px;
+        width:auto;
+        border-radius:8px;
+    }
+    nav{
+        display:flex;
+        gap:24px;
+        align-items:center;
+    }
+    nav a{
+        color:var(--muted);
+        text-decoration:none;
+        font-weight:600;
+        transition: color 0.2s ease;
+    }
+    nav a:hover {
+        color: var(--accent-3);
+    }
+    .btn{
+        background:var(--accent-3);
+        color:white;
+        padding:10px 18px;
+        border-radius:10px;
+        text-decoration:none;
+        font-weight:700;
+        transition: opacity 0.2s ease;
+    }
+    .btn:hover {
+        opacity: 0.9;
+    }
+
+    /* ------------------- */
+    /*       HERO          */
+    /* ------------------- */
+    .hero{
+        display:grid;
+        grid-template-columns:1fr 420px;
+        gap:60px;
+        align-items:center;
+        padding:40px 0;
+    }
+    .hero h1{
+        font-size:42px;
+        margin:0 0 12px 0;
+        line-height: 1.2;
+    }
+    .hero p{
+        margin:0 0 24px;
+        color:var(--muted);
+        line-height:1.7;
+        font-size: 17px;
+    }
+    .cta-row{
+        display:flex;
+        gap:12px;
+        align-items:center;
+    }
+    .btn-ghost{
+        background:transparent;
+        color: var(--accent-3);
+        border:2px solid var(--accent-3);
+        padding:10px 18px;
+        border-radius:10px;
+        font-weight:700;
+        text-decoration: none;
+        transition: background-color 0.2s ease, color 0.2s ease;
+    }
+    .btn-ghost:hover {
+        background-color: var(--accent-3);
+        color: white;
+    }
+    .hero-card{
+        background:linear-gradient(180deg, rgba(255,255,255,0.9), rgba(255,255,255,0.85));
+        border-radius:18px;
+        padding:18px;
+        box-shadow:0 8px 40px rgba(30,30,30,0.07);
+        display:flex;
+        flex-direction:column;
+        align-items:center;
+    }
+    .hero-photo{
+        width:100%;
+        height:420px;
+        object-fit:cover;
+        border-radius:12px;
+    }
+    .meta{
+        margin-top:16px;
+        text-align:center;
+    }
+    .meta strong {
+        color:var(--accent-3);
+        font-size: 18px;
+    }
+    .meta small{
+        display:block;
+        color:var(--muted);
+        margin-top: 4px;
+    }
+    .stats-row {
+        margin-top:32px;
+        display:flex;
+        gap:16px;
+        align-items:center;
+    }
+    .stat-item {
+        background: var(--bg);
+        border: 1px solid #f0f0f0;
+        padding:12px;
+        border-radius:12px;
+        min-width:130px;
+        text-align:center;
+    }
+    .stat-item .stat-number {
+        font-weight:800;
+        color:var(--accent-3);
+        font-size:22px;
+    }
+    .stat-item .stat-label {
+        color:var(--muted);
+        font-size: 14px;
+    }
+
+    /* ------------------- */
+    /*      SECTIONS       */
+    /* ------------------- */
+    section{
+        padding:60px 0;
+        border-top:1px solid rgba(0,0,0,0.05);
+    }
+    .section-header {
+        text-align: center;
+        max-width: 600px;
+        margin: 0 auto 40px auto;
+    }
+    .section-header h2 {
+        font-size: 32px;
+        margin-bottom: 8px;
+    }
+    .section-header p {
+        color: var(--muted);
+        line-height: 1.6;
+    }
+    .grid-3{
+        display:grid;
+        grid-template-columns:repeat(3,1fr);
+        gap:24px;
+    }
+    .card{
+        background: #f9f9f9;
+        border: 1px solid #f0f0f0;
+        border-radius:var(--radius);
+        padding:24px;
+        display:flex;
+        flex-direction:column;
+        justify-content:flex-start;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 30px rgba(30,30,30,0.06);
+    }
+    .card h3{
+        margin:0 0 8px 0;
+    }
+    .card p{
+        margin:0;
+        color:var(--muted);
+        line-height: 1.6;
+    }
+
+    /* Specific Section Styles */
+    #about {
+        background: #fafcff;
+    }
+    .about-content{
+        display:grid;
+        grid-template-columns: 320px 1fr;
+        gap:40px;
+        align-items:center;
+    }
+    .about-content img{
+        width:100%;
+        height:380px;
+        object-fit:cover;
+        border-radius:var(--radius);
+    }
+    .about-content p{
+        color:var(--muted);
+        line-height:1.7;
+        margin-bottom: 16px;
+    }
+
+    .testimonials-grid{
+        display:grid;
+        grid-template-columns:repeat(2,1fr);
+        gap:24px;
+    }
+    .testimonial{
+        background:var(--accent-2);
+        padding:24px;
+        border-radius:var(--radius);
+    }
+    .testimonial p {
+        font-size: 17px;
+        line-height: 1.6;
+        margin: 0 0 16px 0;
+    }
+    .testimonial strong {
+        color: var(--accent-3);
+    }
+
+    /* ------------------- */
+    /*      CONTACT        */
+    /* ------------------- */
+    #contact {
+        background-color: #f9f9f9;
+    }
+    .contact-wrap{
+        display:grid;
+        grid-template-columns: 1fr 380px;
+        gap:40px;
+        background: white;
+        padding: 40px;
+        border-radius: var(--radius);
+        box-shadow: 0 8px 40px rgba(30,30,30,0.07);
+    }
+    .contact-form .field{
+        display:flex;
+        flex-direction:column;
+        margin-bottom:16px;
+    }
+    label{
+        font-size:14px;
+        margin-bottom:8px;
+        color:var(--accent-3);
+        font-weight:700;
+    }
+    input,textarea{
+        padding:12px;
+        border-radius:10px;
+        border:1px solid #ddd;
+        font-size:16px;
+        font-family: 'Inter', sans-serif;
+    }
+    input:focus, textarea:focus {
+        outline: 2px solid var(--accent-1);
+        border-color: transparent;
+    }
+    textarea{min-height:120px}
+    .contact-info {
+        background:linear-gradient(135deg,var(--accent-1),var(--accent-2));
+        padding:24px;
+        border-radius:var(--radius);
+    }
+    .contact-info p{
+        margin:0;
+        color:var(--muted);
+        line-height: 1.6;
+    }
+    .contact-info .email-link {
+        margin-top:16px;
+        font-weight:800;
+        color:var(--accent-3);
+        text-decoration: none;
+        display: block;
+    }
+
+    /* ------------------- */
+    /*       FOOTER        */
+    /* ------------------- */
+    footer{
+        padding:40px var(--container-padding);
+        color:var(--muted);
+        font-size:14px;
+        text-align: center;
+        border-top: 1px solid #f0f0f0;
+    }
+
+    /* ------------------- */
+    /*     RESPONSIVE      */
+    /* ------------------- */
+    @media (max-width:980px){
+      .hero{grid-template-columns:1fr;}
+      .hero h1 { font-size: 36px; }
+      .hero-card { margin-top: 20px; }
+      .hero-photo{height:360px}
+      .grid-3, .testimonials-grid, .contact-wrap, .about-content {
+          grid-template-columns:1fr;
+      }
+      .about-content img { height: 280px; }
+      nav{display:none} /* Hides nav on mobile, can be replaced with a hamburger menu */
+    }
+
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="logo">
+        <img src="hayloimages/logo.png" alt="Haylo logo" />
+        <div>
+          <div style="font-weight:800;color:var(--accent-3);letter-spacing:0.6px">Haylo</div>
+          <small style="color:var(--muted)">Marketing & Sales Portfolio</small>
+        </div>
+      </div>
+      <nav>
+        <a href="#about">About</a>
+        <a href="#services">Services</a>
+        <a href="#testimonials">Testimonials</a>
+        <a href="#contact" class="btn">Work with me</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div>
+          <h1>I’m Haylo — helping businesses grow smarter.</h1>
+          <p>I partner with owner-CEOs to sharpen internal marketing, scale sales channels, and build practical systems that win repeat clients. Combines corporate experience with hands-on execution — friendly, reliable, results-focused.</p>
+          <div class="cta-row">
+            <a href="#contact" class="btn">Work with me</a>
+            <a href="#about" class="btn-ghost">Learn more</a>
+          </div>
+
+          <div class="stats-row">
+            <div class="stat-item">
+              <div class="stat-number">20+</div>
+              <div class="stat-label">Years experience</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-number">50+</div>
+              <div class="stat-label">Businesses helped</div>
+            </div>
+          </div>
+        </div>
+
+        <aside class="hero-card">
+          <img src="hayloimages/1.jpg" alt="Haylo professional portrait" class="hero-photo" />
+          <div class="meta">
+            <strong>Haylo — Marketing & Sales Strategist</strong>
+            <small>Owner-focused growth & systems</small>
+          </div>
+        </aside>
+      </section>
+
+      <section id="about">
+        <div class="about-content">
+          <img src="hayloimages/3.png" alt="Haylo in a work setting" />
+          <div>
+            <h2>About Me: A Partner in Growth</h2>
+            <p>I combine deep marketing knowledge with practical sales experience to help business owners increase revenue without complex bureaucracy. I value clarity, measurable outcomes, and respectful collaboration. My aim is to become an integrated part of your growth engine — not just a consultant.</p>
+            <p><strong>Ideal client:</strong> Male business owners (approx. 50 years old) running stable companies who want to expand marketing and sales both internally and externally.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="services">
+        <div class="section-header">
+            <h2>What I Do</h2>
+            <p>My services are designed to deliver practical, measurable results that directly impact your bottom line.</p>
+        </div>
+        <div class="grid-3">
+          <div class="card" style="background-color: var(--accent-1);">
+            <h3>Marketing Strategy</h3>
+            <p>Clear, practical marketing plans that match your company culture and customer base.</p>
+          </div>
+          <div class="card" style="background-color: var(--accent-2);">
+            <h3>Sales Process</h3>
+            <p>Implement repeatable sales frameworks and train internal teams to close more consistently.</p>
+          </div>
+          <div class="card" style="background-color: #E6E6FA;">
+            <h3>Performance & Reporting</h3>
+            <p>Simple dashboards and KPIs so owners know exactly what actions move the needle.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="portfolio" style="padding-top: 0;">
+        <div class="section-header">
+            <h2>Selected Work</h2>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:18px;">
+          <img src="hayloimages/5.png" alt="project example 1" style="width:100%;height:220px;object-fit:cover;border-radius:var(--radius)" />
+          <img src="hayloimages/5.png" alt="project example 2" style="width:100%;height:220px;object-fit:cover;border-radius:var(--radius)" />
+          <img src="hayloimages/5.png" alt="project example 3" style="width:100%;height:220px;object-fit:cover;border-radius:var(--radius)" />
+        </div>
+      </section>
+
+      <section id="testimonials">
+        <div class="section-header">
+            <h2>What Business Owners Say</h2>
+        </div>
+        <div class="testimonials-grid">
+          <div class="testimonial">
+            <p>“Haylo transformed our lead flow and helped our team close more predictable deals. A true professional who understands the owner's mindset.”</p>
+            <strong>— Business Owner, Auckland</strong>
+          </div>
+          <div class="testimonial">
+            <p>“Practical, patient and results-driven. Highly recommend for any owner who wants to scale sensibly without losing the company culture.”</p>
+            <strong>— CEO, Christchurch</strong>
+          </div>
+        </div>
+      </section>
+
+      <section id="contact">
+        <div class="contact-wrap">
+          <div class="contact-form">
+            <h2>Ready to Grow?</h2>
+            <p style="color: var(--muted); margin-top: -8px; margin-bottom: 24px;">Let's have a conversation about your business goals.</p>
+            <form action="mailto:hello@haylo.example" method="post" enctype="text/plain">
+              <div class="field">
+                <label for="name">Name</label>
+                <input id="name" name="name" placeholder="Your name" type="text" />
+              </div>
+              <div class="field">
+                <label for="email">Email</label>
+                <input id="email" name="email" placeholder="you@company.com" type="email" />
+              </div>
+              <div class="field">
+                <label for="message">Message</label>
+                <textarea id="message" name="message" placeholder="Tell me a bit about your business and your growth objectives..."></textarea>
+              </div>
+              <button type="submit" class="btn">Send message</button>
+            </form>
+          </div>
+          <div class="contact-info">
+            <h3>Let's Talk</h3>
+            <p>I am available for part-time consultancy or in-house leadership. I work best with owners who value clarity, respect, and measurable outcomes.</p>
+            <a href="mailto:hello@haylo.example" class="email-link">hello@haylo.example</a>
+<img src="hayloimages/4.png" 
+     alt="Haylo's workspace" 
+     style="max-width: 200px; height: auto; border-radius: 8px; margin-top: 20px;" />
+
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <footer>
+    <div>
+      <strong style="color:var(--accent-3); font-size: 16px;">Haylo</strong>
+      <div style="color:var(--muted); margin-top: 4px;">Marketing & Sales • Personal Portfolio</div>
+      <div style="margin-top: 8px;">© <span id="year"></span> — Built for owner-CEOs</div>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
