@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>airCeption® – Redefining continence management</title>
+    <style>
+        /* CSS Variables for color palette */
+        :root {
+            --primary-color: #4d1f32;
+            --white-color: #ffffff;
+            --light-gray-color: #f8f9fa;
+            --neutral-gray-color: #e5e5e5;
+            --black-color: #000000;
+            --heading-font: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            --body-font: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        }
+
+        /* General Styles */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--body-font);
+            margin: 0;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        /* Typography */
+        h1, h2, h3, h4 {
+            font-family: var(--heading-font);
+            font-weight: bold;
+            margin-top: 0;
+        }
+
+        h1 {
+            font-size: 3rem;
+            color: var(--white-color);
+        }
+
+        h2 {
+            font-size: 2.2rem;
+            color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        h3 {
+            font-size: 1.2rem;
+            color: var(--primary-color);
+        }
+
+        p {
+            margin-bottom: 1rem;
+        }
+
+        /* Layout & Sections */
+        .container {
+            max-width: 1140px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        section {
+            padding: 6rem 0;
+        }
+
+        section:nth-of-type(even) {
+            background-color: var(--light-gray-color);
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(77, 31, 50, 0.8), rgba(77, 31, 50, 0.6)), url(https://images.unsplash.com/photo-1584984711203-6a2dc5b85a1a?q=80&w=2070&auto=format&fit=crop) center/cover no-repeat;
+            color: var(--white-color);
+            text-align: center;
+            padding: 8rem 0;
+        }
+
+        .hero h1 {
+            margin-bottom: 1rem;
+            animation: fadeInDown 1s ease-in-out;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            animation: fadeInUp 1s ease-in-out;
+        }
+
+        /* Buttons */
+        .cta-button {
+            display: inline-block;
+            background-color: var(--white-color);
+            color: var(--primary-color);
+            padding: 12px 24px;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 5px;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+
+        .cta-button:hover {
+            background-color: var(--neutral-gray-color);
+            transform: translateY(-3px);
+        }
+
+        /* Features Section */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: var(--white-color);
+            padding: 2rem;
+            text-align: center;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+        }
+
+        .feature-card .icon {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        /* Value Proposition */
+        .value-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            text-align: center;
+        }
+        
+        .value-block h3 {
+             margin-top: 1rem;
+        }
+
+        /* How it Works */
+        .how-it-works-flow {
+            display: flex;
+            justify-content: space-around;
+            text-align: center;
+            position: relative;
+            margin-bottom: 3rem;
+        }
+        
+        .how-it-works-flow::before {
+            content: '';
+            position: absolute;
+            top: 30px;
+            left: 10%;
+            right: 10%;
+            height: 2px;
+            background-color: var(--neutral-gray-color);
+            z-index: 1;
+        }
+
+        .step {
+            position: relative;
+            z-index: 2;
+            background-color: var(--white-color);
+            padding: 0 1rem;
+        }
+
+        .step .icon {
+            width: 60px;
+            height: 60px;
+            background-color: var(--primary-color);
+            color: var(--white-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin: 0 auto 1rem auto;
+            border: 4px solid var(--white-color);
+        }
+
+        .tagline {
+            text-align: center;
+            font-size: 1.2rem;
+            font-style: italic;
+            color: #555;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* CTA Band */
+        .cta-band {
+            background-color: var(--primary-color);
+            color: var(--white-color);
+            text-align: center;
+        }
+        
+        .cta-band h2 {
+            color: var(--white-color);
+            margin-bottom: 1.5rem;
+        }
+
+        /* Team Section */
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+        }
+        
+        .team-card {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            background-color: var(--white-color);
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .team-card img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        
+        .team-card .bio {
+            font-size: 0.9rem;
+            color: #555;
+        }
+
+        .team-card a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .team-card a:hover {
+            text-decoration: underline;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #333;
+            color: var(--white-color);
+            padding: 2rem 0;
+            text-align: center;
+        }
+        
+        .footer-links {
+            margin-bottom: 1rem;
+        }
+
+        .footer-links a {
+            color: var(--white-color);
+            text-decoration: none;
+            margin: 0 10px;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--neutral-gray-color);
+        }
+
+        /* Privacy Policy Accordion */
+        #privacy {
+            background-color: #f1f1f1;
+            padding: 0;
+        }
+        .privacy-header {
+            cursor: pointer;
+            padding: 18px;
+            width: 100%;
+            border: none;
+            text-align: center;
+            outline: none;
+            font-size: 15px;
+            background-color: var(--neutral-gray-color);
+            transition: background-color 0.3s;
+        }
+        
+        .privacy-header:hover {
+            background-color: #ccc;
+        }
+
+        .privacy-content {
+            padding: 0 18px;
+            background-color: white;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-out;
+        }
+        .privacy-content-inner {
+            padding: 2rem 0;
+        }
+
+        /* Animations */
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .features-grid { grid-template-columns: repeat(2, 1fr); }
+            .value-grid { grid-template-columns: repeat(2, 1fr); }
+            .team-grid { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5rem; }
+            h2 { font-size: 1.8rem; }
+            .features-grid { grid-template-columns: 1fr; }
+            .value-grid { grid-template-columns: 1fr; }
+            .how-it-works-flow { flex-direction: column; gap: 2rem; }
+            .how-it-works-flow::before { display: none; }
+            .team-card { flex-direction: column; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 1. HERO SECTION -->
+    <section id="hero" class="hero">
+        <div class="container">
+            <h1>Cutting-Edge Ambient, AI-Driven Patient Monitoring</h1>
+            <p>Room-based sensing with app + API integration for seamless care.</p>
+            <a href="#demo" class="cta-button smooth-scroll">Book a Demo</a>
+        </div>
+    </section>
+
+    <!-- 2. CORE FEATURES -->
+    <section id="features">
+        <div class="container">
+            <h2>Core Features</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="icon">✓</div>
+                    <h3>Room-based sensing</h3>
+                    <p>(ambient, not wearable)</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon">✓</div>
+                    <h3>Plug-and-play</h3>
+                    <p>minimal maintenance</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon">✓</div>
+                    <h3>Patent-secured</h3>
+                    <p>continence monitoring</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon">✓</div>
+                    <h3>Configurable modules</h3>
+                    <p>(temperature, humidity, air quality)</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon">✓</div>
+                    <h3>Dedicated caregiver app</h3>
+                    <p>for real-time alerts</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon">✓</div>
+                    <h3>API enabled</h3>
+                    <p>for easy integration</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. VALUE PROPOSITION -->
+    <section id="value">
+        <div class="container">
+            <h2>Value Proposition</h2>
+            <div class="value-grid">
+                <div class="value-block">
+                    <h3>Dignity for patients</h3>
+                    <p>Timely and discreet monitoring improves comfort and well-being.</p>
+                </div>
+                <div class="value-block">
+                    <h3>Efficiency for staff</h3>
+                    <p>Reduces routine manual checks, allowing focus on immediate needs.</p>
+                </div>
+                <div class="value-block">
+                    <h3>Better outcomes</h3>
+                    <p>Fewer complications from prolonged exposure to incontinence.</p>
+                </div>
+                <div class="value-block">
+                    <h3>Cost savings</h3>
+                    <p>Through reduced consumables and prevention of complications.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. HOW IT WORKS -->
+    <section id="how-it-works">
+        <div class="container">
+            <h2>How It Works</h2>
+            <div class="how-it-works-flow">
+                <div class="step">
+                    <div class="icon">1</div>
+                    <h4>Install</h4>
+                </div>
+                <div class="step">
+                    <div class="icon">2</div>
+                    <h4>Monitor</h4>
+                </div>
+                <div class="step">
+                    <div class="icon">3</div>
+                    <h4>Alert</h4>
+                </div>
+                <div class="step">
+                    <div class="icon">4</div>
+                    <h4>Respond</h4>
+                </div>
+            </div>
+            <p class="tagline">“airCeption is the voice for the dependent — notifying caregivers in real time.”</p>
+        </div>
+    </section>
+
+    <!-- 5. CALL TO ACTION -->
+    <section id="cta-band" class="cta-band">
+        <div class="container">
+            <h2>Ready to advance your continence management practices? Schedule a call.</h2>
+            <a href="#demo" class="cta-button smooth-scroll">Book a Demo</a>
+        </div>
+    </section>
+    
+    <!-- DEMO SECTION ANCHOR -->
+    <section id="demo">
+         <div class="container">
+            <h2>Schedule a Demo</h2>
+            <p style="text-align: center;">Contact us to learn more about how airCeption® can be integrated into your facility.</p>
+         </div>
+    </section>
+
+    <!-- 6. TEAM SECTION -->
+    <section id="team">
+        <div class="container">
+            <h2>Our Team</h2>
+            <div class="team-grid">
+                <div class="team-card">
+                    <img src="https://placeholder.com/100" alt="John Kelly">
+                    <div>
+                        <h3>John Kelly – Founder & CEO</h3>
+                        <p class="bio">John Kelly is the original inventor and visionary behind the airCeption system. With a deep background in healthcare technology, he identified the critical need for a more dignified and efficient approach to continence management in care settings.</p>
+                        <a href="https://www.linkedin.com/in/johnkelly10/" target="_blank">LinkedIn</a>
+                    </div>
+                </div>
+                <div class="team-card">
+                    <img src="https://placeholder.com/100" alt="Iain Warner">
+                    <div>
+                        <h3>Iain Warner – Co-Founder & CTO</h3>
+                        <p class="bio">Iain Warner leads technology development, bringing over two decades of experience in sensor technology and data integration. His expertise ensures the airCeption platform is robust, secure, and scalable for enterprise healthcare environments.</p>
+                        <a href="https://www.linkedin.com/in/iain-warner-2205346/" target="_blank">LinkedIn</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 7. FOOTER -->
+    <footer>
+        <div class="container">
+            <div class="footer-links">
+                <a href="#privacy" id="privacy-toggle">Privacy Policy</a>
+                <a href="#demo" class="smooth-scroll">Contact</a>
+                <a href="https://login.airception.com" target="_blank">Partner Login</a>
+            </div>
+            <p><small>&copy; 2025 airCeption®. All Rights Reserved.</small></p>
+        </div>
+    </footer>
+
+    <!-- PRIVACY POLICY HIDDEN SECTION -->
+    <section id="privacy">
+        <button class="privacy-header">Privacy Policy</button>
+        <div class="privacy-content">
+            <div class="container privacy-content-inner">
+                <h4>Last updated: September 2025</h4>
+                <p>airCeption® ("us", "we", or "our") operates the https://airception.com website (the "Service"). This page informs you of our policies regarding the collection, use, and disclosure of personal data when you use our Service and the choices you have associated with that data.</p>
+                <p><strong>Information Collection And Use:</strong> We collect several different types of information for various purposes to provide and improve our Service to you.</p>
+                <p><strong>Types of Data Collected:</strong> Personal Data: While using our Service, we may ask you to provide us with certain personally identifiable information that can be used to contact or identify you ("Personal Data"). Personally identifiable information may include, but is not limited to: Email address, First name and last name, Phone number, Cookies and Usage Data.</p>
+                <p><strong>Use of Data:</strong> airCeption® uses the collected data for various purposes: To provide and maintain the Service, to notify you about changes to our Service, to allow you to participate in interactive features of our Service when you choose to do so, to provide customer care and support, to provide analysis or valuable information so that we can improve the Service, to monitor the usage of the Service, to detect, prevent and address technical issues.</p>
+                <p><strong>Security Of Data:</strong> The security of your data is important to us, but remember that no method of transmission over the Internet, or method of electronic storage is 100% secure. While we strive to use commercially acceptable means to protect your Personal Data, we cannot guarantee its absolute security.</p>
+            </div>
+        </div>
+    </section>
+
+
+    <script>
+        // Smooth Scrolling for anchor links
+        document.querySelectorAll('a.smooth-scroll').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Privacy Policy Accordion
+        const privacyToggle = document.getElementById('privacy-toggle');
+        const accordion = document.querySelector('.privacy-header');
+        const panel = document.querySelector('.privacy-content');
+
+        const toggleAccordion = () => {
+            if (panel.style.maxHeight) {
+                panel.style.maxHeight = null;
+            } else {
+                panel.style.maxHeight = panel.scrollHeight + "px";
+            }
+        };
+
+        accordion.addEventListener('click', toggleAccordion);
+        
+        privacyToggle.addEventListener('click', (e) => {
+            e.preventDefault();
+            // Scroll to the section first
+            document.getElementById('privacy').scrollIntoView({ behavior: 'smooth' });
+            // Open if closed
+            if (!panel.style.maxHeight) {
+                // Use a timeout to allow the scroll to happen first
+                setTimeout(toggleAccordion, 500); 
+            }
+        });
+    </script>
+</body>
+</html>

@@ -6,7 +6,7 @@
     <title>Aenco Holdings</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Lato:wght@400;700&display=swap" rel="stylesheet">
     
     <style>
         /* CSS RESET & DEFAULTS */
@@ -30,7 +30,7 @@
         }
 
         body {
-            font-family: 'Montserrat', sans-serif;
+            font-family: 'Lato', sans-serif;
             line-height: 1.6;
             color: var(--text-dark);
             background-color: var(--text-light);
@@ -39,6 +39,7 @@
 
         /* TYPOGRAPHY & HELPERS */
         h1, h2, h3 {
+            font-family: 'Montserrat', sans-serif;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 1px;
@@ -70,7 +71,7 @@
         section {
             padding: 5rem 2rem;
             text-align: center;
-            overflow: hidden; /* For animations */
+            overflow: hidden;
         }
         
         .container {
@@ -86,14 +87,16 @@
             text-decoration: none;
             font-weight: 700;
             text-transform: uppercase;
+            border-radius: 4px;
             border: none;
             cursor: pointer;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
         }
         
         .btn:hover {
             transform: translateY(-5px);
             box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            background-color: #e00000;
         }
 
         /* ANIMATIONS ON SCROLL */
@@ -139,7 +142,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.884);
+            background-color: rgba(0, 0, 0, 0.6);
             z-index: -1;
         }
         
@@ -169,7 +172,7 @@
 
         /* SECTION 2: WHAT WE DO */
         #what-we-do {
-            background-color: var(--soft-gray);
+            background-color: var(--text-light);
         }
 
         .services-list {
@@ -186,9 +189,17 @@
         }
 
         .service-item .icon {
-            font-size: 3rem;
-            color: var(--brand-red);
             margin-bottom: 1rem;
+            height: 64px; /* Give the container a fixed height */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* ADDED: Style for the new image icons */
+        .service-item .icon img {
+            height: 60px; /* Control the icon size */
+            width: auto;
         }
 
         .service-item h3 {
@@ -210,7 +221,7 @@
             background-image: url('https://www.constructionbusinessowner.com/sites/default/files/main_image/e-droneboys.jpg');
             background-size: cover;
             background-position: center;
-            background-attachment: fixed; /* Parallax effect */
+            background-attachment: fixed;
         }
 
         #why-it-works .overlay {
@@ -242,13 +253,11 @@
 
         /* SECTION 4: BUILT FOR LONGEVITY */
         #longevity {
-            background-color: #ffffff;
-            background-image: linear-gradient(rgba(255,255,255,0.95), rgba(255,255,255,0.95)), url('https://images.unsplash.com/photo-1505691938895-1758d7FEB511?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80');
-            background-size: cover;
-            background-position: center;
+            background-color: var(--soft-gray);
         }
 
         #longevity p {
+            font-family: 'Montserrat', sans-serif;
             font-size: 1.5rem;
             font-weight: 700;
             margin-top: 1rem;
@@ -259,12 +268,17 @@
         
         /* SECTION 5: WORKING WITH AENCO */
         #working-with-aenco {
-            background-color: var(--soft-gray);
+            background-color: var(--dark-charcoal);
+            color: var(--text-light);
         }
         
         #working-with-aenco .container {
             max-width: 900px;
             text-align: left;
+        }
+        
+        #working-with-aenco h2 {
+            color: var(--text-light);
         }
         
         #working-with-aenco h3 {
@@ -276,24 +290,38 @@
 
         #working-with-aenco p {
             margin-bottom: 1.5rem;
+            color: #ccc;
         }
         
         .vendor-info {
             margin-top: 3rem;
             font-size: 0.9rem;
             text-align: center;
-            color: #666;
+            color: #888;
         }
 
         .vendor-info a {
             color: var(--brand-red);
             font-weight: bold;
             text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .vendor-info a:hover {
+            color: #ff4545;
         }
         
         /* SECTION 6: CONTACT */
         #contact {
-            background-color: #ffffff;
+            position: relative;
+            background-image: linear-gradient(rgba(255, 255, 255, 0.75), rgba(255, 255, 255, 0.75)), url('sheridan.png');
+            background-size: cover;
+            background-position: center center;
+        }
+
+        #contact .container {
+            position: relative;
+            z-index: 2;
         }
 
         .contact-grid {
@@ -320,6 +348,16 @@
             color: var(--brand-red);
             margin-bottom: 0.25rem;
         }
+
+        .contact-info a {
+            color: var(--text-dark);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .contact-info a:hover {
+            color: var(--brand-red);
+        }
         
         .contact-form {
             display: flex;
@@ -331,8 +369,10 @@
             width: 100%;
             padding: 1rem;
             border: 1px solid #ccc;
-            font-family: 'Montserrat', sans-serif;
+            border-radius: 4px;
+            font-family: 'Lato', sans-serif;
             font-size: 1rem;
+            background-color: rgba(255,255,255,0.8);
         }
 
         .contact-form input:focus, .contact-form textarea:focus {
@@ -347,10 +387,11 @@
         /* SECTION 7: FOOTER */
         footer {
             background-color: var(--dark-charcoal);
-            color: #aaa;
-            padding: 2rem;
+            color: #888;
+            padding: 1.5rem 1rem;
             text-align: center;
             font-size: 0.8rem;
+            border-top: 1px solid #333;
         }
         
         footer .container {
@@ -382,6 +423,10 @@
                 max-width: 500px;
                 text-align: center;
             }
+
+            .contact-info a {
+                display: block;
+            }
             
             .contact-form .btn {
                 align-self: center;
@@ -395,7 +440,6 @@
     <section id="hero">
         <div class="hero-overlay"></div>
         <video playsinline autoplay muted loop id="hero-video">
-            <!-- Using a placeholder video. Replace with your actual video file. -->
             <source src="https://videos.pexels.com/video-files/855271/855271-hd_1920_1080_25fps.mp4" type="video/mp4">
             Your browser does not support the video tag.
         </video>
@@ -417,15 +461,24 @@
                 <h2>AENCO IS A U.S. HOLDING COMPANY SPECIALIZING IN:</h2>
                 <ul class="services-list">
                     <li class="service-item">
-                        <div class="icon">&#127970;</div>
+                        <!-- UPDATED: Image icon instead of emoji -->
+                        <div class="icon">
+                            <img src="https://cdn-icons-png.flaticon.com/512/17063/17063638.png" alt="Real Estate Investment Icon">
+                        </div>
                         <h3>Real Estate Investment</h3>
                     </li>
                     <li class="service-item">
-                        <div class="icon">&#128736;</div>
+                        <!-- UPDATED: Image icon instead of emoji -->
+                        <div class="icon">
+                             <img src="https://cdn-icons-png.flaticon.com/512/1275/1275442.png" alt="Self-Performed Construction Icon">
+                        </div>
                         <h3>Self-Performed Construction</h3>
                     </li>
                     <li class="service-item">
-                        <div class="icon">&#128221;</div>
+                        <!-- UPDATED: Image icon instead of emoji -->
+                        <div class="icon">
+                             <img src="https://cdn-icons-png.flaticon.com/512/9079/9079646.png" alt="Structural & Systems Engineering Icon">
+                        </div>
                         <h3>Structural & Systems Engineering</h3>
                     </li>
                 </ul>
@@ -518,7 +571,6 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             
-            // SMOOTH SCROLL FOR NAV LINKS
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                 anchor.addEventListener('click', function (e) {
                     e.preventDefault();
@@ -532,14 +584,13 @@
                 });
             });
 
-            // SCROLL REVEAL ANIMATION
             const revealElements = document.querySelectorAll('.reveal');
             
             const revealOnScroll = () => {
                 const windowHeight = window.innerHeight;
                 revealElements.forEach(el => {
                     const elementTop = el.getBoundingClientRect().top;
-                    const elementVisible = 150; // Distance from bottom of viewport to trigger animation
+                    const elementVisible = 100;
 
                     if (elementTop < windowHeight - elementVisible) {
                         el.classList.add('visible');
@@ -548,17 +599,12 @@
             };
 
             window.addEventListener('scroll', revealOnScroll);
-            revealOnScroll(); // Initial check on page load
+            revealOnScroll();
 
-            // CONTACT FORM VALIDATION FEEDBACK
             const form = document.getElementById('main-contact-form');
             form.addEventListener('submit', function(e) {
-                // The form's action is a mailto link, which JS cannot reliably track.
-                // We'll rely on HTML5 validation. This block is for potential future enhancements.
                 if (!form.checkValidity()) {
-                    e.preventDefault();
-                    // You could add custom validation messages here.
-                    alert('Please fill out all required fields correctly.');
+                    console.log('Form is invalid.');
                 }
             });
         });
