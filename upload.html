@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>File Dashboard (Dummy)</title>
+  <style>
+    body {margin:0;font-family:"Segoe UI", Roboto, Arial, sans-serif;background:#f9fafb;color:#111827;}
+    header {background:#1f2937;color:#fff;padding:18px 24px;font-size:20px;font-weight:600;letter-spacing:0.3px;}
+    .container {display:grid;grid-template-columns:1fr 2fr;gap:20px;padding:20px;max-width:1200px;margin:auto;}
+    .card {background:#fff;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.06);padding:20px;}
+    h2 {margin:0 0 12px;font-size:18px;color:#111827;}
+    .upload-box {border:2px dashed #cbd5e1;padding:40px;text-align:center;border-radius:10px;cursor:pointer;color:#6b7280;transition:.2s;}
+    .upload-box:hover {background:#f1f5f9;}
+    .btn {background:#2563eb;color:#fff;padding:6px 12px;border-radius:6px;text-decoration:none;border:none;cursor:pointer;font-size:14px;}
+    .btn.danger {background:#dc2626;}
+    .btn.secondary {background:#e5e7eb;color:#111827;}
+    .file-list {margin-top:15px;max-height:400px;overflow-y:auto;}
+    .file-item {display:flex;justify-content:space-between;align-items:center;border:1px solid #e5e7eb;border-radius:8px;padding:10px 12px;margin-bottom:8px;background:#fafafa;transition:.2s;}
+    .file-item:hover {background:#f3f4f6;}
+    .file-meta {font-size:14px;color:#374151;}
+    .file-meta strong {color:#111827;}
+    .actions button {margin-left:6px;}
+    .empty {color:#6b7280;font-size:14px;text-align:center;margin-top:20px;}
+    .search {margin-bottom:10px;}
+    .search input {width:100%;padding:8px;border-radius:8px;border:1px solid #d1d5db;}
+    @media (max-width:900px){.container{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+
+<header>📂 File Dashboard </header>
+
+<div class="container">
+  <!-- Upload Section -->
+  <div class="card">
+    <h2>Upload Files</h2>
+    <label class="upload-box">
+      <input type="file" id="fileInput" multiple hidden>
+      Click or Drag & Drop files here
+    </label>
+    <p style="font-size:13px;color:#6b7280;margin-top:8px;">Allowed: PDF, DOC, DOCX (simulated only)</p>
+  </div>
+
+  <!-- Manage Files Section -->
+  <div class="card">
+    <h2>Manage Files</h2>
+    <div class="search">
+      <input type="text" id="search" placeholder="Search files...">
+    </div>
+    <div id="fileList" class="file-list"></div>
+    <div class="empty" id="emptyMsg">No files uploaded yet.</div>
+  </div>
+</div>
+
+<script>
+const fileInput = document.getElementById("fileInput");
+const fileList = document.getElementById("fileList");
+const emptyMsg = document.getElementById("emptyMsg");
+const searchInput = document.getElementById("search");
+
+let filesData = [
+  { name: "Project_Proposal.pdf", size: "245 KB" },
+  { name: "Financial_Report_2024.docx", size: "1.2 MB" },
+  { name: "Team_Roster.doc", size: "320 KB" },
+  { name: "Company_Profile.pdf", size: "980 KB" }
+];
+
+// Render initial files
+renderFiles();
+
+// Handle file selection
+fileInput.addEventListener("change", e => {
+  for (let file of e.target.files) {
+    filesData.push({ name: file.name, size: formatBytes(file.size) });
+  }
+  renderFiles();
+  fileInput.value = "";
+});
+
+// Search filter
+searchInput.addEventListener("input", renderFiles);
+
+// Render file list
+function renderFiles() {
+  fileList.innerHTML = "";
+  const query = searchInput.value.toLowerCase();
+  const filtered = filesData.filter(f => f.name.toLowerCase().includes(query));
+
+  if (filtered.length === 0) {
+    emptyMsg.style.display = "block";
+    return;
+  }
+  emptyMsg.style.display = "none";
+
+  filtered.forEach((f, idx) => {
+    const div = document.createElement("div");
+    div.className = "file-item";
+    div.innerHTML = `
+      <div class="file-meta">
+        <strong>${f.name}</strong><br>
+        <small>${f.size}</small>
+      </div>
+      <div class="actions">
+        <button class="btn secondary" onclick="downloadFile('${f.name}')">Download</button>
+        <button class="btn danger" onclick="deleteFile(${idx})">Delete</button>
+      </div>
+    `;
+    fileList.appendChild(div);
+  });
+}
+
+// Delete file
+function deleteFile(index) {
+  filesData.splice(index, 1);
+  renderFiles();
+}
+
+// Fake download
+function downloadFile(filename) {
+  const blob = new Blob([`Dummy content of ${filename}`], { type: "text/plain" });
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.download = filename;
+  link.click();
+  URL.revokeObjectURL(link.href);
+}
+
+// Format size
+function formatBytes(bytes) {
+  const sizes = ["B","KB","MB","GB"];
+  if (bytes === 0) return "0 B";
+  const i = Math.floor(Math.log(bytes) / Math.log(1024));
+  return (bytes / Math.pow(1024,i)).toFixed(1) + " " + sizes[i];
+}
+</script>
+
+</body>
+</html>
