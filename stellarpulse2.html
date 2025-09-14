@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Stellarpulse: Curating progressive, psy-trance, hitech, and hard-techno events across Switzerland. Experience the cosmic beat.">
+    <meta name="keywords" content="Stellarpulse, psy-trance, hitech, hard-techno, techno, progressive, events, Switzerland, electronic music, non-profit, party, rave, DJ, festival">
+    <meta name="author" content="Stellarpulse Collective">
+
+    <!-- Open Graph / Social Media Meta Tags -->
+    <meta property="og:title" content="Stellarpulse - Switzerland's Cosmic Electronic Music Collective">
+    <meta property="og:description" content="Stellarpulse: Curating progressive, psy-trance, hitech, and hard-techno events across Switzerland. Experience the cosmic beat.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.stellarpulse.ch"> <!-- Replace with actual URL when deployed -->
+    <meta property="og:image" content="https://www.stellarpulse.ch/social-share-image.jpg"> <!-- Placeholder, ideally a compelling image representing the event -->
+    <meta property="og:image:alt" content="Stellarpulse event banner with cosmic theme">
+
+    <title>Stellarpulse - Switzerland's Cosmic Electronic Music Collective</title>
+
+    <!-- Google Fonts - Orbitron for headings, Rajdhani for body -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@300;400;700&display=swap" rel="stylesheet">
+
+    <style>
+        /*
+        * CSS STYLES FOR STELLAR PULSE WEBSITE
+        * ------------------------------------
+        *
+        * Designed to be futuristic, sleek, and responsive.
+        * Blends deep-space imagery with audio-wave motifs.
+        * Dark background with glowing neon accents.
+        */
+
+        /* Global Reset & Box Sizing */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            /* Color Palette */
+            --dark-bg: #080010;
+            --darker-bg: #030005; /* Even darker for footer/contrast */
+            --neon-purple: #E0BBE4; /* Primary accent */
+            --neon-blue: #957DAD; /* Secondary accent */
+            --cosmic-pink: #D291BC; /* Tertiary accent */
+            --light-glow: #C0BBDD; /* Lighter glow/hover color */
+            --text-light: #F0F0F0;
+            --text-muted: #A0A0A0;
+
+            /* Fonts */
+            --font-heading: 'Orbitron', sans-serif;
+            --font-body: 'Rajdhani', sans-serif;
+
+            /* Spacing Unit */
+            --spacing-unit: 1rem; /* 16px */
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-body);
+            color: var(--text-light);
+            background-color: var(--dark-bg);
+            line-height: 1.6;
+            overflow-x: hidden; /* Prevent horizontal scroll from subtle background animations */
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            position: relative;
+            min-height: 100vh; /* Ensures background covers full height */
+        }
+
+        /* --- Background Animations: Stars & Nebula --- */
+
+        .stars {
+            position: fixed; /* Fixed so they stay in place on scroll */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%); /* Subtle gradient for depth */
+            opacity: 0.8;
+            z-index: -2; /* Lowest layer */
+        }
+
+        .star {
+            position: absolute;
+            background: var(--text-light);
+            border-radius: 50%;
+            animation: twinkle linear infinite;
+        }
+
+        /* Different star layers for varying density, size, and animation */
+        .star-layer-1 {
+            width: 1px; height: 1px;
+            box-shadow: 0 0 2px var(--light-glow);
+            animation-duration: 4s; opacity: 0.8;
+        }
+        .star-layer-2 {
+            width: 1.5px; height: 1.5px;
+            box-shadow: 0 0 3px var(--neon-purple);
+            animation-duration: 6s; opacity: 0.6;
+        }
+        .star-layer-3 {
+            width: 2px; height: 2px;
+            box-shadow: 0 0 4px var(--neon-blue);
+            animation-duration: 8s; opacity: 0.4;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0; transform: scale(0.5); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        /* Nebula/Audio Wave Effect */
+        .nebula-wave {
+            position: fixed; /* Fixed so it stays in place on scroll */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                radial-gradient(circle at 10% 20%, var(--neon-purple) 0%, transparent 40%),
+                radial-gradient(circle at 70% 80%, var(--neon-blue) 0%, transparent 50%),
+                radial-gradient(circle at 30% 60%, var(--cosmic-pink) 0%, transparent 60%);
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            opacity: 0.2;
+            mix-blend-mode: screen; /* Blends light colors nicely with dark background */
+            animation: nebula-flow 20s ease-in-out infinite alternate;
+            z-index: -1; /* Above stars, below content */
+        }
+
+        @keyframes nebula-flow {
+            0% { transform: scale(1) translate(0%, 0%); opacity: 0.2; }
+            50% { transform: scale(1.1) translate(5%, -5%); opacity: 0.3; }
+            100% { transform: scale(1) translate(-3%, 3%); opacity: 0.2; }
+        }
+
+        /* --- Utility Classes & Base Styles --- */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: calc(2 * var(--spacing-unit));
+        }
+
+        section {
+            padding: calc(4 * var(--spacing-unit)) 0;
+            position: relative; /* For z-index context */
+            z-index: 1; /* Ensure content is above background effects */
+        }
+
+        h1, h2, h3 {
+            font-family: var(--font-heading);
+            color: var(--neon-purple);
+            text-align: center;
+            margin-bottom: calc(2 * var(--spacing-unit));
+            text-shadow: 0 0 10px rgba(224, 187, 228, 0.6);
+            letter-spacing: 0.05em;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            line-height: 1.1;
+            margin-bottom: var(--spacing-unit);
+            text-transform: uppercase;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            margin-bottom: var(--spacing-unit);
+        }
+
+        h3 {
+            font-size: 1.8rem;
+            color: var(--neon-blue);
+            text-shadow: 0 0 8px rgba(149, 125, 173, 0.4);
+        }
+
+        p {
+            font-size: 1.1rem;
+            margin-bottom: var(--spacing-unit);
+            color: var(--text-light);
+        }
+
+        a {
+            color: var(--cosmic-pink);
+            text-decoration: none;
+            transition: color 0.3s ease, text-shadow 0.3s ease;
+            text-shadow: 0 0 5px rgba(210, 145, 188, 0.4);
+        }
+
+        a:hover {
+            color: var(--light-glow);
+            text-shadow: 0 0 15px rgba(192, 187, 221, 0.8);
+        }
+
+        .btn {
+            display: inline-block;
+            background: linear-gradient(45deg, var(--neon-purple) 0%, var(--neon-blue) 100%);
+            color: var(--darker-bg);
+            padding: calc(1.5 * var(--spacing-unit)) calc(3 * var(--spacing-unit));
+            border-radius: 50px;
+            font-family: var(--font-heading);
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            text-shadow: none;
+            box-shadow: 0 0 20px rgba(224, 187, 228, 0.8), 0 0 40px rgba(149, 125, 173, 0.6);
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background: linear-gradient(45deg, var(--cosmic-pink) 0%, var(--light-glow) 100%);
+            box-shadow: 0 0 30px rgba(210, 145, 188, 1), 0 0 60px rgba(192, 187, 221, 0.8);
+            transform: translateY(-3px) scale(1.02);
+        }
+
+        /* --- Hero Section --- */
+        #hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Subtle dark gradient overlay on hero for text readability */
+        #hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to top, var(--darker-bg) 0%, transparent 70%);
+            z-index: -1; /* Below content but above other background effects */
+        }
+
+        #hero .hero-content {
+            max-width: 900px;
+            padding: var(--spacing-unit);
+            animation: fadeInScale 1.5s ease-out forwards;
+            opacity: 0; /* Initial state for animation */
+            transform: scale(0.9); /* Initial state for animation */
+        }
+
+        @keyframes fadeInScale {
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        #hero p {
+            font-size: 1.5rem;
+            margin-top: calc(1.5 * var(--spacing-unit));
+            margin-bottom: calc(3 * var(--spacing-unit));
+            color: var(--light-glow);
+            text-shadow: 0 0 8px rgba(192, 187, 221, 0.5);
+        }
+
+        /* --- Lineup & Venue Section --- */
+        #lineup .content-block {
+            background-color: rgba(13, 0, 20, 0.6); /* Slightly transparent dark block */
+            border-radius: 15px;
+            padding: calc(3 * var(--spacing-unit));
+            margin-top: calc(4 * var(--spacing-unit));
+            box-shadow: 0 0 30px rgba(224, 187, 228, 0.15), inset 0 0 15px rgba(224, 187, 228, 0.1);
+            border: 1px solid rgba(224, 187, 228, 0.2);
+            backdrop-filter: blur(5px); /* Frosted glass effect */
+            -webkit-backdrop-filter: blur(5px);
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            animation: slideUp 1s ease-out forwards;
+            opacity: 0; /* Initial state for animation */
+            transform: translateY(20px); /* Initial state for animation */
+            animation-play-state: paused; /* Play on scroll via JS */
+        }
+
+        @keyframes slideUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        #lineup .content-block p {
+            text-align: center;
+            margin-bottom: calc(2 * var(--spacing-unit));
+            font-size: 1.2rem;
+        }
+
+        #lineup .event-details ul {
+            list-style: none;
+            text-align: center;
+            margin-bottom: calc(2 * var(--spacing-unit));
+        }
+
+        #lineup .event-details li {
+            font-size: 1.15rem;
+            margin-bottom: var(--spacing-unit);
+            color: var(--light-glow);
+        }
+
+        #lineup .event-details li strong {
+            color: var(--cosmic-pink);
+            font-family: var(--font-heading);
+            text-shadow: 0 0 5px rgba(210, 145, 188, 0.6);
+        }
+
+        /* --- About/Contact Section --- */
+        #about-contact {
+            text-align: center;
+            background: linear-gradient(rgba(8, 0, 16, 0.7), rgba(8, 0, 16, 0.9)); /* Slightly darker for contrast */
+        }
+
+        #about-contact .content-block {
+             max-width: 700px;
+            margin: 0 auto;
+            padding: var(--spacing-unit);
+        }
+
+        #about-contact p {
+            font-size: 1.1rem;
+            margin-bottom: calc(2 * var(--spacing-unit));
+        }
+
+        #about-contact .social-links ul {
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap; /* Allow wrapping on small screens */
+            justify-content: center;
+            gap: calc(2 * var(--spacing-unit));
+            margin-top: calc(2 * var(--spacing-unit));
+        }
+
+        #about-contact .social-links a {
+            font-size: 1.5rem;
+            color: var(--neon-blue);
+            text-shadow: 0 0 8px rgba(149, 125, 173, 0.5);
+        }
+
+        #about-contact .social-links a:hover {
+            color: var(--cosmic-pink);
+            transform: scale(1.1);
+        }
+
+        /* --- Impressum Section (Footer) --- */
+        #impressum {
+            background-color: var(--darker-bg);
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            padding: calc(2 * var(--spacing-unit)) 0;
+            text-align: center;
+            border-top: 1px solid rgba(224, 187, 228, 0.1);
+        }
+
+        #impressum p {
+            margin-bottom: 0.5rem;
+            color: var(--text-muted);
+        }
+
+        #impressum a {
+            color: var(--text-muted);
+            text-shadow: none;
+        }
+
+        #impressum a:hover {
+            color: var(--light-glow);
+            text-shadow: 0 0 5px rgba(192, 187, 221, 0.5);
+        }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 1024px) {
+            h1 { font-size: 2.8rem; }
+            h2 { font-size: 2rem; }
+            #hero p { font-size: 1.3rem; }
+            .btn {
+                padding: calc(1.2 * var(--spacing-unit)) calc(2.5 * var(--spacing-unit));
+                font-size: 1.1rem;
+            }
+            .container {
+                padding: var(--spacing-unit);
+            }
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 2.2rem; }
+            h2 { font-size: 1.8rem; }
+            h3 { font-size: 1.5rem; }
+            #hero p { font-size: 1.1rem; margin-top: var(--spacing-unit); margin-bottom: calc(2 * var(--spacing-unit)); }
+            .btn {
+                padding: var(--spacing-unit) calc(2 * var(--spacing-unit));
+                font-size: 1rem;
+            }
+            section {
+                padding: calc(2 * var(--spacing-unit)) 0;
+            }
+            #lineup .content-block, #about-contact .content-block {
+                padding: calc(2 * var(--spacing-unit));
+            }
+            #about-contact .social-links ul {
+                gap: var(--spacing-unit);
+            }
+            #about-contact .social-links a {
+                font-size: 1.2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 { font-size: 1.8rem; }
+            h2 { font-size: 1.5rem; }
+            #hero p { font-size: 1rem; }
+            .btn {
+                padding: 0.8rem 1.5rem;
+                font-size: 0.9rem;
+            }
+            p, #lineup .event-details li { font-size: 0.95rem; }
+            #impressum { font-size: 0.8rem; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <!--
+    * STELLAR PULSE WEBSITE HAND-OFF COMMENTS
+    * --------------------------------------------------------------------------
+    *
+    * Welcome to the Stellarpulse website template!
+    * This is a single-file HTML, CSS, and JS solution for a one-page site.
+    *
+    * ** To update event details: **
+    * Go to the <section id="hero"> and <section id="lineup"> blocks.
+    * Modify the <h1> headline, <p> taglines, date, location, and lineup text.
+    * Update the "Buy Tickets" button's href attribute (currently links to #lineup,
+    * change to external ticket link if available).
+    *
+    * ** To update Stellarpulse description and contact info: **
+    * Go to the <section id="about-contact"> block.
+    * Modify the <p> description, social media links (href and content).
+    *
+    * ** To update impressum/legal info: **
+    * Go to the <section id="impressum"> block (at the very bottom).
+    * Replace the placeholder text with your actual legal information.
+    *
+    * ** To add or change social media icons: **
+    * The current social links use text placeholders.
+    * For actual icons, you would typically use an icon library (e.g., Font Awesome, Feather Icons).
+    * If using SVGs, replace the text with <svg> elements for each icon within the <a> tags.
+    *
+    * ** For background animations: **
+    * The background stars and nebula effects are generated and animated purely with CSS and a
+    * small JS helper for star placement. You can tweak the `.stars`, `.nebula-wave` styles,
+    * and keyframe animations to adjust speed, color, density, and opacity.
+    * In the <script> block, adjust `createStars` call for star density.
+    *
+    * Enjoy!
+    *
+    * --------------------------------------------------------------------------
+    -->
+
+    <!-- Background Animation Layers -->
+    <div class="stars"></div>
+    <div class="nebula-wave"></div>
+
+    <header id="hero">
+        <div class="container hero-content">
+            <!-- Update Event Teaser Headline & Tagline Here -->
+            <h1>Stellarpulse: Lunar Trance Genesis</h1>
+            <p>Unleash the cosmic beat. Progressive, Psy-Trance, Hitech & Hard-Techno under Swiss skies.</p>
+            <!-- Update Ticket Link Here (e.g., to an external ticket platform) -->
+            <a href="#lineup" class="btn">Buy Tickets</a>
+        </div>
+    </header>
+
+    <main>
+        <section id="lineup">
+            <div class="container">
+                <h2>Lineup & Venue</h2>
+                <div class="content-block">
+                    <p>Prepare for an unforgettable journey through sound.</p>
+                    <div class="event-details">
+                        <ul>
+                            <!-- Update Date, Time & Location Here -->
+                            <li><strong>Date:</strong> Saturday, October 26th, 2024</li>
+                            <li><strong>Time:</strong> 22:00 - 06:00</li>
+                            <li><strong>Location:</strong> Cosmic Cavern, Zürich, Switzerland</li>
+                            <!-- Update Lineup Here -->
+                            <li><strong>Featuring:</strong></li>
+                            <li><span class="dj-name">♫ Zenith Flux</span> (Progressive Trance)</li>
+                            <li><span class="dj-name">♫ AstroPilot</span> (Psy-Trance)</li>
+                            <li><span class="dj-name">♫ Quantum Echo</span> (Hitech)</li>
+                            <li><span class="dj-name">♫ Dark Matter</span> (Hard-Techno)</li>
+                        </ul>
+                    </div>
+                    <p>More artists to be announced soon. Stay tuned to our social channels!</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="about-contact">
+            <div class="container content-block">
+                <h2>About Stellarpulse</h2>
+                <!-- Update Stellarpulse Description Here -->
+                <p>Stellarpulse is a non-profit collective born from a passion for boundary-pushing electronic music. We're dedicated to curating immersive experiences, bringing together progressive, psy-trance, hitech, and hard-techno artists to Switzerland's vibrant underground scene. Our mission is to foster community, elevate sonic exploration, and ignite the dance floor with unparalleled energy.</p>
+
+                <h2>Connect With Us</h2>
+                <div class="social-links">
+                    <ul>
+                        <!-- Update Social Media Links Here (replace # with actual URLs) -->
+                        <li><a href="https://www.instagram.com/stellarpulse" target="_blank" rel="noopener noreferrer">Instagram</a></li>
+                        <li><a href="https://www.facebook.com/stellarpulse" target="_blank" rel="noopener noreferrer">Facebook</a></li>
+                        <li><a href="https://t.me/stellarpulse_community" target="_blank" rel="noopener noreferrer">Telegram</a></li>
+                        <li><a href="mailto:info@stellarpulse.ch">Email Us</a></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer id="impressum">
+        <div class="container">
+            <!-- Update Impressum/Legal Information Here -->
+            <p>&copy; 2024 Stellarpulse Collective. All Rights Reserved.</p>
+            <p>Disclaimer: This website is for a fictional non-profit event collective. No actual tickets are sold here.</p>
+            <p>Stellarpulse | Musterstrasse 123 | 8000 Zürich | Switzerland</p>
+            <p><a href="mailto:legal@stellarpulse.ch">legal@stellarpulse.ch</a></p>
+        </div>
+    </footer>
+
+    <script>
+        /*
+        * JAVASCRIPT FOR STELLAR PULSE WEBSITE
+        * ------------------------------------
+        *
+        * This block contains minimal JavaScript to enhance the user experience,
+        * primarily for dynamic star generation and scroll-triggered animations.
+        * Most animations and dynamic effects are handled via CSS for performance.
+        */
+
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('Stellarpulse Website Loaded! Prepare for cosmic beats.');
+
+            // --- Star Generation for the background ---
+            // This function dynamically creates stars at random positions.
+            // Adjust numStars for density.
+            function createStars(numStars, className) {
+                const starsContainer = document.querySelector('.stars');
+                if (!starsContainer) return;
+
+                for (let i = 0; i < numStars; i++) {
+                    let star = document.createElement('div');
+                    star.className = `star ${className}`;
+                    star.style.left = `${Math.random() * 100}%`;
+                    star.style.top = `${Math.random() * 100}%`;
+                    star.style.animationDelay = `${Math.random() * 5}s`; // Vary animation start for natural twinkle
+                    // Duration is handled by CSS classes, but could be randomized here too.
+                    starsContainer.appendChild(star);
+                }
+            }
+
+            // Create different layers of stars for depth and varied twinkling
+            createStars(60, 'star-layer-1'); // More smaller, faster twinkling stars
+            createStars(30, 'star-layer-2'); // Medium size and speed
+            createStars(15, 'star-layer-3'); // Fewer, larger, slower twinkling stars
+
+            // --- Intersection Observer for Scroll-in Animations ---
+            // This makes sections or elements fade/slide in as they become visible in the viewport.
+            const observerOptions = {
+                root: null, // viewport as the root
+                rootMargin: '0px',
+                threshold: 0.1 // Trigger when 10% of the element is visible
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        // For the #lineup section's content-block, trigger its animation
+                        if (entry.target.id === 'lineup') {
+                            const lineupContent = entry.target.querySelector('.content-block');
+                            if (lineupContent) {
+                                lineupContent.style.animationPlayState = 'running';
+                            }
+                        }
+                        // Add more conditions here for other sections if they have specific
+                        // 'paused' animations you want to trigger on scroll.
+                        observer.unobserve(entry.target); // Stop observing once the animation is triggered
+                    }
+                });
+            }, observerOptions);
+
+            // Observe the sections that need scroll-triggered animations
+            const lineupSection = document.getElementById('lineup');
+            if (lineupSection) {
+                observer.observe(lineupSection);
+            }
+
+            // The #hero section's animation (`fadeInScale`) is set to run immediately
+            // via CSS `animation: ... forwards;` and `opacity: 0;` initially.
+            // No need for JS to trigger it unless it was initially `paused`.
+
+        });
+
+        // Note on smooth scroll: `scroll-behavior: smooth` in CSS is generally
+        // sufficient for modern browsers. The commented-out JS below is a common
+        // fallback or enhancement, but may not be strictly necessary for this design.
+        /*
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (href === '#') {
+                    e.preventDefault(); // Prevent jump to top if href is just '#'
+                    return;
+                }
+                const targetId = href.substring(1);
+                const targetElement = document.getElementById(targetId);
+                if (targetElement) {
+                    e.preventDefault();
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        */
+    </script>
+</body>
+</html>
