@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- ------------------------------------------------ -->
+    <!-- EDITABLE SEO & METADATA -->
+    <!-- ------------------------------------------------ -->
+    <title>Stellarpulse | Nebula Nexus | Progressive & Psy-Trance in Switzerland</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Stellarpulse presents Nebula Nexus: A cosmic convergence of progressive, psy-trance, hitech, and hard-techno in the heart of Switzerland. Secure your tickets now for an unparalleled audio-visual journey.">
+    <meta name="keywords" content="Stellarpulse, psy-trance switzerland, progressive trance, hard techno, hitech, electronic music event, zurich, geneva, basel, swiss techno">
+    <meta name="author" content="Stellarpulse Collective">
+
+    <!-- Open Graph (OG) Tags for Social Media Sharing -->
+    <meta property="og:title" content="Stellarpulse Presents: Nebula Nexus">
+    <meta property="og:description" content="Experience the fusion of deep space visuals and pulsating trance beats. Join the Stellarpulse collective for our next interstellar event in Switzerland.">
+    <meta property="og:type" content="website">
+    <!-- EDITABLE: Replace with your actual URL when live -->
+    <meta property="og:url" content="https://www.stellarpulse.ch">
+    <!-- EDITABLE: Replace with a URL to a 1200x630px image for social sharing -->
+    <meta property="og:image" content="https://www.stellarpulse.ch/social-preview.jpg">
+    <meta property="og:image:alt" content="A cosmic wormhole graphic with the Stellarpulse and Nebula Nexus event logos.">
+
+    <!-- Google Fonts: Orbitron for titles, Rajdhani for body -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Rajdhani:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <!-- Favicon: Inline SVG for single-file simplicity -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌀</text></svg>">
+
+<style>
+/*
+ * STELLARPULSE - ONE-PAGE EVENT THEME V3 (Video Background)
+ * -------------------------------------
+ * Sections:
+ * 1. Root & General Styles
+ * 2. Video Background & Overlay
+ * 3. Hero Section & "Buy Tickets" Button
+ * 4. Content Sections & Layout
+ * 5. Animated Constellation Divider
+ * 6. Lineup & Venue Section
+ * 7. About & Contact Section
+ * 8. Footer / Impressum
+ * 9. Responsive Design Media Queries
+ * -------------------------------------
+ */
+
+/* 1. Root & General Styles */
+:root {
+    --primary-glow: #be29ec; /* Cosmic Purple */
+    --secondary-glow: #00d9ff; /* Electric Blue */
+    --accent-glow: #ff3cac; /* Supernova Pink */
+    --dark-bg: #030014;
+    --text-light: #edf2f7;
+    --text-medium: #a0aec0;
+    --font-titles: 'Orbitron', sans-serif;
+    --font-body: 'Rajdhani', sans-serif;
+}
+
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background-color: var(--dark-bg);
+    color: var(--text-light);
+    font-family: var(--font-body);
+    font-size: 18px;
+    line-height: 1.7;
+    overflow-x: hidden;
+}
+
+/* 2. Video Background & Overlay */
+.background-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    overflow: hidden;
+    background: var(--dark-bg); /* Fallback color */
+}
+
+#bg-video {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    z-index: 1;
+    object-fit: cover; /* Ensures video covers the screen without distortion */
+}
+
+.video-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* EDITABLE: Adjust the last value (alpha) to make overlay lighter or darker */
+    background-color: rgba(3, 0, 20, 0.96);
+    z-index: 2;
+}
+
+/* 3. Hero Section & "Buy Tickets" Button */
+#hero {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    padding: 0 20px;
+}
+
+#waveform-canvas {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%; height: 100%;
+    max-width: 1000px; max-height: 1000px;
+    z-index: 10;
+    opacity: 0.15;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 11;
+    animation: fadeIn 2s 0.5s both;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.event-title {
+    font-family: var(--font-titles);
+    font-weight: 900;
+    font-size: clamp(2.5rem, 10vw, 6rem);
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    color: #fff;
+    text-shadow: 0 0 10px var(--primary-glow), 0 0 25px var(--primary-glow), 0 0 50px var(--accent-glow);
+    margin-bottom: 0.5rem;
+}
+
+.event-teaser {
+    font-size: clamp(1.1rem, 3vw, 1.5rem);
+    font-weight: 500;
+    color: var(--text-light);
+    letter-spacing: 1px;
+}
+
+.tickets-button {
+    display: inline-block;
+    background: transparent;
+    border: 2px solid var(--secondary-glow);
+    color: var(--secondary-glow);
+    padding: 16px 40px;
+    margin-top: 2.5rem;
+    font-family: var(--font-titles);
+    font-size: 1.25rem;
+    text-decoration: none;
+    text-transform: uppercase;
+    border-radius: 50px;
+    position: relative;
+    overflow: hidden;
+    transition: color 0.4s ease-in-out, transform 0.3s ease, box-shadow 0.3s ease;
+    z-index: 1;
+    box-shadow: 0 0 15px transparent;
+    animation: buttonPulse 3s infinite;
+}
+
+.tickets-button::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: linear-gradient(120deg, transparent, rgba(0, 217, 255, 0.3), transparent);
+    transition: left 0.6s;
+    z-index: -1;
+}
+
+.tickets-button:hover {
+    color: var(--dark-bg);
+    transform: scale(1.05) translateY(-3px);
+    box-shadow: 0 0 25px var(--secondary-glow), 0 0 40px var(--accent-glow);
+    animation: none;
+}
+
+.tickets-button:hover::before { left: 100%; }
+@keyframes buttonPulse { 50% { transform: scale(1.03); } }
+
+/* 4. Content Sections & Layout */
+.content-wrapper { max-width: 1100px; margin: 0 auto; padding: 0 2rem; }
+section { padding: 120px 0; opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; }
+section.visible { opacity: 1; transform: translateY(0); }
+.section-heading { text-align: center; font-family: var(--font-titles); font-size: clamp(2rem, 6vw, 3rem); font-weight: 700; text-transform: uppercase; margin-bottom: 60px; color: #fff; text-shadow: 0 0 15px var(--secondary-glow); }
+
+/* 5. Animated Constellation Divider */
+.constellation-divider { height: 2px; width: 100%; margin: 80px 0; position: relative; background: linear-gradient(90deg, transparent, rgba(190, 41, 236, 0.4), transparent); }
+.constellation-divider::before, .constellation-divider::after { content: ''; position: absolute; width: 8px; height: 8px; background-color: #fff; border-radius: 50%; box-shadow: 0 0 10px #fff, 0 0 20px var(--secondary-glow); top: 50%; transform: translateY(-50%); animation: star-pulse 2s infinite ease-in-out; }
+.constellation-divider::before { left: 20%; }
+.constellation-divider::after { right: 20%; animation-delay: 1s; }
+@keyframes star-pulse { 50% { opacity: 1; transform: translateY(-50%) scale(1.2); } }
+
+/* 6. Lineup & Venue Section */
+.lineup-venue-grid { display: grid; grid-template-columns: 1fr; gap: 60px; text-align: center; }
+.lineup-list { list-style: none; padding-left: 0; }
+.lineup-list li { font-size: 1.8rem; font-weight: 500; margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid rgba(190, 41, 236, 0.2); }
+.lineup-list li:last-child { border-bottom: none; margin-bottom: 0; }
+.lineup-list li span { display: block; font-size: 1.1rem; font-weight: 400; color: var(--text-medium); margin-top: 5px; }
+.venue-details h3 { font-family: var(--font-titles); font-size: 2.5rem; color: var(--secondary-glow); margin-bottom: 1rem; }
+.venue-details p { font-size: 1.5rem; line-height: 1.5; }
+
+/* 7. About & Contact Section */
+.about-text { max-width: 800px; margin: 0 auto 50px auto; text-align: center; font-size: 1.2rem; }
+.contact-grid { display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 40px; }
+.contact-item a { color: var(--text-light); text-decoration: none; font-size: 1.2rem; transition: color 0.3s ease, text-shadow 0.3s ease; }
+.contact-item a:hover { color: var(--primary-glow); text-shadow: 0 0 10px var(--accent-glow); }
+.social-icons { display: flex; gap: 30px; list-style: none; padding-left: 0; }
+.social-icons a svg { width: 40px; height: 40px; fill: var(--text-medium); transition: fill 0.3s ease, transform 0.3s ease; }
+.social-icons a:hover svg { fill: var(--primary-glow); transform: scale(1.15); }
+
+/* 8. Footer / Impressum */
+.site-footer { padding: 50px 2rem; border-top: 1px solid rgba(190, 41, 236, 0.2); text-align: center; color: var(--text-medium); font-size: 0.9rem; }
+.site-footer p { margin-bottom: 10px; }
+.site-footer a { color: var(--text-medium); text-decoration: none; }
+.site-footer a:hover { color: var(--secondary-glow); }
+
+/* 9. Responsive Design Media Queries */
+@media (min-width: 768px) {
+    .lineup-venue-grid { grid-template-columns: 1fr 1fr; gap: 80px; text-align: left; }
+    .venue-details { text-align: right; }
+}
+@media (max-width: 480px) {
+    body { font-size: 16px; }
+    section { padding: 80px 0; }
+    .contact-grid { flex-direction: column; gap: 20px; }
+}
+</style>
+</head>
+<body>
+
+    <div class="background-wrapper">
+        <div class="video-overlay" aria-hidden="true"></div>
+        <video playsinline autoplay muted loop id="bg-video">
+            <source src="https://www.pexels.com/download/video/6961824/" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+    
+    <!-- ====================================================== -->
+    <!-- HERO SECTION -->
+    <!-- ====================================================== -->
+    <header id="hero">
+        <canvas id="waveform-canvas" aria-hidden="true"></canvas>
+        <div class="hero-content">
+            <!-- EDITABLE: Event Name & Teaser -->
+            <h1 class="event-title">Nebula Nexus</h1>
+            <p class="event-teaser">A Stellarpulse Collective Convergence</p>
+            
+            <!-- EDITABLE: Link to your ticket sales page -->
+            <a href="https://www.ticket-provider.com/stellarpulse-nebula-nexus" class="tickets-button" target="_blank" rel="noopener noreferrer">Buy Tickets</a>
+        </div>
+    </header>
+
+    <main>
+        <div class="content-wrapper">
+
+            <!-- ====================================================== -->
+            <!-- LINEUP & VENUE SECTION -->
+            <!-- ====================================================== -->
+            <section id="lineup-venue">
+                <h2 class="section-heading">Transmission Details</h2>
+                <div class="lineup-venue-grid">
+                    <div class="lineup-details">
+                        <!-- EDITABLE: Add or remove artists -->
+                        <ul class="lineup-list">
+                            <li>Zen Mechanics <span>Progressive Psy</span></li>
+                            <li>Ace Ventura <span>Psy-Trance</span></li>
+                            <li>Kindzadza <span>Hitech</span></li>
+                            <li>I Hate Models <span>Hard-Techno</span></li>
+                        </ul>
+                    </div>
+                    <div class="venue-details">
+                        <!-- EDITABLE: Date and Location -->
+                        <h3>October 25, 2025</h3>
+                        <p>Komplex 457<br>Zürich, Switzerland</p>
+                    </div>
+                </div>
+            </section>
+
+            <div class="constellation-divider" aria-hidden="true"></div>
+
+            <!-- ====================================================== -->
+            <!-- ABOUT & CONTACT SECTION -->
+            <!-- ====================================================== -->
+            <section id="about-contact">
+                <h2 class="section-heading">Our Mission</h2>
+                
+                <!-- EDITABLE: About text for your collective -->
+                <p class="about-text">
+                    Stellarpulse is a non-profit collective dedicated to curating powerful, immersive electronic music experiences in Switzerland. We unite diverse subcultures under a canopy of stars and sound, fusing cosmic visuals with cutting-edge techno and trance. Our events are safe spaces for expression, connection, and interstellar journeys.
+                </p>
+                
+                <div class="contact-grid">
+                    <!-- EDITABLE: Contact email -->
+                    <div class="contact-item">
+                        <a href="mailto:contact@stellarpulse.ch">General Inquiries: contact@stellarpulse.ch</a>
+                    </div>
+                    
+                    <!-- EDITABLE: Social media links -->
+                    <div class="contact-item">
+                        <ul class="social-icons">
+                            <li><a href="https://instagram.com/stellarpulse" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"/></svg>
+                            </a></li>
+                            <li><a href="https://facebook.com/stellarpulse" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M504 256C504 119 393 8 256 8S8 119 8 256c0 123.78 90.69 226.38 209.25 245V327.69h-63V256h63v-54.64c0-62.15 37-96.48 93.67-96.48 27.14 0 55.52 4.84 55.52 4.84v61h-31.28c-30.8 0-40.41 19.12-40.41 38.73V256h68.78l-11 71.69h-57.78V501C413.31 482.38 504 379.78 504 256z"/></svg>
+                            </a></li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- ====================================================== -->
+    <!-- FOOTER / IMPRESSUM -->
+    <!-- ====================================================== -->
+    <footer class="site-footer" id="impressum">
+        <!-- EDITABLE: Legal Information -->
+        <p>&copy; 2025 Stellarpulse Collective (Verein), Switzerland. All rights reserved.</p>
+        <p>Stellarpulse Verein, c/o Max Mustermann, Sternenweg 1, 8000 Zürich</p>
+        <p><a href="mailto:legal@stellarpulse.ch">legal@stellarpulse.ch</a> | <a href="#privacy">Privacy Policy</a></p>
+    </footer>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+
+    // ------------------------------------
+    // 1. FADE-IN SECTIONS ON SCROLL
+    // ------------------------------------
+    const sections = document.querySelectorAll('section');
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, { threshold: 0.1 });
+    sections.forEach(section => observer.observe(section));
+    
+    // ------------------------------------
+    // 2. HERO WAVEFORM ANIMATION
+    // ------------------------------------
+    const waveformCanvas = document.getElementById('waveform-canvas');
+    if (waveformCanvas) {
+        const ctx = waveformCanvas.getContext('2d');
+        let width, height, time = 0;
+        const colors = ['rgba(190, 41, 236, 0.8)', 'rgba(0, 217, 255, 0.7)', 'rgba(255, 60, 172, 0.6)'];
+
+        const resizeWaveform = () => {
+            width = waveformCanvas.width = Math.min(1000, window.innerWidth);
+            height = waveformCanvas.height = Math.min(1000, window.innerHeight * 0.8);
+        };
+
+        const animateWaveform = () => {
+            ctx.clearRect(0, 0, width, height);
+            ctx.lineWidth = 2;
+            ctx.globalCompositeOperation = 'lighter';
+            
+            for(let j = 0; j < 8; j++) {
+                ctx.beginPath();
+                ctx.strokeStyle = colors[j % colors.length];
+                let phase = time + j * 0.2;
+                for (let i = 0; i <= width; i += 5) {
+                    let y = height / 2 + (Math.sin(i * 0.01 + phase) * 50 * Math.sin(phase * 0.1)) + (Math.cos(i * 0.005 + phase * 0.5) * 40 * Math.cos(phase * 0.05));
+                    ctx.lineTo(i, y);
+                }
+                ctx.stroke();
+            }
+            time += 0.02;
+            requestAnimationFrame(animateWaveform);
+        };
+
+        window.addEventListener('resize', resizeWaveform);
+        resizeWaveform();
+        animateWaveform();
+    }
+});
+</script>
+
+</body>
+</html>
