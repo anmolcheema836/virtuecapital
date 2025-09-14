@@ -1,0 +1,622 @@
+<!--
+Hand-off Comment:
+Welcome to the Stellarpulse one-page website!
+
+This single HTML file contains all the necessary HTML, CSS, and JavaScript.
+
+To update content:
+1.  **Event Details (Hero & Lineup Sections):**
+    *   Search for "EVENT DETAILS START" and "EVENT DETAILS END" comments in the HTML.
+    *   Update the main headline, event date/time, lineup, and venue information.
+2.  **About/Contact Section:**
+    *   Search for "ABOUT/CONTACT DETAILS START" and "ABOUT/CONTACT DETAILS END" comments.
+    *   Update the description of Stellarpulse, contact email, and social media links.
+3.  **Impressum Section:**
+    *   Search for "IMPRESSUM DETAILS START" and "IMPRESSUM DETAILS END" comments in the HTML footer.
+    *   Replace the placeholder text with your actual legal impressum information.
+
+To update styling (colors, fonts, animations):
+*   All CSS is within the `<style>` block.
+*   Color variables are defined at the top of the `:root` selector.
+*   Font imports are in the `<head>` section.
+*   Animations are primarily CSS keyframes; adjust parameters for different speeds/intensities.
+
+To update JavaScript (e.g., number of stars, animation parameters):
+*   All JavaScript is within the `<script>` block at the end of the `<body>`.
+*   Parameters for background animations (like star generation) can be found here.
+
+Remember to keep SEO best practices in mind when updating content (clear, concise text, relevant keywords).
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stellarpulse - Psy-Trance, Hitech, Hard-Techno Events in Switzerland</title>
+    <meta name="description" content="Stellarpulse curates progressive psy-trance, hitech, and hard-techno events across Switzerland. Dive into a futuristic soundscape.">
+    <meta name="keywords" content="Stellarpulse, psy-trance, hitech, hard-techno, techno, electronic music, Switzerland events, rave, progressive trance, electronic dance music, DJ, festival">
+    <meta name="author" content="Stellarpulse Collective">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.stellarpulse.ch/"> <!-- Replace with actual URL -->
+    <meta property="og:title" content="Stellarpulse - Psy-Trance, Hitech, Hard-Techno Events in Switzerland">
+    <meta property="og:description" content="Stellarpulse curates progressive psy-trance, hitech, and hard-techno events across Switzerland. Dive into a futuristic soundscape.">
+    <meta property="og:image" content="https://www.stellarpulse.ch/og-image.jpg"> <!-- Placeholder: Replace with actual image for social sharing -->
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://www.stellarpulse.ch/"> <!-- Replace with actual URL -->
+    <meta property="twitter:title" content="Stellarpulse - Psy-Trance, Hitech, Hard-Techno Events in Switzerland">
+    <meta property="twitter:description" content="Stellarpulse curates progressive psy-trance, hitech, and hard-techno events across Switzerland. Dive into a futuristic soundscape.">
+    <meta property="twitter:image" content="https://www.stellarpulse.ch/twitter-image.jpg"> <!-- Placeholder: Replace with actual image for social sharing -->
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@300;400;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* CSS Variables for colors */
+        :root {
+            --bg-dark: #050510;
+            --bg-darker: #000008;
+            --neon-purple: #8a2be2; /* Blue Violet */
+            --neon-blue: #00ffff;   /* Aqua / Cyan */
+            --cosmic-pink: #ff00ff; /* Magenta / Fuchsia */
+            --text-light: #e0e0e0;
+            --text-dim: #a0a0a0;
+            --gradient-start: rgba(138, 43, 226, 0.4);
+            --gradient-mid: rgba(0, 255, 255, 0.3);
+            --gradient-end: rgba(255, 0, 255, 0.4);
+        }
+
+        /* Base Styles */
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            line-height: 1.6;
+            overflow-x: hidden; /* Prevent horizontal scroll due to animations */
+            scroll-behavior: smooth;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--text-light);
+            text-shadow: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-purple);
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--neon-blue);
+            text-shadow: 0 0 8px var(--neon-blue), 0 0 15px var(--neon-purple);
+        }
+
+        p {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }
+
+        a {
+            color: var(--neon-blue);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: var(--cosmic-pink);
+            text-shadow: 0 0 5px var(--cosmic-pink);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+            position: relative;
+            z-index: 2; /* Ensure content is above background effects */
+        }
+
+        /* Neon Button Style */
+        .btn-neon {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            background: linear-gradient(45deg, var(--neon-blue), var(--neon-purple));
+            color: var(--text-light);
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 0 0 15px var(--neon-blue), 0 0 30px var(--neon-purple);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .btn-neon::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.6s ease;
+            z-index: -1;
+        }
+
+        .btn-neon:hover {
+            box-shadow: 0 0 20px var(--neon-blue), 0 0 40px var(--neon-purple), 0 0 80px var(--cosmic-pink);
+            transform: translateY(-3px);
+            color: white;
+        }
+        .btn-neon:hover::before {
+            left: 100%;
+        }
+
+        /* Section Styling */
+        section {
+            padding: 6rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        section:nth-of-type(odd) {
+            background-color: var(--bg-darker);
+            border-top: 1px solid rgba(138, 43, 226, 0.2);
+            border-bottom: 1px solid rgba(0, 255, 255, 0.2);
+        }
+        section:nth-of-type(even) {
+            background-color: var(--bg-dark);
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background: radial-gradient(circle at top left, var(--gradient-start) 0%, transparent 40%),
+                        radial-gradient(circle at bottom right, var(--gradient-mid) 0%, transparent 40%),
+                        linear-gradient(to bottom right, var(--bg-darker), var(--bg-dark));
+            overflow: hidden; /* For star animations */
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%"><defs><radialGradient id="g1" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="%238a2be2" stop-opacity="0.1"/><stop offset="100%" stop-color="transparent"/></radialGradient><radialGradient id="g2" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="%2300ffff" stop-opacity="0.1"/><stop offset="100%" stop-color="transparent"/></radialGradient></defs><rect width="100%" height="100%" fill="url(%23g1)" transform="translate(20, -20) rotate(30)"/><rect width="100%" height="100%" fill="url(%23g2)" transform="translate(-30, 40) rotate(60)"/></svg>') no-repeat center center / cover;
+            opacity: 0.3;
+            animation: pulseBackground 20s infinite ease-in-out alternate;
+            z-index: 0;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            max-width: 900px;
+            padding: 0 1rem;
+        }
+
+        .hero h1 {
+            font-size: 4.5rem;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            animation: textGlow 1.5s infinite alternate;
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            margin-bottom: 2.5rem;
+            color: var(--text-dim);
+        }
+
+        /* Animated Stars */
+        .star {
+            position: absolute;
+            background-color: var(--text-light);
+            border-radius: 50%;
+            opacity: 0;
+            animation: twinkle 4s infinite ease-in-out;
+            z-index: 1; /* Below content, above background */
+        }
+
+        /* Lineup & Venue Section */
+        .lineup-venue .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 2rem;
+        }
+
+        .lineup-details {
+            max-width: 800px;
+            background-color: rgba(10, 10, 30, 0.7);
+            padding: 2.5rem;
+            border-radius: 10px;
+            border: 1px solid var(--neon-purple);
+            box-shadow: 0 0 20px rgba(138, 43, 226, 0.3);
+            position: relative;
+        }
+
+        .lineup-details p {
+            font-size: 1.2rem;
+            margin-bottom: 1.2rem;
+            color: var(--text-light);
+        }
+
+        .lineup-details strong {
+            color: var(--neon-blue);
+            text-shadow: 0 0 5px var(--neon-blue);
+            font-weight: 700;
+        }
+
+        .venue-map {
+            width: 100%;
+            height: 400px;
+            background-color: var(--bg-darker);
+            border-radius: 10px;
+            border: 1px solid var(--neon-blue);
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--text-dim);
+            position: relative;
+            overflow: hidden;
+        }
+        .venue-map::before {
+            content: 'Venue Map Placeholder';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: 'Orbitron', sans-serif;
+            color: var(--text-dim);
+            opacity: 0.5;
+            font-size: 1.8rem;
+        }
+
+        /* Audio Wave Motif */
+        .audio-wave-container {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100px; /* Height of the wave visual */
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            gap: 2px; /* Space between bars */
+            opacity: 0.4;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .audio-bar {
+            width: 4px; /* Width of each bar */
+            background-color: var(--neon-purple);
+            box-shadow: 0 0 8px var(--neon-purple);
+            animation: oscillate 2s ease-in-out infinite alternate;
+            transform-origin: bottom;
+            border-radius: 2px 2px 0 0;
+        }
+
+        .audio-wave-container.top {
+            top: 0;
+            bottom: unset;
+            align-items: flex-start;
+            transform: scaleY(-1); /* Flip for top-down effect */
+        }
+        .audio-wave-container.top .audio-bar {
+            background-color: var(--cosmic-pink);
+            box-shadow: 0 0 8px var(--cosmic-pink);
+        }
+
+        /* About & Contact Section */
+        .about-contact .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 2rem;
+        }
+
+        .about-content {
+            max-width: 800px;
+            background-color: rgba(10, 10, 30, 0.7);
+            padding: 2.5rem;
+            border-radius: 10px;
+            border: 1px solid var(--neon-blue);
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .social-links a {
+            font-size: 1.5rem;
+            margin: 0 1rem;
+            display: inline-block;
+            transition: transform 0.3s ease;
+        }
+
+        .social-links a:hover {
+            transform: scale(1.1);
+        }
+
+        /* Footer (Impressum) */
+        footer {
+            background-color: var(--bg-darker);
+            color: var(--text-dim);
+            text-align: center;
+            padding: 2rem 1rem;
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(0, 255, 255, 0.1);
+            position: relative;
+            z-index: 2;
+        }
+
+        footer p {
+            margin: 0.5rem 0;
+            color: var(--text-dim);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.8rem;
+            }
+            h2 {
+                font-size: 2rem;
+            }
+            .hero p {
+                font-size: 1.2rem;
+            }
+            .btn-neon {
+                padding: 0.8rem 2rem;
+                font-size: 1rem;
+            }
+            .container {
+                padding: 1.5rem 1rem;
+            }
+            .lineup-details, .about-content {
+                padding: 1.5rem;
+            }
+            .lineup-details p {
+                font-size: 1rem;
+            }
+            .venue-map {
+                height: 300px;
+            }
+            .social-links a {
+                font-size: 1.2rem;
+                margin: 0 0.8rem;
+            }
+            .audio-bar {
+                width: 3px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+            h2 {
+                font-size: 1.8rem;
+            }
+            .hero p {
+                font-size: 1rem;
+            }
+            .btn-neon {
+                padding: 0.7rem 1.8rem;
+                font-size: 0.9rem;
+            }
+            .audio-bar {
+                width: 2px;
+            }
+        }
+
+        /* Keyframe Animations */
+        @keyframes twinkle {
+            0%, 100% { opacity: 0; transform: scale(0.5); }
+            50% { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes textGlow {
+            0%, 100% { text-shadow: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-purple); }
+            50% { text-shadow: 0 0 15px var(--neon-purple), 0 0 30px var(--cosmic-pink); }
+        }
+
+        @keyframes pulseBackground {
+            0% { transform: scale(1); opacity: 0.3; }
+            50% { transform: scale(1.05); opacity: 0.4; }
+            100% { transform: scale(1); opacity: 0.3; }
+        }
+
+        @keyframes oscillate {
+            0%, 100% { transform: scaleY(0.5); background-color: var(--neon-purple); box-shadow: 0 0 8px var(--neon-purple); }
+            25% { transform: scaleY(1.2); background-color: var(--neon-blue); box-shadow: 0 0 10px var(--neon-blue); }
+            50% { transform: scaleY(0.7); background-color: var(--cosmic-pink); box-shadow: 0 0 8px var(--cosmic-pink); }
+            75% { transform: scaleY(1.5); background-color: var(--neon-purple); box-shadow: 0 0 12px var(--neon-purple); }
+        }
+    </style>
+</head>
+<body>
+
+    <main>
+        <!-- Hero Section -->
+        <section id="hero" class="hero">
+            <div class="hero-content">
+                <!-- EVENT DETAILS START -->
+                <h1>Stellarpulse: Transcend the Frequencies</h1>
+                <p>Curating Switzerland's most immersive Psy-Trance, Hitech, & Hard-Techno experiences.</p>
+                <a href="#tickets" class="btn-neon">Buy Tickets Now</a>
+                <!-- EVENT DETAILS END -->
+            </div>
+            <!-- Dynamic stars will be added here by JS -->
+        </section>
+
+        <!-- Lineup & Venue Section -->
+        <section id="lineup" class="lineup-venue">
+            <div class="audio-wave-container top" id="audioWaveTop"></div>
+            <div class="container">
+                <h2>Next Event: Cosmic Convergence</h2>
+                <div class="lineup-details">
+                    <!-- EVENT DETAILS START -->
+                    <p><strong>Date:</strong> Saturday, 26. October 2024</p>
+                    <p><strong>Time:</strong> 22:00 - 06:00</p>
+                    <p><strong>Location:</strong> The Nebula Club, Zurich</p>
+                    <p>
+                        <strong>Lineup:</strong>
+                        <br>🎧 AstraLux (Psy-Trance)
+                        <br>🎧 CyberShaman (Hitech)
+                        <br>🎧 Ohm Crusher (Hard-Techno)
+                        <br>🎧 Solar Echoes (Progressive)
+                    </p>
+                    <p>Prepare for an interstellar journey across sound dimensions. Limited capacity!</p>
+                    <a href="#tickets" class="btn-neon">Secure Your Spot</a>
+                    <!-- EVENT DETAILS END -->
+                </div>
+                <div class="venue-map">
+                    <!-- Placeholder for an embedded map, e.g., Google Maps iframe -->
+                    <p>Map to The Nebula Club coming soon...</p>
+                </div>
+            </div>
+            <div class="audio-wave-container" id="audioWaveBottom"></div>
+        </section>
+
+        <!-- About/Contact Section -->
+        <section id="about" class="about-contact">
+            <div class="container">
+                <h2>About Stellarpulse & Contact</h2>
+                <div class="about-content">
+                    <!-- ABOUT/CONTACT DETAILS START -->
+                    <p>
+                        Stellarpulse is a non-profit collective dedicated to bringing high-energy, progressive electronic music to Switzerland.
+                        We believe in fostering a vibrant community through meticulously curated events that blend futuristic aesthetics with raw,
+                        underground sounds. Our mission is to create unforgettable experiences that push the boundaries of sound and vision.
+                    </p>
+                    <div class="contact-info">
+                        <p><strong>Email:</strong> <a href="mailto:info@stellarpulse.ch">info@stellarpulse.ch</a></p>
+                        <p><strong>Follow us:</strong></p>
+                        <div class="social-links">
+                            <a href="https://www.instagram.com/stellarpulse_ch" target="_blank" rel="noopener noreferrer" aria-label="Stellarpulse on Instagram">Instagram</a> |
+                            <a href="https://www.facebook.com/stellarpulse.ch" target="_blank" rel="noopener noreferrer" aria-label="Stellarpulse on Facebook">Facebook</a> |
+                            <a href="https://t.me/stellarpulse_channel" target="_blank" rel="noopener noreferrer" aria-label="Stellarpulse on Telegram">Telegram</a>
+                            <!-- Placeholder for actual SVG icons if desired later: -->
+                            <!-- <svg width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="..."/></svg> -->
+                        </div>
+                    </div>
+                    <!-- ABOUT/CONTACT DETAILS END -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Impressum Section (Footer) -->
+    <footer>
+        <div class="container">
+            <!-- IMPRESSUM DETAILS START -->
+            <p>&copy; 2024 Stellarpulse Collective. All rights reserved.</p>
+            <p>Stellarpulse is a non-profit organization registered in Switzerland.</p>
+            <p><strong>Address:</strong> Stellarpulse Collective, Eventstrasse 12, 8000 Zürich, Switzerland</p>
+            <p><strong>Represented by:</strong> [Name of Legal Representative]</p>
+            <p><strong>Commercial Register Number:</strong> CHE-XXX.XXX.XXX</p>
+            <p><a href="#privacy" aria-label="Privacy Policy">Privacy Policy</a> | <a href="#terms" aria-label="Terms of Service">Terms of Service</a></p>
+            <!-- IMPRESSUM DETAILS END -->
+        </div>
+    </footer>
+
+    <script>
+        // JavaScript for dynamic star field and audio wave animations
+
+        // 1. Dynamic Star Field in Hero Section
+        const heroSection = document.querySelector('.hero');
+        const numStars = 100; // Number of stars to generate
+        const maxStarSize = 3; // Maximum star size in pixels
+        const minStarSize = 1; // Minimum star size in pixels
+        const maxTwinkleDuration = 6; // Max animation duration
+        const minTwinkleDuration = 2; // Min animation duration
+
+        for (let i = 0; i < numStars; i++) {
+            let star = document.createElement('div');
+            star.classList.add('star');
+
+            let size = Math.random() * (maxStarSize - minStarSize) + minStarSize;
+            star.style.width = `${size}px`;
+            star.style.height = `${size}px`;
+
+            star.style.top = `${Math.random() * 100}vh`;
+            star.style.left = `${Math.random() * 100}vw`;
+
+            // Randomize animation duration and delay
+            star.style.animationDuration = `${Math.random() * (maxTwinkleDuration - minTwinkleDuration) + minTwinkleDuration}s`;
+            star.style.animationDelay = `${Math.random() * maxTwinkleDuration}s`; // Stagger animation starts
+
+            heroSection.appendChild(star);
+        }
+
+        // 2. Audio Wave Motif Generation
+        const audioWaveBottom = document.getElementById('audioWaveBottom');
+        const audioWaveTop = document.getElementById('audioWaveTop');
+        const numBars = 150; // Number of bars in the audio wave
+        const maxBarHeight = 100; // Max height for bars in pixels
+
+        function generateAudioWave(container) {
+            for (let i = 0; i < numBars; i++) {
+                let bar = document.createElement('div');
+                bar.classList.add('audio-bar');
+
+                // Initial random height (will be animated by CSS)
+                bar.style.height = `${Math.random() * (maxBarHeight * 0.7) + (maxBarHeight * 0.3)}px`;
+
+                // Stagger animation delays for a more natural, non-uniform pulse
+                bar.style.animationDelay = `${Math.random() * 1.5}s`;
+                bar.style.animationDuration = `${Math.random() * 1.5 + 1.5}s`; // Vary duration slightly
+
+                container.appendChild(bar);
+            }
+        }
+
+        generateAudioWave(audioWaveBottom);
+        generateAudioWave(audioWaveTop);
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>

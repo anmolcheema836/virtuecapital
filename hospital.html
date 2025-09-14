@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MedEquip Solutions | Professional Medical Equipment for Clinics & Hospitals</title>
+    <meta name="description" content="The trusted source for high-performance medical furniture. Explore our catalog of examination tables, treatment chairs, and clinical carts, engineered for durability and ergonomic excellence.">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-blue: #005A9C;
+            --secondary-blue: #003B6A;
+            --accent-light-blue: #E6F0F6;
+            --background-light: #F9FAFB;
+            --background-white: #FFFFFF;
+            --border-color: #E5E7EB;
+            --text-dark: #111827;
+            --text-med: #374151;
+            --text-light: #6B7280;
+            --font-family: 'Inter', sans-serif;
+            --border-radius: 8px;
+            --transition-speed: 0.3s;
+            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: var(--font-family);
+            background-color: var(--background-white);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+        
+        /* --- UTILITY & SHARED STYLES --- */
+        .container { max-width: 1280px; margin: 0 auto; padding: 0 2rem; }
+        .section { padding: 5rem 0; }
+        .section-header { text-align: center; margin-bottom: 3rem; }
+        .section-header .eyebrow { color: var(--primary-blue); font-weight: 600; margin-bottom: 0.5rem; display: block; }
+        .section-header h2 { font-size: clamp(2rem, 5vw, 2.5rem); font-weight: 700; color: var(--text-dark); margin-bottom: 1rem; }
+        .section-header p { font-size: 1.125rem; max-width: 65ch; margin: 0 auto; color: var(--text-med); }
+        .button {
+            display: inline-block; text-decoration: none; padding: 0.875rem 2rem; border-radius: var(--border-radius);
+            font-weight: 600; transition: all var(--transition-speed) ease; cursor: pointer; border: 1px solid transparent; font-size: 1rem;
+        }
+        .btn-primary { background-color: var(--primary-blue); color: var(--background-white); }
+        .btn-primary:hover { background-color: var(--secondary-blue); transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+        .btn-secondary { background-color: var(--background-white); color: var(--primary-blue); border-color: var(--border-color); }
+        .btn-secondary:hover { border-color: var(--primary-blue); background-color: var(--accent-light-blue); }
+        
+        .animate-on-scroll { opacity: 0; transition: opacity 0.6s ease, transform 0.6s ease; }
+        .is-visible { opacity: 1; transform: translateY(0) !important; }
+
+        /* --- HEADER --- */
+        .main-header {
+            background-color: rgba(255, 255, 255, 0.9); backdrop-filter: blur(8px); padding: 1.25rem 0;
+            border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 100;
+        }
+        .main-header .container { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 1.75rem; font-weight: 700; color: var(--secondary-blue); text-decoration: none; }
+        .main-nav ul { list-style: none; display: flex; gap: 2rem; }
+        .main-nav a { text-decoration: none; color: var(--text-med); font-weight: 500; transition: color var(--transition-speed); }
+        .main-nav a:hover { color: var(--primary-blue); }
+
+        /* --- HERO --- */
+        .hero { text-align: center; padding: 6rem 0; background-color: var(--background-light); }
+        .hero h1 { font-size: clamp(2.5rem, 5vw, 3.5rem); font-weight: 700; max-width: 20ch; margin: 0 auto 1.5rem auto; line-height: 1.2; }
+        .hero p { font-size: 1.25rem; max-width: 60ch; margin: 0 auto 2.5rem auto; color: var(--text-med); }
+
+        /* --- TRUSTED BY --- */
+        .trusted-by { padding-top: 0; padding-bottom: 4rem; background-color: var(--background-light); }
+        .trusted-by h3 { text-align: center; font-weight: 500; color: var(--text-light); margin-bottom: 1.5rem; }
+        .logos { display: flex; justify-content: space-around; align-items: center; gap: 2rem; filter: grayscale(1) opacity(0.6); }
+        .logos img { max-height: 30px; }
+
+        /* --- WHY CHOOSE US --- */
+        .why-us-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
+        .why-us-item { background: var(--background-white); border: 1px solid var(--border-color); border-radius: var(--border-radius); padding: 2rem; }
+        .why-us-item svg { background: var(--accent-light-blue); color: var(--primary-blue); padding: 0.75rem; border-radius: 50%; margin-bottom: 1rem; }
+        .why-us-item h3 { font-size: 1.25rem; font-weight: 600; margin-bottom: 0.5rem; }
+
+        /* --- FEATURED PRODUCTS --- */
+        .featured-products { background-color: var(--background-light); }
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 2rem; }
+        .product-card {
+            background-color: var(--background-white); border: 1px solid var(--border-color); border-radius: var(--border-radius); overflow: hidden;
+            display: flex; flex-direction: column; box-shadow: var(--shadow); transition: all var(--transition-speed) ease;
+        }
+        .product-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); }
+        .product-card-image { aspect-ratio: 4/3; background-color: var(--background-light); overflow: hidden; }
+        .product-card-image img { width: 100%; height: 100%; object-fit: cover; transition: transform var(--transition-speed) ease; }
+        .product-card:hover .product-card-image img { transform: scale(1.05); }
+        .product-card-content { padding: 1.5rem; flex-grow: 1; display: flex; flex-direction: column; }
+        .product-card-title { font-size: 1.25rem; font-weight: 600; margin-bottom: 0.5rem; }
+        .product-card-category { color: var(--text-light); font-size: 0.875rem; margin-bottom: 1rem; }
+        .product-card-actions { margin-top: auto; }
+
+        /* --- CTA --- */
+        .cta-section { background-color: var(--secondary-blue); color: var(--background-white); text-align: center; }
+        .cta-section h2 { font-size: 2.5rem; color: var(--background-white); }
+        .cta-section p { color: rgba(255, 255, 255, 0.8); }
+        .cta-section .button { background-color: var(--background-white); color: var(--secondary-blue); }
+        .cta-section .button:hover { background-color: var(--accent-light-blue); }
+
+        /* --- FOOTER --- */
+        .main-footer { background-color: var(--background-light); padding: 4rem 0; border-top: 1px solid var(--border-color); }
+        .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 3rem; }
+        .footer-col h4 { font-size: 1.125rem; font-weight: 600; margin-bottom: 1rem; }
+        .footer-col ul { list-style: none; }
+        .footer-col li { margin-bottom: 0.5rem; }
+        .footer-col a { text-decoration: none; color: var(--text-med); }
+        .footer-col a:hover { color: var(--primary-blue); }
+        .footer-bottom { text-align: center; margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border-color); color: var(--text-light); }
+        
+        /* --- COMPARISON UI --- */
+        .comparison-tray {
+            position: fixed; bottom: -100%; left: 0; width: 100%; background-color: var(--background-white);
+            border-top: 1px solid var(--border-color); box-shadow: var(--shadow-lg); z-index: 200; transition: bottom var(--transition-speed) ease;
+        }
+        .comparison-tray.visible { bottom: 0; }
+        .comparison-tray .container { display: flex; justify-content: space-between; align-items: center; padding-top: 1rem; padding-bottom: 1rem; }
+        .comparison-items { display: flex; gap: 1rem; }
+        .comparison-item { position: relative; }
+        .comparison-item img { height: 60px; width: 80px; object-fit: cover; border-radius: 4px; border: 1px solid var(--border-color); }
+        .remove-from-compare {
+            position: absolute; top: -8px; right: -8px; background: var(--text-med); color: var(--background-white);
+            border-radius: 50%; width: 22px; height: 22px; text-align: center; line-height: 22px; cursor: pointer;
+            border: 2px solid var(--background-white); font-weight: bold; transition: all var(--transition-speed);
+        }
+        .remove-from-compare:hover { background-color: var(--text-dark); transform: scale(1.1); }
+        .comparison-actions .btn-compare:disabled { background-color: var(--border-color); color: var(--text-light); cursor: not-allowed; box-shadow: none; }
+        .comparison-actions .btn-compare:disabled:hover { transform: none; }
+    </style>
+</head>
+<body>
+
+    <header class="main-header">
+        <div class="container">
+            <a href="#" class="logo">MedEquip Solutions</a>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="#">Products</a></li>
+                    <li><a href="#">Solutions</a></li>
+                    <li><a href="#">Resources</a></li>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="container animate-on-scroll">
+                <h1>Precision-Engineered for the Modern Clinic.</h1>
+                <p>High-performance medical equipment that enhances workflow, ensures patient comfort, and delivers uncompromising reliability.</p>
+                <a href="#products" class="button btn-primary">Explore Our Products</a>
+            </div>
+        </section>
+
+        <section class="trusted-by">
+            <div class="container animate-on-scroll">
+                <h3>TRUSTED BY LEADING HEALTHCARE PROVIDERS NATIONWIDE</h3>
+                <div class="logos">
+                    <!-- Replace with real logos -->
+                    <img src="https://via.placeholder.com/150x30/CCCCCC/888888?text=CLINIC+LOGO" alt="Partner Logo">
+                    <img src="https://via.placeholder.com/150x30/CCCCCC/888888?text=HOSPITAL+GROUP" alt="Partner Logo">
+                    <img src="https://via.placeholder.com/150x30/CCCCCC/888888?text=HEALTH+SYSTEM" alt="Partner Logo">
+                    <img src="https://via.placeholder.com/150x30/CCCCCC/888888?text=MEDICAL+CENTER" alt="Partner Logo">
+                </div>
+            </div>
+        </section>
+
+        <section class="section why-us">
+            <div class="container">
+                <div class="section-header animate-on-scroll">
+                    <span class="eyebrow">THE MEDEQUIP ADVANTAGE</span>
+                    <h2>Built for the Demands of Today & Tomorrow.</h2>
+                    <p>Every product is designed with both the practitioner and the patient in mind, ensuring optimal performance and safety.</p>
+                </div>
+                <div class="why-us-grid">
+                    <div class="why-us-item animate-on-scroll">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="m354-247 126-78 126 78-33-144 111-96-146-13-58-136-58 136-146 13 111 96-33 144ZM240-80l80-280-200-160 280-20 120-280 120 280 280 20-200 160 80 280-240-160-240 160Z"/></svg>
+                        <h3>Uncompromising Quality</h3>
+                        <p>We use hospital-grade materials and rigorous quality control to ensure every product meets the highest standards of durability and hygiene.</p>
+                    </div>
+                    <div class="why-us-item animate-on-scroll" style="transition-delay: 0.1s;">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M440-280H280q-83 0-141.5-58.5T80-480q0-83 58.5-141.5T280-680h160v80H280q-50 0-85 35t-35 85q0 50 35 85t85 35h160v80ZM320-440v-80h320v80H320Zm160 160v-80h160q50 0 85-35t35-85q0-50-35-85t-85-35H520v-80h160q83 0 141.5 58.5T880-480q0 83-58.5 141.5T680-280H520Z"/></svg>
+                        <h3>Ergonomic & Efficient Design</h3>
+                        <p>Our equipment is intelligently designed to optimize clinical workflow, reduce practitioner strain, and maximize patient comfort.</p>
+                    </div>
+                    <div class="why-us-item animate-on-scroll" style="transition-delay: 0.2s;">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M480-120 300-300l58-58 122 122 122-122 58 58-180 180ZM218-420q-35-30-54-72t-19-88q0-93 64.5-156T366-800h228q100 0 165 64.5T824-580q0 46-19 88t-54 72l-52-52q24-21 38-47t14-55q0-62-44-106t-106-44H366q-62 0-106 44t-44 106q0 29 14 55t38 47l-50 50Z"/></svg>
+                        <h3>Dedicated Support & Service</h3>
+                        <p>From initial consultation to after-sales support and warranty service, our team is committed to your complete satisfaction.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="products" class="section featured-products">
+            <div class="container">
+                <div class="section-header animate-on-scroll">
+                    <span class="eyebrow">OUR PRODUCTS</span>
+                    <h2>Explore Our Core Equipment Categories</h2>
+                </div>
+                <div class="product-grid">
+                    <!-- Replace with real product data -->
+                    <div class="product-card animate-on-scroll">
+                        <div class="product-card-image"><img src="https://via.placeholder.com/400x300/F9FAFB/111827?text=Exam+Table" alt="Power Exam Table"></div>
+                        <div class="product-card-content">
+                            <h3 class="product-card-title">Power Exam Table</h3>
+                            <p class="product-card-category">Exam Tables</p>
+                            <div class="product-card-actions"><button class="button btn-secondary" onclick="addToCompare({id:'P-ET-01'})">Add to Compare</button></div>
+                        </div>
+                    </div>
+                    <div class="product-card animate-on-scroll" style="transition-delay: 0.1s;">
+                        <div class="product-card-image"><img src="https://via.placeholder.com/400x300/F9FAFB/111827?text=Procedure+Chair" alt="Procedure Chair"></div>
+                        <div class="product-card-content">
+                            <h3 class="product-card-title">Procedure Chair</h3>
+                            <p class="product-card-category">Treatment Chairs</p>
+                            <div class="product-card-actions"><button class="button btn-secondary" onclick="addToCompare({id:'P-PC-02'})">Add to Compare</button></div>
+                        </div>
+                    </div>
+                    <div class="product-card animate-on-scroll" style="transition-delay: 0.2s;">
+                        <div class="product-card-image"><img src="https://via.placeholder.com/400x300/F9FAFB/111827?text=Mobile+Cart" alt="Mobile Cart"></div>
+                        <div class="product-card-content">
+                            <h3 class="product-card-title">Mobile Cart</h3>
+                            <p class="product-card-category">Medical Carts</p>
+                            <div class="product-card-actions"><button class="button btn-secondary" onclick="addToCompare({id:'P-MC-03'})">Add to Compare</button></div>
+                        </div>
+                    </div>
+                    <div class="product-card animate-on-scroll" style="transition-delay: 0.3s;">
+                        <div class="product-card-image"><img src="https://via.placeholder.com/400x300/F9FAFB/111827?text=Surgical+Light" alt="Surgical Light"></div>
+                        <div class="product-card-content">
+                            <h3 class="product-card-title">Surgical Light</h3>
+                            <p class="product-card-category">Lighting</p>
+                            <div class="product-card-actions"><button class="button btn-secondary" onclick="addToCompare({id:'P-SL-04'})">Add to Compare</button></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section cta-section">
+            <div class="container animate-on-scroll">
+                <div class="section-header">
+                    <h2>Ready to Upgrade Your Practice?</h2>
+                    <p>Contact our equipment specialists today for a personalized quote and discover how MedEquip Solutions can elevate your standard of care.</p>
+                </div>
+                <a href="#" class="button">Request a Quote</a>
+            </div>
+        </section>
+    </main>
+
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <a href="#" class="logo">MedEquip Solutions</a>
+                    <p style="margin-top: 1rem; color: var(--text-med);">Engineered for the future of healthcare.</p>
+                </div>
+                <div class="footer-col"><h4>Products</h4><ul><li><a href="#">Exam Tables</a></li><li><a href="#">Treatment Chairs</a></li><li><a href="#">Medical Carts</a></li><li><a href="#">Lighting</a></li></ul></div>
+                <div class="footer-col"><h4>Company</h4><ul><li><a href="#">About Us</a></li><li><a href="#">Careers</a></li><li><a href="#">Press</a></li><li><a href="#">Contact</a></li></ul></div>
+                <div class="footer-col"><h4>Legal</h4><ul><li><a href="#">Privacy Policy</a></li><li><a href="#">Terms of Service</a></li><li><a href="#">Warranty</a></li></ul></div>
+            </div>
+            <div class="footer-bottom"><p>&copy; 2025 MedEquip Solutions Inc. All Rights Reserved.</p></div>
+        </div>
+    </footer>
+
+    <!-- The comparison tray and modal UI would go here, functionality remains the same as previous versions. I've simplified the JS call to keep the code clean. -->
+    
+    <script>
+    document.addEventListener("DOMContentLoaded", () => {
+        // --- SCROLL ANIMATION LOGIC ---
+        const scrollElements = document.querySelectorAll(".animate-on-scroll");
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    // A small delay makes the animation feel smoother
+                    setTimeout(() => {
+                        entry.target.classList.add("is-visible");
+                    }, 100);
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+
+        scrollElements.forEach(el => {
+            // Set initial state for animation
+            el.style.transform = 'translateY(20px)';
+            observer.observe(el);
+        });
+        
+        // Dummy function for prototype
+        window.addToCompare = function(product) {
+            alert(`Product with ID ${product.id} would be added to comparison.`);
+        };
+    });
+    </script>
+</body>
+</html>
