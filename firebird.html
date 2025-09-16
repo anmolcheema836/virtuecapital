@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fire Bird Pte Ltd - Forging Global Connections</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Playfair+Display:ital,wght@0,700;1,600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* REFINED DARK PALETTE */
+            --bg-dark: #0A0F19;
+            --bg-content: #101927;
+            --border-dark: #242E3D;
+            --text-primary: #F0F4F8;
+            --text-secondary: #94A3B8;
+            --brand-blue: #2563EB;
+            --brand-red: #DC2626;
+
+            /* TYPOGRAPHY */
+            --font-display: 'Playfair Display', serif;
+            --font-sans: 'Inter', sans-serif;
+            
+            /* LAYOUT & EFFECTS */
+            --container-width: 1180px;
+            --section-padding: 120px;
+            --transition-smooth: 400ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        html { scroll-behavior: smooth; }
+        
+        body {
+            font-family: var(--font-sans);
+            color: var(--text-secondary);
+            background-color: var(--bg-dark);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: var(--container-width);
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .section {
+            padding: var(--section-padding) 0;
+            position: relative;
+        }
+
+        /* --- HEADER --- */
+        .header {
+            position: fixed;
+            top: 0; left: 0; width: 100%;
+            padding: 24px 0;
+            z-index: 1000;
+            transition: all 300ms ease;
+        }
+        .header.scrolled {
+            background-color: rgba(10, 15, 25, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 16px 0;
+            border-bottom: 1px solid var(--border-dark);
+        }
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .brand-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+        .brand-logo img {
+            height: 48px;
+            width: auto;
+        }
+        .brand-logo span {
+            font-weight: 700;
+            font-size: 1.125rem;
+            color: var(--text-primary);
+        }
+        .main-nav a {
+            margin-left: 32px;
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-weight: 500;
+            transition: color var(--transition-smooth);
+        }
+        .main-nav a:hover {
+            color: var(--text-primary);
+        }
+        .nav-cta {
+            background-color: transparent;
+            border: 1px solid var(--brand-blue);
+            color: var(--brand-blue);
+            padding: 10px 20px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 500;
+            margin-left: 32px;
+            transition: all var(--transition-smooth);
+        }
+        .nav-cta:hover {
+            background-color: var(--brand-blue);
+            color: var(--text-primary);
+        }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            padding-top: 220px;
+            padding-bottom: 150px;
+            text-align: center;
+        }
+        .hero-title {
+            font-family: var(--font-display);
+            font-size: clamp(3rem, 7vw, 5.5rem);
+            color: var(--text-primary);
+            line-height: 1.1;
+            margin-bottom: 24px;
+        }
+        .hero-title .highlight {
+            font-style: italic;
+            color: var(--brand-blue);
+        }
+        .hero-subtitle {
+            font-size: 1.25rem;
+            max-width: 65ch;
+            margin: 0 auto 40px;
+            color: var(--text-secondary);
+        }
+        .hero-cta {
+            display: inline-block;
+            background-color: var(--brand-red);
+            color: var(--text-primary);
+            padding: 18px 36px;
+            border-radius: 8px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all var(--transition-smooth);
+        }
+        .hero-cta:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 20px rgba(220, 38, 38, 0.2);
+        }
+
+        /* --- ABOUT SECTION (Asymmetrical) --- */
+        .about {
+            background-color: var(--bg-content);
+            border-top: 1px solid var(--border-dark);
+            border-bottom: 1px solid var(--border-dark);
+        }
+        .about-grid {
+            display: grid;
+            grid-template-columns: 2fr 3fr;
+            align-items: center;
+            gap: 80px;
+        }
+        .section-heading {
+            margin-bottom: 40px;
+        }
+        .subtitle {
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-weight: 700;
+            color: var(--brand-blue);
+            margin-bottom: 16px;
+        }
+        .title {
+            font-family: var(--font-display);
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
+            color: var(--text-primary);
+            line-height: 1.2;
+        }
+        .about-content p {
+            margin-bottom: 20px;
+        }
+        .stat-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 30px;
+        }
+        .stat-item .stat-number {
+            font-family: var(--font-display);
+            font-size: 3rem;
+            color: var(--brand-red);
+            line-height: 1;
+        }
+        .stat-item .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        /* --- EXPERTISE SECTION --- */
+        .expertise-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1px;
+            background-color: var(--border-dark);
+            border: 1px solid var(--border-dark);
+            margin-top: 60px;
+        }
+        .expertise-card {
+            background-color: var(--bg-content);
+            padding: 40px;
+            transition: background-color var(--transition-smooth);
+        }
+        .expertise-card:hover {
+            background-color: #162131;
+        }
+        .expertise-card-icon {
+            color: var(--brand-blue);
+            margin-bottom: 24px;
+        }
+        .expertise-card h3 {
+            font-family: var(--font-sans);
+            font-size: 1.25rem;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+        }
+        
+        /* --- CTA SECTION --- */
+        .cta-section {
+            background: linear-gradient(rgba(10, 15, 25, 0.9), rgba(10, 15, 25, 0.9)), url('https://images.unsplash.com/photo-1521737604893-d14cc237f11d?q=80&w=2084&auto=format&fit=crop') no-repeat center center;
+            background-size: cover;
+            background-attachment: fixed;
+            text-align: center;
+        }
+        .cta-section .title {
+            max-width: 20ch;
+            margin: 0 auto 40px;
+        }
+
+        /* --- FOOTER --- */
+        .footer {
+            padding: 60px 0;
+            border-top: 1px solid var(--border-dark);
+            text-align: center;
+        }
+        .footer p { font-size: 0.9rem; }
+        .footer-links {
+            margin-top: 16px;
+        }
+        .footer-links a {
+            margin: 0 12px;
+            color: var(--text-secondary);
+        }
+        .footer-links a:hover {
+            color: var(--text-primary);
+        }
+
+        /* --- ANIMATIONS & RESPONSIVE --- */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 600ms ease-out, transform 600ms ease-out;
+        }
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        @media (max-width: 1024px) {
+            .about-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .main-nav, .nav-cta { display: none; } /* Show hamburger menu if needed */
+            .expertise-grid { grid-template-columns: 1fr; }
+            .hero { padding-top: 180px; padding-bottom: 100px; }
+            .section { padding: 80px 0; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- === HEADER === -->
+    <header class="header" id="header">
+        <div class="container header-container">
+            <a href="#home" class="brand-logo">
+                <img src="logo-firebird.png" alt="Fire Bird Pte Ltd Logo">
+                <span>Fire Bird Pte Ltd</span>
+            </a>
+            <nav class="main-nav">
+                <a href="#about">About</a>
+                <a href="#expertise">Expertise</a>
+                <a href="#contact">Contact</a>
+            </nav>
+            <a href="#contact" class="nav-cta">Get in Touch</a>
+        </div>
+    </header>
+
+    <main>
+
+        <!-- === HERO SECTION === -->
+        <section class="hero" id="home">
+            <div class="container">
+                <h1 class="hero-title fade-in">
+                    Connecting European Vision with <br><span class="highlight">Emerging Markets</span>
+                </h1>
+                <p class="hero-subtitle fade-in" style="transition-delay: 200ms;">
+                    We are the architects of global expansion, engineering strategic partnerships for European firms in Southeast Asia, the Middle East, and beyond.
+                </p>
+                <a href="#contact" class="hero-cta fade-in" style="transition-delay: 400ms;">Forge Your Path</a>
+            </div>
+        </section>
+
+        <!-- === ABOUT SECTION === -->
+        <section class="section about" id="about">
+            <div class="container">
+                <div class="about-grid">
+                    <div class="section-heading fade-in">
+                        <div class="subtitle">Our Mission</div>
+                        <h2 class="title">We Build Bridges to Opportunity.</h2>
+                    </div>
+                    <div class="about-content fade-in" style="transition-delay: 200ms;">
+                        <p>Founded in Singapore, Fire Bird Pte Ltd was born from a singular vision: to be the catalyst for European companies aiming to succeed in the world's most dynamic growth markets. We eliminate complexity and create value by connecting private and public partners.</p>
+                        <p>Our approach is built on trust, deep market intelligence, and a relentless commitment to delivering concrete, sustainable results for our clients.</p>
+                        <div class="stat-grid">
+                            <div class="stat-item">
+                                <div class="stat-number">6+</div>
+                                <div class="stat-label">High-Growth Sectors</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number">2019</div>
+                                <div class="stat-label">Established in Singapore</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- === EXPERTISE SECTION === -->
+        <section class="section expertise" id="expertise">
+            <div class="container text-center">
+                <div class="section-heading fade-in">
+                    <div class="subtitle">Areas of Expertise</div>
+                    <h2 class="title">Precision in a Complex World.</h2>
+                </div>
+                <div class="expertise-grid fade-in" style="transition-delay: 200ms;">
+                    <div class="expertise-card">
+                        <div class="expertise-card-icon">
+                           <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v1.5M16.5 4.5l-1 1M21 12h-1.5M16.5 19.5l-1-1M12 21v-1.5M7.5 19.5l1-1M3 12h1.5M7.5 4.5l1 1"/><circle cx="12" cy="12" r="6.5"/></svg>
+                        </div>
+                        <h3>Solar Energy</h3>
+                        <p>Developing utility-scale solar plants and renewable energy infrastructure.</p>
+                    </div>
+                    <div class="expertise-card">
+                        <div class="expertise-card-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16.5 12a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0Z"/><path d="M16.5 12v.01"/></svg>
+                        </div>
+                        <h3>Data & Fintech</h3>
+                        <p>Navigating data protection, software development, and financial compliance.</p>
+                    </div>
+                    <div class="expertise-card">
+                        <div class="expertise-card-icon">
+                           <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.9 19.1C1 15.2 1 8.8 4.9 4.9"/><path d="M7.8 16.2c-2.3-2.3-2.3-6.1 0-8.5"/><path d="M10.6 13.4c-.8-.8-.8-2 0-2.8"/><path d="M13.4 10.6c.8.8.8 2 0 2.8"/><path d="M16.2 7.8c2.3 2.3 2.3 6.1 0 8.5"/><path d="M19.1 4.9C23 8.8 23 15.2 19.1 19.1"/></svg>
+                        </div>
+                        <h3>Telecommunications</h3>
+                        <p>Executing strategic projects in network infrastructure and connectivity.</p>
+                    </div>
+                    <div class="expertise-card">
+                        <div class="expertise-card-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 21h10"/><path d="M12 21V7L5 4v13h7Z"/><path d="M19 4v13h-7"/></svg>
+                        </div>
+                        <h3>Wines & Spirits</h3>
+                        <p>Introducing premium European goods to discerning new consumer markets.</p>
+                    </div>
+                    <div class="expertise-card">
+                        <div class="expertise-card-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 14 4-4"/><path d="M3.34 19a10 10 0 1 1 17.32 0"/></svg>
+                        </div>
+                        <h3>Recycling & Equipment</h3>
+                        <p>Implementing sustainable recycling initiatives and industrial equipment supply.</p>
+                    </div>
+                    <div class="expertise-card">
+                        <div class="expertise-card-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                        </div>
+                        <h3>Compliance & Training</h3>
+                        <p>Delivering critical training on AML, cybercrime, and regulatory frameworks.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- === CTA SECTION === -->
+        <section class="section cta-section" id="contact">
+            <div class="container fade-in">
+                <div class="subtitle">Begin Your Journey</div>
+                <h2 class="title">Let's Build Your Global Future.</h2>
+                <a href="mailto:contact@firebird.sg" class="hero-cta">Schedule a Strategic Consultation</a>
+            </div>
+        </section>
+
+    </main>
+    
+    <!-- === FOOTER === -->
+    <footer class="footer">
+        <div class="container">
+            <p>© 2024 Fire Bird Pte Ltd — Singapore. All Rights Reserved.</p>
+            <div class="footer-links">
+                <a href="#">Legal Notice</a>
+                <a href="#">Privacy Policy</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT FOR ANIMATIONS -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Sticky Header
+            const header = document.getElementById('header');
+            window.addEventListener('scroll', () => {
+                header.classList.toggle('scrolled', window.scrollY > 50);
+            });
+
+            // Scroll Reveal Animation
+            const revealObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.fade-in').forEach(el => {
+                revealObserver.observe(el);
+            });
+        });
+    </script>
+</body>
+</html>
