@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vault Breach | Elite Cybersecurity & Compliance</title>
+
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --color-background: #000000;
+            --color-surface: rgba(22, 22, 22, 0.5); /* Semi-transparent surface */
+            --color-primary: #007BFF; /* A more standard, confident blue */
+            --color-glow: rgba(0, 123, 255, 0.3);
+            --color-text: #F0F2F5;
+            --color-text-muted: #A8B2C0;
+            --color-border: rgba(255, 255, 255, 0.1);
+
+            --font-family-base: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            --container-width: 1200px;
+            --border-radius: 16px;
+        }
+
+        /* --- Base & Reset --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: var(--font-family-base);
+            background-color: var(--color-background);
+            color: var(--color-text);
+            line-height: 1.7;
+            font-size: 17px;
+            overflow-x: hidden;
+        }
+        .container { max-width: var(--container-width); margin: 0 auto; padding: 0 24px; }
+        section { padding: 100px 0; }
+        
+        /* Background Grid & Glow */
+        body::before {
+            content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: 
+                linear-gradient(to right, rgba(255,255,255,0.05) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255,255,255,0.05) 1px, transparent 1px);
+            background-size: 50px 50px;
+            z-index: -2;
+        }
+        body::after {
+            content: ''; position: fixed; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: radial-gradient(circle at center, var(--color-glow), transparent 40%);
+            animation: background-pan 30s linear infinite;
+            z-index: -1;
+        }
+        @keyframes background-pan {
+            0% { transform: translateX(10%) translateY(10%); }
+            50% { transform: translateX(-10%) translateY(-10%); }
+            100% { transform: translateX(10%) translateY(10%); }
+        }
+
+        /* --- Typography --- */
+        h1, h2, h3 { font-weight: 700; letter-spacing: -0.025em; }
+        h1 { font-size: 4.25rem; font-weight: 900; line-height: 1.1; margin-bottom: 24px; }
+        h2 { font-size: 3rem; text-align: center; margin-bottom: 24px; }
+        h3 { font-size: 1.5rem; margin-bottom: 12px; }
+        p { color: var(--color-text-muted); margin-bottom: 16px; max-width: 550px; }
+        .section-subtitle { max-width: 700px; margin: 0 auto 60px auto; text-align: center; font-size: 1.25rem; color: var(--color-text-muted); }
+        
+        /* --- Buttons --- */
+        .btn {
+            display: inline-block; padding: 14px 32px; border-radius: 10px; font-weight: 600;
+            text-decoration: none; cursor: pointer; transition: all 0.3s ease; border: 1px solid transparent;
+        }
+        .btn-primary {
+            background-color: var(--color-primary); color: #fff; box-shadow: 0 0 25px var(--color-glow);
+        }
+        .btn-primary:hover {
+            transform: translateY(-3px) scale(1.05); box-shadow: 0 0 35px var(--color-glow);
+        }
+        
+        /* --- Glassmorphism Effect --- */
+        .glass-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0));
+            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            border: 1px solid var(--color-border);
+            border-radius: var(--border-radius);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        /* --- Navigation Bar --- */
+        .navbar {
+            position: fixed; top: 0; left: 0; width: 100%; z-index: 1000; padding: 20px 0; transition: all 0.3s ease;
+        }
+        .navbar.sticky {
+            background-color: rgba(0, 0, 0, 0.7); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--color-border); padding: 15px 0;
+        }
+        .navbar .container { display: flex; justify-content: space-between; align-items: center; }
+        .navbar-logo { height: 38px; }
+        .nav-links { display: flex; align-items: center; list-style: none; gap: 40px; }
+        .nav-links a { color: var(--color-text-muted); font-weight: 500; text-decoration: none; transition: color 0.3s; font-size: 16px; }
+        .nav-links a:hover { color: var(--color-text); }
+        
+        /* --- Hero Section --- */
+        .hero { text-align: center; padding-top: 180px; padding-bottom: 120px; }
+        .hero h1 {
+            background: linear-gradient(90deg, #ffffff, #b8c3d4);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .hero p { margin: 0 auto 32px auto; font-size: 1.3rem; max-width: 700px; }
+
+        /* --- Social Proof / "Trusted By" Section --- */
+        .trusted-by { padding-top: 0; text-align: center; }
+        .trusted-by span { text-transform: uppercase; color: var(--color-text-muted); font-size: 0.9rem; letter-spacing: 1.5px; }
+        .logos { display: flex; justify-content: center; align-items: center; gap: 60px; margin-top: 24px; opacity: 0.6; filter: grayscale(1) brightness(1.5); }
+        .logos svg { height: 25px; } /* Example */
+
+        /* --- Detailed Offerings Section --- */
+        .offering-item {
+            display: grid; grid-template-columns: 1fr 1fr;
+            align-items: center; gap: 80px;
+        }
+        .offering-item:not(:last-child) { margin-bottom: 120px; }
+        .offering-item:nth-child(even) .offering-image { order: -1; }
+        .offering-image { position: relative; }
+        .offering-image img { width: 100%; border-radius: var(--border-radius); box-shadow: 0 15px 50px rgba(0,0,0,0.5); }
+        .offering-text ul { list-style: none; margin-top: 20px; }
+        .offering-text li { position: relative; padding-left: 30px; margin-bottom: 12px; }
+        .offering-text li::before {
+            content: '✓'; position: absolute; left: 0; color: var(--color-primary); font-weight: bold;
+        }
+
+        /* --- Why Choose Us Section --- */
+        .why-us-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
+        .why-us-card { padding: 32px; }
+        .why-us-card h3 { color: var(--color-primary); }
+
+        /* --- CTA Section --- */
+        .cta-section .container { text-align: center; }
+        .cta-section h2 { font-size: 3rem; }
+        
+        /* --- Footer --- */
+        .footer { text-align: center; padding: 40px 0; border-top: 1px solid var(--color-border); }
+        
+        /* --- Scroll Animations --- */
+        .reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.8s ease, transform 0.8s ease; }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+
+        /* --- Responsive --- */
+        @media (max-width: 992px) {
+            body { font-size: 16px; }
+            h1 { font-size: 3.5rem; } h2 { font-size: 2.5rem; }
+            .offering-item { grid-template-columns: 1fr; gap: 40px; }
+            .offering-item:nth-child(even) .offering-image { order: 1; }
+            .offering-text { text-align: center; }
+            .offering-text p, .offering-text ul { max-width: 100%; margin-left: auto; margin-right: auto; }
+            .why-us-grid { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 768px) {
+            .nav-links { display: none; } h1 { font-size: 2.8rem; } h2 { font-size: 2.2rem; }
+            .logos { flex-wrap: wrap; gap: 40px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ======================= Navigation Bar ======================= -->
+    <nav class="navbar" id="navbar">
+        <div class="container">
+            <a href="#" class="navbar-logo">
+                <img src="vaultlogo.png" alt="Vault Breach Logo" style="height: 100%; width: auto;">
+            </a>
+            <ul class="nav-links">
+                <li><a href="#services">Services</a></li>
+                <li><a href="#">Blog</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+            <a href="#" class="btn btn-primary">Book a Strategy Call</a>
+        </div>
+    </nav>
+
+    <main>
+        <!-- ======================= Hero Section ======================= -->
+        <section class="hero reveal">
+            <div class="container">
+                <h1>From Compliance Chaos to Competitive Edge</h1>
+                <p>Vault Breach is not just a consultancy; we are your strategic partner in transforming cybersecurity and compliance from a complex burden into a powerful business asset.</p>
+                <a href="#" class="btn btn-primary">Secure Your Consultation</a>
+            </div>
+        </section>
+
+        <!-- =================== "Trusted By" Section =================== -->
+        <section class="trusted-by reveal">
+            <div class="container">
+                <span>Powering Security for Industry Leaders</span>
+                <div class="logos">
+                    <!-- Placeholder logos for visual effect -->
+                    <p>Fortune 500</p>
+                    <p>DoD Contractors</p>
+                    <p>SaaS Innovators</p>
+                    <p>FinTech Leaders</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- =================== Detailed Offerings =================== -->
+        <section id="services" class="container">
+            <!-- Service 1: CMMC -->
+            <div class="offering-item reveal">
+                <div class="offering-text">
+                    <h3>CMMC: Uncomplicate the Mandate</h3>
+                    <p>The CMMC 2.0 landscape can feel like a moving target. We provide a clear, phased roadmap to not only achieve certification but to build a sustainable, audit-proof security culture that protects CUI and wins contracts.</p>
+                    <ul>
+                        <li>Official Readiness Assessments & Gap Analysis</li>
+                        <li>System Security Plan (SSP) & POAM Development</li>
+                        <li>Implementation Support & Continuous Monitoring</li>
+                    </ul>
+                </div>
+                <div class="offering-image"><img src="https://images.unsplash.com/photo-1517048676732-d65bc937f952?q=80&w=2070&auto=format&fit=crop" alt="Team collaborating around a table"></div>
+            </div>
+            <!-- Service 2: FedRAMP -->
+            <div class="offering-item reveal">
+                <div class="offering-text">
+                    <h3>FedRAMP: Accelerate Your Path to ATO</h3>
+                    <p>Entering the federal marketplace requires navigating the rigorous FedRAMP authorization process. Our advisory services demystify the journey, from initial planning and documentation to 3PAO assessment and continuous monitoring, saving you time and resources.</p>
+                    <ul>
+                        <li>Market Analysis & FedRAMP Strategy</li>
+                        <li>Full-Stack Documentation (SSP, SAP, SAR)</li>
+                        <li>Liaison with 3PAOs and the FedRAMP PMO</li>
+                    </ul>
+                </div>
+                <div class="offering-image"><img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?q=80&w=1932&auto=format&fit=crop" alt="Professionals reviewing documents on a tablet"></div>
+            </div>
+        </section>
+
+        <!-- =================== Why Choose Us Section =================== -->
+        <section class="why-us">
+            <div class="container">
+                <h2 class="reveal">The Vault Breach Difference</h2>
+                <p class="section-subtitle reveal">We are engineers of trust. Our methodology is built on three core pillars that ensure your security investment delivers measurable business value.</p>
+                <div class="why-us-grid">
+                    <div class="why-us-card glass-card reveal">
+                        <h3>Strategic Partnership</h3>
+                        <p>We integrate with your team as a true partner, not just a vendor. We learn your business inside and out to align security objectives with your most critical company goals.</p>
+                    </div>
+                    <div class="why-us-card glass-card reveal" style="transition-delay: 100ms;">
+                        <h3>Deep Expertise, Applied</h3>
+                        <p>Our consultants are seasoned experts who have led complex compliance initiatives across DoD, federal, and commercial sectors. We bring practical, actionable insights, not just theoretical advice.</p>
+                    </div>
+                    <div class="why-us-card glass-card reveal" style="transition-delay: 200ms;">
+                        <h3>Business-Aligned Security</h3>
+                        <p>We believe security should be an enabler, not an obstacle. Our solutions are designed to be efficient, scalable, and tailored to your operational reality, ensuring security enhances your ability to innovate and compete.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ======================= CTA Section ======================= -->
+        <section class="cta-section">
+            <div class="container reveal">
+                <h2>Ready to Build Your Digital Fortress?</h2>
+                <p class="section-subtitle">Let's move beyond checklists and build a security program that gives you a strategic advantage. Schedule a no-obligation strategy call with our GRC experts today.</p>
+                <a href="#" class="btn btn-primary">Book a Free Strategy Call</a>
+            </div>
+        </section>
+    </main>
+
+    <!-- ======================= Footer ======================= -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Vault Breach LLC. Architecting Digital Resilience.</p>
+        </div>
+    </footer>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            navbar.classList.toggle('sticky', window.scrollY > 50);
+        });
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.15 });
+
+        document.querySelectorAll('.reveal').forEach((el) => {
+            observer.observe(el);
+        });
+    });
+    </script>
+</body>
+</html>
