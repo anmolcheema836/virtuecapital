@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Памяти жертв Бабьего Яра</title>
+    <!--
+    ================================================================================
+    README ДЛЯ ОРГАНИЗАТОРОВ (Версия 2)
+    ================================================================================
+
+    Это полностью автономный HTML-файл. Для его работы не требуются внешние файлы или шаги сборки.
+    Просто откройте `index.html` в любом современном веб-браузере.
+
+    1. ТЕСТИРОВАНИЕ "КАПСУЛЫ ПАМЯТИ":
+       - На странице добавлена кнопка "Загрузить Демо", которая использует встроенный пример данных для мгновенной демонстрации функционала.
+       - Поддерживаемые форматы для загрузки:
+         - **JSON**: Массив объектов. Каждый объект должен иметь ключи `name`, `photo` и `details`.
+           Пример: `[{"name": "Имя Фамилия", "photo": "url/to/image.jpg", "details": "Краткая информация."}]`
+         - **CSV**: Текстовый файл с разделителями-запятыми. Первая строка должна быть заголовком: `name,photo,details`.
+           Парсер поддерживает значения в кавычках, если они содержат запятые.
+           Пример:
+           name,photo,details
+           "Имя, Фамилия","images/photo1.jpg","Краткая информация с, запятой."
+           "Другое Имя","","Дополнительные детали без фото."
+
+    2. ЗАМЕНА ИЗОБРАЖЕНИЙ:
+       - Укажите путь к изображениям в вашем CSV или JSON.
+       - Рекомендуется создать папку `images` в том же каталоге, где находится этот `index.html`, и поместить туда все файлы изображений.
+         Пример пути в данных: `images/victim_photo.jpg`.
+       - Также можно использовать ссылки на изображения в интернете или данные в формате Base64 прямо в поле `photo`.
+       - Если фото отсутствует, будет показан нейтральный силуэт.
+
+    3. КОНТАКТЫ И КООРДИНАЦИЯ:
+       - Организатор будет онлайн в 9:00 по времени Лос-Анджелеса для рассмотрения pull request'ов и предоставления финальных ассетов (тексты, изображения).
+
+    ================================================================================
+    -->
+    <style>
+        /* --- Глобальные стили и переменные --- */
+        :root {
+            --color-bg: #080808;
+            --color-text: #cccccc;
+            --color-heading: #ffffff;
+            --color-border: #2a2a2a;
+            --color-highlight: #444444;
+            --color-subtle-bg: rgba(255, 255, 255, 0.03);
+            --color-error: #c88;
+            --font-serif: "Times New Roman", Times, Georgia, serif;
+            --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+            --transition-speed: 1200ms;
+            --transition-speed-fast: 600ms;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 100%;
+        }
+
+        body {
+            background-color: var(--color-bg);
+            color: var(--color-text);
+            font-family: var(--font-sans);
+            line-height: 1.8;
+            font-size: 1rem;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800"><filter id="f"><feTurbulence type="fractalNoise" baseFrequency="0.7" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23f)"/></svg>');
+            opacity: 0.025;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        /* --- Типографика --- */
+        h1, h2, h3 {
+            font-family: var(--font-serif);
+            color: var(--color-heading);
+            font-weight: 400;
+            line-height: 1.3;
+            text-align: center;
+        }
+
+        h1 { font-size: clamp(2.2rem, 7vw, 4.5rem); margin-bottom: 1rem; }
+        h2 { font-size: clamp(1.8rem, 5vw, 2.8rem); margin-bottom: 2.5rem; margin-top: 5rem; letter-spacing: 0.5px; border-bottom: 1px solid var(--color-border); padding-bottom: 1.5rem; }
+        h3 { font-size: clamp(1.2rem, 4vw, 1.5rem); }
+        p { margin-bottom: 1.5rem; max-width: 65ch; margin-left: auto; margin-right: auto; }
+        a { color: var(--color-heading); text-decoration: none; border-bottom: 1px dotted var(--color-highlight); transition: color var(--transition-speed-fast), border-color var(--transition-speed-fast); }
+        a:hover, a:focus { color: var(--color-text); border-bottom-color: var(--color-text); }
+        article p { text-align: justify; }
+
+        /* --- Основные секции и контейнеры --- */
+        .container { width: 90%; max-width: 1100px; margin: 0 auto; padding: 5rem 1rem; }
+        .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 1rem; }
+        .hero-subtitle { font-size: clamp(1.1rem, 3vw, 1.6rem); color: var(--color-text); margin-bottom: 2.5rem; font-style: italic; }
+        .hero-details { font-size: 1rem; color: var(--color-highlight); text-transform: uppercase; letter-spacing: 2px; }
+        .scroll-down { position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%); color: var(--color-highlight); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px; opacity: 0.6; }
+        .scroll-down::after { content: ''; display: block; width: 1px; height: 50px; background-color: var(--color-highlight); margin: 10px auto 0; }
+        nav { position: sticky; top: 0; background-color: rgba(10, 10, 10, 0.8); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); z-index: 100; padding: 1rem 0; border-bottom: 1px solid var(--color-border); }
+        .nav-links { display: flex; justify-content: center; flex-wrap: wrap; list-style: none; gap: 1rem 2.5rem; }
+        .nav-links a { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1.5px; border-bottom: none; position: relative; padding: 0.5rem 0; }
+        .nav-links a::after { content: ''; position: absolute; width: 100%; height: 1px; bottom: 0; left: 0; background-color: var(--color-heading); transform: scaleX(0); transform-origin: bottom right; transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1); }
+        .nav-links a:hover::after, .nav-links a:focus::after { transform: scaleX(1); transform-origin: bottom left; }
+
+        /* --- УЛУЧШЕННАЯ Капсула Памяти --- */
+        .memory-capsule-ui {
+            background: transparent;
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .data-input-area { margin-bottom: 1.5rem; }
+        .data-input {
+            width: 100%;
+            min-height: 160px;
+            background-color: var(--color-subtle-bg);
+            color: var(--color-text);
+            border: 1px solid var(--color-border);
+            border-radius: 4px;
+            padding: 1rem;
+            font-family: monospace;
+            font-size: 0.9rem;
+            resize: vertical;
+            transition: border-color var(--transition-speed-fast), box-shadow var(--transition-speed-fast);
+        }
+        .data-input:focus {
+            outline: none;
+            border-color: var(--color-highlight);
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
+        }
+        .action-buttons { display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem; }
+        .btn {
+            background-color: transparent;
+            color: var(--color-text);
+            border: 1px solid var(--color-highlight);
+            padding: 0.8rem 1.8rem;
+            font-family: var(--font-sans);
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color var(--transition-speed-fast), color var(--transition-speed-fast), border-color var(--transition-speed-fast);
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 300;
+        }
+        .btn:hover, .btn:focus {
+            background-color: var(--color-heading);
+            color: var(--color-bg);
+            border-color: var(--color-heading);
+            outline: none;
+        }
+        .btn.primary {
+            background-color: var(--color-highlight);
+            border-color: var(--color-highlight);
+        }
+        .btn.primary:hover, .btn.primary:focus {
+             background-color: var(--color-heading);
+             border-color: var(--color-heading);
+        }
+        input[type="file"] { display: none; }
+        .help-text { font-size: 0.85rem; color: var(--color-highlight); text-align: center; margin-top: 2rem; }
+        #data-status-message {
+            text-align: center;
+            min-height: 1.2em;
+            margin-top: 1.5rem;
+            font-size: 0.9rem;
+            transition: color var(--transition-speed-fast);
+        }
+        .error-message { color: var(--color-error); }
+        #memory-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 1.5rem;
+            margin-top: 3rem;
+            position: relative;
+        }
+        #empty-grid-message { position: absolute; width: 100%; text-align: center; color: var(--color-highlight); }
+        .victim-card {
+            background: transparent;
+            border: 1px solid var(--color-border);
+            text-align: center;
+            padding: 1.5rem 1rem;
+            cursor: pointer;
+            transition: background-color var(--transition-speed-fast), transform var(--transition-speed-fast), box-shadow var(--transition-speed-fast);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 0.8s ease-out forwards;
+            border-radius: 4px;
+        }
+        .victim-card:hover, .victim-card:focus-within {
+            background-color: var(--color-subtle-bg);
+            transform: translateY(-8px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            border-color: var(--color-highlight);
+            outline: none;
+        }
+        .victim-card img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 1.5rem;
+            background-color: var(--color-border);
+            filter: grayscale(100%) contrast(1.1);
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            transition: filter var(--transition-speed-fast);
+        }
+        .victim-card:hover img { filter: grayscale(50%) contrast(1); }
+        .victim-name { color: var(--color-heading); font-weight: 500; font-size: 1.1rem; }
+        #noscript-message { background: var(--color-subtle-bg); border: 1px solid var(--color-border); padding: 2rem; text-align: center; }
+        @keyframes fadeIn { to { opacity: 1; transform: translateY(0); } }
+
+        /* --- Лайтбокс/Модальное окно --- */
+        .lightbox-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.9); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); display: flex; justify-content: center; align-items: center; z-index: 1000; opacity: 0; pointer-events: none; transition: opacity var(--transition-speed-fast) ease; }
+        .lightbox-overlay.visible { opacity: 1; pointer-events: auto; }
+        .lightbox-content { background: var(--color-bg); padding: 2.5rem; border: 1px solid var(--color-border); max-width: 600px; width: 90%; max-height: 90vh; overflow-y: auto; text-align: center; position: relative; transform: scale(0.95); transition: transform var(--transition-speed-fast) cubic-bezier(0.23, 1, 0.32, 1); border-radius: 8px; }
+        .lightbox-overlay.visible .lightbox-content { transform: scale(1); }
+        .lightbox-content img { max-width: 180px; width: 100%; height: 180px; object-fit: cover; border-radius: 50%; margin-bottom: 1.5rem; filter: grayscale(100%); background-color: var(--color-border); }
+        .lightbox-details { margin: 1.5rem 0; color: var(--color-text); font-size: 1.1rem; line-height: 1.7; }
+        .close-lightbox { position: absolute; top: 1rem; right: 1rem; background: none; border: none; color: var(--color-text); font-size: 2.5rem; cursor: pointer; line-height: 1; opacity: 0.7; transition: opacity var(--transition-speed-fast), transform var(--transition-speed-fast); }
+        .close-lightbox:hover { opacity: 1; transform: rotate(90deg); }
+
+        /* --- Портал Мира --- */
+        #portal-container { position: relative; display: flex; justify-content: center; align-items: center; min-height: 450px; margin-top: 4rem; overflow: hidden; background: radial-gradient(circle, #111 0%, var(--color-bg) 70%); border: 1px solid var(--color-border); border-radius: 8px; }
+        .portal-svg { width: 220px; height: 330px; cursor: pointer; z-index: 10; }
+        .portal-door { fill: none; stroke: var(--color-heading); stroke-width: 2; transition: transform var(--transition-speed) ease-in-out; filter: drop-shadow(0 0 5px rgba(255,255,255,0.3)); }
+        #portal-container:hover #portal-door-left { transform: translateX(-35px) rotateY(25deg); transform-origin: right center; }
+        #portal-container:hover #portal-door-right { transform: translateX(35px) rotateY(-25deg); transform-origin: left center; }
+        .particle { position: absolute; color: white; font-size: 1rem; opacity: 0; pointer-events: none; animation: riseAndFade 10s linear forwards; white-space: nowrap; }
+        @keyframes riseAndFade { 0% { transform: translateY(0) scale(0.6); opacity: 0; } 10% { opacity: 0.9; } 90% { opacity: 0.9; } 100% { transform: translateY(-350px) scale(1.3); opacity: 0; } }
+        @media (prefers-reduced-motion: reduce) { .portal-door, .particle, .victim-card { transition: none; animation: none; } #portal-container:hover #portal-door-left, #portal-container:hover #portal-door-right { transform: none; } }
+
+        /* --- Секция обратной связи --- */
+        .feedback-section { text-align: center; }
+        .feedback-form { max-width: 700px; margin: 2rem auto 0; display: flex; flex-direction: column; gap: 1.5rem; }
+        .feedback-textarea { background: var(--color-subtle-bg); color: var(--color-text); border: 1px solid var(--color-border); border-radius: 4px; padding: 1rem; font-family: var(--font-sans); height: 140px; resize: vertical; font-size: 1rem; transition: border-color var(--transition-speed-fast), box-shadow var(--transition-speed-fast); }
+        .feedback-textarea:focus { outline: none; border-color: var(--color-highlight); box-shadow: 0 0 10px rgba(255, 255, 255, 0.05); }
+
+        /* --- Подвал --- */
+        footer { text-align: center; padding: 4rem 1rem; margin-top: 5rem; border-top: 1px solid var(--color-border); color: var(--color-highlight); }
+        .footer-quote { font-family: var(--font-serif); font-size: 1.3rem; font-style: italic; color: var(--color-text); margin-bottom: 2.5rem; }
+        .footer-divider { width: 100px; margin: 0 auto 2.5rem; border: none; border-top: 1px solid var(--color-border); }
+        footer small { font-size: 0.9rem; letter-spacing: 0.5px; }
+
+        /* --- Медиа-запросы для мобильной адаптации --- */
+        @media (max-width: 768px) {
+            body { font-size: 0.95rem; line-height: 1.7; }
+            .container { padding: 3rem 1rem; }
+            h1 { font-size: clamp(2rem, 10vw, 2.5rem); }
+            h2 { font-size: clamp(1.6rem, 8vw, 2rem); margin-top: 4rem; }
+            .hero { padding: 1rem; }
+            .nav-links { gap: 0.5rem 1.5rem; }
+            .memory-capsule-ui { padding: 1.5rem; }
+            #memory-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 1rem; }
+            .victim-card { padding: 1rem; }
+            .victim-card img { width: 100px; height: 100px; }
+            .btn { padding: 0.8rem 1.2rem; font-size: 0.9rem; }
+            .lightbox-content { padding: 2rem 1.5rem; }
+        }
+        @media (max-width: 480px) {
+            #memory-grid { grid-template-columns: repeat(2, 1fr); }
+            .victim-card:hover { transform: translateY(-5px); }
+            .action-buttons { flex-direction: column; }
+            .btn { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="hero">
+        <div class="hero-content">
+            <h1>Памяти жертв Бабьего Яра и Второй мировой войны</h1>
+            <p class="hero-subtitle">Церемония памяти</p>
+            <p class="hero-details">29 сентября, Лос-Анджелес</p>
+        </div>
+        <a href="#main-content" class="scroll-down" aria-label="Прокрутить вниз"></a>
+    </header>
+
+    <nav>
+        <ul class="nav-links">
+            <li><a href="#history">История</a></li>
+            <li><a href="#memory-capsule">Капсула памяти</a></li>
+            <li><a href="#peace-portal">Портал мира</a></li>
+        </ul>
+    </nav>
+
+    <main id="main-content">
+        <section id="history" class="container">
+            <article>
+                <h2>Трагедия и Память</h2>
+                <p>Бабий Яр — урочище в северо-западной части Киева, ставшее всемирно известным местом массовых расстрелов гражданского населения, главным образом евреев, цыган, а также советских военнопленных, осуществлявшихся немецкими оккупационными войсками в 1941–1943 годах. 29 и 30 сентября 1941 года здесь были убиты десятки тысяч человек. Эта трагедия стала одним из самых страшных символов Холокоста.</p>
+                <p>Сегодня мы собираемся, чтобы почтить память всех невинных жертв. Эта церемония — не только дань уважения погибшим, но и напоминание живым о ценности мира, человечности и недопустимости повторения подобных ужасов. Мы вспоминаем каждого, чья жизнь была жестоко оборвана, и храним эту память для будущих поколений.</p>
+            </article>
+        </section>
+
+        <section id="memory-capsule" class="container">
+            <h2>Капсула памяти</h2>
+            <p style="text-align: center;">Загрузите данные о жертвах, чтобы отобразить их имена и истории в этом мемориале.</p>
+            
+            <div id="memory-capsule-app">
+                <div class="memory-capsule-ui">
+                    <div class="data-input-area">
+                        <textarea id="data-paste-area" class="data-input" placeholder="Вставьте сюда содержимое CSV или JSON..."></textarea>
+                    </div>
+                    <div class="action-buttons">
+                        <label for="csv-upload" class="btn">Загрузить файл...</label>
+                        <input type="file" id="csv-upload" accept=".csv,.json,.txt">
+                        <button id="load-data-btn" class="btn primary">Обработать</button>
+                        <button id="load-demo-btn" class="btn">Загрузить Демо</button>
+                        <button id="clear-data-btn" class="btn">Очистить</button>
+                    </div>
+                     <p class="help-text">Поддерживаемые форматы: CSV (header: name,photo,details) или JSON (массив объектов с полями name, photo, details).</p>
+                     <div id="data-status-message"></div>
+                </div>
+                <div id="memory-grid">
+                    <p id="empty-grid-message">Список пуст. Загрузите данные, чтобы увидеть имена.</p>
+                </div>
+            </div>
+            
+            <noscript>
+                <div id="noscript-message"><p>Функция "Капсула памяти" требует включенного JavaScript.</p></div>
+            </noscript>
+        </section>
+
+        <section id="peace-portal" class="container">
+            <h2>Портал мира</h2>
+            <p style="text-align: center;">Сквозь скорбь — к надежде. Этот интерактивный портал символизирует вечную память и стремление к миру.</p>
+            <div id="portal-container" role="button" tabindex="0" aria-label="Активировать Портал мира">
+                <svg class="portal-svg" viewBox="0 0 100 150" preserveAspectRatio="none"><path id="portal-door-left" d="M 50,5 A 45,70 0 0 0 50,145" class="portal-door"></path><path id="portal-door-right" d="M 50,5 A 45,70 0 0 1 50,145" class="portal-door"></path></svg>
+            </div>
+        </section>
+
+        <section id="feedback" class="container feedback-section">
+            <h2>Оставить комментарий</h2>
+            <p>Ваши мысли и слова важны для сохранения памяти.</p>
+            <form class="feedback-form" onsubmit="event.preventDefault(); alert('Спасибо за ваш отзыв.');">
+                <textarea class="feedback-textarea" name="feedback" aria-label="Поле для отзыва">Важное уточнение для всех участников: веб-страница должна быть полностью на русском языке. Пожалуйста, предлагайте решения и дизайн с учётом этого требования.</textarea>
+                <button type="submit" class="btn">Отправить</button>
+            </form>
+        </section>
+    </main>
+    
+    <footer>
+        <p class="footer-quote">"Никто не забыт, ничто не забыто."</p>
+        <hr class="footer-divider">
+        <small>&copy; 2025 Мемориальная Церемония, Лос-Анджелес. Вечная память.</small>
+    </footer>
+
+    <div class="lightbox-overlay" id="lightbox">
+        <div class="lightbox-content" role="dialog" aria-modal="true">
+            <button class="close-lightbox" id="close-lightbox-btn" aria-label="Закрыть">&times;</button>
+            <img id="lightbox-img" src="" alt="">
+            <h3 id="lightbox-name"></h3>
+            <p id="lightbox-details" class="lightbox-details"></p>
+        </div>
+    </div>
+
+    <script>
+    // --- Демонстрационные данные для тестирования ---
+    const sampleJsonData = [
+      {
+        "name": "Анна Франк",
+        "photo": "",
+        "details": "Еврейская девочка, автор знаменитого «Дневника Анны Франк», умершая в концлагере Берген-Бельзен."
+      },
+      {
+        "name": "Януш Корчак",
+        "photo": "",
+        "details": "Польский педагог, писатель и врач, который отказался спастись и вошел в газовую камеру вместе со своими воспитанниками из Дома сирот."
+      },
+      {
+        "name": "Ицхак Каценельсон",
+        "photo": "",
+        "details": "Поэт и драматург, писавший на идише и иврите. Погиб в Освенциме. Его \"Песнь об убитом еврейском народе\" — один из важнейших текстов о Холокосте."
+      },
+      {
+        "name": "Ирена Сендлер",
+        "photo": "",
+        "details": "Польская активистка движения Сопротивления, спасшая более 2500 еврейских детей из Варшавского гетто."
+      },
+      {
+          "name": "Дина Проничева",
+          "photo": "",
+          "details": "Актриса киевского кукольного театра, одна из немногих выживших после массовых расстрелов в Бабьем Яру, давшая показания на суде."
+      },
+      {
+          "name": "Неизвестный ребенок",
+          "photo": "",
+          "details": "Символ миллионов детей, чьи имена и истории были утеряны в пламени войны. Мы помним каждого."
+      }
+    ];
+    
+    document.addEventListener('DOMContentLoaded', () => {
+
+        // --- ЛОГИКА КАПСУЛЫ ПАМЯТИ ---
+        const fileUploadInput = document.getElementById('csv-upload');
+        const dataPasteArea = document.getElementById('data-paste-area');
+        const loadDataBtn = document.getElementById('load-data-btn');
+        const loadDemoBtn = document.getElementById('load-demo-btn');
+        const clearDataBtn = document.getElementById('clear-data-btn');
+        const memoryGrid = document.getElementById('memory-grid');
+        const statusMessage = document.getElementById('data-status-message');
+        const emptyGridMessage = document.getElementById('empty-grid-message');
+        
+        const lightbox = document.getElementById('lightbox');
+        const closeLightboxBtn = document.getElementById('close-lightbox-btn');
+        
+        const placeholderImage = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M50 25a20 20 0 100 40 20 20 0 100-40zm0 50c-22 0-40 12-40 25h80c0-13-18-25-40-25z" fill="%23333"/></svg>';
+
+        function setStatus(message, isError = false) {
+            statusMessage.textContent = message;
+            statusMessage.classList.toggle('error-message', isError);
+        }
+        
+        function parseCSV(text) {
+            const result = [];
+            const lines = text.trim().split(/\r?\n/);
+            if (lines.length < 2) return result;
+            
+            const header = lines.shift().split(',').map(h => h.trim());
+            const requiredHeaders = ['name', 'photo', 'details'];
+            if (!requiredHeaders.every(h => header.includes(h))) {
+                throw new Error('CSV должен содержать заголовки: name, photo, details');
+            }
+
+            const regex = /("([^"]*)"|([^,]*))(,|$)/g;
+
+            for (const line of lines) {
+                const row = {};
+                let values = [];
+                let match;
+                while (match = regex.exec(line)) {
+                    values.push(match[2] !== undefined ? match[2] : match[3]);
+                    if (match[4] === '') break;
+                }
+                
+                header.forEach((key, index) => {
+                    row[key] = values[index] || '';
+                });
+                result.push(row);
+            }
+            return result;
+        }
+
+        function renderVictims(data) {
+            memoryGrid.innerHTML = '';
+            
+            if (!Array.isArray(data) || data.length === 0) {
+                memoryGrid.appendChild(emptyGridMessage);
+                emptyGridMessage.style.display = 'block';
+                return;
+            }
+            emptyGridMessage.style.display = 'none';
+            
+            data.forEach((victim, index) => {
+                const card = document.createElement('div');
+                card.className = 'victim-card';
+                card.setAttribute('tabindex', '0');
+                card.setAttribute('role', 'button');
+                card.style.animationDelay = `${index * 50}ms`;
+
+                card.innerHTML = `
+                    <img src="${victim.photo || placeholderImage}" alt="Портрет ${victim.name}">
+                    <div class="victim-name">${victim.name}</div>
+                `;
+
+                card.addEventListener('click', () => openLightbox(victim));
+                card.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        openLightbox(victim);
+                    }
+                });
+                
+                memoryGrid.appendChild(card);
+            });
+        }
+
+        function openLightbox(victim) {
+            document.getElementById('lightbox-img').src = victim.photo || placeholderImage;
+            document.getElementById('lightbox-img').alt = `Портрет ${victim.name}`;
+            document.getElementById('lightbox-name').textContent = victim.name;
+            document.getElementById('lightbox-details').textContent = victim.details || 'Дополнительная информация отсутствует.';
+            lightbox.classList.add('visible');
+            closeLightboxBtn.focus();
+        }
+
+        function closeLightbox() {
+            lightbox.classList.remove('visible');
+        }
+        
+        function processData(text) {
+            setStatus('Обработка...', false);
+            try {
+                let data;
+                if (text.trim().startsWith('[')) { // Попытка парсить как JSON
+                    data = JSON.parse(text);
+                } else { // Иначе как CSV
+                    data = parseCSV(text);
+                }
+                renderVictims(data);
+                setStatus(`Загружено ${data.length} записей.`, false);
+            } catch (e) {
+                renderVictims([]);
+                setStatus(`Ошибка: ${e.message}`, true);
+            }
+        }
+        
+        loadDataBtn.addEventListener('click', () => {
+            const text = dataPasteArea.value.trim();
+            if (!text) {
+                setStatus('Поле ввода пустое. Вставьте данные или выберите файл.', true);
+                return;
+            }
+            processData(text);
+        });
+        
+        fileUploadInput.addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const text = e.target.result;
+                    dataPasteArea.value = text;
+                    processData(text);
+                };
+                reader.onerror = () => {
+                     setStatus('Ошибка при чтении файла.', true);
+                };
+                reader.readAsText(file);
+            }
+        });
+        
+        loadDemoBtn.addEventListener('click', () => {
+            dataPasteArea.value = JSON.stringify(sampleJsonData, null, 2);
+            processData(dataPasteArea.value);
+        });
+
+        clearDataBtn.addEventListener('click', () => {
+            renderVictims([]);
+            dataPasteArea.value = '';
+            fileUploadInput.value = ''; // Сбросить выбор файла
+            setStatus('Список очищен.', false);
+        });
+
+        closeLightboxBtn.addEventListener('click', closeLightbox);
+        lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && lightbox.classList.contains('visible')) closeLightbox(); });
+
+        // --- ЛОГИКА ПОРТАЛА МИРА ---
+        const portalContainer = document.getElementById('portal-container');
+        const portalWords = ["Мир", "Память", "Надежда", "Жизнь", "Свет", "Прощение", "Будущее", "Человечность"];
+        let portalActivated = false;
+
+        const activatePortal = () => {
+            if (portalActivated) return;
+            portalActivated = true;
+            for (let i = 0; i < 20; i++) {
+                setTimeout(() => {
+                    const particle = document.createElement('span');
+                    particle.className = 'particle';
+                    particle.textContent = portalWords[Math.floor(Math.random() * portalWords.length)];
+                    particle.style.left = `${40 + Math.random() * 20}%`;
+                    particle.style.top = `${40 + Math.random() * 20}%`;
+                    particle.style.animationDelay = `${Math.random() * 2}s`;
+                    portalContainer.appendChild(particle);
+                    particle.addEventListener('animationend', () => particle.remove());
+                }, i * 200);
+            }
+            setTimeout(() => { portalActivated = false; }, 5000);
+        };
+        portalContainer.addEventListener('click', activatePortal);
+        portalContainer.addEventListener('mouseenter', activatePortal);
+        portalContainer.addEventListener('focus', activatePortal);
+    });
+    </script>
+</body>
+</html>

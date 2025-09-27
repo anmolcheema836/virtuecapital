@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Raavi Font Typing Tutor</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Raavi&display=swap');
+
+        :root {
+            --background-color: #121212;
+            --surface-color: #1e1e1e;
+            --primary-color: #bb86fc;
+            --primary-variant-color: #3700b3;
+            --secondary-color: #03dac6;
+            --text-color: #e0e0e0;
+            --error-color: #cf6679;
+            --correct-color: #66bb6a;
+            --cursor-color: var(--secondary-color);
+        }
+
+        body {
+            font-family: 'Roboto', 'Raavi', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 16px;
+        }
+
+        .container {
+            display: flex;
+            width: 100%;
+            max-width: 1200px;
+            gap: 20px;
+        }
+
+        .lesson-nav {
+            background-color: var(--surface-color);
+            padding: 20px;
+            border-radius: 8px;
+            width: 20%;
+            align-self: flex-start;
+        }
+
+        .lesson-nav h2 {
+            margin-top: 0;
+            color: var(--primary-color);
+        }
+
+        .lesson-nav ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .lesson-nav li {
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 4px;
+            margin-bottom: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .lesson-nav li:hover, .lesson-nav li.active {
+            background-color: var(--primary-variant-color);
+        }
+        
+        .lesson-nav li.completed {
+            text-decoration: line-through;
+            color: #888;
+        }
+
+        .main-content {
+            width: 80%;
+        }
+
+        .card {
+            background-color: var(--surface-color);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        #lesson-title {
+            color: var(--primary-color);
+            margin-top: 0;
+        }
+
+        #lesson-description {
+            font-style: italic;
+            margin-bottom: 20px;
+        }
+
+        #target-text {
+            font-family: 'Raavi', sans-serif;
+            font-size: 2.5em;
+            letter-spacing: 2px;
+            line-height: 1.5;
+            padding: 20px;
+            background-color: #2c2c2c;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            white-space: pre-wrap;
+        }
+        
+        .typed-char {
+            position: relative;
+        }
+        
+        .typed-char.correct {
+            color: var(--correct-color);
+        }
+
+        .typed-char.incorrect {
+            color: var(--error-color);
+            text-decoration: underline;
+        }
+        
+        .cursor {
+            display: inline-block;
+            width: 2px;
+            height: 2.5em;
+            background-color: var(--cursor-color);
+            margin-left: -2px;
+            animation: blink 1s infinite;
+            vertical-align: bottom;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        #typing-input {
+            width: 100%;
+            padding: 15px;
+            font-size: 1.2em;
+            font-family: 'Raavi', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            border: 2px solid var(--primary-variant-color);
+            border-radius: 4px;
+            box-sizing: border-box;
+            outline: none;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 20px;
+            text-align: center;
+        }
+
+        .stat-item {
+            background-color: #2c2c2c;
+            padding: 15px;
+            border-radius: 4px;
+        }
+        
+        .stat-item h3 {
+            margin: 0 0 5px 0;
+            color: var(--secondary-color);
+            font-size: 1em;
+        }
+        
+        .stat-item p {
+            margin: 0;
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+        
+        .keyboard {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .row {
+            display: flex;
+            margin-bottom: 8px;
+        }
+        
+        .key {
+            width: 50px;
+            height: 50px;
+            background-color: #444;
+            border: 1px solid #555;
+            border-radius: 5px;
+            margin: 0 4px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-size: 1em;
+            position: relative;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+        
+        .key.highlight {
+            background-color: var(--primary-variant-color);
+            color: white;
+        }
+
+        .key.active {
+            transform: scale(0.95);
+            background-color: var(--secondary-color);
+        }
+        
+        .key .shift-char {
+            font-size: 0.8em;
+            color: #ccc;
+            position: absolute;
+            top: 5px;
+            left: 5px;
+        }
+        
+        .key .main-char {
+            font-size: 1.2em;
+        }
+
+        .key.space { width: 300px; }
+        .key.backspace { width: 100px; }
+        .key.tab { width: 70px; }
+        .key.capslock { width: 80px; }
+        .key.enter { width: 100px; }
+        .key.shift { width: 120px; }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        #restart-btn {
+            background-color: var(--secondary-color);
+            color: var(--background-color);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        #restart-btn:hover {
+            background-color: #03c4b1;
+        }
+
+        @media (max-width: 768px) {
+            body { padding: 10px; }
+            .container { flex-direction: column; }
+            .lesson-nav, .main-content { width: 100%; }
+            #target-text { font-size: 1.5em; }
+            .key { width: 35px; height: 35px; font-size: 0.8em; }
+            .key.space { width: 200px; }
+            .key.backspace, .key.enter, .key.shift { width: 70px; }
+            .key.tab, .key.capslock { width: 50px; }
+            .stats { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav class="lesson-nav card">
+            <h2>Lessons</h2>
+            <ul id="lesson-list"></ul>
+        </nav>
+
+        <main class="main-content">
+            <header class="card">
+                <h1 id="lesson-title"></h1>
+                <p id="lesson-description"></p>
+            </header>
+
+            <section class="card">
+                <div id="target-text"></div>
+                <input type="text" id="typing-input" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+            </section>
+
+            <section class="card stats">
+                <div class="stat-item">
+                    <h3>Time</h3>
+                    <p id="time">0s</p>
+                </div>
+                <div class="stat-item">
+                    <h3>Speed (WPM)</h3>
+                    <p id="wpm">0</p>
+                </div>
+                <div class="stat-item">
+                    <h3>Accuracy</h3>
+                    <p id="accuracy">100%</p>
+                </div>
+                 <div class="stat-item">
+                    <h3>Errors</h3>
+                    <p id="errors">0</p>
+                </div>
+            </section>
+            
+            <div class="controls card">
+                <button id="restart-btn">Restart Lesson</button>
+            </div>
+
+            <section class="card keyboard">
+                <!-- Virtual keyboard will be generated here by JS -->
+            </section>
+        </main>
+    </div>
+
+    <script>
+        const lessons = [
+            {
+                title: 'Beginner: Home Row (Left Hand)',
+                description: 'Focus on the home row keys for your left hand: ੳ,  macroeconomic, ਿ, ਾ',
+                text: 'ੳੳ  macroeconomicਿਾ ੳ macroeconomic ਿਾ ੳ macroeconomic ਿਾ',
+                highlightKeys: ['f', 'd', 's', 'a']
+            },
+            {
+                title: 'Beginner: Home Row (Right Hand)',
+                description: 'Now, practice the home row keys for your right hand: ; , ਕ, ਹ',
+                text: ';ਲਕਹ ;ਲਕਹ ;ਲਕਹ',
+                highlightKeys: [';', 'l', 'k', 'j']
+            },
+            {
+                title: 'Beginner: Full Home Row',
+                description: 'Combine both hands on the home row.',
+                text: 'ੳ macroeconomicਿਾ ;ਲਕਹ ੳ macroeconomicਿਾ ;ਲਕਹ',
+                highlightKeys: ['a', 's', 'd', 'f', 'j', 'k', 'l', ';']
+            },
+            {
+                title: 'Intermediate: Top Row',
+                description: 'Practice the keys on the top row.',
+                text: 'ਕਸਦ ਰਟਯ Gਦਦਟ ਯਦਟ ਯਦਟ',
+                highlightKeys: ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p']
+            },
+            {
+                title: 'Intermediate: Shift Keys',
+                description: 'Practice using the shift key for capital letters and special characters.',
+                text: 'ੴ ਖ਼ ੴ ਖ਼ ੴ ਖ਼',
+                highlightKeys: ['shift', 'q', 'w']
+            },
+            {
+                title: 'Advanced: Simple Paragraph',
+                description: 'Type a simple paragraph to practice flow and accuracy.',
+                text: 'ਪੰਜਾਬੀ ਇੱਕ ਬਹੁਤ ਹੀ ਮਿੱਠੀ ਭਾਸ਼ਾ ਹੈ। ਇਸ ਨੂੰ ਸਿੱਖਣਾ ਬਹੁਤ ਆਸਾਨ ਹੈ।',
+                highlightKeys: []
+            },
+            {
+                title: 'Advanced: Speed Drill',
+                description: 'Test your speed with this drill.',
+                text: 'ਤੇਜ਼ ਭੂਰੀ ਲੂੰਬੜੀ ਆਲਸੀ ਕੁੱਤੇ ਉੱਤੇ ਛਾਲ ਮਾਰਦੀ ਹੈ। ਇਹ ਵਾਕ ਸਾਰੇ ਅੱਖਰਾਂ ਦੀ ਵਰਤੋਂ ਕਰਦਾ ਹੈ।',
+                highlightKeys: []
+            }
+        ];
+
+        const keyboardLayout = [
+            [
+                { main: '`', shift: '~', code: 'Backquote' }, { main: '1', shift: '!', code: 'Digit1' }, { main: '2', shift: '@', code: 'Digit2' },
+                { main: '3', shift: '#', code: 'Digit3' }, { main: '4', shift: '$', code: 'Digit4' }, { main: '5', shift: '%', code: 'Digit5' },
+                { main: '6', shift: '^', code: 'Digit6' }, { main: '7', shift: '&', code: 'Digit7' }, { main: '8', shift: '*', code: 'Digit8' },
+                { main: '9', shift: '(', code: 'Digit9' }, { main: '0', shift: ')', code: 'Digit0' }, { main: '-', shift: '_', code: 'Minus' },
+                { main: '=', shift: '+', code: 'Equal' }, { main: 'Backspace', shift: null, code: 'Backspace', class: 'backspace' }
+            ],
+            [
+                { main: 'Tab', shift: null, code: 'Tab', class: 'tab' }, { main: 'ੳ', shift: 'ੴ', code: 'KeyQ' }, { main: ' macroeconomic', shift: 'ਖ਼', code: 'KeyW' },
+                { main: 'ਿ', shift: 'ੲ', code: 'KeyE' }, { main: 'ਾ', shift: 'ਸ', code: 'KeyR' }, { main: 'ਈ', shift: 'ਜ', code: 'KeyT' },
+                { main: 'ੂ', shift: 'ਗ', code: 'KeyY' }, { main: 'ਬ', shift: 'ਦ', code: 'KeyU' }, { main: 'ਹ', shift: 'ਡ', code: 'KeyI' },
+                { main: 'ਗ', shift: 'ਝ', code: 'KeyO' }, { main: 'ਦ', shift: 'ਢ', code: 'KeyP' }, { main: '[', shift: '{', code: 'BracketLeft' },
+                { main: ']', shift: '}', code: 'BracketRight' }, { main: '\\', shift: '|', code: 'Backslash' }
+            ],
+            [
+                { main: 'CapsLock', shift: null, code: 'CapsLock', class: 'capslock' }, { main: 'ੳ', shift: ' ', code: 'KeyA' }, { main: ' macroeconomic', shift: ' ', code: 'KeyS' },
+                { main: 'ਿ', shift: ' ', code: 'KeyD' }, { main: 'ਾ', shift: ' ', code: 'KeyF' }, { main: 'ਕ', shift: ' ', code: 'KeyG' },
+                { main: 'ਹ', shift: ' ', code: 'KeyH' }, { main: ' ', shift: ' ', code: 'KeyJ' }, { main: ' ', shift: ' ', code: 'KeyK' },
+                { main: 'ਲ', shift: ' ', code: 'KeyL' }, { main: ';', shift: ':', code: 'Semicolon' }, { main: '\'', shift: '"', code: 'Quote' },
+                { main: 'Enter', shift: null, code: 'Enter', class: 'enter' }
+            ],
+            [
+                { main: 'Shift', shift: null, code: 'ShiftLeft', class: 'shift' }, { main: 'z', shift: 'Z', code: 'KeyZ' }, { main: 'x', shift: 'X', code: 'KeyX' },
+                { main: 'c', shift: 'C', code: 'KeyC' }, { main: 'v', shift: 'V', code: 'KeyV' }, { main: 'b', shift: 'B', code: 'KeyB' },
+                { main: 'n', shift: 'N', code: 'KeyN' }, { main: 'm', shift: 'M', code: 'KeyM' }, { main: ',', shift: '<', code: 'Comma' },
+                { main: '.', shift: '>', code: 'Period' }, { main: '/', shift: '?', code: 'Slash' }, { main: 'Shift', shift: null, code: 'ShiftRight', class: 'shift' }
+            ],
+            [
+                { main: ' ', shift: null, code: 'Space', class: 'space' }
+            ]
+        ];
+
+        let currentLessonIndex = 0;
+        let typedText = '';
+        let startTime, timerInterval;
+        let errors = 0;
+        let completedLessons = new Set();
+        
+        const lessonListEl = document.getElementById('lesson-list');
+        const lessonTitleEl = document.getElementById('lesson-title');
+        const lessonDescriptionEl = document.getElementById('lesson-description');
+        const targetTextEl = document.getElementById('target-text');
+        const typingInputEl = document.getElementById('typing-input');
+        const timeEl = document.getElementById('time');
+        const wpmEl = document.getElementById('wpm');
+        const accuracyEl = document.getElementById('accuracy');
+        const errorsEl = document.getElementById('errors');
+        const restartBtn = document.getElementById('restart-btn');
+        const keyboardEl = document.querySelector('.keyboard');
+
+        function init() {
+            populateLessonList();
+            loadLesson(0);
+            createKeyboard();
+            
+            typingInputEl.addEventListener('input', handleTyping);
+            typingInputEl.addEventListener('keydown', handleKeyDown);
+            restartBtn.addEventListener('click', () => loadLesson(currentLessonIndex));
+        }
+
+        function populateLessonList() {
+            lessonListEl.innerHTML = '';
+            lessons.forEach((lesson, index) => {
+                const li = document.createElement('li');
+                li.textContent = lesson.title;
+                li.dataset.index = index;
+                li.addEventListener('click', () => {
+                    loadLesson(index);
+                });
+                lessonListEl.appendChild(li);
+            });
+        }
+        
+        function updateLessonListUI() {
+            const lessonItems = lessonListEl.querySelectorAll('li');
+            lessonItems.forEach((item, index) => {
+                item.classList.remove('active', 'completed');
+                if (index === currentLessonIndex) {
+                    item.classList.add('active');
+                }
+                if (completedLessons.has(index)) {
+                    item.classList.add('completed');
+                }
+            });
+        }
+
+        function loadLesson(index) {
+            if (timerInterval) clearInterval(timerInterval);
+            
+            currentLessonIndex = index;
+            const lesson = lessons[index];
+            
+            lessonTitleEl.textContent = lesson.title;
+            lessonDescriptionEl.textContent = lesson.description;
+            renderTargetText(lesson.text, '');
+            
+            resetStats();
+            updateLessonListUI();
+            highlightKeyboardKeys(lesson.highlightKeys);
+            
+            typingInputEl.focus();
+        }
+        
+        function renderTargetText(target, typed) {
+            targetTextEl.innerHTML = '';
+            const targetChars = target.split('');
+            const typedChars = typed.split('');
+
+            targetChars.forEach((char, index) => {
+                const span = document.createElement('span');
+                span.textContent = char;
+                span.className = 'typed-char';
+
+                if (index < typedChars.length) {
+                    if (typedChars[index] === char) {
+                        span.classList.add('correct');
+                    } else {
+                        span.classList.add('incorrect');
+                    }
+                }
+                targetTextEl.appendChild(span);
+            });
+            
+            const cursor = document.createElement('span');
+            cursor.className = 'cursor';
+            const lastTypedChar = targetTextEl.children[typed.length -1];
+            if(lastTypedChar) {
+                targetTextEl.insertBefore(cursor, lastTypedChar.nextSibling);
+            } else {
+                targetTextEl.prepend(cursor);
+            }
+        }
+        
+        function handleTyping(e) {
+            const currentText = lessons[currentLessonIndex].text;
+            typedText = e.target.value;
+
+            if (!startTime && typedText.length > 0) {
+                startTimer();
+            }
+
+            renderTargetText(currentText, typedText);
+            
+            let currentErrors = 0;
+            for(let i=0; i < typedText.length; i++) {
+                if(typedText[i] !== currentText[i]) {
+                    currentErrors++;
+                }
+            }
+            errors = currentErrors;
+
+            updateStats();
+            
+            if (typedText === currentText) {
+                clearInterval(timerInterval);
+                completedLessons.add(currentLessonIndex);
+                updateLessonListUI();
+                alert(`Lesson Complete!\nTime: ${timeEl.textContent}\nWPM: ${wpmEl.textContent}\nAccuracy: ${accuracyEl.textContent}`);
+            }
+        }
+        
+        function handleKeyDown(e) {
+            const keyElement = document.querySelector(`.key[data-code="${e.code}"]`);
+            if (keyElement) {
+                keyElement.classList.add('active');
+                setTimeout(() => keyElement.classList.remove('active'), 200);
+            }
+            if (e.code === 'Tab') {
+                e.preventDefault();
+            }
+        }
+
+        function startTimer() {
+            startTime = new Date();
+            timerInterval = setInterval(updateStats, 1000);
+        }
+
+        function updateStats() {
+            if (!startTime) return;
+
+            const now = new Date();
+            const elapsedTime = (now - startTime) / 1000; // in seconds
+            timeEl.textContent = `${Math.floor(elapsedTime)}s`;
+            
+            const wordsTyped = typedText.length / 5;
+            const minutes = elapsedTime / 60;
+            const wpm = minutes > 0 ? Math.round(wordsTyped / minutes) : 0;
+            wpmEl.textContent = wpm;
+            
+            const accuracy = typedText.length > 0 ? Math.round(((typedText.length - errors) / typedText.length) * 100) : 100;
+            accuracyEl.textContent = `${accuracy}%`;
+
+            errorsEl.textContent = errors;
+        }
+        
+        function resetStats() {
+            typedText = '';
+            typingInputEl.value = '';
+            startTime = null;
+            errors = 0;
+            
+            timeEl.textContent = '0s';
+            wpmEl.textContent = '0';
+            accuracyEl.textContent = '100%';
+            errorsEl.textContent = '0';
+        }
+        
+        function createKeyboard() {
+            keyboardLayout.forEach(rowLayout => {
+                const rowEl = document.createElement('div');
+                rowEl.className = 'row';
+                rowLayout.forEach(keyData => {
+                    const keyEl = document.createElement('div');
+                    keyEl.className = 'key';
+                    if (keyData.class) {
+                        keyEl.classList.add(keyData.class);
+                    }
+                    keyEl.dataset.code = keyData.code;
+
+                    if (keyData.shift) {
+                        const shiftChar = document.createElement('span');
+                        shiftChar.className = 'shift-char';
+                        shiftChar.textContent = keyData.shift;
+                        keyEl.appendChild(shiftChar);
+                    }
+
+                    const mainChar = document.createElement('span');
+                    mainChar.className = 'main-char';
+                    mainChar.textContent = keyData.main;
+                    keyEl.appendChild(mainChar);
+                    
+                    rowEl.appendChild(keyEl);
+                });
+                keyboardEl.appendChild(rowEl);
+            });
+        }
+        
+        function highlightKeyboardKeys(keysToHighlight) {
+            document.querySelectorAll('.key').forEach(key => key.classList.remove('highlight'));
+            if (!keysToHighlight || keysToHighlight.length === 0) return;
+            
+            keysToHighlight.forEach(keyId => {
+                const keyElements = document.querySelectorAll(`.key[data-code*="${keyId.toUpperCase()}"]`);
+                keyElements.forEach(el => el.classList.add('highlight'));
+            });
+        }
+
+        init();
+    </script>
+</body>
+</html>
