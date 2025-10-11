@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Declaration of Customer Assistance</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display+SC:wght@400;700&family=Lustria&display=swap');
+
+        :root {
+            --paper-bg: #FDFBF5;
+            --ink-dark: #3a3228;
+            --ink-light: #6c5f53;
+            --border-color: #d7c7b7;
+            --patriot-red: #9f1c1c;
+            --patriot-blue: #0d2c54;
+            --outer-bg: #1a1a1a;
+        }
+
+        /* --- Foundational Styles --- */
+        body {
+            background-color: var(--outer-bg);
+            background-image: url('https://www.transparenttextures.com/patterns/dark-wood.png');
+            font-family: 'Lustria', serif;
+            color: var(--ink-dark);
+            font-size: 18px;
+            line-height: 1.8;
+            padding: 3rem 1rem;
+            margin: 0;
+        }
+
+        .document-wrapper {
+            max-width: 1400px;
+            margin: 0 auto;
+            background-color: var(--paper-bg);
+            padding: 3rem 4rem;
+            border: 1px solid #7a6a5a;
+            box-shadow: 0 0 0 6px #3E2723, 12px 12px 40px rgba(0,0,0,0.7);
+            background-image: url('https://www.transparenttextures.com/patterns/old-paper.png');
+        }
+        
+        /* --- Typography & Ornaments --- */
+        h1, h2, h3, h4 {
+            font-family: 'Playfair Display SC', serif;
+            font-weight: 700;
+            color: var(--ink-dark);
+            text-shadow: 1px 1px 0 #fff;
+        }
+
+        .section-divider {
+            text-align: center;
+            margin: 3rem 0;
+            font-size: 2.5rem;
+            color: var(--border-color);
+            letter-spacing: 0.5em;
+        }
+
+        /* --- Header Section --- */
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        .header img.logo {
+            max-width: 220px;
+        }
+        .header h1 {
+            font-size: 4.5rem;
+            line-height: 1;
+            margin: 1.5rem 0 0.5rem 0;
+        }
+        .header .subtitle {
+            font-family: 'Lustria', serif;
+            font-style: italic;
+            font-size: 1.4rem;
+            color: var(--ink-light);
+        }
+
+        /* --- Main Content Grid --- */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 4rem;
+        }
+        
+        /* --- Engraving & Signature Styles --- */
+        .founder-engraving {
+            border: 1px solid var(--border-color);
+            padding: 8px;
+            background: #fff;
+            box-shadow: 3px 3px 10px rgba(0,0,0,0.1);
+            filter: grayscale(100%) contrast(120%);
+            width: 100%;
+            height: auto;
+        }
+
+        .founder-signatures {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            align-items: center;
+            gap: 2rem;
+            padding: 2rem;
+        }
+
+        .signature {
+            max-width: 180px;
+            height: auto;
+            filter: contrast(150%) brightness(80%);
+        }
+
+        /* --- Washington's Introduction --- */
+        .washington-intro {
+            grid-column: 1 / -1;
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            gap: 2rem;
+            align-items: center;
+            border-bottom: 3px double var(--border-color);
+            padding-bottom: 3rem;
+        }
+        .washington-intro .text-block p:first-child {
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+        .washington-intro h4 { margin: 0.5rem 0 0 0; text-align: center; }
+        
+        /* --- Left Column --- */
+        .left-column {
+            border-right: 1px solid var(--border-color);
+            padding-right: 4rem;
+        }
+
+        .committee-section {
+            display: grid;
+            grid-template-columns: 150px 1fr;
+            gap: 2rem;
+            align-items: flex-start;
+            margin-bottom: 3rem;
+        }
+        .committee-section .founder-info { text-align: center; }
+        .committee-section h2 { margin: 0 0 0.5rem 0; font-size: 2rem; }
+        .committee-section p { margin-top: 0; }
+        .committee-section .search-bar {
+            width: 100%;
+            font-family: 'Lustria', serif;
+            font-size: 1.1rem;
+            padding: 0.5rem;
+            border: 1px solid var(--border-color);
+            box-shadow: inset 1px 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        /* Accordion */
+        .accordion-item {
+            border-bottom: 1px dotted var(--border-color);
+        }
+        .accordion-header {
+            padding: 1rem 0;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .accordion-header h3 {
+            margin: 0;
+            font-family: 'Lustria', serif;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        .accordion-icon {
+            font-family: serif;
+            font-size: 1.5rem;
+            color: var(--patriot-red);
+            transition: transform 0.3s;
+        }
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out, padding 0.3s ease-out;
+            padding: 0 0.5rem;
+        }
+        .accordion-item.active .accordion-icon { transform: rotate(45deg); }
+        .accordion-item.active .accordion-content { padding: 0.5rem 0.5rem 1.5rem 0.5rem; }
+
+        /* --- Right Column (Sidebar) --- */
+        .sidebar {
+            position: sticky;
+            top: 2rem;
+        }
+        .sidebar-section {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .sidebar-section h2 {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+        }
+        .founder-cabinet {
+            display: flex;
+            justify-content: space-around;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+        .founder-cabinet .founder-info {
+            flex: 1;
+        }
+        .founder-cabinet .founder-engraving {
+            width: 80px;
+            height: auto;
+            border-radius: 50%;
+        }
+        .founder-cabinet h4 { margin: 0.5rem 0 0 0; font-size: 0.9rem; }
+        
+        .dispatch-form .form-group {
+            margin-bottom: 1rem;
+        }
+        .dispatch-form label {
+            display: block;
+            font-size: 0.9rem;
+            margin-bottom: 0.25rem;
+        }
+        .dispatch-form input, .dispatch-form textarea {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid var(--border-color);
+            font-family: 'Lustria', serif;
+            font-size: 1rem;
+            box-sizing: border-box;
+        }
+        .btn-submit {
+            display: block;
+            width: 100%;
+            padding: 0.75rem;
+            background: var(--patriot-red);
+            color: #fff;
+            border: none;
+            font-family: 'Playfair Display SC', serif;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .btn-submit:hover { background: var(--ink-dark); }
+        
+        /* --- Footer --- */
+        .footer {
+            text-align: center;
+            border-top: 3px double var(--border-color);
+            padding-top: 2rem;
+            margin-top: 3rem;
+        }
+        
+        /* --- Responsive Design --- */
+        @media (max-width: 1200px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+            .left-column {
+                border-right: none;
+                padding-right: 0;
+            }
+            .sidebar {
+                position: static;
+                border-top: 1px solid var(--border-color);
+                padding-top: 2rem;
+            }
+        }
+        @media (max-width: 768px) {
+            .document-wrapper { padding: 1.5rem; }
+            .header h1 { font-size: 2.5rem; }
+            .washington-intro, .committee-section { grid-template-columns: 1fr; text-align: center; }
+            .washington-intro .founder-engraving { margin: 0 auto; max-width: 150px; }
+            .committee-section .founder-info { margin-bottom: 1rem; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="document-wrapper">
+        <header class="header">
+            <img src="https://patriotall.com//image/catalog/patriots_new_logo.png" alt="PatriotBuySell Logo" class="logo">
+            <h1>A Declaration of Customer Assistance</h1>
+            <p class="subtitle">Enacted by the Assembly of Patrons, for the swift Resolution of all Inquiries and Concerns</p>
+        </header>
+
+        <section class="washington-intro">
+            <div class="founder-info">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Gilbert_Stuart_Williamstown_Portrait_of_George_Washington.jpg/800px-Gilbert_Stuart_Williamstown_Portrait_of_George_Washington.jpg" class="founder-engraving" alt="Portrait of George Washington">
+                <h4>His Excellency,<br>George Washington</h4>
+            </div>
+            <div class="text-block">
+                <p>"To ensure the prosperity and satisfaction of all Citizens engaged in commerce, it is hereby decreed that a clear and direct path to assistance be established. Let no query go unanswered, and no concern unaddressed, for in the satisfaction of the People lies the strength of our Union."</p>
+            </div>
+        </section>
+
+        <div class="section-divider">~ &starf; ~</div>
+
+        <div class="main-grid">
+            <main class="left-column">
+                <section class="committee-section">
+                    <div class="founder-info">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Official_Presidential_portrait_of_Thomas_Jefferson_%28by_Rembrandt_Peale%2C_1800%29.jpg/800px-Official_Presidential_portrait_of_Thomas_Jefferson_%28by_Rembrandt_Peale%2C_1800%29.jpg" class="founder-engraving" alt="Portrait of Thomas Jefferson">
+                        <h4>Thomas Jefferson</h4>
+                    </div>
+                    <div class="text-block">
+                        <h2>The Committee for Publick Inquiry</h2>
+                        <p>Under the learned eye of Mr. Jefferson, this committee is tasked with cataloging and resolving all common petitions. First, consult the archives with your query:</p>
+                        <input type="search" class="search-bar" placeholder="e.g., Status of my musket shipment...">
+                    </div>
+                </section>
+
+                <div id="faqAccordion">
+                    <div class="accordion-item">
+                        <div class="accordion-header">
+                            <h3>How might I track the progress of my goods?</h3>
+                            <div class="accordion-icon">+</div>
+                        </div>
+                        <div class="accordion-content">
+                            <p>Upon the dispatch of your wares, a rider is sent forth bearing an electronic missive. Within this message, you will find a unique cypher. Present this cypher to the website of the designated courier to receive timely updates on your parcel's journey.</p>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <div class="accordion-header">
+                            <h3>What are the established means of conveyance?</h3>
+                            <div class="accordion-icon">+</div>
+                        </div>
+                        <div class="accordion-content">
+                            <p>We offer Standard Conveyance via reliable wagon train (5-7 days) and Expedited Dispatch via the Pony Express (2-3 days). All shipments originate from our primary depot in Philadelphia.</p>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <div class="accordion-header">
+                            <h3>What is the protocol for returning unsatisfactory items?</h3>
+                            <div class="accordion-icon">+</div>
+                        </div>
+                        <div class="accordion-content">
+                            <p>Should you find an article not to your satisfaction, you are afforded a period of thirty days to return it for a full reimbursement of shillings. The item must be returned in the condition it was received, with its original packaging intact.</p>
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            <aside class="sidebar">
+                <section class="sidebar-section">
+                    <h2>The Council of Advisors</h2>
+                    <div class="founder-cabinet">
+                        <div class="founder-info">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/BenFranklinDuplessis.jpg/800px-BenFranklinDuplessis.jpg" class="founder-engraving" alt="Portrait of Benjamin Franklin">
+                            <h4>Benjamin Franklin</h4>
+                        </div>
+                        <div class="founder-info">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQME95T03v-pKGKtP5LuhjdGsi5MJi5TvuKUQ&s" class="founder-engraving" alt="Portrait of John Adams">
+                            <h4>John Adams</h4>
+                        </div>
+                    </div>
+                </section>
+                <section class="sidebar-section dispatch-form">
+                    <h2>Lodge a Formal Petition</h2>
+                    <form action="#" onsubmit="alert('Your petition has been sealed and sent by post-rider!'); return false;">
+                        <div class="form-group">
+                            <label for="name">Your Name</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Your Electronic Address</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Your Petition</label>
+                            <textarea id="message" name="message" rows="4" required></textarea>
+                        </div>
+                        <button type="submit" class="btn-submit">Send Forth</button>
+                    </form>
+                </section>
+            </aside>
+        </div>
+
+        <footer class="footer">
+            <h2>Endorsed and Affirmed By,</h2>
+            <div class="founder-signatures">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/George_Washington_signature.svg/404px-George_Washington_signature.svg.png?20180911020328" class="signature" alt="Signature of George Washington">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/Thomas_Jefferson_Signature.svg/1280px-Thomas_Jefferson_Signature.svg.png" class="signature" alt="Signature of Thomas Jefferson">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/John_adams_signature.svg/1024px-John_adams_signature.svg.png" class="signature" alt="Signature of John Adams">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Benjamin_Franklin_Signature.svg/2560px-Benjamin_Franklin_Signature.svg.png" class="signature" alt="Signature of Benjamin Franklin">
+            </div>
+            <p>&copy; 1776 - Present Day. A Patriot Company, For the People.</p>
+        </footer>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const accordion = document.getElementById('faqAccordion');
+            if (accordion) {
+                accordion.addEventListener('click', function(e) {
+                    const header = e.target.closest('.accordion-header');
+                    if (!header) return;
+
+                    const item = header.parentElement;
+                    const content = header.nextElementSibling;
+                    const wasActive = item.classList.contains('active');
+                    
+                    Array.from(item.parentElement.children).forEach(child => {
+                        if (child !== item) {
+                            child.classList.remove('active');
+                            child.querySelector('.accordion-content').style.maxHeight = null;
+                        }
+                    });
+                    
+                    if (!wasActive) {
+                        item.classList.add('active');
+                        content.style.maxHeight = content.scrollHeight + 'px';
+                    } else {
+                        item.classList.remove('active');
+                        content.style.maxHeight = null;
+                    }
+                });
+            }
+        });
+    </script>
+
+</body>
+</html>
