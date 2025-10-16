@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>I AM KAZAK - A Novel by Buck Jones</title>
+    <meta name="description" content="The official homepage for 'I AM KAZAK', the new historical adventure and love story by Buck Jones.">
+    <!-- 
+        Explanation:
+        This is a single-file starter template for an author or book landing page.
+        - To add new pages (e.g., a full Store), create new .html files and update the navigation links.
+        - To integrate with a backend for e-commerce (a real 'Buy Now' button), you will need to replace the placeholder link with your product URL or integrate a payment processor like Stripe or Shopify.
+        - Make sure the video and images ('Kazak-vid.mp4', 'book-cover.png', 'author.png') are in the same directory as this index.html file.
+        - Social media icons in the footer are placeholders and should be linked to your actual profiles.
+    -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@300;400;700&display=swap');
+
+        :root {
+            --primary-font: 'Lora', serif;
+            --secondary-font: 'Montserrat', sans-serif;
+            --text-color: #f0f0f0;
+            --background-color: #121212;
+            --accent-color: #d4af37; /* A subtle, elegant gold */
+            --section-bg-color: #1a1a1a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--secondary-font);
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+        
+        #bg-video {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            z-index: -2;
+            transform: translateX(-50%) translateY(-50%);
+            object-fit: cover;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            z-index: -1;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Navigation */
+        .main-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 2rem 0;
+            transition: all 0.4s ease-in-out;
+        }
+        
+        .main-nav.scrolled {
+            background-color: rgba(18, 18, 18, 0.95);
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        }
+
+        .nav-logo a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-family: var(--primary-font);
+            font-weight: 700;
+            font-size: 1.5rem;
+            transition: color 0.3s ease;
+        }
+        .nav-logo a:hover { color: var(--accent-color); }
+
+        .nav-links { list-style: none; display: flex; }
+        .nav-links li { margin-left: 2rem; }
+        .nav-links a { color: var(--text-color); text-decoration: none; font-weight: 300; position: relative; padding-bottom: 5px; }
+        .nav-links a::after { content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 0; height: 1px; background-color: var(--accent-color); transition: width 0.3s ease; }
+        .nav-links a:hover::after { width: 100%; }
+        
+        .menu-toggle { display: none; }
+        
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding-top: 60px; /* Offset for nav bar */
+        }
+        
+        .hero-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 3rem;
+            width: 100%;
+        }
+        
+        .hero-book-cover {
+            flex-basis: 40%;
+            max-width: 350px;
+            opacity: 0;
+            transform: scale(0.9);
+            animation: fade-in-scale 1.2s ease-out 0.5s forwards;
+        }
+        
+        .hero-book-cover img {
+            width: 100%;
+            border-radius: 5px;
+            box-shadow: 10px 10px 30px rgba(0,0,0,0.7);
+            animation: float-effect 5s ease-in-out infinite;
+        }
+
+        @keyframes fade-in-scale {
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes float-effect {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .hero-text {
+            flex-basis: 60%;
+            text-align: left;
+            opacity: 0;
+            transform: translateX(30px);
+            animation: fade-in-right 1.2s ease-out 0.8s forwards;
+        }
+
+        @keyframes fade-in-right {
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .hero-text h1 {
+            font-family: var(--primary-font);
+            font-size: clamp(2.5rem, 8vw, 5rem);
+            font-weight: 700;
+            letter-spacing: 3px;
+            margin-bottom: 0.5rem;
+        }
+        
+        .hero-text .subtitle {
+            font-size: clamp(1rem, 3vw, 1.5rem);
+            font-weight: 300;
+            font-style: italic;
+            margin-bottom: 2.5rem;
+            color: rgba(240, 240, 240, 0.9);
+            max-width: 500px;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background-color: var(--accent-color);
+            color: var(--background-color);
+            padding: 1rem 2.5rem;
+            text-decoration: none;
+            font-weight: 700;
+            border-radius: 5px;
+            transition: transform 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+            border: 2px solid var(--accent-color);
+            letter-spacing: 1px;
+        }
+        .cta-button:hover {
+            transform: translateY(-5px);
+            background-color: transparent;
+            color: var(--accent-color);
+        }
+
+        /* Content Sections */
+        .content-section { padding: 6rem 0; background-color: var(--background-color); position: relative; overflow: hidden; }
+        .content-section:nth-of-type(odd) { background-color: var(--section-bg-color); }
+        .content-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 4rem; align-items: center; }
+        .content-image, .content-text-block { opacity: 0; transition: opacity 0.8s ease-out, transform 0.8s ease-out; }
+        .content-section.visible .content-image { transform: translateX(0); opacity: 1; }
+        .content-section.visible .content-text-block { transform: translateY(0); opacity: 1; }
+
+        #about-book .content-image { transform: translateX(-50px); }
+        #about-author .content-image { transform: translateX(50px); transition-delay: 0.2s; }
+        .content-text-block { transform: translateY(50px); }
+        #about-book .content-text-block { transition-delay: 0.2s; }
+
+        .content-image img { width: 100%; max-width: 380px; box-shadow: 10px 10px 30px rgba(0,0,0,0.5); border-radius: 5px; display: block; margin: 0 auto; }
+        .content-text-block h2 { font-family: var(--primary-font); font-size: 2.8rem; margin-bottom: 1.5rem; color: var(--accent-color); }
+        .content-text-block p { font-size: 1.1rem; margin-bottom: 1rem; }
+
+        #about-author .content-grid { grid-template-areas: "text image"; }
+        #about-author .content-text-block { grid-area: text; }
+        #about-author .content-image { grid-area: image; }
+
+        #buy { text-align: center; }
+        #buy h2 { font-family: var(--primary-font); font-size: 2.5rem; margin-bottom: 2rem; }
+        
+        /* Footer */
+        .footer { background-color: #000; padding: 3rem 0; text-align: center; font-size: 0.9rem; }
+        .footer-socials a { color: var(--text-color); margin: 0 1rem; font-size: 1.5rem; text-decoration: none; transition: color 0.3s; }
+        .footer-socials a:hover { color: var(--accent-color); }
+        .footer-links { list-style: none; display: flex; justify-content: center; padding: 0; margin: 1rem 0; }
+        .footer-links li { margin: 0 1rem; }
+        .footer-links a { color: var(--text-color); text-decoration: none; }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links { position: fixed; top: 0; right: -100%; width: 70%; height: 100vh; background-color: var(--section-bg-color); flex-direction: column; justify-content: center; align-items: center; transition: right 0.5s ease-in-out; }
+            .nav-links.nav-active { right: 0; }
+            .nav-links li { margin: 2rem 0; }
+            .menu-toggle { display: flex; flex-direction: column; cursor: pointer; z-index: 1001; }
+            .menu-toggle .bar { width: 25px; height: 2px; background-color: var(--text-color); margin: 3px 0; transition: 0.4s; }
+            .toggle .bar:nth-child(1) { transform: rotate(-45deg) translate(-5px, 6px); }
+            .toggle .bar:nth-child(2) { opacity: 0; }
+            .toggle .bar:nth-child(3) { transform: rotate(45deg) translate(-5px, -6px); }
+            
+            .hero-content { flex-direction: column; text-align: center; }
+            .hero-text { text-align: center; }
+            .hero-text .subtitle { margin-left: auto; margin-right: auto; }
+            .hero-book-cover { margin-bottom: 2rem; width: 60%; max-width: 280px; }
+
+            .content-grid { grid-template-columns: 1fr; text-align: center; }
+            .content-image { margin-bottom: 2rem; }
+            #about-author .content-grid { grid-template-areas: "image" "text"; }
+            #about-book .content-image, #about-author .content-image { transform: translateX(0) translateY(-30px); }
+        }
+        
+    </style>
+</head>
+<body>
+
+    <video autoplay muted loop playsinline id="bg-video">
+        <source src="Kazak-vid.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+    <div class="overlay"></div>
+
+    <nav class="main-nav" id="mainNav">
+        <div class="container">
+            <div class="nav-logo"><a href="#">BUCK JONES</a></div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#">Home</a></li>
+                <li><a href="#about-book">The Book</a></li>
+                <li><a href="#about-author">The Author</a></li>
+                <li><a href="#buy">Store</a></li>
+            </ul>
+            <div class="menu-toggle" id="menuToggle">
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+            </div>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-book-cover">
+                    <img src="book-cover.png" alt="Animated book cover of I AM KAZAK">
+                </div>
+                <div class="hero-text">
+                    <h1>I AM KAZAK</h1>
+                    <p class="subtitle">A love story and adventure set in the beginning of man's rise to domination.</p>
+                    <a href="#buy" class="cta-button">Order Your Copy</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section id="about-book" class="content-section">
+            <div class="container content-grid">
+                <div class="content-image">
+                    <img src="book-cover.png" alt="Book Cover for I AM KAZAK">
+                </div>
+                <div class="content-text-block">
+                    <h2>About the Book</h2>
+                    <p>I had a dream one night. I was in a fog when I saw a flickering light from a campfire. As I walked towards the light I began to see an old man in skins and leather... Shortly after he told me this story.</p>
+                    <p>His name was Kazak and this is the first part of what he told me. He started life and grew to a simple man who has a great love on his life’s journey, his beloved Mara. Raised by loving people, they gave him his start.</p>
+                    <p>A mysterious group of people were stealing the lives and stores of entire villages. They took everything, leaving only fear. Kazak must protect his people and his woman. Will he be able to bring different people together and defeat the Raiders of lives and their slaves?</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="about-author" class="content-section">
+            <div class="container content-grid">
+                <div class="content-text-block">
+                    <h2>About Buck Jones</h2>
+                    <p>I'm handicapped, but it wasn't always that way. I’ve been a Marine, a Body Guard, a bouncer, a mechanic, and a computer specialist. In my 60 years, I’ve heard stories from people that have been around the world and back.</p>
+                    <p>I'm a history enthusiast and revel in the far ancient times. I have my own writing style and matter of factness that some find refreshing and others unimaginative. If you read my writing, then you decide. I look more mountain man and less geeky but I'm both so take a look and try my tales out.</p>
+                </div>
+                <div class="content-image">
+                     <img src="author.png" alt="Portrait of the author, Buck Jones">
+                </div>
+            </div>
+        </section>
+
+        <section id="buy" class="content-section">
+            <div class="container">
+                <h2>Order Your Copy Today</h2>
+                <p>Available in hardcover, paperback, and e-book formats where all good books are sold.</p>
+                <a href="#buy" class="cta-button">Buy Now</a>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-socials">
+                <a href="#" aria-label="Twitter">X</a>
+                <a href="#" aria-label="Facebook">FB</a>
+            </div>
+            <ul class="footer-links">
+                <li><a href="#">Privacy Policy</a></li>
+                <li><a href="#">Terms of Service</a></li>
+            </ul>
+            <p>&copy; 2025 Buck Jones. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const mainNav = document.getElementById('mainNav');
+            const navLinks = document.getElementById('navLinks');
+            const menuToggle = document.getElementById('menuToggle');
+            
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    mainNav.classList.add('scrolled');
+                } else {
+                    mainNav.classList.remove('scrolled');
+                }
+            });
+
+            menuToggle.addEventListener('click', () => {
+                navLinks.classList.toggle('nav-active');
+                menuToggle.classList.toggle('toggle');
+            });
+
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                link.addEventListener('click', () => {
+                    if (navLinks.classList.contains('nav-active')) {
+                        navLinks.classList.remove('nav-active');
+                        menuToggle.classList.remove('toggle');
+                    }
+                });
+            });
+
+            const sections = document.querySelectorAll('.content-section');
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.15
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+        });
+    </script>
+
+</body>
+</html>
