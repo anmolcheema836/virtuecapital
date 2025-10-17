@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buck's Book Store - Official Author Site of Buck Jones</title>
+    <meta name="description" content="The official bookstore and author homepage for Buck Jones, featuring novels like I AM KAZAK, Vindicator, and more.">
+    <!-- 
+        Explanation:
+        This is a single-file website acting as the main "Book Store".
+        - A single "Buy Now" button is provided for each published book.
+        - All CSS and JavaScript are included directly in this file.
+        - Ensure your video ('Kazak-vid.mp4') and images ('book-cover.png') are in the same folder.
+    -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@300;400;700&display=swap');
+
+        :root {
+            --primary-font: 'Lora', serif;
+            --secondary-font: 'Montserrat', sans-serif;
+            --text-color: #f0f0f0;
+            --background-color: #121212;
+            --accent-color: #d4af37; /* A subtle, elegant gold */
+            --section-bg-color: #1a1a1a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--secondary-font);
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+        
+        #bg-video {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            z-index: -2;
+            transform: translateX(-50%) translateY(-50%);
+            object-fit: cover;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: -1;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Navigation */
+        .main-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 1.5rem 0;
+            background-color: rgba(18, 18, 18, 0.9);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+            transition: padding 0.3s ease-in-out;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .nav-logo a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-family: var(--primary-font);
+            font-weight: 700;
+            font-size: 1.8rem;
+            transition: color 0.3s ease;
+        }
+        .nav-logo a:hover { color: var(--accent-color); }
+
+        .nav-links { list-style: none; display: flex; }
+        .nav-links li { margin-left: 1.5rem; }
+        .nav-links a { color: var(--text-color); text-decoration: none; font-weight: 300; position: relative; padding-bottom: 5px; }
+        .nav-links a::after { content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 0; height: 1px; background-color: var(--accent-color); transition: width 0.3s ease; }
+        .nav-links a:hover::after { width: 100%; }
+        
+        .menu-toggle { display: none; }
+
+        /* Main Content Area */
+        .main-content {
+            padding-top: 150px;
+            padding-bottom: 5rem;
+        }
+        
+        .store-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+        
+        .store-header h1 {
+            font-family: var(--primary-font);
+            font-size: clamp(3rem, 10vw, 5rem);
+            color: var(--accent-color);
+            margin-bottom: 0.5rem;
+        }
+        
+        .store-header .author-link a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-size: 1.2rem;
+            border: 1px solid var(--text-color);
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+        
+        .store-header .author-link a:hover {
+            background-color: var(--accent-color);
+            color: var(--background-color);
+            border-color: var(--accent-color);
+        }
+
+        .book-entry {
+            background-color: var(--section-bg-color);
+            padding: 3rem 2rem;
+            margin-bottom: 4rem;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 3rem;
+            align-items: center;
+        }
+        
+        .book-cover img {
+            width: 100%;
+            max-width: 300px;
+            border-radius: 5px;
+            box-shadow: 5px 5px 20px rgba(0,0,0,0.7);
+            margin: 0 auto;
+            display: block;
+        }
+        
+        .book-details h2 {
+            font-family: var(--primary-font);
+            font-size: 2.8rem;
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+        }
+        
+        .book-details p {
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background-color: var(--accent-color);
+            color: var(--background-color);
+            padding: 1rem 2.5rem;
+            text-decoration: none;
+            font-weight: 700;
+            border-radius: 5px;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+            border: 2px solid var(--accent-color);
+            letter-spacing: 1px;
+            margin-top: 1rem;
+        }
+        .cta-button:hover {
+            transform: translateY(-5px);
+            background-color: transparent;
+            color: var(--accent-color);
+        }
+        
+        .section-title {
+            text-align: center;
+            font-family: var(--primary-font);
+            font-size: 3rem;
+            color: var(--accent-color);
+            margin: 5rem 0 3rem;
+        }
+        
+        .future-books-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .future-book-card {
+            background: var(--section-bg-color);
+            padding: 2rem;
+            border-radius: 5px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+        }
+
+        .future-book-card h3 {
+            font-family: var(--primary-font);
+            color: var(--accent-color);
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+        
+        .footer { 
+            background-color: #000; 
+            padding: 3rem 0; 
+            text-align: center; 
+            font-size: 0.9rem; 
+            margin-top: 4rem;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 900px) {
+            .book-entry { grid-template-columns: 1fr; text-align: center; }
+            .book-cover { margin-bottom: 2rem; }
+        }
+        
+        @media (max-width: 768px) {
+            .nav-links { 
+                position: fixed; top: 0; right: -100%; width: 70%; height: 100vh; 
+                background-color: var(--section-bg-color); flex-direction: column; 
+                justify-content: center; align-items: center; transition: right 0.5s ease-in-out; 
+            }
+            .nav-links.nav-active { right: 0; }
+            .nav-links li { margin: 2rem 0; }
+            .menu-toggle { 
+                display: flex; flex-direction: column; cursor: pointer; z-index: 1001; 
+            }
+            .menu-toggle .bar { 
+                width: 25px; height: 3px; background-color: var(--text-color); 
+                margin: 3px 0; transition: 0.4s; 
+            }
+            .toggle .bar:nth-child(1) { transform: rotate(-45deg) translate(-5px, 6px); }
+            .toggle .bar:nth-child(2) { opacity: 0; }
+            .toggle .bar:nth-child(3) { transform: rotate(45deg) translate(-5px, -6px); }
+        }
+    </style>
+</head>
+<body>
+
+    <video autoplay muted loop playsinline id="bg-video">
+        <source src="Kazak-vid.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+    <div class="overlay"></div>
+
+    <nav class="main-nav" id="mainNav">
+        <div class="container nav-container">
+            <div class="nav-logo"><a href="#">BUCK JONES</a></div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#">ABOUT</a></li>
+                <li><a href="#">BOOKS</a></li>
+                <li><a href="#">AUTHOR</a></li>
+                <li><a href="#">REVIEWS</a></li>
+                <li><a href="#">FUTURE</a></li>
+                <li><a href="#">BLOG</a></li>
+            </ul>
+            <div class="menu-toggle" id="menuToggle">
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <div class="container">
+            
+            <header class="store-header">
+                <h1>BUCK'S BOOK STORE</h1>
+            </header>
+
+            <!-- Book: I AM KAZAK -->
+            <section class="book-entry">
+                <div class="book-cover">
+                    <img src="book-cover.png" alt="Book Cover for I AM KAZAK">
+                </div>
+                <div class="book-details">
+                    <h2>I AM KAZAK</h2>
+                    <p>I had a dream one night. I was in a fog when I saw a flickering light from a campfire. As I walked towards the light I began to see an old man in skins and leather... Shortly after he told me this story. His name was Kazak. He started life and grew to a simple man who has a great love on his life’s journey, his beloved Mara.</p>
+                    <p>A mysterious group of people were stealing the lives and stores of entire villages. They took everything, leaving only fear. Will he be able to bring different people together and defeat the Raiders of lives and their slaves?</p>
+                    <a href="https://anmolcheema836.github.io/virtuecapital/kazak" class="cta-button">Buy Now</a>
+                </div>
+            </section>
+
+            <!-- Book: Vindicator -->
+            <section class="book-entry">
+                <div class="book-cover">
+                    <img src="https://books.buckjones.net/images/COVER%20PICTURE_VINDICATOR.png" alt="Book Cover for Vindicator: The Humans Breakout">
+                </div>
+                <div class="book-details">
+                    <h2>Vindicator: The Humans Breakout</h2>
+                    <p>This is the story of a ship called the Vindicator and Nathan Delves, a scientist who made cold fusion a reality. That made him very rich. With his riches, he built a space ship called the Vindicator. During its maiden voyage, aliens took over half the world’s population.</p>
+                    <p>Space battles and the colonization of Mars all happen until the... well I don't want to give it all away. Feel free to leave an email if you have any questions. buck@4buck.com</p>
+                    <a href="#" class="cta-button">Buy Now</a>
+                </div>
+            </section>
+            
+            <h2 class="section-title">Available Soon</h2>
+            
+            <section class="future-books-grid">
+                <div class="future-book-card">
+                    <h3>Tikki the Brave</h3>
+                    <p>On a foreign world, humans land to colonize. Tikki Is a gifted humanoid on this world, a youngster at 150 years old with a talent for 'Growing' plants into homes. Read what happens when these two societies meet.</p>
+                </div>
+                <div class="future-book-card">
+                    <h3>To the Moon and Beyond</h3>
+                    <p>Follow Bob and his girlfriend, Laura, on their journey. He thinks he discovered a way to cancel gravity. See how he starts out with an $11,000 electric bill and finally creates a ship that floats to the moon.</p>
+                </div>
+                <div class="future-book-card">
+                    <h3>Salvage One</h3>
+                    <p>The galaxy is at war. The ‘Authority’ is attempting to take control. Then there is us, 'Salvagers', who scrape up the pieces and clean up the mess. We repair, replace, and invent new ships to stop the violence. Who will win?</p>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2025 Buck Jones. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const navLinks = document.getElementById('navLinks');
+            const menuToggle = document.getElementById('menuToggle');
+
+            menuToggle.addEventListener('click', () => {
+                navLinks.classList.toggle('nav-active');
+                menuToggle.classList.toggle('toggle');
+            });
+        });
+    </script>
+
+</body>
+</html>
