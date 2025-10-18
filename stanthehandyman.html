@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stan The Handyman - Home Repair & Renovation</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* Modern CSS Reset & Enhanced Basic Setup */
+        :root {
+            --primary-red: #d90429;
+            --primary-red-darker: #b30322;
+            --dark-gray: #2b2d42;
+            --medium-gray: #8d99ae;
+            --light-gray: #edf2f4;
+            --white: #ffffff;
+            --heading-font: 'Oswald', sans-serif;
+            --body-font: 'Roboto', sans-serif;
+            --base-font-size: 16px;
+            --transition-speed: 0.3s;
+        }
+
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--body-font);
+            line-height: 1.7;
+            color: var(--dark-gray);
+            background-color: var(--white);
+            font-size: var(--base-font-size);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: var(--heading-font);
+            font-weight: 700;
+            text-transform: uppercase;
+            line-height: 1.2;
+            color: var(--dark-gray);
+        }
+        
+        h1 { font-size: clamp(2.5rem, 5vw, 4.5rem); margin-bottom: 0.5em; }
+        h2 { font-size: clamp(2rem, 4vw, 3rem); margin-bottom: 0.75em; }
+        h3 { font-size: 1.5rem; margin-bottom: 0.5em; }
+        h4 { font-size: 1.25rem; margin-bottom: 0.5em; }
+
+        p {
+            margin-bottom: 1rem;
+            max-width: 70ch; /* Improves readability */
+        }
+        
+        section {
+            padding: 80px 0;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--primary-red);
+            color: var(--white);
+            padding: 14px 32px;
+            text-decoration: none;
+            font-weight: 700;
+            font-family: var(--heading-font);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            border-radius: 5px;
+            transition: background-color var(--transition-speed) ease, transform var(--transition-speed) ease;
+            border: 2px solid transparent;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-red-darker);
+            transform: translateY(-3px);
+        }
+
+        /* Header & Navigation */
+        .main-header {
+            background-color: var(--white);
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            transition: padding var(--transition-speed) ease;
+        }
+
+        .main-header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo img {
+            width: 180px;
+            height: auto;
+        }
+        
+        .main-nav ul {
+            list-style: none;
+            display: flex;
+        }
+
+        .main-nav ul li {
+            margin-left: 35px;
+        }
+
+        .main-nav ul li a {
+            text-decoration: none;
+            color: var(--dark-gray);
+            font-weight: bold;
+            font-family: var(--body-font);
+            position: relative;
+            padding: 5px 0;
+        }
+
+        .main-nav ul li a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary-red);
+            transition: width var(--transition-speed) ease;
+        }
+
+        .main-nav ul li a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            background-image: linear-gradient(rgba(43, 45, 66, 0.6), rgba(43, 45, 66, 0.6)), url('https://getstan.com/wp-content/uploads/2020/09/Layer-1-1-1536x737.jpg');
+            background-size: cover;
+            background-position: center center;
+            color: var(--white);
+            text-align: left;
+            padding: 150px 0;
+            display: flex;
+            align-items: center;
+        }
+        
+        .hero-content {
+            max-width: 650px;
+        }
+
+        .hero-content h1 {
+            color: var(--white);
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .hero-content .subtitle {
+            font-size: 1.3rem;
+            max-width: 500px;
+            margin-bottom: 40px;
+            font-weight: 400;
+        }
+
+        /* About Section */
+        .about-section {
+            background-color: var(--light-gray);
+        }
+        
+        .about-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 60px;
+            align-items: center;
+        }
+        
+        .about-image {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .about-content .btn {
+             margin-top: 20px;
+        }
+
+        /* Services Section */
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        .section-title p {
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            font-size: 1.1rem;
+            color: var(--medium-gray);
+        }
+        
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+        }
+        
+        .service-card {
+            background-color: var(--white);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #e0e0e0;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+        }
+        
+        .service-image {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+        }
+        .service-card-content {
+            padding: 25px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .service-card-content .service-text {
+            flex-grow: 1;
+        }
+        .service-card-content h3 {
+            margin-bottom: 10px;
+        }
+        .service-card a {
+            color: var(--primary-red);
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 15px;
+            display: inline-block;
+        }
+        .service-card a:hover {
+            text-decoration: underline;
+        }
+
+        /* Projects Section */
+        .projects-section {
+             background-color: var(--light-gray);
+        }
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .project-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+        }
+        .project-item .project-image {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+            transition: transform var(--transition-speed) ease;
+        }
+        .project-item:hover .project-image {
+            transform: scale(1.05);
+        }
+        
+        .project-item p {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            font-weight: bold;
+            color: var(--white);
+            background: linear-gradient(transparent, rgba(0,0,0,0.7));
+            padding: 30px 15px 15px;
+            margin: 0;
+            font-family: var(--heading-font);
+            font-size: 1.2rem;
+            text-transform: uppercase;
+        }
+        
+        .projects-cta {
+            text-align: center;
+            margin-top: 50px;
+        }
+        
+        /* Testimonials Section */
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .testimonial-card {
+            background-color: var(--light-gray);
+            padding: 30px;
+            border-radius: 8px;
+            border-left: 5px solid var(--primary-red);
+        }
+        
+        .testimonial-card p.quote {
+            font-style: italic;
+            margin-bottom: 20px;
+        }
+        
+        .testimonial-card .author {
+            font-weight: bold;
+            color: var(--dark-gray);
+            font-family: var(--heading-font);
+            text-transform: uppercase;
+        }
+        .star-rating {
+            color: #f39c12;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+
+        /* Blog Section */
+        .blog-section {
+            background-color: var(--light-gray);
+        }
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+        }
+
+        .blog-post-card {
+            background: var(--white);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+        }
+        .blog-post-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+        }
+
+        .blog-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        
+        .blog-post-content {
+            padding: 25px;
+        }
+        .blog-post-content h3 {
+            margin-bottom: 10px;
+            font-size: 1.3rem;
+        }
+        .blog-post-content p {
+            font-size: 1rem;
+            color: var(--medium-gray);
+            margin-bottom: 20px;
+        }
+        .blog-post-content a {
+            color: var(--primary-red);
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .blog-post-content a:hover {
+            text-decoration: underline;
+        }
+
+        /* Estimate Section */
+        .estimate-section {
+            background-color: var(--dark-gray);
+            color: var(--white);
+        }
+        .estimate-section h2 {
+            color: var(--white);
+        }
+        .estimate-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 50px;
+            align-items: center;
+        }
+        
+        .estimate-form input, .estimate-form textarea {
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            border: 1px solid var(--medium-gray);
+            font-family: var(--body-font);
+            font-size: 1rem;
+            background: #4a4e69;
+            color: var(--white);
+        }
+        .estimate-form input::placeholder, 
+        .estimate-form textarea::placeholder {
+            color: #c9cddb;
+        }
+        
+        .estimate-form textarea {
+            resize: vertical;
+            min-height: 140px;
+        }
+
+        /* Footer */
+        .main-footer {
+            background-color: #1c1d2b;
+            color: var(--light-gray);
+            padding: 60px 0;
+            font-size: 0.95rem;
+        }
+        
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 50px;
+        }
+        
+        .footer-col h4 {
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            color: var(--white);
+        }
+        
+        .footer-col ul {
+            list-style: none;
+        }
+        
+        .footer-col ul li {
+            margin-bottom: 12px;
+        }
+        
+        .footer-col ul li a, .footer-col ul li p {
+            color: var(--light-gray);
+            text-decoration: none;
+            transition: color var(--transition-speed) ease;
+        }
+        
+        .footer-col ul li a:hover {
+            color: var(--primary-red);
+        }
+        .footer-col .logo {
+            max-width: 180px;
+            margin-bottom: 20px;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            margin-top: 50px;
+            padding-top: 25px;
+            border-top: 1px solid #3a3c50;
+            font-size: 0.9rem;
+            color: var(--medium-gray);
+        }
+        
+        /* Responsive Design */
+        @media(max-width: 992px) {
+            .footer-grid {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            .footer-col .logo {
+                margin-left: auto;
+                margin-right: auto;
+            }
+        }
+
+        @media(max-width: 768px) {
+            h1 { font-size: 2.5rem; }
+            h2 { font-size: 2.2rem; }
+
+            .main-header .container {
+                flex-direction: column;
+            }
+            .main-nav ul {
+                margin-top: 20px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            .main-nav ul li {
+                margin: 5px 15px;
+            }
+
+            .hero {
+                text-align: center;
+                padding: 100px 0;
+            }
+            .hero-content {
+                max-width: 100%;
+            }
+            .hero-content .subtitle {
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .about-grid, .estimate-grid {
+                text-align: center;
+            }
+            .about-image {
+                margin: 0 auto;
+            }
+
+            .section-title h2, .estimate-section h2 {
+                text-align: center;
+            }
+        }
+    </style>
+    
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="main-header">
+        <div class="container">
+            <a href="#" class="logo">
+                <img src="https://getstan.com/wp-content/uploads/2020/09/logo.png" alt="Stan The Handyman Logo">
+            </a>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#about">About Us</a></li>
+                    <li><a href="#services">Services</a></li>
+                    <li><a href="#projects">Projects</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+
+        <!-- Hero Section -->
+        <section id="home" class="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <h1>Expert Handyman Services</h1>
+                    <p class="subtitle">Hire the Best Custom Handyman Contractor in Monroe, OH</p>
+                    <a href="#contact" class="btn">Get a Free Estimate</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="about-section">
+            <div class="container">
+                 <div class="about-grid">
+                    <img src="https://getstan.com/wp-content/uploads/2020/10/001-2.png" alt="About Stan The Handyman" class="about-image">
+                    <div class="about-content">
+                        <h2>About Stan The Handyman</h2>
+                        <p>Stan The Handyman aka Tyler Donovan is a graduate from UC Cincinnati campus. Tyler graduated with a BBA in accounting with a minor in finance. He was a member of the PI Kappa Alpha Fraternity and worked as their secretary. Upon graduating, Tyler worked as a skilled craftsman, honing his expertise in home repair and renovation. With years of experience and a commitment to quality, Stan The Handyman is your trusted, local solution for projects big and small.</p>
+                        <a href="#services" class="btn">Our Services</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Our Services Section -->
+        <section id="services" class="services-section">
+            <div class="container">
+                <div class="section-title">
+                    <h2>Our Services</h2>
+                    <p>Specializing in a wide variety of home repair services to enhance and maintain your property.</p>
+                </div>
+                <div class="services-grid">
+                    <!-- Service Card 1 -->
+                    <div class="service-card">
+                        <img src="https://getstan.com/wp-content/uploads/bb-plugin/cache/20294126_10155611511477708_4120630435343788004_n-square.jpg" alt="Flooring and Tile Service" class="service-image">
+                        <div class="service-card-content">
+                            <div class="service-text">
+                                <h3>Flooring & Tile</h3>
+                                <p>Professional installation for all types of flooring including hardwood, laminate, vinyl, and tile.</p>
+                            </div>
+                            <a href="#">Learn More &rarr;</a>
+                        </div>
+                    </div>
+                    <!-- Service Card 2 -->
+                    <div class="service-card">
+                        <img src="https://getstan.com/wp-content/uploads/2020/11/gutter-repair-before-3-scaled.jpg" alt="Gutter and Siding Service" class="service-image">
+                         <div class="service-card-content">
+                            <div class="service-text">
+                                <h3>Gutter & Siding</h3>
+                                <p>We handle repair, installation, and cleaning for gutters and siding to protect your home's exterior.</p>
+                            </div>
+                            <a href="#">Learn More &rarr;</a>
+                        </div>
+                    </div>
+                    <!-- Service Card 3 -->
+                    <div class="service-card">
+                        <img src="https://getstan.com/wp-content/uploads/2020/10/Wood-fence-After-scaled.jpg" alt="Carpentry Service" class="service-image">
+                         <div class="service-card-content">
+                            <div class="service-text">
+                                <h3>Carpentry</h3>
+                                <p>From custom shelving and trim work to deck repairs and framing, we offer skilled carpentry services.</p>
+                            </div>
+                            <a href="#">Learn More &rarr;</a>
+                        </div>
+                    </div>
+                    <!-- Service Card 4 -->
+                    <div class="service-card">
+                        <img src="https://getstan.com/wp-content/uploads/2020/11/edited.jpg" alt="Painting Service" class="service-image">
+                         <div class="service-card-content">
+                            <div class="service-text">
+                                <h3>Painting</h3>
+                                <p>Interior and exterior painting services to refresh your space and boost your home's curb appeal.</p>
+                            </div>
+                            <a href="#">Learn More &rarr;</a>
+                        </div>
+                    </div>
+                    <!-- Service Card 5 -->
+                    <div class="service-card">
+                        <img src="https://getstan.com/wp-content/uploads/2020/11/backsplash-after-revised-scaled.jpg" alt="Kitchen Remodeling Service" class="service-image">
+                         <div class="service-card-content">
+                            <div class="service-text">
+                                <h3>Kitchens</h3>
+                                <p>Expert kitchen remodeling, including cabinet installation, backsplashes, and fixture updates.</p>
+                            </div>
+                            <a href="#">Learn More &rarr;</a>
+                        </div>
+                    </div>
+                    <!-- Service Card 6 -->
+                    <div class="service-card">
+                        <img src="https://getstan.com/wp-content/uploads/2020/11/dited2.jpg" alt="Bathroom Remodeling Service" class="service-image">
+                         <div class="service-card-content">
+                            <div class="service-text">
+                                <h3>Bathrooms</h3>
+                                <p>Complete bathroom renovations from flooring and lighting to vanity and fixture installation.</p>
+                            </div>
+                            <a href="#">Learn More &rarr;</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Our Projects Section -->
+        <section id="projects" class="projects-section">
+            <div class="container">
+                <div class="section-title">
+                    <h2>Our Projects</h2>
+                    <p>A glimpse into the quality and craftsmanship we deliver on every job.</p>
+                </div>
+                <div class="projects-grid">
+                    <div class="project-item">
+                        <img src="https://getstan.com/wp-content/uploads/2020/09/house-2.jpg" alt="James Hardie Siding Installation Project" class="project-image">
+                        <p>Siding Installation</p>
+                    </div>
+                    <div class="project-item">
+                        <img src="https://getstan.com/wp-content/uploads/2020/09/20160614_163607.jpg" alt="Wood Fence Rebuild Project" class="project-image">
+                        <p>Wood Fence Rebuild</p>
+                    </div>
+                    <div class="project-item">
+                        <img src="https://getstan.com/wp-content/uploads/2020/10/0_0005_porch-railing-after.jpg" alt="Porch Railing Project" class="project-image">
+                        <p>Porch Railing</p>
+                    </div>
+                </div>
+                <div class="projects-cta">
+                    <a href="#" class="btn">View All Projects</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials Section -->
+        <section id="testimonials" class="testimonials-section">
+            <div class="container">
+                <div class="section-title">
+                    <h2>What Our Customers Say</h2>
+                </div>
+                <div class="testimonials-grid">
+                    <!-- Testimonial 1 -->
+                    <div class="testimonial-card">
+                        <div class="star-rating">★★★★★</div>
+                        <p class="quote">"Stan was professional, on time, and did an incredible job on our bathroom remodel. The quality of his work exceeded our expectations. Highly recommended!"</p>
+                        <p class="author">- Jane D.</p>
+                    </div>
+                    <!-- Testimonial 2 -->
+                    <div class="testimonial-card">
+                        <div class="star-rating">★★★★★</div>
+                        <p class="quote">"Fantastic experience! Stan fixed our leaky roof and repaired the drywall perfectly. He was clean, efficient, and very reasonably priced. We'll definitely call him again."</p>
+                        <p class="author">- Mark S.</p>
+                    </div>
+                    <!-- Testimonial 3 -->
+                    <div class="testimonial-card">
+                        <div class="star-rating">★★★★★</div>
+                        <p class="quote">"We needed a new deck built and Stan delivered. He listened to our ideas and brought them to life. We couldn't be happier with the result. Thank you, Stan!"</p>
+                        <p class="author">- The Johnson Family</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Blog Section -->
+        <section id="blog" class="blog-section">
+            <div class="container">
+                <div class="section-title">
+                    <h2>From Our Blog</h2>
+                    <p>Tips, tricks, and professional insights for homeowners.</p>
+                </div>
+                <div class="blog-grid">
+                    <!-- Blog Post 1 -->
+                    <div class="blog-post-card">
+                        <img src="https://getstan.com/wp-content/uploads/2020/11/gutter-repair-before-3-scaled.jpg" alt="Blog post about gutter cleaning" class="blog-image">
+                        <div class="blog-post-content">
+                            <h3>5 Signs Your Gutters Need Cleaning</h3>
+                            <p>Don't wait for water damage. Learn the key indicators that it's time to service your gutters this season...</p>
+                            <a href="#">Read More &rarr;</a>
+                        </div>
+                    </div>
+                    <!-- Blog Post 2 -->
+                    <div class="blog-post-card">
+                        <img src="https://getstan.com/wp-content/uploads/2020/11/edited.jpg" alt="Blog post about paint finishes" class="blog-image">
+                        <div class="blog-post-content">
+                            <h3>How to Choose the Right Paint Finish</h3>
+                            <p>Matte, eggshell, or semi-gloss? We break down the pros and cons of different paint sheens for your interior...</p>
+                            <a href="#">Read More &rarr;</a>
+                        </div>
+                    </div>
+                    <!-- Blog Post 3 -->
+                    <div class="blog-post-card">
+                        <img src="https://getstan.com/wp-content/uploads/2020/11/backsplash-after-revised-scaled.jpg" alt="Blog post about home value upgrades" class="blog-image">
+                        <div class="blog-post-content">
+                            <h3>Top 3 Upgrades to Boost Home Value</h3>
+                            <p>Looking to invest in your home? These three renovations offer the best return on investment for homeowners...</p>
+                            <a href="#">Read More &rarr;</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Request Free Estimate Section -->
+        <section id="contact" class="estimate-section">
+            <div class="container">
+                <div class="estimate-grid">
+                    <div class="estimate-info">
+                        <h2>Request a Free Estimate</h2>
+                        <p>Ready to start your next project? Fill out the form and we'll get back to you to discuss your needs and schedule a free, no-obligation estimate.</p>
+                    </div>
+                    <form class="estimate-form">
+                        <input type="text" name="name" placeholder="Name *" required>
+                        <input type="email" name="email" placeholder="Email Address *" required>
+                        <input type="tel" name="phone" placeholder="Phone No. *">
+                        <input type="text" name="address" placeholder="Street Address, City *" required>
+                        <textarea name="project" placeholder="Describe Your Project *" required></textarea>
+                        <button type="submit" class="btn">Submit Request</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <img src="https://getstan.com/wp-content/uploads/2020/09/logo.png" alt="Stan The Handyman Footer Logo" class="logo">
+                    <p>Your trusted partner for all home repair and renovation needs. Serving the Monroe, OH community with pride and professionalism.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#about">About Us</a></li>
+                        <li><a href="#services">Services</a></li>
+                        <li><a href="#projects">Projects</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Contact Us</h4>
+                    <ul>
+                        <li><p>38 South Main Street, Monroe, OH 45050</p></li>
+                        <li><p>(513) 539-2084</p></li>
+                        <li><a href="mailto:tylerstanhandyman@gmail.com">tylerstanhandyman@gmail.com</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Stan The Handyman. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
