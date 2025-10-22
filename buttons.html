@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>3D Blue Buttons & Tabs — Demo</title>
+
+  <!-- Bootstrap 5 CSS (CDN only for button sizing & utilities) -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    /* -------------------------
+       Configurable variables
+       ------------------------- */
+    :root{
+      --blue-top: #4da6ff;          /* main blue top */
+      --blue-mid: #1e90ff;          /* main blue mid */
+      --blue-bottom: #0b66cc;       /* deep blue/darker */
+      --blue-edge: rgba(0,0,0,0.35);/* darker edge shadow color */
+      --light-variant-top: #f2f6fb; /* default light-grey variant top */
+      --light-variant-bottom: #e9eef6;
+      --radius: 10px;               /* corner roundness */
+      --height: 44px;               /* visual reference height */
+      --transition-fast: 160ms;
+      --transition-smooth: 260ms;
+    }
+
+    /* -------------------------
+       Base reusable 3D style
+       Use on buttons, tabs, pills
+       ------------------------- */
+    .blue3d {
+      display: inline-block;
+      position: relative;
+      padding: 0.45rem 1rem;                  /* adapts to text length */
+      line-height: 1;
+      min-height: var(--height);
+      border-radius: var(--radius);
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      text-decoration: none;
+      color: #05203a;
+      user-select: none;
+
+      /* Outer subtle raised effect (bottom darker "edge") */
+      box-shadow:
+        0 4px 0 0 var(--blue-edge),       /* the darker edge under the button */
+        0 8px 18px rgba(12,35,60,0.12);  /* soft ambient shadow */
+      transition: transform var(--transition-fast) ease,
+                  box-shadow var(--transition-fast) ease,
+                  background var(--transition-smooth) ease,
+                  color var(--transition-fast) ease;
+      -webkit-tap-highlight-color: transparent;
+      vertical-align: middle;
+      white-space: nowrap; /* keep text on one line by default */
+      overflow: visible;
+    }
+
+    /* Light (default) variant — shown initially */
+    .blue3d.light {
+      background: linear-gradient(180deg, var(--light-variant-top) 0%, var(--light-variant-bottom) 100%);
+      color: #1b3a51;
+      box-shadow:
+        0 3px 0 0 rgba(0,0,0,0.06),
+        0 6px 14px rgba(12,35,60,0.06);
+      border: 1px solid rgba(20,40,70,0.04);
+    }
+
+    /* Full blue "pressed" or hover style */
+    .blue3d.blue {
+      color: white;
+      background: linear-gradient(180deg, var(--blue-top) 0%, var(--blue-mid) 55%, var(--blue-bottom) 100%);
+      box-shadow:
+        0 4px 0 0 rgba(2,18,56,0.45),   /* strong dark edge to give raised illusion */
+        0 12px 26px rgba(4,20,40,0.18);
+      border: 1px solid rgba(255,255,255,0.06); /* subtle highlight border */
+    }
+
+    /* Inner glossy highlight using pseudo-element */
+    .blue3d::before{
+      content: "";
+      pointer-events: none;
+      position: absolute;
+      left: 6%;
+      right: 6%;
+      top: 6%;
+      height: 38%;
+      border-radius: calc(var(--radius) - 2px);
+      /* subtle glossy highlight — lighter near top */
+      background: linear-gradient(180deg, rgba(255,255,255,0.45), rgba(255,255,255,0.08));
+      opacity: 0.5;
+      transition: opacity var(--transition-fast) ease;
+      mix-blend-mode: screen;
+    }
+
+    /* Darker inset along edges to better match image reference */
+    .blue3d::after{
+      content: "";
+      pointer-events: none;
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.08), inset 0 -6px 18px rgba(0,0,0,0.18);
+      opacity: 1;
+    }
+
+    /* Hover visual: lift and change background to 'blue' style */
+    .blue3d:hover{
+      transform: translateY(-3px);
+      color: white;
+    }
+    .blue3d.light:hover{
+      /* on hover start transitioning to full blue look */
+      background: linear-gradient(180deg, var(--blue-top) 0%, var(--blue-mid) 55%, var(--blue-bottom) 100%);
+      box-shadow:
+        0 6px 0 0 rgba(2,18,56,0.45),
+        0 14px 28px rgba(4,20,40,0.18);
+      color: white;
+    }
+
+    /* Active/Selected state (kept after click) */
+    .blue3d.active{
+      transform: translateY(-2px);
+      box-shadow:
+        0 4px 0 0 rgba(2,18,56,0.45),
+        0 12px 26px rgba(4,20,40,0.18);
+      color: white;
+      background: linear-gradient(180deg, var(--blue-top) 0%, var(--blue-mid) 55%, var(--blue-bottom) 100%);
+    }
+
+    /* Provide smaller, larger variations using utility classes */
+    .blue3d.sm { padding: 0.25rem .6rem; min-height: 36px; font-size: .9rem; }
+    .blue3d.md { padding: .45rem 1rem; min-height: 44px; font-size: 1rem; }
+    .blue3d.lg { padding: .6rem 1.4rem; min-height: 52px; font-size: 1.05rem; }
+
+    /* Make sure long text wraps nicely on very small screens */
+    @media (max-width:420px){
+      .blue3d { white-space: normal; display: inline-block; padding-left: .8rem; padding-right: .8rem; }
+      .blue3d::before{ left: 8%; right: 8%; }
+    }
+
+    /* -------------------------
+       Tabs specific styling (round-out effect)
+       CSS-Tricks round-out like tabs, but using our blue3d
+       ------------------------- */
+    .tabs-demo {
+      display:flex;
+      gap: 0.35rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .tab-pill {
+      border-radius: 999px; /* round-out look */
+      padding: 0.45rem 1rem;
+      font-weight: 600;
+    }
+
+    /* To make the "tab only" (no panel) look: reduce bottom shadow a bit */
+    .tab-slot .blue3d {
+      box-shadow:
+        0 3px 0 0 rgba(0,0,0,0.18),
+        0 8px 18px rgba(12,35,60,0.08);
+      min-height: 40px;
+    }
+
+    /* -------------------------
+       Tabs + panels (fade transition)
+       ------------------------- */
+    .tab-panel {
+      margin-top: 1rem;
+      padding: 1rem;
+      border-radius: 8px;
+      border: 1px solid rgba(10,20,40,0.04);
+      background: linear-gradient(180deg,#fff,#fbfdff);
+      box-shadow: 0 8px 20px rgba(8,20,40,0.04);
+      opacity: 1;
+      transition: opacity var(--transition-smooth) ease, transform var(--transition-smooth) ease;
+    }
+    .panel-hidden {
+      opacity: 0;
+      transform: translateY(8px);
+      pointer-events: none;
+      height: 0;
+      overflow: hidden;
+    }
+
+    /* Utility: visually indicate which container group will be single-select */
+    .group { margin: 1rem 0; }
+
+    /* Small nicety: focus outline accessible */
+    .blue3d:focus {
+      outline: 3px solid rgba(30,144,255,0.18);
+      outline-offset: 3px;
+    }
+
+    /* small helpers for demo layout */
+    .demo-wrap { max-width: 980px; margin: 2rem auto; padding: 1rem; }
+    h2{ font-weight:700; margin-top:1.2rem; }
+    p.lead { color:#375a73; margin-bottom: .6rem; }
+
+  </style>
+</head>
+<body>
+  <div class="demo-wrap container">
+
+    <header class="mb-4">
+      <h1>3D Blue Buttons & Tabs — CSS Demo</h1>
+      <p class="lead">Light-grey default; hovering or selecting produces a slightly raised 3D blue button with darker edges. Works with variable text length and responsive layouts.</p>
+    </header>
+
+    <!-- -------------------------
+         Example 1: Bootstrap-style buttons
+         ------------------------- -->
+    <section>
+      <h2>Bootstrap button group (single-select)</h2>
+      <p>Buttons start as light-grey variants. Hover = blue look. Click a button to select it and keep the blue style.</p>
+
+      <div class="group" data-group-type="single">
+        <!-- Using bootstrap sizing classes to show compatibility -->
+        <button class="blue3d light md">Short</button>
+        <button class="blue3d light md">Medium length</button>
+        <button class="blue3d light md">A much longer button label</button>
+        <button class="blue3d light md">Outlined Btn</button>
+      </div>
+
+      <small class="d-block text-muted">Try resizing the browser window and changing the text length — the 3D edges and shadows remain consistent.</small>
+    </section>
+
+    <hr />
+
+    <!-- -------------------------
+         Example 2: Tabs (round-out)
+         ------------------------- -->
+    <section>
+      <h2>Round-out Tabs (tabs only; panels below for demo)</h2>
+      <p>Tabs are light-grey by default. Hover or click to apply blue 3D style. The selected tab stays blue. Panels fade in/out smoothly.</p>
+
+      <nav class="tabs-demo tab-slot" role="tablist" aria-label="Demo Tabs" data-group-type="single">
+        <button class="blue3d light tab-pill sm" role="tab" data-target="#panel1">Home</button>
+        <button class="blue3d light tab-pill sm" role="tab" data-target="#panel2">Profile</button>
+        <button class="blue3d light tab-pill sm" role="tab" data-target="#panel3">Very Long Tab Title to Test</button>
+        <button class="blue3d light tab-pill sm" role="tab" data-target="#panel4">Settings</button>
+      </nav>
+
+      <div id="panels" class="mt-3">
+        <div id="panel1" class="tab-panel" role="tabpanel">Panel 1 content — Home. This panel fades when switching tabs.</div>
+        <div id="panel2" class="tab-panel panel-hidden" role="tabpanel">Panel 2 content — Profile.</div>
+        <div id="panel3" class="tab-panel panel-hidden" role="tabpanel">Panel 3 content — Test for long tab title.</div>
+        <div id="panel4" class="tab-panel panel-hidden" role="tabpanel">Panel 4 content — Settings.</div>
+      </div>
+    </section>
+
+    <hr />
+
+    <!-- -------------------------
+         Additional demo: multiple independent groups
+         ------------------------- -->
+    <section>
+      <h2>Independent groups (example)</h2>
+      <p>Each group below can be single-select (click makes one active) or multi-select depending on attribute. Here both are single-select.</p>
+
+      <div class="group" data-group-type="single">
+        <button class="blue3d light sm">Alpha</button>
+        <button class="blue3d light sm">Beta Beta</button>
+        <button class="blue3d light sm">Gamma</button>
+      </div>
+
+      <div class="group" data-group-type="single">
+        <button class="blue3d light lg">Short</button>
+        <button class="blue3d light lg">A longer CTA label</button>
+      </div>
+    </section>
+
+    <footer class="mt-5 text-muted small">
+      <p>Tip: tweak <code>:root</code> variables (colors, radius, height) to match your brand. No images used — pure CSS gradients and shadows.</p>
+    </footer>
+  </div>
+
+  <!-- Vanilla JS: single small script to handle click-to-select and tab panel transitions -->
+  <script>
+    (function(){
+      // Convenience: add click handlers to all groups with data-group-type
+      document.querySelectorAll('[data-group-type]').forEach(function(container){
+        const type = container.getAttribute('data-group-type') || 'single';
+        // delegate clicks to children that have .blue3d
+        container.addEventListener('click', function(e){
+          const btn = e.target.closest('.blue3d');
+          if(!btn || !container.contains(btn)) return;
+
+          // For tabs: if role="tab" and data-target set -> manage panels
+          const targetSelector = btn.getAttribute('data-target');
+
+          if(type === 'single'){
+            // remove active from siblings
+            container.querySelectorAll('.blue3d').forEach(function(s){
+              if(s !== btn){
+                s.classList.remove('active');
+                s.classList.add('light');
+              }
+            });
+          }
+          // Toggle active on clicked element (for single-select it becomes active)
+          btn.classList.add('active');
+          btn.classList.remove('light');
+
+          // If it has a data-target, show panel with fade
+          if(targetSelector){
+            // hide all panels in same #panels parent
+            const panelsParent = document.querySelector('#panels');
+            if(panelsParent){
+              panelsParent.querySelectorAll('.tab-panel').forEach(function(p){
+                // if this is the target show, else hide
+                if(p.id === targetSelector.replace('#','')){
+                  p.classList.remove('panel-hidden');
+                } else {
+                  p.classList.add('panel-hidden');
+                }
+              });
+            }
+          }
+        });
+
+        // keyboard accessibility: allow Enter/Space to activate
+        container.addEventListener('keydown', function(e){
+          if(e.key === 'Enter' || e.key === ' '){
+            const btn = e.target.closest('.blue3d');
+            if(btn){ btn.click(); e.preventDefault(); }
+          }
+        });
+      });
+
+      // Make hover-to-blue appear smooth but not override active state:
+      // When user hovers, the CSS already transitions to blue using :hover. When clicked, our JS
+      // sets the active class which keeps the blue color after hover ends.
+
+      // Optional: set first tab active by default
+      (function defaultActivateFirstTab(){
+        const firstTabs = document.querySelectorAll('.tab-slot .blue3d');
+        if(firstTabs.length){
+          const first = firstTabs[0];
+          first.classList.add('active'); first.classList.remove('light');
+          // show corresponding panel
+          const t = first.getAttribute('data-target');
+          if(t){
+            document.querySelectorAll('.tab-panel').forEach(function(p){
+              if(p.id === t.replace('#','')) p.classList.remove('panel-hidden');
+              else p.classList.add('panel-hidden');
+            });
+          }
+        }
+      })();
+
+      // If you want to allow multi-select groups in future, change data-group-type to "multi".
+    })();
+  </script>
+</body>
+</html>

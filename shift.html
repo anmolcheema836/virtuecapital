@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SHIFT Happens: The Real Thief – A Leadership Transformation Workshop</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,500&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gold: #C09F5E;
+            --dark-bg: #101010;
+            --off-white: #F3F3F3;
+            --font-serif: 'Playfair Display', serif;
+            --font-sans: 'Montserrat', sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            font-family: var(--font-sans);
+            background-color: var(--dark-bg);
+            color: var(--off-white);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* --- Reusable Components --- */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .section {
+            padding: 100px 0;
+            position: relative;
+        }
+        
+        .section-title {
+            font-family: var(--font-serif);
+            font-size: 3.5rem;
+            color: var(--gold);
+            margin: 0;
+            font-weight: 700;
+            text-align: center;
+        }
+
+        .section-subtitle {
+            font-size: 1.2rem;
+            font-weight: 300;
+            line-height: 1.7;
+            max-width: 650px;
+            margin: 1.5rem auto 0 auto;
+            text-align: center;
+            color: rgba(243, 243, 243, 0.8);
+        }
+
+        .btn {
+            background-color: var(--gold);
+            color: var(--dark-bg);
+            padding: 18px 40px;
+            text-decoration: none;
+            font-weight: 600;
+            border-radius: 5px;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            display: inline-block;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: 2px solid var(--gold);
+        }
+
+        .btn:hover {
+            background-color: transparent;
+            color: var(--gold);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--gold);
+            border: 2px solid var(--gold);
+        }
+        .btn-secondary:hover {
+            background-color: var(--gold);
+            color: var(--dark-bg);
+        }
+
+
+        /* --- Hero Section --- */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background-image: linear-gradient(rgba(16, 16, 16, 0.85), rgba(16, 16, 16, 0.85)), url('https://images.unsplash.com/photo-1528459801416-a9e53bbf4e17?auto=format&fit=crop&q=80&w=1974');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
+        .hero-content {
+            max-width: 900px;
+        }
+
+        .hero h1 {
+            font-family: var(--font-serif);
+            font-size: 5.5rem;
+            color: white;
+            margin: 0;
+            line-height: 1.1;
+            font-weight: 700;
+        }
+
+        .hero h1 span {
+            color: var(--gold);
+            font-style: italic;
+        }
+
+        .hero h2 {
+            font-family: var(--font-sans);
+            font-weight: 300;
+            font-size: 1.5rem;
+            margin: 20px 0 40px;
+            color: rgba(255, 255, 255, 0.9);
+            letter-spacing: 1px;
+        }
+        
+        .hero-details {
+            font-size: 1.2rem;
+            margin-bottom: 50px;
+            font-weight: 400;
+        }
+        .hero-details span {
+            margin: 0 15px;
+        }
+
+
+        /* --- Co-branding Logos --- */
+        .co-branding {
+            background-color: #0A0A0A;
+            padding: 25px 0;
+            border-bottom: 1px solid #222;
+        }
+
+        .co-branding-logos {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 50px;
+        }
+
+        .co-branding-logos img {
+            max-height: 50px;
+            filter: invert(0.8);
+            opacity: 0.7;
+        }
+
+        /* --- Intro / "The Why" Section --- */
+        .intro-section {
+            background-color: #141414;
+        }
+
+        .intro-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+            margin-top: 80px;
+        }
+        .intro-image {
+            width: 100%;
+            height: 500px;
+            object-fit: cover;
+        }
+        .intro-text h3 {
+            font-family: var(--font-serif);
+            font-size: 2.5rem;
+            color: var(--gold);
+            margin-top: 0;
+        }
+        .intro-text p {
+            font-weight: 300;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+            color: rgba(243, 243, 243, 0.8);
+        }
+
+        /* --- Speaker Section --- */
+        #speakers {
+            background-color: var(--dark-bg);
+        }
+        .speaker-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+            margin-top: 80px;
+        }
+
+        .speaker-card {
+            position: relative;
+            overflow: hidden;
+            border-radius: 5px;
+        }
+
+        .speaker-card img {
+            width: 100%;
+            display: block;
+            filter: grayscale(100%);
+            transition: transform 0.5s ease, filter 0.5s ease;
+        }
+
+        .speaker-card:hover img {
+            transform: scale(1.1);
+            filter: grayscale(0%);
+        }
+
+        .speaker-info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0,0,0,0.9));
+            padding: 40px 20px 20px 20px;
+            text-align: center;
+            transition: all 0.5s ease;
+        }
+
+        .speaker-card:hover .speaker-info {
+            background: linear-gradient(transparent, rgba(16, 16, 16, 1));
+        }
+
+        .speaker-info h3 {
+            font-family: var(--font-serif);
+            font-size: 1.6rem;
+            color: white;
+            margin: 0;
+        }
+        .speaker-info .title {
+            color: var(--gold);
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin: 5px 0 10px;
+            display: block;
+        }
+        .speaker-info .bio {
+            font-size: 0.9rem;
+            line-height: 1.5;
+            font-weight: 300;
+            opacity: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.6s ease, opacity 0.6s ease;
+        }
+        .speaker-card:hover .bio {
+            opacity: 1;
+            max-height: 100px;
+        }
+
+        /* --- Schedule Section --- */
+        #schedule {
+            background-color: #141414;
+        }
+        .schedule-container {
+            display: flex;
+            margin-top: 80px;
+            border: 1px solid #333;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        .schedule-day {
+            width: 50%;
+            padding: 50px;
+        }
+        .schedule-day.vip {
+            background-color: #1a1a1a;
+            border-right: 1px solid #333;
+        }
+        .schedule-day h3 {
+            font-family: var(--font-serif);
+            font-size: 2rem;
+            color: white;
+            margin: 0 0 10px 0;
+        }
+        .schedule-day .day-title {
+            color: var(--gold);
+            font-size: 1.2rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        .schedule-day ul {
+            list-style: none;
+            padding: 0;
+            margin-top: 30px;
+        }
+        .schedule-day li {
+            font-size: 1.1rem;
+            font-weight: 300;
+            padding: 20px 0;
+            border-bottom: 1px solid #333;
+        }
+        .schedule-day li:last-child {
+            border-bottom: none;
+        }
+        .schedule-day strong {
+            font-weight: 600;
+            color: var(--gold);
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        /* --- Event Banner Showcase --- */
+        .banner-showcase {
+            background-color: var(--dark-bg);
+            padding: 0;
+        }
+        .banner-mockup {
+            background-color: #000;
+            padding: 80px 40px;
+            text-align: center;
+            border-top: 1px solid #333;
+            border-bottom: 1px solid #333;
+        }
+        .banner-mockup h2 {
+            font-family: var(--font-serif);
+            font-size: 4rem;
+            color: var(--gold);
+            margin: 0 0 10px 0;
+            line-height: 1.2;
+        }
+        .banner-mockup p {
+            font-size: 1.5rem;
+            font-weight: 300;
+            margin: 0 0 20px 0;
+        }
+        .banner-mockup .details {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--off-white);
+        }
+
+        /* --- Sponsorship Section --- */
+        #sponsorship {
+            background-color: #141414;
+        }
+        .sponsorship-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+            margin-top: 80px;
+        }
+        .sponsor-packet-mockup {
+            background-color: #0A0A0A;
+            padding: 40px;
+            border: 1px solid #333;
+            text-align: center;
+        }
+        .sponsor-packet-mockup h4 {
+            font-family: var(--font-serif);
+            font-size: 2.5rem;
+            color: var(--gold);
+            margin: 0 0 10px 0;
+        }
+        .sponsor-packet-mockup p {
+            color: rgba(243, 243, 243, 0.8);
+            margin-bottom: 30px;
+        }
+        .sponsor-logos-placeholder {
+            font-size: 1rem;
+            color: #666;
+            margin-top: 30px;
+        }
+        .sponsorship-text {
+            text-align: left;
+        }
+        .sponsorship-text .section-title, .sponsorship-text .section-subtitle {
+             text-align: left;
+             margin-left: 0;
+             margin-right: 0;
+        }
+
+        /* --- Social Media Showcase --- */
+        #social {
+            background-color: var(--dark-bg);
+        }
+        .social-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-top: 80px;
+        }
+        .social-card {
+            background-color: #000;
+            border: 1px solid #222;
+            aspect-ratio: 1 / 1;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+        .social-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--gold);
+        }
+        .social-card.vertical {
+            grid-column: span 1;
+            grid-row: span 2;
+            aspect-ratio: 9 / 16;
+        }
+        .social-card p {
+            font-family: var(--font-serif);
+            font-size: 1.8rem;
+            line-height: 1.4;
+        }
+        .social-card p strong {
+            color: var(--gold);
+            font-style: italic;
+        }
+        .social-card .hashtag {
+            font-family: var(--font-sans);
+            font-size: 1rem;
+            font-weight: 600;
+            color: #888;
+            margin-top: 20px;
+        }
+
+        /* --- Registration CTA --- */
+        #register {
+            background-image: linear-gradient(rgba(16, 16, 16, 0.9), rgba(16, 16, 16, 0.9)), url('https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&q=80&w=1770');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            text-align: center;
+        }
+
+        /* --- Footer --- */
+        .footer {
+            background-color: #0A0A0A;
+            text-align: center;
+            padding: 50px 0;
+            border-top: 1px solid #222;
+        }
+        .footer p {
+            margin: 0;
+            font-weight: 300;
+            color: rgba(243, 243, 243, 0.6);
+        }
+        .footer p:first-child {
+             margin-bottom: 10px;
+             font-weight: 400;
+             color: rgba(243, 243, 243, 0.8);
+        }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 992px) {
+            .hero h1 { font-size: 4rem; }
+            .section-title { font-size: 2.8rem; }
+            .intro-grid { grid-template-columns: 1fr; }
+            .intro-image { height: 400px; }
+            .speaker-grid { grid-template-columns: 1fr 1fr; }
+            .sponsorship-grid { grid-template-columns: 1fr; }
+            .social-grid { grid-template-columns: 1fr 1fr; }
+        }
+        @media (max-width: 768px) {
+            .hero { height: auto; padding: 150px 0; }
+            .hero h1 { font-size: 3rem; }
+            .hero-details span { display: block; margin: 10px 0; }
+            .section-title { font-size: 2.2rem; }
+            .schedule-container { flex-direction: column; }
+            .schedule-day { width: 100%; padding: 30px; }
+            .schedule-day.vip { border-right: none; border-bottom: 1px solid #333; }
+            .banner-mockup h2 { font-size: 3rem; }
+            .social-grid { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 576px) {
+             .container { padding: 0 1rem; }
+            .speaker-grid { grid-template-columns: 1fr; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <header class="hero">
+        <div class="hero-content">
+            <h1>SHIFT Happens: <br>The <span>Real Thief</span></h1>
+            <h2>Buried Time, Talents & Treasure</h2>
+            <p class="hero-details">
+                <span>November 21–22, 2025</span> &bull; <span>Houston, TX</span>
+            </p>
+            <a href="#register" class="btn">RESERVE YOUR SEAT</a>
+        </div>
+    </header>
+    
+    <div class="co-branding">
+        <div class="container">
+            <div class="co-branding-logos">
+                <img src="Leading with LaKesha logo v1.png" alt="Leading with LaKesha Logo">
+                <img src="ndcflogo.png" alt="NDCF Logo">
+            </div>
+        </div>
+    </div>
+
+
+    <main>
+        <section class="section intro-section">
+            <div class="container">
+                 <div class="intro-grid">
+                     <div>
+                        <img src="https://media.istockphoto.com/id/484192453/photo/door-to-heaven.jpg?s=612x612&w=0&k=20&c=-O2r13U55jwcPOD6LIez-4eIdhlRHLIXOcGBMzDJrtQ=" alt="Light breaking through shadows" class="intro-image">
+                     </div>
+                     <div class="intro-text">
+                        <h3>The Thief's Time Is Up.</h3>
+                        <p>For too long, a silent thief has been stealing your most valuable assets: your time, your God-given talents, and your treasure. It operates in the shadows of doubt, procrastination, and misalignment.</p>
+                        <p>This 2-day immersive workshop is not just another conference. It's a divine appointment to unmask this thief, reclaim what is rightfully yours, and step into the abundance you were created for. It's time to move from dreaming to doing.</p>
+                     </div>
+                 </div>
+            </div>
+        </section>
+
+        <section id="speakers" class="section">
+            <div class="container">
+                <h2 class="section-title">Meet Your Transformation Leaders</h2>
+                <p class="section-subtitle">Dynamic, inspiring, intelligent, and transformative voices—a convergence of faith and function to guide your SHIFT.</p>
+                <div class="speaker-grid">
+                    <div class="speaker-card"><img src="https://media.licdn.com/dms/image/v2/D5603AQGP07gw02zihw/profile-displayphoto-scale_200_200/B56ZjiZqCcHMAc-/0/1756145034760?e=2147483647&v=beta&t=WrOvU_twWbY6v4irvDv0GbJtXQ8jLFyw4cey2xjQ5bE" alt="LaKesha Raynor"><div class="speaker-info"><h3>LaKesha Raynor</h3><span class="title">Founder, Leading with LaKesha</span><p class="bio">Visionary speaker and leadership strategist helping leaders finally move from dreaming to doing.</p></div></div>
+                    <div class="speaker-card"><img src="https://media.licdn.com/dms/image/v2/D5603AQFo87RSc_LpyQ/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1714746408024?e=2147483647&v=beta&t=IHE9nYnYD8XR-4YmziJRm2jcTxS365iTzaHvoebJ5Zw" alt="Dr. Tina Marie Jackson"><div class="speaker-info"><h3>Dr. Tina Marie Jackson</h3><span class="title">Founder, Surviving the Game</span><p class="bio">A champion for resilience, guiding others to transform adversity into abundance.</p></div></div>
+                    <div class="speaker-card"><img src="https://via.placeholder.com/400x500/555/fff?text=Dr.+Harris" alt="Dr. Marshall Harris"><div class="speaker-info"><h3>Dr. Marshall Harris</h3><span class="title">President, NDCF & MCOL</span><p class="bio">Leader in faith-based development, focused on building communities that thrive.</p></div></div>
+                    <div class="speaker-card"><img src="https://via.placeholder.com/400x500/666/fff?text=Special+Guest" alt="Special Guest"><div class="speaker-info"><h3>Special Guest</h3><span class="title">To Be Announced</span><p class="bio">An inspiring voice to add to your transformational journey. Stay tuned for the reveal.</p></div></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="schedule" class="section">
+            <div class="container">
+                <h2 class="section-title">Your 2-Day Transformation Blueprint</h2>
+                <p class="section-subtitle">A carefully curated experience designed for maximum impact, from exclusive VIP strategy sessions to powerful main stage revelations.</p>
+                <div class="schedule-container">
+                    <div class="schedule-day vip">
+                        <p class="day-title">Day 1: Nov 21</p><h3>The VIP Alignment Intensive</h3>
+                        <ul>
+                            <li><strong>Intimate Mastermind:</strong> Uncover personal barriers in a closed-door session.</li>
+                            <li><strong>Strategic Blueprinting:</strong> Map your 90-day action plan for reclaiming your assets.</li>
+                            <li><strong>Exclusive Networking Dinner:</strong> Connect with speakers and fellow leaders.</li>
+                        </ul>
+                    </div>
+                    <div class="schedule-day">
+                        <p class="day-title">Day 2: Nov 22</p><h3>The General Abundance Summit</h3>
+                        <ul>
+                            <li><strong>Keynote Revelations:</strong> Identify the hidden thieves of time, talent, and treasure.</li>
+                            <li><strong>Breakout Labs:</strong> Practical workshops on stewardship and productivity.</li>
+                            <li><strong>The SHIFT Activation:</strong> A final impartation and call to action to seal your transformation.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="banner-showcase">
+            <div class="banner-mockup">
+                <h2>SHIFT Happens: The Real Thief</h2>
+                <p>Buried Time, Talents & Treasure</p>
+                <p class="details">November 21–22, 2025 • Houston, TX</p>
+            </div>
+        </section>
+        
+        <section id="sponsorship" class="section">
+            <div class="container">
+                <div class="sponsorship-grid">
+                    <div class="sponsorship-text">
+                        <h2 class="section-title">Partner With Purpose</h2>
+                        <p class="section-subtitle">Align your brand with a transformative movement. Becoming a sponsor connects you with a dedicated audience of 150+ in-person and 80+ virtual leaders, professionals, and entrepreneurs ready to invest in their growth.</p>
+                        <a href="#sponsor-download-link" class="btn btn-secondary">Download Sponsor Packet</a>
+                    </div>
+                    <div class="sponsor-packet-mockup">
+                        <h4>Sponsorship<br>Opportunities</h4>
+                        <p>SHIFT Happens: The Real Thief</p>
+                        <a href="#sponsor-download-link" class="btn">View Tiers</a>
+                        <p class="sponsor-logos-placeholder">LWL + NDCF</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="social" class="section">
+             <div class="container">
+                <h2 class="section-title">Share The SHIFT</h2>
+                <p class="section-subtitle">Our visual story is one of awakening and revelation. Use these assets to share the message and inspire your network to join this life-changing experience.</p>
+                 <div class="social-grid">
+                    <div class="social-card">
+                        <p>You’ve planned long enough. You’ve prayed long enough. <strong>Now it’s time to execute.</strong></p>
+                        <p class="hashtag">#TheRealThief</p>
+                    </div>
+                    <div class="social-card">
+                        <p>Faith in motion looks like <strong>abundance.</strong></p>
+                        <p class="hashtag">#TalkYourSHIFT</p>
+                    </div>
+                    <div class="social-card">
+                         <p>The thief’s time is <strong>up.</strong></p>
+                         <p class="hashtag">#SHIFT2025</p>
+                    </div>
+                 </div>
+            </div>
+        </section>
+
+        <section id="register" class="section">
+            <div class="container">
+                <h2 class="section-title" style="color: white;">Your Abundance Awaits.</h2>
+                <p class="section-subtitle" style="color: rgba(243, 243, 243, 0.9);">This is your moment to reclaim your alignment and walk in purpose. Limited seats available for both in-person and virtual experiences.</p>
+                <a href="#register-link" class="btn">Register Now & Reclaim Your Future</a>
+            </div>
+        </section>
+        
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Leading with LaKesha. All Rights Reserved.</p>
+            <p>A transformational experience in partnership with NDCF.</p>
+        </div>
+    </footer>
+
+</body>
+</html>
