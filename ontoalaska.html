@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alaska Apex | A True Flagship Experience</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        /* ---
+        CORE THEME & VARIABLES
+        --- */
+        :root {
+            --deep-blue: #0F204B;
+            --bright-yellow: #FFB612;
+            --dark-bg: #111111;
+            --white: #ffffff;
+            --light-gray-bg: #f8f8f8;
+            --text-color: #333333;
+            --heading-font: 'Playfair Display', serif;
+            --body-font: 'Montserrat', sans-serif;
+            --transition: 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        /* ---
+        GLOBAL RESETS & STYLES
+        --- */
+        *, *::before, *::after { box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: var(--body-font);
+            margin: 0;
+            background-color: var(--white);
+            color: var(--text-color);
+            line-height: 1.8;
+            font-size: 17px;
+            -webkit-font-smoothing: antialiased;
+        }
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        h1, h2, h3 {
+            font-family: var(--heading-font);
+            color: var(--deep-blue);
+            font-weight: 700;
+            margin: 0 0 1rem 0;
+        }
+        section {
+            padding: 7rem 0;
+            overflow: hidden;
+        }
+
+        /* ---
+        HEADER & NAVIGATION (ADJUSTED FOR COMPACT SIZE)
+        --- */
+        .main-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            /* REDUCED PADDING for a sleeker look */
+            padding: 1rem 0;
+            transition: background-color var(--transition), padding var(--transition), backdrop-filter var(--transition);
+        }
+        .main-header.scrolled {
+            background-color: rgba(10, 10, 10, 0.8);
+            backdrop-filter: blur(10px);
+            /* REDUCED PADDING for scrolled state */
+            padding: 0.75rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo img {
+            /* REDUCED LOGO SIZE */
+            max-width: 100px;
+            transition: max-width var(--transition);
+        }
+        .main-header.scrolled .logo img {
+            /* REDUCED LOGO SIZE for scrolled state */
+            max-width: 90px;
+        }
+        .nav-links a {
+            color: var(--white);
+            text-decoration: none;
+            margin: 0 1.25rem; /* Slightly reduced margin */
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            position: relative;
+            padding-bottom: 8px;
+        }
+        .nav-links a:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--bright-yellow);
+            transition: width var(--transition);
+        }
+        .nav-links a:hover:after { width: 100%; }
+
+        /* ---
+        HERO VIDEO SECTION
+        --- */
+        .hero {
+            height: 100vh;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: var(--white);
+            padding: 0;
+        }
+        #hero-video {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            z-index: -2;
+        }
+        .hero-overlay {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(15, 32, 75, 0.5);
+            z-index: -1;
+        }
+        .hero-content h1 {
+            font-size: clamp(3rem, 7vw, 6rem);
+            color: var(--white);
+            text-shadow: 0 5px 25px rgba(0,0,0,0.5);
+        }
+        .hero-content p {
+            font-size: clamp(1rem, 2vw, 1.3rem);
+            max-width: 750px;
+            margin: 0 auto 2.5rem auto;
+            font-weight: 400;
+        }
+        .cta-button {
+            background-color: var(--bright-yellow);
+            color: var(--deep-blue);
+            padding: 1.2rem 3.5rem;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+            display: inline-block;
+            border: none;
+        }
+        .cta-button:hover {
+            transform: scale(1.05) translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+            background-color: #ffc53d;
+        }
+
+        /* ---
+        INTRO SECTION
+        --- */
+        #intro { background-color: var(--light-gray-bg); }
+        .intro-layout {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            align-items: center;
+            gap: 5rem;
+        }
+        .intro-image {
+            margin-top: -12rem; /* Overlap effect */
+            margin-bottom: -5rem;
+            position: relative;
+        }
+        .intro-image img {
+            border-radius: 10px;
+            box-shadow: 0 30px 60px -20px rgba(0,0,0,0.25);
+            width: 100%;
+        }
+        .intro-text h2 {
+            font-size: 2.8rem;
+            line-height: 1.2;
+        }
+        .highlight { color: var(--bright-yellow); }
+
+        /* ---
+        EXPERIENCES SECTION
+        --- */
+        .section-title { text-align: center; font-size: 3rem; margin-bottom: 1rem; }
+        .section-subtitle { text-align: center; font-size: 1.1rem; max-width: 700px; margin: 0 auto 5rem auto; color: #555; }
+        .experiences-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(2, 300px);
+            gap: 1.5rem;
+            grid-template-areas:
+                "exp1 exp1 exp2"
+                "exp3 exp4 exp2";
+        }
+        .exp-card {
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            color: white;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        .exp-card img {
+            width: 100%; height: 100%; object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+        .exp-card:hover img { transform: scale(1.1); }
+        .exp-card .overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 60%);
+            transition: background var(--transition);
+        }
+        .exp-card .exp-title {
+            position: absolute;
+            bottom: 2rem;
+            left: 2rem;
+            font-size: 1.8rem;
+            font-family: var(--heading-font);
+            transform: translateY(10px);
+            opacity: 0.9;
+            transition: transform var(--transition), opacity var(--transition);
+        }
+        .exp-card:hover .exp-title { transform: translateY(0); opacity: 1; }
+        .exp1 { grid-area: exp1; }
+        .exp2 { grid-area: exp2; }
+        .exp3 { grid-area: exp3; }
+        .exp4 { grid-area: exp4; }
+
+        /* ---
+        FINAL CTA SECTION
+        --- */
+        .final-cta {
+            padding: 0;
+            background-color: var(--dark-bg);
+            color: var(--white);
+        }
+        .cta-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            align-items: center;
+        }
+        .cta-image {
+            height: 600px;
+            background: url('https://images2.alphacoders.com/566/thumb-1920-566239.jpg') no-repeat center center/cover;
+        }
+        .cta-content { padding: 4rem; }
+        .cta-content h2 { color: var(--white); font-size: 3.5rem; }
+        .cta-content p { font-size: 1.1rem; opacity: 0.8; margin-bottom: 2.5rem; }
+
+        /* ---
+        FOOTER
+        --- */
+        .footer {
+            background-color: var(--dark-bg);
+            color: rgba(255,255,255,0.7);
+            padding: 3rem 0;
+            text-align: center;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        /* ---
+        SCROLL ANIMATIONS
+        --- */
+        .reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 1s ease-out, transform 1s ease-out;
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- RESPONSIVE DESIGN --- */
+        @media (max-width: 1024px) {
+            .intro-layout { grid-template-columns: 1fr; text-align: center; }
+            .intro-image { margin: 0 auto; }
+            .experiences-grid {
+                grid-template-columns: 1fr 1fr;
+                grid-template-rows: repeat(3, 300px);
+                grid-template-areas: "exp1 exp1" "exp2 exp3" "exp4 exp4";
+            }
+            .cta-layout { grid-template-columns: 1fr; }
+            .cta-image { height: 400px; }
+        }
+        @media (max-width: 768px) {
+            body { font-size: 16px; }
+            .nav-links { display: none; } /* Simplified for example */
+            .experiences-grid {
+                grid-template-columns: 1fr;
+                grid-template-rows: repeat(4, 300px);
+                grid-template-areas: "exp1" "exp2" "exp3" "exp4";
+            }
+            .cta-content h2 { font-size: 2.5rem; }
+            section { padding: 4rem 0; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- ======================= HEADER ======================= -->
+    <header class="main-header" id="mainHeader">
+        <div class="container navbar">
+            <a href="#home" class="logo">
+                <img src="alaskalogo.png" alt="Alaska Apex Logo">
+            </a>
+            <nav class="nav-links">
+                <a href="#intro">The Dream</a>
+                <a href="#experiences">Experiences</a>
+                <a href="#contact">Begin Your Journey</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+
+        <!-- ======================= HERO VIDEO ======================= -->
+        <section class="hero" id="home">
+            <video playsinline autoplay muted loop id="hero-video">
+                <!-- Reliable video source from Pexels -->
+                <source src="https://cdn.pixabay.com/video/2025/05/23/281102_large.mp4" type="video/mp4">
+            </video>
+            <div class="hero-overlay"></div>
+            <div class="hero-content container">
+                <h1>The Last True Wilderness</h1>
+                <p>This is more than a destination. It's a journey into the wild, untamed heart of the world. An adventure that will redefine you.</p>
+                <a href="#experiences" class="cta-button">Discover Your Expedition</a>
+            </div>
+        </section>
+
+        <!-- ======================= INTRO SECTION ======================= -->
+        <section id="intro">
+            <div class="container intro-layout">
+                <div class="intro-image reveal">
+                    <!-- Reliable image source from Pexels -->
+                    <img src="https://images2.alphacoders.com/566/thumb-1920-566239.jpg" alt="Majestic snow-covered mountains in Alaska">
+                </div>
+                <div class="intro-text reveal">
+                    <h2>Where Raw Beauty Meets <span class="highlight">Unforgettable Adventure</span>.</h2>
+                    <p>We don't offer tours; we craft expeditions. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. We handle every detail, from the thrilling to the serene, allowing you to immerse yourself completely in the magic of the Alaskan wild.</p>
+                    <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Our guides are local experts, passionate about sharing the secrets of this land.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ======================= EXPERIENCES SECTION ======================= -->
+        <section id="experiences">
+            <div class="container">
+                <h2 class="section-title reveal">Signature Alaskan Experiences</h2>
+                <p class="section-subtitle reveal">Hand-crafted journeys designed to connect you with the soul of Alaska. This is where your story begins.</p>
+                <div class="experiences-grid">
+                    <div class="exp-card exp1 reveal">
+                        <img src="https://images.pexels.com/photos/1666012/pexels-photo-1666012.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="Glacier walking">
+                        <div class="overlay"></div>
+                        <h3 class="exp-title">Walk on Ancient Glaciers</h3>
+                    </div>
+                    <div class="exp-card exp2 reveal">
+                        <img src="https://images.pexels.com/photos/3408744/pexels-photo-3408744.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="Northern lights">
+                        <div class="overlay"></div>
+                        <h3 class="exp-title">Witness the Aurora</h3>
+                    </div>
+                    <div class="exp-card exp3 reveal">
+                        <img src="https://images.pexels.com/photos/3553243/pexels-photo-3553243.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="Humpback whale">
+                        <div class="overlay"></div>
+                        <h3 class="exp-title">Ocean Giants Safari</h3>
+                    </div>
+                    <div class="exp-card exp4 reveal">
+                        <img src="https://images.pexels.com/photos/1784577/pexels-photo-1784577.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="Grizzly bear">
+                        <div class="overlay"></div>
+                        <h3 class="exp-title">Wild Bear Encounters</h3>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- ======================= FINAL CTA ======================= -->
+        <section class="final-cta" id="contact">
+            <div class="cta-layout">
+                <div class="cta-image">
+                    <!-- This div has a background image set in CSS -->
+                </div>
+                <div class="cta-content container reveal">
+                    <h2>Your Story Awaits.</h2>
+                    <p>The vast, untamed wilderness of Alaska is calling. Are you ready to answer? Contact our expedition planners to begin crafting a journey that is exclusively yours.</p>
+                    <a href="mailto:info@alaskaapex.com" class="cta-button">Start Planning Your Expedition</a>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ======================= FOOTER ======================= -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Alaska Apex Expeditions | All Rights Reserved</p>
+            <p>Contact: info@alaskaapex.com | (907) 555-APEX</p>
+        </div>
+    </footer>
+
+    <script>
+        // --- Change header style on scroll ---
+        const header = document.getElementById('mainHeader');
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // --- Animate elements on scroll ---
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, {
+            threshold: 0.2
+        });
+
+        const revealElements = document.querySelectorAll('.reveal');
+        revealElements.forEach(el => observer.observe(el));
+    </script>
+</body>
+</html>
