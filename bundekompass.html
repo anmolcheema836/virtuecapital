@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bundeskompass - Nachrichten aus Deutschland und der Welt</title>
+    <style>
+        /* General Styles & Enhanced Design */
+        :root {
+            --primary-navy: #1A2A44;
+            --secondary-slate: #F0F2F5; /* A light, clean background */
+            --accent-cyan: #00A7B5;
+            --accent-red: #D93E4D;
+            --text-dark: #111;
+            --text-light: #5A6A7B;
+            --border-color: #DDE3E8;
+            --font-family-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+            --font-family-serif: "Merriweather", "Georgia", serif; /* A more elegant serif font */
+            --header-height: 60px;
+        }
+
+        /* A modern font-smoothing reset */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body {
+            font-family: var(--font-family-sans);
+            background-color: var(--secondary-slate);
+            color: var(--text-dark);
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 0 16px;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 4px; /* Slightly rounded images */
+        }
+
+        /* ======================= HEADER ======================= */
+        .main-header {
+            background-color: #fff;
+            border-bottom: 1px solid var(--border-color);
+            padding: 0 16px;
+            height: var(--header-height);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        .logo {
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: var(--primary-navy);
+            letter-spacing: -1px;
+        }
+
+        .main-nav { display: none; } /* Hide for mobile first */
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .header-actions svg {
+            width: 28px;
+            height: 28px;
+            stroke: var(--text-light);
+            cursor: pointer;
+        }
+        
+        .menu-toggle { display: block; } /* Show hamburger on mobile */
+
+
+        /* ======================= NEWS TICKER ======================= */
+        .news-ticker {
+            background-color: var(--primary-navy);
+            color: white;
+            padding: 10px 0;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .ticker-content {
+            display: flex;
+            align-items: center;
+        }
+
+        .ticker-label {
+            background-color: var(--accent-red);
+            padding: 4px 10px;
+            font-weight: bold;
+            margin-right: 12px;
+            white-space: nowrap;
+            border-radius: 4px;
+        }
+
+        /* ======================= SPORTS STRIP ======================= */
+        .sports-strip {
+            background-color: #fff;
+            border-bottom: 1px solid var(--border-color);
+            padding: 12px 0;
+            overflow-x: auto; /* Allow horizontal scroll on mobile */
+        }
+        .scores-container {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            gap: 24px;
+            font-size: 0.85em;
+            text-align: center;
+            min-width: 500px;
+        }
+        .match { display: flex; align-items: center; gap: 8px; }
+        .match .teams { font-weight: 600; white-space: nowrap; }
+        .match .score { font-size: 1.1em; color: var(--primary-navy); font-weight: 700; }
+        .match .time { font-size: 0.9em; color: var(--text-light); }
+
+
+        /* ======================= MAIN CONTENT ======================= */
+        .main-content {
+            padding: 24px 0;
+        }
+        
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr; /* Single column for mobile */
+            gap: 32px;
+        }
+        
+        .main-column, .sidebar-column {
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+        }
+
+        /* ======================= ARTICLE CARDS ======================= */
+        .article-card {
+            background-color: #fff;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+        
+        .article-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+        }
+        
+        .card-content { padding: 16px; }
+        
+        .kicker {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--text-light);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .chip {
+            padding: 4px 10px;
+            border-radius: 100px; /* pill shape */
+            font-size: 0.7rem;
+            color: white;
+            font-weight: bold;
+        }
+        .chip.live { background-color: var(--accent-red); }
+        .chip.new { background-color: var(--accent-cyan); }
+
+        .article-card h2, .article-card h3 {
+            font-family: var(--font-family-serif);
+            line-height: 1.3;
+        }
+        .article-card h2 { font-size: 1.75rem; }
+        .article-card h3 { font-size: 1.25rem; }
+        .article-card p {
+            font-size: 1rem;
+            color: var(--text-light);
+            line-height: 1.6;
+            margin-top: 8px;
+        }
+        
+        .article-meta {
+            font-size: 0.8rem;
+            color: #888;
+            margin-top: 16px;
+        }
+
+        /* Card Variations */
+        .lead-story .card-content { padding: 24px; }
+        .lead-story h2 { font-size: 2.25rem; }
+        .lead-story p { font-size: 1.1rem; }
+
+        .sidebar-card {
+            display: flex;
+            flex-direction: row;
+            gap: 16px;
+            align-items: center;
+        }
+        .sidebar-card .card-image-wrapper {
+            flex-shrink: 0;
+            width: 90px;
+            height: 90px;
+        }
+        .sidebar-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .sidebar-card .card-content { padding: 0; flex: 1; }
+        .sidebar-card h3 { font-size: 1rem; line-height: 1.4; }
+        
+        /* ======================= CATEGORY SECTIONS ======================= */
+        .category-section {
+            background-color: transparent; /* No extra background */
+            padding: 0;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--primary-navy);
+            padding-bottom: 12px;
+            margin-bottom: 24px;
+            border-bottom: 4px solid var(--accent-cyan);
+            display: inline-block;
+        }
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: 1fr; /* Mobile first */
+            gap: 24px;
+        }
+
+        /* ======================= FOOTER ======================= */
+        .main-footer {
+            background-color: var(--primary-navy);
+            color: #fff;
+            padding: 50px 0;
+            margin-top: 40px;
+        }
+        .footer-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr; /* 2 columns on mobile */
+            gap: 32px;
+        }
+        .footer-column h4 {
+            margin-bottom: 16px;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            opacity: 0.9;
+        }
+        .footer-column ul { list-style: none; padding: 0; }
+        .footer-column li { margin-bottom: 12px; }
+        .footer-column a { color: var(--secondary-slate); opacity: 0.7; transition: opacity 0.2s; }
+        .footer-column a:hover { opacity: 1; }
+
+        /* ========================================================== */
+        /* ======================= MEDIA QUERIES ====================== */
+        /* ========================================================== */
+
+        /* ====== TABLET STYLES (min-width: 768px) ====== */
+        @media (min-width: 768px) {
+            .container { padding: 0 32px; }
+            .logo { font-size: 2rem; }
+            .menu-toggle { display: none; } /* Hide hamburger */
+
+            .main-nav {
+                display: flex;
+                align-items: center;
+            }
+            .main-nav ul {
+                list-style: none;
+                display: flex;
+                gap: 24px;
+                margin: 0;
+            }
+            .main-nav a {
+                font-weight: 600;
+                font-size: 1rem;
+                color: var(--text-light);
+                transition: color 0.2s;
+                padding: 8px 0;
+            }
+            .main-nav a:hover {
+                color: var(--primary-navy);
+            }
+            
+            .main-content { padding: 40px 0; }
+            
+            .main-grid {
+                grid-template-columns: 2fr 1fr;
+                gap: 40px;
+            }
+            
+            .category-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .footer-content {
+                grid-template-columns: repeat(4, 1fr); /* 4 columns on tablet+ */
+            }
+        }
+        
+        /* ====== DESKTOP STYLES (min-width: 1200px) ====== */
+        @media (min-width: 1200px) {
+            .main-nav ul { gap: 32px; }
+            
+            .category-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            .lead-story h2 { font-size: 2.75rem; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- ======================= HEADER ======================= -->
+    <header class="main-header">
+        <div class="container">
+            <div class="header-content">
+                <a href="#" class="logo">bundeskompass</a>
+                <nav class="main-nav">
+                    <ul>
+                        <li><a href="#">Politics</a></li>
+                        <li><a href="#">Economy</a></li>
+                        <li><a href="#">World</a></li>
+                        <li><a href="#">Tech</a></li>
+                        <li><a href="#">Culture</a></li>
+                        <li><a href="#">Sport</a></li>
+                    </ul>
+                </nav>
+                <div class="header-actions">
+                    <div class="search-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                        </svg>
+                    </div>
+                    <div class="menu-toggle">
+                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ======================= NEWS TICKER ======================= -->
+    <div class="news-ticker">
+        <div class="container">
+            <div class="ticker-content">
+                <span class="ticker-label">BREAKING</span>
+                <span>Allegations of abuse against founder Hexaware Gescher - Investigation also in Germany</span>
+            </div>
+        </div>
+    </div>
+    
+    <!-- ======================= SPORTS STRIP ======================= -->
+    <section class="sports-strip">
+        <div class="container">
+            <div class="scores-container">
+                <div class="match">
+                    <span class="teams">FC Bayern vs RB Leipzig</span>
+                    <span class="score">2-1</span>
+                    <span class="time">Finished</span>
+                </div>
+                <div class="match">
+                    <span class="teams">Hoffenheim vs Hertha</span>
+                    <span class="score">3-0</span>
+                    <span class="time">Finished</span>
+                </div>
+                <div class="match">
+                    <span class="teams">Hamburg vs Wolfsburg</span>
+                    <span class="score">1-1</span>
+                    <span class="time">20:30 CET</span>
+                </div>
+                 <div class="match">
+                    <span class="teams">Dortmund vs Schalke</span>
+                    <span class="score">0-0</span>
+                    <span class="time">Tomorrow</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ======================= MAIN CONTENT ======================= -->
+    <main class="main-content container">
+        <div class="main-grid">
+            
+            <!-- ====== MAIN COLUMN ====== -->
+            <div class="main-column">
+                
+                <!-- Lead Story -->
+                <article class="article-card lead-story">
+                    <img src="https://picsum.photos/id/1018/800/450?grayscale" alt="German landscape">
+                    <div class="card-content">
+                        <div class="kicker">
+                            <span class="chip live">LIVE</span> Germany's Rearmament
+                        </div>
+                        <h2>"Failure cost in money"</h2>
+                        <p>Boris Pistorius wants to make the Bundeswehr war-ready and skillfully creates the impression that things are progressing according to plan. Investigations show new problems with key armaments projects.</p>
+                        <div class="article-meta">By Thomas Wiegold - 2 hours ago</div>
+                    </div>
+                </article>
+
+                <!-- Economy Section -->
+                <section class="category-section">
+                    <h2 class="section-title">Economy & Property</h2>
+                    <div class="category-grid">
+                        <article class="article-card">
+                            <img src="https://picsum.photos/id/24/400/250" alt="Apartment interior">
+                            <div class="card-content">
+                                <div class="kicker">Rental Apartments</div>
+                                <h3>"Rents on average 45 percent more expensive" – The absurd excesses of the furniture trick</h3>
+                            </div>
+                        </article>
+                        <article class="article-card">
+                            <img src="https://picsum.photos/id/1062/400/250" alt="Family looking at house">
+                            <div class="card-content">
+                                <div class="kicker">For Families</div>
+                                <h3>These funding programs are designed to make the dream of home ownership come true</h3>
+                            </div>
+                        </article>
+                        <article class="article-card">
+                            <img src="https://picsum.photos/id/219/400/250" alt="Power lines">
+                            <div class="card-content">
+                                <div class="kicker">Energy Transition</div>
+                                <h3>The real losers of the German energy transition</h3>
+                            </div>
+                        </article>
+                    </div>
+                </section>
+
+                 <!-- Politics Section -->
+                <section class="category-section">
+                    <h2 class="section-title">Politics</h2>
+                    <div class="category-grid">
+                        <article class="article-card">
+                            <img src="https://picsum.photos/id/10/400/250" alt="Politician">
+                            <div class="card-content">
+                                <div class="kicker">Statement Reaction</div>
+                                <h3>"Danke für nichts, Herr Bundeskanzler!" – SPD attackiert Merz wegen „Stoßtrupp“-Aussage</h3>
+                            </div>
+                        </article>
+                        <article class="article-card">
+                            <img src="https://picsum.photos/id/433/400/250" alt="Protest">
+                             <div class="card-content">
+                                <div class="kicker">
+                                    <span class="chip new">NEW</span> Hamburg
+                                </div>
+                                <h3>"cityscape" dispute divides government - SPD parliamentary group</h3>
+                            </div>
+                        </article>
+                        <article class="article-card">
+                            <img src="https://picsum.photos/id/142/400/250" alt="Flags">
+                            <div class="card-content">
+                                <div class="kicker">National Pride</div>
+                                <h3>When dozens of German flags suddenly fly in a community</h3>
+                            </div>
+                        </article>
+                    </div>
+                </section>
+
+            </div>
+
+            <!-- ====== SIDEBAR COLUMN ====== -->
+            <aside class="sidebar-column">
+                <article class="article-card sidebar-card">
+                    <div class="card-image-wrapper"><img src="https://picsum.photos/id/342/100/100" alt="Portrait of a man"></div>
+                    <div class="card-content">
+                        <div class="kicker">US Shutdown</div>
+                        <h3>"That's what I call a patriot" – Donor threatens GOP with no funds</h3>
+                    </div>
+                </article>
+                <article class="article-card sidebar-card">
+                    <div class="card-image-wrapper"><img src="https://picsum.photos/id/1025/100/100" alt="Dog"></div>
+                    <div class="card-content">
+                        <div class="kicker">Promotion</div>
+                        <h3>Number of dog adoptions does significantly drop - this federal state leads the list</h3>
+                    </div>
+                </article>
+                <article class="article-card sidebar-card">
+                    <div class="card-image-wrapper"><img src="https://picsum.photos/id/1074/100/100" alt="Woman portrait"></div>
+                    <div class="card-content">
+                        <div class="kicker">Ukraine War</div>
+                        <h3>"Catastrophic!" – The situation in Avdiivka is becoming critical</h3>
+                    </div>
+                </article>
+                 <article class="article-card sidebar-card">
+                    <div class="card-image-wrapper"><img src="https://picsum.photos/id/1084/100/100" alt="Crash site"></div>
+                    <div class="card-content">
+                        <div class="kicker">Unconventional Go-Getter</div>
+                        <h3>The crash landing of the Merz government</h3>
+                    </div>
+                </article>
+                 <article class="article-card sidebar-card">
+                    <div class="card-image-wrapper"><img src="https://picsum.photos/id/64/100/100" alt="Smartphone"></div>
+                    <div class="card-content">
+                        <div class="kicker">Smartphones</div>
+                        <h3>"If children can't fight the device, the smartphone takes on a different significance."</h3>
+                    </div>
+                </article>
+            </aside>
+
+        </div>
+    </main>
+    
+    <!-- ======================= FOOTER ======================= -->
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h4>Sections</h4>
+                    <ul>
+                        <li><a href="#">Politics</a></li>
+                        <li><a href="#">Economy</a></li>
+                        <li><a href="#">World</a></li>
+                        <li><a href="#">Tech</a></li>
+                        <li><a href="#">Culture</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Subscription</h4>
+                    <ul>
+                        <li><a href="#">Kompass+</a></li>
+                        <li><a href="#">My World</a></li>
+                        <li><a href="#">Newsletter</a></li>
+                        <li><a href="#">Cancel Subscription</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Services</h4>
+                    <ul>
+                        <li><a href="#">Contact</a></li>
+                        <li><a href="#">Syndication</a></li>
+                        <li><a href="#">AI Policy</a></li>
+                        <li><a href="#">Responsibility</a></li>
+                        <li><a href="#">FAQ</a></li>
+                    </ul>
+                </div>
+                 <div class="footer-column">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="#">Imprint</a></li>
+                        <li><a href="#">Data protection</a></li>
+                        <li><a href="#">Terms</a></li>
+                        <li><a href="#">Privacy Manager</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
