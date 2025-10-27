@@ -1,590 +1,699 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bundeskompass - Nachrichten aus Deutschland und der Welt</title>
+    
+    <!-- ==================
+    // SEO & METADATA
+    // ================== -->
+    <title>Your Name | Visual Portfolio</title>
+    <meta name="description" content="A high-end, professional portfolio showcasing stunning visual work in a clean, modern gallery. Fully responsive for all devices.">
+    <meta name="keywords" content="photography, portfolio, gallery, art, mobile responsive, landscape, portraits, high-end, professional">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Your Name | Visual Portfolio">
+    <meta property="og:description" content="A curated collection of high-end visual work.">
+    <meta property="og:image" content="https://images.pexels.com/photos/1123972/pexels-photo-1123972.jpeg">
+    <meta property="og:url" content="[YOUR WEBSITE URL HERE]">
+    <meta property="og:type" content="website">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+
+    <!-- ==================
+    // STYLES (CSS)
+    // ================== -->
     <style>
-        /* General Styles & Enhanced Design */
         :root {
-            --primary-navy: #1A2A44;
-            --secondary-slate: #F0F2F5; /* A light, clean background */
-            --accent-cyan: #00A7B5;
-            --accent-red: #D93E4D;
-            --text-dark: #111;
-            --text-light: #5A6A7B;
-            --border-color: #DDE3E8;
-            --font-family-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
-            --font-family-serif: "Merriweather", "Georgia", serif; /* A more elegant serif font */
-            --header-height: 60px;
+            --background-color: #0a0a0a;
+            --text-color: #e0e0e0;
+            --heading-color: #ffffff;
+            --accent-color: #cda274;
+            --border-color: #2a2a2a;
+            --header-height: 80px;
         }
 
-        /* A modern font-smoothing reset */
-        *, *::before, *::after {
+        /* Basic Reset & Typography */
+        * {
+            margin: 0;
+            padding: 0;
             box-sizing: border-box;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
+        }
+
+        html {
+            scroll-behavior: smooth;
         }
 
         body {
-            font-family: var(--font-family-sans);
-            background-color: var(--secondary-slate);
-            color: var(--text-dark);
-            margin: 0;
-            padding: 0;
+            font-family: 'DM Sans', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.7;
+            font-size: 16px;
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        body.no-scroll {
+            overflow: hidden;
         }
 
         .container {
-            max-width: 1440px;
+            max-width: 1400px;
             margin: 0 auto;
-            padding: 0 16px;
+            padding: 0 40px;
         }
 
-        a {
-            text-decoration: none;
-            color: inherit;
+        h1, h2, h3 {
+            font-family: 'Playfair Display', serif;
+            color: var(--heading-color);
+            line-height: 1.2;
+            margin-bottom: 20px;
+            font-weight: 700;
         }
 
-        img {
-            max-width: 100%;
-            height: auto;
-            display: block;
-            border-radius: 4px; /* Slightly rounded images */
-        }
+        h1 { font-size: 4rem; }
+        h2 { font-size: 3rem; }
+        p { margin-bottom: 20px; max-width: 65ch; }
+        a { color: var(--accent-color); text-decoration: none; transition: color 0.3s ease; }
+        a:hover { color: var(--heading-color); }
 
-        /* ======================= HEADER ======================= */
-        .main-header {
-            background-color: #fff;
+        /* Header & Navigation */
+        .header {
+            background-color: rgba(10, 10, 10, 0.7);
             border-bottom: 1px solid var(--border-color);
-            padding: 0 16px;
+            padding: 0 40px;
             height: var(--header-height);
-            position: sticky;
+            position: fixed;
             top: 0;
+            left: 0;
+            width: 100%;
             z-index: 1000;
-            display: flex;
-            align-items: center;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
         }
 
-        .header-content {
+        .navbar {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            width: 100%;
+            height: 100%;
         }
 
         .logo {
-            font-size: 1.75rem;
-            font-weight: 800;
-            color: var(--primary-navy);
-            letter-spacing: -1px;
+            font-size: 1.8rem;
+            font-family: 'Playfair Display', serif;
+            color: var(--heading-color);
         }
 
-        .main-nav { display: none; } /* Hide for mobile first */
-
-        .header-actions {
+        .nav-links {
             display: flex;
-            align-items: center;
-            gap: 16px;
         }
 
-        .header-actions svg {
-            width: 28px;
-            height: 28px;
-            stroke: var(--text-light);
-            cursor: pointer;
-        }
-        
-        .menu-toggle { display: block; } /* Show hamburger on mobile */
-
-
-        /* ======================= NEWS TICKER ======================= */
-        .news-ticker {
-            background-color: var(--primary-navy);
-            color: white;
-            padding: 10px 0;
-            font-size: 0.9rem;
-            line-height: 1.4;
-        }
-
-        .ticker-content {
-            display: flex;
-            align-items: center;
-        }
-
-        .ticker-label {
-            background-color: var(--accent-red);
-            padding: 4px 10px;
-            font-weight: bold;
-            margin-right: 12px;
-            white-space: nowrap;
-            border-radius: 4px;
-        }
-
-        /* ======================= SPORTS STRIP ======================= */
-        .sports-strip {
-            background-color: #fff;
-            border-bottom: 1px solid var(--border-color);
-            padding: 12px 0;
-            overflow-x: auto; /* Allow horizontal scroll on mobile */
-        }
-        .scores-container {
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            gap: 24px;
-            font-size: 0.85em;
-            text-align: center;
-            min-width: 500px;
-        }
-        .match { display: flex; align-items: center; gap: 8px; }
-        .match .teams { font-weight: 600; white-space: nowrap; }
-        .match .score { font-size: 1.1em; color: var(--primary-navy); font-weight: 700; }
-        .match .time { font-size: 0.9em; color: var(--text-light); }
-
-
-        /* ======================= MAIN CONTENT ======================= */
-        .main-content {
-            padding: 24px 0;
-        }
-        
-        .main-grid {
-            display: grid;
-            grid-template-columns: 1fr; /* Single column for mobile */
-            gap: 32px;
-        }
-        
-        .main-column, .sidebar-column {
-            display: flex;
-            flex-direction: column;
-            gap: 32px;
-        }
-
-        /* ======================= ARTICLE CARDS ======================= */
-        .article-card {
-            background-color: #fff;
-            display: flex;
-            flex-direction: column;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            overflow: hidden;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
-            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-        }
-        
-        .article-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
-        }
-        
-        .card-content { padding: 16px; }
-        
-        .kicker {
-            font-size: 0.75rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            color: var(--text-light);
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .chip {
-            padding: 4px 10px;
-            border-radius: 100px; /* pill shape */
-            font-size: 0.7rem;
-            color: white;
-            font-weight: bold;
-        }
-        .chip.live { background-color: var(--accent-red); }
-        .chip.new { background-color: var(--accent-cyan); }
-
-        .article-card h2, .article-card h3 {
-            font-family: var(--font-family-serif);
-            line-height: 1.3;
-        }
-        .article-card h2 { font-size: 1.75rem; }
-        .article-card h3 { font-size: 1.25rem; }
-        .article-card p {
+        .nav-links a {
+            margin: 0 20px;
+            font-weight: 500;
             font-size: 1rem;
-            color: var(--text-light);
-            line-height: 1.6;
-            margin-top: 8px;
+            color: var(--text-color);
         }
         
-        .article-meta {
-            font-size: 0.8rem;
-            color: #888;
-            margin-top: 16px;
+        /* Mobile Navigation Styles */
+        .hamburger {
+            display: none;
+            cursor: pointer;
+            z-index: 1001; /* Above mobile nav */
+        }
+        .hamburger div {
+            width: 25px;
+            height: 2px;
+            background-color: var(--heading-color);
+            margin: 5px 0;
+            transition: all 0.3s ease;
         }
 
-        /* Card Variations */
-        .lead-story .card-content { padding: 24px; }
-        .lead-story h2 { font-size: 2.25rem; }
-        .lead-story p { font-size: 1.1rem; }
-
-        .sidebar-card {
-            display: flex;
-            flex-direction: row;
-            gap: 16px;
-            align-items: center;
+        /* Main Content Sections */
+        .section {
+            padding: 120px 0;
+            margin-top: var(--header-height);
         }
-        .sidebar-card .card-image-wrapper {
-            flex-shrink: 0;
-            width: 90px;
-            height: 90px;
-        }
-        .sidebar-card img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        .sidebar-card .card-content { padding: 0; flex: 1; }
-        .sidebar-card h3 { font-size: 1rem; line-height: 1.4; }
         
-        /* ======================= CATEGORY SECTIONS ======================= */
-        .category-section {
-            background-color: transparent; /* No extra background */
-            padding: 0;
+        .section-dark {
+            background-color: #111;
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
         }
 
         .section-title {
-            font-size: 1.8rem;
-            font-weight: 800;
-            color: var(--primary-navy);
-            padding-bottom: 12px;
-            margin-bottom: 24px;
-            border-bottom: 4px solid var(--accent-cyan);
-            display: inline-block;
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .section-title p {
+            color: var(--accent-color);
+            margin: 0 auto;
         }
 
-        .category-grid {
+        /* Gallery Styles */
+        #gallery-filters {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .filter-btn {
+            background: none;
+            border: 1px solid var(--border-color);
+            border-radius: 30px;
+            padding: 10px 25px;
+            margin: 5px;
+            cursor: pointer;
+            font-weight: 500;
+            color: var(--text-color);
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background-color: var(--accent-color);
+            color: var(--background-color);
+            border-color: var(--accent-color);
+        }
+
+        .gallery-grid {
             display: grid;
-            grid-template-columns: 1fr; /* Mobile first */
-            gap: 24px;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            grid-auto-rows: 250px;
+            gap: 20px;
         }
 
-        /* ======================= FOOTER ======================= */
-        .main-footer {
-            background-color: var(--primary-navy);
-            color: #fff;
-            padding: 50px 0;
-            margin-top: 40px;
+        .gallery-item {
+            cursor: pointer;
+            overflow: hidden;
+            border-radius: 8px;
+            position: relative;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 0.6s ease forwards;
         }
-        .footer-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr; /* 2 columns on mobile */
-            gap: 32px;
-        }
-        .footer-column h4 {
-            margin-bottom: 16px;
-            font-size: 1rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            opacity: 0.9;
-        }
-        .footer-column ul { list-style: none; padding: 0; }
-        .footer-column li { margin-bottom: 12px; }
-        .footer-column a { color: var(--secondary-slate); opacity: 0.7; transition: opacity 0.2s; }
-        .footer-column a:hover { opacity: 1; }
+        
+        .gallery-item:nth-child(2) { animation-delay: 0.1s; }
+        .gallery-item:nth-child(3) { animation-delay: 0.2s; }
+        .gallery-item:nth-child(4) { animation-delay: 0.3s; }
 
-        /* ========================================================== */
-        /* ======================= MEDIA QUERIES ====================== */
-        /* ========================================================== */
-
-        /* ====== TABLET STYLES (min-width: 768px) ====== */
-        @media (min-width: 768px) {
-            .container { padding: 0 32px; }
-            .logo { font-size: 2rem; }
-            .menu-toggle { display: none; } /* Hide hamburger */
-
-            .main-nav {
-                display: flex;
-                align-items: center;
-            }
-            .main-nav ul {
-                list-style: none;
-                display: flex;
-                gap: 24px;
-                margin: 0;
-            }
-            .main-nav a {
-                font-weight: 600;
-                font-size: 1rem;
-                color: var(--text-light);
-                transition: color 0.2s;
-                padding: 8px 0;
-            }
-            .main-nav a:hover {
-                color: var(--primary-navy);
-            }
-            
-            .main-content { padding: 40px 0; }
-            
-            .main-grid {
-                grid-template-columns: 2fr 1fr;
-                gap: 40px;
-            }
-            
-            .category-grid {
-                grid-template-columns: 1fr 1fr;
-            }
-
-            .footer-content {
-                grid-template-columns: repeat(4, 1fr); /* 4 columns on tablet+ */
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
             }
         }
         
-        /* ====== DESKTOP STYLES (min-width: 1200px) ====== */
-        @media (min-width: 1200px) {
-            .main-nav ul { gap: 32px; }
+        .gallery-item--tall { grid-row: span 2; }
+        
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1), filter 0.4s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.05);
+            filter: brightness(0.6);
+        }
+
+        .gallery-item-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 25px;
+            color: white;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            transform: translateY(100%);
+            opacity: 0;
+            transition: transform 0.5s cubic-bezier(0.165, 0.84, 0.44, 1), opacity 0.5s ease;
+        }
+        
+        .gallery-item:hover .gallery-item-overlay {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        .gallery-item-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+        .gallery-item-category {
+            font-size: 0.9rem;
+            color: var(--accent-color);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        /* Lightbox Modal */
+        .lightbox {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            padding: 20px;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
+        }
+        
+        .lightbox.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .lightbox-content {
+            width: auto;
+            height: auto;
+            max-width: 95vw;
+            max-height: 90vh;
+            position: relative;
+            transform: scale(0.95);
+            transition: transform 0.4s ease;
+        }
+        
+        .lightbox.active .lightbox-content {
+            transform: scale(1);
+        }
+
+        .lightbox-img {
+            max-width: 100%;
+            max-height: 80vh;
+            display: block;
+            margin: 0 auto;
+            border-radius: 4px;
+        }
+        
+        .lightbox-caption {
+            color: white;
+            text-align: center;
+            margin-top: 15px;
+        }
+        
+        .lightbox-caption h3 {
+            font-family: 'Playfair Display', serif;
+            margin-bottom: 5px;
+            font-size: 1.5rem;
+        }
+
+        .lightbox-close {
+            position: fixed;
+            top: 20px;
+            right: 25px;
+            font-size: 3rem;
+            color: white;
+            cursor: pointer;
+            line-height: 1;
+            transition: transform 0.3s ease;
+        }
+        .lightbox-close:hover {
+            transform: rotate(90deg);
+        }
+
+        /* About & Contact Sections */
+        .text-content-area {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        
+        .submit-btn {
+            background: var(--accent-color);
+            color: var(--background-color);
+            border: none;
+            padding: 15px 35px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: background-color 0.3s ease;
+            display: inline-block;
+            margin-top: 20px;
+        }
+        
+        .submit-btn:hover {
+            background: var(--heading-color);
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 50px 20px;
+            border-top: 1px solid var(--border-color);
+            color: #888;
+        }
+
+        /* ==================
+        // RESPONSIVE DESIGN
+        // ================== */
+        @media (max-width: 992px) {
+            h1 { font-size: 3.5rem; }
+            h2 { font-size: 2.5rem; }
+            .container { padding: 0 30px; }
+            .gallery-grid { grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); }
+        }
+        
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5rem; }
+            .container { padding: 0 20px; }
+            .header { padding: 0 20px; }
+            .section { padding: 80px 0; }
             
-            .category-grid {
-                grid-template-columns: repeat(3, 1fr);
+            .hamburger {
+                display: block;
             }
-            .lead-story h2 { font-size: 2.75rem; }
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: 0;
+                height: 100vh;
+                width: 100%;
+                background-color: var(--background-color);
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                clip-path: circle(0px at 90% -10%);
+                -webkit-clip-path: circle(0px at 90% -10%);
+                transition: all 0.8s ease-out;
+            }
+            .nav-links.nav-active {
+                clip-path: circle(150% at 90% -10%);
+                -webkit-clip-path: circle(150% at 90% -10%);
+            }
+            .nav-links a {
+                font-size: 1.5rem;
+                margin: 20px 0;
+            }
+
+            .toggle .line1 {
+                transform: rotate(-45deg) translate(-5px, 6px);
+            }
+            .toggle .line2 {
+                opacity: 0;
+            }
+            .toggle .line3 {
+                transform: rotate(45deg) translate(-5px, -6px);
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .gallery-grid { 
+                grid-template-columns: 1fr;
+                grid-auto-rows: 350px; /* Taller rows for single column */
+            }
+            .gallery-item--tall { grid-row: span 1; } /* Disable tall span on mobile */
         }
 
     </style>
 </head>
 <body>
 
-    <!-- ======================= HEADER ======================= -->
-    <header class="main-header">
-        <div class="container">
-            <div class="header-content">
-                <a href="#" class="logo">bundeskompass</a>
-                <nav class="main-nav">
-                    <ul>
-                        <li><a href="#">Politics</a></li>
-                        <li><a href="#">Economy</a></li>
-                        <li><a href="#">World</a></li>
-                        <li><a href="#">Tech</a></li>
-                        <li><a href="#">Culture</a></li>
-                        <li><a href="#">Sport</a></li>
-                    </ul>
-                </nav>
-                <div class="header-actions">
-                    <div class="search-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
-                        </svg>
-                    </div>
-                    <div class="menu-toggle">
-                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2">
-                          <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-                        </svg>
-                    </div>
-                </div>
+    <!-- ==================
+    // HEADER
+    // ================== -->
+    <header class="header">
+        <nav class="navbar container">
+            <!-- EDIT YOUR NAME/LOGO HERE -->
+            <a href="#" class="logo">Your Name</a>
+            <div class="nav-links" id="nav-links">
+                <a href="#gallery">Gallery</a>
+                <a href="#about">About</a>
+                <a href="#contact">Contact</a>
             </div>
-        </div>
+            <div class="hamburger" id="hamburger">
+                <div class="line1"></div>
+                <div class="line2"></div>
+                <div class="line3"></div>
+            </div>
+        </nav>
     </header>
 
-    <!-- ======================= NEWS TICKER ======================= -->
-    <div class="news-ticker">
-        <div class="container">
-            <div class="ticker-content">
-                <span class="ticker-label">BREAKING</span>
-                <span>Allegations of abuse against founder Hexaware Gescher - Investigation also in Germany</span>
+    <main>
+
+        <!-- ==================
+        // GALLERY SECTION
+        // ================== -->
+        <section id="gallery" class="section">
+            <div class="container">
+                <div class="section-title">
+                    <p>Portfolio</p>
+                    <h1>Visual Showcase</h1>
+                </div>
+                <div id="gallery-filters">
+                    <!-- Filter buttons will be generated by JavaScript -->
+                </div>
+                <div class="gallery-grid" id="gallery-grid">
+                    <!-- Gallery items will be generated by JavaScript -->
+                </div>
+            </div>
+        </section>
+        
+        <!-- ==================
+        // ABOUT SECTION
+        // ================== -->
+        <section id="about" class="section section-dark">
+            <div class="container text-content-area">
+                <p>About Me</p>
+                <h2>Capturing the world, one frame at a time.</h2>
+                <!-- EDIT TEXT: Change the text below -->
+                <p>
+                    I am a visual artist and photographer with a passion for uncovering the beauty in the overlooked. My work is a continuous exploration of light, form, and emotion, whether in the grand scale of architectural marvels or the intimate details of a fleeting portrait. This portfolio is a curated journey through my lens.
+                </p>
+            </div>
+        </section>
+
+        <!-- ==================
+        // CONTACT SECTION
+        // ================== -->
+        <section id="contact" class="section">
+            <div class="container text-content-area">
+                <p>Inquiries</p>
+                <h2>Let's Create Together</h2>
+                <p>
+                    Available for commissions, collaborations, and print inquiries. If you have a project in mind or would like to connect, please reach out.
+                </p>
+                <!-- This button can link directly to your email -->
+                <a href="mailto:your-email@example.com" class="submit-btn">Email Me</a>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ==================
+    // FOOTER
+    // ================== -->
+    <footer class="footer">
+        <!-- EDIT YOUR NAME AND YEAR -->
+        <p>&copy; 2025 Your Name. A high-end portfolio built with care.</p>
+    </footer>
+
+    <!-- ==================
+    // LIGHTBOX (MODAL) STRUCTURE
+    // ================== -->
+    <div class="lightbox" id="lightbox">
+        <span class="lightbox-close">&times;</span>
+        <div class="lightbox-content">
+            <img src="" class="lightbox-img" alt="Enlarged gallery view">
+            <div class="lightbox-caption">
+                <h3 id="lightbox-title"></h3>
+                <p id="lightbox-desc"></p>
             </div>
         </div>
     </div>
-    
-    <!-- ======================= SPORTS STRIP ======================= -->
-    <section class="sports-strip">
-        <div class="container">
-            <div class="scores-container">
-                <div class="match">
-                    <span class="teams">FC Bayern vs RB Leipzig</span>
-                    <span class="score">2-1</span>
-                    <span class="time">Finished</span>
-                </div>
-                <div class="match">
-                    <span class="teams">Hoffenheim vs Hertha</span>
-                    <span class="score">3-0</span>
-                    <span class="time">Finished</span>
-                </div>
-                <div class="match">
-                    <span class="teams">Hamburg vs Wolfsburg</span>
-                    <span class="score">1-1</span>
-                    <span class="time">20:30 CET</span>
-                </div>
-                 <div class="match">
-                    <span class="teams">Dortmund vs Schalke</span>
-                    <span class="score">0-0</span>
-                    <span class="time">Tomorrow</span>
-                </div>
-            </div>
-        </div>
-    </section>
 
-    <!-- ======================= MAIN CONTENT ======================= -->
-    <main class="main-content container">
-        <div class="main-grid">
+    <!-- ==================================================
+    // JAVASCRIPT
+    // ================================================== -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+
+            // ===================================================================================
+            // <<<--- YOUR GALLERY CONTENT --- START --->>>
+            // INSTRUCTIONS:
+            // 1. Add your image URLs to the `src` property.
+            // 2. `span: 'tall'` makes an image twice as high in the grid on desktop.
+            // ===================================================================================
             
-            <!-- ====== MAIN COLUMN ====== -->
-            <div class="main-column">
-                
-                <!-- Lead Story -->
-                <article class="article-card lead-story">
-                    <img src="https://picsum.photos/id/1018/800/450?grayscale" alt="German landscape">
-                    <div class="card-content">
-                        <div class="kicker">
-                            <span class="chip live">LIVE</span> Germany's Rearmament
+            const galleryImages = [
+                {
+                    src: 'https://images.pexels.com/photos/1123972/pexels-photo-1123972.jpeg',
+                    title: 'Summer Haze',
+                    description: 'Golden hour portraiture',
+                    category: 'Portraits',
+                    span: 'tall'
+                },
+                {
+                    src: 'https://images.pexels.com/photos/3225528/pexels-photo-3225528.jpeg',
+                    title: 'Misty Trail',
+                    description: 'A walk into the unknown',
+                    category: 'Landscape'
+                },
+                {
+                    src: 'https://images.pexels.com/photos/3204950/pexels-photo-3204950.jpeg',
+                    title: 'Verdant Detail',
+                    description: 'Macro view of a forest leaf',
+                    category: 'Nature'
+                },
+                {
+                    src: 'https://images.pexels.com/photos/736220/pexels-photo-736220.jpeg',
+                    title: 'Vivid Plumage',
+                    description: 'The brilliant colors of a macaw',
+                    category: 'Animals',
+                },
+                {
+                    src: 'https://images.pexels.com/photos/1123982/pexels-photo-1123982.jpeg',
+                    title: 'Floral Crown',
+                    description: 'Ethereal beauty',
+                    category: 'Portraits'
+                },
+                {
+                    src: 'https://images.pexels.com/photos/13700906/pexels-photo-13700906.jpeg',
+                    title: 'Gentle Soul',
+                    description: 'Curiosity in the pasture',
+                    category: 'Animals',
+                },
+                {
+                    src: 'https://images.pexels.com/photos/54267/sunflower-blossom-bloom-flowers-54267.jpeg',
+                    title: 'Sun Seeker',
+                    description: 'Vibrant sunflower in full bloom',
+                    category: 'Nature',
+                    span: 'tall'
+                },
+                 {
+                    src: 'https://images.pexels.com/photos/3225517/pexels-photo-3225517.jpeg',
+                    title: 'Lake Tranquility',
+                    description: 'Misty morning on the water',
+                    category: 'Landscape'
+                },
+                 {
+                    src: 'https://images.pexels.com/photos/259962/pexels-photo-259962.jpeg',
+                    title: 'Modern Lines',
+                    description: 'Geometric facade',
+                    category: 'Architecture'
+                },
+            ];
+
+            // <<<--- YOUR GALLERY CONTENT --- END --->>>
+            // (No need to edit below this line)
+            // ===================================================================================
+
+            const galleryGrid = document.getElementById('gallery-grid');
+            const filterContainer = document.getElementById('gallery-filters');
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = lightbox.querySelector('.lightbox-img');
+            const lightboxTitle = document.getElementById('lightbox-title');
+            const lightboxDesc = document.getElementById('lightbox-desc');
+            const lightboxClose = lightbox.querySelector('.lightbox-close');
+            const hamburger = document.getElementById('hamburger');
+            const navLinks = document.getElementById('nav-links');
+
+            // --- Mobile Navigation ---
+            const navFunction = () => {
+                hamburger.classList.toggle('toggle');
+                navLinks.classList.toggle('nav-active');
+                document.body.classList.toggle('no-scroll');
+            };
+            
+            hamburger.addEventListener('click', navFunction);
+            
+            // Close menu when a link is clicked
+            navLinks.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    if (navLinks.classList.contains('nav-active')) {
+                        navFunction();
+                    }
+                });
+            });
+
+            // --- Gallery Generation ---
+            function generateGallery(images) {
+                galleryGrid.innerHTML = '';
+                images.forEach((image, index) => {
+                    const item = document.createElement('div');
+                    item.className = 'gallery-item';
+                    if (image.span === 'tall') item.classList.add('gallery-item--tall');
+                    item.style.animationDelay = `${index * 0.05}s`;
+
+                    item.innerHTML = `
+                        <img src="${image.src}" alt="${image.title}" loading="lazy">
+                        <div class="gallery-item-overlay">
+                            <div>
+                               <p class="gallery-item-category">${image.category}</p>
+                               <h3 class="gallery-item-title">${image.title}</h3>
+                            </div>
                         </div>
-                        <h2>"Failure cost in money"</h2>
-                        <p>Boris Pistorius wants to make the Bundeswehr war-ready and skillfully creates the impression that things are progressing according to plan. Investigations show new problems with key armaments projects.</p>
-                        <div class="article-meta">By Thomas Wiegold - 2 hours ago</div>
-                    </div>
-                </article>
+                    `;
+                    item.addEventListener('click', () => openLightbox(image));
+                    galleryGrid.appendChild(item);
+                });
+            }
 
-                <!-- Economy Section -->
-                <section class="category-section">
-                    <h2 class="section-title">Economy & Property</h2>
-                    <div class="category-grid">
-                        <article class="article-card">
-                            <img src="https://picsum.photos/id/24/400/250" alt="Apartment interior">
-                            <div class="card-content">
-                                <div class="kicker">Rental Apartments</div>
-                                <h3>"Rents on average 45 percent more expensive" – The absurd excesses of the furniture trick</h3>
-                            </div>
-                        </article>
-                        <article class="article-card">
-                            <img src="https://picsum.photos/id/1062/400/250" alt="Family looking at house">
-                            <div class="card-content">
-                                <div class="kicker">For Families</div>
-                                <h3>These funding programs are designed to make the dream of home ownership come true</h3>
-                            </div>
-                        </article>
-                        <article class="article-card">
-                            <img src="https://picsum.photos/id/219/400/250" alt="Power lines">
-                            <div class="card-content">
-                                <div class="kicker">Energy Transition</div>
-                                <h3>The real losers of the German energy transition</h3>
-                            </div>
-                        </article>
-                    </div>
-                </section>
+            // --- Filter Generation & Logic ---
+            function generateFilters() {
+                const categories = ['All', ...new Set(galleryImages.map(img => img.category))];
+                filterContainer.innerHTML = categories.map(category => 
+                    `<button class="filter-btn ${category === 'All' ? 'active' : ''}" data-filter="${category}">${category}</button>`
+                ).join('');
+                
+                filterContainer.addEventListener('click', handleFilterClick);
+            }
+            
+            function handleFilterClick(e) {
+                if (e.target.tagName !== 'BUTTON') return;
+                
+                filterContainer.querySelector('.active').classList.remove('active');
+                e.target.classList.add('active');
 
-                 <!-- Politics Section -->
-                <section class="category-section">
-                    <h2 class="section-title">Politics</h2>
-                    <div class="category-grid">
-                        <article class="article-card">
-                            <img src="https://picsum.photos/id/10/400/250" alt="Politician">
-                            <div class="card-content">
-                                <div class="kicker">Statement Reaction</div>
-                                <h3>"Danke für nichts, Herr Bundeskanzler!" – SPD attackiert Merz wegen „Stoßtrupp“-Aussage</h3>
-                            </div>
-                        </article>
-                        <article class="article-card">
-                            <img src="https://picsum.photos/id/433/400/250" alt="Protest">
-                             <div class="card-content">
-                                <div class="kicker">
-                                    <span class="chip new">NEW</span> Hamburg
-                                </div>
-                                <h3>"cityscape" dispute divides government - SPD parliamentary group</h3>
-                            </div>
-                        </article>
-                        <article class="article-card">
-                            <img src="https://picsum.photos/id/142/400/250" alt="Flags">
-                            <div class="card-content">
-                                <div class="kicker">National Pride</div>
-                                <h3>When dozens of German flags suddenly fly in a community</h3>
-                            </div>
-                        </article>
-                    </div>
-                </section>
+                const filter = e.target.dataset.filter;
+                
+                galleryGrid.style.opacity = '0';
+                
+                setTimeout(() => {
+                    const filteredImages = (filter === 'All') ? galleryImages : galleryImages.filter(img => img.category === filter);
+                    generateGallery(filteredImages);
+                    galleryGrid.style.opacity = '1';
+                }, 300);
+            }
 
-            </div>
+            // --- Lightbox Functionality ---
+            function openLightbox(image) {
+                lightboxImg.src = image.src;
+                lightboxTitle.textContent = image.title;
+                lightboxDesc.textContent = image.description;
+                lightbox.classList.add('active');
+                document.body.classList.add('no-scroll');
+            }
 
-            <!-- ====== SIDEBAR COLUMN ====== -->
-            <aside class="sidebar-column">
-                <article class="article-card sidebar-card">
-                    <div class="card-image-wrapper"><img src="https://picsum.photos/id/342/100/100" alt="Portrait of a man"></div>
-                    <div class="card-content">
-                        <div class="kicker">US Shutdown</div>
-                        <h3>"That's what I call a patriot" – Donor threatens GOP with no funds</h3>
-                    </div>
-                </article>
-                <article class="article-card sidebar-card">
-                    <div class="card-image-wrapper"><img src="https://picsum.photos/id/1025/100/100" alt="Dog"></div>
-                    <div class="card-content">
-                        <div class="kicker">Promotion</div>
-                        <h3>Number of dog adoptions does significantly drop - this federal state leads the list</h3>
-                    </div>
-                </article>
-                <article class="article-card sidebar-card">
-                    <div class="card-image-wrapper"><img src="https://picsum.photos/id/1074/100/100" alt="Woman portrait"></div>
-                    <div class="card-content">
-                        <div class="kicker">Ukraine War</div>
-                        <h3>"Catastrophic!" – The situation in Avdiivka is becoming critical</h3>
-                    </div>
-                </article>
-                 <article class="article-card sidebar-card">
-                    <div class="card-image-wrapper"><img src="https://picsum.photos/id/1084/100/100" alt="Crash site"></div>
-                    <div class="card-content">
-                        <div class="kicker">Unconventional Go-Getter</div>
-                        <h3>The crash landing of the Merz government</h3>
-                    </div>
-                </article>
-                 <article class="article-card sidebar-card">
-                    <div class="card-image-wrapper"><img src="https://picsum.photos/id/64/100/100" alt="Smartphone"></div>
-                    <div class="card-content">
-                        <div class="kicker">Smartphones</div>
-                        <h3>"If children can't fight the device, the smartphone takes on a different significance."</h3>
-                    </div>
-                </article>
-            </aside>
+            function closeLightbox() {
+                lightbox.classList.remove('active');
+                document.body.classList.remove('no-scroll');
+            }
 
-        </div>
-    </main>
-    
-    <!-- ======================= FOOTER ======================= -->
-    <footer class="main-footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-column">
-                    <h4>Sections</h4>
-                    <ul>
-                        <li><a href="#">Politics</a></li>
-                        <li><a href="#">Economy</a></li>
-                        <li><a href="#">World</a></li>
-                        <li><a href="#">Tech</a></li>
-                        <li><a href="#">Culture</a></li>
-                    </ul>
-                </div>
-                <div class="footer-column">
-                    <h4>Subscription</h4>
-                    <ul>
-                        <li><a href="#">Kompass+</a></li>
-                        <li><a href="#">My World</a></li>
-                        <li><a href="#">Newsletter</a></li>
-                        <li><a href="#">Cancel Subscription</a></li>
-                    </ul>
-                </div>
-                <div class="footer-column">
-                    <h4>Services</h4>
-                    <ul>
-                        <li><a href="#">Contact</a></li>
-                        <li><a href="#">Syndication</a></li>
-                        <li><a href="#">AI Policy</a></li>
-                        <li><a href="#">Responsibility</a></li>
-                        <li><a href="#">FAQ</a></li>
-                    </ul>
-                </div>
-                 <div class="footer-column">
-                    <h4>Legal</h4>
-                    <ul>
-                        <li><a href="#">Imprint</a></li>
-                        <li><a href="#">Data protection</a></li>
-                        <li><a href="#">Terms</a></li>
-                        <li><a href="#">Privacy Manager</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </footer>
+            lightboxClose.addEventListener('click', closeLightbox);
+            lightbox.addEventListener('click', (e) => {
+                if (e.target === lightbox) closeLightbox();
+            });
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') closeLightbox();
+            });
 
+            // --- Initial Load ---
+            generateFilters();
+            generateGallery(galleryImages);
+        });
+    </script>
 </body>
 </html>
