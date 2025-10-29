@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D.P. Dough - The Original Calzone Company</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --dp-red: #d52128;
+            --dp-black: #1a1a1a;
+            --dp-white: #ffffff;
+            --dp-grey: #222222;
+            --font-display: 'Anton', sans-serif;
+            --font-body: 'Montserrat', sans-serif;
+        }
+
+        /* --- Base Styles --- */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: var(--font-body);
+            background-color: var(--dp-black);
+            color: var(--dp-white);
+            overflow-x: hidden;
+        }
+        
+        .section {
+            padding: 4rem 1.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* --- Backgrounds & Waves --- */
+        .bg-dark-wavy {
+            background-color: var(--dp-black);
+            /* TEXTURE ADDED */
+            background-image: 
+                url('https://www.transparenttextures.com/patterns/concrete-wall.png'),
+                url('https://www.dpdough.com/wp-content/themes/dpdough/img/bg-pattern.png');
+            background-repeat: repeat, repeat;
+        }
+
+        .wave-divider {
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 80px;
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+        }
+
+        .wave-top {
+            top: -1px;
+            bottom: auto;
+            transform: rotate(180deg);
+        }
+        
+        .wave-white { background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 80' preserveAspectRatio='none'%3e%3cpath d='M0,80 C480,0,960,0,1440,80 L1440,80 L0,80 Z' fill='%23ffffff'/%3e%3c/svg%3e"); }
+        .wave-black { background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 80' preserveAspectRatio='none'%3e%3cpath d='M0,80 C480,0,960,0,1440,80 L1440,80 L0,80 Z' fill='%231a1a1a'/%3e%3c/svg%3e"); }
+
+        /* --- Typography & Content --- */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        h1, h2 {
+            font-family: var(--font-display);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--dp-red);
+            margin: 0 0 1rem 0;
+        }
+
+        h1 { font-size: clamp(3.5rem, 10vw, 6rem); }
+        h2 { font-size: clamp(2.5rem, 8vw, 4rem); }
+
+        p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            max-width: 700px;
+            margin: 0 auto 2rem auto;
+        }
+
+        .text-white { color: var(--dp-white); }
+        .text-black { color: var(--dp-black); }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--dp-red);
+            color: var(--dp-white);
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            text-transform: uppercase;
+            text-decoration: none;
+            padding: 1rem 2.5rem;
+            border-radius: 5px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+        }
+
+        /* --- Section Styles --- */
+        
+        /* Hero Section */
+        .hero {
+            padding-top: 2rem;
+            padding-bottom: 6rem;
+            min-height: 80vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .logo {
+            max-width: 250px;
+            margin-bottom: 2rem;
+        }
+        
+        .hero .subheadline {
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+
+        /* College Section */
+        .bg-white { 
+            background-color: var(--dp-white); 
+            /* TEXTURE ADDED */
+            background-image: url('https://www.transparenttextures.com/patterns/notebook-dark.png');
+        }
+
+        .college-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .college-content img {
+            max-width: 300px;
+            border-radius: 10px;
+        }
+
+        /* What Is A Calzone? Section */
+        .calzone-def {
+            border: 2px dashed var(--dp-red);
+            padding: 2rem;
+            max-width: 600px;
+            margin: 2rem auto 0 auto;
+        }
+
+        .calzone-def .pronounce {
+            font-style: italic;
+            color: #ccc;
+            margin-bottom: 1rem;
+        }
+        
+        .calzone-def .noun {
+            font-weight: 900;
+            color: var(--dp-red);
+        }
+
+        /* Form Section */
+        .form-section { 
+            background-color: var(--dp-grey); 
+            /* TEXTURE ADDED */
+            background-image: url('https://www.transparenttextures.com/patterns/dark-denim-3.png');
+        }
+
+        .form-wrapper {
+            background-color: var(--dp-black);
+            border: 2px solid var(--dp-red);
+            border-radius: 16px;
+            padding: 2.5rem;
+            max-width: 650px;
+            margin: 2rem auto 0 auto;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .form-grid {
+            display: grid;
+            gap: 1rem;
+        }
+
+        input[type="email"], input[type="text"], input[type="tel"] {
+            width: 100%;
+            padding: 16px;
+            background: #333;
+            border: 2px solid #555;
+            border-radius: 8px;
+            color: var(--dp-white);
+            font-family: var(--font-body);
+            font-size: 1rem;
+            box-sizing: border-box;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        input::placeholder { color: #aaa; }
+        input:focus {
+            outline: none;
+            border-color: var(--dp-red);
+            box-shadow: 0 0 10px rgba(213, 33, 40, 0.5);
+        }
+
+        .gdpr-consent {
+            font-size: 0.8rem;
+            color: #999;
+            margin-top: 1.5rem;
+        }
+
+        /* Footer */
+        footer {
+            padding: 2rem 1.5rem;
+            text-align: center;
+            color: #888;
+        }
+        
+        .socials a {
+            color: var(--dp-white);
+            margin: 0 0.75rem;
+            font-size: 1.5rem;
+            transition: color 0.2s;
+        }
+        
+        .socials a:hover { color: var(--dp-red); }
+
+        /* --- Media Queries --- */
+        @media (min-width: 768px) {
+            .college-content {
+                flex-direction: row;
+                text-align: left;
+            }
+            .college-content .text-content {
+                flex: 1;
+            }
+            .college-content p { margin-left: 0; }
+            .form-grid { grid-template-columns: 1fr 1fr; }
+            .form-grid .full-width { grid-column: 1 / -1; }
+        }
+    </style>
+    
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=YOUR_GA_MEASUREMENT_ID"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'YOUR_GA_MEASUREMENT_ID');
+    </script>
+</head>
+<body>
+
+    <!-- HERO SECTION -->
+    <header class="section hero bg-dark-wavy">
+        <div class="container">
+            <img src="https://www.dpdough.com/img/logo_dpdough.png" alt="D.P. Dough Logo" class="logo">
+            <h1>The Calzone King</h1>
+            <p class="subheadline">Home of the original late-night calzone. Built by students, for students.</p>
+            <a href="#join-us" class="btn">Get Free Food & Deals</a>
+        </div>
+        <div class="wave-divider wave-white"></div>
+    </header>
+
+    <main>
+        <!-- COLLEGE SECTION -->
+        <section class="section bg-white">
+            <div class="container college-content">
+                <img src="https://www.dpdough.com/img/clownshoes_puppet.webp" alt="D.P. Dough Mascot">
+                <div class="text-content">
+                    <h2 class="text-black">The Official Calzone of College</h2>
+                    <p class="text-black">Choose from 30+ ingredients stuffed inside our original dough recipe. Perfect for late-night study sessions, post-game celebrations, or just because. This isn't your parents' pizza place. This is D.P. Dough.</p>
+                </div>
+            </div>
+            <div class="wave-divider wave-black"></div>
+        </section>
+
+        <!-- WHAT IS A CALZONE? SECTION -->
+        <section class="section bg-dark-wavy">
+            <div class="container">
+                <h2 class="text-white">What is a <span style="color: var(--dp-red);">Calzone?</span></h2>
+                <div class="calzone-def">
+                    <p class="pronounce">/kalˈzōnē, kalˈtsōnā/</p>
+                    <p><span class="noun">noun.</span> a type of <del>pizza</del> <span style="color: var(--dp-red); font-weight: 900;">awesome</span> made with your favorite ingredients and our original dough recipe, folded, and fresh baked to order.</p>
+                </div>
+            </div>
+            
+        </section>
+
+        <!-- FORM / SIGNUP SECTION -->
+        <section id="join-us" class="section form-section">
+            <div class="container">
+                <h2>Join D.P. Dough Nation</h2>
+                <p>Score exclusive deals, BOGOs, and a free calzone on your birthday. Plus, get the inside scoop on opening your OWN D.P. Dough franchise. Drop your info below to get in on the action.</p>
+
+                <div class="form-wrapper">
+                    <!-- Begin Mailchimp Signup Form -->
+                    <form action="YOUR_MAILCHIMP_ACTION_URL" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate onsubmit="trackFormConversion()">
+                        <div class="form-grid">
+                            <div class="full-width">
+                                <input type="email" value="" name="EMAIL" id="mce-EMAIL" placeholder="Your Email Address" required>
+                            </div>
+                            <div>
+                                <input type="text" value="" name="FNAME" id="mce-FNAME" placeholder="First Name (Optional)">
+                            </div>
+                            <div>
+                                <input type="text" value="" name="MMERGE6" id="mce-MMERGE6" placeholder="Zip Code (Optional)">
+                            </div>
+                            <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
+                            <div style="position: absolute; left: -5000px;" aria-hidden="true"><input type="text" name="b_YOUR_MAILCHIMP_USER_ID_AND_LIST_ID" tabindex="-1" value=""></div>
+                            <div class="full-width">
+                                <button type="submit" name="subscribe" id="mc-embedded-subscribe" class="btn" style="width: 100%; border-radius: 8px;">Count Me In!</button>
+                            </div>
+                        </div>
+                        <div class="gdpr-consent">
+                            By signing up, you agree to receive awesome marketing emails. No spam, ever. Unsubscribe anytime.
+                        </div>
+                    </form>
+                    <!--End mc_embed_signup-->
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <!-- FOOTER -->
+    <footer class="bg-dark-wavy">
+        <div class="container">
+            <div class="socials">
+                <!-- Replace with your actual social media links -->
+                <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+            </div>
+            <p style="font-size: 0.9rem; margin-top: 1.5rem; color: #888;">D.P. Dough&reg; &copy; 2025 The Original Calzone Company</p>
+        </div>
+    </footer>
+    
+    <!-- Font Awesome for Social Icons -->
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+    <script>
+        function trackFormConversion() {
+            if (typeof gtag === 'function') {
+                gtag('event', 'form_submission', {
+                    'event_category': 'conversion',
+                    'event_label': 'main_signup'
+                });
+            }
+        }
+    </script>
+</body>
+</html>
