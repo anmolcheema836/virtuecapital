@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real Estate Buy Page</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/phosphor-icons"></script>
+    <style>
+        :root {
+            --primary-color: #007AFF;
+            --secondary-color: #F2F2F7;
+            --text-color: #1C1C1E;
+            --subtle-text-color: #8A8A8E;
+            --background-color: #FFFFFF;
+            --border-color: #E5E5EA;
+            --green: #34C759;
+            --red: #FF3B30;
+            --whisper-tag-bg: #E3F2FD;
+            --whisper-tag-text: #007AFF;
+            --deals-tag-bg: #FFF0E5;
+            --deals-tag-text: #FF9500;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .container {
+            padding: 0 16px;
+        }
+
+        /* --- Hero Metrics --- */
+        .hero-metrics {
+            display: flex;
+            justify-content: space-around;
+            padding: 20px 16px;
+            background-color: var(--secondary-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+        .metric-item {
+            text-align: center;
+        }
+        .metric-value {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-color);
+        }
+        .metric-label {
+            font-size: 0.75rem;
+            color: var(--subtle-text-color);
+            margin-top: 4px;
+        }
+        .metric-change {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .metric-change i {
+            font-size: 1.1rem;
+            margin-right: 4px;
+        }
+        .trend-up {
+            color: var(--green);
+        }
+        .trend-down {
+            color: var(--red);
+        }
+
+        /* --- Map Section --- */
+        .map-container {
+            position: relative;
+            margin: 24px 0;
+            text-align: center;
+        }
+        .map-image {
+            width: 100%;
+            height: auto;
+            border-radius: 12px;
+            filter: grayscale(0.5) brightness(1.1);
+        }
+        .hotspot {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background-color: var(--primary-color);
+            border-radius: 50%;
+            border: 2px solid white;
+            box-shadow: 0 0 10px rgba(0, 122, 255, 0.7);
+            animation: pulse 2s infinite;
+        }
+        .hotspot-1 { top: 30%; left: 40%; }
+        .hotspot-2 { top: 50%; left: 60%; }
+        .hotspot-3 { top: 65%; left: 30%; }
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 122, 255, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(0, 122, 255, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 122, 255, 0); }
+        }
+        h2.section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        /* --- Property Sections --- */
+        .property-card {
+            background-color: var(--background-color);
+            border-radius: 12px;
+            margin-bottom: 20px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border: 1px solid var(--border-color);
+        }
+        .property-image {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
+        .property-info {
+            padding: 16px;
+        }
+        .property-price {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-color);
+        }
+        .property-address {
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--subtle-text-color);
+            margin: 4px 0;
+        }
+        .property-details {
+            display: flex;
+            gap: 16px;
+            font-size: 0.875rem;
+            color: var(--subtle-text-color);
+            margin-top: 12px;
+        }
+        .property-details span {
+            display: flex;
+            align-items: center;
+        }
+        .property-details i {
+            margin-right: 6px;
+            font-size: 1.1rem;
+        }
+        
+        /* --- Whisper Listings Specifics --- */
+        .whisper-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            background-color: var(--secondary-color);
+            border-top: 1px solid var(--border-color);
+        }
+        .whisper-tag {
+            background-color: var(--whisper-tag-bg);
+            color: var(--whisper-tag-text);
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.75rem;
+        }
+        .stats-bar {
+            color: var(--green);
+            font-weight: 600;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+        }
+        .stats-bar i {
+            margin-right: 4px;
+        }
+
+        /* --- Top Deals Specifics --- */
+        .top-deals-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        .top-deals-grid .property-card {
+            margin-bottom: 0;
+        }
+        .top-deals-grid .property-image {
+            height: 120px;
+        }
+        .top-deals-grid .property-info {
+            padding: 12px;
+        }
+        .top-deals-grid .property-price {
+            font-size: 1.1rem;
+        }
+        .top-deals-grid .property-address {
+            font-size: 0.875rem;
+        }
+        .top-deals-grid .property-details {
+            font-size: 0.75rem;
+            gap: 12px;
+        }
+        .top-deals-tag {
+            background-color: var(--deals-tag-bg);
+            color: var(--deals-tag-text);
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.75rem;
+            margin-top: 8px;
+            display: inline-block;
+        }
+
+        /* --- CTA Button --- */
+        .cta-button-container {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            z-index: 1000;
+        }
+        .cta-button {
+            width: 100%;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(0, 122, 255, 0.35);
+            transition: transform 0.2s;
+        }
+        .cta-button:hover {
+            transform: scale(1.02);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Hero Metrics Strip -->
+    <div class="hero-metrics">
+        <div class="metric-item">
+            <div class="metric-value">124</div>
+            <div class="metric-label">New Listings Today</div>
+        </div>
+        <div class="metric-item">
+            <div class="metric-value">42</div>
+            <div class="metric-label">Avg. Days on Market</div>
+        </div>
+        <div class="metric-item">
+            <div class="metric-value metric-change trend-down">
+                <i class="ph-bold ph-arrow-down"></i>
+                <span>-3.2%</span>
+            </div>
+            <div class="metric-label">30-Day Change</div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Interactive Map Concept -->
+        <div class="map-container">
+            <h2 class="section-title">Property Hotspots</h2>
+            <img src="https://i.imgur.com/gAY9J8c.png" alt="Map of property hotspots" class="map-image">
+            <div class="hotspot hotspot-1"></div>
+            <div class="hotspot hotspot-2"></div>
+            <div class="hotspot hotspot-3"></div>
+        </div>
+
+        <!-- Whisper Listings Section -->
+        <h2 class="section-title">Whisper Listings</h2>
+        <div class="whisper-listings">
+            <div class="property-card">
+                <img src="https://images.pexels.com/photos/106399/pexels-photo-106399.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="Modern suburban house" class="property-image">
+                <div class="whisper-header">
+                    <span class="whisper-tag">WHISPER LISTING</span>
+                    <div class="stats-bar">
+                        <i class="ph-bold ph-sparkle"></i>
+                        <span>5 new posts today</span>
+                    </div>
+                </div>
+                <div class="property-info">
+                    <div class="property-price">$550,000</div>
+                    <div class="property-address">123 Maple Street, Pleasantville</div>
+                    <div class="property-details">
+                        <span><i class="ph ph-bed"></i>3 beds</span>
+                        <span><i class="ph ph-bathtub"></i>2 baths</span>
+                        <span><i class="ph ph-ruler"></i>1,800 sqft</span>
+                    </div>
+                </div>
+            </div>
+            <!-- More whisper listings can be added here -->
+        </div>
+
+        <!-- Top Deals Section -->
+        <h2 class="section-title">Top Deals</h2>
+        <div class="top-deals-grid">
+            <div class="property-card">
+                <img src="https://images.pexels.com/photos/259588/pexels-photo-259588.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="Cozy cottage" class="property-image">
+                <div class="property-info">
+                    <div class="property-price">$420,000</div>
+                    <div class="property-address">456 Oak Avenue</div>
+                    <div class="property-details">
+                        <span><i class="ph ph-bed"></i>2 beds</span>
+                        <span><i class="ph ph-bathtub"></i>2 baths</span>
+                    </div>
+                    <span class="top-deals-tag">INSTANT EQUITY</span>
+                </div>
+            </div>
+            <div class="property-card">
+                <img src="https://images.pexels.com/photos/208736/pexels-photo-208736.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="Luxury apartment" class="property-image">
+                <div class="property-info">
+                    <div class="property-price">$710,000</div>
+                    <div class="property-address">789 Pine Lane</div>
+                    <div class="property-details">
+                        <span><i class="ph ph-bed"></i>4 beds</span>
+                        <span><i class="ph ph-bathtub"></i>3 baths</span>
+                    </div>
+                    <span class="top-deals-tag">VETTED BY FLIPPERS</span>
+                </div>
+            </div>
+            <!-- More top deals can be added here -->
+        </div>
+    </div>
+    
+    <div style="height: 120px;"></div> <!-- Spacer for CTA button -->
+    
+    <!-- CTA Button -->
+    <div class="cta-button-container">
+        <button class="cta-button">Speak to a live online agent right now</button>
+    </div>
+
+</body>
+</html>

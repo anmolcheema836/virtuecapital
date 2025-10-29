@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D.P. Dough - Loading...</title>
+    <style>
+        /*
+         * D.P. Dough Loading Screen Styles
+         *
+         * This version includes an animated road to enhance the
+         * sense of motion for the delivery vehicle.
+         */
+
+        body, html {
+            height: 100%;
+            margin: 0;
+            overflow: hidden;
+            background-color: #FFFFFF; /* Clean white background */
+        }
+
+        .loading-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 9999;
+        }
+
+        .delivery-vehicle {
+            width: 200px; /* Base size for the vehicle */
+            height: auto;
+            position: absolute;
+            /* Position the vehicle just above the vertical center to sit on the road */
+            bottom: 46%;
+            left: -150px; /* Start off-screen to the left */
+            animation: driveAcross 4s linear infinite;
+            z-index: 2; /* Ensure car is on top of the road */
+        }
+
+        /*
+         * Car Animation: Moves the vehicle from left to right across the screen.
+         */
+        @keyframes driveAcross {
+            0% {
+                transform: translateX(-150px);
+            }
+            100% {
+                transform: translateX(calc(100vw + 150px));
+            }
+        }
+
+        /*
+         * Road Element: A simple dark bar to represent the asphalt.
+         */
+        .road {
+            width: 100%;
+            height: 60px; /* Thickness of the road */
+            background-color: #333; /* Dark gray for asphalt */
+            position: absolute;
+            /* Positioned in the vertical center of the screen */
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 1;
+            overflow: hidden; /* Hide the animated lines that go outside the road's bounds */
+        }
+
+        /*
+         * Road Markings: Created using a pseudo-element and an animated gradient.
+         * This creates the illusion that the road itself is moving.
+         */
+        .road::after {
+            content: '';
+            position: absolute;
+            width: 200%; /* Make it twice as wide to allow for seamless looping */
+            height: 6px; /* Thickness of the dashed line */
+            background-image: linear-gradient(90deg, #FFFFFF 50%, transparent 50%);
+            background-size: 60px 100%; /* Width of the dashes and gaps */
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%);
+            animation: moveRoadLines 1s linear infinite;
+        }
+
+        /*
+         * Road Animation: Moves the background position of the road markings
+         * from right to left, creating a parallax effect.
+         */
+        @keyframes moveRoadLines {
+            0% {
+                transform: translate3d(0, -50%, 0);
+            }
+            100% {
+                transform: translate3d(-120px, -50%, 0); /* Moves by the size of two dashes + gaps */
+            }
+        }
+
+        /*
+         * Mobile Responsiveness: Adjust sizes for smaller screens.
+         */
+        @media (max-width: 768px) {
+            .delivery-vehicle {
+                width: 200px; /* Smaller vehicle for smaller screens */
+            }
+            
+            .road {
+                height: 40px; /* Thinner road */
+            }
+
+            .road::after {
+                background-size: 40px 100%; /* Smaller dashes */
+            }
+
+            @keyframes moveRoadLines {
+                 100% {
+                    transform: translate3d(-80px, -50%, 0);
+                }
+            }
+
+            @keyframes driveAcross {
+                0% {
+                    transform: translateX(-100px);
+                }
+                100% {
+                    transform: translateX(calc(100vw + 100px));
+                }
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="loading-container">
+        <!-- The mascot image. The animation is applied to this element. -->
+        <img src="mascot.png" alt="D.P. Dough Delivery" class="delivery-vehicle">
+        
+        <!-- The road element. Its ::after pseudo-element contains the moving lines. -->
+        <div class="road"></div>
+    </div>
+
+</body>
+</html>
