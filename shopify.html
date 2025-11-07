@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Desktop Landing Page</title>
+    <style>
+        /* 1. SETUP AND FONT */
+        @import url('https://fonts.cdnfonts.com/css/gotham');
+
+        :root {
+            --primary-blue: #0052ff;
+            --light-gray: #f4f4f4;
+            --border-color: #ddd;
+            --dark-text: #333;
+        }
+
+        body {
+            font-family: 'Gotham', sans-serif;
+            margin: 0;
+            padding: 40px;
+            background-color: #e9e9e9;
+            color: var(--dark-text);
+            display: flex;
+            justify-content: center;
+        }
+
+        .desktop-container {
+            display: flex;
+            gap: 30px;
+            width: 100%;
+            max-width: 1200px;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .main-content {
+            flex: 2; /* Takes up 2/3 of the space */
+        }
+
+        .sidebar {
+            flex: 1; /* Takes up 1/3 of the space */
+        }
+        
+        .section-box {
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+
+        h2 {
+            font-size: 24px;
+            margin-top: 0;
+            text-align: center;
+        }
+        h3 {
+            margin-top: 0;
+            font-weight: 500;
+        }
+
+        /* 2. HEADER & "WHAT YOU'LL GET" */
+        .header-section {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+        .header-image-placeholder {
+            flex: 1;
+            height: 120px;
+            background: var(--light-gray);
+            border-radius: 8px;
+        }
+        .header-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .header-btn {
+            background: transparent;
+            border: 2px solid var(--dark-text);
+            border-radius: 20px;
+            padding: 8px 25px;
+            font-size: 16px;
+            font-family: 'Gotham', sans-serif;
+            cursor: pointer;
+        }
+
+        .benefits-grid {
+            display: flex;
+            gap: 20px;
+        }
+        .packs-box {
+            flex: 1;
+            height: 150px;
+            background-color: var(--light-gray);
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .benefits-list-box {
+            flex: 1;
+        }
+        .benefits-list {
+            list-style: none;
+            padding: 0;
+            columns: 2;
+        }
+        .benefits-list li { padding-bottom: 8px; }
+        .benefits-actions {
+            margin-top: 15px;
+            display: flex;
+            gap: 10px;
+        }
+        .action-btn {
+            flex: 1;
+            border-radius: 25px;
+            padding: 10px;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+        }
+        .btn-preorder { background: var(--primary-blue); color: white; }
+        .btn-giveaway { background: white; color: black; border: 2px solid black; }
+
+        /* 3. OTHER SECTIONS */
+        .health-banner {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 15px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .health-banner .gif-circle {
+            border: 2px solid var(--primary-blue);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: normal;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 82, 255, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(0, 82, 255, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 82, 255, 0); }
+        }
+
+        .facts-container {
+            display: flex;
+            gap: 20px;
+        }
+        .fact-column {
+            flex: 1;
+            height: 200px;
+            border: 2px solid var(--dark-text);
+            border-radius: 8px;
+            padding: 10px;
+        }
+
+        .progress-bar-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .progress-bar {
+            flex-grow: 1;
+            height: 25px;
+            background: #ddd;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            width: 30%; /* Example progress */
+            height: 100%;
+            background: var(--primary-blue);
+        }
+        
+        .giveaway-form input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border-radius: 25px;
+            border: 1px solid #ccc;
+            text-align: center;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        
+        .faq-container {
+            display: flex;
+            gap: 20px;
+        }
+        .faq-column { flex: 1; }
+        .faq-item {
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+        .faq-question {
+            padding: 12px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+        }
+        .faq-answer {
+            padding: 0 12px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+
+        .footer-icons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+        .footer-icon {
+            width: 50px; height: 30px; background: #ccc; border-radius: 4px;
+        }
+
+        /* 4. POPUP STYLES */
+        .popup-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .popup-content {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+        .close-popup {
+            position: absolute;
+            top: 10px; right: 15px;
+            background: none; border: none;
+            font-size: 28px; cursor: pointer;
+        }
+
+        /* Specific popup styles */
+        .ingredients-popup-content { max-height: 80vh; }
+        .ingredients-list {
+            overflow-y: auto;
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 0 20px;
+        }
+        .ingredients-list div { padding: 8px 0; border-bottom: 1px solid var(--border-color); }
+        .ingredients-list div:last-child { border-bottom: none; }
+        
+        /* Checkout Popup */
+        .checkout-actions button {
+            width: 100%; padding: 15px;
+            border-radius: 8px; border: 1px solid #888;
+            font-size: 16px; font-weight: bold; cursor: pointer;
+            margin-bottom: 15px;
+        }
+        .checkout-actions .shop-pay { background: #5a31f4; color: white; }
+        .checkout-actions .paypal { background: #ffc439; color: black; }
+        
+        .checkout-form label { display: block; margin: 15px 0 5px; }
+        .checkout-form input {
+            width: 100%; padding: 12px;
+            border: 1px solid #ccc; border-radius: 5px;
+            box-sizing: border-box;
+        }
+        .checkout-form .submit-order {
+            width: 100%; padding: 15px;
+            margin-top: 20px;
+            background: var(--primary-blue); color: white;
+            font-size: 18px; border: none; border-radius: 5px; cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="desktop-container">
+        <!-- LEFT MAIN CONTENT COLUMN -->
+        <div class="main-content">
+            
+            <section class="header-section section-box">
+                <div class="header-image-placeholder"></div>
+                <div class="header-actions">
+                    <button class="header-btn" id="popup-ingredients-btn">popup ingredients</button>
+                    <button class="header-btn preorder-btn">preorder</button>
+                </div>
+            </section>
+            
+            <section class="section-box">
+                <h3>What you'll get</h3>
+                <div class="benefits-grid">
+                    <div class="packs-box">10 packs</div>
+                    <div class="benefits-list-box">
+                        <ul class="benefits-list">
+                            <li>Antioxidants</li>
+                            <li>B complex</li>
+                            <li>immune supra</li>
+                            <li>vitamins</li>
+                            <li>Fishoil</li>
+                            <li>turmeric</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="benefits-actions">
+                    <button class="action-btn btn-preorder preorder-btn">Preorder</button>
+                    <button class="action-btn btn-giveaway">enter giveaway</button>
+                </div>
+            </section>
+
+            <section class="health-banner section-box">
+                <span>Immune health</span>
+                <div class="gif-circle">GIF</div>
+                <span>Heart health</span>
+            </section>
+            
+            <section class="section-box">
+                <h2>We are All in One Solution with 84+ ingredients for a reasonable price</h2>
+                <p style="text-align:center; font-style:italic;">*we promise highest quality and no high markups</p>
+            </section>
+            
+            <section class="section-box">
+                <h3>Some Honest Facts about UK suplementation</h3>
+                <div class="facts-container">
+                    <div class="fact-column"></div>
+                    <div class="fact-column"></div>
+                    <div class="fact-column"></div>
+                </div>
+            </section>
+
+        </div>
+
+        <!-- RIGHT SIDEBAR COLUMN -->
+        <div class="sidebar">
+            <section class="section-box">
+                <h3>Founder's Note</h3>
+                <p style="font-style:italic;">"where my journey started what helped me and how long it took"</p>
+            </section>
+            
+            <section class="section-box">
+                <h3>Our Progress <span style="font-weight:normal;float:right;">Functional</span></h3>
+                <div class="progress-bar-container">
+                    <span>0 orders</span>
+                    <div class="progress-bar"><div class="progress-fill"></div></div>
+                    <span>500 orders</span>
+                </div>
+            </section>
+            
+            <section class="section-box">
+                <h3>Enter a Giveaway</h3>
+                <form class="giveaway-form" onsubmit="alert('Thanks for entering!'); return false;">
+                    <input type="email" placeholder="Enter Your Best Email" required>
+                    <button type="submit" class="action-btn btn-giveaway">Submit</button>
+                </form>
+            </section>
+            
+            <section class="section-box">
+                <h3>Frequently asked Questions</h3>
+                <div class="faq-container">
+                    <div class="faq-column">
+                        <div class="faq-item">
+                            <div class="faq-question"><span>Question 1</span><span>+</span></div>
+                            <div class="faq-answer"><p>Answer 1 here.</p></div>
+                        </div>
+                        <div class="faq-item">
+                            <div class="faq-question"><span>Question 2</span><span>+</span></div>
+                            <div class="faq-answer"><p>Answer 2 here.</p></div>
+                        </div>
+                    </div>
+                    <div class="faq-column">
+                        <div class="faq-item">
+                            <div class="faq-question"><span>Question 3</span><span>+</span></div>
+                            <div class="faq-answer"><p>Answer 3 here.</p></div>
+                        </div>
+                        <div class="faq-item">
+                            <div class="faq-question"><span>Question 4</span><span>+</span></div>
+                            <div class="faq-answer"><p>Answer 4 here.</p></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <footer class="footer-icons">
+                <div class="footer-icon"></div>
+                <div class="footer-icon"></div>
+                <div class="footer-icon"></div>
+                <div class="footer-icon"></div>
+                <div class="footer-icon"></div>
+            </footer>
+        </div>
+    </div>
+
+    <!-- POPUP 1: INGREDIENTS -->
+    <div id="ingredients-popup" class="popup-overlay">
+        <div class="popup-content ingredients-popup-content">
+            <button class="close-popup">&times;</button>
+            <h2>Ingredients</h2>
+            <div class="ingredients-list">
+                <div>Ingredient 1</div><div>100 mg</div>
+                <div>Ingredient 2</div><div>50 mg</div>
+                <div>Ingredient 3</div><div>200 mg</div>
+                <div>Ingredient 4</div><div>75 mg</div>
+                <div>Ingredient 5</div><div>150 mg</div>
+                <div>Ingredient 6</div><div>120 mg</div>
+                <div>Ingredient 7</div><div>90 mg</div>
+                <div>Ingredient 8</div><div>80 mg</div>
+                <div>Ingredient 9</div><div>110 mg</div>
+                <div>Ingredient 10</div><div>60 mg</div>
+                <div>Ingredient 11</div><div>25 mg</div>
+                <div>Ingredient 12</div><div>300 mg</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- POPUP 2: PREORDER CHECKOUT -->
+    <div id="checkout-popup" class="popup-overlay">
+        <div class="popup-content">
+            <button class="close-popup">&times;</button>
+            <h2>Preorder Checkout</h2>
+            <div class="checkout-actions">
+                <button class="shop-pay">Shop Pay</button>
+                <button class="paypal">PayPal</button>
+            </div>
+            <hr>
+            <form class="checkout-form" onsubmit="alert('Order submitted!'); return false;">
+                <label for="cc">Credit Card</label>
+                <input type="text" id="cc" placeholder="Card Number">
+                <label for="address">Address</label>
+                <input type="text" id="address" placeholder="Shipping Address">
+                <button type="submit" class="submit-order">Complete Order</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- General Popup Logic ---
+            const ingredientsPopup = document.getElementById('ingredients-popup');
+            const checkoutPopup = document.getElementById('checkout-popup');
+            const openIngredientsBtn = document.getElementById('popup-ingredients-btn');
+            const openCheckoutBtns = document.querySelectorAll('.preorder-btn');
+
+            const openPopup = (popup) => popup.style.display = 'flex';
+            const closePopup = (popup) => popup.style.display = 'none';
+
+            openIngredientsBtn.addEventListener('click', () => openPopup(ingredientsPopup));
+            openCheckoutBtns.forEach(btn => btn.addEventListener('click', () => openPopup(checkoutPopup)));
+            
+            document.querySelectorAll('.popup-overlay').forEach(popup => {
+                popup.addEventListener('click', (e) => {
+                    if (e.target === popup || e.target.classList.contains('close-popup')) {
+                        closePopup(popup);
+                    }
+                });
+            });
+
+            // --- Accordion (FAQ) Functionality ---
+            document.querySelectorAll('.faq-question').forEach(question => {
+                question.addEventListener('click', () => {
+                    const answer = question.nextElementSibling;
+                    const plusSign = question.querySelector('span:last-child');
+                    const isOpened = answer.style.maxHeight && answer.style.maxHeight !== '0px';
+
+                    if (isOpened) {
+                        answer.style.maxHeight = '0px';
+                        plusSign.textContent = '+';
+                    } else {
+                        answer.style.maxHeight = answer.scrollHeight + 'px';
+                        plusSign.textContent = '−';
+                    }
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>

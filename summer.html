@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Summer Breeze Garden Design</title>
+    <style>
+        /*
+        ==========================================================================
+         FONTS & ROOT VARIABLES
+        ==========================================================================
+        */
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Work+Sans:wght@300;400;500&display=swap');
+
+        :root {
+            /* Typography */
+            --font-serif: 'Cormorant Garamond', serif;
+            --font-sans: 'Work Sans', sans-serif;
+
+            /* Colors */
+            --color-text: #4a4a4a;
+            --color-heading: #2d332c;
+            --color-primary: #8A9A87; /* Muted Sage */
+            --color-bg-light: #F8F7F5; /* Softer Neutral */
+            --color-border: #EAEAEA;
+            --color-white: #FFFFFF;
+            --color-black: #000000;
+
+            /* Spacing */
+            --spacing-xs: 0.5rem;
+            --spacing-sm: 1rem;
+            --spacing-md: 2rem;
+            --spacing-lg: 4rem;
+            --spacing-xl: 6rem;
+
+            /* Misc */
+            --header-height: 90px;
+            --transition-main: 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        /*
+        ==========================================================================
+         BASE & RESET STYLES
+        ==========================================================================
+        */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            color: var(--color-text);
+            background-color: var(--color-white);
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden;
+        }
+
+        /*
+        ==========================================================================
+         TYPOGRAPHY
+        ==========================================================================
+        */
+        h1, h2, h3, h4 {
+            font-family: var(--font-serif);
+            font-weight: 600;
+            color: var(--color-heading);
+            line-height: 1.2;
+        }
+
+        h1 { font-size: clamp(2.8rem, 6vw, 4.5rem); }
+        h2 { font-size: clamp(2.2rem, 5vw, 3.2rem); }
+        h3 { font-size: 1.8rem; margin-bottom: var(--spacing-sm); }
+        h4 { font-size: 1.25rem; font-weight: 600; }
+
+        p {
+            margin-bottom: var(--spacing-sm);
+            max-width: 65ch;
+        }
+
+        a {
+            color: var(--color-primary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: var(--color-heading);
+        }
+
+        /*
+        ==========================================================================
+         LAYOUT & HELPERS
+        ==========================================================================
+        */
+        .container {
+            width: 90%;
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        .section {
+            padding: var(--spacing-xl) 0;
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: var(--spacing-lg);
+        }
+        .section-header p {
+            max-width: 60ch;
+            margin-left: auto;
+            margin-right: auto;
+            font-size: 1.1rem;
+        }
+        
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s var(--transition-main), transform 0.8s var(--transition-main);
+        }
+        .fade-in.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /*
+        ==========================================================================
+         HEADER & NAVIGATION
+        ==========================================================================
+        */
+        .site-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 5%;
+            height: var(--header-height);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 100;
+            transition: background-color 0.4s ease, backdrop-filter 0.4s ease;
+        }
+        .site-header.is-scrolled {
+            background-color: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--color-border);
+        }
+        .logo {
+            font-family: var(--font-serif);
+            font-size: 1.6rem;
+            font-weight: 400;
+            letter-spacing: 1px;
+            z-index: 101;
+        }
+        .logo a { color: var(--color-heading); }
+
+        .nav-desktop { display: flex; }
+        .nav-desktop ul { list-style: none; display: flex; gap: var(--spacing-md); }
+        .nav-desktop a {
+            color: var(--color-heading);
+            font-weight: 500;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            padding: var(--spacing-xs) 0;
+        }
+        .nav-desktop a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background-color: var(--color-heading);
+            transition: width 0.4s ease;
+        }
+        .nav-desktop a:hover::after { width: 100%; }
+
+        /* Mobile Nav */
+        .nav-toggle { display: none; }
+        .nav-mobile { display: none; }
+
+        @media (max-width: 768px) {
+            .nav-desktop { display: none; }
+            .nav-toggle {
+                display: block;
+                width: 30px;
+                height: 25px;
+                position: relative;
+                z-index: 101;
+                background: none;
+                border: none;
+                cursor: pointer;
+            }
+            .nav-toggle span {
+                display: block;
+                position: absolute;
+                height: 2px;
+                width: 100%;
+                background: var(--color-heading);
+                border-radius: 2px;
+                left: 0;
+                transition: transform 0.3s ease, top 0.3s ease, opacity 0.3s ease;
+            }
+            .nav-toggle span:nth-child(1) { top: 0; }
+            .nav-toggle span:nth-child(2) { top: 10px; }
+            .nav-toggle span:nth-child(3) { top: 20px; }
+
+            body.nav-open .nav-toggle span:nth-child(1) { top: 10px; transform: rotate(135deg); }
+            body.nav-open .nav-toggle span:nth-child(2) { opacity: 0; }
+            body.nav-open .nav-toggle span:nth-child(3) { top: 10px; transform: rotate(-135deg); }
+
+            .nav-mobile {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: var(--color-white);
+                transform: translateX(100%);
+                transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            }
+            body.nav-open .nav-mobile { transform: translateX(0); }
+            .nav-mobile ul { list-style: none; text-align: center; }
+            .nav-mobile li { margin: var(--spacing-md) 0; }
+            .nav-mobile a {
+                font-family: var(--font-serif);
+                font-size: 2rem;
+                color: var(--color-heading);
+            }
+        }
+        
+        /*
+        ==========================================================================
+         PAGE SECTIONS
+        ==========================================================================
+        */
+        main { padding-top: var(--header-height); }
+
+        .hero {
+            height: calc(100vh - var(--header-height));
+            min-height: 550px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background: url('https://www.bhg.com/thmb/ozV5ZJPfRR4yw3ZLBmEc2C2-9i0=/4000x0/filters:no_upscale():strip_icc()/BHG-Hollister-House_2017_0515-051-929dbb6d5ffd4f188b73519d383ba161.jpg') no-repeat center center/cover;
+            padding: 0 5%;
+            position: relative;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--color-black);
+            opacity: 0.3;
+        }
+        .hero-content { position: relative; color: var(--color-white); }
+        .hero h1 { color: inherit; font-weight: 400; }
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 55ch;
+            margin: var(--spacing-sm) auto 0;
+            color: rgba(255, 255, 255, 0.95);
+        }
+
+        .intro { background-color: var(--color-bg-light); text-align: center; }
+        .intro h2 { max-width: 30ch; margin: 0 auto; }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--spacing-lg);
+            align-items: center;
+        }
+        .about-image { width: 100%; height: 600px; object-fit: cover; }
+        @media (max-width: 900px) {
+            .about-grid { grid-template-columns: 1fr; gap: var(--spacing-md); }
+            .about-image { height: 400px; order: -1; margin-bottom: var(--spacing-md); }
+        }
+
+        #portfolio { background-color: var(--color-bg-light); }
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--spacing-md);
+        }
+        .portfolio-item {
+            position: relative;
+            overflow: hidden;
+            height: 500px;
+            display: block;
+        }
+        .portfolio-item:first-child { grid-column: 1 / -1; } /* Make first item span full width */
+
+        .portfolio-item__image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s var(--transition-main);
+        }
+        .portfolio-item:hover .portfolio-item__image { transform: scale(1.05); }
+
+        .portfolio-item__overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: var(--spacing-lg) var(--spacing-md) var(--spacing-md);
+            color: var(--color-white);
+            background: linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 100%);
+        }
+        .portfolio-item__text {
+             transform: translateY(20px);
+             opacity: 0;
+             transition: transform 0.5s var(--transition-main), opacity 0.5s var(--transition-main);
+        }
+        .portfolio-item:hover .portfolio-item__text {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        .portfolio-item__overlay h4 { color: inherit; margin-bottom: var(--spacing-xs); }
+        .portfolio-item__overlay p { font-size: 0.9rem; color: rgba(255,255,255,0.8); margin-bottom: 0; }
+        @media (max-width: 768px) {
+            .portfolio-grid { grid-template-columns: 1fr; }
+            .portfolio-item { height: 400px; }
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: var(--spacing-md);
+            text-align: center;
+        }
+        .service-card { padding: var(--spacing-md) var(--spacing-sm); }
+        .service-card h4 { color: var(--color-heading); margin-bottom: var(--spacing-sm); }
+        .service-card p { font-size: 0.95rem; }
+
+        #contact { background-color: var(--color-bg-light); }
+        .contact-form { max-width: 700px; margin: 0 auto; }
+        .form-group { margin-bottom: 1.5rem; }
+        .form-group label {
+            display: block;
+            margin-bottom: var(--spacing-xs);
+            font-size: 0.9rem;
+            color: var(--color-heading);
+        }
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: var(--spacing-sm);
+            border: 1px solid var(--color-border);
+            background-color: var(--color-white);
+            font-family: var(--font-sans);
+            font-size: 1rem;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            border-radius: 4px;
+        }
+        .form-group input:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 3px rgba(138, 154, 135, 0.2);
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: calc(var(--spacing-sm) * 1.2) calc(var(--spacing-md) * 1.5);
+            background-color: var(--color-primary);
+            color: var(--color-white);
+            border: none;
+            cursor: pointer;
+            font-family: var(--font-sans);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            transition: background-color 0.3s ease;
+            border-radius: 4px;
+        }
+        .btn:hover { background-color: var(--color-heading); color: var(--color-white); }
+        
+        /*
+        ==========================================================================
+         FOOTER
+        ==========================================================================
+        */
+        .site-footer {
+            background-color: var(--color-heading);
+            color: var(--color-bg-light);
+            text-align: center;
+            padding: var(--spacing-lg) 0;
+            font-size: 0.9rem;
+        }
+        .footer-links a {
+            margin: 0 var(--spacing-sm);
+            color: var(--color-bg-light);
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+        }
+        .site-footer p {
+            margin-top: var(--spacing-md);
+            margin-bottom: 0;
+            color: rgba(255,255,255,0.6);
+        }
+    </style>
+</head>
+<body>
+
+    <header class="site-header">
+        <div class="logo">
+            <a href="#home">Summer Breeze</a>
+        </div>
+        <nav class="nav-desktop">
+            <ul>
+                <li><a href="#about">About</a></li>
+                <li><a href="#portfolio">Projects</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+        <button class="nav-toggle" aria-label="Open navigation">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <nav class="nav-mobile">
+             <ul>
+                <li><a href="#about">About</a></li>
+                <li><a href="#portfolio">Projects</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="home" class="hero">
+            <div class="hero-content fade-in">
+                <h1>Refined design for timeless landscapes.</h1>
+                <p>A boutique garden design practice specialising in premium residential and lifestyle landscapes.</p>
+            </div>
+        </section>
+        
+        <section class="section intro">
+            <div class="container fade-in">
+                <h2>We create gardens that feel calm, confident, and natural—spaces of enduring beauty that connect home and landscape.</h2>
+            </div>
+        </section>
+
+        <section id="about" class="section">
+            <div class="container">
+                <div class="about-grid">
+                    <div class="about-text fade-in">
+                        <h3>Autumn, the Designer</h3>
+                        <p>With a background in architecture and a lifelong passion for horticulture, Autumn founded Summer Breeze to create thoughtful, understated gardens that stand the test of time. Her design philosophy is rooted in the belief that a garden should be a natural extension of the home—a sanctuary that reflects the client's lifestyle and the surrounding environment.</p>
+                        <p>Our work is inspired by the calm and tactile restraint of contemporary architecture, focusing on texture, sustainability, and thoughtful design to create a seamless flow between inside and out.</p>
+                    </div>
+                    <div class="about-image-wrapper fade-in" style="transition-delay: 150ms;">
+                         <img src="https://images.unsplash.com/photo-1587334274328-64186a80aeee?ixlib=rb-4.0.3&auto=format&fit=crop&w=774&q=80" alt="Lush green foliage in a designed garden" class="about-image">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="portfolio" class="section">
+            <div class="container">
+                <div class="section-header fade-in">
+                    <h2>Selected Projects</h2>
+                </div>
+                <div class="portfolio-grid">
+                    <a href="#" class="portfolio-item fade-in">
+                        <img src="https://cdn.mos.cms.futurecdn.net/a8DDqMP28u8Qd64xeE4bc9.jpg" alt="Modern coastal garden with stone paving" class="portfolio-item__image">
+                        <div class="portfolio-item__overlay">
+                            <div class="portfolio-item__text">
+                                <h4>Coastal Retreat</h4>
+                                <p>A serene space blending native plants with contemporary architecture.</p>
+                            </div>
+                        </div>
+                    </a>
+                    <a href="#" class="portfolio-item fade-in" style="transition-delay: 150ms;">
+                        <img src="https://cdn.mos.cms.futurecdn.net/45gsiKnZ39DQWT9XHvnRZE.jpg" alt="Urban courtyard with vertical planting" class="portfolio-item__image">
+                         <div class="portfolio-item__overlay">
+                             <div class="portfolio-item__text">
+                                <h4>Urban Sanctuary</h4>
+                                <p>Transforming a compact city space into a lush, private oasis.</p>
+                            </div>
+                        </div>
+                    </a>
+                    <a href="#" class="portfolio-item fade-in" style="transition-delay: 300ms;">
+                        <img src="https://travel.home.sndimg.com/content/dam/images/travel/fullrights/2018/3/27/0/CI_William-Pitt-Sothebys_Washington-Connecticut-estate-1.jpg.rend.hgtvcom.616.411.85.suffix/1522159327398.webp" alt="Country estate with sprawling lawns and formal beds" class="portfolio-item__image">
+                         <div class="portfolio-item__overlay">
+                             <div class="portfolio-item__text">
+                                <h4>Country Estate</h4>
+                                <p>A timeless design for a large property, focused on seasonal beauty.</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section id="services" class="section">
+            <div class="container">
+                <div class="section-header fade-in">
+                    <h2>Our Services</h2>
+                </div>
+                <div class="services-grid">
+                    <div class="service-card fade-in">
+                        <h4>Garden Design</h4>
+                        <p>A complete design process from concept to detailed plans, creating a cohesive vision for your landscape.</p>
+                    </div>
+                    <div class="service-card fade-in" style="transition-delay: 150ms;">
+                        <h4>Planting Design</h4>
+                        <p>Expertly curated plant palettes that provide year-round interest, texture, and form.</p>
+                    </div>
+                    <div class="service-card fade-in" style="transition-delay: 300ms;">
+                        <h4>Consultation</h4>
+                        <p>On-site advice to help you unlock your garden's potential, whether for a new direction or a gentle refresh.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="section">
+            <div class="container fade-in">
+                 <div class="section-header">
+                    <h2>Get In Touch</h2>
+                    <p>If you have a project you would like to discuss, please fill out the form below. We will get back to you shortly.</p>
+                </div>
+                <form class="contact-form" action="#" method="POST">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Tell us about your project</label>
+                        <textarea id="message" name="message" rows="6" required></textarea>
+                    </div>
+                    <button type="submit" class="btn">Send Enquiry</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-links">
+                <a href="#">Instagram</a>
+                <a href="#">Pinterest</a>
+            </div>
+            <p>&copy; 2025 Summer Breeze Garden Design. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+
+            // --- HEADER SCROLL EFFECT ---
+            const header = document.querySelector('.site-header');
+            const scrollThreshold = 50;
+            const handleHeaderScroll = () => {
+                if (window.scrollY > scrollThreshold) {
+                    header.classList.add('is-scrolled');
+                } else {
+                    header.classList.remove('is-scrolled');
+                }
+            };
+            window.addEventListener('scroll', handleHeaderScroll);
+            handleHeaderScroll(); // Check on page load
+
+            // --- MOBILE NAVIGATION TOGGLE ---
+            const navToggle = document.querySelector('.nav-toggle');
+            const navLinks = document.querySelectorAll('.nav-mobile a');
+            navToggle.addEventListener('click', () => {
+                document.body.classList.toggle('nav-open');
+            });
+            // Close mobile nav when a link is clicked
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    document.body.classList.remove('nav-open');
+                });
+            });
+
+            // --- SCROLL-TRIGGERED FADE-IN ANIMATION ---
+            const faders = document.querySelectorAll('.fade-in');
+            const appearOptions = {
+                threshold: 0.15,
+                rootMargin: "0px 0px -50px 0px"
+            };
+            const appearOnScroll = new IntersectionObserver(function(entries, observer) {
+                entries.forEach(entry => {
+                    if (!entry.isIntersecting) {
+                        return;
+                    }
+                    entry.target.classList.add('is-visible');
+                    observer.unobserve(entry.target);
+                });
+            }, appearOptions);
+
+            faders.forEach(fader => {
+                appearOnScroll.observe(fader);
+            });
+
+        });
+    </script>
+</body>
+</html>
