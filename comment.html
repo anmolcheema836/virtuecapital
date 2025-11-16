@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Definitive Commenting Simulation</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Feather Icons Library -->
+    <script src="https://unpkg.com/feather-icons"></script>
+    <style>
+        :root {
+            --color-black: #0F0F0F; --color-dark-gray: #555555; --color-mid-gray: #999999;
+            --color-light-gray: #EAEAEA; --color-bg: #F9F9F9; --color-white: #FFFFFF;
+            --color-accent-blue: #007AFF; --color-accent-red: #d9534f;
+            --font-family: 'Manrope', sans-serif; --border-radius: 12px;
+        }
+        body { font-family: var(--font-family); background-color: var(--color-bg); color: var(--color-black); margin: 0; padding: 40px 20px; }
+        .main-container { max-width: 700px; margin: auto; display: flex; flex-direction: column; gap: 32px; }
+        .new-comment-form { background-color: var(--color-white); border: 1px solid var(--color-light-gray); border-radius: var(--border-radius); padding: 24px; }
+        .new-comment-form h2 { margin: 0 0 16px 0; font-size: 1.2rem; }
+        .new-comment-form textarea { width: 100%; min-height: 70px; padding: 12px; border: 1px solid var(--color-light-gray); border-radius: 8px; font-family: var(--font-family); font-size: 1rem; line-height: 1.6; resize: vertical; box-sizing: border-box; margin-bottom: 12px; }
+        .new-comment-form textarea:focus { outline: none; border-color: var(--color-black); }
+        .new-comment-form button { display: block; margin-left: auto; background-color: var(--color-black); color: var(--color-white); border: none; padding: 10px 20px; border-radius: 8px; font-family: var(--font-family); font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: background-color 0.2s ease; }
+        .new-comment-form button:hover { background-color: var(--color-dark-gray); }
+        .comment-thread { display: flex; flex-direction: column; gap: 16px; }
+        .comment-wrapper { display: flex; flex-direction: column; gap: 16px; }
+        .replies-container { padding-left: 56px; display: flex; flex-direction: column; gap: 16px; }
+        .comment { display: flex; gap: 16px; padding: 24px; background-color: var(--color-white); border: 1px solid var(--color-light-gray); border-radius: var(--border-radius); }
+        .comment .avatar { width: 40px; height: 40px; border-radius: 50%; background-color: var(--color-light-gray); color: var(--color-dark-gray); font-weight: 600; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 4px; }
+        .comment-details { width: 100%; }
+        .comment-header { display: flex; align-items: baseline; gap: 12px; margin-bottom: 8px; }
+        .comment-header .username { font-weight: 700; font-size: 1rem; }
+        .comment-header .timestamp { font-size: 0.8rem; color: var(--color-mid-gray); }
+        .comment-body { font-size: 1rem; line-height: 1.6; margin: 0 0 16px 0; color: var(--color-dark-gray); }
+        .comment-stats { margin-bottom: 16px; padding: 10px; background-color: var(--color-bg); border-radius: 8px; font-size: 0.85rem; color: var(--color-dark-gray); }
+        .comment-stats div { display: flex; align-items: center; gap: 8px; }
+        .comment-stats .feather { width: 16px; height: 16px; }
+        .comment-actions { display: flex; gap: 24px; align-items: center; }
+        .action-button { background: none; border: none; padding: 4px 0; cursor: pointer; color: var(--color-mid-gray); font-size: 0.9rem; display: flex; align-items: center; gap: 6px; font-family: var(--font-family); font-weight: 600; transition: color 0.2s ease; }
+        .action-button:hover { color: var(--color-black); }
+        .action-button.active { color: var(--color-accent-blue); }
+        .comment-flagged-message { padding: 12px; background-color: #fffbe6; border: 1px solid #ffe58f; border-radius: 8px; font-size: 0.9rem; color: #d46b08; display: flex; align-items: center; gap: 8px; }
+        .comment-flagged-message .feather { width: 18px; height: 18px; }
+        .reply-container { margin-top: 24px; }
+        .reply-parent-comment-wrapper { border-left: 2px solid var(--color-light-gray); padding-left: 16px; margin-bottom: 16px; }
+        .reply-parent-comment-author { font-weight: 600; font-size: 0.9rem; color: var(--color-dark-gray); margin-bottom: 4px; }
+        .reply-parent-comment-text { font-size: 0.9rem; color: var(--color-mid-gray); line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        .reply-box { position: relative; }
+        .reply-input { width: 100%; min-height: 60px; padding: 12px 48px 12px 16px; border: 1px solid var(--color-light-gray); border-radius: 8px; font-family: var(--font-family); font-size: 1rem; line-height: 1.6; resize: vertical; box-sizing: border-box; transition: border-color 0.2s ease; }
+        .reply-input:focus { outline: none; border-color: var(--color-black); }
+        .reply-submit-button { position: absolute; right: 8px; bottom: 8px; width: 36px; height: 36px; background-color: var(--color-black); color: var(--color-white); border: none; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background-color 0.2s ease; }
+        .reply-submit-button:hover { background-color: var(--color-dark-gray); }
+        .reply-submit-button .feather { width: 18px; height: 18px; }
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); display: flex; align-items: center; justify-content: center; z-index: 1000; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0s 0.3s; }
+        .modal-overlay.visible { opacity: 1; visibility: visible; transition: opacity 0.3s ease; }
+        .modal-panel { background-color: var(--color-white); padding: 32px; border-radius: 16px; width: 90%; max-width: 500px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); transform: scale(0.95); transition: transform 0.3s ease; }
+        .modal-overlay.visible .modal-panel { transform: scale(1); }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+        .modal-title { font-size: 1.25rem; font-weight: 700; margin: 0; }
+        .close-modal-button { background: none; border: none; color: var(--color-mid-gray); cursor: pointer; padding: 0; transition: color 0.2s ease; }
+        .close-modal-button:hover { color: var(--color-black); }
+        .close-modal-button .feather { width: 28px; height: 28px; }
+        .modal-content .category { margin-bottom: 24px; }
+        .modal-content .category:last-child { margin-bottom: 0; }
+        .modal-content .category-title { font-size: 1rem; font-weight: 600; margin: 0 0 12px 0; display: flex; align-items: center; gap: 8px; }
+        .modal-content .category-title .feather { width: 20px; height: 20px; color: var(--color-dark-gray); }
+        .modal-content .category-description { font-size: 0.85rem; color: var(--color-mid-gray); margin: -8px 0 16px 0; }
+        .modal-options { display: flex; flex-wrap: wrap; gap: 10px; }
+        .modal-options button { font-family: var(--font-family); font-size: 0.9rem; padding: 8px 16px; background-color: var(--color-bg); border: 1px solid var(--color-light-gray); color: var(--color-dark-gray); border-radius: 20px; cursor: pointer; transition: all 0.2s ease; }
+        .modal-options button:hover { background-color: var(--color-light-gray); border-color: var(--color-mid-gray); color: var(--color-black); }
+        .flag-comment-preview { background-color: var(--color-bg); padding: 16px; border-radius: 8px; border: 1px solid var(--color-light-gray); margin-bottom: 24px; font-size: 0.9rem; }
+        .flag-comment-preview .username { font-weight: 600; }
+        .revision-notes-area { width: 100%; min-height: 80px; padding: 12px; border: 1px solid var(--color-light-gray); border-radius: 8px; font-family: var(--font-family); font-size: 0.9rem; resize: vertical; box-sizing: border-box; }
+    </style>
+</head>
+<body>
+
+    <div class="main-container">
+        <div class="new-comment-form">
+            <h2>Leave a Comment</h2>
+            <form id="add-comment-form">
+                <textarea id="new-comment-text" placeholder="What are your thoughts?" required></textarea>
+                <button type="submit">Post Comment</button>
+            </form>
+        </div>
+        <div class="comment-thread" id="comment-thread"></div>
+    </div>
+
+    <!-- MODALS -->
+    <div id="good-modal" class="modal-overlay">
+         <div class="modal-panel">
+            <div class="modal-header"><h2 class="modal-title">Why is this comment good?</h2><button class="close-modal-button"><i data-feather="x"></i></button></div>
+            <div class="modal-content">
+                <div class="category"><h3 class="category-title"><i data-feather="sun"></i>Insightful</h3><div class="modal-options"><button data-reason="Kindness">Kindness</button><button data-reason="Compassionate">Compassionate</button><button data-reason="Curious">Curious</button><button data-reason="Thoughtful">Thoughtful</button><button data-reason="Personal">Personal</button><button data-reason="Reasonable">Reasonable</button><button data-reason="Respectful">Respectful</button></div></div>
+                <div class="category"><h3 class="category-title"><i data-feather="book-open"></i>Informative</h3><div class="modal-options"><button data-reason="Funny">Funny</button><button data-reason="Passionate">Passionate</button></div></div>
+                <div class="category"><h3 class="category-title"><i data-feather="trending-up"></i>Constructive</h3></div>
+                <div class="category"><h3 class="category-title"><i data-feather="smile"></i>Funny</h3></div>
+                <div class="category"><h3 class="category-title"><i data-feather="heart"></i>Passionate</h3></div>
+                <div class="category"><h3 class="category-title"><i data-feather="award"></i>Nice</h3></div>
+            </div>
+        </div>
+    </div>
+    <div id="bad-modal" class="modal-overlay">
+        <div class="modal-panel">
+            <div class="modal-header"><h2 class="modal-title">Why is this comment bad?</h2><button class="close-modal-button"><i data-feather="x"></i></button></div>
+            <div class="modal-content">
+                <div class="category"><h3 class="category-title"><i data-feather="help-circle"></i>Illogical</h3><p class="category-description">Presents a logical fallacy. Doesn't make sense.</p><div class="modal-options"><button data-reason="Illogical">Submit</button></div></div>
+                <div class="category"><h3 class="category-title"><i data-feather="slash"></i>Off-Topic</h3><p class="category-description">Totally irrelevant to the conversation.</p><div class="modal-options"><button data-reason="Off-Topic">Submit</button></div></div>
+                <div class="category"><h3 class="category-title"><i data-feather="copy"></i>Redundant</h3><p class="category-description">Repeats what has already been said.</p><div class="modal-options"><button data-reason="Redundant">Submit</button></div></div>
+                <div class="category"><h3 class="category-title"><i data-feather="frown"></i>Not Funny</h3><p class="category-description">Crude, mean-spirited or politically incorrect.</p><div class="modal-options"><button data-reason="Not Funny">Submit</button></div></div>
+                <div class="category"><h3 class="category-title"><i data-feather="zap-off"></i>Spiteful</h3><p class="category-description">Not inappropriate, but still mean. Obnoxious, rash, immature, etc.</p><div class="modal-options"><button data-reason="Spiteful">Submit</button></div></div>
+                <div class="category"><h3 class="category-title"><i data-feather="eye-off"></i>Fabricated</h3><p class="category-description">Playing fast and loose with the truth.</p><div class="modal-options"><button data-reason="Fabricated">Submit</button></div></div>
+            </div>
+        </div>
+    </div>
+    <div id="flag-modal" class="modal-overlay">
+        <div class="modal-panel">
+            <div class="modal-header"><h2 class="modal-title">Flag Comment for Moderation</h2><button class="close-modal-button"><i data-feather="x"></i></button></div>
+            <div class="modal-content">
+                <div class="flag-comment-preview" id="flag-preview"></div>
+                <div class="category"><h3 class="category-title"><i data-feather="alert-octagon"></i>Inappropriate (Vulgar, hateful, etc.)</h3><div class="modal-options"><button data-reason="Toxic">Toxic</button><button data-reason="Attack">Attack</button><button data-reason="Insult">Insult</button><button data-reason="Profane">Profane</button><button data-reason="Threatening">Threatening</button><button data-reason="Explicit">Explicit</button><button data-reason="Flirtation">Flirtation</button></div></div>
+                <div class="category"><h3 class="category-title"><i data-feather="edit-3"></i>Revise (Sensitive, unsuitable content)</h3><textarea class="revision-notes-area" id="revision-notes" placeholder="Provide notes for the author..."></textarea><div class="modal-options" style="margin-top: 12px;"><button data-reason="Revise">Submit for Revision</button></div></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const STORAGE_KEY = 'definitiveCommentApp';
+        const commentThreadContainer = document.getElementById('comment-thread');
+        const modals = { good: document.getElementById('good-modal'), bad: document.getElementById('bad-modal'), flag: document.getElementById('flag-modal') };
+
+        // --- DATA STRUCTURE & MANAGEMENT ---
+        const createNewComment = (id, username, initials, text, replies = []) => ({
+            id, username, initials, text, replies,
+            timestamp: new Date().toLocaleDateString(),
+            interactions: { good: { count: 0, reasons: {} }, bad: { count: 0, reasons: {} } },
+            userVote: null,
+            flag: { status: 'none', reason: null, notes: null }
+        });
+
+        const getInitialData = () => [
+            createNewComment(1, 'Salmon Sandpiper (Tucker Farris)', 'SS', 'I think carbondale arts is a great organization.'),
+            createNewComment(2, 'Violet Vicuna (Vivienne Shapiro)', 'VV', 'I’d go but I bet my mom is going to be there. It would be great if they offered this just for school-aged people.')
+        ];
+
+        const getComments = () => {
+            try { const stored = localStorage.getItem(STORAGE_KEY); return stored ? JSON.parse(stored) : getInitialData(); } 
+            catch { return getInitialData(); }
+        };
+        const saveComments = (comments) => localStorage.setItem(STORAGE_KEY, JSON.stringify(comments));
+
+        const findComment = (comments, id) => {
+            for (const comment of comments) {
+                if (comment.id === id) return comment;
+                if (comment.replies) {
+                    const found = findComment(comment.replies, id);
+                    if (found) return found;
+                }
+            }
+            return null;
+        };
+        
+        // --- UI RENDERING LOGIC ---
+        const createInteractionStatsHTML = (interactions) => {
+            let html = '';
+            const goodCount = interactions.good.count;
+            if (goodCount > 0) {
+                const topReason = Object.keys(interactions.good.reasons).sort((a,b) => interactions.good.reasons[b] - interactions.good.reasons[a])[0];
+                html += `<div><i data-feather="thumbs-up"></i> ${goodCount} found this good (${topReason})</div>`;
+            }
+            return html ? `<div class="comment-stats">${html}</div>` : '';
+        };
+
+        const createCommentHTML = (comment) => {
+            let bottomContent;
+            if (comment.flag.status === 'pending') {
+                let message = `Flagged for review (${comment.flag.reason})`;
+                if (comment.flag.reason === 'Revise' && comment.flag.notes) {
+                    message += `: "${comment.flag.notes}"`;
+                }
+                bottomContent = `<div class="comment-flagged-message"><i data-feather="alert-triangle"></i> ${message}</div>`;
+            } else {
+                bottomContent = `
+                    ${createInteractionStatsHTML(comment.interactions)}
+                    <div class="comment-actions">
+                        <button class="action-button ${comment.userVote === 'good' ? 'active' : ''}" data-action="good"><i data-feather="thumbs-up"></i>good</button>
+                        <button class="action-button ${comment.userVote === 'bad' ? 'active' : ''}" data-action="bad"><i data-feather="thumbs-down"></i>bad</button>
+                        <button class="action-button" data-action="flag"><i data-feather="flag"></i>flag</button>
+                        <button class="action-button" data-action="reply"><i data-feather="corner-up-left"></i>reply</button>
+                    </div>`;
+            }
+
+            return `
+                <div class="comment" data-comment-id="${comment.id}">
+                    <div class="avatar">${comment.initials}</div>
+                    <div class="comment-details">
+                        <div class="comment-header"><span class="username">${comment.username}</span><span class="timestamp">${comment.timestamp}</span></div>
+                        <p class="comment-body">${comment.text}</p>
+                        ${bottomContent}
+                    </div>
+                </div>`;
+        };
+
+        const render = () => {
+            const comments = getComments();
+            commentThreadContainer.innerHTML = '';
+            const buildCommentTree = (commentList, container) => {
+                commentList.forEach(comment => {
+                    const wrapper = document.createElement('div');
+                    wrapper.className = 'comment-wrapper';
+                    wrapper.innerHTML = createCommentHTML(comment);
+                    if (comment.replies && comment.replies.length > 0) {
+                        const repliesContainer = document.createElement('div');
+                        repliesContainer.className = 'replies-container';
+                        buildCommentTree(comment.replies, repliesContainer);
+                        wrapper.appendChild(repliesContainer);
+                    }
+                    container.appendChild(wrapper);
+                });
+            };
+            buildCommentTree(comments, commentThreadContainer);
+            feather.replace();
+        };
+
+        // --- CORE FUNCTIONALITY ---
+        const handleVote = (commentId, type, reason) => {
+            const allComments = getComments();
+            const comment = findComment(allComments, commentId);
+            if (!comment || comment.flag.status === 'pending') return;
+            const oppositeType = type === 'good' ? 'bad' : 'good';
+            if (comment.userVote === type) { // Retracting
+                comment.interactions[type].count--;
+                delete comment.interactions[type].reasons[reason];
+                comment.userVote = null;
+            } else { // Voting or switching
+                if (comment.userVote === oppositeType) { comment.interactions[oppositeType].count--; }
+                comment.interactions[type].count++;
+                comment.interactions[type].reasons[reason] = (comment.interactions[type].reasons[reason] || 0) + 1;
+                comment.userVote = type;
+            }
+            saveComments(allComments);
+            render();
+        };
+
+        const handleFlag = (commentId, reason, notes = null) => {
+            const allComments = getComments();
+            const comment = findComment(allComments, commentId);
+            if (!comment) return;
+            comment.flag = { status: 'pending', reason, notes };
+            saveComments(allComments);
+            render();
+        };
+
+        // --- EVENT HANDLERS ---
+        document.getElementById('add-comment-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const textArea = document.getElementById('new-comment-text');
+            const text = textArea.value.trim();
+            if (text) {
+                const newComment = createNewComment(Date.now(), 'Anonymous User', 'AU', text);
+                const comments = getComments();
+                comments.push(newComment);
+                saveComments(comments);
+                render();
+                textArea.value = '';
+            }
+        });
+
+        commentThreadContainer.addEventListener('click', (e) => {
+            const button = e.target.closest('.action-button');
+            if (!button) return;
+            const action = button.dataset.action;
+            const commentEl = button.closest('.comment');
+            const commentId = parseInt(commentEl.dataset.commentId);
+            if (action === 'good' || action === 'bad' || action === 'flag') {
+                const comment = findComment(getComments(), commentId);
+                if ((action === 'good' || action === 'bad') && comment.userVote === action) { handleVote(commentId, action, 'retraction'); return; }
+                openModal(action, commentId);
+            } else if (action === 'reply') {
+                openReplyUI(commentEl);
+            }
+        });
+
+        // MODALS & REPLY UI
+        const openModal = (action, commentId) => {
+            const modal = modals[action];
+            modal.dataset.commentId = commentId;
+            if (action === 'flag') {
+                const comment = findComment(getComments(), commentId);
+                document.getElementById('flag-preview').innerHTML = `<p><span class="username">${comment.username}:</span> ${comment.text}</p>`;
+                document.getElementById('revision-notes').value = '';
+            }
+            modal.classList.add('visible');
+            feather.replace();
+        };
+
+        Object.values(modals).forEach(modal => {
+            modal.addEventListener('click', e => {
+                const reasonButton = e.target.closest('.modal-options button');
+                const type = modal.id.replace('-modal', '');
+                if (reasonButton) {
+                    const commentId = parseInt(modal.dataset.commentId);
+                    const reason = reasonButton.dataset.reason;
+                    if (type === 'flag') {
+                        const notes = reason === 'Revise' ? document.getElementById('revision-notes').value.trim() : null;
+                        handleFlag(commentId, reason, notes);
+                    } else {
+                        handleVote(commentId, type, reason);
+                    }
+                }
+                if (e.target === modal || e.target.closest('.close-modal-button') || reasonButton) {
+                    modal.classList.remove('visible');
+                }
+            });
+        });
+
+        const openReplyUI = (commentEl) => {
+            document.querySelectorAll('.reply-container').forEach(form => form.remove());
+            const detailsEl = commentEl.querySelector('.comment-details');
+            const parentText = commentEl.querySelector('.comment-body').textContent.trim();
+            const parentAuthor = commentEl.querySelector('.username').textContent.trim();
+            const replyContainer = document.createElement('div');
+            replyContainer.className = 'reply-container';
+            replyContainer.innerHTML = `<div class="reply-parent-comment-wrapper"><div class="reply-parent-comment-author">Replying to ${parentAuthor}</div><div class="reply-parent-comment-text">${parentText}</div></div><div class="reply-box"><textarea class="reply-input" placeholder="Write a reply..."></textarea><button class="reply-submit-button"><i data-feather="send"></i></button></div>`;
+            detailsEl.appendChild(replyContainer);
+            feather.replace();
+            replyContainer.querySelector('.reply-input').focus();
+            replyContainer.querySelector('.reply-submit-button').addEventListener('click', () => {
+                const text = replyContainer.querySelector('.reply-input').value.trim();
+                if (text) {
+                    const parentId = parseInt(commentEl.dataset.commentId);
+                    const newReply = createNewComment(Date.now(), 'Anonymous User', 'AU', text);
+                    const comments = getComments();
+                    const parentComment = findComment(comments, parentId);
+                    if (parentComment) {
+                        parentComment.replies.push(newReply);
+                        saveComments(comments);
+                        render();
+                    }
+                }
+            });
+        };
+        
+        // --- INITIALIZATION ---
+        render();
+    });
+    </script>
+</body>
+</html>
