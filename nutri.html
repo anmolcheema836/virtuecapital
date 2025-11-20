@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NutriLife | Personalized Nutrition & Coaching</title>
+    <meta name="description" content="Achieve your health goals with personalized meal plans and expert nutrition coaching.">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Custom Configuration for Colors/Fonts -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Poppins', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            900: '#14532d',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Scrollbar for Webkit */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #16a34a; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #14532d; 
+        }
+    </style>
+</head>
+<body class="font-sans text-gray-800 antialiased bg-gray-50">
+
+    <!-- Navigation -->
+    <nav class="bg-white shadow-md fixed w-full z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-20">
+                <div class="flex items-center">
+                    <a href="#" class="flex items-center gap-2 text-2xl font-bold text-brand-600">
+                        <i class="fa-solid fa-leaf"></i>
+                        <span>NutriLife</span>
+                    </a>
+                </div>
+                
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#home" class="text-gray-600 hover:text-brand-600 transition">Home</a>
+                    <a href="#meal-plans" class="text-gray-600 hover:text-brand-600 transition">Meal Plans</a>
+                    <a href="#coaching" class="text-gray-600 hover:text-brand-600 transition">Coaching</a>
+                    <a href="#blog" class="text-gray-600 hover:text-brand-600 transition">Blog</a>
+                    <a href="#contact" class="bg-brand-600 text-white px-5 py-2.5 rounded-full font-medium hover:bg-brand-700 transition shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
+                        Book Consultation
+                    </a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="flex items-center md:hidden">
+                    <button id="mobile-menu-btn" class="text-gray-600 hover:text-brand-600 focus:outline-none">
+                        <i class="fa-solid fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Panel -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#home" class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-brand-600 hover:bg-gray-50 rounded-md">Home</a>
+                <a href="#meal-plans" class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-brand-600 hover:bg-gray-50 rounded-md">Meal Plans</a>
+                <a href="#coaching" class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-brand-600 hover:bg-gray-50 rounded-md">Coaching</a>
+                <a href="#blog" class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-brand-600 hover:bg-gray-50 rounded-md">Blog</a>
+                <a href="#contact" class="block px-3 py-2 text-base font-medium text-brand-600 font-bold hover:bg-gray-50 rounded-md">Book Now</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
+        <!-- Background Image with Overlay -->
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80" alt="Healthy Food" class="w-full h-full object-cover">
+            <div class="absolute inset-0 bg-gradient-to-r from-white via-white/90 to-transparent"></div>
+        </div>
+
+        <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="max-w-2xl">
+                <h1 class="text-4xl md:text-6xl font-bold text-gray-900 leading-tight mb-6">
+                    Fuel Your Body with <span class="text-brand-600">Intention</span>
+                </h1>
+                <p class="text-lg md:text-xl text-gray-600 mb-8 leading-relaxed">
+                    Get personalized meal plans and expert one-on-one coaching tailored to your unique lifestyle and health goals.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <a href="#meal-plans" class="text-center px-8 py-4 bg-brand-600 text-white rounded-full font-semibold shadow-lg hover:bg-brand-700 hover:shadow-xl transition transform hover:-translate-y-1">
+                        Start Your Journey
+                    </a>
+                    <a href="#contact" class="text-center px-8 py-4 bg-white text-brand-600 border-2 border-brand-600 rounded-full font-semibold hover:bg-brand-50 transition">
+                        Learn More
+                    </a>
+                </div>
+                
+                <div class="mt-10 flex items-center gap-4 text-sm text-gray-500 font-medium">
+                    <div class="flex -space-x-2">
+                        <img class="w-10 h-10 rounded-full border-2 border-white" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80" alt="User">
+                        <img class="w-10 h-10 rounded-full border-2 border-white" src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=100&q=80" alt="User">
+                        <img class="w-10 h-10 rounded-full border-2 border-white" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=80" alt="User">
+                    </div>
+                    <p>Trusted by 500+ happy clients</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features / Value Prop -->
+    <section class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-10 text-center">
+                <div class="p-6 rounded-2xl bg-brand-50 hover:shadow-lg transition duration-300">
+                    <div class="w-14 h-14 mx-auto bg-brand-100 text-brand-600 rounded-full flex items-center justify-center text-2xl mb-4">
+                        <i class="fa-solid fa-utensils"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Custom Meal Plans</h3>
+                    <p class="text-gray-600">Recipes designed specifically for your taste preferences, allergies, and caloric needs.</p>
+                </div>
+                <div class="p-6 rounded-2xl bg-brand-50 hover:shadow-lg transition duration-300">
+                    <div class="w-14 h-14 mx-auto bg-brand-100 text-brand-600 rounded-full flex items-center justify-center text-2xl mb-4">
+                        <i class="fa-solid fa-user-doctor"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Expert Coaching</h3>
+                    <p class="text-gray-600">Weekly check-ins and 1-on-1 video calls to keep you motivated and on track.</p>
+                </div>
+                <div class="p-6 rounded-2xl bg-brand-50 hover:shadow-lg transition duration-300">
+                    <div class="w-14 h-14 mx-auto bg-brand-100 text-brand-600 rounded-full flex items-center justify-center text-2xl mb-4">
+                        <i class="fa-solid fa-chart-line"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Track Progress</h3>
+                    <p class="text-gray-600">Advanced analytics to monitor your weight, macro intake, and overall well-being.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Meal Plans Preview -->
+    <section id="meal-plans" class="py-20 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <span class="text-brand-600 font-semibold tracking-wider uppercase">What we offer</span>
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mt-2">Personalized Meal Plans</h2>
+                <p class="text-gray-600 mt-4 max-w-2xl mx-auto">Choose a plan that fits your lifestyle. All plans include shopping lists and preparation guides.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Plan Card 1 -->
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition duration-300 flex flex-col">
+                    <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=800&q=80" alt="Vegetarian" class="w-full h-48 object-cover">
+                    <div class="p-6 flex-1 flex flex-col">
+                        <div class="mb-4">
+                            <span class="bg-green-100 text-green-800 text-xs font-bold px-2 py-1 rounded uppercase">Plant Based</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">The Green Vitality</h3>
+                        <p class="text-gray-600 text-sm mb-6 flex-1">Perfect for vegetarians looking to boost energy and maintain muscle mass with plant protein.</p>
+                        <ul class="space-y-2 text-gray-600 text-sm mb-6">
+                            <li class="flex items-center"><i class="fa-solid fa-check text-brand-600 mr-2"></i> Custom Macro Split</li>
+                            <li class="flex items-center"><i class="fa-solid fa-check text-brand-600 mr-2"></i> 50+ Recipes</li>
+                            <li class="flex items-center"><i class="fa-solid fa-check text-brand-600 mr-2"></i> Grocery List</li>
+                        </ul>
+                        <button class="w-full py-3 border-2 border-brand-600 text-brand-600 font-bold rounded-lg hover:bg-brand-600 hover:text-white transition">View Sample</button>
+                    </div>
+                </div>
+
+                <!-- Plan Card 2 -->
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition duration-300 flex flex-col border-2 border-brand-500 relative">
+                    <div class="absolute top-0 right-0 bg-brand-600 text-white text-xs font-bold px-3 py-1 rounded-bl-lg">POPULAR</div>
+                    <img src="https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=800&q=80" alt="Balanced" class="w-full h-48 object-cover">
+                    <div class="p-6 flex-1 flex flex-col">
+                        <div class="mb-4">
+                            <span class="bg-orange-100 text-orange-800 text-xs font-bold px-2 py-1 rounded uppercase">Balanced</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">Metabolic Balance</h3>
+                        <p class="text-gray-600 text-sm mb-6 flex-1">A sustainable mix of carbs, proteins, and fats designed for long-term weight management.</p>
+                        <ul class="space-y-2 text-gray-600 text-sm mb-6">
+                            <li class="flex items-center"><i class="fa-solid fa-check text-brand-600 mr-2"></i> Flexible Dieting</li>
+                            <li class="flex items-center"><i class="fa-solid fa-check text-brand-600 mr-2"></i> Cheat Meal Guide</li>
+                            <li class="flex items-center"><i class="fa-solid fa-check text-brand-600 mr-2"></i> Monthly Updates</li>
+                        </ul>
+                        <button class="w-full py-3 bg-brand-600 text-white font-bold rounded-lg hover:bg-brand-700 transition">Select Plan</button>
+                    </div>
+                </div>
+
+                <!-- Plan Card 3 -->
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition duration-300 flex flex-col">
+                    <img src="https://images.unsplash.com/photo-1606787366850-de6330128bfc?auto=format&fit=crop&w=800&q=80" alt="High Protein" class="w-full h-48 object-cover">
+                    <div class="p-6 flex-1 flex flex-col">
+                        <div class="mb-4">
+                            <span class="bg-blue-100 text-blue-800 text-xs font-bold px-2 py-1 rounded uppercase">High Protein</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">Performance Elite</h3>
+                        <p class="text-gray-600 text-sm mb-6 flex-1">Designed for athletes and active individuals focusing on muscle gain and recovery.</p>
+                        <ul class="space-y-2 text-gray-600 text-sm mb-6">
+                            <li class="flex items-center"><i class="fa-solid fa-check text-brand-600 mr-2"></i> Pre/Post Workout Meals</li>
+                            <li class="flex items-center"><i class="fa-solid fa-check text-brand-600 mr-2"></i> Supplement Guide</li>
+                            <li class="flex items-center"><i class="fa-solid fa-check text-brand-600 mr-2"></i> Coach Check-in</li>
+                        </ul>
+                        <button class="w-full py-3 border-2 border-brand-600 text-brand-600 font-bold rounded-lg hover:bg-brand-600 hover:text-white transition">View Sample</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Coaching / Booking Section -->
+    <section id="coaching" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col lg:flex-row items-center gap-16">
+                
+                <!-- Image Side -->
+                <div class="w-full lg:w-1/2 relative">
+                    <div class="absolute -top-4 -left-4 w-24 h-24 bg-brand-100 rounded-full z-0"></div>
+                    <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=800&q=80" alt="Nutritionist Consultation" class="relative z-10 rounded-2xl shadow-2xl w-full object-cover h-[500px]">
+                    <div class="absolute -bottom-6 -right-6 bg-white p-6 rounded-xl shadow-xl z-20 max-w-xs hidden md:block">
+                        <div class="flex items-center gap-3 mb-2">
+                            <div class="text-yellow-400 text-sm">
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                            </div>
+                            <span class="font-bold text-gray-900">5.0 Rating</span>
+                        </div>
+                        <p class="text-sm text-gray-600">"The coaching completely changed my relationship with food!"</p>
+                    </div>
+                </div>
+
+                <!-- Booking Form Side -->
+                <div id="contact" class="w-full lg:w-1/2">
+                    <span class="text-brand-600 font-semibold tracking-wider uppercase">One-on-One Coaching</span>
+                    <h2 class="text-3xl font-bold text-gray-900 mt-2 mb-6">Book Your Consultation</h2>
+                    <p class="text-gray-600 mb-8">Ready to take the next step? Fill out the form below to schedule your initial discovery call. We'll discuss your goals and build a roadmap.</p>
+
+                    <form class="space-y-5" onsubmit="event.preventDefault(); alert('Thank you! Your booking request has been sent. We will contact you shortly.');">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                            <div>
+                                <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+                                <input type="text" id="name" class="w-full px-4 py-3 rounded-lg bg-gray-50 border border-gray-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-200 outline-none transition" placeholder="John Doe" required>
+                            </div>
+                            <div>
+                                <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+                                <input type="email" id="email" class="w-full px-4 py-3 rounded-lg bg-gray-50 border border-gray-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-200 outline-none transition" placeholder="john@example.com" required>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label for="goal" class="block text-sm font-medium text-gray-700 mb-1">Primary Goal</label>
+                            <select id="goal" class="w-full px-4 py-3 rounded-lg bg-gray-50 border border-gray-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-200 outline-none transition">
+                                <option>Weight Loss</option>
+                                <option>Muscle Gain</option>
+                                <option>Better Energy</option>
+                                <option>Digestive Health</option>
+                                <option>Sports Performance</option>
+                            </select>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                            <div>
+                                <label for="date" class="block text-sm font-medium text-gray-700 mb-1">Preferred Date</label>
+                                <input type="date" id="date" class="w-full px-4 py-3 rounded-lg bg-gray-50 border border-gray-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-200 outline-none transition" required>
+                            </div>
+                            <div>
+                                <label for="time" class="block text-sm font-medium text-gray-700 mb-1">Preferred Time</label>
+                                <select id="time" class="w-full px-4 py-3 rounded-lg bg-gray-50 border border-gray-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-200 outline-none transition">
+                                    <option>Morning (9AM - 12PM)</option>
+                                    <option>Afternoon (12PM - 4PM)</option>
+                                    <option>Evening (4PM - 7PM)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="w-full py-4 bg-brand-600 text-white font-bold text-lg rounded-lg hover:bg-brand-700 shadow-lg transition duration-300 mt-4">
+                            Schedule Consultation
+                        </button>
+                        <p class="text-xs text-gray-500 text-center mt-3"><i class="fa-solid fa-lock mr-1"></i> Secure payment processing via Stripe</p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Blog Section -->
+    <section id="blog" class="py-20 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-end mb-10">
+                <div>
+                    <span class="text-brand-600 font-semibold tracking-wider uppercase">Latest News</span>
+                    <h2 class="text-3xl font-bold text-gray-900 mt-2">Nutrition Tips & Tricks</h2>
+                </div>
+                <a href="#" class="hidden md:inline-flex items-center text-brand-600 font-semibold hover:text-brand-700">
+                    View all articles <i class="fa-solid fa-arrow-right ml-2"></i>
+                </a>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Article 1 -->
+                <article class="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition">
+                    <img src="https://realfood.tesco.com/media/images/1400x919-Super-green-smoothies-1d500917-513a-4069-a259-498746cabff6-0-1400x919.jpg" alt="Smoothie" class="w-full h-56 object-cover">
+                    <div class="p-6">
+                        <span class="text-xs font-bold text-brand-600 mb-2 block uppercase">Healthy Habits</span>
+                        <h3 class="text-lg font-bold text-gray-900 mb-2 hover:text-brand-600 cursor-pointer">5 Green Smoothies to Jumpstart Your Morning</h3>
+                        <p class="text-gray-600 text-sm mb-4">Discover the best combinations of greens and fruits to energize your day without the sugar crash.</p>
+                        <a href="#" class="text-sm font-semibold text-gray-900 hover:text-brand-600">Read More</a>
+                    </div>
+                </article>
+
+                <!-- Article 2 -->
+                <article class="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition">
+                    <img src="https://images.unsplash.com/photo-1532980400857-e8d9d275d858?auto=format&fit=crop&w=600&q=80" alt="Macros" class="w-full h-56 object-cover">
+                    <div class="p-6">
+                        <span class="text-xs font-bold text-brand-600 mb-2 block uppercase">Education</span>
+                        <h3 class="text-lg font-bold text-gray-900 mb-2 hover:text-brand-600 cursor-pointer">Understanding Macros: Protein, Carbs, and Fats</h3>
+                        <p class="text-gray-600 text-sm mb-4">A beginner's guide to tracking macronutrients and why it matters more than just counting calories.</p>
+                        <a href="#" class="text-sm font-semibold text-gray-900 hover:text-brand-600">Read More</a>
+                    </div>
+                </article>
+
+                <!-- Article 3 -->
+                <article class="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQRmB9me22iFMQsYyb05hK21ftY-DFqu101xw&s" alt="Hydration" class="w-full h-56 object-cover">
+                    <div class="p-6">
+                        <span class="text-xs font-bold text-brand-600 mb-2 block uppercase">Wellness</span>
+                        <h3 class="text-lg font-bold text-gray-900 mb-2 hover:text-brand-600 cursor-pointer">The Truth About Hydration and Metabolism</h3>
+                        <p class="text-gray-600 text-sm mb-4">How drinking enough water impacts your metabolic rate and overall cognitive function.</p>
+                        <a href="#" class="text-sm font-semibold text-gray-900 hover:text-brand-600">Read More</a>
+                    </div>
+                </article>
+            </div>
+            
+            <div class="mt-8 text-center md:hidden">
+                <a href="#" class="inline-block px-6 py-3 border border-gray-300 rounded-lg text-gray-700 font-medium hover:bg-gray-50">View all articles</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white pt-16 pb-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+                <!-- Brand Info -->
+                <div class="col-span-1 md:col-span-1">
+                    <a href="#" class="flex items-center gap-2 text-2xl font-bold text-white mb-4">
+                        <i class="fa-solid fa-leaf text-brand-500"></i>
+                        <span>NutriLife</span>
+                    </a>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        Empowering you to live a healthier, happier life through nutrition science and personalized coaching.
+                    </p>
+                    <div class="flex space-x-4 mt-6">
+                        <a href="#" class="text-gray-400 hover:text-brand-500 transition"><i class="fa-brands fa-instagram text-xl"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-brand-500 transition"><i class="fa-brands fa-twitter text-xl"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-brand-500 transition"><i class="fa-brands fa-facebook text-xl"></i></a>
+                    </div>
+                </div>
+
+                <!-- Links -->
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
+                    <ul class="space-y-2 text-gray-400 text-sm">
+                        <li><a href="#home" class="hover:text-brand-500 transition">Home</a></li>
+                        <li><a href="#meal-plans" class="hover:text-brand-500 transition">Meal Plans</a></li>
+                        <li><a href="#coaching" class="hover:text-brand-500 transition">Coaching</a></li>
+                        <li><a href="#blog" class="hover:text-brand-500 transition">Blog</a></li>
+                    </ul>
+                </div>
+
+                <!-- Legal -->
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Legal</h4>
+                    <ul class="space-y-2 text-gray-400 text-sm">
+                        <li><a href="#" class="hover:text-brand-500 transition">Privacy Policy</a></li>
+                        <li><a href="#" class="hover:text-brand-500 transition">Terms of Service</a></li>
+                        <li><a href="#" class="hover:text-brand-500 transition">Cookie Policy</a></li>
+                        <li><a href="#" class="hover:text-brand-500 transition">Disclaimer</a></li>
+                    </ul>
+                </div>
+
+                <!-- Newsletter -->
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Stay Updated</h4>
+                    <p class="text-gray-400 text-sm mb-4">Join our newsletter for free recipes and tips.</p>
+                    <form class="flex gap-2">
+                        <input type="email" placeholder="Enter email" class="w-full px-3 py-2 rounded bg-gray-800 border border-gray-700 text-white text-sm focus:border-brand-500 outline-none">
+                        <button class="bg-brand-600 hover:bg-brand-700 px-3 py-2 rounded text-white text-sm font-bold transition">Go</button>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 pt-8 text-center text-gray-500 text-sm">
+                <p>&copy; 2023 NutriLife Wellness. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Mobile Menu Script -->
+    <script>
+        const btn = document.getElementById('mobile-menu-btn');
+        const menu = document.getElementById('mobile-menu');
+
+        btn.addEventListener('click', () => {
+            menu.classList.toggle('hidden');
+        });
+    </script>
+</body>
+</html>

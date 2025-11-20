@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="pa">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cheema Typing Master (Auto-Sync Fix)</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Gurmukhi:wght@400;500;600&family=Roboto:wght@400;500;700&display=swap');
+
+        :root {
+            --primary: #2563eb;
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --text: #0f172a;
+            --error: #ef4444;
+            --highlight-bg: #e0e7ff;
+            
+            /* Fingers */
+            --f-pinky: #fca5a5;
+            --f-ring: #fdba74;
+            --f-mid: #fde047;
+            --f-idx: #86efac;
+            --f-thb: #93c5fd;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* --- Header --- */
+        header {
+            background: var(--card);
+            padding: 0 30px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+            z-index: 20;
+        }
+
+        .brand { font-size: 1.5rem; font-weight: 800; color: var(--primary); letter-spacing: -0.5px; }
+        .brand span { color: var(--text); font-weight: 400; }
+
+        .controls { display: flex; gap: 10px; }
+        select { padding: 8px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.9rem; }
+        button { padding: 8px 20px; background: var(--primary); color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; }
+        button:hover { filter: brightness(1.1); }
+
+        /* --- Main Layout --- */
+        main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            padding: 20px;
+        }
+
+        /* Stats */
+        .stats-bar {
+            display: flex;
+            gap: 30px;
+            background: var(--card);
+            padding: 10px 30px;
+            border-radius: 50px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            font-weight: 600;
+            color: #64748b;
+        }
+        .stat-val { color: var(--primary); font-size: 1.2rem; margin-left: 5px; }
+
+        /* Typing Box (The Viewport) */
+        .viewport {
+            width: 100%;
+            max-width: 900px;
+            height: 160px;
+            background: var(--card);
+            border-radius: 16px;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden; /* Essential for the "View" */
+            display: flex;
+            align-items: center;
+            /* We use a center guide for visual reference */
+        }
+        
+        /* The Center Guide Line (Optional visual aid) */
+        .viewport::before {
+            content: '';
+            position: absolute;
+            left: 50%; top: 20px; bottom: 20px;
+            width: 2px;
+            background: var(--primary);
+            opacity: 0.1;
+            transform: translateX(-50%);
+            z-index: 0;
+        }
+
+        /* The Moving Text Stream */
+        .text-stream {
+            display: flex;
+            align-items: center;
+            position: absolute; /* Absolute allows exact pixel positioning */
+            left: 0;
+            height: 100%;
+            padding-left: 50%; /* Start text at the center line */
+            transition: transform 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            will-change: transform;
+            white-space: nowrap;
+        }
+
+        .char {
+            font-family: 'Noto Sans Gurmukhi', sans-serif;
+            font-size: 2.5rem;
+            padding: 0 1px;
+            color: #cbd5e1;
+            position: relative;
+            line-height: 1;
+        }
+
+        .char.correct { color: #334155; }
+        .char.incorrect { color: var(--error); background: #fee2e2; border-radius: 4px; }
+        
+        /* Active Character Styling */
+        .char.current {
+            color: var(--text);
+            background: var(--highlight-bg);
+            border-bottom: 3px solid var(--primary);
+            border-radius: 4px;
+            z-index: 2;
+        }
+        .char.current::after {
+            content: attr(data-hint);
+            position: absolute;
+            top: -25px; left: 50%; transform: translateX(-50%);
+            font-size: 12px; font-family: 'Roboto'; 
+            background: #0f172a; color: white;
+            padding: 3px 8px; border-radius: 4px;
+            opacity: 0.9; white-space: nowrap;
+        }
+
+        /* Overlays */
+        .overlay {
+            position: absolute; inset: 0; background: rgba(255,255,255,0.95);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            z-index: 10; text-align: center; backdrop-filter: blur(2px);
+        }
+        .hidden { display: none !important; }
+
+        /* --- Keyboard & Hands --- */
+        .bottom-area {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            transform: scale(0.95); /* Fit better on smaller screens */
+        }
+
+        .keyboard {
+            background: #e2e8f0;
+            padding: 12px;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            user-select: none;
+        }
+        .row { display: flex; justify-content: center; gap: 5px; }
+        .key {
+            width: 42px; height: 42px;
+            background: var(--card);
+            border-radius: 6px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            box-shadow: 0 3px 0 #94a3b8;
+            transition: all 0.1s;
+        }
+        .key span { pointer-events: none; }
+        .eng { font-size: 9px; color: #94a3b8; position: absolute; top: 2px; left: 3px; font-weight: bold; }
+        .pun { font-size: 16px; font-family: 'Noto Sans Gurmukhi'; color: var(--text); margin-top: 6px; }
+        
+        /* Color Coding Stripes */
+        .key::after { content: ''; position: absolute; bottom: 0; left:0; right:0; height: 4px; border-radius: 0 0 6px 6px; opacity: 0.6; }
+        .c-pinky::after { background: var(--f-pinky); }
+        .c-ring::after { background: var(--f-ring); }
+        .c-mid::after { background: var(--f-mid); }
+        .c-idx::after { background: var(--f-idx); }
+        .c-thb::after { background: var(--f-thb); }
+
+        .key.active { transform: translateY(3px); box-shadow: none; background: var(--text); }
+        .key.active .eng, .key.active .pun { color: white; }
+
+        .key-w { width: auto; padding: 0 15px; font-size: 11px; font-weight: bold; color: #64748b; }
+        .key-space { width: 260px; }
+
+        /* Hands SVG */
+        .hands { display: flex; gap: 60px; height: 100px; }
+        .hand-svg { height: 100%; overflow: visible; }
+        .finger { fill: #cbd5e1; stroke: #94a3b8; stroke-width: 1; transition: fill 0.1s; }
+        
+        .lit-pinky { fill: var(--f-pinky) !important; }
+        .lit-ring { fill: var(--f-ring) !important; }
+        .lit-mid { fill: var(--f-mid) !important; }
+        .lit-idx { fill: var(--f-idx) !important; }
+        .lit-thb { fill: var(--f-thb) !important; }
+
+        #input-sink { position: absolute; opacity: 0; pointer-events: none; }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="brand">CHEEMA <span>TYPING MASTER</span></div>
+    <div class="controls">
+        <select id="lessonSelect"></select>
+        <button onclick="reloadLesson()">Restart ⟳</button>
+    </div>
+</header>
+
+<main>
+    <div class="stats-bar">
+        <div>WPM: <span id="wpm" class="stat-val">0</span></div>
+        <div>Accuracy: <span id="acc" class="stat-val">100%</span></div>
+        <div>Progress: <span id="prog" class="stat-val">0%</span></div>
+    </div>
+
+    <div class="viewport" id="viewport" onclick="focusInput()">
+        <div class="text-stream" id="stream">
+            <!-- Text Generates Here -->
+        </div>
+        
+        <div id="overlay" class="overlay">
+            <h2 id="overlayTitle">Ready?</h2>
+            <p>Click here to start the 5-minute session.</p>
+        </div>
+    </div>
+
+    <div class="bottom-area">
+        <div class="keyboard" id="keyboard"></div>
+        
+        <div class="hands">
+            <!-- Left Hand -->
+            <svg class="hand-svg" viewBox="0 0 200 200">
+                <path id="lh-pinky" class="finger" d="M20,120 Q20,50 40,50 Q60,50 60,120 L60,150" />
+                <path id="lh-ring" class="finger" d="M65,120 Q65,30 85,30 Q105,30 105,120 L105,150" />
+                <path id="lh-mid" class="finger" d="M110,120 Q110,10 130,10 Q150,10 150,120 L150,150" />
+                <path id="lh-idx" class="finger" d="M155,120 Q155,40 175,40 Q195,40 195,120 L195,150" />
+                <path id="lh-thb" class="finger" d="M195,150 Q230,180 160,190" /> 
+                <rect x="20" y="150" width="180" height="50" rx="10" fill="#cbd5e1"/>
+            </svg>
+            <!-- Right Hand -->
+            <svg class="hand-svg" viewBox="0 0 200 200">
+                <path id="rh-thb" class="finger" d="M5,150 Q-30,180 40,190" />
+                <path id="rh-idx" class="finger" d="M5,120 Q5,40 25,40 Q45,40 45,120 L45,150" />
+                <path id="rh-mid" class="finger" d="M50,120 Q50,10 70,10 Q90,10 90,120 L90,150" />
+                <path id="rh-ring" class="finger" d="M95,120 Q95,30 115,30 Q135,30 135,120 L135,150" />
+                <path id="rh-pinky" class="finger" d="M140,120 Q140,50 160,50 Q180,50 180,120 L180,150" />
+                <rect x="0" y="150" width="180" height="50" rx="10" fill="#cbd5e1"/>
+            </svg>
+        </div>
+    </div>
+</main>
+
+<input type="text" id="input-sink" autocomplete="off">
+
+<script>
+/* 
+   DATA: Key Mappings for Raavi
+   f: Finger ID (matches SVG IDs)
+   c: Color class (matches CSS classes)
+*/
+const keyMap = {
+    '`':{n:'ੋ',s:'ਁ',f:'lh-pinky',c:'c-pinky'}, '1':{n:'੧',s:'!',f:'lh-pinky',c:'c-pinky'}, '2':{n:'੨',s:'@',f:'lh-ring',c:'c-ring'}, 
+    '3':{n:'੩',s:'#',f:'lh-mid',c:'c-mid'}, '4':{n:'੪',s:'$',f:'lh-idx',c:'c-idx'}, '5':{n:'੫',s:'%',f:'lh-idx',c:'c-idx'},
+    '6':{n:'੬',s:'^',f:'rh-idx',c:'c-idx'}, '7':{n:'੭',s:'&',f:'rh-idx',c:'c-idx'}, '8':{n:'੮',s:'*',f:'rh-mid',c:'c-mid'},
+    '9':{n:'੯',s:'(',f:'rh-ring',c:'c-ring'}, '0':{n:'੦',s:')',f:'rh-pinky',c:'c-pinky'}, '-':{n:'-',s:'_',f:'rh-pinky',c:'c-pinky'}, '=':{n:'ृ',s:'+',f:'rh-pinky',c:'c-pinky'},
+
+    'q':{n:'ੌ',s:'ਔ',f:'lh-pinky',c:'c-pinky'}, 'w':{n:'ੈ',s:'ਐ',f:'lh-ring',c:'c-ring'}, 'e':{n:'ਾ',s:'ਆ',f:'lh-mid',c:'c-mid'},
+    'r':{n:'ੀ',s:'ਈ',f:'lh-idx',c:'c-idx'}, 't':{n:'ੂ',s:'ਊ',f:'lh-idx',c:'c-idx'}, 'y':{n:'ਬ',s:'ਭ',f:'rh-idx',c:'c-idx'},
+    'u':{n:'ਹ',s:'ਙ',f:'rh-idx',c:'c-idx'}, 'i':{n:'ਗ',s:'ਘ',f:'rh-mid',c:'c-mid'}, 'o':{n:'ਦ',s:'ਧ',f:'rh-ring',c:'c-ring'},
+    'p':{n:'ਜ',s:'ਝ',f:'rh-pinky',c:'c-pinky'}, '[':{n:'ਡ',s:'ਢ',f:'rh-pinky',c:'c-pinky'}, ']':{n:'਼',s:'ਞ',f:'rh-pinky',c:'c-pinky'},
+
+    'a':{n:'ੋ',s:'ਓ',f:'lh-pinky',c:'c-pinky'}, 's':{n:'ੇ',s:'ਏ',f:'lh-ring',c:'c-ring'}, 'd':{n:'੍',s:'ਅ',f:'lh-mid',c:'c-mid'},
+    'f':{n:'ਿ',s:'ਇ',f:'lh-idx',c:'c-idx'}, 'g':{n:'ੁ',s:'ਉ',f:'lh-idx',c:'c-idx'}, 'h':{n:'ਪ',s:'ਫ',f:'rh-idx',c:'c-idx'},
+    'j':{n:'ਰ',s:'ੜ',f:'rh-idx',c:'c-idx'}, 'k':{n:'ਕ',s:'ਖ',f:'rh-mid',c:'c-mid'}, 'l':{n:'ਤ',s:'ਥ',f:'rh-ring',c:'c-ring'},
+    ';':{n:'ਚ',s:'ਛ',f:'rh-pinky',c:'c-pinky'}, '\'':{n:'ਟ',s:'ਠ',f:'rh-pinky',c:'c-pinky'},
+
+    'z':{n:'੝',s:'੝',f:'lh-pinky',c:'c-pinky'}, 'x':{n:'ੰ',s:'ਂ',f:'lh-ring',c:'c-ring'}, 'c':{n:'ਮ',s:'ਣ',f:'lh-mid',c:'c-mid'},
+    'v':{n:'ਨ',s:'ਵ',f:'lh-idx',c:'c-idx'}, 'b':{n:'ਵ',s:'ਲ਼',f:'lh-idx',c:'c-idx'}, 'n':{n:'ਲ',s:'ਲ਼',f:'rh-idx',c:'c-idx'},
+    'm':{n:'ਸ',s:'ਸ਼',f:'rh-idx',c:'c-idx'}, ',':{n:',',s:'ਃ',f:'rh-mid',c:'c-mid'}, '.':{n:'.',s:'।',f:'rh-ring',c:'c-ring'},
+    '/':{n:'ਯ',s:'?',f:'rh-pinky',c:'c-pinky'}, ' ':{n:' ',s:' ',f:'rh-thb',c:'c-thb'}
+};
+
+/* LESSONS */
+const lessons = [
+    { title: "1. Home Row (d f g)", pat: "dfg gdf fgd ddf fgg ", rep: 80 },
+    { title: "2. Home Row (a s)", pat: "as sas ass asa ", rep: 80 },
+    { title: "3. Home Row (h j k)", pat: "hjk khj jhk jjh kkh ", rep: 80 },
+    { title: "4. Home Row (l ; ')", pat: "l; ;' l' ll ;; ", rep: 80 },
+    { title: "5. Full Home Row", pat: "ask has lad fad jag fall gash flask ", rep: 60 },
+    { title: "6. Top Row Vowels", pat: "qwe rty tre rew qew ", rep: 80 },
+    { title: "7. Top Row Consonants", pat: "yui op pou pop yip ", rep: 80 },
+    { title: "8. Bottom Row", pat: "zxc vbn mmn bvc xz ", rep: 80 },
+    { title: "9. Basic Words", pat: "kr qr pr hr cl gl jl ", rep: 60 },
+    { title: "10. Shift Keys", pat: "Q W E R T Y U I O P ", rep: 50 },
+    { title: "11. FINAL SPEED TEST (5 MIN)", pat: "ask has lad fad jag fall gash flask qwe rty tre rew qew yui op pou pop yip zxc vbn mmn bvc xz kr qr pr hr cl gl jl ", rep: 30 }
+];
+
+/* STATE */
+let curLesson = 0;
+let fullText = "";
+let cursor = 0;
+let mistakes = 0;
+let startTime = null;
+const streamEl = document.getElementById('stream');
+const inputEl = document.getElementById('input-sink');
+
+function init() {
+    drawKeyboard();
+    const sel = document.getElementById('lessonSelect');
+    lessons.forEach((l, i) => {
+        let opt = document.createElement('option');
+        opt.value = i; opt.innerText = l.title;
+        sel.appendChild(opt);
+    });
+    sel.addEventListener('change', e => loadLesson(parseInt(e.target.value)));
+    
+    inputEl.addEventListener('blur', () => {
+        if(cursor < fullText.length && cursor > 0) showOverlay("Paused", "Click to resume");
+    });
+    
+    inputEl.addEventListener('keydown', handleInput);
+    loadLesson(0);
+}
+
+function drawKeyboard() {
+    const rows = [
+        ['`','1','2','3','4','5','6','7','8','9','0','-','='],
+        ['q','w','e','r','t','y','u','i','o','p','[',']'],
+        ['a','s','d','f','g','h','j','k','l',';','\''],
+        ['z','x','c','v','b','n','m',',','.','/']
+    ];
+    const kb = document.getElementById('keyboard');
+    
+    rows.forEach((r, i) => {
+        let d = document.createElement('div'); d.className = 'row';
+        if(i===1) d.innerHTML += `<div class="key key-w">Tab</div>`;
+        if(i===2) d.innerHTML += `<div class="key key-w">Caps</div>`;
+        if(i===3) d.innerHTML += `<div class="key key-w" id="sh-l">Shift</div>`;
+        
+        r.forEach(k => {
+            let data = keyMap[k];
+            d.innerHTML += `<div class="key ${data.c}" data-key="${k}">
+                <span class="eng">${k.toUpperCase()}</span>
+                <span class="pun">${data.n}</span>
+            </div>`;
+        });
+        
+        if(i===0) d.innerHTML += `<div class="key key-w">Bksp</div>`;
+        if(i===2) d.innerHTML += `<div class="key key-w" style="width:50px">Enter</div>`;
+        if(i===3) d.innerHTML += `<div class="key key-w" id="sh-r">Shift</div>`;
+        kb.appendChild(d);
+    });
+    kb.innerHTML += `<div class="row"><div class="key key-space c-thb" data-key=" "><span class="eng">Space</span></div></div>`;
+}
+
+function loadLesson(idx) {
+    curLesson = idx;
+    let data = lessons[idx];
+    
+    // Generate Text
+    let raw = "";
+    for(let i=0; i<data.rep; i++) raw += data.pat;
+    
+    fullText = "";
+    for(let char of raw) {
+        let lc = char.toLowerCase();
+        if(keyMap[lc]) {
+            let mapped = (char === char.toUpperCase() && char !== lc) ? keyMap[lc].s : keyMap[lc].n;
+            fullText += mapped;
+        }
+    }
+    
+    // Reset State
+    cursor = 0; mistakes = 0; startTime = null;
+    streamEl.innerHTML = '';
+    
+    // Build DOM (Frag for speed)
+    let frag = document.createDocumentFragment();
+    for(let i=0; i<fullText.length; i++) {
+        let s = document.createElement('span');
+        s.className = 'char';
+        s.textContent = fullText[i];
+        
+        // Hint Logic
+        let entry = Object.entries(keyMap).find(([k,v])=> v.n===fullText[i] || v.s===fullText[i]);
+        if(entry) s.dataset.hint = entry[0].toUpperCase();
+        
+        frag.appendChild(s);
+    }
+    streamEl.appendChild(frag);
+    
+    // Reset UI
+    streamEl.style.transform = `translateX(0px)`;
+    document.getElementById('wpm').innerText = 0;
+    document.getElementById('acc').innerText = '100%';
+    document.getElementById('prog').innerText = '0%';
+    
+    showOverlay(data.title, "Click to start 5-minute session");
+    updateVisuals();
+}
+
+function focusInput() {
+    if(cursor < fullText.length) {
+        inputEl.focus();
+        document.getElementById('overlay').classList.add('hidden');
+    }
+}
+
+function reloadLesson() { loadLesson(curLesson); }
+
+function handleInput(e) {
+    if(e.ctrlKey || e.altKey || e.metaKey || e.key==='Tab' || e.key==='CapsLock' || e.key==='Shift') return;
+    
+    if(!startTime) { startTime = new Date(); document.getElementById('overlay').classList.add('hidden'); }
+    
+    if(e.key === 'Backspace') {
+        if(cursor > 0) {
+            cursor--;
+            streamEl.children[cursor].className = 'char';
+            updateVisuals();
+        }
+        return;
+    }
+
+    e.preventDefault();
+    let k = e.key.toLowerCase();
+    if(!keyMap[k]) return;
+
+    let typed = e.shiftKey ? keyMap[k].s : keyMap[k].n;
+    let target = fullText[cursor];
+    let span = streamEl.children[cursor];
+
+    if(typed === target) {
+        span.className = 'char correct';
+        cursor++;
+        if(cursor >= fullText.length) finish();
+        else updateVisuals();
+    } else {
+        span.className = 'char incorrect';
+        mistakes++;
+    }
+    updateStats();
+}
+
+/* --- THE SYNC FIX ENGINE --- */
+function updateVisuals() {
+    // 1. Highlight active char
+    if(cursor < fullText.length) {
+        let activeSpan = streamEl.children[cursor];
+        activeSpan.className = 'char current';
+        
+        // DYNAMIC SYNC CALCULATION
+        // We calculate the position of the active char relative to the stream start
+        // Then shift the stream so that the char sits exactly in the middle of the stream container
+        let charOffset = activeSpan.offsetLeft;
+        let charWidth = activeSpan.offsetWidth;
+        
+        // Note: The stream has padding-left: 50%. So offsetLeft starts from center.
+        // We want to pull the text Left (negative translateX) by exactly the char's distance from start.
+        let shift = -(charOffset);
+        
+        streamEl.style.transform = `translateX(${shift}px)`;
+
+        // 2. Update Keyboard/Hands
+        let target = fullText[cursor];
+        let entry = Object.entries(keyMap).find(([k,v])=> v.n===target || v.s===target);
+        
+        // Clear old highlights
+        document.querySelectorAll('.active').forEach(e=>e.classList.remove('active'));
+        document.querySelectorAll('.finger').forEach(f=>{
+            f.classList.remove('lit-pinky','lit-ring','lit-mid','lit-idx','lit-thb');
+        });
+
+        if(entry) {
+            let [k, data] = entry;
+            // Key
+            let keyEl = document.querySelector(`.key[data-key="${k}"]`);
+            if(keyEl) keyEl.classList.add('active');
+            // Shift
+            if(data.s===target && data.n!==target) {
+                document.getElementById('sh-l').classList.add('active');
+                document.getElementById('sh-r').classList.add('active');
+            }
+            // Finger
+            let fEl = document.getElementById(data.f);
+            let cClass = data.f.includes('pinky')?'lit-pinky': data.f.includes('ring')?'lit-ring': data.f.includes('mid')?'lit-mid': data.f.includes('idx')?'lit-idx':'lit-thb';
+            if(fEl) fEl.classList.add(cClass);
+        }
+    }
+}
+
+function updateStats() {
+    if(!startTime) return;
+    let min = (new Date() - startTime)/60000;
+    if(min===0) return;
+    
+    let wpm = Math.round((cursor/5)/min);
+    let acc = Math.round(((cursor-mistakes)/cursor)*100);
+    let prog = Math.round((cursor/fullText.length)*100);
+    
+    document.getElementById('wpm').innerText = wpm;
+    document.getElementById('acc').innerText = (acc<0?0:acc)+'%';
+    document.getElementById('prog').innerText = prog+'%';
+}
+
+function finish() {
+    inputEl.blur();
+    showOverlay("🎉 Session Complete", `WPM: ${document.getElementById('wpm').innerText} | Accuracy: ${document.getElementById('acc').innerText}`);
+}
+
+function showOverlay(h, p) {
+    let ov = document.getElementById('overlay');
+    ov.innerHTML = `<h2>${h}</h2><p>${p}</p>`;
+    ov.classList.remove('hidden');
+}
+
+init();
+</script>
+</body>
+</html>
