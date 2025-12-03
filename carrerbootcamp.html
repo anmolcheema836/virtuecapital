@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Career Bootcamp | AI-Powered Karrierecoaching Zürich</title>
+    <meta name="description" content="Secure Your Next Great Role in Switzerland. Join 250+ professionals who've transformed their careers since 2019.">
+    
+    <!-- Google Fonts: Inter (Swiss-style modern sans) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Tailwind CSS (CDN for immediate usage) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Alpine.js for interactivity -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+    <!-- Tailwind Configuration for Brand Colors -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            teal: '#0d9488', // Teal-600
+                            dark: '#0f172a', // Slate-900
+                            light: '#f0fdfa', // Teal-50
+                            gold: '#fbbf24', // Amber-400
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Schema Markup -->
+    <script type="application/ld+json">
+    {
+    "@context": "https://schema.org",
+    "@type": "ProfessionalService",
+    "name": "Career Bootcamp",
+    "image": "https://www.career-bootcamp.net/images/logo.png",
+    "description": "Leading Karrierecoaching and Bewerbungscoaching in Zürich. AI-powered career coaching for professionals, executives, and expats in Switzerland.",
+    "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Bahnhofplatz 1",
+        "addressLocality": "Zürich",
+        "postalCode": "8001",
+        "addressCountry": "CH"
+    },
+    "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 47.3769,
+        "longitude": 8.5417
+    },
+    "telephone": "+41782228002",
+    "email": "michael@career-bootcamp.net",
+    "priceRange": "CHF 1750 - CHF 19000",
+    "areaServed": ["Zürich", "Zug", "Basel", "Bern", "Geneva", "Switzerland"],
+    "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.95",
+        "reviewCount": "250"
+    }
+    }
+    </script>
+
+    <style>
+        /* Custom Utilities */
+        .text-shadow { text-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+    </style>
+</head>
+<body class="font-sans text-slate-800 antialiased bg-white">
+
+    <!-- NAVIGATION -->
+    <nav class="fixed w-full z-50 bg-white/95 backdrop-blur-sm border-b border-slate-100" x-data="{ mobileMenuOpen: false }">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center">
+                    <a href="#" class="text-2xl font-bold text-brand-dark tracking-tight">
+                        CAREER <span class="text-brand-teal">BOOTCAMP</span>
+                    </a>
+                </div>
+                
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex space-x-8 items-center">
+                    <div class="relative group">
+                        <button class="text-slate-600 hover:text-brand-teal font-medium flex items-center">
+                            Programs <i class="fa-solid fa-chevron-down text-xs ml-1"></i>
+                        </button>
+                        <!-- Dropdown -->
+                        <div class="absolute left-0 mt-2 w-48 bg-white shadow-xl rounded-md py-2 hidden group-hover:block border border-slate-100">
+                            <a href="accelerate.html" class="block px-4 py-2 text-sm text-slate-700 hover:bg-brand-light hover:text-brand-teal">Accelerate</a>
+                            <a href="elevate.html" class="block px-4 py-2 text-sm text-slate-700 hover:bg-brand-light hover:text-brand-teal">Elevate</a>
+                            <a href="executive.html" class="block px-4 py-2 text-sm text-slate-700 hover:bg-brand-light hover:text-brand-teal">Executive</a>
+                        </div>
+                    </div>
+                    <a href="#success-stories" class="text-slate-600 hover:text-brand-teal font-medium transition">Success Stories</a>
+                    <a href="about.html" class="text-slate-600 hover:text-brand-teal font-medium transition">About Us</a>
+                    <a href="blog.html" class="text-slate-600 hover:text-brand-teal font-medium transition">Resources</a>
+                    <a href="#contact" class="bg-brand-teal text-white px-5 py-2.5 rounded-md font-semibold hover:bg-teal-700 transition shadow-lg shadow-teal-500/30">
+                        Book Strategy Call
+                    </a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden flex items-center">
+                    <button @click="mobileMenuOpen = !mobileMenuOpen" class="text-slate-600 hover:text-brand-teal">
+                        <i class="fa-solid fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Panel -->
+        <div x-show="mobileMenuOpen" @click.away="mobileMenuOpen = false" class="md:hidden bg-white border-t border-slate-100 p-4 space-y-4 shadow-lg">
+            <a href="accelerate.html" class="block text-slate-700 font-medium">Accelerate Program</a>
+            <a href="elevate.html" class="block text-slate-700 font-medium">Elevate Program</a>
+            <a href="executive.html" class="block text-slate-700 font-medium">Executive Program</a>
+            <a href="#success-stories" class="block text-slate-700 font-medium">Success Stories</a>
+            <a href="#contact" class="block w-full text-center bg-brand-teal text-white px-5 py-3 rounded-md font-semibold">Book Strategy Call</a>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section class="relative pt-32 pb-20 lg:pt-40 lg:pb-28 overflow-hidden bg-slate-50">
+        <!-- Background Decor -->
+        <div class="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 rounded-full bg-teal-100 blur-3xl opacity-50"></div>
+        <div class="absolute bottom-0 left-0 -ml-20 -mb-20 w-80 h-80 rounded-full bg-blue-100 blur-3xl opacity-50"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <!-- Content -->
+                <div class="max-w-2xl">
+                    <div class="inline-block px-3 py-1 mb-6 text-xs font-semibold tracking-wider text-teal-800 uppercase bg-teal-100 rounded-full">
+                        Switzerland's High-Impact Career Coaching Boutique
+                    </div>
+                    <h1 class="text-4xl lg:text-5xl xl:text-6xl font-extrabold text-slate-900 leading-tight mb-6">
+                        Secure Your Next Great Role in Switzerland—Faster, Smarter, with <span class="text-brand-teal">AI-Powered Karrierecoaching</span>
+                    </h1>
+                    <p class="text-lg text-slate-600 mb-8 leading-relaxed">
+                        Join 250+ professionals who've transformed their careers since 2019 with our proven Career Bootcamp Method. From job seekers to C-level executives, we deliver results through hand-selected expert coaches.
+                    </p>
+                    
+                    <!-- Value Prop Bar -->
+                    <div class="text-xs md:text-sm text-slate-500 font-medium mb-8 border-l-4 border-brand-teal pl-4">
+                        Founded 2019 | Former F1 Executive Leadership | Hand-Selected Senior Coaches | Proven Methodology
+                    </div>
+
+                    <!-- CTAs -->
+                    <div class="flex flex-col sm:flex-row gap-4 mb-10">
+                        <a href="#contact" class="inline-flex justify-center items-center px-8 py-4 text-base font-bold text-white bg-brand-teal rounded-lg hover:bg-teal-700 transition shadow-lg shadow-teal-500/30">
+                            Book Free Strategy Call
+                        </a>
+                        <a href="#programs" class="inline-flex justify-center items-center px-8 py-4 text-base font-bold text-slate-700 bg-white border-2 border-slate-200 rounded-lg hover:border-brand-teal hover:text-brand-teal transition">
+                            Explore Programs
+                        </a>
+                    </div>
+
+                    <!-- Trust Indicators -->
+                    <div class="grid grid-cols-2 md:grid-cols-3 gap-y-4 gap-x-2 text-sm text-slate-600 font-medium">
+                        <div class="flex items-center"><i class="fa-solid fa-star text-brand-gold mr-2"></i> 4.95/5 Client Satisfaction</div>
+                        <div class="flex items-center"><i class="fa-solid fa-check text-brand-teal mr-2"></i> 78% Interview Rate</div>
+                        <div class="flex items-center"><i class="fa-solid fa-users text-brand-teal mr-2"></i> 250+ Coached</div>
+                        <div class="flex items-center"><i class="fa-solid fa-certificate text-brand-teal mr-2"></i> ISO 17024 & ICI Certified</div>
+                        <div class="flex items-center"><i class="fa-solid fa-briefcase text-brand-teal mr-2"></i> 30+ Top Companies</div>
+                        <div class="flex items-center"><i class="fa-solid fa-trophy text-brand-teal mr-2"></i> Founded 2019</div>
+                    </div>
+                </div>
+
+                <!-- Hero Image/Video Placeholder -->
+                <div class="relative">
+                    <div class="relative rounded-2xl overflow-hidden shadow-2xl border-4 border-white">
+                        <!-- Replace src with actual image of Michael M. Schmidt/Team -->
+                        <img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?ixlib=rb-1.2.1&auto=format&fit=crop&w=1600&q=80" alt="Executive Coaching Session" class="w-full h-auto object-cover transform hover:scale-105 transition duration-700">
+                        
+                        <!-- Floating Badge -->
+                        <div class="absolute bottom-6 left-6 bg-white/95 backdrop-blur px-5 py-3 rounded-lg shadow-lg border-l-4 border-brand-teal">
+                            <p class="font-bold text-slate-900">Michael M. Schmidt</p>
+                            <p class="text-xs text-slate-500">Former F1 Executive & Founder</p>
+                        </div>
+                    </div>
+                    <!-- Background Pattern -->
+                    <div class="absolute -z-10 top-10 -right-10 w-full h-full border-2 border-brand-teal/20 rounded-2xl"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PROBLEM / AGITATION SECTION -->
+    <section class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-slate-900 mb-4">The Swiss Job Market in 2025: <br>Tougher Than Ever—But Not Impossible</h2>
+                <p class="text-lg text-slate-600">Since 2019, We've Helped 250+ Professionals Navigate These Exact Challenges.</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Column 1 -->
+                <div class="bg-slate-50 p-8 rounded-xl border border-slate-100 hover:shadow-lg transition">
+                    <div class="w-14 h-14 bg-blue-100 rounded-full flex items-center justify-center mb-6">
+                        <i class="fa-solid fa-search text-2xl text-blue-600"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-4">Job Seekers & Expats</h3>
+                    <ul class="space-y-3 text-slate-600">
+                        <li class="flex items-start"><i class="fa-solid fa-xmark text-red-400 mt-1 mr-2"></i> Hundreds of applications, zero responses</li>
+                        <li class="flex items-start"><i class="fa-solid fa-xmark text-red-400 mt-1 mr-2"></i> AI filters blocking your CV</li>
+                        <li class="flex items-start"><i class="fa-solid fa-xmark text-red-400 mt-1 mr-2"></i> "Hidden job market" feels impossible</li>
+                        <li class="flex items-start"><i class="fa-solid fa-xmark text-red-400 mt-1 mr-2"></i> Struggling to "Swissify" applications</li>
+                    </ul>
+                </div>
+
+                <!-- Column 2 -->
+                <div class="bg-slate-50 p-8 rounded-xl border border-slate-100 hover:shadow-lg transition">
+                    <div class="w-14 h-14 bg-teal-100 rounded-full flex items-center justify-center mb-6">
+                        <i class="fa-solid fa-compass text-2xl text-brand-teal"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-4">Mid-Career Professionals</h3>
+                    <ul class="space-y-3 text-slate-600">
+                        <li class="flex items-start"><i class="fa-solid fa-xmark text-red-400 mt-1 mr-2"></i> Stuck in the wrong role</li>
+                        <li class="flex items-start"><i class="fa-solid fa-xmark text-red-400 mt-1 mr-2"></i> Personal brand doesn't reflect value</li>
+                        <li class="flex items-start"><i class="fa-solid fa-xmark text-red-400 mt-1 mr-2"></i> Networking feels awkward</li>
+                        <li class="flex items-start"><i class="fa-solid fa-xmark text-red-400 mt-1 mr-2"></i> Need structured guidance, not generic advice</li>
+                    </ul>
+                </div>
+
+                <!-- Column 3 -->
+                <div class="bg-slate-50 p-8 rounded-xl border border-slate-100 hover:shadow-lg transition">
+                    <div class="w-14 h-14 bg-indigo-100 rounded-full flex items-center justify-center mb-6">
+                        <i class="fa-solid fa-crown text-2xl text-indigo-600"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-4">Executives & Leaders</h3>
+                    <ul class="space-y-3 text-slate-600">
+                        <li class="flex items-start"><i class="fa-solid fa-xmark text-red-400 mt-1 mr-2"></i> Ready for C-level but positioning is off</li>
+                        <li class="flex items-start"><i class="fa-solid fa-xmark text-red-400 mt-1 mr-2"></i> Opaque executive search process</li>
+                        <li class="flex items-start"><i class="fa-solid fa-xmark text-red-400 mt-1 mr-2"></i> Compensation negotiation anxiety</li>
+                        <li class="flex items-start"><i class="fa-solid fa-xmark text-red-400 mt-1 mr-2"></i> Need 100% confidential strategy</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="mt-12 text-center max-w-2xl mx-auto">
+                <p class="text-lg text-slate-700 font-medium">
+                    You're not alone. Welcome to <span class="text-brand-teal font-bold">Career Bootcamp</span>—where former F1 executives, CHROs, and C-level leaders coach you to victory.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- PROGRAMS SECTION -->
+    <section id="programs" class="py-20 bg-brand-dark text-white relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Three Programs. One Mission: Your Career Success.</h2>
+                <p class="text-slate-400 text-lg">Choose the path that fits your ambition and career stage.</p>
+            </div>
+
+            <div class="grid lg:grid-cols-3 gap-8">
+                
+                <!-- TILE 1: ACCELERATE -->
+                <div class="bg-slate-800 rounded-2xl p-8 border border-slate-700 hover:border-brand-teal transition group flex flex-col">
+                    <div class="mb-6 flex items-center justify-between">
+                        <div class="w-12 h-12 bg-slate-700 rounded-lg flex items-center justify-center text-brand-teal text-xl">
+                            <i class="fa-solid fa-rocket"></i>
+                        </div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Self-Paced</span>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-2">ACCELERATE</h3>
+                    <p class="text-brand-teal text-sm font-semibold mb-4">Fast-Track Your Swiss Job Search</p>
+                    <p class="text-slate-300 text-sm mb-6 flex-grow">For job seekers who want practical AI skills and results without weekly coaching.</p>
+                    
+                    <ul class="space-y-3 mb-8 text-sm text-slate-300">
+                        <li class="flex"><i class="fa-solid fa-check text-brand-teal mt-1 mr-2"></i> 12 self-paced online modules</li>
+                        <li class="flex"><i class="fa-solid fa-check text-brand-teal mt-1 mr-2"></i> Career Bootcamp app with quests</li>
+                        <li class="flex"><i class="fa-solid fa-check text-brand-teal mt-1 mr-2"></i> AI advantage training (4x faster)</li>
+                        <li class="flex"><i class="fa-solid fa-check text-brand-teal mt-1 mr-2"></i> <strong>1 live coaching session included</strong></li>
+                    </ul>
+
+                    <div class="mt-auto">
+                        <p class="text-2xl font-bold mb-4">CHF 1,750<span class="text-sm font-normal text-slate-400">/mo x 3</span></p>
+                        <a href="accelerate.html" class="block w-full py-3 text-center border border-white rounded-lg hover:bg-white hover:text-brand-dark transition font-semibold">Start Accelerate</a>
+                    </div>
+                </div>
+
+                <!-- TILE 2: ELEVATE (Featured) -->
+                <div class="bg-white text-slate-900 rounded-2xl p-8 border-4 border-brand-teal transform lg:-translate-y-4 shadow-2xl shadow-teal-900/50 flex flex-col relative overflow-hidden">
+                    <div class="absolute top-0 right-0 bg-brand-teal text-white text-xs font-bold px-3 py-1 rounded-bl-lg">POPULAR</div>
+                    <div class="mb-6 flex items-center justify-between">
+                        <div class="w-12 h-12 bg-teal-100 rounded-lg flex items-center justify-center text-brand-teal text-xl">
+                            <i class="fa-solid fa-chart-line"></i>
+                        </div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Micro-Group</span>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-2">ELEVATE</h3>
+                    <p class="text-brand-teal text-sm font-semibold mb-4">Transform Your Career in 12 Weeks</p>
+                    <p class="text-slate-600 text-sm mb-6 flex-grow">Structured guidance, expert feedback, and community support in intimate cohorts.</p>
+                    
+                    <ul class="space-y-3 mb-8 text-sm text-slate-700">
+                        <li class="flex"><i class="fa-solid fa-check text-brand-teal mt-1 mr-2"></i> 12-week CREATE-FIND-SEIZE method</li>
+                        <li class="flex"><i class="fa-solid fa-check text-brand-teal mt-1 mr-2"></i> <strong>12 weekly live micro-group sessions</strong></li>
+                        <li class="flex"><i class="fa-solid fa-check text-brand-teal mt-1 mr-2"></i> Expert feedback on CV/LinkedIn</li>
+                        <li class="flex"><i class="fa-solid fa-check text-brand-teal mt-1 mr-2"></i> Hidden job market access</li>
+                    </ul>
+
+                    <div class="mt-auto">
+                        <p class="text-2xl font-bold mb-1">CHF 4,750</p>
+                        <p class="text-xs text-slate-500 mb-4">Flexible payment available</p>
+                        <a href="elevate.html" class="block w-full py-3 text-center bg-brand-teal text-white rounded-lg hover:bg-teal-700 transition font-bold shadow-lg">Join Next Cohort</a>
+                        <p class="text-xs text-center mt-3 text-slate-500">Next Start: Dec 1, 2025</p>
+                    </div>
+                </div>
+
+                <!-- TILE 3: EXECUTIVE -->
+                <div class="bg-slate-800 rounded-2xl p-8 border border-slate-700 hover:border-brand-gold transition group flex flex-col">
+                    <div class="mb-6 flex items-center justify-between">
+                        <div class="w-12 h-12 bg-slate-700 rounded-lg flex items-center justify-center text-brand-gold text-xl">
+                            <i class="fa-solid fa-user-tie"></i>
+                        </div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-brand-gold">C-Level Only</span>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-2">EXECUTIVE</h3>
+                    <p class="text-brand-gold text-sm font-semibold mb-4">Exclusive Coaching for Leaders</p>
+                    <p class="text-slate-300 text-sm mb-6 flex-grow">For senior executives seeking board appointments or C-level transitions.</p>
+                    
+                    <ul class="space-y-3 mb-8 text-sm text-slate-300">
+                        <li class="flex"><i class="fa-solid fa-check text-brand-gold mt-1 mr-2"></i> 6 months premium 1:1 coaching</li>
+                        <li class="flex"><i class="fa-solid fa-check text-brand-gold mt-1 mr-2"></i> <strong>Coached by former F1 Exec/CEOs</strong></li>
+                        <li class="flex"><i class="fa-solid fa-check text-brand-gold mt-1 mr-2"></i> 24/7 WhatsApp strategic support</li>
+                        <li class="flex"><i class="fa-solid fa-check text-brand-gold mt-1 mr-2"></i> Complete confidentiality</li>
+                    </ul>
+
+                    <div class="mt-auto">
+                        <p class="text-2xl font-bold mb-4">CHF 19,000 <span class="text-sm font-normal text-slate-400">/ or Success Fee</span></p>
+                        <a href="executive.html" class="block w-full py-3 text-center border border-brand-gold text-brand-gold rounded-lg hover:bg-brand-gold hover:text-slate-900 transition font-semibold">Confidential Consult</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- WHY US SECTION -->
+    <section class="py-20 bg-slate-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold text-slate-900 mb-4">Why 250+ Professionals Choose Career Bootcamp</h2>
+                <p class="text-slate-600">The Precision of a Boutique. The Power of Proven Expertise.</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Benefit 1 -->
+                <div class="flex gap-4">
+                    <div class="flex-shrink-0 w-10 h-10 rounded bg-teal-100 flex items-center justify-center text-brand-teal">
+                        <i class="fa-solid fa-bullseye"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-lg mb-2">Proprietary Bootcamp Method</h4>
+                        <p class="text-sm text-slate-600">Refined since 2019. 96% success rate. Time-boxed, goal-oriented, and intensely personal.</p>
+                    </div>
+                </div>
+                <!-- Benefit 2 -->
+                <div class="flex gap-4">
+                    <div class="flex-shrink-0 w-10 h-10 rounded bg-teal-100 flex items-center justify-center text-brand-teal">
+                        <i class="fa-solid fa-users-gear"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-lg mb-2">Hand-Selected Expert Team</h4>
+                        <p class="text-sm text-slate-600">Coaches who are former C-level execs, CHROs, and headhunters. Not career theorists.</p>
+                    </div>
+                </div>
+                <!-- Benefit 3 -->
+                <div class="flex gap-4">
+                    <div class="flex-shrink-0 w-10 h-10 rounded bg-teal-100 flex items-center justify-center text-brand-teal">
+                        <i class="fa-solid fa-robot"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-lg mb-2">AI Integration & Modern Tools</h4>
+                        <p class="text-sm text-slate-600">Pioneering AI career coaching in Switzerland. 4x faster applications.</p>
+                    </div>
+                </div>
+                <!-- Benefit 4 -->
+                <div class="flex gap-4">
+                    <div class="flex-shrink-0 w-10 h-10 rounded bg-teal-100 flex items-center justify-center text-brand-teal">
+                        <i class="fa-solid fa-flag"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-lg mb-2">Swiss Market Mastery</h4>
+                        <p class="text-sm text-slate-600">Deep understanding of "Swissifying" profiles and accessing the hidden job market.</p>
+                    </div>
+                </div>
+                <!-- Benefit 5 -->
+                <div class="flex gap-4">
+                    <div class="flex-shrink-0 w-10 h-10 rounded bg-teal-100 flex items-center justify-center text-brand-teal">
+                        <i class="fa-solid fa-layer-group"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-lg mb-2">Tailored Programs</h4>
+                        <p class="text-sm text-slate-600">From self-paced to premium 1:1. Flexibility without sacrificing quality.</p>
+                    </div>
+                </div>
+                <!-- Benefit 6 -->
+                <div class="flex gap-4">
+                    <div class="flex-shrink-0 w-10 h-10 rounded bg-teal-100 flex items-center justify-center text-brand-teal">
+                        <i class="fa-solid fa-check-double"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-lg mb-2">Guaranteed Results</h4>
+                        <p class="text-sm text-slate-600">100% money-back guarantee. Average client ROI of 15x.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SUCCESS STORIES -->
+    <section id="success-stories" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-16">Real People. Real Results.</h2>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Testimonial 1 -->
+                <div class="bg-slate-50 p-6 rounded-lg shadow-sm border border-slate-100">
+                    <div class="flex text-brand-gold mb-3">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="text-slate-700 italic mb-4">"As an expat, I was struggling to adapt my CV to Swiss standards. My applications improved dramatically, and I started getting interviews almost immediately."</p>
+                    <div class="font-bold text-slate-900">Eva L.</div>
+                    <div class="text-xs text-slate-500">Global Supply Manager, Pharma</div>
+                </div>
+
+                <!-- Testimonial 2 -->
+                <div class="bg-slate-50 p-6 rounded-lg shadow-sm border border-slate-100">
+                    <div class="flex text-brand-gold mb-3">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="text-slate-700 italic mb-4">"The ELEVATE program was a game-changer. The structured roadmap gave me the direction I needed. I landed my first job in just 20 weeks!"</p>
+                    <div class="font-bold text-slate-900">Sandra K.</div>
+                    <div class="text-xs text-slate-500">CEO Assistant</div>
+                </div>
+
+                <!-- Testimonial 3 -->
+                <div class="bg-slate-50 p-6 rounded-lg shadow-sm border border-slate-100">
+                    <div class="flex text-brand-gold mb-3">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="text-slate-700 italic mb-4">"Michael's Career Bootcamp methodology is truly one of a kind. If you want truly transformative executive career coaching, Michael is in a class of his own."</p>
+                    <div class="font-bold text-slate-900">Dr. Andreas C.</div>
+                    <div class="text-xs text-slate-500">Sports Apparel Executive</div>
+                </div>
+            </div>
+
+            <!-- Client Logos -->
+            <div class="mt-16 pt-10 border-t border-slate-100">
+                <p class="text-center text-sm font-semibold text-slate-400 uppercase tracking-wider mb-8">Where Our Clients Have Landed</p>
+                <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8 opacity-60 grayscale hover:grayscale-0 transition duration-500">
+                    <!-- Text placeholders for logos (replace with imgs in production) -->
+                    <div class="flex items-center justify-center font-bold text-slate-700">UBS</div>
+                    <div class="flex items-center justify-center font-bold text-slate-700">Nestlé</div>
+                    <div class="flex items-center justify-center font-bold text-slate-700">Roche</div>
+                    <div class="flex items-center justify-center font-bold text-slate-700">Google</div>
+                    <div class="flex items-center justify-center font-bold text-slate-700">Novartis</div>
+                    <div class="flex items-center justify-center font-bold text-slate-700">BMW</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TAX & NEWSLETTER SECTION -->
+    <section class="py-12 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+            
+            <!-- Tax Highlight -->
+            <div class="bg-teal-50 border border-teal-100 rounded-xl p-6 md:p-8 flex flex-col md:flex-row items-start md:items-center gap-6">
+                <div class="bg-white p-3 rounded-full text-brand-teal shadow-sm text-2xl">
+                    <i class="fa-regular fa-lightbulb"></i>
+                </div>
+                <div class="flex-grow">
+                    <h3 class="text-xl font-bold text-slate-900 mb-2">Pro Tip: Tax-Deductible Investment</h3>
+                    <p class="text-slate-700">In most Swiss cantons (including Zürich), career coaching qualifies as professional education and can be deducted from your taxes, up to CHF 12,400 per year.</p>
+                </div>
+                <a href="#" class="whitespace-nowrap px-6 py-2.5 bg-white border border-brand-teal text-brand-teal font-semibold rounded-lg hover:bg-teal-50 transition">
+                    Get Tax Guide
+                </a>
+            </div>
+
+            <!-- Newsletter Signup (Integrated) -->
+            <div class="bg-slate-50 border border-slate-200 rounded-xl overflow-hidden shadow-sm">
+                <div class="grid md:grid-cols-2">
+                    <div class="relative h-64 md:h-auto bg-slate-800">
+                        <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" class="absolute inset-0 w-full h-full object-cover opacity-60" alt="Planning">
+                        <div class="absolute bottom-6 left-6 text-white">
+                            <p class="font-bold text-lg">100+ Articles | 10k+ Subscribers</p>
+                        </div>
+                    </div>
+                    <div class="p-8 md:p-12">
+                        <h3 class="text-2xl font-bold text-slate-900 mb-2">Career Insights Newsletter</h3>
+                        <p class="text-slate-600 mb-6">Join 10,000+ professionals getting actionable Karrierecoaching insights, Swiss job market trends, and AI tools delivered weekly.</p>
+                        <form class="flex flex-col gap-3">
+                            <input type="email" placeholder="Your email address" class="w-full px-4 py-3 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-brand-teal">
+                            <button class="w-full px-6 py-3 bg-brand-teal text-white font-bold rounded-lg hover:bg-teal-700 transition">Subscribe Free</button>
+                        </form>
+                        <a href="newsletter.html" class="block mt-4 text-center text-sm text-brand-teal font-medium hover:underline">Browse 100+ past articles →</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section class="py-20 bg-slate-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-bold text-center mb-16">Your Journey to Success</h2>
+            
+            <div class="relative">
+                <!-- Connecting Line (Desktop) -->
+                <div class="hidden md:block absolute top-1/2 left-0 w-full h-0.5 bg-slate-200 -z-0 transform -translate-y-1/2"></div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-5 gap-8 relative z-10">
+                    <!-- Step 1 -->
+                    <div class="text-center bg-slate-50 p-2">
+                        <div class="w-12 h-12 mx-auto bg-brand-teal text-white rounded-full flex items-center justify-center font-bold text-lg mb-4 shadow-lg border-4 border-slate-50">1</div>
+                        <h4 class="font-bold mb-2">Book Call</h4>
+                        <p class="text-xs text-slate-500">Free strategy session</p>
+                    </div>
+                    <!-- Step 2 -->
+                    <div class="text-center bg-slate-50 p-2">
+                        <div class="w-12 h-12 mx-auto bg-white text-brand-teal border-2 border-brand-teal rounded-full flex items-center justify-center font-bold text-lg mb-4 shadow-lg">2</div>
+                        <h4 class="font-bold mb-2">Choose Program</h4>
+                        <p class="text-xs text-slate-500">Accelerate, Elevate, Executive</p>
+                    </div>
+                    <!-- Step 3 -->
+                    <div class="text-center bg-slate-50 p-2">
+                        <div class="w-12 h-12 mx-auto bg-white text-brand-teal border-2 border-brand-teal rounded-full flex items-center justify-center font-bold text-lg mb-4 shadow-lg">3</div>
+                        <h4 class="font-bold mb-2">Transform</h4>
+                        <p class="text-xs text-slate-500">App, Coaching, Methods</p>
+                    </div>
+                    <!-- Step 4 -->
+                    <div class="text-center bg-slate-50 p-2">
+                        <div class="w-12 h-12 mx-auto bg-white text-brand-teal border-2 border-brand-teal rounded-full flex items-center justify-center font-bold text-lg mb-4 shadow-lg">4</div>
+                        <h4 class="font-bold mb-2">Expert Guide</h4>
+                        <p class="text-xs text-slate-500">Feedback & Strategy</p>
+                    </div>
+                    <!-- Step 5 -->
+                    <div class="text-center bg-slate-50 p-2">
+                        <div class="w-12 h-12 mx-auto bg-brand-gold text-slate-900 rounded-full flex items-center justify-center font-bold text-lg mb-4 shadow-lg border-4 border-slate-50"><i class="fa-solid fa-trophy"></i></div>
+                        <h4 class="font-bold mb-2">Land Role</h4>
+                        <p class="text-xs text-slate-500">Success!</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-12">
+                <a href="#contact" class="inline-flex items-center text-brand-teal font-bold hover:underline">Start Your Journey Today <i class="fa-solid fa-arrow-right ml-2"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ SECTION -->
+    <section class="py-20 bg-white">
+        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-bold text-center mb-12">Frequently Asked Questions</h2>
+            
+            <div x-data="{ selected: null }" class="space-y-4">
+                <!-- Q1 -->
+                <div class="border rounded-lg p-4">
+                    <button @click="selected !== 1 ? selected = 1 : selected = null" class="flex justify-between w-full font-bold text-left text-slate-800">
+                        <span>What makes Career Bootcamp different?</span>
+                        <i :class="selected === 1 ? 'fa-minus' : 'fa-plus'" class="fa-solid text-brand-teal"></i>
+                    </button>
+                    <div x-show="selected === 1" class="mt-4 text-slate-600 text-sm" x-collapse>
+                        Our proprietary CBC Method combines executive-level coaching, AI integration, Swiss market expertise, and a structured, time-boxed approach. We have a 96% success rate and over 5,000 hours of coaching experience.
+                    </div>
+                </div>
+                <!-- Q2 -->
+                <div class="border rounded-lg p-4">
+                    <button @click="selected !== 2 ? selected = 2 : selected = null" class="flex justify-between w-full font-bold text-left text-slate-800">
+                        <span>Can I really deduct this from my Swiss taxes?</span>
+                        <i :class="selected === 2 ? 'fa-minus' : 'fa-plus'" class="fa-solid text-brand-teal"></i>
+                    </button>
+                    <div x-show="selected === 2" class="mt-4 text-slate-600 text-sm" x-collapse>
+                        Yes! In most cantons, career coaching qualifies as professional education (Weiterbildung) and is tax-deductible up to CHF 12,400/year. Consult your tax advisor for specifics.
+                    </div>
+                </div>
+                <!-- Q3 -->
+                <div class="border rounded-lg p-4">
+                    <button @click="selected !== 3 ? selected = 3 : selected = null" class="flex justify-between w-full font-bold text-left text-slate-800">
+                        <span>What if I'm not satisfied?</span>
+                        <i :class="selected === 3 ? 'fa-minus' : 'fa-plus'" class="fa-solid text-brand-teal"></i>
+                    </button>
+                    <div x-show="selected === 3" class="mt-4 text-slate-600 text-sm" x-collapse>
+                        We offer a 100% money-back guarantee: 20 days for Accelerate/Elevate, and 4 weeks for Executive programs.
+                    </div>
+                </div>
+                <!-- Q4 -->
+                <div class="border rounded-lg p-4">
+                    <button @click="selected !== 4 ? selected = 4 : selected = null" class="flex justify-between w-full font-bold text-left text-slate-800">
+                        <span>Do you work with Expats?</span>
+                        <i :class="selected === 4 ? 'fa-minus' : 'fa-plus'" class="fa-solid text-brand-teal"></i>
+                    </button>
+                    <div x-show="selected === 4" class="mt-4 text-slate-600 text-sm" x-collapse>
+                        Absolutely! Over 60% of our clients are expats navigating the Swiss job market. We specialize in "Swissifying" applications and accessing the hidden job market.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FINAL CTA -->
+    <section id="contact" class="py-20 bg-gradient-to-br from-teal-600 to-teal-800 text-white">
+        <div class="max-w-4xl mx-auto px-4 text-center">
+            <h2 class="text-3xl md:text-5xl font-bold mb-6">Ready to Secure Your Next Great Role?</h2>
+            <p class="text-xl text-teal-100 mb-10">Join 250+ professionals who've transformed their careers with Career Bootcamp.</p>
+            
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <a href="#" class="inline-block px-8 py-4 text-lg font-bold text-brand-teal bg-white rounded-lg hover:bg-teal-50 transition shadow-xl">
+                    Book Free Strategy Call
+                </a>
+                <a href="#" class="inline-block px-8 py-4 text-lg font-bold text-white border-2 border-white rounded-lg hover:bg-white/10 transition">
+                    Download Program Brochure
+                </a>
+            </div>
+
+            <div class="mt-12 pt-8 border-t border-teal-500/50 text-teal-100 flex flex-col md:flex-row justify-center gap-8">
+                <div><i class="fa-solid fa-phone mr-2"></i> +41 78 222 80 02</div>
+                <div><i class="fa-solid fa-envelope mr-2"></i> michael@career-bootcamp.net</div>
+                <div><i class="fa-solid fa-location-dot mr-2"></i> Bahnhofplatz 1, 8001 Zürich</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-slate-900 text-slate-300 py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
+                <div>
+                    <h5 class="text-white font-bold mb-4">Programs</h5>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="accelerate.html" class="hover:text-brand-teal">Accelerate</a></li>
+                        <li><a href="elevate.html" class="hover:text-brand-teal">Elevate</a></li>
+                        <li><a href="executive.html" class="hover:text-brand-teal">Executive</a></li>
+                        <li><a href="compare.html" class="hover:text-brand-teal">Compare Programs</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="text-white font-bold mb-4">Resources</h5>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="newsletter.html" class="hover:text-brand-teal">Newsletter Archive</a></li>
+                        <li><a href="blog.html" class="hover:text-brand-teal">Blog</a></li>
+                        <li><a href="#" class="hover:text-brand-teal">Success Stories</a></li>
+                        <li><a href="#" class="hover:text-brand-teal">Tax Deduction Guide</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="text-white font-bold mb-4">Company</h5>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="about.html" class="hover:text-brand-teal">About Michael M. Schmidt</a></li>
+                        <li><a href="about.html#team" class="hover:text-brand-teal">Our Team</a></li>
+                        <li><a href="#" class="hover:text-brand-teal">Certifications</a></li>
+                        <li><a href="#contact" class="hover:text-brand-teal">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="text-white font-bold mb-4">Legal</h5>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#" class="hover:text-brand-teal">Privacy Policy</a></li>
+                        <li><a href="#" class="hover:text-brand-teal">Terms & Conditions</a></li>
+                        <li><a href="#" class="hover:text-brand-teal">Refund Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <div class="text-sm text-slate-500 mb-4 md:mb-0">
+                    &copy; 2025 Career Bootcamp. All rights reserved.
+                </div>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-slate-400 hover:text-white transition"><i class="fa-brands fa-linkedin text-xl"></i></a>
+                    <a href="#" class="text-slate-400 hover:text-white transition"><i class="fa-brands fa-instagram text-xl"></i></a>
+                    <a href="#" class="text-slate-400 hover:text-white transition"><i class="fa-brands fa-youtube text-xl"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

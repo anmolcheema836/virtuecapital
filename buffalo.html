@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>School Search Experience</title>
+    <!-- Google Fonts & Material Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- RESET & BASE STYLES --- */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Roboto', arial, sans-serif; font-size: 14px; color: #202124; }
+        a { text-decoration: none; color: inherit; cursor: pointer; }
+        ul { list-style: none; }
+
+        /* --- DEMO NAVIGATION (For switching views) --- */
+        .demo-nav {
+            position: fixed; top: 0; left: 0; right: 0;
+            background: #333; color: white; padding: 10px;
+            display: flex; justify-content: center; gap: 20px;
+            z-index: 9999;
+        }
+        .demo-nav button {
+            background: #555; border: none; color: white;
+            padding: 8px 16px; border-radius: 4px; cursor: pointer;
+        }
+        .demo-nav button.active { background: #4285f4; font-weight: bold; }
+
+        /* --- SHARED COMPONENTS --- */
+        .hidden { display: none !important; }
+
+        /* Icons */
+        .icon { color: #5f6368; font-size: 24px; cursor: pointer; }
+        .icon-mic { color: #4285f4; margin-right: 12px; } /* Google Blue for mic usually, or multi-color */
+        .icon-search-grey { color: #9aa0a6; padding-left: 14px; padding-right: 8px; }
+        
+        /* AI Badge */
+        .ai-mode-btn {
+            display: flex; align-items: center; gap: 6px;
+            background: #f1f3f4; color: #1f1f1f;
+            font-family: 'Google Sans', sans-serif; font-size: 13px; font-weight: 500;
+            padding: 6px 12px; border-radius: 18px; cursor: pointer;
+            margin-right: 8px; transition: 0.2s;
+        }
+        .ai-mode-btn:hover { background: #e3e3e3; }
+        .ai-sparkles { color: #db34c1; font-size: 16px; }
+
+        /* Search Bar (Home Style) */
+        .search-wrapper-home {
+            display: flex; align-items: center;
+            background: #fff;
+            border: 1px solid #dfe1e5;
+            box-shadow: none;
+            border-radius: 24px;
+            width: 100%; max-width: 584px;
+            height: 46px; margin: 0 auto;
+            transition: box-shadow 200ms cubic-bezier(0.4, 0.0, 0.2, 1);
+        }
+        .search-wrapper-home:hover, .search-wrapper-home:focus-within {
+            box-shadow: 0 1px 6px rgba(32,33,36,.28);
+            border-color: rgba(223,225,229,0);
+        }
+        .search-input {
+            flex-grow: 1; border: none; outline: none;
+            font-size: 16px; height: 100%; color: rgba(0,0,0,0.87);
+        }
+
+        /* Action Buttons (Google Search / Lucky) */
+        .action-buttons { margin-top: 28px; display: flex; justify-content: center; gap: 12px; }
+        .action-btn {
+            background-color: #f8f9fa; border: 1px solid #f8f9fa;
+            border-radius: 4px; color: #3c4043;
+            font-family: arial, sans-serif; font-size: 14px;
+            padding: 0 16px; height: 36px; line-height: 34px; cursor: pointer;
+        }
+        .action-btn:hover {
+            box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+            background-color: #f8f9fa; border-color: #dadce0; color: #202124;
+        }
+
+        /* Quick Access Shortcuts */
+        .shortcuts-row {
+            margin-top: 32px; display: flex; justify-content: center; gap: 30px; flex-wrap: wrap;
+        }
+        .shortcut-item {
+            display: flex; flex-direction: column; align-items: center; gap: 8px;
+            cursor: pointer; group: hover;
+        }
+        .shortcut-icon-circle {
+            width: 48px; height: 48px; background: #e8f0fe;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            transition: 0.2s;
+        }
+        .shortcut-item:hover .shortcut-icon-circle { background: #d2e3fc; }
+        .shortcut-icon-circle .material-icons { color: #1967d2; font-size: 24px; }
+        .shortcut-label { font-size: 13px; color: #202124; }
+        
+        /* Logo Styling */
+        .logo-area { text-align: center; margin-bottom: 25px; }
+        .school-logo-text {
+            font-family: 'Google Sans', sans-serif;
+            font-size: 50px; color: #fff; font-weight: bold;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        .school-logo-text span { color: #fbbc05; } /* Accent color */
+
+        /* ================= VIEW 1: IMAGE BACKGROUND ================= */
+        #view-hero {
+            height: 100vh; width: 100%;
+            /* Using a placeholder image of students */
+            background: linear-gradient(rgba(0, 51, 102, 0.6), rgba(0, 51, 102, 0.6)), 
+                        url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=2070&auto=format&fit=crop');
+            background-size: cover; background-position: center;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            padding-top: 40px;
+        }
+        /* Overrides for Hero view text colors */
+        #view-hero .school-logo-text { color: #fff; }
+        #view-hero .shortcut-label { color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,0.5); }
+        #view-hero .shortcut-icon-circle { background: rgba(255,255,255,0.9); }
+        #view-hero .shortcut-item:hover .shortcut-icon-circle { background: #fff; }
+
+        /* ================= VIEW 2: WHITE BACKGROUND ================= */
+        #view-clean {
+            height: 100vh; width: 100%; background: #fff;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            /* To offset the fixed header */
+            margin-top: -20px; 
+        }
+        #view-clean .school-logo-text {
+            color: #4285f4; text-shadow: none;
+        }
+        #view-clean .school-logo-text span { color: #fbbc05; }
+        #view-clean .school-logo-sub { color: #ea4335; }
+
+        /* ================= VIEW 3: RESULTS PAGE ================= */
+        #view-results { background: #fff; min-height: 100vh; padding-top: 60px; /* Space for demo nav */ }
+        
+        /* Results Header */
+        .results-header {
+            border-bottom: 1px solid #ebebeb; padding: 20px 20px 0 20px;
+            position: sticky; top: 50px; background: #fff; z-index: 100;
+        }
+        .header-top { display: flex; align-items: center; gap: 40px; margin-bottom: 20px; }
+        .logo-small {
+            font-family: 'Google Sans', sans-serif; font-weight: bold; font-size: 22px; color: #4285f4;
+            text-decoration: none;
+        }
+        
+        /* Search bar inside header */
+        .search-wrapper-header {
+            display: flex; align-items: center; background: #fff;
+            border: 1px solid transparent; box-shadow: 0 2px 5px 1px rgba(64,60,67,.16);
+            border-radius: 24px; width: 690px; height: 44px;
+        }
+        .search-wrapper-header:hover { box-shadow: 0 2px 8px 1px rgba(64,60,67,.24); }
+        .search-wrapper-header input { flex: 1; border: none; outline: none; margin-left: 10px; font-size: 16px; }
+        .header-icons {
+            margin-left: auto; display: flex; gap: 15px; align-items: center;
+        }
+
+        /* Results Tabs */
+        .results-tabs { display: flex; gap: 26px; margin-left: 160px; font-size: 14px; color: #5f6368; }
+        .tab { padding-bottom: 12px; cursor: pointer; border-bottom: 3px solid transparent; display: flex; align-items: center; gap: 5px; }
+        .tab.active { color: #1a73e8; border-bottom-color: #1a73e8; }
+        .tab:hover { color: #1a73e8; }
+
+        /* Results Content */
+        .results-content { margin-left: 180px; width: 650px; padding-top: 16px; padding-bottom: 40px; }
+        .result-stats { color: #70757a; font-size: 14px; margin-bottom: 20px; }
+
+        .result-card { margin-bottom: 28px; }
+        .result-url-row { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; }
+        .site-icon { width: 26px; height: 26px; background: #f1f3f4; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: bold; color: #4285f4; }
+        .site-info { display: flex; flex-direction: column; }
+        .site-name { font-size: 14px; color: #202124; }
+        .site-link { font-size: 12px; color: #5f6368; }
+        
+        .result-title {
+            display: block; font-size: 20px; color: #1a73e8; cursor: pointer;
+            line-height: 1.3; margin-bottom: 3px;
+        }
+        .result-title:hover { text-decoration: underline; }
+        .result-desc { color: #4d5156; font-size: 14px; line-height: 1.58; }
+
+        /* Helper for Voice/Icon alignment in input */
+        .right-actions { display: flex; align-items: center; padding-right: 12px; }
+        .divider { height: 25px; width: 1px; background: #dfe1e5; margin: 0 10px; }
+
+    </style>
+</head>
+<body>
+
+    <!-- DEMO CONTROLS (Top Bar) -->
+    <nav class="demo-nav">
+        <div style="align-self:center; font-size:12px; margin-right:10px;">PREVIEW MODES:</div>
+        <button onclick="switchView('hero')" id="btn-hero" class="active">1. Image Background</button>
+        <button onclick="switchView('clean')" id="btn-clean">2. White Background</button>
+        <button onclick="switchView('results')" id="btn-results">3. Results Page</button>
+    </nav>
+
+    <!-- ============================================== -->
+    <!-- VIEW 1: HERO IMAGE SEARCH INTERFACE            -->
+    <!-- ============================================== -->
+    <div id="view-hero" class="view-section">
+        
+        <div class="logo-area">
+            <div class="school-logo-text">BUFFALO <span>SCHOOL DISTRICT</span></div>
+        </div>
+
+        <!-- Search Bar Component -->
+        <div class="search-wrapper-home">
+            <span class="material-icons icon-search-grey">search</span>
+            <input type="text" class="search-input" value="" placeholder="">
+            <div class="right-actions">
+                <span class="material-icons icon" style="margin-right:8px; font-size:20px;">mic</span>
+                <!-- AI Mode Button -->
+                <div class="ai-mode-btn">
+                    <span class="material-icons ai-sparkles">auto_awesome</span>
+                    AI Mode
+                </div>
+            </div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="action-buttons">
+            <button class="action-btn" onclick="switchView('results')">Google Search</button>
+            <button class="action-btn">I'm Feeling Lucky</button>
+        </div>
+
+        <!-- Shortcuts -->
+        <div class="shortcuts-row">
+            <div class="shortcut-item">
+                <div class="shortcut-icon-circle"><span class="material-icons">people</span></div>
+                <div class="shortcut-label">Staff Directory</div>
+            </div>
+            <div class="shortcut-item">
+                <div class="shortcut-icon-circle"><span class="material-icons">contact_phone</span></div>
+                <div class="shortcut-label">Contact</div>
+            </div>
+            <div class="shortcut-item">
+                <div class="shortcut-icon-circle"><span class="material-icons">policy</span></div>
+                <div class="shortcut-label">Policies</div>
+            </div>
+            <div class="shortcut-item">
+                <div class="shortcut-icon-circle"><span class="material-icons">calendar_month</span></div>
+                <div class="shortcut-label">Calendars</div>
+            </div>
+            <div class="shortcut-item">
+                <div class="shortcut-icon-circle"><span class="material-icons">business</span></div>
+                <div class="shortcut-label">Departments</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================== -->
+    <!-- VIEW 2: CLEAN WHITE BACKGROUND INTERFACE       -->
+    <!-- ============================================== -->
+    <div id="view-clean" class="view-section hidden">
+        
+        <div class="logo-area">
+            <div class="school-logo-text">BUFFALO <span class="school-logo-sub">SCHOOLS</span></div>
+        </div>
+
+        <!-- Search Bar Component (Same structure) -->
+        <div class="search-wrapper-home">
+            <span class="material-icons icon-search-grey">search</span>
+            <input type="text" class="search-input" value="" placeholder="">
+            <div class="right-actions">
+                <span class="material-icons icon" style="margin-right:8px; font-size:20px;">mic</span>
+                <div class="ai-mode-btn">
+                    <span class="material-icons ai-sparkles">auto_awesome</span>
+                    AI Mode
+                </div>
+            </div>
+        </div>
+
+        <div class="action-buttons">
+            <button class="action-btn" onclick="switchView('results')">Google Search</button>
+            <button class="action-btn">I'm Feeling Lucky</button>
+        </div>
+
+        <!-- Shortcuts (Darker text for white background) -->
+        <div class="shortcuts-row">
+            <div class="shortcut-item">
+                <div class="shortcut-icon-circle"><span class="material-icons">people</span></div>
+                <div class="shortcut-label">Staff Directory</div>
+            </div>
+            <div class="shortcut-item">
+                <div class="shortcut-icon-circle"><span class="material-icons">contact_phone</span></div>
+                <div class="shortcut-label">Contact</div>
+            </div>
+            <div class="shortcut-item">
+                <div class="shortcut-icon-circle"><span class="material-icons">policy</span></div>
+                <div class="shortcut-label">Policies</div>
+            </div>
+            <div class="shortcut-item">
+                <div class="shortcut-icon-circle"><span class="material-icons">calendar_month</span></div>
+                <div class="shortcut-label">Calendars</div>
+            </div>
+            <div class="shortcut-item">
+                <div class="shortcut-icon-circle"><span class="material-icons">business</span></div>
+                <div class="shortcut-label">Departments</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================== -->
+    <!-- VIEW 3: RESULTS PAGE                           -->
+    <!-- ============================================== -->
+    <div id="view-results" class="view-section hidden">
+        <div class="results-header">
+            <div class="header-top">
+                <a href="#" onclick="switchView('clean')" class="logo-small">Buffalo</a>
+                
+                <!-- Header Search Bar -->
+                <div class="search-wrapper-header">
+                    <input type="text" value="High School Football Schedule">
+                    <div class="right-actions">
+                        <span class="material-icons" style="color:#70757a; font-size:20px; cursor:pointer;">close</span>
+                        <div class="divider"></div>
+                        <span class="material-icons icon-mic" style="margin:0; font-size:20px;">mic</span>
+                        <span class="material-icons" style="color:#4285f4; margin-left:12px; font-size:20px; cursor:pointer;">search</span>
+                    </div>
+                </div>
+
+                <div class="header-icons">
+                    <span class="material-icons icon">settings</span>
+                    <span class="material-icons icon">apps</span>
+                    <div style="width:32px; height:32px; background:#003366; border-radius:50%; color:white; text-align:center; line-height:32px; font-size:14px;">B</div>
+                </div>
+            </div>
+
+            <!-- Navigation Tabs -->
+            <div class="results-tabs">
+                <div class="tab active"><span class="material-icons" style="font-size:16px;">search</span> All</div>
+                <div class="tab"><span class="material-icons" style="font-size:16px;">image</span> Images</div>
+                <div class="tab"><span class="material-icons" style="font-size:16px;">feed</span> News</div>
+                <div class="tab"><span class="material-icons" style="font-size:16px;">videocam</span> Videos</div>
+                <div class="tab"><span class="material-icons" style="font-size:16px;">map</span> Maps</div>
+                <div class="tab"><span class="material-icons" style="font-size:16px;">more_vert</span> More</div>
+            </div>
+        </div>
+
+        <div class="results-content">
+            <div class="result-stats">About 1,240 results (0.42 seconds)</div>
+
+            <!-- Result 1 -->
+            <div class="result-card">
+                <div class="result-url-row">
+                    <div class="site-icon">B</div>
+                    <div class="site-info">
+                        <span class="site-name">Buffalo School District</span>
+                        <span class="site-link">https://www.buffaloschools.org/athletics</span>
+                    </div>
+                </div>
+                <a href="#" class="result-title">High School Football - 2025 Schedule & Roster</a>
+                <div class="result-desc">
+                    View the complete 2025 football schedule for Buffalo High School. Tickets are available online or at the gate. Come support the Bisons this Friday night at the home opener!
+                </div>
+            </div>
+
+            <!-- Result 2 -->
+            <div class="result-card">
+                <div class="result-url-row">
+                    <div class="site-icon">M</div>
+                    <div class="site-info">
+                        <span class="site-name">MaxPreps</span>
+                        <span class="site-link">https://www.maxpreps.com/ny/buffalo/football</span>
+                    </div>
+                </div>
+                <a href="#" class="result-title">Buffalo Bisons Football (Buffalo, NY) Varsity</a>
+                <div class="result-desc">
+                    Buffalo High School Football. Standings, rankings, team stats and more. Check out the latest highlights from last week's game against the Rochester Raiders.
+                </div>
+            </div>
+
+            <!-- Result 3 -->
+            <div class="result-card">
+                <div class="result-url-row">
+                    <div class="site-icon">C</div>
+                    <div class="site-info">
+                        <span class="site-name">District Calendar</span>
+                        <span class="site-link">https://www.buffaloschools.org/calendar</span>
+                    </div>
+                </div>
+                <a href="#" class="result-title">District Wide Events & Athletics Calendar</a>
+                <div class="result-desc">
+                    Filter by school or activity type. All athletic events including Football, Soccer, and Volleyball are updated daily by the athletic director.
+                </div>
+            </div>
+            
+            <!-- Result 4 -->
+             <div class="result-card">
+                <div class="result-url-row">
+                    <div class="site-icon">S</div>
+                    <div class="site-info">
+                        <span class="site-name">Staff Directory</span>
+                        <span class="site-link">https://www.buffaloschools.org/staff/coach-smith</span>
+                    </div>
+                </div>
+                <a href="#" class="result-title">Coach John Smith - Athletics Department</a>
+                <div class="result-desc">
+                    Head Football Coach. Email: jsmith@buffaloschools.org. Phone: 555-0199 ext 203. Office hours: M-F 2:00 PM - 3:30 PM in the Field House.
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- SCRIPT TO HANDLE VIEW SWITCHING -->
+    <script>
+        function switchView(viewName) {
+            // Hide all views
+            document.querySelectorAll('.view-section').forEach(el => el.classList.add('hidden'));
+            
+            // Show selected view
+            document.getElementById('view-' + viewName).classList.remove('hidden');
+
+            // Update nav buttons
+            document.querySelectorAll('.demo-nav button').forEach(btn => btn.classList.remove('active'));
+            document.getElementById('btn-' + viewName).classList.add('active');
+        }
+    </script>
+</body>
+</html>
