@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="The Valorian – West Hollywood. A fever dream in white. Ethereal luxury on the Sunset Strip.">
+    <title>The Valorian | West Hollywood</title>
+
+    <!-- Fonts: Cormorant Garamond (Editorial Serif) & Outfit (Modern Sans) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Outfit:wght@200;300;400;500&display=swap" rel="stylesheet">
+
+    <!-- Libraries (CDN) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+
+    <style>
+        /* --- CSS VARIABLES & RESET --- */
+        :root {
+            /* Palette - Ethereal/Editorial */
+            --color-bg: #F8F5F2; /* Warm Alabaster */
+            --color-surface: #FFFFFF;
+            --color-text: #1C1C1C; /* Soft Black */
+            --color-text-muted: #6E6E6E;
+            --color-accent: #CBAF5A; /* Muted Champagne/Gold */
+            --color-accent-hover: #B09545;
+            --color-border: rgba(28, 28, 28, 0.1);
+
+            /* Typography */
+            --font-display: 'Cormorant Garamond', serif;
+            --font-body: 'Outfit', sans-serif;
+
+            /* Fluid Sizing */
+            --container-padding: clamp(1.5rem, 5vw, 4rem);
+            --text-xs: clamp(0.75rem, 0.8vw, 0.875rem);
+            --text-sm: clamp(0.875rem, 1vw, 1rem);
+            --text-base: clamp(1rem, 1.2vw, 1.125rem);
+            --text-lg: clamp(1.25rem, 2vw, 1.75rem);
+            --text-xl: clamp(2rem, 3.5vw, 3rem);
+            --text-2xl: clamp(2.5rem, 5vw, 4.5rem);
+            --text-3xl: clamp(3.5rem, 7vw, 8rem);
+        }
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        html.lenis { height: auto; }
+        .lenis.lenis-smooth { scroll-behavior: auto; }
+        .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+        .lenis.lenis-stopped { overflow: hidden; }
+        
+        body {
+            background-color: var(--color-bg);
+            color: var(--color-text);
+            font-family: var(--font-body);
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+            line-height: 1.5;
+        }
+
+        a { text-decoration: none; color: inherit; transition: opacity 0.3s ease; }
+        ul { list-style: none; }
+        img { display: block; max-width: 100%; height: auto; object-fit: cover; }
+        
+        /* --- UTILITY CLASSES --- */
+        .container {
+            width: 100%;
+            padding: 0 var(--container-padding);
+            margin: 0 auto;
+            max-width: 1600px;
+        }
+        
+        .display-font { font-family: var(--font-display); font-weight: 400; }
+        .italic { font-style: italic; }
+        .uppercase { text-transform: uppercase; letter-spacing: 0.1em; }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem 2rem;
+            border: 1px solid var(--color-text);
+            font-family: var(--font-body);
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.15em;
+            background: transparent;
+            color: var(--color-text);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            cursor: pointer;
+        }
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--color-text);
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+            z-index: -1;
+        }
+        .btn:hover { color: var(--color-surface); border-color: var(--color-text); }
+        .btn:hover::before { transform: scaleX(1); transform-origin: left; }
+        
+        .btn-primary {
+            background: var(--color-text);
+            color: var(--color-surface);
+            border-color: var(--color-text);
+        }
+        .btn-primary:hover {
+            background: transparent;
+            color: var(--color-text);
+        }
+        .btn-primary::before { background: var(--color-bg); }
+
+        /* --- HEADER & NAV --- */
+        .header {
+            position: fixed;
+            top: 0; left: 0; width: 100%;
+            padding: 1.5rem 0;
+            z-index: 100;
+            transition: padding 0.3s ease, background 0.3s ease, backdrop-filter 0.3s ease;
+        }
+        .header.scrolled {
+            padding: 1rem 0;
+            background: rgba(248, 245, 242, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+        
+        .nav-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-weight: 500;
+            position: relative;
+            z-index: 102;
+        }
+        
+        .desktop-nav {
+            display: none;
+        }
+        @media(min-width: 1024px) {
+            .desktop-nav {
+                display: flex;
+                gap: 3rem;
+                align-items: center;
+            }
+            .nav-link {
+                font-size: 0.875rem;
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
+                position: relative;
+            }
+            .nav-link::after {
+                content: '';
+                position: absolute;
+                bottom: -4px; left: 0; width: 0%; height: 1px;
+                background: var(--color-text);
+                transition: width 0.3s ease;
+            }
+            .nav-link:hover::after { width: 100%; }
+        }
+
+        /* Hamburger */
+        .hamburger {
+            width: 30px; height: 20px;
+            display: flex; flex-direction: column; justify-content: space-between;
+            cursor: pointer; z-index: 102;
+        }
+        @media(min-width: 1024px) { .hamburger { display: none; } }
+        .line { width: 100%; height: 1px; background: currentColor; transition: transform 0.3s, opacity 0.3s; }
+        
+        .mobile-menu {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+            background: var(--color-bg);
+            z-index: 101;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            transform: translateY(-100%);
+            transition: transform 0.6s cubic-bezier(0.85, 0, 0.15, 1);
+        }
+        .mobile-menu.active { transform: translateY(0); }
+        .mobile-link {
+            font-family: var(--font-display);
+            font-size: 2.5rem;
+            margin: 1rem 0;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            position: relative;
+            height: 100vh;
+            width: 100%;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Three.js Canvas Layer */
+        #webgl-canvas {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 1; pointer-events: none; opacity: 0.6;
+        }
+        
+        .hero-bg {
+            position: absolute; top: 0; left: 0; width: 100%; height: 120%;
+            /* High-end Abstract/Interior Placeholder */
+            background-image: url('https://images.unsplash.com/photo-1590381105924-c72589b9ef3f?q=80&w=2071&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            z-index: 0;
+            filter: brightness(0.9) contrast(0.95);
+        }
+        
+        .hero-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to bottom, rgba(248,245,242,0) 60%, rgba(248,245,242,1) 100%);
+            z-index: 1;
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            padding: 0 1rem;
+            color: white;
+            mix-blend-mode: difference; /* Editorial effect */
+        }
+        
+        .hero-eyebrow {
+            display: block;
+            font-family: var(--font-body);
+            font-size: var(--text-sm);
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+            opacity: 0;
+        }
+        
+        .hero-title {
+            font-size: var(--text-3xl);
+            line-height: 0.9;
+            margin-bottom: 2rem;
+            opacity: 0;
+        }
+        
+        .hero-title span { display: block; }
+        
+        .scroll-indicator {
+            position: absolute; bottom: 2rem; left: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+            display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+            font-size: 0.75rem; letter-spacing: 0.1em;
+            color: var(--color-text);
+            opacity: 0.7;
+        }
+        .scroll-line { width: 1px; height: 40px; background: currentColor; animation: scrollAnim 2s infinite; transform-origin: top; }
+        
+        @keyframes scrollAnim { 0% { transform: scaleY(0); } 50% { transform: scaleY(1); } 100% { transform: scaleY(0); transform-origin: bottom; } }
+
+        /* --- INTRO NARRATIVE --- */
+        .intro-section {
+            padding: 8rem 0;
+            text-align: center;
+        }
+        .intro-text {
+            font-size: var(--text-xl);
+            max-width: 900px;
+            margin: 0 auto;
+            color: var(--color-text);
+            line-height: 1.3;
+        }
+        .intro-sub {
+            margin-top: 2rem;
+            font-size: var(--text-base);
+            color: var(--color-text-muted);
+            max-width: 600px;
+            margin-left: auto; margin-right: auto;
+        }
+
+        /* --- ROOMS SECTION (Editorial Grid) --- */
+        .rooms-section { padding: 4rem 0 8rem; }
+        .section-header {
+            margin-bottom: 4rem;
+            display: flex; justify-content: space-between; align-items: flex-end;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--color-border);
+        }
+        
+        .rooms-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 4rem;
+        }
+        
+        @media(min-width: 768px) {
+            .rooms-grid { grid-template-columns: repeat(2, 1fr); column-gap: 2rem; row-gap: 6rem; }
+            /* Offset layout for editorial feel */
+            .room-card:nth-child(2) { margin-top: 6rem; }
+            .room-card:nth-child(3) { margin-top: -4rem; }
+            .room-card:nth-child(4) { margin-top: 2rem; }
+        }
+        
+        .room-card { display: block; group: cursor-pointer; }
+        .room-img-wrap {
+            position: relative;
+            aspect-ratio: 3/4;
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+        }
+        .room-img {
+            width: 100%; height: 100%;
+            transition: transform 1.2s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+        .room-card:hover .room-img { transform: scale(1.05); }
+        
+        .room-info { display: flex; justify-content: space-between; align-items: baseline; }
+        .room-title { font-size: var(--text-lg); font-weight: 400; margin-bottom: 0.5rem; }
+        .room-details { font-size: var(--text-sm); color: var(--color-text-muted); }
+
+        /* --- EXPERIENCES (Horizontal Scroll) --- */
+        .exp-section { padding: 4rem 0; overflow: hidden; background: #EFECE8; } /* Slightly darker neutral */
+        .exp-track-wrap { padding-left: var(--container-padding); }
+        .exp-track {
+            display: flex;
+            gap: 2rem;
+            width: max-content;
+        }
+        .exp-card {
+            width: 80vw;
+            max-width: 500px;
+            position: relative;
+        }
+        .exp-img-wrap {
+            aspect-ratio: 16/9;
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+        .exp-img { width: 100%; height: 100%; transition: transform 0.8s ease; }
+        .exp-card:hover .exp-img { transform: scale(1.03); }
+
+        /* --- STORY SECTION --- */
+        .story-section { padding: 8rem 0; }
+        .story-layout {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+        @media(min-width: 900px) {
+            .story-layout { grid-template-columns: 1fr 1fr; gap: 6rem; }
+        }
+        .story-content h2 { margin-bottom: 2rem; line-height: 1.1; }
+        .story-content p { color: var(--color-text-muted); margin-bottom: 2rem; }
+        
+        .story-visual { position: relative; }
+        .story-img-main { width: 100%; aspect-ratio: 4/5; }
+        .story-badge {
+            position: absolute; bottom: -10%; left: -10%;
+            width: 140px; height: 140px;
+            background: var(--color-bg);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.05);
+            animation: rotateBadge 20s linear infinite;
+        }
+        @keyframes rotateBadge { to { transform: rotate(360deg); } }
+
+        /* --- FOOTER --- */
+        .footer {
+            background-color: #111;
+            color: #fff;
+            padding: 6rem 0 2rem;
+        }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 3rem;
+            margin-bottom: 6rem;
+        }
+        @media(min-width: 768px) {
+            .footer-grid { grid-template-columns: 2fr 1fr 1fr; }
+        }
+        .footer-logo {
+            font-family: var(--font-display);
+            font-size: 2rem; margin-bottom: 1.5rem; display: block;
+        }
+        .footer-address {
+            font-style: normal;
+            color: #888;
+            font-size: 0.9rem;
+            line-height: 1.8;
+        }
+        .footer-col h4 {
+            text-transform: uppercase; letter-spacing: 0.1em;
+            font-size: 0.75rem; color: #666; margin-bottom: 1.5rem;
+        }
+        .footer-links li { margin-bottom: 0.75rem; }
+        .footer-links a { color: #ccc; font-size: 0.9rem; transition: color 0.3s; }
+        .footer-links a:hover { color: #fff; }
+        
+        .footer-bottom {
+            border-top: 1px solid #222;
+            padding-top: 2rem;
+            display: flex; justify-content: space-between;
+            font-size: 0.75rem; color: #555;
+        }
+
+        /* --- MICRO COMPONENTS --- */
+        .float-cta {
+            position: fixed; bottom: 2rem; right: 2rem;
+            z-index: 90;
+            transform: translateY(150%);
+            transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        .float-cta.visible { transform: translateY(0); }
+        
+        .cookie-banner {
+            position: fixed; bottom: 0; left: 0; width: 100%;
+            background: var(--color-surface);
+            padding: 1rem var(--container-padding);
+            border-top: 1px solid var(--color-border);
+            z-index: 200;
+            display: flex; justify-content: space-between; align-items: center;
+            transform: translateY(100%);
+            transition: transform 0.5s ease;
+        }
+        .cookie-banner.show { transform: translateY(0); }
+        
+        /* --- ACCESSIBILITY --- */
+        .skip-link {
+            position: absolute; top: -100px; left: 1rem;
+            background: var(--color-accent); color: #000;
+            padding: 1rem; z-index: 1000;
+        }
+        .skip-link:focus { top: 1rem; }
+        
+        /* Reveal Animations Class */
+        .char-reveal { display: inline-block; opacity: 0; }
+    </style>
+</head>
+<body>
+
+    <!-- A11y Skip -->
+    <a href="#main-content" class="skip-link">Skip to content</a>
+
+    <!-- Floating Book CTA -->
+    <div class="float-cta" id="floatBtn">
+        <a href="https://brandsite.com/book" target="_blank" class="btn btn-primary" aria-label="Book a room at The Valorian">Book Now</a>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container nav-wrapper">
+            <!-- Mobile Menu Trigger -->
+            <div class="hamburger" role="button" aria-label="Menu" tabindex="0">
+                <span class="line"></span>
+                <span class="line"></span>
+                <span class="line"></span>
+            </div>
+
+            <a href="#" class="logo">The Valorian</a>
+
+            <!-- Desktop Nav -->
+            <nav class="desktop-nav">
+                <a href="#rooms" class="nav-link">Rooms</a>
+                <a href="#experiences" class="nav-link">Dining & Bar</a>
+                <a href="#story" class="nav-link">Story</a>
+                <a href="#contact" class="nav-link">Contact</a>
+                <a href="https://brandsite.com/book" target="_blank" class="btn">Book Your Stay</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu">
+        <a href="#rooms" class="mobile-link">Rooms & Suites</a>
+        <a href="#experiences" class="mobile-link">Experiences</a>
+        <a href="#story" class="mobile-link">Our Story</a>
+        <a href="https://brandsite.com/book" class="mobile-link" style="color: var(--color-accent);">Book Now</a>
+    </div>
+
+    <main id="main-content">
+        <!-- Hero Section -->
+        <section class="hero" id="hero">
+            <!-- Three.js Container -->
+            <div id="webgl-canvas"></div>
+            
+            <div class="hero-bg" data-scroll-speed="0.5"></div>
+            <div class="hero-overlay"></div>
+            
+            <div class="hero-content">
+                <span class="hero-eyebrow">West Hollywood</span>
+                <h1 class="hero-title display-font">
+                    <span>A Fever Dream</span>
+                    <span class="italic">in White</span>
+                </h1>
+                <a href="https://brandsite.com/book" class="btn" style="color: white; border-color: white;">Begin the Experience</a>
+            </div>
+
+            <div class="scroll-indicator">
+                <span>SCROLL</span>
+                <div class="scroll-line"></div>
+            </div>
+        </section>
+
+        <!-- Intro / Narrative -->
+        <section class="intro-section container">
+            <h2 class="intro-text display-font reveal-type">
+                "Rising above the Sunset Strip, The Valorian is a seductive collision of fantasy and fame. A modern temple for those who live between light and shadow."
+            </h2>
+            <p class="intro-sub reveal-fade">
+                Ideally situated at the intersection of culture and quietude. An editorial approach to hospitality.
+            </p>
+        </section>
+
+        <!-- Rooms Section -->
+        <section id="rooms" class="rooms-section container">
+            <div class="section-header">
+                <div>
+                    <span class="uppercase" style="font-size: 0.75rem; color: #888;">Sanctuaries</span>
+                    <h2 class="display-font" style="font-size: var(--text-2xl);">Curated Suites</h2>
+                </div>
+                <a href="https://brandsite.com/book" class="btn">Check Availability</a>
+            </div>
+
+            <div class="rooms-grid">
+                <!-- Room 1 -->
+                <a href="https://brandsite.com/book" class="room-card">
+                    <div class="room-img-wrap">
+                        <img src="https://images.unsplash.com/photo-1578683010236-d716f9a3f461?q=80&w=2070&auto=format&fit=crop" alt="The Atelier Suite" class="room-img" loading="lazy">
+                    </div>
+                    <div class="room-info">
+                        <h3 class="room-title display-font">The Atelier Suite</h3>
+                        <span class="room-details">450 SQ FT / City View</span>
+                    </div>
+                </a>
+
+                <!-- Room 2 -->
+                <a href="https://brandsite.com/book" class="room-card">
+                    <div class="room-img-wrap">
+                        <img src="https://images.unsplash.com/photo-1560185007-cde436f6a4d0?q=80&w=2070&auto=format&fit=crop" alt="Terrace King" class="room-img" loading="lazy">
+                    </div>
+                    <div class="room-info">
+                        <h3 class="room-title display-font">Terrace King</h3>
+                        <span class="room-details">380 SQ FT / Balcony</span>
+                    </div>
+                </a>
+
+                <!-- Room 3 -->
+                <a href="https://brandsite.com/book" class="room-card">
+                    <div class="room-img-wrap">
+                        <img src="https://www.hollywoodreporter.com/wp-content/uploads/2019/10/massive_l.a._penthouse_-top1197_beverlyblvd_-publicity_-_h_2019_.jpg" alt="Penthouse" class="room-img" loading="lazy">
+                    </div>
+                    <div class="room-info">
+                        <h3 class="room-title display-font">Valorian Penthouse</h3>
+                        <span class="room-details">1,200 SQ FT / Panoramic</span>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <!-- Experiences (Horizontal) -->
+        <section id="experiences" class="exp-section">
+            <div class="container" style="margin-bottom: 3rem;">
+                <span class="uppercase" style="font-size: 0.75rem; color: #888;">Immersion</span>
+                <h2 class="display-font" style="font-size: var(--text-2xl);">The Scene</h2>
+            </div>
+            
+            <div class="exp-track-wrap">
+                <div class="exp-track">
+                    <div class="exp-card">
+                        <div class="exp-img-wrap">
+                            <img src="https://dynamic-media-cdn.tripadvisor.com/media/photo-o/29/11/36/9e/vesper-bar.jpg?w=900&h=500&s=1" alt="Bar Vesper" class="exp-img" loading="lazy">
+                        </div>
+                        <h3 class="display-font" style="font-size: 1.5rem;">Bar Vesper</h3>
+                        <p style="font-size: 0.9rem; color: #666; margin-top: 0.5rem;">Where elegance flirts with temptation.</p>
+                    </div>
+                    <div class="exp-card">
+                        <div class="exp-img-wrap">
+                            <img src="https://images.unsplash.com/photo-1540541338287-41700207dee6?q=80&w=2070&auto=format&fit=crop" alt="Rooftop Pool" class="exp-img" loading="lazy">
+                        </div>
+                        <h3 class="display-font" style="font-size: 1.5rem;">Altitude Pool</h3>
+                        <p style="font-size: 0.9rem; color: #666; margin-top: 0.5rem;">Private cabanas, endless horizons.</p>
+                    </div>
+                    <div class="exp-card">
+                        <div class="exp-img-wrap">
+                            <img src="https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=2070&auto=format&fit=crop" alt="Dining" class="exp-img" loading="lazy">
+                        </div>
+                        <h3 class="display-font" style="font-size: 1.5rem;">The Salon</h3>
+                        <p style="font-size: 0.9rem; color: #666; margin-top: 0.5rem;">A culinary experience in the clouds.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Story / About -->
+        <section id="story" class="story-section container">
+            <div class="story-layout">
+                <div class="story-content">
+                    <span class="uppercase" style="font-size: 0.75rem; color: #888; margin-bottom: 1rem; display:block;">Philosophy</span>
+                    <h2 class="display-font" style="font-size: var(--text-xl);">Quiet Confidence in a Loud City.</h2>
+                    <p>
+                        We believe in the luxury of privacy and the allure of the unseen. 
+                        Designed for those who don't seek validation, but simply expect excellence.
+                        Follow the white rabbit into a world where rules dissolve.
+                    </p>
+                    <!-- Lottie Placeholder -->
+                    <div style="width: 60px; height: 60px;">
+                        <lottie-player src="https://lottie.host/9e013483-424f-4d24-9b24-541575024479/Placeholder.json" background="transparent" speed="1" style="width: 100%; height: 100%;" loop autoplay></lottie-player>
+                    </div>
+                </div>
+                <div class="story-visual">
+                    <img src="https://images.unsplash.com/photo-1531835551805-16d864c8d311?q=80&w=1974&auto=format&fit=crop" alt="Abstract Architecture" class="story-img-main" loading="lazy">
+                    <div class="story-badge">
+                        <svg viewBox="0 0 100 100" width="100" height="100">
+                            <path id="circlePath" d="M 50, 50 m -37, 0 a 37,37 0 1,1 74,0 a 37,37 0 1,1 -74,0" fill="transparent" />
+                            <text font-family="Outfit" font-size="12" letter-spacing="2px" fill="#000">
+                                <textPath href="#circlePath" startOffset="0%">EST. 2026 • THE VALORIAN •</textPath>
+                            </text>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer id="contact" class="footer">
+        <div class="container footer-grid">
+            <div class="footer-brand">
+                <span class="footer-logo">The Valorian</span>
+                <address class="footer-address">
+                    8490 Sunset Boulevard<br>
+                    West Hollywood, CA 90069<br><br>
+                    <a href="mailto:concierge@thevalorian.com">concierge@thevalorian.com</a><br>
+                    <a href="tel:+13235550100">+1 323 555 0100</a>
+                </address>
+            </div>
+            
+            <div class="footer-col">
+                <h4>Discover</h4>
+                <ul class="footer-links">
+                    <li><a href="#rooms">Accommodations</a></li>
+                    <li><a href="#experiences">Dining</a></li>
+                    <li><a href="#">Wellness</a></li>
+                    <li><a href="#">Private Events</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>Social</h4>
+                <ul class="footer-links">
+                    <li><a href="#">Instagram</a></li>
+                    <li><a href="#">Spotify</a></li>
+                    <li><a href="#">Press Inquiries</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="container footer-bottom">
+            <span>© 2026 The Valorian. All Rights Reserved.</span>
+            <span>Design Concept</span>
+        </div>
+    </footer>
+
+    <!-- Cookie Consent -->
+    <div class="cookie-banner" id="cookieBanner">
+        <p style="font-size: 0.8rem; max-width: 70%;">We use cookies to ensure a flawless experience.</p>
+        <button id="acceptCookies" class="btn" style="padding: 0.5rem 1rem; font-size: 0.7rem; border-color: #000;">Accept</button>
+    </div>
+
+    <!-- SCRIPT LOGIC -->
+    <script>
+        // 1. SETUP LENIS (Smooth Scroll)
+        const lenis = new Lenis({
+            duration: 1.2,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            direction: 'vertical',
+            gestureDirection: 'vertical',
+            smooth: true,
+            mouseMultiplier: 1,
+            smoothTouch: false,
+            touchMultiplier: 2,
+        });
+
+        function raf(time) {
+            lenis.raf(time);
+            requestAnimationFrame(raf);
+        }
+        requestAnimationFrame(raf);
+
+        // Sync ScrollTrigger with Lenis
+        gsap.registerPlugin(ScrollTrigger);
+        
+        // 2. THREE.JS ATMOSPHERIC EFFECT (Lightweight Particles)
+        // Only init on Desktop to save mobile battery/performance
+        if (window.innerWidth > 768) {
+            const canvas = document.getElementById('webgl-canvas');
+            const scene = new THREE.Scene();
+            // Fog for depth
+            scene.fog = new THREE.FogExp2(0xF8F5F2, 0.002); 
+
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+            
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            canvas.appendChild(renderer.domElement);
+
+            // Create "Dust Motes"
+            const geometry = new THREE.BufferGeometry();
+            const particlesCount = 400;
+            const posArray = new Float32Array(particlesCount * 3);
+
+            for(let i = 0; i < particlesCount * 3; i++) {
+                // Spread particles in a wide area
+                posArray[i] = (Math.random() - 0.5) * 20;
+            }
+
+            geometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+
+            const material = new THREE.PointsMaterial({
+                size: 0.03,
+                color: 0xCBAF5A, // Gold dust
+                transparent: true,
+                opacity: 0.6,
+            });
+
+            const particles = new THREE.Points(geometry, material);
+            scene.add(particles);
+
+            camera.position.z = 3;
+
+            // Mouse Interaction
+            let mouseX = 0;
+            let mouseY = 0;
+            
+            document.addEventListener('mousemove', (event) => {
+                mouseX = event.clientX / window.innerWidth - 0.5;
+                mouseY = event.clientY / window.innerHeight - 0.5;
+            });
+
+            // Animate
+            const clock = new THREE.Clock();
+            const tick = () => {
+                const elapsedTime = clock.getElapsedTime();
+                
+                // Gentle rotation
+                particles.rotation.y = elapsedTime * 0.05;
+                particles.rotation.x = mouseY * 0.05;
+                particles.rotation.y += mouseX * 0.05;
+
+                renderer.render(scene, camera);
+                window.requestAnimationFrame(tick);
+            }
+            tick();
+
+            window.addEventListener('resize', () => {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            });
+        }
+
+        // 3. GSAP ANIMATIONS
+        
+        // Hero Entrance
+        const tl = gsap.timeline();
+        tl.to('.hero-eyebrow', { opacity: 1, y: 0, duration: 1, delay: 0.5 })
+          .to('.hero-title', { opacity: 1, y: 0, duration: 1.5, ease: 'power3.out' }, "-=0.5")
+          .from('.hero .btn', { opacity: 0, y: 20, duration: 1 }, "-=1");
+
+        // Parallax for Hero Background
+        gsap.to('.hero-bg', {
+            scrollTrigger: {
+                trigger: '#hero',
+                start: 'top top',
+                end: 'bottom top',
+                scrub: true
+            },
+            y: '30%', 
+            ease: 'none'
+        });
+
+        // Intro Text Split Reveal
+        // Quick split text simulation (no paid plugin)
+        const splitTargets = document.querySelectorAll('.reveal-type');
+        splitTargets.forEach(target => {
+            gsap.from(target, {
+                scrollTrigger: {
+                    trigger: target,
+                    start: 'top 80%',
+                },
+                y: 50,
+                opacity: 0,
+                duration: 1.2,
+                ease: 'power3.out'
+            });
+        });
+
+        // Image Parallax on Scroll
+        document.querySelectorAll('.room-img-wrap, .exp-img-wrap, .story-visual').forEach(wrap => {
+            let img = wrap.querySelector('img');
+            gsap.fromTo(img, 
+                { scale: 1.1 },
+                {
+                    scale: 1,
+                    scrollTrigger: {
+                        trigger: wrap,
+                        start: 'top bottom',
+                        end: 'bottom top',
+                        scrub: 1.5
+                    }
+                }
+            );
+        });
+
+        // Horizontal Scroll for Experiences
+        let expContainer = document.querySelector('.exp-section');
+        let track = document.querySelector('.exp-track');
+        
+        // Only horizontal scroll logic on desktop if desired, 
+        // but here we used basic CSS overflow for mobile friendliness.
+        // We can add a GSAP parallax to the track for visual flair:
+        if(window.innerWidth > 768) {
+             gsap.to(track, {
+                x: -100, // Gentle drift
+                scrollTrigger: {
+                    trigger: expContainer,
+                    start: 'top bottom',
+                    end: 'bottom top',
+                    scrub: 1
+                }
+            });
+        }
+
+        // Navbar State
+        const header = document.querySelector('.header');
+        window.addEventListener('scroll', () => {
+            if(window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Floating CTA Visibility
+        const floatBtn = document.getElementById('floatBtn');
+        ScrollTrigger.create({
+            trigger: "#hero",
+            start: "bottom center",
+            onEnter: () => floatBtn.classList.add('visible'),
+            onLeaveBack: () => floatBtn.classList.remove('visible')
+        });
+
+        // 4. UI INTERACTION
+        
+        // Mobile Menu
+        const ham = document.querySelector('.hamburger');
+        const menu = document.querySelector('.mobile-menu');
+        const links = document.querySelectorAll('.mobile-link');
+        
+        ham.addEventListener('click', () => {
+            const isActive = menu.classList.contains('active');
+            if(!isActive) {
+                menu.classList.add('active');
+                lenis.stop(); // Stop scroll
+                // Stagger in links
+                gsap.to(links, {
+                    opacity: 1, y: 0, duration: 0.5, stagger: 0.1, delay: 0.3
+                });
+            } else {
+                menu.classList.remove('active');
+                lenis.start();
+                gsap.set(links, { opacity: 0, y: 20 });
+            }
+        });
+
+        // Link handling (close menu on click)
+        links.forEach(l => l.addEventListener('click', () => {
+            menu.classList.remove('active');
+            lenis.start();
+        }));
+
+        // Cookie Banner
+        setTimeout(() => {
+            document.getElementById('cookieBanner').classList.add('show');
+        }, 2000);
+        
+        document.getElementById('acceptCookies').addEventListener('click', () => {
+            document.getElementById('cookieBanner').classList.remove('show');
+        });
+
+    </script>
+</body>
+</html>
