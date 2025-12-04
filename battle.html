@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Battle of the Branches | TV Series</title>
+    <!-- Fonts: Oswald for bold military headers, Roboto for readability -->
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* --- RESET & BASICS --- */
+        :root {
+            --navy: #0a1f44;
+            --blue: #14356d;
+            --red: #b22234;
+            --white: #ffffff;
+            --grey: #f4f4f4;
+            --dark-grey: #1a1a1a;
+        }
+        
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--white);
+            color: var(--dark-grey);
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Oswald', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        img {
+            max-width: 100%;
+            display: block;
+        }
+
+        /* --- UTILITIES --- */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 15px 35px;
+            font-family: 'Oswald', sans-serif;
+            font-weight: 700;
+            text-transform: uppercase;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            clip-path: polygon(10% 0, 100% 0, 100% 80%, 90% 100%, 0 100%, 0 20%);
+        }
+
+        .btn-primary {
+            background-color: var(--red);
+            color: var(--white);
+            border: 2px solid var(--red);
+        }
+
+        .btn-primary:hover {
+            background-color: transparent;
+            color: var(--red);
+        }
+
+        .btn-outline {
+            border: 2px solid var(--white);
+            color: var(--white);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--white);
+            color: var(--navy);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: var(--navy);
+            position: relative;
+            display: inline-block;
+        }
+        
+        /* Star Icon decoration under titles */
+        .title-dec {
+            display: block;
+            width: 60px;
+            height: 4px;
+            background-color: var(--red);
+            margin: 10px auto 40px;
+            position: relative;
+        }
+        .title-dec::after {
+            content: '\f005';
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--white);
+            padding: 0 10px;
+            color: var(--navy);
+            font-size: 14px;
+        }
+
+        /* --- HEADER & NAV --- */
+        header {
+            background-color: var(--navy);
+            padding: 15px 0;
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+            border-bottom: 4px solid var(--red);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        .nav-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Logo Styling */
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-img {
+            max-height: 50px; 
+            width: auto;
+        }
+
+        /* Fallback if png is missing */
+        .logo-text-fallback {
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.5rem;
+            color: var(--white);
+            font-weight: 700;
+            text-decoration: none;
+            display: none; 
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li { margin-left: 30px; }
+
+        nav ul li a {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            transition: color 0.3s;
+        }
+
+        nav ul li a:hover { color: var(--red); }
+
+        .mobile-toggle { display: none; color: white; font-size: 1.5rem; }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            height: 100vh;
+            /* RELIABLE DESERT OFFROAD IMAGE */
+            background: linear-gradient(rgba(10, 31, 68, 0.6), rgba(10, 31, 68, 0.7)), 
+                        url('https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?q=80&w=2000&auto=format&fit=crop') no-repeat center center/cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: var(--white);
+            position: relative;
+        }
+
+        .hero::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image: radial-gradient(var(--white) 1px, transparent 1px);
+            background-size: 50px 50px;
+            opacity: 0.1;
+        }
+
+        .hero-content h2 {
+            font-size: 1.5rem;
+            color: var(--red);
+            margin-bottom: 10px;
+            letter-spacing: 4px;
+        }
+
+        .hero-content h1 {
+            font-size: 5rem;
+            line-height: 1;
+            margin-bottom: 20px;
+            text-shadow: 0px 4px 10px rgba(0,0,0,0.5);
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 40px;
+        }
+
+        /* --- CONCEPT --- */
+        .concept {
+            padding: 80px 0;
+            background-color: var(--white);
+            text-align: center;
+        }
+
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        .stat-card {
+            background: var(--navy);
+            color: var(--white);
+            padding: 30px;
+            clip-path: polygon(0 0, 100% 0, 100% 85%, 85% 100%, 0 100%);
+        }
+
+        .stat-card i { font-size: 2rem; color: var(--red); margin-bottom: 15px; }
+        .stat-card h3 { font-size: 2.5rem; margin-bottom: 5px; }
+        .stat-card p { font-size: 0.9rem; text-transform: uppercase; opacity: 0.8; }
+
+        /* --- TEAMS GRID --- */
+        .teams-section {
+            background-color: var(--grey);
+            padding: 80px 0;
+            position: relative;
+        }
+
+        .teams-section::before {
+            content: '';
+            position: absolute;
+            top: -40px; left: 0; right: 0;
+            height: 40px;
+            background-color: var(--grey);
+            clip-path: polygon(0 100%, 50% 0, 100% 100%);
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .team-card {
+            background: var(--white);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+            border-top: 4px solid var(--navy);
+            transition: transform 0.3s;
+        }
+
+        .team-card:hover { transform: translateY(-5px); border-top-color: var(--red); }
+
+        .team-img {
+            height: 200px;
+            background-color: #666;
+            background-position: center;
+            background-size: cover;
+            position: relative;
+        }
+        
+        .team-branch {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            background: var(--navy);
+            color: var(--white);
+            padding: 5px 15px;
+            font-family: 'Oswald', sans-serif;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            clip-path: polygon(0 0, 90% 0, 100% 100%, 0% 100%);
+        }
+
+        .team-info { padding: 20px; }
+        .team-info h4 { font-size: 1.5rem; margin-bottom: 10px; color: var(--navy); }
+        .team-info p { font-size: 0.9rem; color: #666; margin-bottom: 15px; }
+        .vote-count {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid #eee;
+            padding-top: 15px;
+            font-weight: 700;
+            color: var(--red);
+        }
+
+        /* --- ROUTE MAP --- */
+        .route-section {
+            background-color: var(--navy);
+            color: var(--white);
+            padding: 80px 0;
+            text-align: center;
+        }
+
+        .route-section .section-title { color: var(--white); }
+        .route-section .title-dec::after { background: var(--navy); color: var(--white); }
+
+        .map-container {
+            /* FOUR CORNERS IMAGE - Reliable Wikimedia Source */
+            background: #333 url('https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/Four_Corners_Monument_%282006%29.jpg/1200px-Four_Corners_Monument_%282006%29.jpg') center/cover;
+            height: 500px;
+            width: 100%;
+            position: relative;
+            border: 4px solid var(--white);
+            margin-top: 30px;
+        }
+        
+        .map-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(10, 31, 68, 0.7);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .route-points {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .point {
+            background: var(--red);
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-weight: bold;
+            font-family: 'Oswald';
+        }
+
+        /* --- SPONSORS --- */
+        .sponsors {
+            padding: 60px 0;
+            text-align: center;
+            background: var(--white);
+        }
+
+        .sponsor-grid {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 40px;
+            opacity: 0.6;
+        }
+
+        .sponsor-logo {
+            height: 50px;
+            background: #ccc;
+            width: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            background-color: var(--dark-grey);
+            color: #888;
+            padding: 60px 0 20px;
+            font-size: 0.9rem;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-col h4 { color: var(--white); margin-bottom: 20px; font-size: 1.2rem; }
+        .footer-col ul { list-style: none; }
+        .footer-col ul li { margin-bottom: 10px; }
+        .footer-col ul li a { color: #888; text-decoration: none; }
+        .footer-col ul li a:hover { color: var(--red); }
+
+        .contact-box {
+            background: #222;
+            padding: 20px;
+            border-left: 3px solid var(--red);
+        }
+
+        .copyright {
+            text-align: center;
+            border-top: 1px solid #333;
+            padding-top: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .hero-content h1 { font-size: 3rem; }
+            .stat-grid { grid-template-columns: 1fr 1fr; }
+            nav ul { display: none; } 
+            .mobile-toggle { display: block; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVIGATION -->
+    <header>
+        <div class="container nav-wrapper">
+            <div class="logo-container">
+                <!-- LOGO FILE: Ensure logo.png is in the same folder -->
+                <a href="#"><img src="battlelogo.png" alt="Battle of the Branches" class="logo-img"></a>
+                <!-- Fallback if image fails to load -->
+                <a href="#" class="logo-text-fallback" onclick="this.style.display='block';this.previousElementSibling.style.display='none'">BATTLE <span>OF THE BRANCHES</span></a>
+            </div>
+
+            <nav>
+                <ul>
+                    <li><a href="#hero">Home</a></li>
+                    <li><a href="#concept">Concept</a></li>
+                    <li><a href="#teams">The Teams</a></li>
+                    <li><a href="#route">The Route</a></li>
+                    <li><a href="#sponsors">Partners</a></li>
+                </ul>
+            </nav>
+            <div class="mobile-toggle"><i class="fas fa-bars"></i></div>
+            <a href="#" class="btn btn-primary" style="display:none; @media(min-width:768px){display:inline-block;}">Watch Trailer</a>
+        </div>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section class="hero" id="hero">
+        <div class="container hero-content">
+            <h2>FILMING SPRING 2026</h2>
+            <h1>5 DAYS. 4 STATES.<br>ONE MISSION.</h1>
+            <p>Six military branches. Six civilian partners. 500+ miles of unforgiving off-road terrain. Who has the grit to win?</p>
+            <a href="#concept" class="btn btn-primary">Discover the Show</a>
+            <a href="#teams" class="btn btn-outline" style="margin-left: 10px;">Meet the Teams</a>
+        </div>
+    </section>
+
+    <!-- CONCEPT / STATS -->
+    <section class="concept" id="concept">
+        <div class="container">
+            <h2 class="section-title">The Ultimate Test</h2>
+            <div class="title-dec"></div>
+            <p style="max-width: 800px; margin: 0 auto; font-size: 1.1rem; line-height: 1.6;">
+                Battle of the Branches is a high-energy competition reality series. We pair members of each Armed Service Branch with civilian partners to test physical ability, strategy, and teamwork. Designed for families, veterans, and patriots.
+            </p>
+
+            <div class="stat-grid">
+                <div class="stat-card">
+                    <i class="fas fa-route"></i>
+                    <h3>500+</h3>
+                    <p>Miles Off-Road</p>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-users"></i>
+                    <h3>6</h3>
+                    <p>Elite Teams</p>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-map-marked-alt"></i>
+                    <h3>4</h3>
+                    <p>States (AZ, UT, NM, CO)</p>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-trophy"></i>
+                    <h3>1</h3>
+                    <p>Grand Prize</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TEAMS GRID -->
+    <section class="teams-section" id="teams">
+        <div class="container">
+            <h2 class="section-title">The Competitors</h2>
+            <div class="title-dec"></div>
+            
+            <div class="team-grid">
+                <!-- Team 1: Army (Soldiers) -->
+                <div class="team-card">
+                    <div class="team-img" style="background-image: url('https://images03.military.com/sites/default/files/styles/full/public/2025-04/mil-super-garuda-shield-2024-1800.jpg');">
+                        <div class="team-branch">U.S. Army</div>
+                    </div>
+                    <div class="team-info">
+                        <h4>Team Ground Pounders</h4>
+                        <p>Specialist Mark D. & Civilian Sarah J.</p>
+                        <div class="vote-count">
+                            <span><i class="fas fa-heart"></i> Fan Favorites</span>
+                            <span>12,403 Votes</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Team 2: Navy (Ship) -->
+                <div class="team-card">
+                    <div class="team-img" style="background-image: url('https://i0.wp.com/www.defensemedianetwork.com/wp-content/uploads/2012/11/Return-to-the-Sea-opener.jpg?fit=720%2C478&ssl=1');">
+                        <div class="team-branch">U.S. Navy</div>
+                    </div>
+                    <div class="team-info">
+                        <h4>Team Deep Blue</h4>
+                        <p>PO1 James R. & Civilian Mike T.</p>
+                        <div class="vote-count">
+                            <span><i class="fas fa-star"></i> Rising Stars</span>
+                            <span>9,840 Votes</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Team 3: Marines (Desert Patrol) -->
+                <div class="team-card">
+                    <div class="team-img" style="background-image: url('https://static.diffen.com/uploadz/b/b3/united-states-army--1.jpg');">
+                        <div class="team-branch">U.S. Marines</div>
+                    </div>
+                    <div class="team-info">
+                        <h4>Team Devil Dogs</h4>
+                        <p>Sgt. Elena G. & Civilian Rob P.</p>
+                        <div class="vote-count">
+                            <span><i class="fas fa-bolt"></i> Speed Leaders</span>
+                            <span>11,200 Votes</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Team 4: Air Force (Jet) -->
+                <div class="team-card">
+                    <div class="team-img" style="background-image: url('https://cdn.shopify.com/s/files/1/0642/7853/files/9129644.jpg?v=1750866799');">
+                        <div class="team-branch">U.S. Air Force</div>
+                    </div>
+                    <div class="team-info">
+                        <h4>Team High Flyers</h4>
+                        <p>Capt. Steve L. & Civilian Jen K.</p>
+                        <div class="vote-count">
+                            <span><i class="fas fa-cogs"></i> Tech Experts</span>
+                            <span>10,150 Votes</span>
+                        </div>
+                    </div>
+                </div>
+                 <!-- Team 5: Coast Guard (Helicopter Rescue) -->
+                 <div class="team-card">
+                    <div class="team-img" style="background-image: url('https://media.defense.gov/2025/Mar/20/2003673255/1920/1080/0/250320-G-LB555-1001.JPG');">
+                        <div class="team-branch">U.S. Coast Guard</div>
+                    </div>
+                    <div class="team-info">
+                        <h4>Team Guardians</h4>
+                        <p>PO2 Chris M. & Civilian Lisa D.</p>
+                        <div class="vote-count">
+                            <span><i class="fas fa-shield-alt"></i> Resilience</span>
+                            <span>8,900 Votes</span>
+                        </div>
+                    </div>
+                </div>
+                 <!-- Team 6: Space Force (Rocket Launch) -->
+                 <div class="team-card">
+                    <div class="team-img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwr32fdNclB4SOiiClfyd6JITltOrvtrTsFA&s');">
+                        <div class="team-branch">U.S. Space Force</div>
+                    </div>
+                    <div class="team-info">
+                        <h4>Team Orbit</h4>
+                        <p>Sgt. Alex B. & Civilian Tom H.</p>
+                        <div class="vote-count">
+                            <span><i class="fas fa-rocket"></i> Strategy</span>
+                            <span>9,100 Votes</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            
+            <div style="text-align: center; margin-top: 50px;">
+                <a href="#" class="btn btn-primary">Vote for your Team</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ROUTE MAP -->
+    <section class="route-section" id="route">
+        <div class="container">
+            <h2 class="section-title">The Route</h2>
+            <div class="title-dec"></div>
+            <p>5 Days of grueling challenges ending at the Four Corners Monument.</p>
+
+            <div class="map-container">
+                <div class="map-overlay">
+                    <i class="fas fa-map-marked-alt" style="font-size: 4rem; color: var(--red); margin-bottom: 20px;"></i>
+                    <h3 style="font-size: 2rem;">Interactive Map Loading...</h3>
+                    <div class="route-points">
+                        <div class="point">ARIZONA</div>
+                        <div class="point">UTAH</div>
+                        <div class="point">NEW MEXICO</div>
+                        <div class="point">COLORADO</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SPONSORS -->
+    <section class="sponsors" id="sponsors">
+        <div class="container">
+            <h4 style="color: #999; margin-bottom: 30px;">SPONSORSHIP OPPORTUNITIES AVAILABLE</h4>
+            <div class="sponsor-grid">
+                <div class="sponsor-logo" style="background:#000;">TITLE SPONSOR</div>
+                <div class="sponsor-logo" style="background:#444;">GEAR PARTNER</div>
+                <div class="sponsor-logo" style="background:#444;">VEHICLE PARTNER</div>
+                <div class="sponsor-logo" style="background:#444;">APPAREL</div>
+            </div>
+            <p style="margin-top: 30px;"><a href="#" style="color: var(--navy); font-weight: bold;">Become a Partner <i class="fas fa-arrow-right"></i></a></p>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <div class="logo-container">
+                        <!-- Footer Logo Instance -->
+                        <img src="logo.png" alt="Battle of the Branches" class="logo-img" style="max-height: 40px; margin-bottom:15px;">
+                    </div>
+                    <p>The ultimate test of military grit and off-road capability. Filming Spring 2026.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">The Teams</a></li>
+                        <li><a href="#">Sponsorship Deck</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Contact Production</h4>
+                    <div class="contact-box">
+                        <p style="color: white; font-weight: bold;">Keenan Campbell</p>
+                        <p>815-252-6383</p>
+                        <p style="font-size: 0.8rem; margin-top: 5px;">keenan@overlandingwithintention.com</p>
+                    </div>
+                    <div style="margin-top: 20px; font-size: 1.2rem;">
+                        <a href="#" style="margin-right: 15px;"><i class="fab fa-facebook"></i></a>
+                        <a href="#" style="margin-right: 15px;"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2025 Battle of the Branches. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
