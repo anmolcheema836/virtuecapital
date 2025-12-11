@@ -6,181 +6,47 @@
     
     <title>Dr. Don Utas | Meadowbrook Dental Laser Clinic</title>
     
-    <!-- Fonts from Reference Site -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Cormorant+Garamond:wght@300;400;500;600;700&family=Libre+Baskerville:wght@400;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Libre+Baskerville:wght@400;700&display=swap" rel="stylesheet">
     
     <!-- Bootstrap & FontAwesome -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
-        /* --- SITE VARIABLES (Copied from Source) --- */
+        /* --- BRAND VARIABLES --- */
         :root {
             --teal: #214e53;
             --slate-teal: #3F6274;
             --aqua: #2ed2d1;
             --off-white: #e1edf0;
-            --light: #f5f7f7;
             --charcoal: #4c5b61;
-            --nav-item-hover: #ffffff;
+            --light-bg: #f9fbfb;
             
-            /* Font Mappings */
-            --bs-body-font-family: 'Inter', sans-serif;
             --font-heading: 'Cormorant Garamond', serif;
+            --font-body: 'Inter', sans-serif;
             --font-accent: 'Libre Baskerville', serif;
         }
 
         body {
-            font-family: var(--bs-body-font-family);
+            font-family: var(--font-body);
             color: var(--charcoal);
-            line-height: 1.6;
             background-color: #fff;
+            line-height: 1.7;
         }
 
-        /* --- HEADER STYLES (To match production) --- */
-        .top-strip {
-            background-color: var(--slate-teal);
-            height: 40px;
-            font-size: 0.9rem;
-            color: white;
-        }
+        /* --- HEADER & FOOTER STYLES (PRESERVED) --- */
+        .top-strip { background-color: var(--slate-teal); height: 40px; font-size: 0.9rem; color: white; }
         .top-strip a { text-decoration: none; color: white; font-family: var(--font-accent); }
-        
-        .header-wrapper {
-            background: #fff;
-            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
-            padding: 15px 0;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
-        
+        .header-wrapper { background: #fff; box-shadow: 0 2px 15px rgba(0,0,0,0.05); padding: 15px 0; position: sticky; top: 0; z-index: 1000; }
         .navbar-brand img { height: 60px; width: auto; }
-        .nav-link {
-            color: var(--charcoal) !important;
-            font-weight: 500;
-            text-transform: uppercase;
-            font-size: 0.85rem;
-            padding: 0 1rem !important;
-            letter-spacing: 0.5px;
-        }
+        .nav-link { color: var(--charcoal) !important; font-weight: 500; text-transform: uppercase; font-size: 0.85rem; padding: 0 1rem !important; letter-spacing: 0.5px; }
         .nav-link:hover, .nav-link.active { color: var(--slate-teal) !important; }
         .dropdown-menu { border-radius: 0; border: none; box-shadow: 0 5px 20px rgba(0,0,0,0.1); }
         .dropdown-item { font-size: 0.9rem; padding: 8px 20px; color: var(--charcoal); }
         .dropdown-item:hover { background-color: var(--off-white); color: var(--teal); }
         .dropdown-header { color: var(--teal); font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; }
 
-        /* --- INTERIOR PAGE HERO (Custom for this page) --- */
-        .interior-hero {
-            background-color: var(--slate-teal);
-            padding: 80px 0 100px;
-            position: relative;
-            text-align: center;
-            color: white;
-        }
-        .interior-hero h1 {
-            font-family: var(--font-heading);
-            font-size: 3.5rem;
-            color: white;
-            margin-bottom: 10px;
-        }
-        .interior-hero .subtitle {
-            font-family: var(--font-accent);
-            opacity: 0.9;
-            font-size: 1.1rem;
-        }
-        
-        /* Wave Separator */
-        .hero-wave {
-            position: absolute;
-            bottom: -1px;
-            left: 0;
-            width: 100%;
-            overflow: hidden;
-            line-height: 0;
-        }
-        .hero-wave svg {
-            display: block;
-            width: calc(100% + 1.3px);
-            height: 60px;
-        }
-
-        /* --- STAFF PROFILE SECTION --- */
-        .staff-section {
-            padding: 60px 0;
-        }
-
-        /* Sidebar Image */
-        .profile-card {
-            background: #fff;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 1rem 3rem rgba(0,0,0,.15);
-            margin-bottom: 30px;
-        }
-        .profile-card img {
-            width: 100%;
-            height: auto;
-            display: block;
-        }
-        .contact-box {
-            background-color: var(--light);
-            padding: 25px;
-            border-top: 4px solid var(--teal);
-        }
-        .contact-box h5 {
-            font-family: var(--font-heading);
-            color: var(--teal);
-            font-weight: 700;
-            margin-bottom: 15px;
-        }
-        .contact-item { margin-bottom: 12px; font-size: 0.95rem; }
-        .contact-item i { width: 25px; color: var(--slate-teal); }
-        .btn-book {
-            background-color: var(--teal);
-            color: white;
-            width: 100%;
-            padding: 12px;
-            text-transform: uppercase;
-            font-weight: 600;
-            font-size: 0.85rem;
-            border: none;
-            margin-top: 15px;
-            border-radius: 4px;
-            transition: 0.3s;
-        }
-        .btn-book:hover { background-color: var(--slate-teal); color: white; }
-
-        /* Bio Text */
-        .bio-content h2 {
-            font-family: var(--font-heading);
-            color: var(--teal);
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 10px;
-        }
-        .bio-intro {
-            font-size: 1.15rem;
-            color: var(--slate-teal);
-            font-weight: 500;
-            margin-bottom: 30px;
-        }
-        
-        .feature-box {
-            background-color: var(--off-white);
-            border-left: 4px solid var(--aqua);
-            padding: 25px;
-            margin: 30px 0;
-            border-radius: 0 8px 8px 0;
-        }
-        .feature-box h4 {
-            font-family: var(--font-heading);
-            color: var(--teal);
-            margin-bottom: 10px;
-            font-weight: 700;
-        }
-
-        /* --- FOOTER STYLES (To match production) --- */
         .footer-section { background-color: white; padding: 60px 0 30px; border-top: 1px solid #eee; }
         .footer-logo { max-height: 60px; }
         .footer-heading { color: var(--teal); font-family: var(--font-heading); font-weight: 700; margin-bottom: 20px; font-size: 1.3rem; }
@@ -189,13 +55,162 @@
         .footer-links a:hover { color: var(--teal); padding-left: 5px; }
         .footer-copy { font-size: 0.85rem; color: #999; margin-top: 40px; }
 
+        /* --- NEW EDITORIAL DESIGN STYLES --- */
+        
+        /* Breadcrumb Strip */
+        .breadcrumb-strip {
+            background-color: var(--light-bg);
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 40px;
+            font-size: 0.85rem;
+            color: #888;
+        }
+        .breadcrumb-strip a { text-decoration: none; color: var(--slate-teal); font-weight: 600; }
+        .breadcrumb-strip span { margin: 0 8px; color: #ccc; }
+
+        /* Editorial Layout */
+        .editorial-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Sticky Sidebar (Left) */
+        .sticky-profile {
+            position: sticky;
+            top: 130px; /* Adjust for sticky header */
+            text-align: center;
+        }
+
+        .profile-frame {
+            position: relative;
+            padding: 10px;
+            border: 1px solid #eee;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+        
+        .profile-frame img {
+            width: 100%;
+            max-width: 300px;
+            height: auto;
+            display: block;
+            filter: sepia(10%); /* Slight warm tone */
+        }
+
+        .quick-contact {
+            text-align: left;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+        .qc-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 15px;
+            color: var(--charcoal);
+            font-size: 0.9rem;
+        }
+        .qc-icon {
+            color: var(--aqua);
+            margin-right: 12px;
+            margin-top: 4px;
+        }
+        .btn-outline-teal {
+            border: 1px solid var(--teal);
+            color: var(--teal);
+            width: 100%;
+            border-radius: 0;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            padding: 10px;
+            transition: 0.3s;
+        }
+        .btn-outline-teal:hover {
+            background-color: var(--teal);
+            color: white;
+        }
+
+        /* Main Bio Content (Right) */
+        .bio-category {
+            font-family: var(--font-body);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--aqua);
+            font-weight: 700;
+            margin-bottom: 10px;
+            display: block;
+        }
+        
+        .bio-title {
+            font-family: var(--font-heading);
+            font-size: 3.5rem;
+            color: var(--teal);
+            line-height: 1.1;
+            margin-bottom: 25px;
+        }
+
+        .bio-lead {
+            font-family: var(--font-heading);
+            font-size: 1.5rem;
+            color: var(--slate-teal);
+            font-style: italic;
+            margin-bottom: 30px;
+            line-height: 1.5;
+        }
+
+        .bio-text p { margin-bottom: 20px; font-size: 1.05rem; }
+
+        /* Credentials Grid */
+        .credentials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 40px 0;
+        }
+        .cred-card {
+            background: var(--light-bg);
+            padding: 20px;
+            border-left: 3px solid var(--teal);
+        }
+        .cred-year { font-weight: 700; color: var(--teal); display: block; margin-bottom: 5px; }
+        .cred-detail { font-size: 0.9rem; line-height: 1.4; }
+
+        /* Laser Tech Section */
+        .tech-section {
+            background-color: var(--teal);
+            color: white;
+            padding: 40px;
+            margin-top: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+        .tech-section h3 { color: white; margin-bottom: 15px; }
+        .tech-section p { opacity: 0.9; font-weight: 300; }
+        .tech-bg-icon {
+            position: absolute;
+            right: -20px;
+            bottom: -20px;
+            font-size: 10rem;
+            opacity: 0.05;
+            color: white;
+        }
+
+        @media (max-width: 991px) {
+            .sticky-profile { position: static; text-align: left; margin-bottom: 40px; }
+            .profile-frame { width: 100%; max-width: none; border: none; padding: 0; }
+            .profile-frame img { max-width: 100%; }
+            .bio-title { font-size: 2.5rem; }
+        }
     </style>
 </head>
 <body>
 
 <!-- ============================================ -->
-<!-- HEADER (EXACTLY FROM REFERENCE SITE)         -->
-<!-- Links updated to point to live site          -->
+<!-- HEADER (UNCHANGED)                           -->
 <!-- ============================================ -->
 
 <div class="top-strip d-none d-md-flex align-items-center justify-content-end px-3">
@@ -279,74 +294,92 @@
 
 
 <!-- ============================================ -->
-<!-- CUSTOM INTERIOR PAGE CONTENT                 -->
+<!-- EDITORIAL STAFF PAGE CONTENT                 -->
 <!-- ============================================ -->
 
-<!-- Interior Hero -->
-<section class="interior-hero">
-    <div class="container">
-        <h1>Dr. Don Utas</h1>
-        <div class="subtitle">Dentist & Owner | Meadowbrook Dental Laser Clinic</div>
+<!-- Subtle Breadcrumb Strip -->
+<div class="breadcrumb-strip">
+    <div class="editorial-container">
+        <a href="https://vancouvernaturopaths.com/">Home</a> <span>/</span> 
+        <a href="#">About Us</a> <span>/</span> 
+        Dr. Don Utas
     </div>
-    <!-- Matching Wave from Homepage -->
-    <div class="hero-wave">
-        <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
-            <path d="M0 40 C 480 140 960 -20 1440 60 L1440 120 L0 120 Z" fill="#fff"></path>
-        </svg>
-    </div>
-</section>
+</div>
 
-<!-- Main Profile Area -->
-<section class="staff-section">
-    <div class="container">
-        <div class="row g-5">
-            
-            <!-- LEFT COLUMN: PHOTO & CONTACT -->
-            <div class="col-lg-4">
-                <div class="profile-card">
-                    <!-- IMAGE: Assumes 'profile.png' is in the same folder -->
+<div class="editorial-container pb-5">
+    <div class="row">
+        
+        <!-- LEFT COLUMN: Sticky Sidebar -->
+        <div class="col-lg-4">
+            <div class="sticky-profile">
+                <div class="profile-frame">
+                    <!-- Image expects 'profile.png' -->
                     <img src="profile.png" alt="Dr. Don Utas">
+                </div>
+
+                <div class="quick-contact">
+                    <h6 class="text-uppercase mb-3" style="color:var(--teal); font-weight:700; letter-spacing:1px;">Contact</h6>
                     
-                    <div class="contact-box">
-                        <h5>Contact Info</h5>
-                        <div class="contact-item">
-                            <i class="fa-solid fa-location-dot"></i> 514-45715 Hocking Ave<br>
-                            <span style="padding-left: 29px;">Chilliwack, BC, V2P 6Z6</span>
-                        </div>
-                        <div class="contact-item">
-                            <i class="fa-solid fa-phone"></i> (604) 792-2400
-                        </div>
-                        <a href="tel:6047922400" class="btn btn-book">Book Appointment</a>
+                    <div class="qc-item">
+                        <div class="qc-icon"><i class="fa-solid fa-map-pin"></i></div>
+                        <div>514-45715 Hocking Ave<br>Chilliwack, BC, V2P 6Z6</div>
                     </div>
+                    
+                    <div class="qc-item">
+                        <div class="qc-icon"><i class="fa-solid fa-phone"></i></div>
+                        <div style="font-family: var(--font-accent);">(604) 792-2400</div>
+                    </div>
+
+                    <a href="tel:6047922400" class="btn btn-outline-teal mt-2">Book Consultation</a>
                 </div>
             </div>
-
-            <!-- RIGHT COLUMN: BIO -->
-            <div class="col-lg-8 bio-content">
-                <h2>About Dr. Don Utas</h2>
-                <p class="bio-intro">Devoted to helping people through modern, compassionate dentistry.</p>
-                
-                <p>Dr. Don Utas received his Dental degree from the University of Saskatchewan in 1994 and bought Meadowbrook Dental in Chilliwack a year later. As a lifelong learner, he has earned a Diploma of Technology at BCIT and a Bachelor of Education at Simon Fraser University.</p>
-                
-                <p>Before devoting his life to dentistry, Dr. Utas worked as a Park Ranger and high school teacher. These diverse experiences have shaped his approach to patient care, allowing him to explain complex dental health concepts with clarity and patience.</p>
-
-                <div class="feature-box">
-                    <h4><i class="fa-solid fa-bolt me-2"></i>Laser Dentistry Specialist</h4>
-                    <p class="mb-2">Since 2006, Dr. Utas has been committed to offering the most up-to-date technology to his patients. He received <strong>Mastership Certification in Laser Dentistry</strong> at the World Clinical Laser Institute in California and continues to learn about new procedures through continuing education in the US and Canada.</p>
-                    <p class="mb-0 small text-muted"><em>Laser dentistry is a safe and effective alternative to the dental drill. It reduces or eliminates the need for freezing in many cases.</em></p>
-                </div>
-
-                <p>Located in Chilliwack, Meadowbrook Dental specializes in the use of lasers to treat a wide range of dental problems. Dr. Utas and his team are dedicated to providing leading-edge laser dentistry to residents of the Fraser Valley in a comfortable, welcoming environment.</p>
-            </div>
-
         </div>
-    </div>
-</section>
 
+        <!-- RIGHT COLUMN: Narrative Bio -->
+        <div class="col-lg-7 offset-lg-1 bio-text">
+            <span class="bio-category">Meet The Team</span>
+            <h1 class="bio-title">Dr. Don Utas</h1>
+            <p class="bio-lead">A lifelong learner and educator devoted to helping people through compassionate, modern dentistry.</p>
+            
+            <p>Dr. Don Utas received his Dental degree from the University of Saskatchewan in 1994 and bought Meadowbrook Dental in Chilliwack a year later. His path to dentistry was paved with diverse experiences; before devoting his life to oral health, he worked as a Park Ranger and high school teacher. These roles instilled in him a patience and educational approach that he brings to every patient interaction.</p>
+
+            <div class="credentials-grid">
+                <div class="cred-card">
+                    <span class="cred-year">1994</span>
+                    <div class="cred-detail">DMD Degree<br>University of Saskatchewan</div>
+                </div>
+                <div class="cred-card">
+                    <span class="cred-year">1995</span>
+                    <div class="cred-detail">Owner<br>Meadowbrook Dental</div>
+                </div>
+                <div class="cred-card">
+                    <span class="cred-year">Ongoing</span>
+                    <div class="cred-detail">Mastership<br>World Clinical Laser Institute</div>
+                </div>
+            </div>
+
+            <p>Dr. Utas continues to expand his knowledge through a Bachelor of Education at Simon Fraser University and a Diploma of Technology at BCIT. He is committed to offering the most up-to-date technology to his patients, ensuring treatments are as comfortable and effective as possible.</p>
+
+            <!-- Feature Section: Laser Dentistry -->
+            <div class="tech-section">
+                <i class="fa-solid fa-wand-magic-sparkles tech-bg-icon"></i>
+                <h3><i class="fa-solid fa-bolt me-2"></i>Specialization: Laser Dentistry</h3>
+                <p>Since 2006, Dr. Utas has specialized in laser dentistry. This leading-edge technology is a safe and effective alternative to the dental drill.</p>
+                <ul class="list-unstyled mt-3" style="font-size: 0.9rem;">
+                    <li class="mb-2"><i class="fa-solid fa-check me-2" style="color:var(--aqua)"></i> Removes decay and prepares teeth painlessly.</li>
+                    <li class="mb-2"><i class="fa-solid fa-check me-2" style="color:var(--aqua)"></i> Reduces or eliminates the need for freezing.</li>
+                    <li><i class="fa-solid fa-check me-2" style="color:var(--aqua)"></i> Treats a wide range of dental problems comfortably.</li>
+                </ul>
+            </div>
+            
+            <p class="mt-4 text-muted small">Meadowbrook Dental Laser Clinic provides leading-edge laser dentistry to residents of the Fraser Valley.</p>
+        </div>
+
+    </div>
+</div>
 
 <!-- ============================================ -->
-<!-- FOOTER (EXACTLY FROM REFERENCE SITE)         -->
-<!-- Links updated to point to live site          -->
+<!-- FOOTER (UNCHANGED)                           -->
 <!-- ============================================ -->
 
 <footer class="footer-section">
