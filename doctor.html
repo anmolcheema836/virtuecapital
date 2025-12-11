@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dr. Don Utas | Meadowbrook Dental Laser Clinic</title>
+    
+    <!-- Fonts from Reference -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Cormorant+Garamond:wght@300;400;500;600;700&family=Libre+Baskerville:wght@400;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome (Using Free CDN for display purposes) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* --- BRAND VARIABLES (Extracted from Reference) --- */
+        :root {
+            --teal: #214e53;
+            --slate-teal: #3F6274;
+            --aqua: #2ed2d1;
+            --off-white: #e1edf0;
+            --light: #f5f7f7;
+            --charcoal: #4c5b61;
+            --text-dark: #212529;
+            --font-heading: 'Cormorant Garamond', serif;
+            --font-body: 'Inter', sans-serif;
+            --font-accent: 'Libre Baskerville', serif;
+        }
+
+        body {
+            font-family: var(--font-body);
+            color: var(--charcoal);
+            background-color: #fff;
+            line-height: 1.7;
+        }
+
+        /* --- TYPOGRAPHY --- */
+        h1, h2, h3, h4, h5, h6 {
+            font-family: var(--font-heading);
+            color: var(--teal);
+            font-weight: 700;
+        }
+
+        .text-accent {
+            font-family: var(--font-accent);
+        }
+
+        /* --- HEADER & NAV --- */
+        .top-strip {
+            background-color: var(--slate-teal);
+            height: 40px;
+            font-size: 0.9rem;
+            color: white;
+        }
+        
+        .top-strip a { text-decoration: none; color: white; font-family: var(--font-accent); }
+
+        .header-wrapper {
+            background: #fff;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar-brand img { height: 60px; width: auto; }
+        
+        .nav-link {
+            color: var(--charcoal) !important;
+            font-weight: 500;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            padding: 0 15px !important;
+            letter-spacing: 0.5px;
+        }
+        
+        .nav-link:hover, .nav-link.active { color: var(--slate-teal) !important; }
+
+        /* --- HERO SECTION --- */
+        .interior-hero {
+            background-color: var(--slate-teal);
+            color: white;
+            padding: 80px 0 100px 0;
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .interior-hero h1 { color: white; font-size: 3.5rem; }
+        .interior-hero p { font-size: 1.2rem; opacity: 0.9; max-width: 600px; margin: 0 auto; }
+
+        /* Wave Separator */
+        .hero-wave {
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            overflow: hidden;
+            line-height: 0;
+        }
+        .hero-wave svg {
+            display: block;
+            width: calc(100% + 1.3px);
+            height: 60px;
+        }
+
+        /* --- PROFILE CONTENT --- */
+        .profile-img-container {
+            position: relative;
+            margin-bottom: 30px;
+        }
+
+        .profile-img {
+            border-radius: 8px;
+            box-shadow: 0 1rem 3rem rgba(0,0,0,.175); /* shadow-lg */
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+        }
+
+        .contact-sidebar-card {
+            background-color: var(--light);
+            border: 1px solid var(--off-white);
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 .125rem .25rem rgba(0,0,0,.075);
+        }
+
+        .contact-icon-circle {
+            width: 40px;
+            height: 40px;
+            background-color: var(--slate-teal);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-size: 1.1rem;
+        }
+
+        .bio-kicker {
+            color: var(--slate-teal);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .highlight-box {
+            background-color: var(--off-white);
+            border-left: 4px solid var(--aqua);
+            padding: 25px;
+            border-radius: 0 8px 8px 0;
+            margin: 30px 0;
+        }
+
+        .highlight-box h5 { margin-bottom: 10px; color: var(--teal); }
+        .highlight-box p { margin-bottom: 0; font-size: 0.95rem; }
+
+        /* --- FOOTER --- */
+        footer { background-color: #fff; border-top: 1px solid #eee; }
+        .footer-logo { max-height: 50px; }
+        .footer-heading { color: var(--teal); font-size: 1.2rem; margin-bottom: 1.5rem; }
+        .footer-links a { color: var(--charcoal); text-decoration: none; display: block; margin-bottom: 10px; }
+        .footer-links a:hover { color: var(--slate-teal); padding-left: 5px; transition: 0.3s; }
+
+        /* Responsive */
+        @media(max-width: 768px) {
+            .interior-hero h1 { font-size: 2.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- TOP STRIP -->
+    <div class="top-strip d-none d-md-flex align-items-center justify-content-end px-3">
+        <div class="call-info">
+            <span class="me-2"><i class="fa-solid fa-phone me-2"></i>CALL</span>
+            <a href="tel:6047922400" class="phone">(604) 792-2400</a>
+        </div>
+    </div>
+
+    <!-- HEADER / NAVIGATION -->
+    <header class="container-fluid header-wrapper">
+        <div class="container">
+            <nav class="navbar navbar-expand-lg px-0">
+                <a class="navbar-brand d-flex align-items-center gap-2" href="#">
+                    <img src="https://vancouvernaturopaths.com/images/meadowbrook-logo-header.png" alt="Meadowbrook Dental Logo" class="logo-img">
+                </a>
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse justify-content-end" id="mainNav">
+                    <ul class="navbar-nav align-items-center">
+                        <li class="nav-item"><a class="nav-link" href="#">HOME</a></li>
+                        <li class="nav-item"><a class="nav-link active" href="#">OUR TEAM</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#">SERVICES</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#">CONTACT</a></li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- INTERIOR HERO -->
+    <section class="interior-hero text-center">
+        <div class="container">
+            <h6 style="color:var(--aqua); letter-spacing: 2px; text-transform:uppercase;">Meadowbrook Dental</h6>
+            <h1>Dr. Don Utas</h1>
+            <p>Dentist & Owner | Dedicated to helping people through dentistry</p>
+        </div>
+        <div class="hero-wave">
+            <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
+                <path d="M0 40 C 480 140 960 -20 1440 60 L1440 120 L0 120 Z" fill="#fff"></path>
+            </svg>
+        </div>
+    </section>
+
+    <!-- MAIN PROFILE CONTENT -->
+    <section class="py-5">
+        <div class="container">
+            <div class="row g-5">
+                
+                <!-- Left Sidebar: Photo & Contact -->
+                <div class="col-lg-4">
+                    <div class="profile-img-container">
+                        <!-- Image must be named profile.png and in same folder -->
+                        <img src="profile.png" alt="Dr. Don Utas" class="profile-img img-fluid">
+                    </div>
+
+                    <div class="contact-sidebar-card">
+                        <h4 class="mb-4">Contact Info</h4>
+                        
+                        <div class="d-flex align-items-start mb-4">
+                            <div class="contact-icon-circle">
+                                <i class="fa-solid fa-location-dot"></i>
+                            </div>
+                            <div>
+                                <strong class="d-block text-dark">Address</strong>
+                                <span class="text-secondary">514-45715 Hocking Ave<br>Chilliwack, BC<br>V2P 6Z6</span>
+                            </div>
+                        </div>
+
+                        <div class="d-flex align-items-center mb-4">
+                            <div class="contact-icon-circle">
+                                <i class="fa-solid fa-phone"></i>
+                            </div>
+                            <div>
+                                <strong class="d-block text-dark">Phone</strong>
+                                <a href="tel:6047922400" class="text-accent text-decoration-none" style="color:var(--teal); font-weight:700;">(604) 792-2400</a>
+                            </div>
+                        </div>
+
+                        <a href="tel:6047922400" class="btn w-100 text-white" style="background-color: var(--teal); padding: 12px;">Book Appointment</a>
+                    </div>
+                </div>
+
+                <!-- Right Content: Bio -->
+                <div class="col-lg-8">
+                    <span class="bio-kicker">Professional Profile</span>
+                    <h2 class="mb-4 display-6">About Dr. Don Utas</h2>
+                    
+                    <div class="text-secondary">
+                        <p>Dr. Don Utas received his Dental degree from the University of Saskatchewan in 1994 and bought Meadowbrook Dental in Chilliwack a year later. As a lifelong learner, he has earned a Diploma of Technology at BCIT and a Bachelor of Education at Simon Fraser University.</p> 
+                        
+                        <p>Before devoting his life to helping people through dentistry, Dr. Utas cultivated a diverse background working as a Park Ranger and high school teacher. This unique experience allows him to bring a calm, educational approach to his dental practice.</p>
+
+                        <h4 class="mt-5 mb-3">Expertise in Laser Dentistry</h4>
+                        <p>Since 2006, Dr. Utas has been committed to offering the most up-to-date technology to his patients through laser dentistry. He received <strong>Mastership Certification in Laser Dentistry</strong> at the World Clinical Laser Institute in California, and he continues to learn about new procedures through continuing education in the US and Canada.</p>
+
+                        <div class="highlight-box">
+                            <h5><i class="fa-solid fa-bolt me-2"></i>Why Laser Dentistry?</h5>
+                            <p>Laser dentistry is a safe and effective alternative to the dental drill when fillings are needed. Lasers are used to remove decay and prepare teeth for fillings painlessly. Depending on the size of the cavity, lasers reduce or eliminate the need for freezing.</p>
+                        </div>
+
+                        <p>Meadowbrook Dental Laser Clinic provides leading-edge laser dentistry to residents of the Fraser Valley. Located in Chilliwack, Meadowbrook Dental specializes in the use of lasers to treat a wide range of dental problems.</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer-section py-5 mt-5">
+        <div class="container">
+            <div class="row g-4 align-items-start">
+                <div class="col-md-4 text-center text-md-start">
+                    <img src="https://vancouvernaturopaths.com/images/meadowbrook-logo-header.png" class="footer-logo mb-3" alt="Meadowbrook Dental">
+                    <p class="small text-secondary">Leading-edge laser dentistry providing safe, painless dental care to residents of the Fraser Valley since 1995.</p>
+                </div>
+                <div class="col-md-4 text-center text-md-start">
+                    <h5 class="footer-heading">Quick Links</h5>
+                    <div class="footer-links">
+                        <a href="#">Home</a>
+                        <a href="#">About Us</a>
+                        <a href="#">Services</a>
+                        <a href="#">Contact</a>
+                    </div>
+                </div>
+                <div class="col-md-4 text-center text-md-start">
+                    <h5 class="footer-heading">Contact</h5>
+                    <p class="mb-1 text-secondary">514-45715 Hocking Ave<br>Chilliwack, BC</p>
+                    <p class="text-secondary">V2P 6Z6<br><span class="text-accent text-dark fw-bold">(604) 792-2400</span></p>
+                </div>
+            </div>
+            <hr class="my-4">
+            <p class="text-center small text-secondary mb-0">© 2025 Meadowbrook Dental Laser Clinic. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
