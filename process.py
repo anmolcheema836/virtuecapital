@@ -5,13 +5,16 @@ import os
 # --- CONFIGURATION ---
 RESULT_FILE = "warder.xlsx"
 MARKS_FILE = "numbersofwarder.xlsx"
-OUTPUT_FILE = "Final_Selection_List_175_Clean.pdf"
+OUTPUT_FILE = "Final_Selection_List_175.pdf"
 TELEGRAM_LINK = "https://t.me/punjabjailwarder"
 
 # --- SEAT DISTRIBUTION RULES ---
-# (Display Name, Count, Internal Category Match Keywords)
 SEAT_QUOTAS = [
+    # (Display Name, Count, Internal Category Match Keywords)
+    # The 'Open' category is handled specially in code (Top 75 regardless of cat)
     ("Open / General (Merit)", 75, ["ANY"]), 
+    
+    # Reserved Categories (Applied to remaining candidates)
     ("Economic Weaker Section", 17, ["ews"]),
     ("Scheduled Caste (M&B)", 18, ["s.c (m", "sc (m", "mazhbi"]),
     ("Scheduled Caste (R&O)", 17, ["s.c (r", "sc (r", "ramdasia"]),
@@ -28,10 +31,12 @@ SEAT_QUOTAS = [
 
 class PDF(FPDF):
     def header(self):
+        # Top Watermark
         self.set_font('Arial', 'I', 10)
         self.set_text_color(0, 102, 204)
         self.cell(0, 6, f'Join Telegram: {TELEGRAM_LINK}', 0, 1, 'C', link=TELEGRAM_LINK)
         
+        # Title
         self.set_text_color(0, 0, 0)
         self.set_font('Arial', 'B', 14)
         self.cell(0, 10, 'FINAL SELECTION LIST (Top 175 Candidates)', 0, 1, 'C')
@@ -39,6 +44,7 @@ class PDF(FPDF):
         self.cell(0, 8, 'Post of Warder (Advt No. 08 of 2024)', 0, 1, 'C')
         self.ln(2)
         
+        # Table Header
         self.set_font('Arial', 'B', 8)
         self.set_fill_color(220, 220, 220)
         
@@ -74,30 +80,39 @@ def clean_roll_no(val):
         return str(val).strip()
 
 def normalize_category(raw_cat, quota_list):
+    """
+    Matches the raw Excel category string to one of our Selection Categories.
+    This ensures 'S.C (M & B)' matches the 'Scheduled Caste (M&B)' bucket.
+    """
     raw = str(raw_cat).lower().strip()
+    
+    # Check strict buckets (skip Open as that is automatic)
     for display_name, count, keywords in quota_list[1:]: 
         for k in keywords:
             if k in raw:
                 return display_name
     
+    # Fallback for General if not matched above
     if 'gen' in raw and 'ews' not in raw and 'esm' not in raw and 'sports' not in raw:
         return "General"
+        
     return "Other"
 
 def process_selection_list():
+    # 1. READ & MERGE DATA (Same logic as before)
     print("Reading files...")
     if not os.path.exists(RESULT_FILE) or not os.path.exists(MARKS_FILE):
         print("Error: Files not found.")
         return
 
     try:
-        # Read Result File
+        # Read Result
         r_raw = pd.read_excel(RESULT_FILE, header=None)
         r_idx = find_header_row_fuzzy(r_raw, "Roll", "Result")
         df_res = pd.read_excel(RESULT_FILE, header=r_idx)
         df_res.columns = df_res.columns.str.strip()
         
-        # Read Marks File
+        # Read Marks
         m_raw = pd.read_excel(MARKS_FILE, header=None)
         m_idx = find_header_row_fuzzy(m_raw, "Roll", "MKS")
         df_mks = pd.read_excel(MARKS_FILE, header=m_idx)
@@ -116,17 +131,6 @@ def process_selection_list():
     mks_roll = next(c for c in df_mks.columns if "Roll" in c)
     mks_val = next(c for c in df_mks.columns if "MKS" in c)
 
-    # --- CLEANING & DEDUPLICATION (The Fix) ---
-    print("Cleaning and De-duplicating data...")
-    
-    # Clean Roll numbers to strings
-    df_res['Match_Roll'] = df_res[res_roll].apply(clean_roll_no)
-    df_mks['Match_Roll'] = df_mks[mks_roll].apply(clean_roll_no)
-    
-    # DROP DUPLICATES: Keep first occurrence of any Roll Number
-    df_res = df_res.drop_duplicates(subset=['Match_Roll'], keep='first')
-    df_mks = df_mks.drop_duplicates(subset=['Match_Roll'], keep='first')
-
     # Filter Qualified
     df_res[res_status] = df_res[res_status].astype(str)
     qualified = df_res[
@@ -134,26 +138,30 @@ def process_selection_list():
         (~df_res[res_status].str.contains("Not", case=False))
     ].copy()
 
-    # Merge
+    # Merge Marks
+    qualified['Match_Roll'] = qualified[res_roll].apply(clean_roll_no)
+    df_mks['Match_Roll'] = df_mks[mks_roll].apply(clean_roll_no)
+    
     merged = pd.merge(qualified, df_mks[['Match_Roll', mks_val]], on='Match_Roll', how='left')
     merged[mks_val] = merged[mks_val].fillna(0)
     
-    # Normalize Category
+    # Normalize Category for filtering
     merged['Norm_Cat'] = merged[res_cat].apply(lambda x: normalize_category(x, SEAT_QUOTAS))
 
-    # --- SELECTION ALGORITHM ---
-    print("Running Selection Logic...")
+    # --- THE SELECTION ALGORITHM ---
+    print("Running Selection Algorithm...")
     
-    # Sort ALL candidates by Marks (Desc) -> Name (Asc)
+    # 1. Sort EVERYONE by Marks (Desc)
+    # We sort by Marks, then Name to handle ties deterministically
     merged.sort_values(by=[mks_val, res_name], ascending=[False, True], inplace=True)
     
     final_selection = []
     selected_indices = []
 
-    # 1. FILL OPEN MERIT (Top 75)
-    open_quota = SEAT_QUOTAS[0][1]
+    # 2. FILL OPEN CATEGORY (Top 75)
+    open_quota = SEAT_QUOTAS[0][1] # 75
     
-    # Select Top 75
+    # Take top 75 available candidates
     open_candidates = merged.iloc[:open_quota].copy()
     
     for idx, row in open_candidates.iterrows():
@@ -161,40 +169,46 @@ def process_selection_list():
         final_selection.append(row)
         selected_indices.append(idx)
         
-    print(f"Filled 75 Open Merit seats.")
+    print(f"Filled 75 Open Merit seats (Cutoff: {open_candidates.iloc[-1][mks_val]})")
 
-    # 2. FILL RESERVED SEATS
+    # 3. FILL RESERVED CATEGORIES
+    # Create a pool of remaining candidates
     remaining_pool = merged.drop(selected_indices)
 
+    # Loop through the rest of the quotas
     for display_name, count, keywords in SEAT_QUOTAS[1:]:
-        # Filter for this specific category
+        # Filter pool for this specific category
+        # We match based on the 'Norm_Cat' we created earlier
         eligible = remaining_pool[remaining_pool['Norm_Cat'] == display_name]
         
-        # Take the top N available
+        # Take the top 'count' from this filtered list
         selected = eligible.head(count).copy()
         
-        if not selected.empty:
-            for idx, row in selected.iterrows():
-                row['Allocated_Category'] = display_name
-                final_selection.append(row)
-                # Remove from pool immediately to prevent double selection (though unlikely with this logic)
-                remaining_pool = remaining_pool.drop(idx)
+        print(f"Filled {len(selected)}/{count} seats for {display_name}")
         
-        print(f"{display_name}: Filled {len(selected)}/{count}")
+        for idx, row in selected.iterrows():
+            row['Allocated_Category'] = display_name
+            final_selection.append(row)
+            # Remove from pool so they aren't picked again (though unlikely given logic)
+            remaining_pool = remaining_pool.drop(idx)
 
-    # --- PDF GENERATION ---
+    # --- CREATE DATAFRAME FOR PDF ---
     final_df = pd.DataFrame(final_selection)
     
-    # Sort for Presentation
+    # Add Sorting Order for PDF presentation
+    # 1. Order by the SEAT_QUOTAS list (Open first, then EWS, then SC...)
+    # 2. Then by Marks
     cat_order = {item[0]: i for i, item in enumerate(SEAT_QUOTAS)}
     final_df['Sort_Order'] = final_df['Allocated_Category'].map(cat_order)
+    
     final_df.sort_values(by=['Sort_Order', mks_val], ascending=[True, False], inplace=True)
     
-    # Add Final Sr No
+    # Add Final Sr No (1 to 175)
     final_df.reset_index(drop=True, inplace=True)
     final_df.index += 1
     
-    print(f"Generating PDF for {len(final_df)} candidates...")
+    # --- GENERATE PDF ---
+    print(f"Generating PDF with {len(final_df)} candidates...")
     pdf = PDF(orientation='L', unit='mm', format='A4')
     pdf.set_auto_page_break(auto=True, margin=15)
     pdf.add_page()
@@ -207,32 +221,36 @@ def process_selection_list():
         try:
             current_alloc = row['Allocated_Category']
             
-            # Header
+            # Section Header
             if current_alloc != previous_alloc:
                 pdf.set_font('Arial', 'B', 9)
-                pdf.set_fill_color(0, 0, 0)
-                pdf.set_text_color(255, 255, 255)
+                pdf.set_fill_color(0, 0, 0) # Black bar
+                pdf.set_text_color(255, 255, 255) # White text
                 
+                # Count how many in this category
                 count_in_cat = len(final_df[final_df['Allocated_Category'] == current_alloc])
+                
                 header_text = f"{current_alloc} (Selected: {count_in_cat})"
                 pdf.cell(sum(widths), 8, header_text, border=1, align='L', fill=True)
                 pdf.ln()
                 
+                # Reset styles
                 pdf.set_font('Arial', '', 8)
                 pdf.set_text_color(0, 0, 0)
                 previous_alloc = current_alloc
 
-            # Data
+            # Prepare Data
             sr = str(index)
             roll = str(row[res_roll])
             name = str(row[res_name])
             father = str(row[res_father])
-            orig_cat = str(row[res_cat])
+            orig_cat = str(row[res_cat]) # Use original detailed category name
             mks = f"{float(row[mks_val]):.2f}"
             sel_cat = str(row['Allocated_Category'])
 
             data = [sr, roll, name, father, orig_cat, mks, sel_cat]
             
+            # Check Page Break
             if pdf.get_y() > 180:
                 pdf.add_page()
                 pdf.set_font('Arial', 'B', 9)
@@ -243,6 +261,8 @@ def process_selection_list():
                 pdf.set_font('Arial', '', 8)
                 pdf.set_text_color(0, 0, 0)
 
+            # Draw Row
+            max_y = pdf.get_y()
             for i, txt in enumerate(data):
                 txt = txt.replace('\n', ' ')[:45]
                 pdf.cell(widths[i], 8, txt, border=1, align='L')
