@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>All Webbed Up - Digital Marketing & Web Design</title>
+    <meta name="description" content="Sydney's ROI-Focused Digital Marketing Agency. Web Design, SEO, Google Ads.">
+
+    <!-- Fonts: Poppins (Brand Font) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Icons: FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* --- 1. BRAND VARIABLES --- */
+        :root {
+            --brand-green: #00C647;
+            --brand-green-dark: #009936;
+            --brand-black: #1a1d21;
+            --text-dark: #2c3e50;
+            --text-light: #64748b;
+            --white: #ffffff;
+            --bg-light: #f9f9f9;
+            --shadow-card: 0 10px 40px -10px rgba(0,0,0,0.08);
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        /* --- 2. RESET & BASE --- */
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-font-smoothing: antialiased; }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            min-height: 100vh;
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+        }
+
+        a { text-decoration: none; color: inherit; transition: var(--transition); }
+        ul { list-style: none; }
+        img { max-width: 100%; height: auto; }
+
+        /* --- 3. NAVBAR (Replicated) --- */
+        .navbar {
+            background: var(--white);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo img {
+            max-height: 50px;
+            width: auto;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-link {
+            font-weight: 500;
+            font-size: 15px;
+            color: var(--text-dark);
+        }
+
+        .nav-link:hover { color: var(--brand-green); }
+
+        /* Mobile Menu Toggle */
+        .hamburger { display: none; font-size: 24px; cursor: pointer; }
+
+        @media (max-width: 992px) {
+            .nav-menu { display: none; } /* Simplified for landing page focus */
+            .hamburger { display: block; }
+        }
+
+        /* --- 4. MAIN LAYOUT --- */
+        .main-wrapper {
+            width: 100%;
+            max-width: 600px; /* Focus width for conversion */
+            margin: 0 auto;
+            padding: 60px 20px 100px 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* --- 5. HERO SECTION --- */
+        .hero-text {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .hero-text h1 {
+            font-size: 36px;
+            font-weight: 700;
+            line-height: 1.2;
+            color: var(--brand-black);
+            margin-bottom: 15px;
+        }
+
+        .hero-text p {
+            color: var(--text-light);
+            font-size: 18px;
+            margin: 0 auto;
+        }
+
+        /* --- 6. PROMINENT CALL BUTTON --- */
+        .cta-wrapper { width: 100%; margin-bottom: 40px; }
+
+        .btn-primary {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            background: var(--brand-green);
+            color: var(--white);
+            font-size: 20px;
+            font-weight: 600;
+            padding: 22px;
+            border-radius: 50px;
+            box-shadow: 0 10px 25px rgba(0, 198, 71, 0.3);
+            transition: var(--transition);
+        }
+
+        .btn-primary i { margin-right: 12px; }
+
+        .btn-primary:hover {
+            background: var(--brand-green-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(0, 198, 71, 0.4);
+        }
+
+        /* --- 7. LEAD FORM --- */
+        .form-card {
+            background: var(--white);
+            width: 100%;
+            padding: 40px 30px;
+            border-radius: 20px;
+            box-shadow: var(--shadow-card);
+            border: 1px solid #eee;
+            margin-bottom: 50px;
+        }
+
+        .form-header {
+            text-align: center;
+            font-weight: 600;
+            font-size: 20px;
+            margin-bottom: 25px;
+            color: var(--brand-black);
+        }
+
+        .input-group { position: relative; margin-bottom: 15px; }
+
+        .form-control {
+            width: 100%;
+            padding: 16px 20px;
+            border: 2px solid #f0f0f0;
+            border-radius: 10px;
+            font-size: 16px;
+            color: var(--brand-black);
+            background: #fafafa;
+            transition: var(--transition);
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .form-control:focus {
+            background: #fff;
+            border-color: var(--brand-green);
+            outline: none;
+        }
+
+        textarea.form-control { resize: none; min-height: 120px; }
+
+        .btn-submit {
+            width: 100%;
+            background: var(--brand-black);
+            color: var(--white);
+            border: none;
+            padding: 18px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: var(--transition);
+            margin-top: 10px;
+        }
+
+        .btn-submit:hover {
+            background: #000;
+            transform: translateY(-2px);
+        }
+
+        .success-box {
+            display: none;
+            text-align: center;
+            padding: 30px 0;
+        }
+        .success-box i { font-size: 48px; color: var(--brand-green); margin-bottom: 15px; display: block; }
+
+        /* --- 8. REVIEWS SECTION --- */
+        .reviews-container {
+            width: 100vw;
+            max-width: 100%;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: #fff;
+            padding: 60px 0;
+            border-top: 1px solid #eee;
+            border-bottom: 1px solid #eee;
+        }
+
+        .btn-reviews-link {
+            display: inline-flex;
+            align-items: center;
+            background: #fff;
+            border: 1px solid #e1e1e1;
+            padding: 14px 28px;
+            border-radius: 100px;
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 40px;
+            transition: var(--transition);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        .btn-reviews-link i.fa-google { color: #4285F4; margin-right: 10px; font-size: 18px; }
+        .btn-reviews-link:hover { border-color: var(--brand-green); color: var(--brand-green); transform: translateY(-2px); }
+
+        /* Marquee */
+        .marquee {
+            width: 100%;
+            position: relative;
+            /* Fade edges */
+            mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+            -webkit-mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+        }
+
+        .marquee-content {
+            display: flex;
+            gap: 20px;
+            width: max-content;
+            animation: scroll-left 120s linear infinite; /* Slow, professional speed */
+        }
+
+        .marquee-content:hover { animation-play-state: paused; }
+
+        @keyframes scroll-left {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* Review Card */
+        .review-card {
+            width: 350px;
+            background: #fcfcfc;
+            padding: 25px;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+            border: 1px solid #f0f0f0;
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+        }
+
+        .review-top { display: flex; align-items: center; margin-bottom: 12px; }
+
+        .user-initial {
+            width: 40px; height: 40px;
+            border-radius: 50%;
+            background: #333;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            margin-right: 12px;
+            font-size: 14px;
+        }
+
+        .user-info h4 { font-size: 14px; font-weight: 700; margin: 0; }
+        .user-info span { font-size: 12px; color: #999; }
+        .stars { color: #F4B400; font-size: 13px; margin-bottom: 12px; }
+        .review-text {
+            font-size: 14px; color: #555;
+            line-height: 1.5;
+            display: -webkit-box;
+            -webkit-line-clamp: 5;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        /* --- 9. FOOTER (Replicated) --- */
+        footer {
+            background: #fff;
+            padding: 60px 20px 20px 20px;
+            border-top: 1px solid #eee;
+        }
+
+        .footer-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1.5fr 1fr 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-col h3 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--brand-black);
+        }
+
+        .footer-col ul li { margin-bottom: 12px; }
+        .footer-col ul li a { font-size: 14px; color: #555; }
+        .footer-col ul li a:hover { color: var(--brand-green); text-decoration: underline; }
+
+        .footer-about p { font-size: 14px; color: #555; margin-top: 20px; }
+        
+        .footer-bottom {
+            text-align: center;
+            font-size: 13px;
+            color: #999;
+            border-top: 1px solid #eee;
+            padding-top: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Responsive Footer */
+        @media (max-width: 900px) {
+            .footer-grid { grid-template-columns: 1fr 1fr; }
+        }
+        @media (max-width: 600px) {
+            .footer-grid { grid-template-columns: 1fr; text-align: center; }
+            .hero-text h1 { font-size: 28px; }
+        }
+
+        /* --- 10. STICKY MOBILE BUTTON --- */
+        .mobile-sticky {
+            display: none;
+            position: fixed;
+            bottom: 0; left: 0; right: 0;
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            padding: 15px 20px;
+            box-shadow: 0 -5px 20px rgba(0,0,0,0.05);
+            z-index: 1000;
+            border-top: 1px solid #f0f0f0;
+        }
+
+        @media (max-width: 768px) {
+            .mobile-sticky { display: block; }
+            .main-wrapper { padding-bottom: 80px; } /* Space for sticky bar */
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="https://allwebbedup.com.au" class="nav-logo">
+                <img src="https://allwebbedup.com.au/wp-content/uploads/2024/04/All-Webbed-Up-01-3-2.png" alt="All Webbed Up Logo">
+            </a>
+            
+            <ul class="nav-menu">
+                <li><a href="https://allwebbedup.com.au/" class="nav-link">Home</a></li>
+                <li><a href="https://allwebbedup.com.au/about-us/" class="nav-link">About Us</a></li>
+                <li><a href="https://allwebbedup.com.au/websites-and-portfolio/" class="nav-link">Web Design</a></li>
+                <li><a href="https://allwebbedup.com.au/blog/" class="nav-link">Blog</a></li>
+                <li><a href="https://allwebbedup.com.au/contact/" class="nav-link">Contact</a></li>
+            </ul>
+
+            <div class="hamburger">
+                <i class="fa-solid fa-bars"></i>
+            </div>
+        </div>
+    </nav>
+
+    <!-- MAIN CONTENT -->
+    <div class="main-wrapper">
+        
+        <!-- Hero Text -->
+        <div class="hero-text">
+            <h1>Digital Marketing That<br><span style="color:var(--brand-green);">Delivers ROI.</span></h1>
+            <p>Unsure when to book? Call us now or fill out the form below.</p>
+        </div>
+
+        <!-- 1. Prominent Call Button -->
+        <div class="cta-wrapper">
+            <a href="tel:1800714148" class="btn-primary">
+                <i class="fa-solid fa-phone"></i> Call 1800 714 148
+            </a>
+        </div>
+
+        <!-- 2. Clean Lead Form -->
+        <div class="form-card">
+            <div id="form-inner">
+                <div class="form-header">Request a Strategy Call</div>
+                
+                <!-- Keeps Formspree Action from previous working code -->
+                <form id="leadForm" action="https://formspree.io/f/xnnzazvj" method="POST">
+                    
+                    <div class="input-group">
+                        <input type="text" name="name" class="form-control" placeholder="Your Name" required>
+                    </div>
+
+                    <div class="input-group">
+                        <input type="tel" name="phone" class="form-control" placeholder="Phone Number" required>
+                    </div>
+
+                    <div class="input-group">
+                        <input type="email" name="email" class="form-control" placeholder="Email Address" required>
+                    </div>
+
+                    <div class="input-group">
+                        <textarea name="message" class="form-control" placeholder="How can we help you?"></textarea>
+                    </div>
+
+                    <button type="submit" class="btn-submit">Claim My Strategy Call</button>
+                </form>
+            </div>
+
+            <!-- Success Message -->
+            <div id="success-msg" class="success-box">
+                <i class="fa-regular fa-circle-check"></i>
+                <h3>Application Received!</h3>
+                <p>We will be in touch within 24 hours.</p>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- 3. Real Reviews Section (Full Width) -->
+    <div class="reviews-container">
+        <a href="https://maps.app.goo.gl/TZqDHUUBtWPLj9rJA" target="_blank" class="btn-reviews-link">
+            <i class="fa-brands fa-google"></i>
+            Check our 100+ Reviews
+        </a>
+
+        <div class="marquee">
+            <div class="marquee-content" id="review-track">
+                <!-- Javascript will inject real reviews here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-grid">
+            <!-- Col 1: Brand -->
+            <div class="footer-col footer-about">
+                <img src="https://allwebbedup.com.au/wp-content/uploads/2024/04/All-Webbed-Up-01-3-2.png" alt="All Webbed Up" style="max-width:180px;">
+                <p>All Webbed Up is not a marketing Agency. We are a web of freelancers based in Sydney, specialising in B2B and B2C Marketing with a focus on positive ROI.</p>
+            </div>
+
+            <!-- Col 2: Quick Links -->
+            <div class="footer-col">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="https://allwebbedup.com.au/">Home</a></li>
+                    <li><a href="https://allwebbedup.com.au/about-us/">About Us</a></li>
+                    <li><a href="#">Standard Packages</a></li>
+                    <li><a href="https://allwebbedup.com.au/blog/">Blog</a></li>
+                    <li><a href="https://allwebbedup.com.au/contact/">Contact Us</a></li>
+                </ul>
+            </div>
+
+            <!-- Col 3: Solutions -->
+            <div class="footer-col">
+                <h3>Solutions</h3>
+                <ul>
+                    <li><a href="https://allwebbedup.com.au/websites-and-portfolio/">Web Design</a></li>
+                    <li><a href="https://allwebbedup.com.au/local-seo/">Business SEO</a></li>
+                    <li><a href="https://allwebbedup.com.au/google-ads/">Google Ads</a></li>
+                    <li><a href="https://allwebbedup.com.au/e-commerce-and-portfolio/">Ecommerce Ads</a></li>
+                    <li><a href="https://allwebbedup.com.au/metaverse-ads-facebook-and-instagram/">Facebook Ads</a></li>
+                </ul>
+            </div>
+
+            <!-- Col 4: Badge -->
+            <div class="footer-col" style="display:flex; align-items:center; justify-content:center;">
+                <img src="https://allwebbedup.com.au/wp-content/uploads/2024/04/Google-Ads-Partner-Badge.png" alt="Google Ads Partner" style="max-width:150px;">
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            &copy; <script>document.write(new Date().getFullYear())</script> All Webbed Up. All Rights Reserved.
+        </div>
+    </footer>
+
+    <!-- Sticky Mobile CTA -->
+    <div class="mobile-sticky">
+        <a href="tel:1800714148" class="btn-primary" style="padding: 15px; font-size: 16px;">
+            <i class="fa-solid fa-phone"></i> Call 1800 714 148
+        </a>
+    </div>
+
+    <!-- JAVASCRIPT -->
+    <script>
+        // 1. DATA: The Real Reviews provided in the prompt
+        const reviewsData = [
+            { name: "Ahmed Charafeddine", text: "I’ve been extremely impressed with the service from All Webbed Up. From the start, they were professional, easy to communicate with, and genuinely invested in helping my business grow. The website they built is clean, fast, and modern.", stars: 5 },
+            { name: "Hastin Sanyasi", text: "Running a glazier business is fast-paced... Our website was old... That changed when I found All Webbed Up. They rebuilt our site and optimized our profile. Amazing results.", stars: 5 },
+            { name: "Anthony Daidone", text: "Mark and his team rebuilt our site into a clean landing page and kicked off a local SEO campaign. Within a few months we saw a noticeable jump in calls and form fills.", stars: 5 },
+            { name: "Michael Fuda", text: "Andy has gone above and beyond my expectations his knowledge and understanding of what I wanted for my business is outstanding. Highly recommend this business.", stars: 5 },
+            { name: "Amanda", text: "I engaged All Webbed up develop and host a website for my business and I have been extremely impressed with the service provided.", stars: 5 },
+            { name: "Gomez", text: "Andy did a fantastic job building my website. He is professional, responsive, and really understood my vision. The site looks great, works perfectly.", stars: 5 },
+            { name: "Nick Davenport", text: "I've worked with All Webbed Up on a few website projects and the service and craftmanship has been phenomenal. Big thanks to Andy for his guidance.", stars: 5 },
+            { name: "Jasmine Abaki", text: "My old website just wasn’t converting visitors into buyers. I reached out to Andy... sales are up by 40% since we relaunched. I can't rave enough.", stars: 5 },
+            { name: "Lionel Makhoul", text: "We run a small café... our digital presence was weak. I reached out to Andy... now we are thriving. He cares about the local community.", stars: 5 },
+            { name: "Geoff Neill", text: "All webbed up did the impossible. I thought I had done a good job with our Google reviews but these guys turned my business around. I wouldn’t go anywhere else.", stars: 5 },
+            { name: "Tan P", text: "Andy is a true professional who delivered noticeable SEO results in a short amount of time. What really sets him apart is his transparency and integrity.", stars: 5 },
+            { name: "Nabil Refaieh", text: "Working with Andy from All Webbed Up was one of the best decisions I’ve made for my business. Deep understanding of SEO and Google Ads strategy.", stars: 5 },
+            { name: "Paris Du Casse", text: "All Webbed Up completely turned my business around. My outdated website was doing me no favors, so I contacted Andy. They truly lived up to their reputation.", stars: 5 },
+            { name: "Allen Fu", text: "Fantastic service, Andy is definitely an expert at what he does. He's helped significantly with our traffic. Highly recommend reaching out to chat with him for SEO!", stars: 5 },
+            { name: "David Georgievski", text: "I had Andy create a Landing Page for my Company. He was Communicative, Experienced and Tailored to my needs. All Webbed Up is a Professional Service.", stars: 5 },
+            { name: "Louis Atallah", text: "I recently partnered with All Webbed Up... I can confidently say that the experience was outstanding. They demonstrated expertise, creativity, and a true commitment.", stars: 5 },
+            { name: "Tannous Ferris", text: "I recently hired Andy to create my business website. All I can say is that I highly recommend. He made the whole experience seamless.", stars: 5 },
+            { name: "Tyson Nhan", text: "My old website was outdated and barely visible on Google. Andy quickly identified the issues and laid out a plan. Great results.", stars: 5 },
+            { name: "Andreas Gavrilidis", text: "The boys did a fantastic job on my new website. Converting leads to sales is incredibly important in my industry. Clean cut website is the foundation.", stars: 5 },
+            { name: "Fahad H", text: "Andy was very helpful in putting together a landing page for our business. It’s created traffic to our social media and generated enquiries leading to winning work.", stars: 5 }
+        ];
+
+        // 2. RENDER: Create Cards
+        const track = document.getElementById('review-track');
+
+        function createCard(review) {
+            const initials = review.name.split(' ').map(n => n[0]).join('').substring(0,2).toUpperCase();
+            return `
+                <div class="review-card">
+                    <div class="review-top">
+                        <div class="user-initial">${initials}</div>
+                        <div class="user-info">
+                            <h4>${review.name}</h4>
+                            <span>Google Review</span>
+                        </div>
+                    </div>
+                    <div class="stars">★★★★★</div>
+                    <div class="review-text">"${review.text}"</div>
+                </div>
+            `;
+        }
+
+        // 3. INFINITE SCROLL LOGIC (Duplicate Data)
+        // Repeat data enough times to fill screen for smooth infinite scroll
+        const loopData = [...reviewsData, ...reviewsData]; 
+
+        loopData.forEach(review => {
+            track.innerHTML += createCard(review);
+        });
+
+        // 4. FORM LOGIC (AJAX)
+        const form = document.getElementById('leadForm');
+        const formInner = document.getElementById('form-inner');
+        const successMsg = document.getElementById('success-msg');
+
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const btn = form.querySelector('.btn-submit');
+            const originalText = btn.innerText;
+
+            btn.innerText = "Sending...";
+            btn.style.opacity = "0.7";
+
+            try {
+                const response = await fetch(form.action, {
+                    method: 'POST',
+                    body: new FormData(form),
+                    headers: { 'Accept': 'application/json' }
+                });
+
+                if (response.ok) {
+                    formInner.style.display = 'none';
+                    successMsg.style.display = 'block';
+                } else {
+                    alert('Submission failed. Please call us directly.');
+                    btn.innerText = originalText;
+                    btn.style.opacity = "1";
+                }
+            } catch (err) {
+                alert('Network error. Please call us directly.');
+                btn.innerText = originalText;
+                btn.style.opacity = "1";
+            }
+        });
+    </script>
+</body>
+</html>
