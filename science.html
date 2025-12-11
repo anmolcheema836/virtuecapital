@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class X Science Pre-Board I Practice (2025-26)</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --accent: #3498db;
+            --light: #ecf0f1;
+            --success: #27ae60;
+            --danger: #c0392b;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f7f6;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        h1 { margin: 0; color: var(--primary); font-size: 1.8rem; }
+        p.subtitle { color: #666; margin-top: 5px; }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            position: sticky;
+            top: 10px;
+            z-index: 100;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .btn-submit { background-color: var(--success); color: white; }
+        .btn-reset { background-color: var(--danger); color: white; }
+        .btn:hover { opacity: 0.9; }
+
+        .question-card {
+            background: white;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            border-left: 5px solid var(--accent);
+        }
+
+        .q-text { font-weight: 600; font-size: 1.1rem; margin-bottom: 15px; }
+        
+        .options-grid {
+            display: grid;
+            gap: 10px;
+        }
+
+        .option-label {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .option-label:hover { background-color: var(--light); }
+        input[type="radio"] { margin-right: 10px; transform: scale(1.2); }
+
+        /* Results Styling */
+        .correct { background-color: #d4edda !important; border-color: #c3e6cb !important; }
+        .incorrect { background-color: #f8d7da !important; border-color: #f5c6cb !important; }
+        .feedback { font-size: 0.9rem; margin-top: 10px; font-weight: bold; }
+
+        #result-modal {
+            display: none;
+            position: fixed;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 30px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.3);
+            border-radius: 10px;
+            text-align: center;
+            z-index: 1000;
+            width: 80%;
+            max-width: 400px;
+        }
+        #overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
+        }
+
+        .category-header {
+            background: var(--primary);
+            color: white;
+            padding: 10px;
+            margin-top: 30px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Pre-Board I Science (2025-26)</h1>
+    <p class="subtitle">Class X | 100 Important Questions | Auto-Save Enabled</p>
+    <p style="font-size: 0.9em; margin-top: 5px;">
+        Weightage: Chem(27) | Bio(28) | Natural Phenom(12) | Current(13)<br>
+
+    </p>
+</header>
+
+<div class="controls">
+    <button class="btn btn-reset" onclick="resetQuiz()">Reset / Clear</button>
+    <button class="btn btn-submit" onclick="submitQuiz()">Submit Test</button>
+</div>
+
+<div id="quiz-container">
+    <!-- Questions will be injected here via JS -->
+</div>
+
+<div id="overlay"></div>
+<div id="result-modal">
+    <h2>Result</h2>
+    <p id="score-display" style="font-size: 2rem; font-weight: bold;"></p>
+    <p id="percentage-display"></p>
+    <button class="btn btn-accent" onclick="closeModal()">Review Answers</button>
+</div>
+
+<script>
+    // --- Syllabus Weightage Distribution ---
+    // Total 100 Questions approximate distribution:
+    // Chemistry: 34 Qs
+    // Biology: 35 Qs
+    // Physics (Light): 15 Qs
+    // Physics (Elec/Mag): 16 Qs
+
+    const questions = [
+        // --- CHEMISTRY (Unit 1) ---
+        { q: "Which of the following reaction is an endothermic reaction?", o: ["Burning of coal", "Decomposition of vegetable matter into compost", "Process of respiration", "Decomposition of calcium carbonate to quick lime"], a: 3, cat: "Chemical Reactions" },
+        { q: "When lead nitrate powder is heated in a boiling tube, we observe:", o: ["Brown fumes of NO2", "Brown fumes of NO", "White fumes of NO2", "Yellow fumes of N2O"], a: 0, cat: "Chemical Reactions" },
+        { q: "Fe2O3 + 2Al → Al2O3 + 2Fe. This reaction is an example of:", o: ["Combination reaction", "Double displacement reaction", "Decomposition reaction", "Displacement reaction"], a: 3, cat: "Chemical Reactions" },
+        { q: "Which of the following statements about the given reaction are correct? 3Fe(s) + 4H2O(g) → Fe3O4(s) + 4H2(g)", o: ["Iron metal is getting oxidized", "Water is getting reduced", "Water is acting as reducing agent", "Both A and B"], a: 3, cat: "Chemical Reactions" },
+        { q: "The chemical formula of marble is:", o: ["CaO", "Ca(OH)2", "CaCO3", "CaCl2"], a: 2, cat: "Chemical Reactions" },
+        { q: "Rancidity can be prevented by:", o: ["Adding antioxidants", "Storing food in light", "Keeping food in open containers", "Adding oxygen"], a: 0, cat: "Chemical Reactions" },
+        { q: "A solution turns red litmus blue, its pH is likely to be:", o: ["1", "4", "5", "10"], a: 3, cat: "Acids, Bases, Salts" },
+        { q: "Which one of the following salts does not contain water of crystallisation?", o: ["Blue vitriol", "Baking soda", "Washing soda", "Gypsum"], a: 1, cat: "Acids, Bases, Salts" },
+        { q: "Brine is an aqueous solution of:", o: ["Sodium hydroxide", "Sodium carbonate", "Sodium chloride", "Sodium bicarbonate"], a: 2, cat: "Acids, Bases, Salts" },
+        { q: "Which acid is present in tomato?", o: ["Acetic acid", "Oxalic acid", "Citric acid", "Tartaric acid"], a: 1, cat: "Acids, Bases, Salts" },
+        { q: "Tooth enamel is made up of:", o: ["Calcium phosphate", "Calcium carbonate", "Calcium oxide", "Potassium"], a: 0, cat: "Acids, Bases, Salts" },
+        { q: "The pH of gastric juice released during digestion is:", o: ["Less than 7", "More than 7", "Equal to 7", "Equal to 0"], a: 0, cat: "Acids, Bases, Salts" },
+        { q: "Bleaching powder is represented as:", o: ["CaCl2", "CaOCl2", "CaCO3", "CaSO4"], a: 1, cat: "Acids, Bases, Salts" },
+        { q: "Which metal is liquid at room temperature?", o: ["Sodium", "Mercury", "Potassium", "Iron"], a: 1, cat: "Metals & Non-Metals" },
+        { q: "The most abundant metal in the earth’s crust is:", o: ["Iron", "Aluminium", "Calcium", "Sodium"], a: 1, cat: "Metals & Non-Metals" },
+        { q: "Which of the following pairs will give displacement reaction?", o: ["NaCl solution and copper metal", "MgCl2 solution and aluminium metal", "FeSO4 solution and silver metal", "AgNO3 solution and copper metal"], a: 3, cat: "Metals & Non-Metals" },
+        { q: "Food cans are coated with tin and not with zinc because:", o: ["Zinc is costlier than tin", "Zinc has a higher melting point than tin", "Zinc is more reactive than tin", "Zinc is less reactive than tin"], a: 2, cat: "Metals & Non-Metals" },
+        { q: "Cinnabar is an ore of:", o: ["Zinc", "Lead", "Mercury", "Copper"], a: 2, cat: "Metals & Non-Metals" },
+        { q: "The process of sulfide ore concentration is usually done by:", o: ["Froth floatation", "Roasting", "Calcination", "Refining"], a: 0, cat: "Metals & Non-Metals" },
+        { q: "Amalgam is an alloy of:", o: ["Copper and Tin", "Mercury", "Lead and Tin", "Copper and Zinc"], a: 1, cat: "Metals & Non-Metals" },
+        { q: "Carbon forms four covalent bonds by sharing its four valence electrons. This property is known as:", o: ["Catenation", "Tetravalency", "Isomerism", "Allotropy"], a: 1, cat: "Carbon Compounds" },
+        { q: "Which of the following is not an allotrope of carbon?", o: ["Diamond", "Graphite", "Fullerene", "Propane"], a: 3, cat: "Carbon Compounds" },
+        { q: "The functional group represents by -CHO is:", o: ["Alcohol", "Aldehyde", "Ketone", "Carboxylic Acid"], a: 1, cat: "Carbon Compounds" },
+        { q: "Which of the following belongs to the same homologous series?", o: ["CH4 and C2H6", "C2H6 and C2H4", "C2H4 and C3H4", "CH4 and C2H4"], a: 0, cat: "Carbon Compounds" },
+        { q: "Ethanol on heating with alkaline KMnO4 is converted to:", o: ["Ethanal", "Ethene", "Ethanoic Acid", "Methane"], a: 2, cat: "Carbon Compounds" },
+        { q: "The reaction between an acid and alcohol to form ester is called:", o: ["Saponification", "Esterification", "Neutralization", "Hydrogenation"], a: 1, cat: "Carbon Compounds" },
+        { q: "Soap is the sodium or potassium salt of:", o: ["Long chain alcohols", "Long chain carboxylic acids", "Glycerol", "Aldehydes"], a: 1, cat: "Carbon Compounds" },
+        { q: "Vinegar is a solution of:", o: ["50-60% acetic acid in alcohol", "5-8% acetic acid in alcohol", "5-8% acetic acid in water", "50-60% acetic acid in water"], a: 2, cat: "Carbon Compounds" },
+        { q: "Buckminsterfullerene has how many carbon atoms?", o: ["40", "50", "60", "70"], a: 2, cat: "Carbon Compounds" },
+        { q: "Atomic number of Carbon is:", o: ["4", "6", "8", "12"], a: 1, cat: "Carbon Compounds" },
+        { q: "Saturated hydrocarbons burn with a:", o: ["Blue flame", "Yellow sooty flame", "Red flame", "Green flame"], a: 0, cat: "Carbon Compounds" },
+        { q: "The catalyst used in the hydrogenation of vegetable oils is:", o: ["Iron", "Nickel", "Copper", "Sodium"], a: 1, cat: "Carbon Compounds" },
+        { q: "Which gas is evolved when ethanol reacts with sodium?", o: ["CO2", "O2", "H2", "N2"], a: 2, cat: "Carbon Compounds" },
+        { q: "Structural isomers have:", o: ["Same formula different structure", "Different formula same structure", "Same boiling point", "Different mass"], a: 0, cat: "Carbon Compounds" },
+
+        // --- BIOLOGY (Unit 2) ---
+        { q: "The mode of nutrition in Fungi is:", o: ["Parasitic", "Holozoic", "Autotrophic", "Saprotrophic"], a: 3, cat: "Life Processes" },
+        { q: "The site of photosynthesis in the cells of a leaf is:", o: ["Chloroplast", "Mitochondria", "Cytoplasm", "Protoplasm"], a: 0, cat: "Life Processes" },
+        { q: "In amoeba, food is digested in the:", o: ["Food vacuole", "Mitochondria", "Pseudopodia", "Chloroplast"], a: 0, cat: "Life Processes" },
+        { q: "The breakdown of pyruvate to give carbon dioxide, water and energy takes place in:", o: ["Cytoplasm", "Mitochondria", "Chloroplast", "Nucleus"], a: 1, cat: "Life Processes" },
+        { q: "The xylem in plants are responsible for:", o: ["Transport of water", "Transport of food", "Transport of amino acids", "Transport of oxygen"], a: 0, cat: "Life Processes" },
+        { q: "The kidneys in human beings are a part of the system for:", o: ["Nutrition", "Respiration", "Excretion", "Transportation"], a: 2, cat: "Life Processes" },
+        { q: "Which part of the blood helps in clotting?", o: ["RBCs", "WBCs", "Platelets", "Plasma"], a: 2, cat: "Life Processes" },
+        { q: "Respiratory pigment in human body is:", o: ["Chlorophyll", "Water", "Blood", "Haemoglobin"], a: 3, cat: "Life Processes" },
+        { q: "Movement of sunflower in accordance with the path of sun is due to:", o: ["Chemotropism", "Geotropism", "Phototropism", "Hydrotropism"], a: 2, cat: "Control & Coordination" },
+        { q: "The gap between two neurons is called a:", o: ["Dendrite", "Synapse", "Axon", "Impulse"], a: 1, cat: "Control & Coordination" },
+        { q: "Which part of the brain maintains posture and balance of the body?", o: ["Cerebrum", "Cerebellum", "Medulla", "Pons"], a: 1, cat: "Control & Coordination" },
+        { q: "Which plant hormone promotes cell division?", o: ["Auxin", "Gibberellin", "Cytokinin", "Abscisic acid"], a: 2, cat: "Control & Coordination" },
+        { q: "Iodine is necessary for the synthesis of which hormone?", o: ["Adrenaline", "Thyroxin", "Auxin", "Insulin"], a: 1, cat: "Control & Coordination" },
+        { q: "Involuntary actions including blood pressure, salivation and vomiting are controlled by:", o: ["Cerebrum", "Cerebellum", "Medulla", "Hypothalamus"], a: 2, cat: "Control & Coordination" },
+        { q: "Which hormone regulates blood sugar level?", o: ["Adrenaline", "Insulin", "Testosterone", "Thyroxin"], a: 1, cat: "Control & Coordination" },
+        { q: "Asexual reproduction takes place through budding in:", o: ["Amoeba", "Yeast", "Plasmodium", "Leishmania"], a: 1, cat: "Reproduction" },
+        { q: "The anther contains:", o: ["Sepals", "Ovules", "Pistil", "Pollen grains"], a: 3, cat: "Reproduction" },
+        { q: "Which of the following is NOT a part of the female reproductive system in humans?", o: ["Ovary", "Uterus", "Vas deferens", "Fallopian tube"], a: 2, cat: "Reproduction" },
+        { q: "The embryo gets nutrition from the mother’s blood with the help of a special tissue called:", o: ["Placenta", "Villi", "Uterus", "Womb"], a: 0, cat: "Reproduction" },
+        { q: "Spirogyra reproduces by:", o: ["Budding", "Fragmentation", "Regeneration", "Fission"], a: 1, cat: "Reproduction" },
+        { q: "The process of release of egg from the ovary is called:", o: ["Menstruation", "Reproduction", "Insemination", "Ovulation"], a: 3, cat: "Reproduction" },
+        { q: "In humans, fertilization occurs in the:", o: ["Uterus", "Ovary", "Fallopian tube", "Vagina"], a: 2, cat: "Reproduction" },
+        { q: "IUCD is for:", o: ["Vegetative propagation", "Contraception", "Increasing fertility", "Avoiding miscarriage"], a: 1, cat: "Reproduction" },
+        { q: "Genetics is the study of:", o: ["Heredity and Variation", "Cells", "Tissues", "Evolution only"], a: 0, cat: "Heredity" },
+        { q: "Mendel conducted his experiments on:", o: ["Rose", "Lotus", "Garden Pea", "Hibiscus"], a: 2, cat: "Heredity" },
+        { q: "Which of the following is a dominant trait in pea plants?", o: ["Wrinkled seeds", "Short height", "White flowers", "Tall height"], a: 3, cat: "Heredity" },
+        { q: "The genotypic ratio of a monohybrid cross in F2 generation is:", o: ["3:1", "1:2:1", "9:3:3:1", "1:1"], a: 1, cat: "Heredity" },
+        { q: "In human males, the sex chromosomes are:", o: ["XX", "XY", "YY", "XO"], a: 1, cat: "Heredity" },
+        { q: "A cross between a tall plant (TT) and short plant (tt) resulted in progeny that were all tall plants because:", o: ["Tallness is recessive", "Shortness is dominant", "Tallness is dominant", "Height is not controlled by genes"], a: 2, cat: "Heredity" },
+        { q: "Who proposed the theory of Natural Selection? (Note: Evolution partially removed but basic concepts usually asked)", o: ["Mendel", "Darwin", "Lamarck", "Einstein"], a: 1, cat: "Heredity" },
+        { q: "The number of autosomes in humans is:", o: ["22 pairs", "23 pairs", "1 pair", "44 pairs"], a: 0, cat: "Heredity" },
+        { q: "Exchange of genetic material takes place in:", o: ["Vegetative reproduction", "Asexual reproduction", "Sexual reproduction", "Budding"], a: 2, cat: "Heredity" },
+        { q: "If a grasshopper is eaten by a frog, then the energy transfer will be from:", o: ["Producer to decomposer", "Producer to primary consumer", "Primary consumer to secondary consumer", "Secondary consumer to primary consumer"], a: 2, cat: "Our Environment" },
+        { q: "Which of the following is biodegradable?", o: ["Plastic mug", "Leather belt", "Silver foil", "Iron nail"], a: 1, cat: "Our Environment" },
+        { q: "Depletion of ozone is mainly due to:", o: ["CFCs", "CO2", "CO", "Methane"], a: 0, cat: "Our Environment" },
+
+        // --- PHYSICS (Unit 3 - Natural Phenomenon) ---
+        { q: "The focal length of a plane mirror is:", o: ["0", "Infinity", "25 cm", "-25 cm"], a: 1, cat: "Light" },
+        { q: "An object is placed at a distance of 10 cm from a convex mirror of focal length 15 cm. The position of the image is:", o: ["6 cm behind mirror", "6 cm in front", "10 cm behind", "30 cm behind"], a: 0, cat: "Light" },
+        { q: "Which mirror is used as a rear-view mirror in vehicles?", o: ["Concave", "Convex", "Plane", "None"], a: 1, cat: "Light" },
+        { q: "The image formed by a concave mirror is observed to be virtual, erect and larger than the object. The position of the object should be:", o: ["Between principal focus and centre of curvature", "At centre of curvature", "Beyond centre of curvature", "Between pole of the mirror and principal focus"], a: 3, cat: "Light" },
+        { q: "The laws of reflection hold good for:", o: ["Plane mirrors only", "Concave mirrors only", "Convex mirrors only", "All mirrors irrespective of their shape"], a: 3, cat: "Light" },
+        { q: "A spherical mirror and a thin spherical lens have each a focal length of -15 cm. The mirror and the lens are likely to be:", o: ["Both concave", "Both convex", "Mirror concave, lens convex", "Mirror convex, lens concave"], a: 0, cat: "Light" },
+        { q: "The SI unit of power of a lens is:", o: ["Metre", "Watt", "Dioptre", "Centimetre"], a: 2, cat: "Light" },
+        { q: "Refractive index of water is 1.33. The speed of light in water will be:", o: ["1.33 x 10^8 m/s", "3 x 10^8 m/s", "2.26 x 10^8 m/s", "2.66 x 10^8 m/s"], a: 2, cat: "Light" },
+        { q: "Twinkling of stars is due to:", o: ["Reflection", "Atmospheric Refraction", "Dispersion", "Scattering"], a: 1, cat: "Human Eye" },
+        { q: "The human eye forms the image of an object at its:", o: ["Cornea", "Iris", "Pupil", "Retina"], a: 3, cat: "Human Eye" },
+        { q: "The change in focal length of an eye lens is caused by the action of the:", o: ["Pupil", "Retina", "Ciliary muscles", "Iris"], a: 2, cat: "Human Eye" },
+        { q: "The defect of vision in which a person cannot see distinct objects clearly but can see nearby objects is called:", o: ["Myopia", "Hypermetropia", "Presbyopia", "Cataract"], a: 0, cat: "Human Eye" },
+        { q: "The splitting of white light into different colours on passing through a prism is called:", o: ["Reflection", "Refraction", "Dispersion", "Deviation"], a: 2, cat: "Human Eye" },
+        { q: "Which colour of light deviates the least passing through a prism?", o: ["Violet", "Red", "Blue", "Green"], a: 1, cat: "Human Eye" },
+        { q: "At noon the sun appears white as:", o: ["Light is least scattered", "All the colours are scattered away", "Blue colour is scattered the most", "Red colour is scattered the most"], a: 0, cat: "Human Eye" },
+
+        // --- PHYSICS (Unit 4 - Effects of Current) ---
+        { q: "The unit of electric current is:", o: ["Volt", "Ampere", "Joule", "Ohm"], a: 1, cat: "Electricity" },
+        { q: "Which instrument is used to measure potential difference?", o: ["Ammeter", "Galvanometer", "Voltmeter", "Potentiometer"], a: 2, cat: "Electricity" },
+        { q: "According to Ohm’s law:", o: ["V = I/R", "V = IR", "I = VR", "R = VI"], a: 1, cat: "Electricity" },
+        { q: "The resistivity of a wire depends on:", o: ["Length", "Area of cross-section", "Material", "Shape"], a: 2, cat: "Electricity" },
+        { q: "Two resistors of 4Ω and 6Ω are connected in parallel. The equivalent resistance is:", o: ["10Ω", "2.4Ω", "24Ω", "1.5Ω"], a: 1, cat: "Electricity" },
+        { q: "1 kWh is equal to:", o: ["3.6 x 10^6 J", "3.6 x 10^5 J", "3.6 x 10^4 J", "3.6 J"], a: 0, cat: "Electricity" },
+        { q: "The heating element of an electric iron is made of:", o: ["Copper", "Nichrome", "Aluminium", "Iron"], a: 1, cat: "Electricity" },
+        { q: "The rate at which electrical energy is consumed is called:", o: ["Electric Current", "Electric Potential", "Electric Power", "Resistance"], a: 2, cat: "Electricity" },
+        { q: "Which of the following correctly describes the magnetic field near a long straight wire carrying current?", o: ["Straight lines perpendicular to wire", "Straight lines parallel to wire", "Radial lines originating from wire", "Concentric circles centred on the wire"], a: 3, cat: "Magnetic Effects" },
+        { q: "The phenomenon of electromagnetic induction is:", o: ["Charging a body", "Producing magnetic field due to current", "Producing induced current in a coil due to relative motion", "Rotating a coil in magnetic field"], a: 2, cat: "Magnetic Effects" },
+        { q: "The essential difference between an AC generator and a DC generator is:", o: ["AC has electromagnet", "DC has permanent magnet", "AC has slip rings, DC has commutator", "AC has higher voltage"], a: 2, cat: "Magnetic Effects" },
+        { q: "Which rule is used to find the direction of force on a current carrying conductor in a magnetic field?", o: ["Right hand thumb rule", "Fleming's left hand rule", "Fleming's right hand rule", "Maxwell's corkscrew rule"], a: 1, cat: "Magnetic Effects" },
+        { q: "A soft iron bar introduced inside a current carrying solenoid:", o: ["Decreases magnetic field", "Increases magnetic field", "No effect", "Reverses direction"], a: 1, cat: "Magnetic Effects" },
+        { q: "The frequency of AC mains in India is:", o: ["50 Hz", "60 Hz", "100 Hz", "220 Hz"], a: 0, cat: "Magnetic Effects" },
+        { q: "The safety device used for protecting the circuits due to short-circuiting is:", o: ["Resistor", "Fuse", "Stabilizer", "Switch"], a: 1, cat: "Magnetic Effects" },
+        { q: "Magnetic field lines emerge from the ____ pole and merge at the ____ pole outside the magnet.", o: ["North, South", "South, North", "North, North", "South, South"], a: 0, cat: "Magnetic Effects" },
+
+        // --- ASSERTION REASON (Mixed) to make up 100 ---
+        { q: "Assertion (A): Respiration is an exothermic reaction. <br>Reason (R): Energy is released during respiration.", o: ["Both A and R are true and R is correct explanation of A", "Both A and R are true but R is NOT correct explanation", "A is true but R is false", "A is false but R is true"], a: 0, cat: "Assertion-Reason" },
+        { q: "Assertion (A): Silver chloride turns grey in sunlight. <br>Reason (R): Silver chloride undergoes decomposition reaction in presence of sunlight.", o: ["Both A and R are true and R is correct explanation of A", "Both A and R are true but R is NOT correct explanation", "A is true but R is false", "A is false but R is true"], a: 0, cat: "Assertion-Reason" },
+        { q: "Assertion (A): Arteries have thick elastic walls. <br>Reason (R): Blood flows under high pressure in arteries.", o: ["Both A and R are true and R is correct explanation of A", "Both A and R are true but R is NOT correct explanation", "A is true but R is false", "A is false but R is true"], a: 0, cat: "Assertion-Reason" },
+        { q: "Assertion (A): Males have more chromosomes than females. <br>Reason (R): Males have XY and females have XX sex chromosomes.", o: ["Both A and R are true and R is correct explanation of A", "Both A and R are true but R is NOT correct explanation", "A is true but R is false", "A is false but R is true"], a: 3, cat: "Assertion-Reason" },
+        { q: "Assertion (A): Sky appears blue in the day time. <br>Reason (R): White light is composed of seven colours.", o: ["Both A and R are true and R is correct explanation of A", "Both A and R are true but R is NOT correct explanation", "A is true but R is false", "A is false but R is true"], a: 1, cat: "Assertion-Reason" }, // R is true, but doesn't explain scattering specifically
+        { q: "Assertion (A): Fuse wire is placed in series with the device. <br>Reason (R): Fuse wire has high resistance and low melting point.", o: ["Both A and R are true and R is correct explanation of A", "Both A and R are true but R is NOT correct explanation", "A is true but R is false", "A is false but R is true"], a: 0, cat: "Assertion-Reason" },
+        { q: "Assertion (A): Alkynes are unsaturated hydrocarbons. <br>Reason (R): They contain a triple bond between two carbon atoms.", o: ["Both A and R are true and R is correct explanation of A", "Both A and R are true but R is NOT correct explanation", "A is true but R is false", "A is false but R is true"], a: 0, cat: "Assertion-Reason" },
+        { q: "Assertion (A): The magnetic field lines do not intersect each other. <br>Reason (R): If they intersect, the compass needle would point in two directions which is impossible.", o: ["Both A and R are true and R is correct explanation of A", "Both A and R are true but R is NOT correct explanation", "A is true but R is false", "A is false but R is true"], a: 0, cat: "Assertion-Reason" },
+        { q: "Assertion (A): Mendel selected pea plants for his experiment. <br>Reason (R): Pea plants have short life span and contrasting characters.", o: ["Both A and R are true and R is correct explanation of A", "Both A and R are true but R is NOT correct explanation", "A is true but R is false", "A is false but R is true"], a: 0, cat: "Assertion-Reason" }
+    ];
+
+    // Local Storage Key
+    const STORAGE_KEY = 'cbse_science_10_answers';
+
+    // State
+    let userAnswers = {};
+
+    function init() {
+        const stored = localStorage.getItem(STORAGE_KEY);
+        if (stored) {
+            userAnswers = JSON.parse(stored);
+        }
+        renderQuiz();
+    }
+
+    function renderQuiz() {
+        const container = document.getElementById('quiz-container');
+        container.innerHTML = '';
+
+        let currentCat = '';
+
+        questions.forEach((item, index) => {
+            // Category Headers
+            if (item.cat !== currentCat) {
+                currentCat = item.cat;
+                const catHeader = document.createElement('div');
+                catHeader.className = 'category-header';
+                catHeader.innerHTML = `<h3>${currentCat}</h3>`;
+                container.appendChild(catHeader);
+            }
+
+            const card = document.createElement('div');
+            card.className = 'question-card';
+            
+            let optionsHtml = '';
+            item.o.forEach((opt, optIndex) => {
+                const isChecked = userAnswers[index] === optIndex ? 'checked' : '';
+                optionsHtml += `
+                    <label class="option-label" id="lbl-${index}-${optIndex}">
+                        <input type="radio" name="q${index}" value="${optIndex}" 
+                            onchange="saveAnswer(${index}, ${optIndex})" ${isChecked}>
+                        ${opt}
+                    </label>
+                `;
+            });
+
+            card.innerHTML = `
+                <div class="q-text">${index + 1}. ${item.q}</div>
+                <div class="options-grid">
+                    ${optionsHtml}
+                </div>
+                <div class="feedback" id="feedback-${index}"></div>
+            `;
+            container.appendChild(card);
+        });
+    }
+
+    function saveAnswer(qIndex, optIndex) {
+        userAnswers[qIndex] = optIndex;
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(userAnswers));
+        
+        // Remove feedback if changing answer after submit
+        const lbls = document.querySelectorAll(`[id^=lbl-${qIndex}-]`);
+        lbls.forEach(l => {
+            l.classList.remove('correct', 'incorrect');
+        });
+        document.getElementById(`feedback-${qIndex}`).innerHTML = '';
+    }
+
+    function submitQuiz() {
+        let score = 0;
+        let total = questions.length;
+        let attempted = Object.keys(userAnswers).length;
+
+        if (attempted < total) {
+            if(!confirm(`You have attempted ${attempted} out of ${total} questions. Do you still want to submit?`)) return;
+        }
+
+        questions.forEach((q, index) => {
+            const selected = userAnswers[index];
+            const feedbackEl = document.getElementById(`feedback-${index}`);
+            
+            // Visual feedback
+            const correctLabel = document.getElementById(`lbl-${index}-${q.a}`);
+            if(correctLabel) correctLabel.classList.add('correct');
+
+            if (selected !== undefined) {
+                if (selected === q.a) {
+                    score++;
+                    feedbackEl.innerHTML = '<span style="color:var(--success)">Correct!</span>';
+                } else {
+                    const selectedLabel = document.getElementById(`lbl-${index}-${selected}`);
+                    if(selectedLabel) selectedLabel.classList.add('incorrect');
+                    feedbackEl.innerHTML = `<span style="color:var(--danger)">Incorrect. Correct answer: ${q.o[q.a]}</span>`;
+                }
+            } else {
+                feedbackEl.innerHTML = `<span style="color:orange">Not Attempted. Correct answer: ${q.o[q.a]}</span>`;
+            }
+        });
+
+        // Show Modal
+        const modal = document.getElementById('result-modal');
+        const overlay = document.getElementById('overlay');
+        const scoreDisplay = document.getElementById('score-display');
+        const percentDisplay = document.getElementById('percentage-display');
+
+        scoreDisplay.innerText = `${score} / ${total}`;
+        const percent = ((score/total)*100).toFixed(1);
+        percentDisplay.innerText = `Percentage: ${percent}%`;
+        
+        modal.style.display = 'block';
+        overlay.style.display = 'block';
+        
+        // Scroll to top
+        window.scrollTo(0,0);
+    }
+
+    function closeModal() {
+        document.getElementById('result-modal').style.display = 'none';
+        document.getElementById('overlay').style.display = 'none';
+    }
+
+    function resetQuiz() {
+        if(confirm("Are you sure? This will clear all your saved answers.")) {
+            localStorage.removeItem(STORAGE_KEY);
+            userAnswers = {};
+            location.reload();
+        }
+    }
+
+    // Run on load
+    init();
+
+</script>
+
+</body>
+</html>
