@@ -138,29 +138,34 @@
             box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
         }
 
+        /* Flex Container for Header */
         .header-inner {
             display: flex;
-            justify-content: space-between;
+            justify-content: space-between; /* Pushes Logo Left, Content Right */
             align-items: center;
             width: 100%;
         }
 
-        /* Logo Styles */
+        /* Logo Styles - FIXED ALIGNMENT */
         .logo {
-            padding-right: 50px;
             display: flex;
             align-items: center;
+            margin-right: auto; /* Forces everything else to the right */
+            flex-shrink: 0; /* Prevents logo from shrinking */
         }
         
-        /* Header Logo Size */
+        /* Header Logo Size - REMOVED EXCESS PADDING */
         .logo img {
             max-height: 80px; 
             width: auto;
-            padding-right: 150px;
+            padding-right: 23vw;
         }
 
         /* Desktop Menu */
-        .main-nav { margin-left: auto; margin-right: 40px; }
+        .main-nav { 
+            margin-left: auto; /* Ensures menu pushes right */
+            margin-right: 40px; 
+        }
         .main-nav ul { display: flex; gap: 35px; margin: 0; padding: 0; }
         .main-nav a {
             font-weight: 500;
@@ -191,6 +196,7 @@
             font-size: 24px;
             color: var(--white);
             cursor: pointer;
+            margin-left: 20px; /* Space from other elements */
         }
 
         /* --- NEW HERO SECTION --- */
@@ -383,6 +389,7 @@
         @media (max-width: 991px) {
             .hero-content h1 { font-size: 50px; }
             .col-50, .col-33, .col-25 { flex: 0 0 100%; max-width: 100%; margin-bottom: 30px; }
+            .logo img {padding-right: 40vw;}
             
             /* Navbar Mobile Fixes */
             .header-btn { display: none; }
