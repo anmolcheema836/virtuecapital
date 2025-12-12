@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Answerson | Digital Marketing Agency</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;900&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* --- VARIABLES & RESET --- */
+        :root {
+            --primary-color: #0D0D0D;
+            --accent-color: #FE1F07; /* Sominx Red */
+            --text-color: #666666;
+            --heading-color: #1a1a1a;
+            --white: #ffffff;
+            --light-gray: #f5f5f5;
+            --border-color: #eaeaea;
+            --container-width: 1200px;
+            --header-height: 90px;
+            --transition: all 0.3s ease;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Roboto', sans-serif;
+            color: var(--text-color);
+            line-height: 1.7;
+            font-size: 16px;
+            background: #fff;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Rubik', sans-serif;
+            color: var(--heading-color);
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 15px;
+        }
+
+        a { text-decoration: none; color: inherit; transition: var(--transition); }
+        ul { list-style: none; }
+        img { max-width: 100%; height: auto; display: block; }
+
+        /* --- UTILITIES --- */
+        .container {
+            max-width: var(--container-width);
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        .row { display: flex; flex-wrap: wrap; margin: 0 -15px; }
+        .col { padding: 0 15px; flex: 1; }
+        .col-50 { flex: 0 0 50%; max-width: 50%; }
+        .col-33 { flex: 0 0 33.333%; max-width: 33.333%; }
+        .col-25 { flex: 0 0 25%; max-width: 25%; }
+
+        .text-center { text-align: center; }
+        .text-right { text-align: right; }
+        .d-flex { display: flex; align-items: center; }
+        
+        .section-padding { padding: 100px 0; }
+        .bg-light { background-color: #F7F7F7; }
+
+        .sub-title {
+            color: var(--accent-color);
+            text-transform: uppercase;
+            font-weight: 600;
+            font-size: 14px;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .section-title { font-size: 42px; margin-bottom: 20px; }
+
+        /* --- BUTTONS --- */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 15px 40px;
+            background: var(--heading-color);
+            color: var(--white);
+            font-weight: 600;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-radius: 4px;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn:hover { background: var(--accent-color); color: var(--white); }
+        
+        .btn-outline {
+            border: 2px solid var(--white);
+            background: transparent;
+            color: var(--white);
+        }
+        .btn-outline:hover {
+            background: var(--accent-color);
+            border-color: var(--accent-color);
+        }
+
+        /* --- [UPDATED] HEADER / NAVBAR --- */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            height: var(--header-height);
+            display: flex;
+            align-items: center;
+            transition: all 0.4s ease;
+            background: transparent;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+
+        /* Sticky Glassmorphism Header */
+        header.sticky {
+            background: rgba(13, 13, 13, 0.9);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            height: 80px;
+            border-bottom: none;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 800;
+            padding-right: 150px;
+            font-family: 'Rubik', sans-serif;
+            color: var(--white);
+            display: flex;
+            align-items: center;
+            text-transform: uppercase;
+            letter-spacing: -1px;
+        }
+        
+        .logo span { color: var(--accent-color); }
+
+        /* Desktop Menu */
+        .main-nav { margin-left: auto; margin-right: 40px; }
+        .main-nav ul { display: flex; gap: 35px; margin: 0; padding: 0; }
+        .main-nav a {
+            font-weight: 500;
+            font-size: 15px;
+            color: var(--white);
+            position: relative;
+            padding: 10px 0;
+            opacity: 0.9;
+        }
+        .main-nav a:hover { color: var(--accent-color); opacity: 1; }
+        .main-nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0%;
+            height: 2px;
+            background: var(--accent-color);
+            transition: var(--transition);
+        }
+        .main-nav a:hover::after { width: 100%; }
+
+        /* Header Button (CTA) */
+        .header-btn .btn {
+            padding: 12px 25px;
+            font-size: 13px;
+            background: var(--accent-color);
+            border-radius: 50px; /* Pill shape */
+        }
+        .header-btn .btn:hover {
+            background: var(--white);
+            color: var(--primary-color);
+        }
+
+        /* Mobile Menu Toggle */
+        .mobile-toggle {
+            display: none;
+            font-size: 24px;
+            color: var(--white);
+            cursor: pointer;
+        }
+
+        /* --- [UPDATED] HERO SECTION --- */
+        .hero {
+            height: 100vh;
+            min-height: 750px;
+            background-image: url('https://demothemesflat.co/sominxkit/wp-content/uploads/2023/03/img_slide_Home01-BW3T25C.jpg');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            display: flex;
+            align-items: center;
+            z-index: 1;
+        }
+
+        /* Dark Gradient Overlay for Readability */
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(135deg, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.6) 60%, rgba(20,20,20,0.4) 100%);
+            z-index: -1;
+        }
+
+        .hero-content {
+            position: relative;
+            color: var(--white);
+            max-width: 900px;
+        }
+
+        /* Hero Text Animation */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hero-sub {
+            display: inline-block;
+            background: rgba(254, 31, 7, 0.15);
+            color: var(--accent-color);
+            padding: 8px 16px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 25px;
+            border: 1px solid rgba(254, 31, 7, 0.3);
+            animation: fadeInUp 0.8s ease forwards;
+        }
+
+        .hero-content h1 {
+            color: var(--white);
+            font-size: 80px;
+            line-height: 1.1;
+            margin-bottom: 25px;
+            font-weight: 800;
+            animation: fadeInUp 0.8s ease forwards 0.2s;
+            opacity: 0; /* Initial state */
+        }
+
+        .hero-content h1 span {
+            -webkit-text-stroke: 1px var(--white);
+            color: transparent;
+        }
+
+        .hero-content p {
+            font-size: 20px;
+            opacity: 0.9;
+            margin-bottom: 40px;
+            max-width: 600px;
+            font-weight: 300;
+            animation: fadeInUp 0.8s ease forwards 0.4s;
+            opacity: 0;
+        }
+
+        .hero-btns {
+            display: flex;
+            gap: 20px;
+            animation: fadeInUp 0.8s ease forwards 0.6s;
+            opacity: 0;
+        }
+
+        .scroll-down {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: var(--white);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            opacity: 0.7;
+        }
+        .scroll-down i {
+            margin-top: 10px;
+            animation: bounce 2s infinite;
+        }
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+            40% {transform: translateY(-10px);}
+            60% {transform: translateY(-5px);}
+        }
+
+
+        /* --- PREVIOUS SECTIONS (UNCHANGED CSS) --- */
+        .about-img-wrapper { position: relative; padding-right: 50px; padding-bottom: 50px; }
+        .about-main-img { border-radius: 5px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .about-float-img {
+            position: absolute; bottom: 0; right: 0;
+            border: 10px solid #fff; border-radius: 5px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1); max-width: 250px;
+        }
+        .check-list li { position: relative; padding-left: 30px; margin-bottom: 15px; font-weight: 500; color: var(--heading-color); }
+        .check-list li i { position: absolute; left: 0; top: 4px; color: var(--accent-color); }
+
+        .service-card {
+            background: #fff; padding: 40px; border-radius: 5px; border: 1px solid #f0f0f0;
+            transition: var(--transition); margin-bottom: 30px; height: 100%;
+        }
+        .service-card:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.05); border-color: var(--white); }
+        .service-icon { margin-bottom: 25px; height: 65px; width: 65px; }
+        .service-card h3 { font-size: 22px; margin-bottom: 15px; }
+
+        .cta-texture-section {
+            background-color: #0D0D0D; 
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400' viewBox='0 0 800 800'%3E%3Cg fill='none' stroke='%23FFFFFF' stroke-width='1' stroke-opacity='0.05'%3E%3Cpath d='M769 229L1037 260.9M927 880L731 737 520 660 309 538 40 599 295 764 126.5 879.5 40 599-197 493 102 382-31 229 126.5 79.5-69-63'/%3E%3Cpath d='M-169 229L1037 260.9M927 880L731 737 520 660 309 538 40 599 295 764 126.5 879.5 40 599-197 493 102 382-31 229 126.5 79.5-69-63'/%3E%3Cpath d='M509 229L1037 260.9M927 880L731 737 520 660 309 538 40 599 295 764 126.5 879.5 40 599-197 493 102 382-31 229 126.5 79.5-69-63'/%3E%3Cpath d='M-17 229L537 260.9M627 880L431 737 220 660 9 538-260 599-5 764-173.5 879.5-260 599-497 493-198 382-331 229-173.5 79.5-369-63'/%3E%3Cpath d='M613 229L1167 260.9M1257 880L1061 737 850 660 639 538 370 599 625 764 456.5 879.5 370 599 133 493 432 382 299 229 456.5 79.5 261-63'/%3E%3Cpath d='M-369 229L185 260.9M275 880L79 737-132 660-343 538-612 599-357 764-525.5 879.5-612 599-849 493-550 382-683 229-525.5 79.5-721-63'/%3E%3C/g%3E%3C/svg%3E");
+            position: relative; padding: 120px 0; color: var(--white); overflow: hidden;
+        }
+        .cta-red-box {
+            background: var(--accent-color); padding: 40px; max-width: 300px; color: #fff; box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+        .cta-red-box i { font-size: 40px; margin-bottom: 15px; }
+        .cta-red-box h3 { color: #fff; font-size: 24px; margin-bottom: 0; }
+
+        .stats-section {
+            background-image: url('https://demothemesflat.co/sominxkit/wp-content/uploads/2023/03/bg-counter-01.jpg');
+            background-size: cover; position: relative; padding: 80px 0;
+        }
+        .stats-section::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(13, 13, 13, 0.9); }
+        .stat-item { position: relative; z-index: 2; display: flex; align-items: center; gap: 20px; }
+        .stat-icon { width: 70px; height: 70px; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; border-radius: 50%; }
+        .stat-content h3 { color: var(--accent-color); font-size: 40px; margin: 0; }
+        .stat-content p { color: var(--white); margin: 0; font-weight: 500; }
+
+        .portfolio-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; }
+        .portfolio-item { position: relative; overflow: hidden; height: 350px; }
+        .portfolio-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+        .portfolio-item:hover img { transform: scale(1.1); }
+        .portfolio-overlay {
+            position: absolute; bottom: 0; left: 0; right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            padding: 30px; opacity: 0; transform: translateY(20px); transition: var(--transition);
+        }
+        .portfolio-item:hover .portfolio-overlay { opacity: 1; transform: translateY(0); }
+        .portfolio-overlay h4 { color: #fff; margin-bottom: 5px; }
+        .portfolio-overlay span { color: var(--accent-color); font-size: 14px; text-transform: uppercase; }
+
+        footer { background-color: #101010; color: #999; padding: 80px 0 30px; }
+        .footer-logo { margin-bottom: 20px; font-size: 24px; font-weight: bold; color: #fff; }
+        .footer-widget h4 { color: #fff; font-size: 20px; margin-bottom: 25px; }
+        .footer-links li { margin-bottom: 12px; }
+        .footer-links a:hover { color: var(--accent-color); }
+        .copyright { border-top: 1px solid #222; padding-top: 30px; margin-top: 60px; text-align: center; font-size: 14px; }
+
+        /* --- RESPONSIVE FIXES --- */
+        @media (max-width: 991px) {
+            .hero-content h1 { font-size: 50px; }
+            .col-50, .col-33, .col-25 { flex: 0 0 100%; max-width: 100%; margin-bottom: 30px; }
+            
+            /* Navbar Mobile Fixes */
+            .header-btn { display: none; }
+            .mobile-toggle { display: block; } 
+            
+            .main-nav {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: #0D0D0D;
+                border-top: 1px solid rgba(255,255,255,0.1);
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.4s ease-out;
+                margin: 0;
+            }
+            
+            .main-nav.active {
+                max-height: 400px;
+                box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            }
+
+            .main-nav ul {
+                flex-direction: column;
+                padding: 20px;
+                gap: 0;
+                text-align: center;
+            }
+            
+            .main-nav a { display: block; padding: 15px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+
+            .portfolio-grid { grid-template-columns: repeat(2, 1fr); }
+            .about-img-wrapper { padding: 0; margin-bottom: 40px; }
+            .about-float-img { display: none; }
+        }
+        
+        @media (max-width: 576px) {
+            .portfolio-grid { grid-template-columns: 1fr; }
+            .hero-content h1 { font-size: 40px; }
+            .hero-btns { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- [UPDATED] Header -->
+    <header id="site-header">
+        <div class="container">
+            <div class="header-inner">
+                <!-- Text Logo -->
+                <a href="#" class="logo">
+                    Answer<span>son.</span>
+                </a>
+                
+                <!-- Main Navigation -->
+                <nav class="main-nav" id="main-nav">
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#services">Services</a></li>
+                        <li><a href="#projects">Work</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </nav>
+
+                <!-- Header CTA Button -->
+                <div class="header-btn">
+                    <a href="#contact" class="btn">Get a Quote</a>
+                </div>
+
+                <!-- Mobile Toggle Button -->
+                <div class="mobile-toggle" id="mobile-toggle">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- [UPDATED] Hero Section -->
+    <section id="home" class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <span class="hero-sub">#1 Digital Agency</span>
+                <h1>Empowering Growth Through <br><span>Digital Innovation</span></h1>
+                <p>From bold branding to data-driven results, we build strategies that elevate your business in the modern world.</p>
+                
+                <div class="hero-btns">
+                    <a href="#services" class="btn">Our Services <i class="fas fa-arrow-right" style="margin-left: 10px;"></i></a>
+                    <a href="#projects" class="btn btn-outline">View Portfolio</a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Scroll Down Indicator -->
+        <a href="#about" class="scroll-down">
+            Scroll Down
+            <i class="fas fa-chevron-down"></i>
+        </a>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="section-padding">
+        <div class="container">
+            <div class="row" style="align-items: center;">
+                <div class="col col-50">
+                    <div class="about-img-wrapper">
+                        <img src="https://demothemesflat.co/sominxkit/wp-content/uploads/2023/03/img_company_Home01-JW44LLQ.jpg" alt="About Answerson" class="about-main-img">
+                        <div class="about-float-img">
+                            <img src="https://demothemesflat.co/sominxkit/wp-content/uploads/2023/03/img_company_Home01-NY3JCZP.jpg" alt="Team">
+                        </div>
+                    </div>
+                </div>
+                <div class="col col-50">
+                    <span class="sub-title">About Answerson</span>
+                    <h2 class="section-title">We Provide the Best Services for Growth</h2>
+                    <p style="margin-bottom: 20px;">Founded with a passion for clarity and results, Answerson blends creativity with strategy to help businesses thrive online. We believe in honest communication, measurable outcomes, and work that makes an impact.</p>
+                    <p style="margin-bottom: 30px;">We partner with brands and businesses to create standout experiences — from websites and campaigns to brand identity and performance marketing.</p>
+                    
+                    <ul class="check-list">
+                        <li><i class="fas fa-check-circle"></i> Brand Strategy & Identity</li>
+                        <li><i class="fas fa-check-circle"></i> SEO & Performance Marketing</li>
+                        <li><i class="fas fa-check-circle"></i> Web Design & Development</li>
+                    </ul>
+                    
+                    <a href="#about" class="btn" style="margin-top: 20px;">More About Us</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="section-padding bg-light">
+        <div class="container">
+            <div class="row">
+                <div class="col col-100 text-center" style="margin-bottom: 60px;">
+                    <span class="sub-title">Our Expertise</span>
+                    <h2 class="section-title">What We’re Offering</h2>
+                </div>
+            </div>
+            
+            <div class="row">
+                <!-- Service 1 -->
+                <div class="col col-33">
+                    <div class="service-card">
+                        <img src="https://demothemesflat.co/sominxkit/wp-content/uploads/2023/03/icon-service-01.png" alt="Icon" class="service-icon">
+                        <h3>Modern Web Design</h3>
+                        <p>Beautifully designed, high-performance websites built for engagement and conversions.</p>
+                    </div>
+                </div>
+                <!-- Service 2 -->
+                <div class="col col-33">
+                    <div class="service-card">
+                        <img src="https://demothemesflat.co/sominxkit/wp-content/uploads/2023/03/icon-service-02.png" alt="Icon" class="service-icon">
+                        <h3>SEO & Content</h3>
+                        <p>Boost visibility and relevance with content that ranks and resonates with your audience.</p>
+                    </div>
+                </div>
+                <!-- Service 3 -->
+                <div class="col col-33">
+                    <div class="service-card">
+                        <img src="https://demothemesflat.co/sominxkit/wp-content/uploads/2023/03/icon-service-04.png" alt="Icon" class="service-icon">
+                        <h3>Digital Marketing</h3>
+                        <p>Targeted campaigns across search, social, and display channels — optimized for ROI.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="margin-top: 30px;">
+                <!-- Service 4 -->
+                <div class="col col-33">
+                    <div class="service-card">
+                        <img src="https://demothemesflat.co/sominxkit/wp-content/uploads/2023/03/icon-service-03.png" alt="Icon" class="service-icon">
+                        <h3>App Development</h3>
+                        <p>Custom applications that solve business problems and enhance user experience.</p>
+                    </div>
+                </div>
+                <!-- Service 5 -->
+                <div class="col col-33">
+                    <div class="service-card">
+                        <img src="https://demothemesflat.co/sominxkit/wp-content/uploads/2023/03/icon-service-05.png" alt="Icon" class="service-icon">
+                        <h3>Brand Strategy</h3>
+                        <p>Craft compelling brand stories and visuals that connect and convert.</p>
+                    </div>
+                </div>
+                <!-- Service 6 -->
+                <div class="col col-33">
+                    <div class="service-card">
+                        <img src="https://demothemesflat.co/sominxkit/wp-content/uploads/2023/03/icon-running.png" alt="Icon" class="service-icon">
+                        <h3>Consultancy</h3>
+                        <p>Strategic advice to help navigate the complex digital landscape.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- AMOEBA TEXTURE SECTION -->
+    <section class="cta-texture-section">
+        <div class="container">
+            <div class="row">
+                <!-- Left Side: Text -->
+                <div class="col col-50">
+                    <span class="sub-title" style="color: var(--accent-color);">Discover the World of Answerson</span>
+                    <h2 style="font-size: 50px; color: #fff;">We Shape the Perfect<br>Solutions for You</h2>
+                    <a href="#services" class="btn-outline btn" style="margin-top: 20px;">Discover More</a>
+                </div>
+                
+                <!-- Right Side: Red Box -->
+                <div class="col col-50" style="position: relative; display: flex; justify-content: flex-end; align-items: center;">
+                    <div class="cta-red-box">
+                        <i class="far fa-building"></i>
+                        <h3>We're Running Business Since 1986</h3>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bottom Icons -->
+            <div class="row" style="margin-top: 60px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 40px;">
+                <div class="col col-33 d-flex">
+                    <img src="https://demothemesflat.co/sominxkit/wp-content/uploads/2023/03/icon-digital.png" style="width: 50px; margin-right: 15px;" alt="Digital Strategy">
+                    <div><h4 style="color:#fff; margin:0; font-size: 18px;">Digital Strategy</h4><p style="font-size: 13px; margin:0; opacity: 0.7;">Growing Businesses</p></div>
+                </div>
+                <div class="col col-33 d-flex">
+                    <img src="https://demothemesflat.co/sominxkit/wp-content/uploads/2023/03/icon-qualiti.png" style="width: 50px; margin-right: 15px;" alt="Quality Services">
+                    <div><h4 style="color:#fff; margin:0; font-size: 18px;">Quality Services</h4><p style="font-size: 13px; margin:0; opacity: 0.7;">Building Relationships</p></div>
+                </div>
+                <div class="col col-33 d-flex">
+                    <img src="https://demothemesflat.co/sominxkit/wp-content/uploads/2023/03/icon-trust.png" style="width: 50px; margin-right: 15px;" alt="Trusted Agency">
+                    <div><h4 style="color:#fff; margin:0; font-size: 18px;">Trusted Agency</h4><p style="font-size: 13px; margin:0; opacity: 0.7;">Operational Excellence</p></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats-section">
+        <div class="container">
+            <div class="row">
+                <div class="col col-33">
+                    <div class="stat-item">
+                        <div class="stat-icon"><img src="https://demothemesflat.co/sominxkit/wp-content/uploads/2023/03/icon-counter-01.png" alt="Icon" style="width: 30px;"></div>
+                        <div class="stat-content">
+                            <h3>450+</h3>
+                            <p>Projects Completed</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col col-33">
+                    <div class="stat-item">
+                        <div class="stat-icon"><img src="https://demothemesflat.co/sominxkit/wp-content/uploads/2023/03/icon-counter-02.png" alt="Icon" style="width: 30px;"></div>
+                        <div class="stat-content">
+                            <h3>98%</h3>
+                            <p>Client Satisfaction</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col col-33">
+                    <div class="stat-item">
+                        <div class="stat-icon"><img src="https://demothemesflat.co/sominxkit/wp-content/uploads/2023/03/icon-counter-03.png" alt="Icon" style="width: 30px;"></div>
+                        <div class="stat-content">
+                            <h3>10+</h3>
+                            <p>Years Experience</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="section-padding">
+        <div class="container" style="margin-bottom: 50px;">
+            <div class="row" style="align-items: flex-end;">
+                <div class="col col-50">
+                    <span class="sub-title">Recent Work</span>
+                    <h2 class="section-title">Our Project Showcase</h2>
+                </div>
+                <div class="col col-50 text-right" style="padding-bottom: 20px;">
+                    <a href="#" class="btn">View All Work</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="portfolio-grid">
+            <div class="portfolio-item">
+                <img src="https://demothemesflat.co/sominxkit/wp-content/uploads/elementor/thumbs/img-design-01-q2uqwgeanuqfsd4z4d3l4wl2u7sesvyt1gfnd1xcby.jpg" alt="Project 1">
+                <div class="portfolio-overlay">
+                    <span>Branding</span>
+                    <h4>GlobalReach Campaign</h4>
+                </div>
+            </div>
+            <div class="portfolio-item">
+                <img src="https://demothemesflat.co/sominxkit/wp-content/uploads/elementor/thumbs/img-design-02-pkz807183aatamo2l7dqbhfz0uchavzh7tyow8abou-q2uso09gqlqcr8tq0u1ipv90q2jt869h40bhgjp3n2.jpg" alt="Project 2">
+                <div class="portfolio-overlay">
+                    <span>Marketing</span>
+                    <h4>SwiftBrand Identity</h4>
+                </div>
+            </div>
+            <div class="portfolio-item">
+                <img src="https://demothemesflat.co/sominxkit/wp-content/uploads/elementor/thumbs/img-design-03-pkz807183aatamo2l7dqbhfz0uchavzh7tyow8abou-q2uso17axfrn2uscvcg5ad0hbgf6fvd7g4yyxtnpgu.jpg" alt="Project 3">
+                <div class="portfolio-overlay">
+                    <span>eCommerce</span>
+                    <h4>ShopBoost Overhaul</h4>
+                </div>
+            </div>
+            <div class="portfolio-item">
+                <img src="https://demothemesflat.co/sominxkit/wp-content/uploads/elementor/thumbs/img-design-04-pkz807183aatamo2l7dqbhfz0uchavzh7tyow8abou-q2uso17axfrn2uscvcg5ad0hbgf6fvd7g4yyxtnpgu.jpg" alt="Project 4">
+                <div class="portfolio-overlay">
+                    <span>Design</span>
+                    <h4>Creative Concepts</h4>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section / CTA -->
+    <section id="contact" class="section-padding bg-light">
+        <div class="container">
+            <div class="row">
+                <div class="col col-50">
+                    <span class="sub-title">Contact Us</span>
+                    <h2 class="section-title">Have a project in mind?</h2>
+                    <p style="margin-bottom: 30px;">We are ready to help you grow your business. Call us or send an email to get started.</p>
+                    
+                    <ul class="contact-info">
+                        <li>
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>123 Business Road, Tech City, India</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-envelope"></i>
+                            <span>contact@answerson.in</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-phone"></i>
+                            <span>+91 987 654 3210</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col col-50">
+                    <!-- Simple Form -->
+                    <form style="background: #fff; padding: 40px; border-radius: 5px; box-shadow: 0 5px 20px rgba(0,0,0,0.05);">
+                        <div style="margin-bottom: 20px;">
+                            <label style="display: block; margin-bottom: 5px; font-weight: 500;">Name</label>
+                            <input type="text" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 4px;">
+                        </div>
+                        <div style="margin-bottom: 20px;">
+                            <label style="display: block; margin-bottom: 5px; font-weight: 500;">Email</label>
+                            <input type="email" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 4px;">
+                        </div>
+                        <div style="margin-bottom: 20px;">
+                            <label style="display: block; margin-bottom: 5px; font-weight: 500;">Message</label>
+                            <textarea rows="4" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 4px;"></textarea>
+                        </div>
+                        <button type="submit" class="btn" style="width: 100%; justify-content: center;">Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col col-25">
+                    <div class="footer-logo">Answerson.</div>
+                    <p style="margin-bottom: 20px;">Empowering growth through smart digital solutions and bold branding strategies.</p>
+                    <div style="display: flex; gap: 15px;">
+                        <a href="#" style="color: #fff;"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" style="color: #fff;"><i class="fab fa-twitter"></i></a>
+                        <a href="#" style="color: #fff;"><i class="fab fa-instagram"></i></a>
+                        <a href="#" style="color: #fff;"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="col col-25">
+                    <div class="footer-widget">
+                        <h4>Services</h4>
+                        <ul class="footer-links">
+                            <li><a href="#">Brand Strategy</a></li>
+                            <li><a href="#">Web Development</a></li>
+                            <li><a href="#">Digital Marketing</a></li>
+                            <li><a href="#">SEO & Content</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col col-25">
+                    <div class="footer-widget">
+                        <h4>Company</h4>
+                        <ul class="footer-links">
+                            <li><a href="#">About Us</a></li>
+                            <li><a href="#">Our Team</a></li>
+                            <li><a href="#">Portfolio</a></li>
+                            <li><a href="#">Contact</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col col-25">
+                    <div class="footer-widget">
+                        <h4>Newsletter</h4>
+                        <p style="margin-bottom: 15px;">Subscribe for the latest updates.</p>
+                        <form style="display: flex;">
+                            <input type="email" placeholder="Email" style="padding: 10px; width: 100%; border: none; border-radius: 4px 0 0 4px;">
+                            <button type="submit" style="background: var(--accent-color); border: none; color: #fff; padding: 0 15px; border-radius: 0 4px 4px 0; cursor: pointer;"><i class="fas fa-paper-plane"></i></button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">
+                &copy; 2025 Answerson. All Rights Reserved.
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript for Sticky Header & Mobile Menu -->
+    <script>
+        // Sticky Header Script
+        const header = document.getElementById('site-header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                header.classList.add('sticky');
+            } else {
+                header.classList.remove('sticky');
+            }
+        });
+
+        // Mobile Menu Script
+        const mobileToggle = document.getElementById('mobile-toggle');
+        const mainNav = document.getElementById('main-nav');
+
+        mobileToggle.addEventListener('click', () => {
+            mainNav.classList.toggle('active');
+            
+            // Toggle Icon
+            const icon = mobileToggle.querySelector('i');
+            if (mainNav.classList.contains('active')) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+            } else {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            }
+        });
+
+        // Close menu when clicking a link
+        document.querySelectorAll('.main-nav a').forEach(link => {
+            link.addEventListener('click', () => {
+                mainNav.classList.remove('active');
+                const icon = mobileToggle.querySelector('i');
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            });
+        });
+    </script>
+
+</body>
+</html>
