@@ -129,6 +129,13 @@
             border-bottom: 1px solid rgba(255,255,255,0.08);
         }
 
+        /* HEADER OVERRIDES FOR FULL WIDTH & ALIGNMENT */
+        header .container {
+            max-width: 100%;
+            padding: 0 40px; /* Space from screen edges */
+            width: 100%;
+        }
+
         /* Sticky Header */
         header.sticky {
             background: rgba(13, 13, 13, 0.95);
@@ -141,32 +148,31 @@
         /* Flex Container for Header */
         .header-inner {
             display: flex;
-            justify-content: space-between; /* Pushes Logo Left, Content Right */
+            justify-content: space-between; 
             align-items: center;
             width: 100%;
         }
 
-        /* Logo Styles - FIXED ALIGNMENT */
+        /* Logo Styles */
         .logo {
             display: flex;
             align-items: center;
-            margin-right: auto; /* Forces everything else to the right */
-            flex-shrink: 0; /* Prevents logo from shrinking */
+            /* No margin right auto needed if using space-between correctly */
+            flex-shrink: 0; 
         }
         
-        /* Header Logo Size - REMOVED EXCESS PADDING */
         .logo img {
             max-height: 80px; 
             width: auto;
-            padding-right: 23vw;
+            padding-right: 0; /* Removed padding to keep it Leftmost */
         }
 
         /* Desktop Menu */
         .main-nav { 
-            margin-left: auto; /* Ensures menu pushes right */
-            margin-right: 40px; 
+            margin-left: auto; /* Pushes everything to the right */
+            margin-right: 50px; /* Space between Links and Button */
         }
-        .main-nav ul { display: flex; gap: 35px; margin: 0; padding: 0; }
+        .main-nav ul { display: flex; gap: 80px; margin: 0; padding: 0; }
         .main-nav a {
             font-weight: 500;
             font-size: 16px;
@@ -178,6 +184,9 @@
         .main-nav a:hover { color: var(--accent-color); opacity: 1; }
 
         /* Header Button (CTA) */
+        .header-btn {
+            /* Keeps button on far right */
+        }
         .header-btn .btn {
             padding: 12px 25px;
             font-size: 14px;
@@ -196,14 +205,13 @@
             font-size: 24px;
             color: var(--white);
             cursor: pointer;
-            margin-left: 20px; /* Space from other elements */
+            margin-left: 20px; 
         }
 
         /* --- NEW HERO SECTION --- */
         .hero {
             height: 100vh;
             min-height: 700px;
-            /* Business Meeting Background */
             background-image: url('https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=2070&auto=format&fit=crop');
             background-size: cover;
             background-position: center;
@@ -218,7 +226,7 @@
             content: '';
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(15, 23, 30, 0.75); /* Dark Overlay */
+            background: rgba(15, 23, 30, 0.75); 
             z-index: -1;
         }
 
@@ -230,33 +238,23 @@
             padding: 0 20px;
         }
 
-        .hero-sub-text {
-            display: block;
-            font-size: 18px;
-            font-weight: 400;
-            margin-bottom: 20px;
-            opacity: 0.9;
-            letter-spacing: 0.5px;
-        }
-
         .hero-content h1 {
             color: var(--white);
             font-size: 80px;
             line-height: 1.1;
             margin-bottom: 50px;
-            font-weight: 400; /* Regular weight as per reference */
+            font-weight: 400; 
             font-family: 'Jost', sans-serif;
             text-transform: none;
         }
 
-        /* Specific Hero Button (Red Left Border) */
         .btn-hero {
             display: inline-block;
             padding: 15px 50px;
             color: var(--white);
             background: transparent;
             border: 1px solid rgba(255,255,255,0.3);
-            border-left: 4px solid var(--accent-color); /* The Red Line */
+            border-left: 4px solid var(--accent-color); 
             font-size: 15px;
             font-weight: 600;
             transition: all 0.3s ease;
@@ -268,7 +266,6 @@
             border-left-color: var(--accent-color);
         }
 
-        /* Left Side Bar */
         .hero-left-bar {
             position: absolute;
             left: 50px;
@@ -288,7 +285,6 @@
             white-space: nowrap;
         }
 
-        /* Right Side Bar */
         .hero-right-bar {
             position: absolute;
             right: 50px;
@@ -367,12 +363,14 @@
 
         /* --- CONTACT --- */
         .contact-info li { display: flex; gap: 15px; margin-bottom: 20px; align-items: center; }
-        .contact-info i { color: var(--accent-color); width: 20px; }
+        /* Adjusted for multi-line address */
+        .contact-info li.address-item { align-items: flex-start; }
+        .contact-info i { color: var(--accent-color); width: 20px; flex-shrink: 0; }
+        .contact-info a:hover { color: var(--accent-color); }
 
         /* --- FOOTER --- */
         footer { background-color: #101010; color: #999; padding: 80px 0 30px; }
         .footer-logo { margin-bottom: 20px; }
-        /* Footer Logo Size */
         .footer-logo img { max-height: 80px; width: auto; }
         
         .footer-widget h4 { color: #fff; font-size: 20px; margin-bottom: 25px; }
@@ -383,17 +381,22 @@
         /* --- RESPONSIVE FIXES --- */
         @media (max-width: 1200px) {
             .hero-content h1 { font-size: 60px; }
-            .hero-left-bar, .hero-right-bar { display: none; } /* Hide sidebars on smaller screens */
+            .hero-left-bar, .hero-right-bar { display: none; } 
         }
 
         @media (max-width: 991px) {
+            /* Reset Padding for Mobile */
+            header .container { padding: 0 20px; }
+            
             .hero-content h1 { font-size: 50px; }
             .col-50, .col-33, .col-25 { flex: 0 0 100%; max-width: 100%; margin-bottom: 30px; }
-            .logo img {padding-right: 40vw;}
+            .logo img { padding-right: 0; }
             
-            /* Navbar Mobile Fixes */
             .header-btn { display: none; }
-            .mobile-toggle { display: block; } 
+            .mobile-toggle { 
+                display: block; 
+                margin-left: auto; /* Pushes toggle to far right */
+            } 
             
             .main-nav {
                 position: absolute;
@@ -437,6 +440,7 @@
 
     <!-- Header -->
     <header id="site-header">
+        <!-- Changed to container-fluid style via CSS overrides to span full width -->
         <div class="container">
             <div class="header-inner">
                 <!-- Image Logo: answeronelogo.png -->
@@ -478,7 +482,6 @@
 
         <!-- Center Content -->
         <div class="hero-content">
-            <!-- Original Text, New Font Style -->
             <h1>Empowering Growth Through <br> Digital Innovation</h1>
             <a href="#services" class="btn-hero">Discover more</a>
         </div>
@@ -716,13 +719,25 @@
                 <div class="col col-50">
                     <span class="sub-title">Contact Us</span>
                     <h2 class="section-title">Have a project in mind?</h2>
-                    <p style="margin-bottom: 30px;">We are ready to help you grow your business. Email us to get started.</p>
+                    <p style="margin-bottom: 30px;">We are ready to help you grow your business. Reach out to us via email or visit our office.</p>
                     
                     <ul class="contact-info">
-                        <!-- Only Email as requested -->
+                        <!-- Address Added -->
+                        <li class="address-item">
+                            <i class="fas fa-location-dot" style="margin-top: 5px;"></i>
+                            <span>First Floor, No.1, Shop No.3,<br>Third Cross 100 Feet Mohan Nagar<br>Pondicherry, PY 605005</span>
+                        </li>
+                        
+                        <!-- Email -->
                         <li>
                             <i class="fas fa-envelope"></i>
                             <span>hr@answerson.in</span>
+                        </li>
+
+                        <!-- Website Added -->
+                        <li>
+                            <i class="fas fa-globe"></i>
+                            <a href="https://www.answerson.in" target="_blank">www.answerson.in</a>
                         </li>
                     </ul>
                 </div>
@@ -758,6 +773,7 @@
                         <img src="answeronelogo.png" alt="Answerson Logo">
                     </div>
                     <p style="margin-bottom: 20px;">Empowering growth through smart digital solutions and bold branding strategies.</p>
+                    
                     <div style="display: flex; gap: 15px;">
                         <a href="#" style="color: #fff;"><i class="fab fa-facebook-f"></i></a>
                         <a href="#" style="color: #fff;"><i class="fab fa-twitter"></i></a>
@@ -784,6 +800,7 @@
                             <li><a href="#">Our Team</a></li>
                             <li><a href="#">Portfolio</a></li>
                             <li><a href="#">Contact</a></li>
+                            <li><a href="https://www.answerson.in" target="_blank">www.answerson.in</a></li>
                         </ul>
                     </div>
                 </div>
