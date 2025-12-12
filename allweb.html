@@ -38,12 +38,11 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center; /* Centers vertically on desktop */
+            justify-content: center;
             -webkit-font-smoothing: antialiased;
         }
 
-        /* --- DESKTOP BACKGROUND IMAGE --- */
-        /* Only visible on larger screens to fill white space */
+        /* --- DESKTOP BACKGROUND --- */
         @media (min-width: 900px) {
             body {
                 background: linear-gradient(rgba(0, 40, 15, 0.8), rgba(0, 40, 15, 0.8)), 
@@ -58,21 +57,20 @@
         /* --- LAYOUT CONTAINER --- */
         .wrapper {
             width: 100%;
-            max-width: 500px; /* Default for mobile */
+            max-width: 500px; /* Mobile Default */
             padding: 30px 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            transition: all 0.3s ease;
         }
 
-        /* --- DESKTOP LAYOUT MODIFICATIONS --- */
+        /* --- DESKTOP SPLIT LAYOUT --- */
         @media (min-width: 900px) {
             .wrapper {
                 max-width: 1100px;
                 background: #ffffff;
                 border-radius: 24px;
-                flex-direction: row; /* Side by side layout */
+                flex-direction: row; /* Side by Side */
                 align-items: flex-start;
                 padding: 60px;
                 gap: 60px;
@@ -103,7 +101,6 @@
             max-width: 200px;
             height: auto;
         }
-        
         @media (min-width: 900px) {
             .logo-container { text-align: left; margin-bottom: 40px; }
             .logo { max-width: 240px; }
@@ -126,7 +123,6 @@
             font-size: 16px;
             line-height: 1.5;
         }
-
         @media (min-width: 900px) {
             .hero-text { text-align: left; margin-bottom: 40px; }
             .hero-text h1 { font-size: 38px; }
@@ -136,7 +132,8 @@
         /* --- CALL BUTTON --- */
         .cta-call-container {
             width: 100%;
-            margin-bottom: 30px;
+            /* Adds space between Call button and Form on mobile */
+            margin-bottom: 40px; 
         }
 
         .btn-call {
@@ -183,6 +180,8 @@
 
         @media (min-width: 900px) {
             .btn-call { max-width: 350px; font-size: 20px; }
+            /* Reset margin for desktop logic */
+            .cta-call-container { margin-bottom: 30px; } 
         }
 
         /* --- FORM CARD --- */
@@ -193,16 +192,17 @@
             border-radius: var(--radius);
             box-shadow: var(--shadow-card);
             border: 1px solid rgba(0,0,0,0.02);
+            /* Space between form and footer/reviews on mobile */
+            margin-bottom: 30px; 
         }
         
         @media (min-width: 900px) {
             .form-card {
                 padding: 40px;
-                /* On desktop, remove shadow as the main wrapper has it, 
-                   instead make it blend or give a subtle border */
                 box-shadow: none; 
                 border: 1px solid #f0f0f0;
                 background: #fdfdfd;
+                margin-bottom: 0;
             }
         }
 
@@ -247,7 +247,6 @@
             transition: color 0.3s;
         }
         
-        /* Adjust icon position for Textarea */
         .textarea-group .input-icon {
             top: 20px;
             transform: translateY(0);
@@ -263,7 +262,7 @@
         .btn-submit {
             width: 100%;
             padding: 16px;
-            background: var(--text-main); /* Dark Grey */
+            background: var(--text-main);
             color: var(--white);
             border: none;
             border-radius: 10px;
@@ -281,7 +280,6 @@
             background: #000;
         }
 
-        /* Success Message */
         .success-message {
             display: none;
             text-align: center;
@@ -298,7 +296,6 @@
         .review-section {
             width: 100%;
             text-align: center;
-            margin-top: 25px;
         }
 
         .btn-reviews {
@@ -312,34 +309,34 @@
             text-decoration: none;
             color: var(--text-main);
             font-weight: 600;
-            font-size: 14px;
+            font-size: 12px;
             transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
         }
 
         .btn-reviews:hover {
             border-color: var(--brand-green);
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.08);
         }
 
         .g-icon { color: #4285F4; margin-right: 8px; }
         .stars { color: #F4B400; margin-left: 8px; letter-spacing: 1px; }
 
-        @media (min-width: 900px) {
-            .review-section { text-align: left; margin-top: 40px; }
-        }
+        /* --- VISIBILITY TOGGLES --- */
+        /* This ensures we have specific layouts for mobile vs desktop */
+        .desktop-only-review { display: none; }
+        .mobile-only-review { display: block; margin-top: 0; }
 
-        /* --- FOOTER --- */
-        footer {
-            margin-top: 40px;
-            font-size: 12px;
-            color: #999;
-            text-align: center;
-            width: 100%;
-        }
-        
         @media (min-width: 900px) {
-            footer { display: none; } /* Hide footer on desktop design to keep it clean, or move inside wrapper */
+            .desktop-only-review { 
+                display: block; 
+                text-align: left; 
+                margin-top: 40px; 
+            }
+            .mobile-only-review { 
+                display: none; 
+            }
         }
     </style>
 </head>
@@ -347,7 +344,7 @@
 
     <div class="wrapper">
         
-        <!-- LEFT COLUMN (Info & Call) -->
+        <!-- LEFT COLUMN (Mobile: Top) -->
         <div class="col-left">
             <!-- Logo -->
             <div class="logo-container">
@@ -369,8 +366,9 @@
                 </a>
             </div>
 
-            <!-- Reviews (Visible on Desktop here) -->
-            <div class="review-section">
+            <!-- REVIEWS (DESKTOP ONLY LOCATION) -->
+            <!-- This is hidden on mobile so it doesn't appear before form -->
+            <div class="review-section desktop-only-review">
                 <a href="https://maps.app.goo.gl/TZqDHUUBtWPLj9rJA" target="_blank" class="btn-reviews">
                     <i class="fa-brands fa-google g-icon"></i>
                     See our 100+ 5-Star Reviews
@@ -385,23 +383,14 @@
             </div>
         </div>
 
-        <!-- RIGHT COLUMN (Form) -->
+        <!-- RIGHT COLUMN (Mobile: Bottom) -->
         <div class="col-right">
             <div class="form-card">
                 
                 <div id="form-content">
                     <div class="form-header">Request a Call Back</div>
                     
-                    <!-- 
-                        IMPORTANT: 
-                        To send emails to admin@allwebbedup.com.au, you must use a form backend service 
-                        because HTML cannot send emails alone.
-                        
-                        1. Go to https://formspree.io/
-                        2. Create a new form project.
-                        3. Add 'admin@allwebbedup.com.au' as the target email.
-                        4. Copy the URL they give you and paste it in the action="" below.
-                    -->
+                    <!-- Formspree form link -->
                     <form id="leadForm" action="https://formspree.io/f/xnnzazvj" method="POST">
                         
                         <!-- Name -->
@@ -410,7 +399,7 @@
                             <i class="fa-regular fa-user input-icon"></i>
                         </div>
 
-                        <!-- Business Name (NEW) -->
+                        <!-- Business Name -->
                         <div class="input-group">
                             <input type="text" name="business_name" class="input-field" placeholder="Business Name" required>
                             <i class="fa-solid fa-briefcase input-icon"></i>
@@ -446,16 +435,31 @@
                 </div>
 
             </div>
+
+            <!-- REVIEWS (MOBILE ONLY LOCATION) -->
+            <!-- This appears below the form only on mobile -->
+            <div class="review-section mobile-only-review">
+                <a href="https://maps.app.goo.gl/TZqDHUUBtWPLj9rJA" target="_blank" class="btn-reviews">
+                    <i class="fa-brands fa-google g-icon"></i>
+                    See our 100+ 5-Star Reviews
+                    <div class="stars">
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                    </div>
+                </a>
+            </div>
             
-            <!-- Mobile Footer inside right col just in case -->
-            <footer class="mobile-only-footer" style="margin-top:20px; font-size:11px; text-align:center; color:#aaa;">
+            <footer style="margin-top:40px; font-size:11px; text-align:center; color:#aaa; display:block;">
                  &copy; <script>document.write(new Date().getFullYear())</script> All Webbed Up.
             </footer>
         </div>
 
     </div>
 
-    <!-- Script for Form Handling (No Page Reload) -->
+    <!-- Script for Form Handling -->
     <script>
         const form = document.getElementById("leadForm");
         const formContent = document.getElementById("form-content");
@@ -467,7 +471,6 @@
             const btn = document.querySelector('.btn-submit');
             const originalText = btn.innerText;
 
-            // Loading state
             btn.innerText = "Sending...";
             btn.style.opacity = "0.7";
             btn.disabled = true;
@@ -480,16 +483,13 @@
                 });
 
                 if (response.ok) {
-                    // Show Success
                     formContent.style.display = "none";
                     successMsg.style.display = "block";
-                    // Optional: Scroll to top of form area if on mobile
                     successMsg.scrollIntoView({behavior: "smooth"});
                 } else {
                     throw new Error('Form submission failed');
                 }
             } catch (error) {
-                // Show Error
                 alert("Oops! There was a problem submitting your form. Please call us directly.");
                 btn.innerText = originalText;
                 btn.style.opacity = "1";
