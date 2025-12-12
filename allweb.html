@@ -22,9 +22,8 @@
             --text-main: #32373c;
             --text-light: #6e6e6e;
             --white: #ffffff;
-            --bg-gradient: linear-gradient(180deg, #ffffff 0%, #f4fcf6 100%);
+            --bg-mobile: linear-gradient(180deg, #ffffff 0%, #f4fcf6 100%);
             --shadow-card: 0 20px 40px rgba(0, 0, 0, 0.08);
-            --shadow-hover: 0 25px 50px rgba(0, 198, 71, 0.15);
             --radius: 16px;
         }
 
@@ -33,36 +32,82 @@
         
         body {
             font-family: 'Poppins', sans-serif;
-            background: var(--bg-gradient);
+            background: var(--bg-mobile);
             color: var(--text-main);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: center; /* Centers vertically on desktop */
             -webkit-font-smoothing: antialiased;
+        }
+
+        /* --- DESKTOP BACKGROUND IMAGE --- */
+        /* Only visible on larger screens to fill white space */
+        @media (min-width: 900px) {
+            body {
+                background: linear-gradient(rgba(0, 40, 15, 0.8), rgba(0, 40, 15, 0.8)), 
+                            url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop');
+                background-size: cover;
+                background-position: center;
+                background-attachment: fixed;
+                padding: 40px;
+            }
         }
 
         /* --- LAYOUT CONTAINER --- */
         .wrapper {
             width: 100%;
-            max-width: 520px; /* Narrow focus for high conversion */
-            padding: 40px 20px;
+            max-width: 500px; /* Default for mobile */
+            padding: 30px 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        /* --- DESKTOP LAYOUT MODIFICATIONS --- */
+        @media (min-width: 900px) {
+            .wrapper {
+                max-width: 1100px;
+                background: #ffffff;
+                border-radius: 24px;
+                flex-direction: row; /* Side by side layout */
+                align-items: flex-start;
+                padding: 60px;
+                gap: 60px;
+                box-shadow: 0 30px 60px rgba(0,0,0,0.3);
+            }
+
+            .col-left {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                height: 100%;
+                padding-top: 20px;
+            }
+
+            .col-right {
+                flex: 1;
+                width: 100%;
+            }
         }
 
         /* --- LOGO --- */
         .logo-container {
-            margin-bottom: 30px;
+            margin-bottom: 20px;
             text-align: center;
         }
         .logo {
-            max-width: 220px;
+            max-width: 200px;
             height: auto;
-            transition: opacity 0.3s;
         }
-        .logo:hover { opacity: 0.9; }
+        
+        @media (min-width: 900px) {
+            .logo-container { text-align: left; margin-bottom: 40px; }
+            .logo { max-width: 240px; }
+        }
 
         /* --- HERO TEXT --- */
         .hero-text {
@@ -71,22 +116,27 @@
         }
         .hero-text h1 {
             font-weight: 700;
-            font-size: 28px;
+            font-size: 26px;
             line-height: 1.2;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             color: var(--text-main);
         }
         .hero-text p {
             color: var(--text-light);
             font-size: 16px;
-            font-weight: 400;
+            line-height: 1.5;
         }
 
-        /* --- ELEMENT 1: PROMINENT CALL BUTTON --- */
+        @media (min-width: 900px) {
+            .hero-text { text-align: left; margin-bottom: 40px; }
+            .hero-text h1 { font-size: 38px; }
+            .hero-text p { font-size: 18px; }
+        }
+
+        /* --- CALL BUTTON --- */
         .cta-call-container {
             width: 100%;
             margin-bottom: 30px;
-            position: relative;
         }
 
         .btn-call {
@@ -96,9 +146,9 @@
             width: 100%;
             background-color: var(--brand-green);
             color: var(--white);
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 700;
-            padding: 20px;
+            padding: 18px;
             border-radius: 50px;
             text-decoration: none;
             box-shadow: 0 10px 25px rgba(0, 198, 71, 0.4);
@@ -107,7 +157,7 @@
             overflow: hidden;
         }
 
-        .btn-call i { margin-right: 12px; font-size: 22px; }
+        .btn-call i { margin-right: 12px; font-size: 20px; }
 
         .btn-call:hover {
             background-color: var(--brand-green-dark);
@@ -115,7 +165,7 @@
             box-shadow: 0 15px 35px rgba(0, 198, 71, 0.5);
         }
 
-        /* Subtle Pulse Animation */
+        /* Pulse Animation */
         .btn-call::after {
             content: '';
             position: absolute;
@@ -131,15 +181,29 @@
             100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 198, 71, 0); }
         }
 
-        /* --- ELEMENT 2: CLEAN LEAD FORM --- */
+        @media (min-width: 900px) {
+            .btn-call { max-width: 350px; font-size: 20px; }
+        }
+
+        /* --- FORM CARD --- */
         .form-card {
             background: var(--white);
             width: 100%;
-            padding: 35px 30px;
+            padding: 30px 25px;
             border-radius: var(--radius);
             box-shadow: var(--shadow-card);
-            margin-bottom: 25px;
             border: 1px solid rgba(0,0,0,0.02);
+        }
+        
+        @media (min-width: 900px) {
+            .form-card {
+                padding: 40px;
+                /* On desktop, remove shadow as the main wrapper has it, 
+                   instead make it blend or give a subtle border */
+                box-shadow: none; 
+                border: 1px solid #f0f0f0;
+                background: #fdfdfd;
+            }
         }
 
         .form-header {
@@ -157,11 +221,11 @@
 
         .input-field {
             width: 100%;
-            padding: 16px 16px 16px 45px; /* Space for icon */
+            padding: 15px 15px 15px 45px; /* Space for icon */
             border: 1px solid #e1e1e1;
-            border-radius: 12px;
+            border-radius: 10px;
             font-family: 'Poppins', sans-serif;
-            font-size: 15px;
+            font-size: 14px;
             color: var(--text-main);
             background: #f9f9f9;
             transition: all 0.3s ease;
@@ -179,25 +243,30 @@
             top: 50%;
             transform: translateY(-50%);
             color: #aaa;
-            font-size: 16px;
+            font-size: 15px;
             transition: color 0.3s;
+        }
+        
+        /* Adjust icon position for Textarea */
+        .textarea-group .input-icon {
+            top: 20px;
+            transform: translateY(0);
         }
 
         .input-field:focus + .input-icon { color: var(--brand-green); }
 
         textarea.input-field {
-            padding-left: 16px; /* No icon for textarea usually */
             resize: vertical;
             min-height: 100px;
         }
 
         .btn-submit {
             width: 100%;
-            padding: 18px;
-            background: var(--text-main); /* Black/Dark Grey */
+            padding: 16px;
+            background: var(--text-main); /* Dark Grey */
             color: var(--white);
             border: none;
-            border-radius: 12px;
+            border-radius: 10px;
             font-size: 16px;
             font-weight: 600;
             font-family: 'Poppins', sans-serif;
@@ -205,7 +274,7 @@
             text-transform: uppercase;
             letter-spacing: 0.5px;
             transition: background 0.3s ease;
-            margin-top: 10px;
+            margin-top: 5px;
         }
 
         .btn-submit:hover {
@@ -225,10 +294,11 @@
             display: block;
         }
 
-        /* --- ELEMENT 3: GOOGLE REVIEWS BUTTON --- */
+        /* --- REVIEWS BUTTON --- */
         .review-section {
             width: 100%;
             text-align: center;
+            margin-top: 25px;
         }
 
         .btn-reviews {
@@ -237,50 +307,39 @@
             justify-content: center;
             background: var(--white);
             border: 1px solid #e0e0e0;
-            padding: 14px 24px;
+            padding: 12px 20px;
             border-radius: 50px;
             text-decoration: none;
             color: var(--text-main);
             font-weight: 600;
-            font-size: 15px;
+            font-size: 14px;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.03);
         }
 
         .btn-reviews:hover {
             border-color: var(--brand-green);
             transform: translateY(-2px);
-            box-shadow: 0 10px 15px rgba(0,0,0,0.05);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
         }
 
-        .g-icon {
-            color: #4285F4;
-            font-size: 18px;
-            margin-right: 10px;
-        }
+        .g-icon { color: #4285F4; margin-right: 8px; }
+        .stars { color: #F4B400; margin-left: 8px; letter-spacing: 1px; }
 
-        .stars {
-            color: #F4B400;
-            margin-left: 8px;
-            font-size: 13px;
-            letter-spacing: 1px;
+        @media (min-width: 900px) {
+            .review-section { text-align: left; margin-top: 40px; }
         }
 
         /* --- FOOTER --- */
         footer {
-            margin-top: 50px;
-            margin-bottom: 20px;
+            margin-top: 40px;
             font-size: 12px;
             color: #999;
             text-align: center;
+            width: 100%;
         }
-
-        /* --- RESPONSIVE TWEAKS --- */
-        @media (max-width: 480px) {
-            .wrapper { padding: 30px 15px; }
-            .btn-call { font-size: 18px; }
-            .form-card { padding: 25px 20px; }
-            .hero-text h1 { font-size: 24px; }
+        
+        @media (min-width: 900px) {
+            footer { display: none; } /* Hide footer on desktop design to keep it clean, or move inside wrapper */
         }
     </style>
 </head>
@@ -288,84 +347,111 @@
 
     <div class="wrapper">
         
-        <!-- Logo -->
-        <div class="logo-container">
-            <a href="https://allwebbedup.com.au">
-                <img src="https://allwebbedup.com.au/wp-content/uploads/2024/04/All-Webbed-Up-01-3-2.png" alt="All Webbed Up" class="logo">
-            </a>
+        <!-- LEFT COLUMN (Info & Call) -->
+        <div class="col-left">
+            <!-- Logo -->
+            <div class="logo-container">
+                <a href="https://allwebbedup.com.au">
+                    <img src="https://allwebbedup.com.au/wp-content/uploads/2024/04/All-Webbed-Up-01-3-2.png" alt="All Webbed Up" class="logo">
+                </a>
+            </div>
+
+            <!-- Hero -->
+            <div class="hero-text">
+                <h1>Ready to Scale?</h1>
+                <p>Digital marketing strategies tailored for growth. Call us now or fill out the form to get started.</p>
+            </div>
+
+            <!-- Call Button -->
+            <div class="cta-call-container">
+                <a href="tel:1800714148" class="btn-call">
+                    <i class="fa-solid fa-phone-volume"></i> CALL 1800 714 148
+                </a>
+            </div>
+
+            <!-- Reviews (Visible on Desktop here) -->
+            <div class="review-section">
+                <a href="https://maps.app.goo.gl/TZqDHUUBtWPLj9rJA" target="_blank" class="btn-reviews">
+                    <i class="fa-brands fa-google g-icon"></i>
+                    See our 100+ 5-Star Reviews
+                    <div class="stars">
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                    </div>
+                </a>
+            </div>
         </div>
 
-        <!-- Hero -->
-        <div class="hero-text">
-            <h1>Let's Scale Your Business</h1>
-            <p>Speak to a strategist today. No obligations.</p>
-        </div>
-
-        <!-- 1. Prominent Click-to-Call -->
-        <div class="cta-call-container">
-            <a href="tel:1800714148" class="btn-call">
-                <i class="fa-solid fa-phone-volume"></i> CALL 1800 714 148
-            </a>
-        </div>
-
-        <!-- 2. Clean Lead Capture Form -->
-        <div class="form-card">
-            
-            <div id="form-content">
-                <div class="form-header">Or request a call back</div>
-                <!-- Using the Formspree ID from your original site. Replace URL if needed. -->
-                <form id="leadForm" action="https://formspree.io/f/xnnzazvj" method="POST">
+        <!-- RIGHT COLUMN (Form) -->
+        <div class="col-right">
+            <div class="form-card">
+                
+                <div id="form-content">
+                    <div class="form-header">Request a Call Back</div>
                     
-                    <div class="input-group">
-                        <input type="text" name="name" class="input-field" placeholder="Full Name" required>
-                        <i class="fa-regular fa-user input-icon"></i>
-                    </div>
+                    <!-- 
+                        IMPORTANT: 
+                        To send emails to admin@allwebbedup.com.au, you must use a form backend service 
+                        because HTML cannot send emails alone.
+                        
+                        1. Go to https://formspree.io/
+                        2. Create a new form project.
+                        3. Add 'admin@allwebbedup.com.au' as the target email.
+                        4. Copy the URL they give you and paste it in the action="" below.
+                    -->
+                    <form id="leadForm" action="https://formspree.io/f/xnnzazvj" method="POST">
+                        
+                        <!-- Name -->
+                        <div class="input-group">
+                            <input type="text" name="name" class="input-field" placeholder="Full Name" required>
+                            <i class="fa-regular fa-user input-icon"></i>
+                        </div>
 
-                    <div class="input-group">
-                        <input type="tel" name="phone" class="input-field" placeholder="Phone Number" required>
-                        <i class="fa-solid fa-phone input-icon"></i>
-                    </div>
+                        <!-- Business Name (NEW) -->
+                        <div class="input-group">
+                            <input type="text" name="business_name" class="input-field" placeholder="Business Name" required>
+                            <i class="fa-solid fa-briefcase input-icon"></i>
+                        </div>
 
-                    <div class="input-group">
-                        <input type="email" name="email" class="input-field" placeholder="Email Address" required>
-                        <i class="fa-regular fa-envelope input-icon"></i>
-                    </div>
+                        <!-- Phone -->
+                        <div class="input-group">
+                            <input type="tel" name="phone" class="input-field" placeholder="Phone Number" required>
+                            <i class="fa-solid fa-phone input-icon"></i>
+                        </div>
 
-                    <div class="input-group">
-                        <textarea name="message" class="input-field" placeholder="How can we help?" rows="3"></textarea>
-                    </div>
+                        <!-- Email -->
+                        <div class="input-group">
+                            <input type="email" name="email" class="input-field" placeholder="Email Address" required>
+                            <i class="fa-regular fa-envelope input-icon"></i>
+                        </div>
 
-                    <button type="submit" class="btn-submit">Claim My Strategy Call</button>
-                </form>
-            </div>
+                        <!-- Message -->
+                        <div class="input-group textarea-group">
+                            <textarea name="message" class="input-field" placeholder="How can we help?" rows="3"></textarea>
+                            <i class="fa-regular fa-comment-dots input-icon"></i>
+                        </div>
 
-            <!-- Hidden Success Message -->
-            <div id="success-msg" class="success-message">
-                <i class="fa-regular fa-circle-check success-icon"></i>
-                <h3 style="margin-bottom: 10px;">We'll be in touch!</h3>
-                <p style="color:#666; font-size: 14px;">One of our strategists will contact you within 24 hours.</p>
-            </div>
-
-        </div>
-
-        <!-- 3. Reviews Button -->
-        <div class="review-section">
-            <a href="https://maps.app.goo.gl/TZqDHUUBtWPLj9rJA" target="_blank" class="btn-reviews">
-                <i class="fa-brands fa-google g-icon"></i>
-                Check our 100+ reviews
-                <div class="stars">
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
+                        <button type="submit" class="btn-submit">Claim My Strategy Call</button>
+                    </form>
                 </div>
-            </a>
-        </div>
 
-        <footer>
-            &copy; <script>document.write(new Date().getFullYear())</script> All Webbed Up. All Rights Reserved.
-        </footer>
+                <!-- Hidden Success Message -->
+                <div id="success-msg" class="success-message">
+                    <i class="fa-regular fa-circle-check success-icon"></i>
+                    <h3 style="margin-bottom: 10px;">We'll be in touch!</h3>
+                    <p style="color:#666; font-size: 14px;">Our team has received your details and will contact you shortly.</p>
+                </div>
+
+            </div>
+            
+            <!-- Mobile Footer inside right col just in case -->
+            <footer class="mobile-only-footer" style="margin-top:20px; font-size:11px; text-align:center; color:#aaa;">
+                 &copy; <script>document.write(new Date().getFullYear())</script> All Webbed Up.
+            </footer>
+        </div>
 
     </div>
 
@@ -384,6 +470,7 @@
             // Loading state
             btn.innerText = "Sending...";
             btn.style.opacity = "0.7";
+            btn.disabled = true;
 
             try {
                 const response = await fetch(event.target.action, {
@@ -396,16 +483,17 @@
                     // Show Success
                     formContent.style.display = "none";
                     successMsg.style.display = "block";
+                    // Optional: Scroll to top of form area if on mobile
+                    successMsg.scrollIntoView({behavior: "smooth"});
                 } else {
-                    // Show Error
-                    alert("Oops! There was a problem submitting your form. Please call us directly.");
-                    btn.innerText = originalText;
-                    btn.style.opacity = "1";
+                    throw new Error('Form submission failed');
                 }
             } catch (error) {
+                // Show Error
                 alert("Oops! There was a problem submitting your form. Please call us directly.");
                 btn.innerText = originalText;
                 btn.style.opacity = "1";
+                btn.disabled = false;
             }
         }
 
