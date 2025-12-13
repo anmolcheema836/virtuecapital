@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <title>Bomb Dodger - Audio Fixed</title>
+    <style>
+        /* 🎨 CSS3 STYLING & UI */
+        :root {
+            --ui-font: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: none;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: #2f3542;
+            font-family: var(--ui-font);
+        }
+
+        #game-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        canvas {
+            display: block;
+            box-shadow: 0 0 20px rgba(0,0,0,0.2);
+        }
+
+        /* 🖼️ UI OVERLAYS */
+        .ui-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.3s ease;
+        }
+
+        /* HUD */
+        #hud-layer {
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 20px;
+            height: auto;
+        }
+
+        .score-box {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 10px 20px;
+            border-radius: 30px;
+            color: white;
+            font-weight: bold;
+            font-size: 1.2rem;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        #controls-top {
+            display: flex;
+            gap: 10px;
+            pointer-events: auto;
+        }
+
+        .icon-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid white;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.1s;
+        }
+
+        .icon-btn:active { transform: scale(0.9); }
+
+        /* SCREENS */
+        .modal-screen {
+            background: rgba(47, 53, 66, 0.85);
+            backdrop-filter: blur(10px);
+            pointer-events: auto;
+            text-align: center;
+            color: white;
+            z-index: 10;
+        }
+
+        .hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin: 0 0 10px 0;
+            text-shadow: 0 4px 0 #ff4757;
+            background: -webkit-linear-gradient(#fff, #ddd);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        p { font-size: 1.2rem; color: #ccc; }
+
+        .big-score {
+            font-size: 4rem;
+            color: #ffd700;
+            margin: 10px 0;
+            font-weight: 800;
+        }
+
+        button.cta-btn {
+            margin-top: 20px;
+            padding: 15px 40px;
+            font-size: 1.5rem;
+            border: none;
+            border-radius: 50px;
+            background: linear-gradient(45deg, #ff4757, #ff6b81);
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 10px 20px rgba(255, 71, 87, 0.4);
+            transition: transform 0.2s, box-shadow 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        button.cta-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 25px rgba(255, 71, 87, 0.5);
+        }
+
+        button.cta-btn:active { transform: translateY(1px); }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .shake {
+            animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+        }
+
+        @keyframes shake {
+            10%, 90% { transform: translate3d(-1px, 0, 0); }
+            20%, 80% { transform: translate3d(2px, 0, 0); }
+            30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+            40%, 60% { transform: translate3d(4px, 0, 0); }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="game-container">
+        <canvas id="gameCanvas"></canvas>
+
+        <div id="hud-layer" class="ui-layer hidden">
+            <div class="score-box">Score: <span id="scoreVal">0</span></div>
+            <div id="controls-top">
+                <div class="icon-btn" id="muteBtn">🔊</div>
+                <div class="icon-btn" id="pauseBtn">⏸️</div>
+            </div>
+        </div>
+
+        <div id="start-screen" class="ui-layer modal-screen">
+            <h1>BOMB DODGER</h1>
+            <p>Avoid the falling bombs!</p>
+            <p style="font-size: 0.9rem; margin-top:5px;">Desktop: Arrow Keys | Mobile: Swipe/Drag to Move</p>
+            <button class="cta-btn" id="startBtn">PLAY</button>
+        </div>
+
+        <div id="gameover-screen" class="ui-layer modal-screen hidden">
+            <h1>GAME OVER</h1>
+            <p>You Survived</p>
+            <div class="big-score" id="finalScore">0</div>
+            <p>Best: <span id="bestScore">0</span></p>
+            <button class="cta-btn" id="restartBtn">TRY AGAIN</button>
+        </div>
+
+        <div id="pause-screen" class="ui-layer modal-screen hidden">
+            <h1>PAUSED</h1>
+            <button class="cta-btn" id="resumeBtn">RESUME</button>
+        </div>
+    </div>
+
+    <script>
+        /**
+         * 🧠 GAME LOGIC & ENGINE
+         */
+
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        let gameState = 'MENU';
+        let score = 0;
+        let highScore = localStorage.getItem('bombDodgerHigh') || 0;
+        let frames = 0;
+        let difficulty = 1;
+        let isMuted = false;
+
+        // Assets
+        const assets = {
+            player: new Image(),
+            bomb: new Image(),
+            soundLose: new Audio('lose.mp3') // MUST BE IN SAME FOLDER
+        };
+        
+        assets.player.src = 'player.png';
+        assets.bomb.src = 'bomb.png';
+        
+        // Preload settings for audio
+        assets.soundLose.preload = 'auto';
+
+        const sprites = { playerLoaded: false, bombLoaded: false };
+        assets.player.onload = () => sprites.playerLoaded = true;
+        assets.bomb.onload = () => sprites.bombLoaded = true;
+
+        /* 🌈 BACKGROUND SYSTEM */
+        const themes = [
+            { name: "Day", top: "#87CEEB", bottom: "#E0F6FF" },
+            { name: "Sunset", top: "#ff9966", bottom: "#ff5e62" },
+            { name: "Night", top: "#141E30", bottom: "#243B55" },
+            { name: "Toxic", top: "#11998e", bottom: "#38ef7d" },
+            { name: "Candy", top: "#8360c3", bottom: "#2ebf91" }
+        ];
+
+        let bgState = {
+            currentIdx: 0,
+            nextIdx: 1,
+            progress: 0,
+            timer: 0,
+            switchInterval: 600, 
+            transitionSpeed: 0.01 
+        };
+
+        // Entities
+        const player = {
+            x: 0,
+            y: 0,
+            width: 80,
+            height: 80,
+            speed: 7,
+            dx: 0,
+            color: '#1e90ff'
+        };
+
+        let bombs = [];
+        let particles = [];
+
+        const ui = {
+            start: document.getElementById('start-screen'),
+            gameover: document.getElementById('gameover-screen'),
+            pause: document.getElementById('pause-screen'),
+            hud: document.getElementById('hud-layer'),
+            score: document.getElementById('scoreVal'),
+            finalScore: document.getElementById('finalScore'),
+            bestScore: document.getElementById('bestScore'),
+            container: document.getElementById('game-container'),
+            startBtn: document.getElementById('startBtn'),
+            restartBtn: document.getElementById('restartBtn'),
+            resumeBtn: document.getElementById('resumeBtn'),
+            muteBtn: document.getElementById('muteBtn'),
+            pauseBtn: document.getElementById('pauseBtn')
+        };
+
+        // --- Initialization ---
+
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            player.y = canvas.height - player.height - 20;
+            if(player.x > canvas.width) player.x = canvas.width / 2;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        // --- Input Handling ---
+        const keys = { right: false, left: false };
+        
+        document.addEventListener('keydown', (e) => {
+            if (e.code === 'ArrowRight' || e.code === 'KeyD') keys.right = true;
+            if (e.code === 'ArrowLeft' || e.code === 'KeyA') keys.left = true;
+            if (e.code === 'Escape') togglePause();
+        });
+
+        document.addEventListener('keyup', (e) => {
+            if (e.code === 'ArrowRight' || e.code === 'KeyD') keys.right = false;
+            if (e.code === 'ArrowLeft' || e.code === 'KeyA') keys.left = false;
+        });
+
+        let lastTouchX = null;
+        canvas.addEventListener('touchstart', (e) => {
+            if(gameState !== 'PLAYING') return;
+            e.preventDefault(); 
+            lastTouchX = e.touches[0].clientX;
+        }, {passive: false});
+
+        canvas.addEventListener('touchmove', (e) => {
+            if(gameState !== 'PLAYING') return;
+            e.preventDefault(); 
+            if (lastTouchX !== null) {
+                const currentTouchX = e.touches[0].clientX;
+                const deltaX = currentTouchX - lastTouchX;
+                player.x += deltaX * 1.5; 
+                if(player.x < 0) player.x = 0;
+                if(player.x + player.width > canvas.width) player.x = canvas.width - player.width;
+                lastTouchX = currentTouchX;
+            }
+        }, {passive: false});
+        canvas.addEventListener('touchend', (e) => lastTouchX = null);
+
+        // --- Color Helper ---
+        function lerpColor(a, b, amount) { 
+            var ah = parseInt(a.replace(/#/g, ''), 16),
+                ar = ah >> 16, ag = ah >> 8 & 0xff, ab = ah & 0xff,
+                bh = parseInt(b.replace(/#/g, ''), 16),
+                br = bh >> 16, bg = bh >> 8 & 0xff, bb = bh & 0xff,
+                rr = ar + amount * (br - ar),
+                rg = ag + amount * (bg - ag),
+                rb = ab + amount * (bb - ab);
+            return '#' + ((1 << 24) + (rr << 16) + (rg << 8) + (rb | 0)).toString(16).slice(1);
+        }
+
+        // --- Audio Warmer ---
+        // This function forces the browser to acknowledge the audio file on the first click
+        function warmUpAudio() {
+            if (!isMuted) {
+                // Play it at volume 0 then immediately pause
+                // This "activates" the file for later use
+                assets.soundLose.volume = 0; 
+                assets.soundLose.play().then(() => {
+                    assets.soundLose.pause();
+                    assets.soundLose.currentTime = 0;
+                    assets.soundLose.volume = 1; // Restore volume
+                }).catch(e => console.log("Audio warmup skipped:", e));
+            }
+        }
+
+        // --- Game Logic ---
+
+        function start() {
+            // Trigger audio permission
+            warmUpAudio();
+
+            gameState = 'PLAYING';
+            score = 0;
+            difficulty = 1;
+            frames = 0;
+            bombs = [];
+            particles = [];
+            
+            // Reset BG
+            bgState.currentIdx = 0;
+            bgState.nextIdx = 1;
+            bgState.progress = 0;
+            bgState.timer = 0;
+
+            player.x = canvas.width / 2 - player.width / 2;
+            
+            ui.start.classList.add('hidden');
+            ui.gameover.classList.add('hidden');
+            ui.pause.classList.add('hidden');
+            ui.hud.classList.remove('hidden');
+            ui.container.classList.remove('shake');
+            updateScore();
+            gameLoop();
+        }
+
+        function gameOver() {
+            gameState = 'GAMEOVER';
+            
+            if (!isMuted) {
+                // FORCE REPLAY
+                try {
+                    assets.soundLose.currentTime = 0; // Rewind
+                    var promise = assets.soundLose.play();
+                    
+                    if (promise !== undefined) {
+                        promise.catch(error => {
+                            console.error("Audio failed to play. Check browser permissions or file path.", error);
+                        });
+                    }
+                } catch(err) {
+                    console.error("Audio Error:", err);
+                }
+            }
+
+            if (score > highScore) {
+                highScore = score;
+                localStorage.setItem('bombDodgerHigh', highScore);
+            }
+
+            ui.finalScore.innerText = Math.floor(score);
+            ui.bestScore.innerText = Math.floor(highScore);
+            ui.hud.classList.add('hidden');
+            ui.gameover.classList.remove('hidden');
+
+            if (navigator.vibrate) navigator.vibrate(200);
+        }
+
+        function togglePause() {
+            if (gameState === 'PLAYING') {
+                gameState = 'PAUSED';
+                ui.pause.classList.remove('hidden');
+                ui.pauseBtn.innerText = '▶️';
+            } else if (gameState === 'PAUSED') {
+                gameState = 'PLAYING';
+                ui.pause.classList.add('hidden');
+                ui.pauseBtn.innerText = '⏸️';
+                gameLoop();
+            }
+        }
+
+        function spawnBomb() {
+            const size = 50 + Math.random() * 30; 
+            const bomb = {
+                x: Math.random() * (canvas.width - size),
+                y: -size,
+                width: size,
+                height: size,
+                speed: (Math.random() * 2 + 3) * difficulty,
+                rotation: 0,
+                rotSpeed: (Math.random() - 0.5) * 0.2
+            };
+            bombs.push(bomb);
+        }
+
+        function createExplosion(x, y, color) {
+            for (let i = 0; i < 15; i++) {
+                particles.push({
+                    x: x,
+                    y: y,
+                    radius: Math.random() * 5 + 2,
+                    color: color,
+                    vx: (Math.random() - 0.5) * 10,
+                    vy: (Math.random() - 0.5) * 10,
+                    life: 1.0
+                });
+            }
+        }
+
+        // --- The Loop ---
+
+        function update() {
+            // Background Transition
+            bgState.timer++;
+            if (bgState.timer > bgState.switchInterval) {
+                bgState.progress += bgState.transitionSpeed;
+                if (bgState.progress >= 1) {
+                    bgState.progress = 0;
+                    bgState.currentIdx = bgState.nextIdx;
+                    bgState.nextIdx = (bgState.nextIdx + 1) % themes.length;
+                    bgState.timer = 0;
+                }
+            }
+
+            if (keys.right && player.x + player.width < canvas.width) player.x += player.speed;
+            if (keys.left && player.x > 0) player.x -= player.speed;
+
+            frames++;
+            if (frames % 60 === 0) {
+                score += 1;
+                updateScore();
+                difficulty += 0.02;
+            }
+
+            if (frames % Math.max(20, Math.floor(60 / difficulty)) === 0) spawnBomb();
+
+            for (let i = 0; i < bombs.length; i++) {
+                let b = bombs[i];
+                b.y += b.speed;
+                b.rotation += b.rotSpeed;
+
+                if (
+                    player.x < b.x + b.width - 15 && 
+                    player.x + player.width > b.x + 15 &&
+                    player.y < b.y + b.height - 15 &&
+                    player.y + player.height > b.y + 15
+                ) {
+                    ui.container.classList.add('shake');
+                    setTimeout(() => ui.container.classList.remove('shake'), 500);
+                    createExplosion(player.x + player.width/2, player.y + player.height/2, '#ff4757');
+                    gameOver();
+                }
+
+                if (b.y > canvas.height) {
+                    bombs.splice(i, 1);
+                    i--;
+                }
+            }
+
+            for (let i = 0; i < particles.length; i++) {
+                let p = particles[i];
+                p.x += p.vx;
+                p.y += p.vy;
+                p.life -= 0.05;
+                if (p.life <= 0) {
+                    particles.splice(i, 1);
+                    i--;
+                }
+            }
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            const themeCurrent = themes[bgState.currentIdx];
+            const themeNext = themes[bgState.nextIdx];
+            const topColor = lerpColor(themeCurrent.top, themeNext.top, bgState.progress);
+            const bottomColor = lerpColor(themeCurrent.bottom, themeNext.bottom, bgState.progress);
+
+            const grd = ctx.createLinearGradient(0, 0, 0, canvas.height);
+            grd.addColorStop(0, topColor);
+            grd.addColorStop(1, bottomColor);
+            ctx.fillStyle = grd;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.shadowBlur = 10;
+            ctx.shadowColor = 'rgba(0,0,0,0.3)';
+            
+            if (sprites.playerLoaded) {
+                ctx.drawImage(assets.player, player.x, player.y, player.width, player.height);
+            } else {
+                ctx.fillStyle = player.color;
+                ctx.beginPath();
+                ctx.roundRect(player.x, player.y, player.width, player.height, 5);
+                ctx.fill();
+                ctx.fillStyle = 'white';
+                ctx.beginPath();
+                ctx.arc(player.x + player.width*0.3, player.y + player.height*0.3, 5, 0, Math.PI * 2);
+                ctx.arc(player.x + player.width*0.7, player.y + player.height*0.3, 5, 0, Math.PI * 2);
+                ctx.fill();
+            }
+
+            for (let b of bombs) {
+                ctx.save();
+                ctx.translate(b.x + b.width/2, b.y + b.height/2);
+                ctx.rotate(b.rotation);
+                if (sprites.bombLoaded) {
+                    ctx.drawImage(assets.bomb, -b.width/2, -b.height/2, b.width, b.height);
+                } else {
+                    ctx.fillStyle = '#2f3542';
+                    ctx.beginPath();
+                    ctx.arc(0, 0, b.width/2, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.strokeStyle = '#ff4757';
+                    ctx.lineWidth = 3;
+                    ctx.beginPath();
+                    ctx.moveTo(0, -b.width/2);
+                    ctx.lineTo(5, -b.width/2 - 10);
+                    ctx.stroke();
+                }
+                ctx.restore();
+            }
+
+            ctx.shadowBlur = 0;
+            for (let p of particles) {
+                ctx.globalAlpha = p.life;
+                ctx.fillStyle = p.color;
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.globalAlpha = 1;
+            }
+        }
+
+        function gameLoop() {
+            if (gameState === 'PLAYING') {
+                update();
+                draw();
+                requestAnimationFrame(gameLoop);
+            }
+        }
+
+        function updateScore() {
+            ui.score.innerText = Math.floor(score);
+        }
+
+        ui.startBtn.addEventListener('click', start);
+        ui.restartBtn.addEventListener('click', start);
+        ui.resumeBtn.addEventListener('click', togglePause);
+        ui.pauseBtn.addEventListener('click', togglePause);
+        
+        ui.muteBtn.addEventListener('click', () => {
+            isMuted = !isMuted;
+            assets.soundLose.muted = isMuted;
+            ui.muteBtn.innerText = isMuted ? '🔇' : '🔊';
+        });
+
+        ui.bestScore.innerText = Math.floor(highScore);
+
+    </script>
+</body>
+</html>
