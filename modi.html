@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <title>Bomb Dodger - Audio Fixed</title>
+    <title>Rahul Dodger - Graphics Update</title>
     <style>
         /* 🎨 CSS3 STYLING & UI */
         :root {
@@ -126,10 +126,24 @@
 
         p { font-size: 1.2rem; color: #ccc; }
 
+        /* LOSE IMAGE STYLE */
+        .lose-icon {
+            width: 150px;
+            height: auto;
+            margin-bottom: 10px;
+            animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            filter: drop-shadow(0 10px 10px rgba(0,0,0,0.3));
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0) rotate(-20deg); opacity: 0; }
+            100% { transform: scale(1) rotate(0deg); opacity: 1; }
+        }
+
         .big-score {
             font-size: 4rem;
             color: #ffd700;
-            margin: 10px 0;
+            margin: 5px 0;
             font-weight: 800;
         }
 
@@ -188,15 +202,17 @@
         </div>
 
         <div id="start-screen" class="ui-layer modal-screen">
-            <h1>BOMB DODGER</h1>
-            <p>Avoid the falling bombs!</p>
+            <h1>RAHUL DODGER</h1>
+            <p>Avoid the falling Rahuls!</p>
             <p style="font-size: 0.9rem; margin-top:5px;">Desktop: Arrow Keys | Mobile: Swipe/Drag to Move</p>
             <button class="cta-btn" id="startBtn">PLAY</button>
         </div>
 
         <div id="gameover-screen" class="ui-layer modal-screen hidden">
+            <!-- 💀 LOSE IMAGE ADDED HERE 💀 -->
+            <img src="https://pbs.twimg.com/media/Gk-FKhubQAMIEU2.jpg" alt="You Lost" class="lose-icon">
+            
             <h1>GAME OVER</h1>
-            <p>You Survived</p>
             <div class="big-score" id="finalScore">0</div>
             <p>Best: <span id="bestScore">0</span></p>
             <button class="cta-btn" id="restartBtn">TRY AGAIN</button>
@@ -227,14 +243,17 @@
         const assets = {
             player: new Image(),
             bomb: new Image(),
-            soundLose: new Audio('lose.mp3') // MUST BE IN SAME FOLDER
+            soundLose: new Audio('lose.mp3'),
+            soundBg: new Audio('playersong.mp3') 
         };
         
         assets.player.src = 'player.png';
         assets.bomb.src = 'bomb.png';
         
-        // Preload settings for audio
+        // Audio Settings
         assets.soundLose.preload = 'auto';
+        assets.soundBg.preload = 'auto';
+        assets.soundBg.loop = true; 
 
         const sprites = { playerLoaded: false, bombLoaded: false };
         assets.player.onload = () => sprites.playerLoaded = true;
@@ -285,7 +304,8 @@
             restartBtn: document.getElementById('restartBtn'),
             resumeBtn: document.getElementById('resumeBtn'),
             muteBtn: document.getElementById('muteBtn'),
-            pauseBtn: document.getElementById('pauseBtn')
+            pauseBtn: document.getElementById('pauseBtn'),
+            loseImg: document.querySelector('.lose-icon') // Reference to image
         };
 
         // --- Initialization ---
@@ -347,24 +367,21 @@
         }
 
         // --- Audio Warmer ---
-        // This function forces the browser to acknowledge the audio file on the first click
         function warmUpAudio() {
-            if (!isMuted) {
-                // Play it at volume 0 then immediately pause
-                // This "activates" the file for later use
-                assets.soundLose.volume = 0; 
-                assets.soundLose.play().then(() => {
-                    assets.soundLose.pause();
-                    assets.soundLose.currentTime = 0;
-                    assets.soundLose.volume = 1; // Restore volume
-                }).catch(e => console.log("Audio warmup skipped:", e));
-            }
+            if (isMuted) return;
+            
+            // Warm up Lose Sound silently
+            assets.soundLose.volume = 0;
+            assets.soundLose.play().then(() => {
+                assets.soundLose.pause();
+                assets.soundLose.currentTime = 0;
+                assets.soundLose.volume = 1;
+            }).catch(e => console.log("Lose audio unlock skipped", e));
         }
 
         // --- Game Logic ---
 
         function start() {
-            // Trigger audio permission
             warmUpAudio();
 
             gameState = 'PLAYING';
@@ -387,6 +404,17 @@
             ui.pause.classList.add('hidden');
             ui.hud.classList.remove('hidden');
             ui.container.classList.remove('shake');
+
+            // Play BG Music
+            if (!isMuted) {
+                assets.soundBg.currentTime = 0;
+                assets.soundBg.volume = 1; 
+                var playPromise = assets.soundBg.play();
+                if (playPromise !== undefined) {
+                    playPromise.catch(error => { console.log("BG Play failed:", error); });
+                }
+            }
+
             updateScore();
             gameLoop();
         }
@@ -394,19 +422,15 @@
         function gameOver() {
             gameState = 'GAMEOVER';
             
+            // Stop BG Music
+            assets.soundBg.pause(); 
+            assets.soundBg.currentTime = 0; 
+
+            // Play Lose Music
             if (!isMuted) {
-                // FORCE REPLAY
-                try {
-                    assets.soundLose.currentTime = 0; // Rewind
-                    var promise = assets.soundLose.play();
-                    
-                    if (promise !== undefined) {
-                        promise.catch(error => {
-                            console.error("Audio failed to play. Check browser permissions or file path.", error);
-                        });
-                    }
-                } catch(err) {
-                    console.error("Audio Error:", err);
+                var playPromise = assets.soundLose.play();
+                if (playPromise !== undefined) {
+                    playPromise.catch(error => console.log("Lose sound failed:", error));
                 }
             }
 
@@ -417,6 +441,12 @@
 
             ui.finalScore.innerText = Math.floor(score);
             ui.bestScore.innerText = Math.floor(highScore);
+            
+            // Reset animation for lose image
+            ui.loseImg.style.animation = 'none';
+            ui.loseImg.offsetHeight; /* trigger reflow */
+            ui.loseImg.style.animation = 'popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+
             ui.hud.classList.add('hidden');
             ui.gameover.classList.remove('hidden');
 
@@ -428,10 +458,14 @@
                 gameState = 'PAUSED';
                 ui.pause.classList.remove('hidden');
                 ui.pauseBtn.innerText = '▶️';
+                assets.soundBg.pause();
             } else if (gameState === 'PAUSED') {
                 gameState = 'PLAYING';
                 ui.pause.classList.add('hidden');
                 ui.pauseBtn.innerText = '⏸️';
+                if(!isMuted) {
+                    assets.soundBg.play().catch(e => console.log("Resume failed", e));
+                }
                 gameLoop();
             }
         }
@@ -609,7 +643,14 @@
         ui.muteBtn.addEventListener('click', () => {
             isMuted = !isMuted;
             assets.soundLose.muted = isMuted;
+            assets.soundBg.muted = isMuted; // Sync Mute
+            
             ui.muteBtn.innerText = isMuted ? '🔇' : '🔊';
+
+            if(gameState === 'PLAYING') {
+                if(isMuted) assets.soundBg.pause();
+                else assets.soundBg.play().catch(e=>console.log(e));
+            }
         });
 
         ui.bestScore.innerText = Math.floor(highScore);
