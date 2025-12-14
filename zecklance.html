@@ -3,15 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Zecklance Global Services Pvt Ltd offers expert Web Development, Graphics Design, and Digital Marketing services to help your business grow. Get a quote today.">
     <title>Home - ZECKLANCE GLOBAL SERVICES PVT LTD</title>
-    
+    <link rel="icon" type="image/webp" href="favicon.webp">
+
+    <!-- Preload Critical Assets for LCP -->
+    <link rel="preload" as="image" href="assets/herobackground.webp">
+    <link rel="preload" as="image" href="assets/heroimage.webp">
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
-    <!-- Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <!-- Icons (Deferred loading to prevent blocking) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"></noscript>
 
     <style>
         /* --- CSS VARIABLES & RESET --- */
@@ -121,7 +128,7 @@
             position: relative;
         }
 
-        .logo img { max-height: 35px; }
+        .logo img { max-height: 35px; width: auto; }
 
         .nav-menu ul { display: flex; gap: 30px; }
         
@@ -770,8 +777,8 @@
     <header>
         <div class="container header-wrap">
             <div class="logo">
-                <a href="#home">
-                    <img src="assets/logo.webp" alt="ZECKLANCE GLOBAL SERVICES PVT LTD">
+                <a href="#home" aria-label="Home">
+                    <img src="assets/logo.webp" alt="ZECKLANCE GLOBAL SERVICES PVT LTD" width="238" height="35">
                 </a>
             </div>
             <!-- SCROLL NAVIGATION -->
@@ -785,7 +792,7 @@
                 </ul>
             </nav>
             <div class="header-buttons">
-                <a href="#contact" class="btn header-quote-btn">Get A Quote <i class="fas fa-arrow-right"></i></a>
+                <a href="#contact" class="btn header-quote-btn" aria-label="Get A Quote">Get A Quote <i class="fas fa-arrow-right"></i></a>
             </div>
             <div class="mobile-toggle" id="mobileToggle">
                 <i class="fas fa-bars"></i>
@@ -793,309 +800,312 @@
         </div>
     </header>
 
-    <!-- Hero Section -->
-    <section class="hero" id="home">
-        <div class="container hero-grid">
-            <div class="hero-content fade-in">
-                <h1>Zecklance Global Service Pvt LTD</h1>
-                <p>ZECKLANCE GLOBAL SERVICES PVT LTD is the most effective Digital agency at the current time. Get More Clients with The Help of <span>ZECKLANCE GLOBAL SERVICES PVT LTD</span></p>
-                <a href="#contact" class="hero-btn">Get A Quote <i class="fas fa-arrow-circle-right" style="margin-left: 10px;"></i></a>
+    <main>
+        <!-- Hero Section -->
+        <section class="hero" id="home">
+            <div class="container hero-grid">
+                <div class="hero-content fade-in">
+                    <h1>Zecklance Global Service Pvt LTD</h1>
+                    <p>ZECKLANCE GLOBAL SERVICES PVT LTD is the most effective Digital agency at the current time. Get More Clients with The Help of <span>ZECKLANCE GLOBAL SERVICES PVT LTD</span></p>
+                    <a href="#contact" class="hero-btn" aria-label="Get A Quote">Get A Quote <i class="fas fa-arrow-circle-right" style="margin-left: 10px;"></i></a>
+                </div>
+                <div class="hero-image fade-in">
+                    <!-- Added explicit size and fetchpriority for LCP -->
+                    <img src="assets/heroimage.webp" alt="Hero Illustration" width="600" height="400" fetchpriority="high">
+                </div>
             </div>
-            <div class="hero-image fade-in">
-                <img src="assets/heroimage.webp" alt="Hero Illustration">
-            </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Services Section -->
-    <section class="section" id="service">
-        <div class="container">
-            <div class="services-header fade-in">
-                <h2>Our Services</h2>
-                <div class="divider"></div>
-            </div>
-            <div class="services-grid">
-                <!-- Card 1 -->
-                <div class="service-card tilt-card fade-in">
-                    <div class="service-icon"><i class="fas fa-desktop"></i></div>
-                    <h3>Web<br> Development</h3>
-                    <p>DRIVE your user control with our CMS service; we make our clients website more informative. Stand on top in your division with our content customized service.</p>
+        <!-- Services Section -->
+        <section class="section" id="service">
+            <div class="container">
+                <div class="services-header fade-in">
+                    <h2>Our Services</h2>
+                    <div class="divider"></div>
                 </div>
-                <!-- Card 2 -->
-                <div class="service-card tilt-card fade-in">
-                    <div class="service-icon"><i class="fas fa-pencil-ruler"></i></div>
-                    <h3>Graphics <br>Design</h3>
-                    <p>The Graphics Design feature on our website is a vital component of our digital marketing services, providing businesses with visually captivating designs.</p>
-                </div>
-                <!-- Card 3 -->
-                <div class="service-card tilt-card fade-in">
-                    <div class="service-icon"><i class="far fa-chart-bar"></i></div>
-                    <h3>Digital<br>Marketing</h3>
-                    <p>The Digital Marketing feature on our website is designed to empower businesses with the essential tools and strategies needed to thrive in today’s landscape.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- How We Work - Strategize -->
-    <section class="work-section">
-        <div class="container">
-            <div class="text-center work-heading fade-in" style="max-width: 700px; margin: 0 auto 50px;">
-                <h2>How We Work</h2>
-                <div class="divider"></div>
-            </div>
-            
-            <div class="feature-row fade-in">
-                <div class="feature-img">
-                    <img src="assets/westrategize.webp" alt="Strategize">
-                </div>
-                <div class="feature-content">
-                    <h1>We Strategize</h1>
-                    <p>There are hundreds of variables to consider when crafting a digital marketing strategy. We evaluate factors like your service or product type, target audience, business location, service territory, industry seasonality, search volume in your area, and more. At ZECKLANCE GLOBAL SERVICES PVT LTD, you’re not just buying digital services – you get a custom strategy.</p>
-                    <a href="#" class="btn-work">Learn More <i class="far fa-arrow-alt-circle-right" style="margin-left: 8px;"></i></a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- How We Work - Design -->
-    <section class="work-section">
-        <div class="container">
-            <div class="feature-row reverse fade-in">
-                <div class="feature-img">
-                    <img src="assets/wedesign.webp" alt="Design">
-                </div>
-                <div class="feature-content">
-                    <h1>We Design</h1>
-                    <p>All our websites and landing pages are mobile friendly and designed with conversion in mind. Our expert web design team boasts over 20 years of combined experience. When they aren’t busy building beautiful client websites they’re catching up with the latest design trends.</p>
-                    <a href="#" class="btn-work">Learn More <i class="far fa-arrow-alt-circle-right" style="margin-left: 8px;"></i></a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- How We Work - Convert -->
-    <section class="work-section">
-        <div class="container">
-            <div class="feature-row fade-in">
-                <div class="feature-img">
-                    <img src="assets/weconvert.webp" alt="Convert">
-                </div>
-                <div class="feature-content">
-                    <h1>We Convert</h1>
-                    <p>All of our lead generation services are designed with one thing in mind – getting you new customers. Our SEO and PPC specialists will make ongoing adjustments to your projects to make sure we’re always driving new traffic to your site.</p>
-                    <a href="#" class="btn-work">Learn More <i class="far fa-arrow-alt-circle-right" style="margin-left: 8px;"></i></a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- How We Work - Maintain -->
-    <section class="work-section">
-        <div class="container">
-            <div class="feature-row reverse fade-in">
-                <div class="feature-img">
-                    <img src="assets/wemaintain.webp" alt="Maintain">
-                </div>
-                <div class="feature-content">
-                    <h1>We Maintain</h1>
-                    <p>Once the dust settles and your initial goals have been reached, it’s easy to think the job is done, right? Not at ZECKLANCE GLOBAL SERVICES PVT LTD. Our advanced tracking techniques ensure our specialists regularly make critical adjustments to your campaign.</p>
-                    <a href="#" class="btn-work">Learn More <i class="far fa-arrow-alt-circle-right" style="margin-left: 8px;"></i></a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- About Section -->
-    <section class="section" id="about">
-        <div class="container">
-            <!-- Main Title Centered -->
-            <div class="text-center fade-in" style="margin-bottom: 40px;">
-                <h2 style="color: #230572; font-size: 36px;">About Zecklance Global Service Pvt LTD</h2>
-                <div class="divider"></div>
-            </div>
-
-            <div class="about-grid">
-                <!-- Left Column -->
-                <div class="about-left fade-in">
-                    <h3 style="color: #666; font-size: 18px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 25px; font-weight: 700;">OUR VALUES:</h3>
-                    
-                    <div class="values-list">
-                        <div class="values-list-item">
-                            1. <strong>Client Success:</strong> We are committed to the success of our clients. Their goals become our goals, and we work relentlessly to exceed their expectations, providing them with the tools and strategies needed to achieve remarkable results.
-                        </div>
-                        
-                        <div class="values-list-item">
-                            2. <strong>Excellence:</strong> We have an unwavering dedication to excellence. Our team is composed of highly skilled professionals who are passionate about their craft, continually honing their skills and staying up-to-date with the latest industry trends and best practices.
-                        </div>
-                        
-                        <div class="values-list-item">
-                            3. <strong>Collaboration:</strong> We believe in the power of collaboration. By working closely with our clients, we develop a deep understanding of their business, enabling us to create customized digital marketing solutions that align with their objectives and target audience.
-                        </div>
-                        
-                        <div class="values-list-item">
-                            4. <strong>Transparency:</strong> We believe in transparency and open communication. We keep our clients informed every step of the way, providing regular reports and insights into campaign performance, ensuring they are always aware of the progress and results achieved.
-                        </div>
+                <div class="services-grid">
+                    <!-- Card 1 -->
+                    <div class="service-card tilt-card fade-in">
+                        <div class="service-icon"><i class="fas fa-desktop"></i></div>
+                        <h3>Web<br> Development</h3>
+                        <p>DRIVE your user control with our CMS service; we make our clients website more informative. Stand on top in your division with our content customized service.</p>
                     </div>
-                </div>
-
-                <!-- Right Column -->
-                <div class="about-right fade-in">
-                    <h3 style="color: #666; font-size: 18px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 20px; font-weight: 700;">OUR HISTORY</h3>
-                    <p style="color: #555; margin-bottom: 20px;">Welcome to ZECKLANCE GLOBAL SERVICES PVT LTD! We are a leading digital marketing agency committed to helping businesses succeed and thrive in the ever-evolving online landscape. With our innovative strategies and cutting-edge solutions, we empower our clients to unlock their full digital potential.</p>
-                    
-                    <p style="color: #555; margin-bottom: 40px;">At ZECKLANCE, we understand that digital marketing is not just about promoting products or services; it’s about building connections and fostering meaningful relationships with your target audience. With years of industry experience, our team of skilled professionals is dedicated to delivering exceptional results that drive growth and maximize ROI.</p>
-                    
-                    <h3 style="color: #666; font-size: 18px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 20px; font-weight: 700;">OUR MISSION</h3>
-                    <p style="color: #555;">Our mission is to revolutionize the way businesses harness the power of digital marketing. We strive to be at the forefront of industry trends, consistently delivering innovative strategies tailored to our clients’ unique needs. We believe in the transformative power of digital marketing and its ability to create new opportunities and elevate brands to new heights.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Testimonials Section -->
-    <section class="testimonials-section">
-        <div class="container">
-            <div class="text-center fade-in">
-                <h2>See What Our Clients Say</h2>
-                <div class="divider"></div>
-            </div>
-            
-            <div class="t-slider-container fade-in" id="tContainer">
-                <div class="t-slider-track" id="tTrack">
-                    <!-- Client 1 -->
-                    <div class="t-card">
-                        <div class="t-content">
-                            ZECKLANCE has been instrumental in transforming our digital presence. Their comprehensive approach to digital marketing, including SEO and social media marketing, has driven significant organic traffic to our website and increased our online conversions.
-                        </div>
-                        <div class="t-author">
-                            <span class="t-name">Andrea Velle</span>
-                            <span class="t-role">CUSTOMER</span>
-                        </div>
+                    <!-- Card 2 -->
+                    <div class="service-card tilt-card fade-in">
+                        <div class="service-icon"><i class="fas fa-pencil-ruler"></i></div>
+                        <h3>Graphics <br>Design</h3>
+                        <p>The Graphics Design feature on our website is a vital component of our digital marketing services, providing businesses with visually captivating designs.</p>
                     </div>
-                    <!-- Client 2 -->
-                    <div class="t-card">
-                        <div class="t-content">
-                            We engaged ZECKLANCE for their content marketing services, and we couldn't be happier with the results. Their team produced high-quality, engaging content that resonated with our target audience. Their expertise in crafting compelling storytelling really made a difference.
-                        </div>
-                        <div class="t-author">
-                            <span class="t-name">Elle Aasen</span>
-                            <span class="t-role">JOURNALIST</span>
-                        </div>
-                    </div>
-                    <!-- Client 3 -->
-                    <div class="t-card">
-                        <div class="t-content">
-                            ZECKLANCE has exceeded our expectations in every aspect of our digital marketing strategy. Their team's deep understanding of our industry and target market allowed them to develop customized solutions that have significantly improved our brand visibility and engagement.
-                        </div>
-                        <div class="t-author">
-                            <span class="t-name">Isa Holmgren</span>
-                            <span class="t-role">CUSTOMER</span>
-                        </div>
-                    </div>
-                    <!-- Client 4 -->
-                    <div class="t-card">
-                        <div class="t-content">
-                            Working with ZECKLANCE has been a game-changer for our business. Their digital marketing expertise and strategies have significantly improved our online visibility and helped us reach our target audience effectively. Their team is highly knowledgeable and professional.
-                        </div>
-                        <div class="t-author">
-                            <span class="t-name">Jon Bakken</span>
-                            <span class="t-role">JOURNALIST</span>
-                        </div>
-                    </div>
-                    <!-- Client 5 (Repeat 1 for variety) -->
-                    <div class="t-card">
-                        <div class="t-content">
-                            The comprehensive approach to digital marketing, including SEO and social media marketing, has driven significant organic traffic to our website. We highly recommend ZECKLANCE to any business looking to amplify their digital reach.
-                        </div>
-                        <div class="t-author">
-                            <span class="t-name">Andrea Velle</span>
-                            <span class="t-role">CUSTOMER</span>
-                        </div>
+                    <!-- Card 3 -->
+                    <div class="service-card tilt-card fade-in">
+                        <div class="service-icon"><i class="far fa-chart-bar"></i></div>
+                        <h3>Digital<br>Marketing</h3>
+                        <p>The Digital Marketing feature on our website is designed to empower businesses with the essential tools and strategies needed to thrive in today’s landscape.</p>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Blog Section -->
-    <section class="section" id="blog">
-        <div class="container">
-            <div class="text-center fade-in" style="margin-bottom: 50px;">
-                <h2 style="color: #230572; font-size: 36px;">Our Recent Post</h2>
-                <div class="divider"></div>
-            </div>
-
-            <div class="blog-grid">
-                <!-- Blog 1 -->
-                <article class="blog-card fade-in">
-                    <div class="blog-img">
-                        <a href="#">
-                            <img src="assets/seo.webp" alt="SEO">
-                        </a>
-                    </div>
-                    <div class="blog-content">
-                        <span class="blog-badge">Digital Marketing</span>
-                        <h3 class="blog-title"><a href="#">5 Ways to Maximize SEO and Social Media</a></h3>
-                        <p>Search Engine Optimization (SEO) plays an important role in any digital marketing strategy...</p>
-                        <div class="blog-meta">July 6, 2023 • No Comments</div>
-                    </div>
-                </article>
-
-                <!-- Blog 2 -->
-                <article class="blog-card fade-in">
-                    <div class="blog-img">
-                        <a href="#">
-                            <img src="assets/websitelayout.webp" alt="Landing Page">
-                        </a>
-                    </div>
-                    <div class="blog-content">
-                        <span class="blog-badge">Web Development</span>
-                        <h3 class="blog-title"><a href="#">Effective Landing Page Design: Elements and Strategies</a></h3>
-                        <p>In the digital world, a landing page is a crucial element for online businesses...</p>
-                        <div class="blog-meta">July 6, 2023 • No Comments</div>
-                    </div>
-                </article>
-
-                <!-- Blog 3 -->
-                <article class="blog-card fade-in">
-                    <div class="blog-img">
-                        <a href="#">
-                            <img src="assets/softskills.webp" alt="Soft Skills">
-                        </a>
-                    </div>
-                    <div class="blog-content">
-                        <span class="blog-badge">Digital Marketing</span>
-                        <h3 class="blog-title"><a href="#">9 Essential Soft Skills for Digital Marketers</a></h3>
-                        <p>The difference between a good and a great digital marketer can sometimes be hard to determine...</p>
-                        <div class="blog-meta">July 6, 2023 • No Comments</div>
-                    </div>
-                </article>
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact Form Section -->
-    <section class="section" id="contact">
-        <div class="container fade-in">
-            <div class="contact-card-wrapper">
-                <h2 class="contact-title">Contact US</h2>
-                <div class="contact-underline"></div>
+        <!-- How We Work - Strategize -->
+        <section class="work-section">
+            <div class="container">
+                <div class="text-center work-heading fade-in" style="max-width: 700px; margin: 0 auto 50px;">
+                    <h2>How We Work</h2>
+                    <div class="divider"></div>
+                </div>
                 
-                <!-- Added action, method, and name attributes -->
-                <form action="sendmail.php" method="post">
-                    <input type="text" name="name" class="contact-input" placeholder="Name" required>
-                    <input type="tel" name="phone" class="contact-input" placeholder="Phone">
-                    <input type="email" name="email" class="contact-input" placeholder="Email" required>
-                    <textarea name="message" class="contact-input" rows="5" placeholder="Message" required></textarea>
-                    
-                    <button type="submit" class="btn-submit-custom">
-                        SUBMIT
-                    </button>
-                </form>
+                <div class="feature-row fade-in">
+                    <div class="feature-img">
+                        <img src="assets/westrategize.webp" alt="Strategize" width="523" height="392" loading="lazy">
+                    </div>
+                    <div class="feature-content">
+                        <h1>We Strategize</h1>
+                        <p>There are hundreds of variables to consider when crafting a digital marketing strategy. We evaluate factors like your service or product type, target audience, business location, service territory, industry seasonality, search volume in your area, and more. At ZECKLANCE GLOBAL SERVICES PVT LTD, you’re not just buying digital services – you get a custom strategy.</p>
+                        <a href="#" class="btn-work" aria-label="Learn More about Strategy">Learn More <i class="far fa-arrow-alt-circle-right" style="margin-left: 8px;"></i></a>
+                    </div>
+                </div>
             </div>
-        </div>
-    </section>
+        </section>
+
+        <!-- How We Work - Design -->
+        <section class="work-section">
+            <div class="container">
+                <div class="feature-row reverse fade-in">
+                    <div class="feature-img">
+                        <img src="assets/wedesign.webp" alt="Design" width="523" height="376" loading="lazy">
+                    </div>
+                    <div class="feature-content">
+                        <h1>We Design</h1>
+                        <p>All our websites and landing pages are mobile friendly and designed with conversion in mind. Our expert web design team boasts over 20 years of combined experience. When they aren’t busy building beautiful client websites they’re catching up with the latest design trends.</p>
+                        <a href="#" class="btn-work" aria-label="Learn More about Design">Learn More <i class="far fa-arrow-alt-circle-right" style="margin-left: 8px;"></i></a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- How We Work - Convert -->
+        <section class="work-section">
+            <div class="container">
+                <div class="feature-row fade-in">
+                    <div class="feature-img">
+                        <img src="assets/weconvert.webp" alt="Convert" width="523" height="523" loading="lazy">
+                    </div>
+                    <div class="feature-content">
+                        <h1>We Convert</h1>
+                        <p>All of our lead generation services are designed with one thing in mind – getting you new customers. Our SEO and PPC specialists will make ongoing adjustments to your projects to make sure we’re always driving new traffic to your site.</p>
+                        <a href="#" class="btn-work" aria-label="Learn More about Conversion">Learn More <i class="far fa-arrow-alt-circle-right" style="margin-left: 8px;"></i></a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- How We Work - Maintain -->
+        <section class="work-section">
+            <div class="container">
+                <div class="feature-row reverse fade-in">
+                    <div class="feature-img">
+                        <img src="assets/wemaintain.webp" alt="Maintain" width="523" height="523" loading="lazy">
+                    </div>
+                    <div class="feature-content">
+                        <h1>We Maintain</h1>
+                        <p>Once the dust settles and your initial goals have been reached, it’s easy to think the job is done, right? Not at ZECKLANCE GLOBAL SERVICES PVT LTD. Our advanced tracking techniques ensure our specialists regularly make critical adjustments to your campaign.</p>
+                        <a href="#" class="btn-work" aria-label="Learn More about Maintenance">Learn More <i class="far fa-arrow-alt-circle-right" style="margin-left: 8px;"></i></a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section class="section" id="about">
+            <div class="container">
+                <!-- Main Title Centered -->
+                <div class="text-center fade-in" style="margin-bottom: 40px;">
+                    <h2 style="color: #230572; font-size: 36px;">About Zecklance Global Service Pvt LTD</h2>
+                    <div class="divider"></div>
+                </div>
+
+                <div class="about-grid">
+                    <!-- Left Column -->
+                    <div class="about-left fade-in">
+                        <h3 style="color: #666; font-size: 18px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 25px; font-weight: 700;">OUR VALUES:</h3>
+                        
+                        <div class="values-list">
+                            <div class="values-list-item">
+                                1. <strong>Client Success:</strong> We are committed to the success of our clients. Their goals become our goals, and we work relentlessly to exceed their expectations, providing them with the tools and strategies needed to achieve remarkable results.
+                            </div>
+                            
+                            <div class="values-list-item">
+                                2. <strong>Excellence:</strong> We have an unwavering dedication to excellence. Our team is composed of highly skilled professionals who are passionate about their craft, continually honing their skills and staying up-to-date with the latest industry trends and best practices.
+                            </div>
+                            
+                            <div class="values-list-item">
+                                3. <strong>Collaboration:</strong> We believe in the power of collaboration. By working closely with our clients, we develop a deep understanding of their business, enabling us to create customized digital marketing solutions that align with their objectives and target audience.
+                            </div>
+                            
+                            <div class="values-list-item">
+                                4. <strong>Transparency:</strong> We believe in transparency and open communication. We keep our clients informed every step of the way, providing regular reports and insights into campaign performance, ensuring they are always aware of the progress and results achieved.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Column -->
+                    <div class="about-right fade-in">
+                        <h3 style="color: #666; font-size: 18px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 20px; font-weight: 700;">OUR HISTORY</h3>
+                        <p style="color: #555; margin-bottom: 20px;">Welcome to ZECKLANCE GLOBAL SERVICES PVT LTD! We are a leading digital marketing agency committed to helping businesses succeed and thrive in the ever-evolving online landscape. With our innovative strategies and cutting-edge solutions, we empower our clients to unlock their full digital potential.</p>
+                        
+                        <p style="color: #555; margin-bottom: 40px;">At ZECKLANCE, we understand that digital marketing is not just about promoting products or services; it’s about building connections and fostering meaningful relationships with your target audience. With years of industry experience, our team of skilled professionals is dedicated to delivering exceptional results that drive growth and maximize ROI.</p>
+                        
+                        <h3 style="color: #666; font-size: 18px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 20px; font-weight: 700;">OUR MISSION</h3>
+                        <p style="color: #555;">Our mission is to revolutionize the way businesses harness the power of digital marketing. We strive to be at the forefront of industry trends, consistently delivering innovative strategies tailored to our clients’ unique needs. We believe in the transformative power of digital marketing and its ability to create new opportunities and elevate brands to new heights.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials Section -->
+        <section class="testimonials-section">
+            <div class="container">
+                <div class="text-center fade-in">
+                    <h2>See What Our Clients Say</h2>
+                    <div class="divider"></div>
+                </div>
+                
+                <div class="t-slider-container fade-in" id="tContainer">
+                    <div class="t-slider-track" id="tTrack">
+                        <!-- Client 1 -->
+                        <div class="t-card">
+                            <div class="t-content">
+                                ZECKLANCE has been instrumental in transforming our digital presence. Their comprehensive approach to digital marketing, including SEO and social media marketing, has driven significant organic traffic to our website and increased our online conversions.
+                            </div>
+                            <div class="t-author">
+                                <span class="t-name">Andrea Velle</span>
+                                <span class="t-role">CUSTOMER</span>
+                            </div>
+                        </div>
+                        <!-- Client 2 -->
+                        <div class="t-card">
+                            <div class="t-content">
+                                We engaged ZECKLANCE for their content marketing services, and we couldn't be happier with the results. Their team produced high-quality, engaging content that resonated with our target audience. Their expertise in crafting compelling storytelling really made a difference.
+                            </div>
+                            <div class="t-author">
+                                <span class="t-name">Elle Aasen</span>
+                                <span class="t-role">JOURNALIST</span>
+                            </div>
+                        </div>
+                        <!-- Client 3 -->
+                        <div class="t-card">
+                            <div class="t-content">
+                                ZECKLANCE has exceeded our expectations in every aspect of our digital marketing strategy. Their team's deep understanding of our industry and target market allowed them to develop customized solutions that have significantly improved our brand visibility and engagement.
+                            </div>
+                            <div class="t-author">
+                                <span class="t-name">Isa Holmgren</span>
+                                <span class="t-role">CUSTOMER</span>
+                            </div>
+                        </div>
+                        <!-- Client 4 -->
+                        <div class="t-card">
+                            <div class="t-content">
+                                Working with ZECKLANCE has been a game-changer for our business. Their digital marketing expertise and strategies have significantly improved our online visibility and helped us reach our target audience effectively. Their team is highly knowledgeable and professional.
+                            </div>
+                            <div class="t-author">
+                                <span class="t-name">Jon Bakken</span>
+                                <span class="t-role">JOURNALIST</span>
+                            </div>
+                        </div>
+                        <!-- Client 5 (Repeat 1 for variety) -->
+                        <div class="t-card">
+                            <div class="t-content">
+                                The comprehensive approach to digital marketing, including SEO and social media marketing, has driven significant organic traffic to our website. We highly recommend ZECKLANCE to any business looking to amplify their digital reach.
+                            </div>
+                            <div class="t-author">
+                                <span class="t-name">Andrea Velle</span>
+                                <span class="t-role">CUSTOMER</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Blog Section -->
+        <section class="section" id="blog">
+            <div class="container">
+                <div class="text-center fade-in" style="margin-bottom: 50px;">
+                    <h2 style="color: #230572; font-size: 36px;">Our Recent Post</h2>
+                    <div class="divider"></div>
+                </div>
+
+                <div class="blog-grid">
+                    <!-- Blog 1 -->
+                    <article class="blog-card fade-in">
+                        <div class="blog-img">
+                            <a href="#" aria-label="Read more about SEO">
+                                <img src="assets/seo.webp" alt="SEO" width="373" height="200" loading="lazy">
+                            </a>
+                        </div>
+                        <div class="blog-content">
+                            <span class="blog-badge">Digital Marketing</span>
+                            <h3 class="blog-title"><a href="#">5 Ways to Maximize SEO and Social Media</a></h3>
+                            <p>Search Engine Optimization (SEO) plays an important role in any digital marketing strategy...</p>
+                            <div class="blog-meta">July 6, 2023 • No Comments</div>
+                        </div>
+                    </article>
+
+                    <!-- Blog 2 -->
+                    <article class="blog-card fade-in">
+                        <div class="blog-img">
+                            <a href="#" aria-label="Read more about Landing Pages">
+                                <img src="assets/websitelayout.webp" alt="Landing Page" width="373" height="200" loading="lazy">
+                            </a>
+                        </div>
+                        <div class="blog-content">
+                            <span class="blog-badge">Web Development</span>
+                            <h3 class="blog-title"><a href="#">Effective Landing Page Design: Elements and Strategies</a></h3>
+                            <p>In the digital world, a landing page is a crucial element for online businesses...</p>
+                            <div class="blog-meta">July 6, 2023 • No Comments</div>
+                        </div>
+                    </article>
+
+                    <!-- Blog 3 -->
+                    <article class="blog-card fade-in">
+                        <div class="blog-img">
+                            <a href="#" aria-label="Read more about Soft Skills">
+                                <img src="assets/softskills.webp" alt="Soft Skills" width="373" height="200" loading="lazy">
+                            </a>
+                        </div>
+                        <div class="blog-content">
+                            <span class="blog-badge">Digital Marketing</span>
+                            <h3 class="blog-title"><a href="#">9 Essential Soft Skills for Digital Marketers</a></h3>
+                            <p>The difference between a good and a great digital marketer can sometimes be hard to determine...</p>
+                            <div class="blog-meta">July 6, 2023 • No Comments</div>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Form Section -->
+        <section class="section" id="contact">
+            <div class="container fade-in">
+                <div class="contact-card-wrapper">
+                    <h2 class="contact-title">Contact US</h2>
+                    <div class="contact-underline"></div>
+                    
+                    <!-- Added action, method, and name attributes -->
+                    <form action="sendmail.php" method="post">
+                        <input type="text" name="name" class="contact-input" placeholder="Name" required aria-label="Name">
+                        <input type="tel" name="phone" class="contact-input" placeholder="Phone" aria-label="Phone">
+                        <input type="email" name="email" class="contact-input" placeholder="Email" required aria-label="Email">
+                        <textarea name="message" class="contact-input" rows="5" placeholder="Message" required aria-label="Message"></textarea>
+                        
+                        <button type="submit" class="btn-submit-custom">
+                            SUBMIT
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
 
     <!-- Footer -->
     <footer>
@@ -1104,7 +1114,7 @@
                 <!-- Col 1: Logo & Company Name -->
                 <div class="footer-col footer-logo-text">
                     <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
-                        <img src="assets/logo.webp" alt="Logo" style="height: 40px; width: auto; ;"> 
+                        <img src="assets/logo.webp" alt="Logo" width="238" height="35" style="height: 40px; width: auto; ;"> 
                     </div>
                 </div>
 
@@ -1132,12 +1142,12 @@
                 <div class="footer-col">
                     <h2>Get Connected</h2>
                     <div class="social-icons">
-                        <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
-                        <a href="#" class="social-icon"><i class="fab fa-google-plus-g"></i></a>
-                        <a href="#" class="social-icon"><i class="fab fa-pinterest"></i></a>
-                        <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
-                        <a href="#" class="social-icon"><i class="fas fa-envelope"></i></a>
+                        <a href="#" class="social-icon" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-icon" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-icon" aria-label="Google Plus"><i class="fab fa-google-plus-g"></i></a>
+                        <a href="#" class="social-icon" aria-label="Pinterest"><i class="fab fa-pinterest"></i></a>
+                        <a href="#" class="social-icon" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-icon" aria-label="Email"><i class="fas fa-envelope"></i></a>
                     </div>
                 </div>
             </div>
