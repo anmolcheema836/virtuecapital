@@ -1,0 +1,1400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - ZECKLANCE GLOBAL SERVICES PVT LTD</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <style>
+        /* --- CSS VARIABLES & RESET --- */
+        :root {
+            --primary-color: #230572;
+            --secondary-color: #046bd2;
+            --text-color: #334155;
+            --heading-color: #1e293b;
+            --bg-light: #f9fafb;
+            --bg-white: #ffffff;
+            --border-color: #e2e8f0;
+            --font-main: 'Poppins', sans-serif;
+            --container-width: 1200px;
+        }
+
+        /* ENABLE SMOOTH SCROLLING */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-main);
+            color: var(--text-color);
+            background-color: var(--bg-white);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+        ul { list-style: none; }
+        img { max-width: 100%; height: auto; vertical-align: middle; }
+
+        /* --- LAYOUT UTILITIES --- */
+        .container {
+            max-width: var(--container-width);
+            margin: 0 auto;
+            padding: 0 20px;
+            width: 100%; /* Ensure fluid width on small screens */
+        }
+
+        .section {
+            padding: 80px 0;
+            scroll-margin-top: 80px; 
+        }
+
+        .bg-light { background-color: var(--bg-light); }
+        .text-center { text-align: center; }
+
+        /* --- TYPOGRAPHY --- */
+        h1, h2, h3, h4, h5, h6 {
+            color: var(--heading-color);
+            font-weight: 600;
+            margin-bottom: 20px;
+            line-height: 1.3;
+        }
+
+        h1 { font-size: 40px; }
+        h2 { font-size: 32px; }
+        h3 { font-size: 24px; }
+        p { margin-bottom: 15px; }
+
+        /* --- BUTTONS --- */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--primary-color);
+            color: #fff;
+            padding: 12px 30px;
+            font-size: 16px;
+            font-weight: 500;
+            border: 2px solid var(--primary-color);
+            border-radius: 0; 
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .btn i { margin-right: 8px; }
+        .btn.btn-icon-right i { margin-right: 0; margin-left: 8px; }
+
+        .btn:hover {
+            background-color: transparent;
+            color: var(--primary-color);
+        }
+
+        /* --- HEADER --- */
+        header {
+            background: transparent; 
+            border-bottom: none;
+            padding: 15px 0;
+            position: absolute; 
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-wrap {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+        }
+
+        .logo img { max-height: 35px; }
+
+        .nav-menu ul { display: flex; gap: 30px; }
+        
+        .nav-menu a {
+            font-weight: 500;
+            color: #ffffff; 
+            font-size: 16px;
+        }
+        .nav-menu a:hover, .nav-menu a.active { color: #ccc; }
+
+        .header-buttons { display: flex; gap: 15px; }
+        
+        .header-quote-btn {
+            background: #fff;
+            color: var(--primary-color);
+            border-radius: 50px;
+            padding: 10px 30px;
+            font-size: 14px;
+            font-weight: 600;
+            gap: 4px;
+            border: 2px solid #fff;
+        }
+
+        .header-quote-btn:hover {
+            background: transparent;
+            color: #fff;
+        }
+
+        /* Mobile Toggle */
+        .mobile-toggle {
+            display: none;
+            color: #fff;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            background-image: url('assets/herobackground.webp');
+            background-size: cover;
+            background-position: center bottom;
+            background-repeat: no-repeat;
+            display: flex;
+            align-items: center;
+            min-height: 92vh;
+            /* Added top padding for mobile spacing */
+            padding-top: 80px; 
+            padding-bottom: 50px;
+        }
+        .hero img{
+            max-width: 95%;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+
+        .hero-content h1 { 
+            font-size: 42px; 
+            line-height: 1.2; 
+            color: #ffffff; 
+        }
+        .hero-content p { 
+            font-size: 17px; 
+            margin-bottom: 30px; 
+            color: #ffffff;
+        }
+        .hero-content span {
+            color: #ffffff !important;
+        }
+        
+        .hero-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #6a4cba; 
+            color: #fff;
+            padding: 15px 40px;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            border-radius: 50px; 
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        .hero-btn:hover {
+            transform: translateY(-2px);
+            background-color: #7b5ccf;
+            color: #fff;
+        }
+
+        /* Animation for Hero Image */
+        .hero-image img {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+
+        /* --- SERVICES SECTION --- */
+        #service {
+            padding-top: 80px; /* Adjusted padding */
+            background-color: #ffffff; 
+        }
+
+        #service h2 {
+            color: #230572; 
+            font-size: 35px;
+            margin-bottom: 8px;
+        }
+
+        .services-header {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 50px;
+        }
+        
+        .divider {
+            width: 130px;
+            height: 1px;
+            background: #230572;
+            margin: 10px auto 20px;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+
+        .service-card {
+            background: #fff;
+            padding: 40px;
+            text-align: center;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            transition: transform 0.1s; 
+            perspective: 1000px;
+            transform-style: preserve-3d;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .service-icon {
+            font-size: 50px;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+
+        /* --- HOW WE WORK --- */
+        .work-section {
+            background-color: #ffffff !important;
+            scroll-margin-top: 80px; 
+        }
+
+        .work-heading h2 {
+            color: #230572 !important;
+        }
+        .work-heading .divider {
+            background-color: #230572 !important;
+        }
+
+        .work-section .feature-img img {
+            max-width: 95% !important;
+            width: 95%;
+        }
+
+        .btn-work {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 30px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            fill: #120B27C2;
+            color: #120B27C2 !important;
+            background-color: #4B4B4B3D !important;
+            border-radius: 25px 25px 25px 25px;
+            border: none;
+        }
+        
+        .btn-work:hover {
+            opacity: 0.8;
+            color: #120B27C2;
+        }
+
+        .feature-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+        
+        .feature-row.reverse {
+            direction: rtl; 
+        }
+        .feature-row.reverse > * {
+            direction: ltr; 
+        }
+
+        .feature-img img {
+            border-radius: 10px;
+            transition: transform 0.5s;
+        }
+        .feature-img:hover img {
+            transform: scale(1.05) rotate(1deg);
+        }
+
+        /* --- ABOUT & HISTORY --- */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            margin-top: 30px;
+        }
+        
+        .values-list-item {
+            margin-bottom: 25px;
+            color: #555;
+            font-size: 15px;
+            line-height: 1.7;
+        }
+        
+        .values-list-item strong {
+            color: #555;
+            font-weight: 700;
+        }
+
+        /* ---  TESTIMONIALS SECTION --- */
+        .testimonials-section {
+            background-color: #230572; /* Dark Purple Background */
+            padding: 80px 0;
+            overflow: hidden;
+            user-select: none; /* Prevent text selection while dragging */
+        }
+
+        .testimonials-section h2 {
+            color: #ffffff !important; /* White Heading */
+        }
+        
+        .testimonials-section .divider {
+            background-color: #ffffff !important; /* White Divider */
+        }
+
+        /* Container for the slider */
+        .t-slider-container {
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+            padding: 20px 0 40px 0;
+            cursor: grab;
+        }
+        
+        .t-slider-container:active {
+            cursor: grabbing;
+        }
+
+        /* The moving track */
+        .t-slider-track {
+            display: flex;
+            gap: 30px;
+            width: max-content;
+        }
+
+        /* The Card Design */
+        .t-card {
+            width: 380px; /* Big boxes */
+            min-width: 380px;
+            background: #ffffff;
+            padding: 40px 30px;
+            border-radius: 4px; 
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            text-align: center;
+            white-space: normal; /* Ensure text wraps */
+        }
+
+        .t-content {
+            font-size: 15px;
+            color: #666;
+            line-height: 1.8;
+            margin-bottom: 30px;
+            font-weight: 400;
+        }
+
+        .t-author {
+            margin-top: auto;
+        }
+
+        .t-name {
+            display: block;
+            font-size: 18px;
+            font-weight: 600;
+            color: #230572;
+            margin-bottom: 5px;
+        }
+
+        .t-role {
+            display: block;
+            font-size: 12px;
+            color: #999;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        /* --- BLOG --- */
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+
+        .blog-card {
+            background: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: 0.3s;
+        }
+        .blog-card:hover { transform: translateY(-5px); }
+
+        .blog-img {
+            height: 200px;
+            overflow: hidden;
+        }
+        .blog-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: 0.3s;
+        }
+        .blog-card:hover .blog-img img { transform: scale(1.1); }
+
+        .blog-content { padding: 25px; }
+        .blog-badge {
+            background: var(--primary-color);
+            color: #fff;
+            padding: 4px 10px;
+            font-size: 12px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+        .blog-title { font-size: 18px; margin-bottom: 10px; }
+        .blog-meta { font-size: 13px; color: #888; border-top: 1px solid #eee; padding-top: 15px; margin-top: 15px; }
+
+        /* --- CONTACT SECTION --- */
+        #contact {
+            background-color: #120047 !important; /* Deep Blue Background to match image */
+        }
+
+        .contact-card-wrapper {
+            background-color: #d6d6d6; /* Light Grey Card */
+            padding: 50px 60px;
+            border-radius: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .contact-title {
+            color: #1a0b4b;
+            font-weight: 700;
+            text-align: center;
+            font-size: 36px;
+            margin-bottom: 5px;
+            letter-spacing: 0.5px;
+        }
+        
+        .contact-underline {
+            width: 120px;
+            height: 2px;
+            background: #1a0b4b;
+            margin: 0 auto 40px;
+        }
+
+        .contact-input {
+            width: 100%;
+            padding: 16px 25px;
+            border-radius: 50px;
+            border: none;
+            background: #ffffff;
+            margin-bottom: 25px;
+            font-family: inherit;
+            font-size: 15px;
+            color: #333;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        textarea.contact-input {
+            border-radius: 25px;
+            resize: none;
+        }
+
+        .contact-input::placeholder {
+            color: #888;
+        }
+
+        .contact-input:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px #1a0b4b;
+        }
+
+        .btn-submit-custom {
+            background-color: #1a0b4b;
+            color: #fff;
+            padding: 15px 50px;
+            border-radius: 50px;
+            border: none;
+            font-weight: 600;
+            text-transform: uppercase;
+            cursor: pointer;
+            font-size: 15px;
+            transition: 0.3s;
+            display: inline-block;
+            letter-spacing: 1px;
+        }
+
+        .btn-submit-custom:hover {
+            background-color: #2b1570;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        /* --- FOOTER  --- */
+        footer {
+            background-color: #230572;
+            color: #ffffff;
+            padding-top: 70px;
+            padding-bottom: 30px;
+            border-top: none;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr 1.2fr 1fr;
+            gap: 40px;
+            padding-bottom: 50px;
+            align-items: start;
+        }
+
+        .footer-logo-text h1 {
+            color: #fff;
+            font-size: 28px;
+            line-height: 1.1;
+            margin-bottom: 5px;
+        }
+        .footer-logo-text span {
+            font-size: 16px;
+            display: block;
+            margin-top: 5px;
+            letter-spacing: 2px;
+            font-weight: 400;
+        }
+
+        .footer-col h2 { 
+            color: #ffffff; 
+            font-size: 22px; 
+            margin-bottom: 25px; 
+            font-weight: 500;
+        }
+        
+        /* Navigation specific */
+        .footer-links li { margin-bottom: 12px; }
+        .footer-links a { 
+            color: #ffffff; 
+            text-transform: uppercase;
+            font-size: 14px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+        .footer-links a:hover { color: #ccc; text-decoration: none; }
+
+        /* Contact Info */
+        .footer-contact-info p {
+            margin-bottom: 15px;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        .social-icons { display: flex; gap: 15px; margin-top: 10px; }
+        .social-icon {
+            width: auto;
+            height: auto;
+            background: transparent;
+            color: #ffffff;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+        .social-icon:hover { background-color: transparent; color: #aaa; transform: translateY(-3px); }
+
+        .footer-bottom {
+            padding-top: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+            border-top: none;
+        }
+        
+        .footer-bottom-links a {
+            color: #fff;
+            text-transform: uppercase;
+            font-size: 12px;
+            font-weight: 700;
+            margin-left: 20px;
+            letter-spacing: 0.5px;
+        }
+
+        /* --- ANIMATION CLASSES --- */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Scroll to Top */
+        #scroll-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--primary-color);
+            color: #fff;
+            width: 40px;
+            height: 40px;
+            display: none; 
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 999;
+        }
+
+        /* --- RESPONSIVE STYLES --- */
+        @media (max-width: 991px) {
+            /* Layout & Grids */
+            .hero-grid, .services-grid, .feature-row, .about-grid, .blog-grid, .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            /* Fix Reverse Ordering for Mobile (Text top, Image bottom) */
+            .feature-row.reverse { direction: ltr; }
+            .feature-row.reverse > * { direction: ltr; }
+
+            /* Header & Nav */
+            .mobile-toggle { display: block; }
+            .header-buttons { display: none; }
+            
+            .nav-menu {
+                display: none; 
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background-color: var(--primary-color);
+                padding: 20px;
+                text-align: center;
+                box-shadow: 0 10px 10px rgba(0,0,0,0.1);
+            }
+            .nav-menu.active { display: block; }
+            
+            .nav-menu ul {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            /* Hero */
+            .hero { text-align: center; padding-top: 100px; }
+            .hero-content h1 { font-size: 32px; }
+            .hero-content p { font-size: 15px; }
+
+            /* Services */
+            .service-card { padding: 30px 20px; }
+            .service-icon { font-size: 40px; }
+
+            /* How We Work */
+            .feature-row { gap: 30px; }
+            .feature-img { order: 2; } /* Image below text on mobile usually reads better, or remove to keep original order */
+            .feature-content { order: 1; text-align: center; }
+            .feature-content h1 { font-size: 28px; }
+
+            /* Testimonials */
+            .t-card {
+                min-width: 300px;
+                width: 300px;
+                max-width: 85vw;
+                padding: 30px 20px;
+            }
+            .t-content { font-size: 14px; }
+
+            /* Contact */
+            .contact-card-wrapper { 
+                padding: 40px 20px; 
+                margin: 0 10px;
+            }
+            .contact-title { font-size: 28px; }
+
+            /* Footer */
+            .footer-bottom { 
+                flex-direction: column; 
+                gap: 15px; 
+                text-align: center; 
+            }
+            .footer-bottom-links { margin-bottom: 20px; }
+            .footer-bottom-links a { margin-left: 10px; margin-right: 10px; }
+        }
+
+        @media (max-width: 480px) {
+            h1 { font-size: 28px; }
+            h2 { font-size: 24px; }
+            
+            .hero-btn { padding: 12px 30px; width: 100%; }
+            .btn-work { width: 100%; }
+            
+            .t-card { min-width: 280px; width: 280px; }
+            
+            .contact-card-wrapper { padding: 30px 15px; }
+            .btn-submit-custom { width: 100%; padding: 12px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="container header-wrap">
+            <div class="logo">
+                <a href="#home">
+                    <img src="assets/logo.webp" alt="ZECKLANCE GLOBAL SERVICES PVT LTD">
+                </a>
+            </div>
+            <!-- SCROLL NAVIGATION -->
+            <nav class="nav-menu" id="navMenu">
+                <ul>
+                    <li><a href="#home" class="nav-link">Home</a></li>
+                    <li><a href="#service" class="nav-link">Service</a></li>
+                    <li><a href="#about" class="nav-link">About Us</a></li>
+                    <li><a href="#blog" class="nav-link">Blog</a></li>
+                    <li><a href="#contact" class="nav-link">Contact Us</a></li>
+                </ul>
+            </nav>
+            <div class="header-buttons">
+                <a href="#contact" class="btn header-quote-btn">Get A Quote <i class="fas fa-arrow-right"></i></a>
+            </div>
+            <div class="mobile-toggle" id="mobileToggle">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container hero-grid">
+            <div class="hero-content fade-in">
+                <h1>Zecklance Global Service Pvt LTD</h1>
+                <p>ZECKLANCE GLOBAL SERVICES PVT LTD is the most effective Digital agency at the current time. Get More Clients with The Help of <span>ZECKLANCE GLOBAL SERVICES PVT LTD</span></p>
+                <a href="#contact" class="hero-btn">Get A Quote <i class="fas fa-arrow-circle-right" style="margin-left: 10px;"></i></a>
+            </div>
+            <div class="hero-image fade-in">
+                <img src="assets/heroimage.webp" alt="Hero Illustration">
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="section" id="service">
+        <div class="container">
+            <div class="services-header fade-in">
+                <h2>Our Services</h2>
+                <div class="divider"></div>
+            </div>
+            <div class="services-grid">
+                <!-- Card 1 -->
+                <div class="service-card tilt-card fade-in">
+                    <div class="service-icon"><i class="fas fa-desktop"></i></div>
+                    <h3>Web<br> Development</h3>
+                    <p>DRIVE your user control with our CMS service; we make our clients website more informative. Stand on top in your division with our content customized service.</p>
+                </div>
+                <!-- Card 2 -->
+                <div class="service-card tilt-card fade-in">
+                    <div class="service-icon"><i class="fas fa-pencil-ruler"></i></div>
+                    <h3>Graphics <br>Design</h3>
+                    <p>The Graphics Design feature on our website is a vital component of our digital marketing services, providing businesses with visually captivating designs.</p>
+                </div>
+                <!-- Card 3 -->
+                <div class="service-card tilt-card fade-in">
+                    <div class="service-icon"><i class="far fa-chart-bar"></i></div>
+                    <h3>Digital<br>Marketing</h3>
+                    <p>The Digital Marketing feature on our website is designed to empower businesses with the essential tools and strategies needed to thrive in today’s landscape.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How We Work - Strategize -->
+    <section class="work-section">
+        <div class="container">
+            <div class="text-center work-heading fade-in" style="max-width: 700px; margin: 0 auto 50px;">
+                <h2>How We Work</h2>
+                <div class="divider"></div>
+            </div>
+            
+            <div class="feature-row fade-in">
+                <div class="feature-img">
+                    <img src="assets/westrategize.webp" alt="Strategize">
+                </div>
+                <div class="feature-content">
+                    <h1>We Strategize</h1>
+                    <p>There are hundreds of variables to consider when crafting a digital marketing strategy. We evaluate factors like your service or product type, target audience, business location, service territory, industry seasonality, search volume in your area, and more. At ZECKLANCE GLOBAL SERVICES PVT LTD, you’re not just buying digital services – you get a custom strategy.</p>
+                    <a href="#" class="btn-work">Learn More <i class="far fa-arrow-alt-circle-right" style="margin-left: 8px;"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How We Work - Design -->
+    <section class="work-section">
+        <div class="container">
+            <div class="feature-row reverse fade-in">
+                <div class="feature-img">
+                    <img src="assets/wedesign.webp" alt="Design">
+                </div>
+                <div class="feature-content">
+                    <h1>We Design</h1>
+                    <p>All our websites and landing pages are mobile friendly and designed with conversion in mind. Our expert web design team boasts over 20 years of combined experience. When they aren’t busy building beautiful client websites they’re catching up with the latest design trends.</p>
+                    <a href="#" class="btn-work">Learn More <i class="far fa-arrow-alt-circle-right" style="margin-left: 8px;"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How We Work - Convert -->
+    <section class="work-section">
+        <div class="container">
+            <div class="feature-row fade-in">
+                <div class="feature-img">
+                    <img src="assets/weconvert.webp" alt="Convert">
+                </div>
+                <div class="feature-content">
+                    <h1>We Convert</h1>
+                    <p>All of our lead generation services are designed with one thing in mind – getting you new customers. Our SEO and PPC specialists will make ongoing adjustments to your projects to make sure we’re always driving new traffic to your site.</p>
+                    <a href="#" class="btn-work">Learn More <i class="far fa-arrow-alt-circle-right" style="margin-left: 8px;"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How We Work - Maintain -->
+    <section class="work-section">
+        <div class="container">
+            <div class="feature-row reverse fade-in">
+                <div class="feature-img">
+                    <img src="assets/wemaintain.webp" alt="Maintain">
+                </div>
+                <div class="feature-content">
+                    <h1>We Maintain</h1>
+                    <p>Once the dust settles and your initial goals have been reached, it’s easy to think the job is done, right? Not at ZECKLANCE GLOBAL SERVICES PVT LTD. Our advanced tracking techniques ensure our specialists regularly make critical adjustments to your campaign.</p>
+                    <a href="#" class="btn-work">Learn More <i class="far fa-arrow-alt-circle-right" style="margin-left: 8px;"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="section" id="about">
+        <div class="container">
+            <!-- Main Title Centered -->
+            <div class="text-center fade-in" style="margin-bottom: 40px;">
+                <h2 style="color: #230572; font-size: 36px;">About Zecklance Global Service Pvt LTD</h2>
+                <div class="divider"></div>
+            </div>
+
+            <div class="about-grid">
+                <!-- Left Column -->
+                <div class="about-left fade-in">
+                    <h3 style="color: #666; font-size: 18px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 25px; font-weight: 700;">OUR VALUES:</h3>
+                    
+                    <div class="values-list">
+                        <div class="values-list-item">
+                            1. <strong>Client Success:</strong> We are committed to the success of our clients. Their goals become our goals, and we work relentlessly to exceed their expectations, providing them with the tools and strategies needed to achieve remarkable results.
+                        </div>
+                        
+                        <div class="values-list-item">
+                            2. <strong>Excellence:</strong> We have an unwavering dedication to excellence. Our team is composed of highly skilled professionals who are passionate about their craft, continually honing their skills and staying up-to-date with the latest industry trends and best practices.
+                        </div>
+                        
+                        <div class="values-list-item">
+                            3. <strong>Collaboration:</strong> We believe in the power of collaboration. By working closely with our clients, we develop a deep understanding of their business, enabling us to create customized digital marketing solutions that align with their objectives and target audience.
+                        </div>
+                        
+                        <div class="values-list-item">
+                            4. <strong>Transparency:</strong> We believe in transparency and open communication. We keep our clients informed every step of the way, providing regular reports and insights into campaign performance, ensuring they are always aware of the progress and results achieved.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column -->
+                <div class="about-right fade-in">
+                    <h3 style="color: #666; font-size: 18px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 20px; font-weight: 700;">OUR HISTORY</h3>
+                    <p style="color: #555; margin-bottom: 20px;">Welcome to ZECKLANCE GLOBAL SERVICES PVT LTD! We are a leading digital marketing agency committed to helping businesses succeed and thrive in the ever-evolving online landscape. With our innovative strategies and cutting-edge solutions, we empower our clients to unlock their full digital potential.</p>
+                    
+                    <p style="color: #555; margin-bottom: 40px;">At ZECKLANCE, we understand that digital marketing is not just about promoting products or services; it’s about building connections and fostering meaningful relationships with your target audience. With years of industry experience, our team of skilled professionals is dedicated to delivering exceptional results that drive growth and maximize ROI.</p>
+                    
+                    <h3 style="color: #666; font-size: 18px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 20px; font-weight: 700;">OUR MISSION</h3>
+                    <p style="color: #555;">Our mission is to revolutionize the way businesses harness the power of digital marketing. We strive to be at the forefront of industry trends, consistently delivering innovative strategies tailored to our clients’ unique needs. We believe in the transformative power of digital marketing and its ability to create new opportunities and elevate brands to new heights.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials-section">
+        <div class="container">
+            <div class="text-center fade-in">
+                <h2>See What Our Clients Say</h2>
+                <div class="divider"></div>
+            </div>
+            
+            <div class="t-slider-container fade-in" id="tContainer">
+                <div class="t-slider-track" id="tTrack">
+                    <!-- Client 1 -->
+                    <div class="t-card">
+                        <div class="t-content">
+                            ZECKLANCE has been instrumental in transforming our digital presence. Their comprehensive approach to digital marketing, including SEO and social media marketing, has driven significant organic traffic to our website and increased our online conversions.
+                        </div>
+                        <div class="t-author">
+                            <span class="t-name">Andrea Velle</span>
+                            <span class="t-role">CUSTOMER</span>
+                        </div>
+                    </div>
+                    <!-- Client 2 -->
+                    <div class="t-card">
+                        <div class="t-content">
+                            We engaged ZECKLANCE for their content marketing services, and we couldn't be happier with the results. Their team produced high-quality, engaging content that resonated with our target audience. Their expertise in crafting compelling storytelling really made a difference.
+                        </div>
+                        <div class="t-author">
+                            <span class="t-name">Elle Aasen</span>
+                            <span class="t-role">JOURNALIST</span>
+                        </div>
+                    </div>
+                    <!-- Client 3 -->
+                    <div class="t-card">
+                        <div class="t-content">
+                            ZECKLANCE has exceeded our expectations in every aspect of our digital marketing strategy. Their team's deep understanding of our industry and target market allowed them to develop customized solutions that have significantly improved our brand visibility and engagement.
+                        </div>
+                        <div class="t-author">
+                            <span class="t-name">Isa Holmgren</span>
+                            <span class="t-role">CUSTOMER</span>
+                        </div>
+                    </div>
+                    <!-- Client 4 -->
+                    <div class="t-card">
+                        <div class="t-content">
+                            Working with ZECKLANCE has been a game-changer for our business. Their digital marketing expertise and strategies have significantly improved our online visibility and helped us reach our target audience effectively. Their team is highly knowledgeable and professional.
+                        </div>
+                        <div class="t-author">
+                            <span class="t-name">Jon Bakken</span>
+                            <span class="t-role">JOURNALIST</span>
+                        </div>
+                    </div>
+                    <!-- Client 5 (Repeat 1 for variety) -->
+                    <div class="t-card">
+                        <div class="t-content">
+                            The comprehensive approach to digital marketing, including SEO and social media marketing, has driven significant organic traffic to our website. We highly recommend ZECKLANCE to any business looking to amplify their digital reach.
+                        </div>
+                        <div class="t-author">
+                            <span class="t-name">Andrea Velle</span>
+                            <span class="t-role">CUSTOMER</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Blog Section -->
+    <section class="section" id="blog">
+        <div class="container">
+            <div class="text-center fade-in" style="margin-bottom: 50px;">
+                <h2 style="color: #230572; font-size: 36px;">Our Recent Post</h2>
+                <div class="divider"></div>
+            </div>
+
+            <div class="blog-grid">
+                <!-- Blog 1 -->
+                <article class="blog-card fade-in">
+                    <div class="blog-img">
+                        <a href="#">
+                            <img src="assets/seo.webp" alt="SEO">
+                        </a>
+                    </div>
+                    <div class="blog-content">
+                        <span class="blog-badge">Digital Marketing</span>
+                        <h3 class="blog-title"><a href="#">5 Ways to Maximize SEO and Social Media</a></h3>
+                        <p>Search Engine Optimization (SEO) plays an important role in any digital marketing strategy...</p>
+                        <div class="blog-meta">July 6, 2023 • No Comments</div>
+                    </div>
+                </article>
+
+                <!-- Blog 2 -->
+                <article class="blog-card fade-in">
+                    <div class="blog-img">
+                        <a href="#">
+                            <img src="assets/websitelayout.webp" alt="Landing Page">
+                        </a>
+                    </div>
+                    <div class="blog-content">
+                        <span class="blog-badge">Web Development</span>
+                        <h3 class="blog-title"><a href="#">Effective Landing Page Design: Elements and Strategies</a></h3>
+                        <p>In the digital world, a landing page is a crucial element for online businesses...</p>
+                        <div class="blog-meta">July 6, 2023 • No Comments</div>
+                    </div>
+                </article>
+
+                <!-- Blog 3 -->
+                <article class="blog-card fade-in">
+                    <div class="blog-img">
+                        <a href="#">
+                            <img src="assets/softskills.webp" alt="Soft Skills">
+                        </a>
+                    </div>
+                    <div class="blog-content">
+                        <span class="blog-badge">Digital Marketing</span>
+                        <h3 class="blog-title"><a href="#">9 Essential Soft Skills for Digital Marketers</a></h3>
+                        <p>The difference between a good and a great digital marketer can sometimes be hard to determine...</p>
+                        <div class="blog-meta">July 6, 2023 • No Comments</div>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Form Section -->
+    <section class="section" id="contact">
+        <div class="container fade-in">
+            <div class="contact-card-wrapper">
+                <h2 class="contact-title">Contact US</h2>
+                <div class="contact-underline"></div>
+                
+                <!-- Added action, method, and name attributes -->
+                <form action="sendmail.php" method="post">
+                    <input type="text" name="name" class="contact-input" placeholder="Name" required>
+                    <input type="tel" name="phone" class="contact-input" placeholder="Phone">
+                    <input type="email" name="email" class="contact-input" placeholder="Email" required>
+                    <textarea name="message" class="contact-input" rows="5" placeholder="Message" required></textarea>
+                    
+                    <button type="submit" class="btn-submit-custom">
+                        SUBMIT
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <!-- Col 1: Logo & Company Name -->
+                <div class="footer-col footer-logo-text">
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                        <img src="assets/logo.webp" alt="Logo" style="height: 40px; width: auto; ;"> 
+                    </div>
+                </div>
+
+                <!-- Col 2: Navigation -->
+                <div class="footer-col">
+                    <h2>Navigation</h2>
+                    <ul class="footer-links">
+                        <li><a href="#home">HOME</a></li>
+                        <li><a href="#service">SERVICES</a></li>
+                        <li><a href="#about">ABOUT</a></li>
+                        <li><a href="#blog">BLOG</a></li>
+                        <li><a href="#contact">CONTACT</a></li>
+                        <li><a href="#">SITEMAP</a></li>
+                    </ul>
+                </div>
+
+                <!-- Col 3: Contact Us -->
+                <div class="footer-col footer-contact-info">
+                    <h2>Contact Us</h2>
+                    <p>Dhwarco_KKM – Plot No.21-B, 5th Cross St, South Phase, Thiru Vi Ka Industrial Estate, Guindy, Chennai, Tamil Nadu 600032</p>
+                    <p>info@zecklance.com</p>
+                </div>
+
+                <!-- Col 4: Get Connected -->
+                <div class="footer-col">
+                    <h2>Get Connected</h2>
+                    <div class="social-icons">
+                        <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-google-plus-g"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-pinterest"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-icon"><i class="fas fa-envelope"></i></a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <div class="copyright-text">
+                    <p>©ZECKLANCE GLOBAL SERVICES PVT LTD. All Rights Reserved</p>
+                </div>
+                <div class="footer-bottom-links">
+                    <a href="#">PRIVACY POLICY</a>
+                    <a href="#">TERMS OF USE</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scroll To Top -->
+    <div id="scroll-top">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // 1. Mobile Menu Toggle
+        const mobileToggle = document.getElementById('mobileToggle');
+        const navMenu = document.getElementById('navMenu');
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        mobileToggle.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+            // Toggle icon shape if desired
+            const icon = mobileToggle.querySelector('i');
+            if (navMenu.classList.contains('active')) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+            } else {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            }
+        });
+
+        // Close menu when a link is clicked
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                navMenu.classList.remove('active');
+                const icon = mobileToggle.querySelector('i');
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            });
+        });
+
+        // 2. Intersection Observer for Fade In Animation
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // 3. 3D Tilt Effect for Service Cards
+        const cards = document.querySelectorAll('.tilt-card');
+        
+        cards.forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const cardRect = card.getBoundingClientRect();
+                const x = e.clientX - cardRect.left;
+                const y = e.clientY - cardRect.top;
+                
+                const midCardWidth = cardRect.width / 2;
+                const midCardHeight = cardRect.height / 2;
+                
+                const angleX = (midCardHeight - y) / 20; 
+                const angleY = (x - midCardWidth) / 20;
+                
+                card.style.transform = `perspective(1000px) rotateX(${angleX}deg) rotateY(${angleY}deg) scale(1.05)`;
+            });
+
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale(1)';
+            });
+        });
+
+        // 4. Scroll To Top Button
+        const scrollTopBtn = document.getElementById('scroll-top');
+        
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                scrollTopBtn.style.display = 'flex';
+            } else {
+                scrollTopBtn.style.display = 'none';
+            }
+        });
+
+        scrollTopBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        // 5. INFINITE AUTO-SCROLL + DRAG SLIDER LOGIC
+        const track = document.getElementById('tTrack');
+        const container = document.getElementById('tContainer');
+        
+        // Clone children to create the infinite loop effect
+        const originalCards = Array.from(track.children);
+        originalCards.forEach(card => {
+            const clone = card.cloneNode(true);
+            track.appendChild(clone);
+        });
+
+        let scrollAmount = 0;
+        let isHovered = false;
+        let isDragging = false;
+        let startX;
+        let startScroll;
+        let scrollSpeed = 0.5; // Speed of auto scroll
+        let animationId;
+
+        // Auto Scroll Function
+        function autoScroll() {
+            if (!isDragging) {
+                scrollAmount += scrollSpeed;
+                
+                // If we've scrolled past the halfway point (the original set), reset to 0
+                // We divide by 2 because we doubled the content
+                if (scrollAmount >= track.scrollWidth / 2) {
+                    scrollAmount = 0;
+                }
+                
+                track.style.transform = `translateX(-${scrollAmount}px)`;
+            }
+            animationId = requestAnimationFrame(autoScroll);
+        }
+
+        // Start Animation
+        autoScroll();
+
+        // Mouse Down (Start Drag)
+        container.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            startX = e.pageX - container.offsetLeft;
+            // Get current translation X value (positive number for logic)
+            const transformMatrix = window.getComputedStyle(track).transform;
+            if(transformMatrix !== 'none') {
+                const matrixValues = transformMatrix.split('(')[1].split(')')[0].split(',');
+                // matrix[4] is the X translation
+                startScroll = Math.abs(parseInt(matrixValues[4])); 
+            } else {
+                startScroll = 0;
+            }
+            // Stop auto scroll temporarily (optional, but better UX)
+            cancelAnimationFrame(animationId);
+        });
+        
+        // Touch Events for Mobile Dragging
+        container.addEventListener('touchstart', (e) => {
+            isDragging = true;
+            startX = e.touches[0].pageX - container.offsetLeft;
+            const transformMatrix = window.getComputedStyle(track).transform;
+            if(transformMatrix !== 'none') {
+                const matrixValues = transformMatrix.split('(')[1].split(')')[0].split(',');
+                startScroll = Math.abs(parseInt(matrixValues[4])); 
+            } else {
+                startScroll = 0;
+            }
+            cancelAnimationFrame(animationId);
+        });
+
+        // Mouse Leave
+        container.addEventListener('mouseleave', () => {
+            if (isDragging) {
+                isDragging = false;
+                // Determine current scrollAmount based on where drag left off
+                const transformMatrix = window.getComputedStyle(track).transform;
+                if(transformMatrix !== 'none') {
+                    const matrixValues = transformMatrix.split('(')[1].split(')')[0].split(',');
+                    scrollAmount = Math.abs(parseFloat(matrixValues[4]));
+                }
+                autoScroll(); // Resume
+            }
+        });
+
+        // Mouse Up (End Drag)
+        const stopDrag = () => {
+             if (isDragging) {
+                isDragging = false;
+                // Determine current scrollAmount based on where drag left off
+                const transformMatrix = window.getComputedStyle(track).transform;
+                if(transformMatrix !== 'none') {
+                    const matrixValues = transformMatrix.split('(')[1].split(')')[0].split(',');
+                    scrollAmount = Math.abs(parseFloat(matrixValues[4]));
+                }
+                autoScroll(); // Resume
+            }
+        };
+
+        container.addEventListener('mouseup', stopDrag);
+        container.addEventListener('touchend', stopDrag);
+
+        // Mouse Move (Dragging)
+        container.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            e.preventDefault();
+            const x = e.pageX - container.offsetLeft;
+            const walk = (x - startX) * 2; // Scroll-fast
+            let newPos = startScroll - walk;
+
+            if (newPos < 0) newPos = 0;
+            
+            track.style.transform = `translateX(-${newPos}px)`;
+        });
+        
+        // Touch Move (Dragging)
+        container.addEventListener('touchmove', (e) => {
+            if (!isDragging) return;
+            const x = e.touches[0].pageX - container.offsetLeft;
+            const walk = (x - startX) * 2; 
+            let newPos = startScroll - walk;
+
+            if (newPos < 0) newPos = 0;
+            
+            track.style.transform = `translateX(-${newPos}px)`;
+        });
+
+        // 6. SMOOTH SCROLLING FOR NAV & FOOTER LINKS (FIXED LOGIC)
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const targetId = this.getAttribute('href');
+                
+                // Prevent action if href is just "#" or link doesn't exist on page
+                if (targetId === '#' || !document.querySelector(targetId)) return;
+
+                e.preventDefault(); // Stop default instant jump
+
+                const targetElement = document.querySelector(targetId);
+                
+                // Use scrollIntoView with smooth behavior.
+                targetElement.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            });
+        });
+
+    </script>
+</body>
+</html>
