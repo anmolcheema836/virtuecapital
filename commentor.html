@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Commenter AI - Revenue Intelligence for LinkedIn</title>
+    
+    <!-- Fonts: Inter for "Operator-Grade" clarity -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS (Utility Framework) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Design System Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        bg: '#0F1115',      /* Deep Charcoal/Black */
+                        surface: '#16191D', /* Card Background */
+                        surfaceHighlight: '#1F2228',
+                        border: '#2A2E35',
+                        textMain: '#EDEDED',
+                        textMuted: '#9CA3AF', /* Neutral Gray */
+                        brandBlue: '#3B82F6', /* Signal Blue */
+                        brandBlueDim: 'rgba(59, 130, 246, 0.15)',
+                        brandGreen: '#10B981',
+                    },
+                    spacing: {
+                        '128': '32rem',
+                    },
+                    maxWidth: {
+                        '8xl': '88rem',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* 
+           PREMIUM STYLING OVERRIDES
+           Enforcing "Luxury through Restraint" 
+        */
+
+        body {
+            background-color: #0F1115;
+            color: #EDEDED;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* --- COMPONENT: SALES SIGNAL CARD (The Core Motif) --- */
+        .signal-card {
+            background: #16191D;
+            border: 1px solid #2A2E35;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+            font-size: 0.875rem;
+            width: fit-content;
+            transition: all 0.2s ease;
+        }
+        .signal-card:hover {
+            border-color: #3B82F6;
+            transform: translateY(-1px);
+        }
+
+        /* Compact Variant */
+        .signal-card.compact {
+            gap: 12px;
+            height: 48px;
+        }
+
+        .signal-icon {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #3B82F6;
+            box-shadow: 0 0 8px rgba(59, 130, 246, 0.6); /* Glow effect */
+            flex-shrink: 0;
+        }
+
+        .signal-chip {
+            background-color: rgba(59, 130, 246, 0.1);
+            color: #60A5FA;
+            font-size: 0.7rem;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 4px;
+            letter-spacing: 0.02em;
+            white-space: nowrap;
+        }
+
+        /* Full Variant */
+        .signal-card.full {
+            flex-direction: column;
+            align-items: flex-start;
+            padding: 20px;
+            width: 100%;
+            max-width: 380px;
+            gap: 12px;
+        }
+
+        .signal-header {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            align-items: center;
+        }
+
+        .signal-action {
+            margin-top: 4px;
+            color: #60A5FA;
+            font-size: 0.8rem;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        /* --- BACKGROUND TEXTURE --- */
+        .bg-grid-pattern {
+            background-image: linear-gradient(to right, #2A2E35 1px, transparent 1px),
+                              linear-gradient(to bottom, #2A2E35 1px, transparent 1px);
+            background-size: 60px 60px;
+            mask-image: linear-gradient(to bottom, transparent, black 40%, black 70%, transparent);
+            -webkit-mask-image: linear-gradient(to bottom, transparent 5%, black 40%, black 70%, transparent 95%);
+            opacity: 0.05;
+            pointer-events: none;
+        }
+
+        /* --- BUTTONS --- */
+        .btn-primary {
+            background-color: #3B82F6;
+            color: white;
+            font-weight: 500;
+            padding: 12px 28px;
+            border-radius: 6px;
+            border: 1px solid #2563EB;
+            transition: all 0.2s ease;
+            display: inline-block;
+            text-align: center;
+        }
+        .btn-primary:hover {
+            background-color: #2563EB;
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.3);
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #D1D5DB;
+            font-weight: 500;
+            padding: 12px 28px;
+            border-radius: 6px;
+            border: 1px solid #374151;
+            transition: all 0.2s ease;
+            display: inline-block;
+            text-align: center;
+        }
+        .btn-secondary:hover {
+            border-color: #9CA3AF;
+            color: white;
+            background-color: rgba(255,255,255,0.02);
+        }
+
+        /* --- ACCORDION ANIMATION --- */
+        details > summary { list-style: none; outline: none; }
+        details > summary::-webkit-details-marker { display: none; }
+        details[open] summary ~ * { animation: sweep .3s ease-in-out; }
+        @keyframes sweep { 0% {opacity: 0; transform: translateY(-8px)} 100% {opacity: 1; transform: translateY(0)} }
+    </style>
+</head>
+<body class="relative min-h-screen flex flex-col font-sans">
+
+    <!-- Subtle Background Texture -->
+    <div class="fixed inset-0 bg-grid-pattern z-0"></div>
+
+    <!-- Navigation -->
+    <nav class="sticky top-0 z-50 bg-bg/95 backdrop-blur-md border-b border-border transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex justify-between items-center">
+            <!-- Logo -->
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 bg-surface border border-border rounded flex items-center justify-center">
+                    <div class="w-3 h-3 bg-brandBlue rounded-sm"></div>
+                </div>
+                <span class="font-semibold text-lg tracking-tight text-white">Commenter AI</span>
+            </div>
+            
+            <!-- Desktop Menu -->
+            <div class="hidden md:flex gap-8 text-sm text-textMuted font-medium">
+                <a href="#how-it-works" class="hover:text-white transition">How it works</a>
+                <a href="#outcomes" class="hover:text-white transition">Outcomes</a>
+                <a href="#pricing" class="hover:text-white transition">Pricing</a>
+                <a href="#faq" class="hover:text-white transition">FAQ</a>
+            </div>
+
+            <!-- Login / Mobile Toggle -->
+            <div class="flex items-center gap-4">
+                <a href="#" class="hidden md:block text-sm font-medium text-textMain hover:text-brandBlue transition">Log in</a>
+                <button class="md:hidden text-textMuted p-2" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')">
+                    <!-- Hamburger Icon -->
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Overlay -->
+        <div id="mobile-menu" class="hidden md:hidden bg-surface border-b border-border p-6 shadow-2xl absolute w-full">
+            <div class="flex flex-col gap-6 text-base font-medium text-textMuted">
+                <a href="#how-it-works" class="hover:text-white" onclick="document.getElementById('mobile-menu').classList.add('hidden')">How it works</a>
+                <a href="#outcomes" class="hover:text-white" onclick="document.getElementById('mobile-menu').classList.add('hidden')">Outcomes</a>
+                <a href="#pricing" class="hover:text-white" onclick="document.getElementById('mobile-menu').classList.add('hidden')">Pricing</a>
+                <a href="#faq" class="hover:text-white" onclick="document.getElementById('mobile-menu').classList.add('hidden')">FAQ</a>
+                <div class="h-px bg-border w-full"></div>
+                <a href="#" class="text-white">Log in</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- SECTION 1: HERO -->
+    <section class="relative z-10 pt-16 pb-20 lg:pt-24 lg:pb-32 px-6">
+        <div class="max-w-7xl mx-auto">
+            
+            <!-- Eyebrow -->
+            <div class="flex justify-center mb-8">
+                <span class="px-3 py-1 rounded-full border border-border bg-surface text-xs text-textMuted tracking-wide font-medium">
+                    Commenter AI 2.0: From AI commenting to revenue insights for B2B founders & teams
+                </span>
+            </div>
+
+            <!-- Headline Area -->
+            <div class="text-center max-w-4xl mx-auto mb-16">
+                <h1 class="text-4xl md:text-6xl font-semibold leading-[1.1] text-white mb-6">
+                    Turn LinkedIn interactions into <br class="hidden md:block"/>
+                    <span class="text-white">revenue insights in 7 days</span>
+                </h1>
+                <p class="text-lg md:text-xl text-textMuted max-w-2xl mx-auto leading-relaxed">
+                    Commenter AI connects comments and DMs to visible sales signals, so you know exactly where to focus and what to avoid.
+                </p>
+                
+                <div class="mt-8 flex flex-col md:flex-row gap-4 justify-center items-center">
+                    <a href="#pricing" class="btn-primary w-full md:w-auto">Start Free Trial</a>
+                    <span class="text-xs text-textMuted">7-day trial • No credit card required</span>
+                </div>
+                <div class="mt-6">
+                    <p class="text-xs text-textMuted tracking-wide">Used by 10,000+ B2B founders and sales teams</p>
+                </div>
+            </div>
+
+            <!-- Hero Visual Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-end max-w-6xl mx-auto">
+                
+                <!-- Founder Image (Trust Anchor) -->
+                <div class="lg:col-span-5 relative order-2 lg:order-1">
+                    <div class="relative rounded-lg overflow-hidden border border-border aspect-[4/5] bg-surfaceHighlight group">
+                        <!-- Founder Photo -->
+                        <img src="FOUNDER1.jpeg" alt="Founder" class="w-full h-full object-cover grayscale opacity-90 group-hover:grayscale-0 group-hover:opacity-100 transition duration-700">
+                        
+                        <!-- Overlay Testimonial -->
+                        <div class="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-bg via-bg/80 to-transparent">
+                            <div class="flex items-center gap-3 bg-surface/90 backdrop-blur border border-border p-3 rounded-lg w-fit shadow-lg">
+                                <img src="Jasmin.jpeg" alt="Jasmin Alic" class="w-8 h-8 rounded-full object-cover">
+                                <div>
+                                    <p class="text-xs text-white font-medium">"Consider Commenter AI as a helper."</p>
+                                    <p class="text-[10px] text-textMuted">Jasmin Alic • 342,000+ Followers</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product UI + Active Signal -->
+                <div class="lg:col-span-7 relative order-1 lg:order-2 mb-8 lg:mb-0">
+                    <div class="bg-surface border border-border rounded-lg p-6 shadow-2xl relative min-h-[400px]">
+                        <!-- UI Header (Decoration) -->
+                        <div class="flex items-center justify-between border-b border-border pb-4 mb-4">
+                            <div class="flex gap-2">
+                                <div class="w-3 h-3 rounded-full bg-border"></div>
+                                <div class="w-3 h-3 rounded-full bg-border"></div>
+                            </div>
+                            <div class="text-xs text-textMuted uppercase tracking-wider">Opportunity Console</div>
+                        </div>
+
+                        <!-- UI Body (Abstract) -->
+                        <div class="space-y-4 opacity-40">
+                            <div class="flex items-center gap-4">
+                                <div class="w-8 h-8 rounded-full bg-border"></div>
+                                <div class="h-4 bg-border rounded w-1/3"></div>
+                            </div>
+                            <div class="h-4 bg-border rounded w-1/4 ml-12"></div>
+                            <div class="h-24 bg-border rounded w-full mt-4"></div>
+                        </div>
+
+                        <!-- SALES SIGNAL CARD: MASTER COMPONENT (Hero) -->
+                        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-sm">
+                            <div class="signal-card full bg-surfaceHighlight border-brandBlueDim shadow-2xl">
+                                <div class="signal-header">
+                                    <div class="flex items-center gap-2">
+                                        <div class="signal-icon"></div>
+                                        <span class="text-white font-medium">Sales signal detected</span>
+                                    </div>
+                                    <div class="signal-chip">Needs attention</div>
+                                </div>
+                                <div class="signal-body mt-2">
+                                    A conversation has stalled and may need follow-up.
+                                </div>
+                                <div class="signal-action mt-3">
+                                    Review follow-ups →
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 2: PROBLEM AWARENESS -->
+    <section class="bg-surface py-24 border-y border-border">
+        <div class="max-w-3xl mx-auto px-6 text-center">
+            <h2 class="text-3xl font-semibold text-white mb-8 leading-tight">
+                You’re active on LinkedIn. <br class="hidden md:block">
+                <span class="text-textMuted">What’s missing is what’s actually working.</span>
+            </h2>
+            <div class="space-y-6 text-lg text-textMuted leading-relaxed max-w-2xl mx-auto">
+                <p>You comment, reply, and DM but can’t tell which interactions are worth pushing forward.</p>
+                <p>Deals start forming quietly, without clear signals to act on.</p>
+                <p class="text-white font-medium pt-2">So you keep guessing where to spend time and where to stop.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 3: PRODUCT VISIBILITY (Video) -->
+    <section class="py-24 max-w-5xl mx-auto px-6">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl font-semibold mb-4 text-white">When visibility exists, opportunities become clear.</h2>
+            <p class="text-textMuted text-lg">Commenter AI turns comments and DMs into clear sales signals, so you can focus on the activities that actually matter.</p>
+        </div>
+
+        <!-- Video Container -->
+        <div class="relative aspect-video bg-surfaceHighlight border border-border rounded-lg overflow-hidden flex items-center justify-center group cursor-pointer hover:border-brandBlue/40 transition-colors shadow-2xl">
+            <!-- Play Button -->
+            <div class="w-20 h-20 rounded-full bg-brandBlue flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform z-20">
+                <svg class="w-8 h-8 text-white ml-1" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+            </div>
+            <!-- Overlay Gradient -->
+            <div class="absolute inset-0 bg-gradient-to-tr from-surface via-surface/80 to-transparent"></div>
+            
+            <!-- Floating Signal in Video Preview -->
+            <div class="absolute bottom-8 right-8 z-10 hidden md:block">
+                 <div class="signal-card full bg-surface/90 backdrop-blur border-brandBlueDim">
+                    <div class="signal-header">
+                        <div class="flex items-center gap-2">
+                            <div class="signal-icon"></div>
+                            <span class="text-white text-sm">Opportunity</span>
+                        </div>
+                        <div class="signal-chip">Ready to progress</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="text-center mt-8 space-y-4">
+             <p class="text-xs text-textMuted uppercase tracking-widest font-medium">See how a LinkedIn comment becomes a tracked sales signal worth following up.</p>
+             <div class="text-sm text-textMuted flex flex-col md:flex-row justify-center gap-6 mt-4 opacity-80">
+                <span class="flex items-center gap-2"><span class="w-1 h-1 bg-brandBlue rounded-full"></span> Know exactly what to work on next</span>
+                <span class="flex items-center gap-2"><span class="w-1 h-1 bg-brandBlue rounded-full"></span> Catch high-intent conversations early</span>
+             </div>
+        </div>
+    </section>
+
+    <!-- SECTION 4: HOW IT WORKS -->
+    <section id="how-it-works" class="py-24 border-t border-border bg-gradient-to-b from-bg to-surface">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-semibold text-white mb-4">A simple system that turns LinkedIn activity into clear focus.</h2>
+                <p class="text-textMuted">No new habits. No extra work. Commenter AI works quietly in the background.</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-12 relative">
+                <!-- Connector Line (Desktop) -->
+                <div class="hidden md:block absolute top-12 left-0 right-0 h-px bg-gradient-to-r from-transparent via-border to-transparent z-0"></div>
+
+                <!-- Step 1 -->
+                <div class="relative z-10 bg-bg p-8 rounded-lg border border-border/50 hover:border-border transition-colors">
+                    <div class="w-16 h-16 bg-surface border border-border rounded-full flex items-center justify-center mb-6 mx-auto md:mx-0 text-brandBlue font-bold text-xl shadow-lg">1</div>
+                    <h3 class="text-xl font-medium text-white mb-3 text-center md:text-left">Connect LinkedIn</h3>
+                    <p class="text-textMuted text-sm leading-relaxed text-center md:text-left">
+                        Connect your LinkedIn account so comments and DMs can be seen together and tracked in one place.
+                    </p>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="relative z-10 bg-bg p-8 rounded-lg border border-border/50 hover:border-border transition-colors">
+                    <div class="w-16 h-16 bg-surface border border-border rounded-full flex items-center justify-center mb-6 mx-auto md:mx-0 text-white font-bold text-xl shadow-lg">2</div>
+                    <h3 class="text-xl font-medium text-white mb-3 text-center md:text-left">Use LinkedIn as normal</h3>
+                    <p class="text-textMuted text-sm leading-relaxed text-center md:text-left">
+                        Comment, reply, and message like you already do. No scripts. No forced workflows.
+                    </p>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="relative z-10 bg-bg p-8 rounded-lg border border-border/50 hover:border-border transition-colors">
+                    <div class="w-16 h-16 bg-surface border border-border rounded-full flex items-center justify-center mb-6 mx-auto md:mx-0 text-brandGreen font-bold text-xl shadow-lg">3</div>
+                    <h3 class="text-xl font-medium text-white mb-3 text-center md:text-left">Turn activity into decisions</h3>
+                    <p class="text-textMuted text-sm leading-relaxed text-center md:text-left">
+                        Commenter AI highlights real sales signals and shows where attention should go next and where it shouldn’t.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 5: MODULES / OUTCOMES -->
+    <section id="outcomes" class="py-24 max-w-6xl mx-auto px-6">
+        <div class="mb-16">
+            <h2 class="text-3xl font-semibold mb-4 text-white">Everything you need to turn LinkedIn activity into revenue clarity.</h2>
+            <p class="text-textMuted text-lg">Commenter AI helps you see where opportunities are forming and where effort isn’t paying off.</p>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-8">
+            
+            <!-- Module 1: Sales signals -->
+            <div class="bg-surface border border-border p-8 rounded-lg flex flex-col justify-between">
+                <div>
+                    <h3 class="text-xl text-white font-medium mb-2">Sales signals</h3>
+                    <p class="text-sm font-medium text-brandBlue mb-3">See where real opportunities are starting to form.</p>
+                    <p class="text-textMuted text-sm mb-6 leading-relaxed">Commenter AI highlights meaningful sales signals as conversations develop, helping you identify which LinkedIn interactions are moving toward opportunities and which aren’t.</p>
+                </div>
+                <!-- Visual Motif -->
+                <div class="space-y-3 mt-4 pl-4 border-l border-border">
+                    <div class="signal-card compact w-full">
+                        <div class="signal-icon"></div>
+                        <div class="text-white text-sm">Founder in comments</div>
+                        <div class="signal-chip ml-auto">Needs attention</div>
+                    </div>
+                    <div class="signal-card compact w-full opacity-60">
+                        <div class="w-2 h-2 rounded-full bg-gray-600"></div>
+                        <div class="text-textMuted text-sm">Consultant in DMs</div>
+                        <div class="text-xs text-textMuted ml-auto border border-border px-2 py-1 rounded">Watching</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Module 2: Clear priorities -->
+            <div class="bg-surface border border-border p-8 rounded-lg">
+                <h3 class="text-xl text-white font-medium mb-2">Clear priorities</h3>
+                <p class="text-sm font-medium text-brandBlue mb-3">Know exactly what to work on next.</p>
+                <p class="text-textMuted text-sm leading-relaxed mb-6">Each day, see which conversations are worth following up, which to move forward, and which to stop spending time on, so attention goes where it matters most.</p>
+            </div>
+
+            <!-- Module 3: Focused activity view -->
+            <div class="bg-surface border border-border p-8 rounded-lg">
+                <h3 class="text-xl text-white font-medium mb-2">Focused activity view</h3>
+                <p class="text-sm font-medium text-brandBlue mb-3">Review what matters most in one place.</p>
+                <p class="text-textMuted text-sm leading-relaxed">Commenter AI gives you a focused view of comments and DMs together, so you can quickly see which conversations are progressing.</p>
+            </div>
+
+            <!-- Module 4: Conversation context -->
+            <div class="bg-surface border border-border p-8 rounded-lg">
+                <h3 class="text-xl text-white font-medium mb-2">Conversation context</h3>
+                <p class="text-sm font-medium text-brandBlue mb-3">Understand how opportunities actually evolve.</p>
+                <p class="text-textMuted text-sm leading-relaxed">See how each interaction started, how it progressed, and where it stands now so conversations aren’t treated as isolated messages.</p>
+            </div>
+
+            <!-- Module 5: AI-assisted execution (With Jasmin Alic Testimonial) -->
+            <div class="bg-surface border border-border p-8 rounded-lg md:col-span-2 grid md:grid-cols-2 gap-8 items-center">
+                <div>
+                    <h3 class="text-xl text-white font-medium mb-2">AI-assisted execution</h3>
+                    <p class="text-sm font-medium text-brandBlue mb-3">Move conversations forward faster, without losing your voice.</p>
+                    <p class="text-textMuted text-sm mb-6 leading-relaxed">When it’s time to act, Commenter AI helps draft comments and replies in your own tone, reducing writing time while keeping conversations human and relevant.</p>
+                </div>
+                <!-- Embedded Testimonial -->
+                <div class="bg-bg border border-border rounded-lg p-6 flex gap-4 items-start relative overflow-hidden">
+                    <img src="Jasmin.jpeg" alt="Jasmin Alic" class="w-12 h-12 rounded-full object-cover">
+                    <div class="relative z-10">
+                        <p class="text-sm text-white italic mb-3">"Consider Commenter AI as a helper. It can help you with that initial idea. Then, it’s yours to bring it home and make the commenting game easier and better."</p>
+                        <p class="text-xs font-bold text-white">Jasmin Alic</p>
+                        <p class="text-[10px] text-textMuted uppercase tracking-wide">Ranked #1 Copywriter & Growth Expert on LinkedIn</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Module 6: Insight over time -->
+            <div class="bg-surface border border-border p-8 rounded-lg md:col-span-2">
+                <h3 class="text-xl text-white font-medium mb-2">Insight over time</h3>
+                <p class="text-sm font-medium text-brandBlue mb-3">Learn what works and repeat it with confidence.</p>
+                <p class="text-textMuted text-sm leading-relaxed">Over time, Commenter AI reveals patterns across your LinkedIn activity so you can double down on what consistently leads to better conversations and sales opportunities.</p>
+            </div>
+
+        </div>
+        <p class="text-center text-xs text-textMuted mt-12 uppercase tracking-widest font-medium">Less guesswork. Clearer decisions. Better opportunities.</p>
+    </section>
+
+    <!-- SECTION 6: PROOF -->
+    <section class="py-24 bg-surface border-y border-border">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-semibold mb-4 text-white">When focus improves, results follow.</h2>
+                <p class="text-textMuted max-w-2xl mx-auto mb-4 text-lg">Commenter AI doesn’t promise shortcuts. It gives you clarity and that changes how deals progress.</p>
+                <p class="text-sm text-textMuted opacity-80">Clarity doesn’t close deals on its own, but it changes which deals actually move forward.</p>
+            </div>
+
+            <!-- Credibility Snapshot -->
+            <div class="text-center mb-16">
+                <p class="text-xs text-textMuted uppercase tracking-widest mb-6 font-medium">Trusted by B2B founders, consultants, and small sales teams</p>
+                <div class="flex flex-wrap justify-center gap-4 text-sm text-textMuted">
+                    <span class="px-4 py-2 bg-bg rounded border border-border">Used by 10,000+ LinkedIn-first professionals</span>
+                    <span class="px-4 py-2 bg-bg rounded border border-border">Founder-led sales teams</span>
+                    <span class="px-4 py-2 bg-bg rounded border border-border">Deal-driven workflows</span>
+                </div>
+            </div>
+
+            <!-- Testimonials Grid -->
+            <div class="grid md:grid-cols-3 gap-6 mb-24">
+                <!-- Testimonial 1 -->
+                <div class="bg-bg border border-border p-8 rounded-lg hover:border-textMuted transition duration-300 flex flex-col h-full">
+                    <div class="mb-6 flex items-center gap-3">
+                        <div class="w-10 h-10 bg-surfaceHighlight rounded-full flex items-center justify-center font-bold text-textMuted">RG</div>
+                        <div>
+                            <p class="text-sm font-bold text-white">Robert Groenendijk</p>
+                            <p class="text-xs text-textMuted">B2B Founder</p>
+                        </div>
+                    </div>
+                    <p class="text-white font-medium text-sm mb-4 border-l-2 border-brandBlue pl-4">Generated multiple new clients and $25,000+ in new revenue by focusing on the right conversations.</p>
+                    <p class="text-sm text-textMuted leading-relaxed mb-4 flex-grow">"Before using Commenter AI, Robert was active on LinkedIn but lacked structure. With clearer visibility into which conversations mattered, his LinkedIn activity became more strategic, resulting in new clients without spending more time on the platform."</p>
+                    <p class="text-[10px] text-textMuted mt-auto">Individual results. Not a guarantee.</p>
+                </div>
+
+                <!-- Testimonial 2 -->
+                <div class="bg-bg border border-border p-8 rounded-lg hover:border-textMuted transition duration-300 flex flex-col h-full">
+                     <div class="mb-6 flex items-center gap-3">
+                        <div class="w-10 h-10 bg-surfaceHighlight rounded-full flex items-center justify-center font-bold text-textMuted">DM</div>
+                        <div>
+                            <p class="text-sm font-bold text-white">Diego Mangabeira</p>
+                            <p class="text-xs text-textMuted">B2B Sales Consultant</p>
+                        </div>
+                    </div>
+                    <p class="text-white font-medium text-sm mb-4 border-l-2 border-brandBlue pl-4">Booked 12 qualified calls and closed 3 new clients in the first month.</p>
+                    <p class="text-sm text-textMuted leading-relaxed mb-4 flex-grow">"Using Commenter AI helped Diego focus on real conversations instead of spreading effort across low-signal activity. By knowing exactly who was worth following up with and who wasn’t, conversations that started in comments turned into qualified calls and new clients."</p>
+                    <p class="text-[10px] text-textMuted mt-auto">Individual results. Not a guarantee.</p>
+                </div>
+
+                <!-- Testimonial 3 -->
+                <div class="bg-bg border border-border p-8 rounded-lg hover:border-textMuted transition duration-300 flex flex-col h-full">
+                     <div class="mb-6 flex items-center gap-3">
+                        <div class="w-10 h-10 bg-surfaceHighlight rounded-full flex items-center justify-center font-bold text-textMuted">TS</div>
+                        <div>
+                            <p class="text-sm font-bold text-white">Tom Saper</p>
+                            <p class="text-xs text-textMuted">Sales Lead, Small Team</p>
+                        </div>
+                    </div>
+                    <p class="text-white font-medium text-sm mb-4 border-l-2 border-brandBlue pl-4">Saved 3-5 hours per week by reviewing 5-10 high-signal conversations per day.</p>
+                    <p class="text-sm text-textMuted leading-relaxed mb-4 flex-grow">"Before Commenter AI, Tom had multiple ongoing conversations across comments and DMs, but no clear way to prioritize them. With Commenter AI, he could immediately see which conversations were active, which were gaining momentum, and which were no longer worth attention."</p>
+                </div>
+            </div>
+
+            <!-- Before / After -->
+            <div class="grid md:grid-cols-2 gap-12 max-w-4xl mx-auto">
+                <div class="p-8 border-l border-border opacity-70">
+                    <h4 class="text-lg text-textMuted mb-6 font-medium">Before Commenter AI</h4>
+                    <ul class="space-y-4 text-textMuted text-sm">
+                        <li class="flex gap-3">✕ Hidden opportunities across comments and DMs</li>
+                        <li class="flex gap-3">✕ Follow-ups based on memory or guesswork</li>
+                        <li class="flex gap-3">✕ Time spent on low-signal interactions</li>
+                    </ul>
+                </div>
+
+                <div class="p-8 border-l-2 border-brandBlue bg-bg/50 rounded-r-lg">
+                    <h4 class="text-lg text-white mb-6 font-medium">After Commenter AI</h4>
+                    <ul class="space-y-4 text-white text-sm">
+                        <li class="flex gap-3 items-center">
+                            <div class="w-1.5 h-1.5 bg-brandBlue rounded-full"></div> 
+                            Sales signals clearly highlighted
+                        </li>
+                        <li class="flex gap-3 items-center">
+                            <div class="w-1.5 h-1.5 bg-brandBlue rounded-full"></div> 
+                            Daily focus on conversations that matter
+                        </li>
+                        <li class="flex gap-3 items-center">
+                            <div class="w-1.5 h-1.5 bg-brandBlue rounded-full"></div> 
+                            Less time wasted, better momentum
+                        </li>
+                    </ul>
+                    <!-- Visual Anchor -->
+                    <div class="mt-8">
+                         <div class="signal-card compact">
+                            <div class="signal-icon"></div>
+                            <div class="signal-text text-sm">Momentum building</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-16">
+                <p class="text-lg text-white font-medium">Commenter AI doesn’t push you to do more.</p>
+                <p class="text-lg text-textMuted">It helps you do the right things at the right time.</p>
+                <p class="text-xs text-textMuted mt-4 uppercase tracking-wider">Clear focus compounds faster than effort.</p>
+            </div>
+            
+            <div class="flex justify-center mt-8">
+                <div class="text-center">
+                    <a href="#pricing" class="btn-primary">Start free trial</a>
+                    <p class="text-xs text-textMuted mt-3">See clarity in your own conversations • No credit card required</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 7: VALUE BRIDGE -->
+    <section class="py-24 text-center px-6">
+        <h2 class="text-3xl md:text-4xl font-semibold mb-6 text-white">From clarity to real leverage</h2>
+        <p class="text-lg text-textMuted max-w-xl mx-auto mb-2">
+            When you know what’s worth doing and what isn’t, time stops leaking.
+        </p>
+        <p class="text-lg text-textMuted max-w-xl mx-auto mb-8">
+            Better decisions beat more activity. That’s what the plans below are built for.
+        </p>
+        <a href="#pricing" class="text-brandBlue font-medium hover:text-white transition inline-flex items-center gap-1">See plans and pricing <span>↓</span></a>
+    </section>
+
+    <!-- SECTION 8: PRICING -->
+    <section id="pricing" class="py-24 max-w-7xl mx-auto px-6">
+        <div class="text-center mb-16">
+            <h2 class="text-3xl font-semibold mb-4 text-white">Pricing that grows with how you use LinkedIn</h2>
+            <p class="text-textMuted mb-2 text-lg">One closed deal often covers months of Commenter AI.</p>
+            <p class="text-xs text-textMuted uppercase tracking-wide opacity-80">Every plan includes the full clarity loop - comments, DMs, sales signals, and focus.</p>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-8 items-stretch">
+            
+            <!-- Starter -->
+            <div class="bg-surface border border-border p-8 rounded-lg hover:shadow-lg transition-shadow flex flex-col">
+                <h3 class="text-lg font-medium text-white mb-2">Starter</h3>
+                <p class="text-sm text-textMuted mb-6 min-h-[40px]">For founders and small sales teams validating LinkedIn as a revenue channel</p>
+                <div class="mb-6">
+                    <span class="text-4xl font-bold text-white">$99</span><span class="text-textMuted">/month</span>
+                </div>
+                <button class="btn-secondary w-full mb-8">Start free trial</button>
+                <ul class="space-y-4 text-sm text-textMuted mb-8 flex-grow">
+                    <li class="flex gap-3"><span class="text-brandBlue">✓</span> Connect 1 LinkedIn account</li>
+                    <li class="flex gap-3"><span class="text-brandBlue">✓</span> Track comments and DMs in one place</li>
+                    <li class="flex gap-3"><span class="text-brandBlue">✓</span> See early sales signals</li>
+                    <li class="flex gap-3"><span class="text-brandBlue">✓</span> Daily clarity on what to focus on</li>
+                    <li class="flex gap-3"><span class="text-brandBlue">✓</span> AI-assisted comments and replies</li>
+                </ul>
+                <p class="text-xs text-textMuted text-center border-t border-border pt-4">Upgrade anytime as your workflow grows.</p>
+            </div>
+
+            <!-- Growth (Highlighted) -->
+            <div class="bg-surfaceHighlight border border-brandBlue p-8 rounded-lg relative transform md:-translate-y-4 shadow-2xl flex flex-col z-10">
+                <div class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-brandBlue text-white text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full shadow-lg">
+                    Most Popular
+                </div>
+                <h3 class="text-lg font-medium text-white mb-2">Growth</h3>
+                <p class="text-sm text-textMuted mb-6 min-h-[40px]">For founders and small teams turning LinkedIn into a scalable revenue channel</p>
+                <div class="mb-6">
+                    <span class="text-4xl font-bold text-white">$149</span><span class="text-textMuted">/month</span>
+                </div>
+                <button class="btn-primary w-full mb-8">Start free trial</button>
+                <ul class="space-y-4 text-sm text-textMain mb-8 flex-grow">
+                    <li class="flex gap-3 font-medium text-white">Everything in Starter, plus:</li>
+                    <li class="flex gap-3"><span class="text-brandBlue">✓</span> Advanced sales signal detection</li>
+                    <li class="flex gap-3"><span class="text-brandBlue">✓</span> Clearer prioritization across conversations</li>
+                    <li class="flex gap-3"><span class="text-brandBlue">✓</span> Deeper insight into what’s working over time</li>
+                    <li class="flex gap-3"><span class="text-brandBlue">✓</span> Faster execution with AI-assisted replies and context</li>
+                </ul>
+                <p class="text-xs text-textMuted text-center border-t border-border pt-4">Most teams choose this once LinkedIn is working.</p>
+            </div>
+
+            <!-- Team -->
+            <div class="bg-surface border border-border p-8 rounded-lg hover:shadow-lg transition-shadow flex flex-col">
+                <h3 class="text-lg font-medium text-white mb-2">Team</h3>
+                <p class="text-sm text-textMuted mb-6 min-h-[40px]">For agencies and teams managing multiple people or profiles</p>
+                <div class="mb-6">
+                    <span class="text-2xl font-bold text-white">From $349</span><span class="text-textMuted">/month</span>
+                </div>
+                <button class="btn-secondary w-full mb-8">Talk to Sales</button>
+                <ul class="space-y-4 text-sm text-textMuted mb-8 flex-grow">
+                    <li class="flex gap-3 font-medium">Everything in Growth, plus:</li>
+                    <li class="flex gap-3"><span class="text-brandBlue">✓</span> Multiple LinkedIn accounts</li>
+                    <li class="flex gap-3"><span class="text-brandBlue">✓</span> Shared visibility across conversations</li>
+                    <li class="flex gap-3"><span class="text-brandBlue">✓</span> Team-level clarity and coordination</li>
+                </ul>
+                <p class="text-xs text-textMuted text-center border-t border-border pt-4">We’ll help you set this up properly.</p>
+            </div>
+        </div>
+        
+        <div class="text-center mt-12 pt-8 border-t border-border">
+            <p class="text-sm font-medium text-white">Clear plan boundaries. No surprises. Cancel anytime.</p>
+            <p class="text-sm text-textMuted mt-1">Start small, see value, and upgrade only when it makes sense.</p>
+        </div>
+
+        <!-- 30 Days Expectation -->
+        <div class="mt-16 max-w-3xl mx-auto bg-bg border border-border p-8 rounded-lg text-center">
+            <h4 class="text-white font-medium mb-6">What to expect in your first 30 days</h4>
+            <div class="grid md:grid-cols-3 gap-6 text-sm text-textMuted text-left">
+                <div class="bg-surface p-4 rounded border border-border/50">
+                    <strong class="text-white block mb-2">Week 1:</strong> 
+                    Comments and DMs visible in one place
+                </div>
+                <div class="bg-surface p-4 rounded border border-border/50">
+                    <strong class="text-white block mb-2">Weeks 2–3:</strong> 
+                    Clearer signals on what matters
+                </div>
+                <div class="bg-surface p-4 rounded border border-border/50">
+                    <strong class="text-white block mb-2">Day 30:</strong> 
+                    Patterns emerge around momentum
+                </div>
+            </div>
+            <p class="text-xs text-textMuted mt-6 uppercase tracking-wide">Commenter AI is built to deliver clarity first - and outcomes are built on clarity.</p>
+        </div>
+    </section>
+
+    <!-- SECTION 9: FAQ (Complete Content) -->
+    <section id="faq" class="py-24 max-w-3xl mx-auto px-6">
+        <h2 class="text-3xl font-semibold mb-12 text-center text-white">Frequently asked questions</h2>
+        
+        <div class="space-y-4">
+            <!-- FAQ 1 -->
+            <details class="bg-surface border border-border rounded-lg group">
+                <summary class="px-6 py-5 font-medium cursor-pointer flex justify-between items-center text-white hover:bg-surfaceHighlight transition-colors rounded-lg select-none">
+                    Is Commenter AI just an AI commenting tool?
+                    <span class="text-textMuted group-open:rotate-180 transition-transform duration-200">▼</span>
+                </summary>
+                <div class="px-6 pb-6 text-textMuted text-sm leading-relaxed border-t border-border mt-2 pt-4">
+                    <p class="mb-2"><strong class="text-white">No.</strong></p>
+                    <p class="mb-3">Commenter AI is not built to automate commenting for volume. It’s built to connect your comments and DMs to sales signals, so you can see what matters and what doesn’t.</p>
+                    <p>AI plays a supporting role: drafts comments and replies faster, learns your writing style over time, and can use your own insights. You stay in control of what’s sent and how you engage.</p>
+                </div>
+            </details>
+
+            <!-- FAQ 2 -->
+            <details class="bg-surface border border-border rounded-lg group">
+                <summary class="px-6 py-5 font-medium cursor-pointer flex justify-between items-center text-white hover:bg-surfaceHighlight transition-colors rounded-lg select-none">
+                    Who is Commenter AI best suited for?
+                    <span class="text-textMuted group-open:rotate-180 transition-transform duration-200">▼</span>
+                </summary>
+                <div class="px-6 pb-6 text-textMuted text-sm leading-relaxed border-t border-border mt-2 pt-4">
+                    <p class="mb-2">Commenter AI works best for people who already use LinkedIn to drive conversations and want more focus, not more activity.</p>
+                    <ul class="list-disc pl-5 mb-3 space-y-1">
+                        <li>B2B founders (solo or with small teams)</li>
+                        <li>Consultants and service providers</li>
+                        <li>Small sales teams using LinkedIn for conversations and deals</li>
+                    </ul>
+                    <p>Typically, they have a proven offer ($1k+), have made sales through LinkedIn, and want clarity on what to follow up. It helps scale what already works.</p>
+                </div>
+            </details>
+
+            <!-- FAQ 3 -->
+            <details class="bg-surface border border-border rounded-lg group">
+                <summary class="px-6 py-5 font-medium cursor-pointer flex justify-between items-center text-white hover:bg-surfaceHighlight transition-colors rounded-lg select-none">
+                    Do I need a credit card to start the free trial?
+                    <span class="text-textMuted group-open:rotate-180 transition-transform duration-200">▼</span>
+                </summary>
+                <div class="px-6 pb-6 text-textMuted text-sm leading-relaxed border-t border-border mt-2 pt-4">
+                    <p><strong class="text-white">No.</strong></p>
+                    <p>You can start the 7-day trial without a credit card. If you choose to keep using Commenter AI after the trial, you can pick a plan then.</p>
+                </div>
+            </details>
+
+            <!-- FAQ 4 -->
+            <details class="bg-surface border border-border rounded-lg group">
+                <summary class="px-6 py-5 font-medium cursor-pointer flex justify-between items-center text-white hover:bg-surfaceHighlight transition-colors rounded-lg select-none">
+                    What should I expect in my first 30 days?
+                    <span class="text-textMuted group-open:rotate-180 transition-transform duration-200">▼</span>
+                </summary>
+                <div class="px-6 pb-6 text-textMuted text-sm leading-relaxed border-t border-border mt-2 pt-4">
+                    <p class="mb-2">The first month is about visibility and focus, not instant outcomes.</p>
+                    <ul class="list-disc pl-5 space-y-1 mb-2">
+                        <li>Week 1: comments and DMs visible in one place</li>
+                        <li>Weeks 2-3: clearer signals on which conversations are worth following up</li>
+                        <li>By Day 30: patterns emerge around what leads to momentum</li>
+                    </ul>
+                    <p class="mt-2">Commenter AI is built to deliver clarity first. Outcomes are built on clarity.</p>
+                </div>
+            </details>
+            
+            <!-- FAQ 5 -->
+            <details class="bg-surface border border-border rounded-lg group">
+                <summary class="px-6 py-5 font-medium cursor-pointer flex justify-between items-center text-white hover:bg-surfaceHighlight transition-colors rounded-lg select-none">
+                    Does Commenter AI guarantee leads or deals?
+                    <span class="text-textMuted group-open:rotate-180 transition-transform duration-200">▼</span>
+                </summary>
+                <div class="px-6 pb-6 text-textMuted text-sm leading-relaxed border-t border-border mt-2 pt-4">
+                    <p><strong class="text-white">No.</strong></p>
+                    <p>Results depend on your offer, your conversations, skills, and how you follow up. Commenter AI doesn’t promise deals. It helps you see what moves deals forward so you can act with confidence.</p>
+                </div>
+            </details>
+
+            <!-- FAQ 6 -->
+            <details class="bg-surface border border-border rounded-lg group">
+                <summary class="px-6 py-5 font-medium cursor-pointer flex justify-between items-center text-white hover:bg-surfaceHighlight transition-colors rounded-lg select-none">
+                    What if I’m not seeing clarity yet?
+                    <span class="text-textMuted group-open:rotate-180 transition-transform duration-200">▼</span>
+                </summary>
+                <div class="px-6 pb-6 text-textMuted text-sm leading-relaxed border-t border-border mt-2 pt-4">
+                    <p class="mb-2"><strong class="text-white">That’s normal early on.</strong></p>
+                    <p class="mb-2">Commenter AI doesn’t force outcomes, it reveals patterns as conversations happen. If you’re not seeing clarity, it usually means there isn't enough interaction data yet, or conversations haven't progressed far enough to show signals.</p>
+                    <p>If you feel unsure during your trial, you can reach out and we’ll help you understand what you’re seeing.</p>
+                </div>
+            </details>
+
+            <!-- FAQ 7 -->
+            <details class="bg-surface border border-border rounded-lg group">
+                <summary class="px-6 py-5 font-medium cursor-pointer flex justify-between items-center text-white hover:bg-surfaceHighlight transition-colors rounded-lg select-none">
+                    Do I need to post content regularly for this to work?
+                    <span class="text-textMuted group-open:rotate-180 transition-transform duration-200">▼</span>
+                </summary>
+                <div class="px-6 pb-6 text-textMuted text-sm leading-relaxed border-t border-border mt-2 pt-4">
+                    <p><strong class="text-white">No.</strong></p>
+                    <p>Commenter AI works whether you post often, comment strategically, or focus mainly on DMs. It’s designed around interaction, not posting frequency.</p>
+                </div>
+            </details>
+
+            <!-- FAQ 8 -->
+            <details class="bg-surface border border-border rounded-lg group">
+                <summary class="px-6 py-5 font-medium cursor-pointer flex justify-between items-center text-white hover:bg-surfaceHighlight transition-colors rounded-lg select-none">
+                    Is my LinkedIn account safe?
+                    <span class="text-textMuted group-open:rotate-180 transition-transform duration-200">▼</span>
+                </summary>
+                <div class="px-6 pb-6 text-textMuted text-sm leading-relaxed border-t border-border mt-2 pt-4">
+                    <p><strong class="text-white">Yes.</strong></p>
+                    <p>Commenter AI connects securely and works within normal LinkedIn usage patterns. You stay in control of what’s sent and when.</p>
+                </div>
+            </details>
+
+            <!-- FAQ 9 -->
+            <details class="bg-surface border border-border rounded-lg group">
+                <summary class="px-6 py-5 font-medium cursor-pointer flex justify-between items-center text-white hover:bg-surfaceHighlight transition-colors rounded-lg select-none">
+                    Can I cancel anytime?
+                    <span class="text-textMuted group-open:rotate-180 transition-transform duration-200">▼</span>
+                </summary>
+                <div class="px-6 pb-6 text-textMuted text-sm leading-relaxed border-t border-border mt-2 pt-4">
+                    <p><strong class="text-white">Yes.</strong></p>
+                    <p>There are no contracts. You can cancel anytime directly from your account.</p>
+                </div>
+            </details>
+        </div>
+    </section>
+
+    <!-- SECTION 10: FINAL CTA -->
+    <section class="py-32 bg-bg text-center px-6 relative overflow-hidden border-t border-border">
+        <!-- Decoration -->
+        <div class="absolute top-12 left-1/2 transform -translate-x-1/2 opacity-5 pointer-events-none select-none">
+            <div class="signal-card compact"><div class="signal-icon"></div></div>
+        </div>
+
+        <div class="relative z-10 max-w-2xl mx-auto">
+            <h2 class="text-4xl font-bold text-white mb-6">Ready to stop guessing and start focusing?</h2>
+            <p class="text-xl text-textMuted mb-2">
+                You’re already having conversations on LinkedIn.
+            </p>
+            <p class="text-xl text-textMuted mb-10">
+                Commenter AI helps you see which ones matter and what to do next.
+            </p>
+            <button class="btn-primary text-lg px-10 py-4 shadow-2xl">Start free trial</button>
+            <p class="mt-4 text-sm text-textMuted">7-day trial • No credit card required</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t border-border py-12 text-center text-sm text-textMuted bg-bg">
+        <p>© 2025 Commenter AI. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>
