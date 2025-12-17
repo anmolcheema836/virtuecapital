@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BoxDrop | Night Logistics</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Fonts: 'Be Vietnam Pro' for a high-tech/industrial look -->
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Flatpickr (Dark Theme Configured via CSS) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                fontFamily: { sans: ['"Be Vietnam Pro"', 'sans-serif'] },
+                extend: {
+                    colors: {
+                        // Dark Palette
+                        bg: '#09090b',      // Zinc 950
+                        surface: '#18181b', // Zinc 900
+                        border: '#27272a',  // Zinc 800
+                        subtle: '#52525b',  // Zinc 600
+                        
+                        // Brand Accent (Safety Amber)
+                        primary: '#f59e0b', 
+                        primaryHover: '#d97706',
+                    },
+                    boxShadow: {
+                        'glow': '0 0 20px -5px rgba(245, 158, 11, 0.3)',
+                        'glass': '0 8px 32px 0 rgba(0, 0, 0, 0.37)',
+                    },
+                    backgroundImage: {
+                        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body { background-color: #09090b; color: #f4f4f5; }
+        
+        /* Animations */
+        .fade-in { animation: fadeIn 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Dark Mode Inputs */
+        .input-dark {
+            width: 100%;
+            background: #18181b;
+            border: 1px solid #27272a;
+            color: white;
+            padding: 1rem 1.25rem;
+            border-radius: 0.75rem;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+        .input-dark:focus {
+            border-color: #f59e0b;
+            box-shadow: 0 0 0 1px #f59e0b;
+            background: #27272a;
+        }
+        .input-dark::placeholder { color: #52525b; }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #09090b; }
+        ::-webkit-scrollbar-thumb { background: #3f3f46; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #52525b; }
+
+        /* Flatpickr Dark Override */
+        .flatpickr-calendar { background: #18181b !important; border: 1px solid #27272a !important; box-shadow: 0 10px 30px rgba(0,0,0,0.5) !important; }
+        .flatpickr-day { color: #e4e4e7 !important; }
+        .flatpickr-day.selected { background: #f59e0b !important; border-color: #f59e0b !important; color: #000 !important; }
+        .flatpickr-months .flatpickr-month { color: white !important; fill: white !important; }
+        .flatpickr-current-month .flatpickr-monthDropdown-months { background: #18181b !important; }
+
+        /* Glass Card */
+        .glass-panel {
+            background: rgba(24, 24, 27, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+    </style>
+</head>
+<body class="antialiased min-h-screen flex flex-col relative overflow-x-hidden">
+
+    <!-- Ambient Background Glow -->
+    <div class="fixed top-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-primary/10 rounded-full blur-[120px] pointer-events-none -z-10"></div>
+
+    <!-- HEADER -->
+    <header class="fixed top-0 w-full z-50 glass-panel border-b border-border">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex justify-between items-center">
+            <div class="flex items-center gap-3 cursor-pointer group" onclick="app.goHome()">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-orange-600 flex items-center justify-center text-black font-bold text-xl shadow-glow">
+                    B
+                </div>
+                <span class="font-bold text-xl tracking-tight text-white group-hover:text-primary transition-colors">BoxDrop</span>
+            </div>
+            
+            <nav class="flex items-center gap-6">
+                <button onclick="app.openPickup()" class="text-sm font-medium text-zinc-400 hover:text-white transition-colors hidden sm:block">
+                    Track / Pickup
+                </button>
+                <div class="h-6 w-px bg-zinc-800 hidden sm:block"></div>
+                <button onclick="app.toggleAdmin()" class="flex items-center gap-2 text-xs font-bold uppercase tracking-wider bg-zinc-800 hover:bg-zinc-700 text-white px-4 py-2 rounded-lg transition-all border border-zinc-700">
+                    <i class="fa-solid fa-shield-halved text-primary"></i> Admin
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- MAIN -->
+    <main class="flex-grow pt-28 pb-20 px-6">
+        
+        <!-- VIEW: CATALOG -->
+        <div id="view-home" class="max-w-7xl mx-auto fade-in">
+            
+            <!-- Hero Text -->
+            <div class="mb-16 mt-8">
+                <h1 class="text-5xl md:text-7xl font-bold tracking-tight mb-6">
+                    Logistics, <br>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-orange-600">Reinvented.</span>
+                </h1>
+                <p class="text-zinc-400 text-lg max-w-2xl leading-relaxed">
+                    Deploy commercial-grade storage and waste infrastructure to your job site instantly. 
+                    <span class="text-white">Zero friction, 100% reliability.</span>
+                </p>
+            </div>
+
+            <!-- Filter Bar -->
+            <div class="sticky top-24 z-40 mb-12 -mx-2">
+                <div class="inline-flex p-1.5 rounded-xl bg-surface border border-border shadow-2xl">
+                    <button onclick="app.filter('all')" class="filter-btn active px-6 py-2.5 rounded-lg text-sm font-semibold transition-all text-white bg-zinc-800 shadow-sm">Overview</button>
+                    <button onclick="app.filter('storage')" class="filter-btn px-6 py-2.5 rounded-lg text-sm font-semibold transition-all text-zinc-500 hover:text-white">Storage</button>
+                    <button onclick="app.filter('waste')" class="filter-btn px-6 py-2.5 rounded-lg text-sm font-semibold transition-all text-zinc-500 hover:text-white">Waste</button>
+                    <button onclick="app.filter('vehicle')" class="filter-btn px-6 py-2.5 rounded-lg text-sm font-semibold transition-all text-zinc-500 hover:text-white">Fleet</button>
+                </div>
+            </div>
+
+            <!-- Grid -->
+            <div id="product-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- JS Injected -->
+            </div>
+        </div>
+
+        <!-- VIEW: ADMIN -->
+        <div id="view-admin" class="hidden max-w-7xl mx-auto fade-in">
+            <div class="glass-panel rounded-2xl p-8 border border-border">
+                <div class="flex justify-between items-center mb-8">
+                    <div>
+                        <h2 class="text-2xl font-bold text-white">Live Operations</h2>
+                        <p class="text-zinc-500 text-sm mt-1">Real-time booking stream</p>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-xs uppercase text-zinc-500 font-bold tracking-wider">Revenue</span>
+                        <div class="text-3xl font-bold text-primary" id="admin-revenue">$0</div>
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="text-xs font-bold uppercase text-zinc-500 border-b border-zinc-800">
+                                <th class="py-4">Order Ref</th>
+                                <th class="py-4">Client</th>
+                                <th class="py-4">Asset</th>
+                                <th class="py-4">Date</th>
+                                <th class="py-4 text-right">Value</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-tbody" class="text-sm divide-y divide-zinc-800 text-zinc-300"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="border-t border-border mt-auto py-12 bg-black">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4 text-zinc-600 text-sm">
+            <p>&copy; 2025 BoxDrop Logistics. Powered by Carbon.</p>
+            <div class="flex gap-6">
+                <a href="#" class="hover:text-white transition-colors">Privacy</a>
+                <a href="#" class="hover:text-white transition-colors">Terms</a>
+                <a href="#" class="hover:text-white transition-colors">System Status <span class="w-2 h-2 bg-green-500 rounded-full inline-block ml-1"></span></a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- BOOKING OVERLAY (Right Side Drawer) -->
+    <div id="booking-drawer-bg" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden transition-opacity duration-300 opacity-0" onclick="app.closeBooking()"></div>
+    
+    <div id="booking-drawer" class="fixed inset-y-0 right-0 z-50 w-full sm:w-[500px] bg-surface border-l border-border shadow-2xl transform translate-x-full transition-transform duration-500 ease-out flex flex-col">
+        
+        <!-- Drawer Header -->
+        <div class="h-20 flex items-center justify-between px-8 border-b border-border bg-surface">
+            <h2 class="text-lg font-bold text-white tracking-wide">Configure Order</h2>
+            <button onclick="app.closeBooking()" class="w-8 h-8 rounded-full bg-zinc-800 flex items-center justify-center text-zinc-400 hover:text-white hover:bg-zinc-700 transition-all">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <!-- Scrollable Content -->
+        <div class="flex-grow overflow-y-auto p-8 relative">
+            
+            <!-- Item Preview -->
+            <div class="flex gap-4 mb-8 pb-8 border-b border-border">
+                <div class="w-24 h-24 rounded-lg bg-zinc-800 overflow-hidden flex-shrink-0 border border-zinc-700">
+                    <img id="drawer-img" class="w-full h-full object-cover opacity-80">
+                </div>
+                <div>
+                    <h3 class="font-bold text-lg text-white" id="drawer-title">Product</h3>
+                    <p class="text-sm text-zinc-500 mt-1" id="drawer-price">$0</p>
+                    <div class="mt-2 inline-flex items-center text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded border border-primary/20">
+                        <i class="fa-solid fa-bolt mr-1.5"></i> Instant Availability
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 1 Form -->
+            <div id="step-1" class="space-y-6 fade-in">
+                <div>
+                    <label class="block text-xs font-bold uppercase text-zinc-500 mb-2">Delivery Target</label>
+                    <input id="inp-date" class="input-dark" placeholder="Select Date">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase text-zinc-500 mb-2">Site Location</label>
+                    <input id="inp-addr" class="input-dark" placeholder="Address / ZIP">
+                </div>
+                <div class="grid grid-cols-1 gap-6 pt-2">
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-zinc-500 mb-2">Authorized Person</label>
+                        <input id="inp-name" class="input-dark" placeholder="Full Name">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-zinc-500 mb-2">Contact Email</label>
+                        <input id="inp-email" type="email" class="input-dark" placeholder="work@email.com">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 2 Payment -->
+            <div id="step-2" class="hidden fade-in space-y-6">
+                <!-- Receipt -->
+                <div class="bg-zinc-950/50 rounded-lg p-5 border border-zinc-800 space-y-3">
+                    <div class="flex justify-between text-zinc-400 text-sm">
+                        <span>Base Rate</span> <span id="summ-price" class="text-zinc-200">$0</span>
+                    </div>
+                    <div class="flex justify-between text-zinc-400 text-sm">
+                        <span>Logistics Fee</span> <span id="summ-ship" class="text-zinc-200">$0</span>
+                    </div>
+                    <div class="h-px bg-zinc-800 my-2"></div>
+                    <div class="flex justify-between text-white font-bold text-lg">
+                        <span>Total Due</span> <span id="summ-total" class="text-primary">$0</span>
+                    </div>
+                </div>
+
+                <!-- Card Input -->
+                <div>
+                    <label class="block text-xs font-bold uppercase text-zinc-500 mb-2">Payment Method</label>
+                    <div class="relative">
+                        <input class="input-dark pl-10" placeholder="Card Number">
+                        <i class="fa-regular fa-credit-card absolute left-3.5 top-3.5 text-zinc-500"></i>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4 mt-3">
+                        <input class="input-dark text-center" placeholder="MM/YY">
+                        <input class="input-dark text-center" placeholder="CVC">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 3 Success -->
+            <div id="step-3" class="hidden h-full flex flex-col items-center justify-center text-center fade-in py-10">
+                <div class="w-20 h-20 rounded-full bg-primary/20 flex items-center justify-center text-primary text-3xl mb-6 shadow-glow border border-primary/30">
+                    <i class="fa-solid fa-check"></i>
+                </div>
+                <h3 class="text-2xl font-bold text-white mb-2">Deployment Confirmed</h3>
+                <p class="text-zinc-500 text-sm mb-6">Your asset is being prepared for dispatch.</p>
+                <div class="bg-zinc-800 px-4 py-2 rounded text-zinc-300 font-mono text-sm border border-zinc-700">
+                    ID: <span id="final-id" class="text-white font-bold"></span>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Drawer Footer -->
+        <div id="drawer-footer" class="p-8 border-t border-border bg-surface">
+            <button id="btn-next" onclick="app.toStep2()" class="w-full bg-white text-black font-bold py-4 rounded-xl hover:bg-primary hover:text-black transition-colors shadow-[0_0_20px_rgba(255,255,255,0.2)]">
+                Proceed to Checkout
+            </button>
+            
+            <div id="btn-group-pay" class="hidden flex gap-4">
+                <button onclick="app.toStep1()" class="w-1/3 bg-transparent border border-zinc-700 text-zinc-400 font-bold py-4 rounded-xl hover:text-white hover:border-white transition-colors">Back</button>
+                <button onclick="app.pay()" id="btn-pay" class="w-2/3 bg-primary text-black font-bold py-4 rounded-xl hover:bg-primaryHover transition-colors flex items-center justify-center gap-2">
+                    <span>Initialize</span>
+                    <i class="fa-solid fa-circle-notch fa-spin hidden" id="spinner"></i>
+                </button>
+            </div>
+
+            <button id="btn-close-final" onclick="app.closeBooking()" class="hidden w-full bg-zinc-800 text-white font-bold py-4 rounded-xl hover:bg-zinc-700">Return to Dashboard</button>
+        </div>
+
+    </div>
+
+    <!-- PICKUP MODAL -->
+    <div id="pickup-modal" class="fixed inset-0 z-50 hidden" aria-hidden="true">
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="app.closePickup()"></div>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-sm glass-panel p-8 rounded-2xl border border-zinc-800 shadow-2xl">
+            <h3 class="text-xl font-bold text-white mb-6">Asset Retrieval</h3>
+            <div id="pu-form" class="space-y-4">
+                <input id="pu-id" class="input-dark" placeholder="Order Reference #">
+                <input id="pu-date" class="input-dark" placeholder="Pickup Date">
+                <button onclick="app.submitPickup()" class="w-full bg-primary text-black font-bold py-3 rounded-lg hover:bg-primaryHover transition-colors">Schedule</button>
+            </div>
+            <div id="pu-success" class="hidden text-center py-4">
+                <p class="text-primary font-bold text-lg">Signal Received</p>
+                <p class="text-zinc-500 text-sm">Logistics team notified.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // DATA
+        const products = [
+            { id: 1, name: "16' Steel Pod", cat: 'storage', price: 150, term: 'mo', transport: 50, desc: "Weather-resistant ISO container. Secure locking mechanism.", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQHJcMiP1VaOfukDDhosMgcj7JdSJiHrk-BHw&s" },
+            { id: 2, name: "20' Cargo Unit", cat: 'storage', price: 190, term: 'mo', transport: 100, desc: "Heavy duty commercial grade storage unit. 1,170 cu. ft.", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR5rzs2LQtM58YOQ3uTeza6SyoFmbd7P3BALQ&s" },
+            { id: 3, name: "15-Yard Dumpster", cat: 'waste', price: 299, term: 'wk', transport: 75, desc: "Reinforced steel walls. Ideal for renovation debris.", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQN6RTG9GSC34sL43JwA8cuXAsLiyvFXgLIkQ&s" },
+            { id: 4, name: "10-Yard Mini", cat: 'waste', price: 225, term: 'wk', transport: 75, desc: "Compact footprint for tight urban driveways.", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTyRVGmHbIGDw2JEnAIFIsomj9j9f70aScT_A&s" },
+            { id: 5, name: "Sanitation Unit", cat: 'waste', price: 120, term: 'mo', transport: 30, desc: "Standard portable unit with weekly maintenance service.", img: "https://expressportables.com.au/cdn/shop/articles/Bailey_Crescent_3.png?v=1660709540&width=1100" },
+            { id: 6, name: "26' Fleet Truck", cat: 'vehicle', price: 89, term: 'day', transport: 0, desc: "Commercial moving van with hydraulic ramp.", img: "https://nelsonwesterberg.com/wp-content/uploads/2021/05/moving-truck-sizes-e1715619925952.jpeg" }
+        ];
+
+        let orders = [{ id: '#BX-900', name: 'Tech Corp', item: '16\' Steel Pod', date: '2023-10-12', total: 200 }];
+
+        const app = {
+            state: { prod: null, form: {} },
+
+            init() {
+                this.renderGrid('all');
+                flatpickr("#inp-date", { minDate: "today", disableMobile: "true", theme: "dark" });
+                flatpickr("#pu-date", { minDate: "today", disableMobile: "true", theme: "dark" });
+                this.renderAdmin();
+            },
+
+            filter(cat) {
+                document.querySelectorAll('.filter-btn').forEach(btn => {
+                    const txt = btn.innerText.toLowerCase();
+                    const match = (cat === 'all' && txt === 'overview') || (cat === 'vehicle' && txt === 'fleet') || (txt.includes(cat));
+                    
+                    if(match) {
+                        btn.classList.add('bg-zinc-800', 'text-white', 'shadow-sm');
+                        btn.classList.remove('text-zinc-500', 'hover:text-white');
+                    } else {
+                        btn.classList.remove('bg-zinc-800', 'text-white', 'shadow-sm');
+                        btn.classList.add('text-zinc-500', 'hover:text-white');
+                    }
+                });
+                this.renderGrid(cat);
+            },
+
+            renderGrid(cat) {
+                const grid = document.getElementById('product-grid');
+                grid.innerHTML = '';
+                const items = cat === 'all' ? products : products.filter(p => p.cat === cat);
+
+                items.forEach(p => {
+                    grid.innerHTML += `
+                        <div class="group relative bg-surface border border-zinc-800 rounded-xl overflow-hidden hover:border-zinc-600 transition-colors duration-300 flex flex-col cursor-pointer" onclick="app.openBooking(${p.id})">
+                            <div class="h-56 relative overflow-hidden bg-zinc-800">
+                                <img src="${p.img}" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500">
+                                <div class="absolute inset-0 bg-gradient-to-t from-surface to-transparent"></div>
+                                <div class="absolute bottom-4 left-4">
+                                    <span class="bg-primary text-black text-xs font-bold px-2 py-1 rounded shadow-glow">$${p.price}/${p.term}</span>
+                                </div>
+                            </div>
+                            <div class="p-5 flex flex-col flex-grow">
+                                <h3 class="text-xl font-bold text-white mb-2 group-hover:text-primary transition-colors">${p.name}</h3>
+                                <p class="text-zinc-500 text-sm leading-relaxed mb-4 flex-grow">${p.desc}</p>
+                                <div class="flex items-center text-xs font-bold uppercase tracking-wider text-zinc-400 group-hover:text-white transition-colors">
+                                    Select Asset <i class="fa-solid fa-arrow-right ml-2 text-primary"></i>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+            },
+
+            openBooking(id) {
+                this.state.prod = products.find(p => p.id === id);
+                const p = this.state.prod;
+                
+                document.getElementById('drawer-img').src = p.img;
+                document.getElementById('drawer-title').innerText = p.name;
+                document.getElementById('drawer-price').innerText = `$${p.price}/${p.term}`;
+
+                document.getElementById('step-1').classList.remove('hidden');
+                document.getElementById('step-2').classList.add('hidden');
+                document.getElementById('step-3').classList.add('hidden');
+                document.getElementById('btn-next').classList.remove('hidden');
+                document.getElementById('btn-group-pay').classList.add('hidden');
+                document.getElementById('btn-close-final').classList.add('hidden');
+                document.getElementById('drawer-footer').classList.remove('hidden');
+
+                // Drawer Animation
+                const bg = document.getElementById('booking-drawer-bg');
+                const drawer = document.getElementById('booking-drawer');
+                
+                bg.classList.remove('hidden');
+                setTimeout(() => bg.classList.remove('opacity-0'), 10);
+                drawer.classList.remove('translate-x-full');
+            },
+
+            closeBooking() {
+                const bg = document.getElementById('booking-drawer-bg');
+                const drawer = document.getElementById('booking-drawer');
+                
+                drawer.classList.add('translate-x-full');
+                bg.classList.add('opacity-0');
+                setTimeout(() => bg.classList.add('hidden'), 300);
+            },
+
+            toStep2() {
+                const f = {
+                    date: document.getElementById('inp-date').value,
+                    addr: document.getElementById('inp-addr').value,
+                    name: document.getElementById('inp-name').value,
+                    email: document.getElementById('inp-email').value
+                };
+                if (!f.date || !f.name) { alert("Please complete required fields."); return; }
+                this.state.form = f;
+                
+                const p = this.state.prod;
+                document.getElementById('summ-price').innerText = `$${p.price.toFixed(2)}`;
+                document.getElementById('summ-ship').innerText = `$${p.transport.toFixed(2)}`;
+                document.getElementById('summ-total').innerText = `$${(p.price + p.transport).toFixed(2)}`;
+
+                document.getElementById('step-1').classList.add('hidden');
+                document.getElementById('step-2').classList.remove('hidden');
+                document.getElementById('btn-next').classList.add('hidden');
+                document.getElementById('btn-group-pay').classList.remove('hidden');
+            },
+
+            toStep1() {
+                document.getElementById('step-2').classList.add('hidden');
+                document.getElementById('step-1').classList.remove('hidden');
+                document.getElementById('btn-group-pay').classList.add('hidden');
+                document.getElementById('btn-next').classList.remove('hidden');
+            },
+
+            pay() {
+                const btn = document.getElementById('btn-pay');
+                const spin = document.getElementById('spinner');
+                
+                btn.disabled = true;
+                spin.classList.remove('hidden');
+
+                setTimeout(() => {
+                    const total = this.state.prod.price + this.state.prod.transport;
+                    const oid = '#BX-'+Math.floor(1000 + Math.random()*9000);
+                    
+                    orders.unshift({
+                        id: oid,
+                        name: this.state.form.name,
+                        item: this.state.prod.name,
+                        date: this.state.form.date,
+                        total: total
+                    });
+
+                    document.getElementById('final-id').innerText = oid;
+                    document.getElementById('step-2').classList.add('hidden');
+                    document.getElementById('btn-group-pay').classList.add('hidden');
+                    document.getElementById('step-3').classList.remove('hidden');
+                    document.getElementById('btn-close-final').classList.remove('hidden');
+                    
+                    btn.disabled = false;
+                    spin.classList.add('hidden');
+                    this.renderAdmin();
+                }, 1500);
+            },
+
+            toggleAdmin() {
+                const h = document.getElementById('view-home');
+                const a = document.getElementById('view-admin');
+                if(h.classList.contains('hidden')) {
+                    h.classList.remove('hidden'); a.classList.add('hidden');
+                } else {
+                    h.classList.add('hidden'); a.classList.remove('hidden');
+                    this.renderAdmin();
+                }
+            },
+            goHome() {
+                document.getElementById('view-home').classList.remove('hidden');
+                document.getElementById('view-admin').classList.add('hidden');
+            },
+            renderAdmin() {
+                const t = document.getElementById('admin-tbody');
+                t.innerHTML = '';
+                let rev = 0;
+                orders.forEach(o => {
+                    rev += o.total;
+                    t.innerHTML += `
+                        <tr class="group hover:bg-zinc-800/50 transition-colors">
+                            <td class="py-4 font-mono text-zinc-400 group-hover:text-primary transition-colors">${o.id}</td>
+                            <td class="py-4 text-white font-medium">${o.name}</td>
+                            <td class="py-4 text-zinc-400">${o.item}</td>
+                            <td class="py-4 text-zinc-500 text-xs">${o.date}</td>
+                            <td class="py-4 text-right font-bold text-white">$${o.total}</td>
+                        </tr>
+                    `;
+                });
+                document.getElementById('admin-revenue').innerText = '$' + rev.toLocaleString();
+            },
+
+            openPickup() { document.getElementById('pickup-modal').classList.remove('hidden'); document.getElementById('pu-form').classList.remove('hidden'); document.getElementById('pu-success').classList.add('hidden'); },
+            closePickup() { document.getElementById('pickup-modal').classList.add('hidden'); },
+            submitPickup() {
+                if(!document.getElementById('pu-id').value) return;
+                document.getElementById('pu-form').classList.add('hidden');
+                document.getElementById('pu-success').classList.remove('hidden');
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', () => app.init());
+    </script>
+</body>
+</html>
