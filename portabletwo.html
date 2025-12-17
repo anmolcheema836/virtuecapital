@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BoxDrop | Premium Equipment</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Plus Jakarta Sans for a premium tech/modern feel -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Flatpickr -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                fontFamily: { sans: ['"Plus Jakarta Sans"', 'sans-serif'] },
+                extend: {
+                    colors: {
+                        black: '#0a0a0a',
+                        dark: '#171717',
+                        gray: {
+                            50: '#fafafa',
+                            100: '#f5f5f5',
+                            200: '#e5e5e5',
+                            400: '#a3a3a3',
+                            500: '#737373',
+                            800: '#262626'
+                        },
+                        accent: '#0044CC', // High-end deep blue
+                    },
+                    spacing: {
+                        '128': '32rem',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body { background-color: #ffffff; color: #0a0a0a; -webkit-font-smoothing: antialiased; }
+        
+        /* Smooth Fade In */
+        .fade-in { animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Minimal Input Fields */
+        .input-minimal {
+            width: 100%;
+            background: transparent;
+            border-bottom: 1px solid #e5e5e5;
+            padding: 1rem 0;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            outline: none;
+            border-radius: 0;
+        }
+        .input-minimal:focus {
+            border-bottom-color: #0a0a0a;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #e5e5e5; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #a3a3a3; }
+
+        /* Card Hover Effect */
+        .product-card .img-container img { transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1); }
+        .product-card:hover .img-container img { transform: scale(1.05); }
+        
+        /* Loader */
+        .loader {
+            width: 18px; height: 18px;
+            border: 2px solid #FFF;
+            border-bottom-color: transparent;
+            border-radius: 50%;
+            display: inline-block;
+            box-sizing: border-box;
+            animation: rotation 1s linear infinite;
+        }
+        @keyframes rotation { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen">
+
+    <!-- HEADER -->
+    <header class="fixed w-full top-0 z-40 bg-white/80 backdrop-blur-md border-b border-gray-100">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex justify-between items-center">
+            <!-- Logo -->
+            <div class="flex items-center gap-3 cursor-pointer group" onclick="app.goHome()">
+                <div class="w-8 h-8 bg-black text-white flex items-center justify-center rounded text-sm font-bold group-hover:bg-accent transition-colors">B</div>
+                <span class="font-bold text-lg tracking-tight group-hover:opacity-70 transition-opacity">BoxDrop.</span>
+            </div>
+
+            <!-- Nav -->
+            <nav class="flex items-center gap-8">
+                <button onclick="app.openPickupModal()" class="text-sm font-medium text-gray-500 hover:text-black transition-colors">
+                    Pickup Request
+                </button>
+                <button onclick="app.toggleAdmin()" class="text-xs font-semibold uppercase tracking-widest text-black border border-gray-200 px-4 py-2 hover:bg-black hover:text-white transition-all">
+                    Admin
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main class="flex-grow pt-20">
+        
+        <!-- HOME VIEW -->
+        <div id="view-home" class="fade-in">
+            
+            <!-- HERO SECTION -->
+            <div class="max-w-7xl mx-auto px-6 py-20 sm:py-28 text-center border-b border-gray-100">
+                <span class="text-accent text-sm font-bold uppercase tracking-widest mb-4 block">Premium Logistics</span>
+                <h1 class="text-4xl sm:text-6xl font-bold text-black tracking-tight mb-6 leading-tight max-w-3xl mx-auto">
+                    Essential equipment for<br>the modern job site.
+                </h1>
+                <p class="text-gray-500 text-lg max-w-xl mx-auto mb-10 font-light">
+                    Seamless rentals. Commercial grade quality. Delivered to your location with precision.
+                </p>
+            </div>
+
+            <!-- FILTERS & GRID CONTAINER -->
+            <div class="max-w-7xl mx-auto px-6 py-12">
+                
+                <!-- Minimalist Tabs -->
+                <div class="flex justify-center mb-16 border-b border-gray-100">
+                    <div class="flex gap-8 overflow-x-auto">
+                        <button onclick="app.filter('all')" class="filter-tab active text-sm font-semibold pb-4 border-b-2 border-black text-black transition-all">All Collection</button>
+                        <button onclick="app.filter('storage')" class="filter-tab text-sm font-semibold pb-4 border-b-2 border-transparent text-gray-400 hover:text-black transition-all">Storage Units</button>
+                        <button onclick="app.filter('waste')" class="filter-tab text-sm font-semibold pb-4 border-b-2 border-transparent text-gray-400 hover:text-black transition-all">Waste Management</button>
+                        <button onclick="app.filter('vehicle')" class="filter-tab text-sm font-semibold pb-4 border-b-2 border-transparent text-gray-400 hover:text-black transition-all">Fleet & Transport</button>
+                    </div>
+                </div>
+
+                <!-- PRODUCT GRID -->
+                <div id="product-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16">
+                    <!-- Injected via JS -->
+                </div>
+            </div>
+        </div>
+
+        <!-- ADMIN DASHBOARD -->
+        <div id="view-admin" class="hidden fade-in max-w-7xl mx-auto px-6 py-16">
+            <div class="flex flex-col sm:flex-row justify-between items-end mb-12 pb-6 border-b border-black">
+                <div>
+                    <span class="text-xs font-bold text-gray-400 uppercase tracking-widest">Backend</span>
+                    <h2 class="text-3xl font-bold mt-1">Transactions</h2>
+                </div>
+                <div class="text-right">
+                    <span class="text-sm text-gray-500 block">Total Revenue</span>
+                    <span class="text-3xl font-bold text-black" id="admin-revenue">$0.00</span>
+                </div>
+            </div>
+            
+            <div class="overflow-hidden">
+                <table class="w-full text-left text-sm">
+                    <thead class="text-xs uppercase tracking-widest text-gray-400 border-b border-gray-100">
+                        <tr>
+                            <th class="py-4 font-normal">Order ID</th>
+                            <th class="py-4 font-normal">Client</th>
+                            <th class="py-4 font-normal">Equipment</th>
+                            <th class="py-4 font-normal">Date</th>
+                            <th class="py-4 font-normal text-right">Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody id="admin-table-body" class="divide-y divide-gray-50">
+                        <!-- JS Injection -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="border-t border-gray-100 py-12 bg-white mt-auto">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center text-xs text-gray-400 uppercase tracking-widest">
+            <div>&copy; 2025 BoxDrop Inc.</div>
+            <div class="mt-4 md:mt-0 flex gap-6">
+                <a href="#" class="hover:text-black transition-colors">Privacy</a>
+                <a href="#" class="hover:text-black transition-colors">Terms</a>
+                <a href="#" class="hover:text-black transition-colors">Support</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- BOOKING MODAL -->
+    <div id="booking-modal" class="fixed inset-0 z-50 hidden" aria-hidden="true">
+        <!-- Backdrop -->
+        <div class="absolute inset-0 bg-white/60 backdrop-blur-xl transition-opacity" onclick="app.closeBooking()"></div>
+        
+        <!-- Modal Content -->
+        <div class="absolute inset-x-0 bottom-0 sm:inset-auto sm:top-1/2 sm:left-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 w-full sm:max-w-2xl bg-white shadow-2xl sm:rounded-xl overflow-hidden border border-gray-100 h-[85vh] sm:h-auto flex flex-col">
+            
+            <!-- Header -->
+            <div class="flex justify-between items-center p-6 sm:p-8 border-b border-gray-50">
+                <h3 class="font-bold text-xl tracking-tight">Reserve Equipment</h3>
+                <button onclick="app.closeBooking()" class="text-gray-400 hover:text-black transition-colors">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+            </div>
+
+            <div class="flex-grow overflow-y-auto">
+                <div class="flex flex-col sm:flex-row h-full">
+                    
+                    <!-- Left: Product Summary -->
+                    <div class="bg-gray-50 sm:w-5/12 p-6 sm:p-8 flex flex-col justify-center">
+                        <div class="aspect-[4/3] bg-white rounded-lg overflow-hidden shadow-sm mb-6">
+                            <img id="modal-img" src="" class="w-full h-full object-cover">
+                        </div>
+                        <h4 class="font-bold text-xl text-black mb-1 leading-tight" id="modal-item-name">Product Name</h4>
+                        <p class="text-sm text-gray-500 mb-4" id="modal-item-desc"></p>
+                        <div class="border-t border-gray-200 pt-4 mt-auto">
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="text-sm text-gray-500">Rate</span>
+                                <span class="font-semibold" id="modal-item-price">$0</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-500">Delivery</span>
+                                <span class="font-semibold" id="modal-item-transport">$0</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right: Form -->
+                    <div class="sm:w-7/12 p-6 sm:p-8 bg-white relative">
+                        
+                        <!-- Step 1 -->
+                        <div id="step-1" class="fade-in space-y-6">
+                            <div>
+                                <label class="text-xs font-bold uppercase tracking-widest text-gray-400">Logistics</label>
+                                <input id="date-picker" class="input-minimal" placeholder="Select drop-off date">
+                                <input id="input-address" class="input-minimal mt-4" placeholder="Site Address">
+                            </div>
+                            <div class="pt-4">
+                                <label class="text-xs font-bold uppercase tracking-widest text-gray-400">Contact</label>
+                                <input id="input-name" class="input-minimal" placeholder="Full Name">
+                                <input id="input-email" type="email" class="input-minimal mt-4" placeholder="Email Address">
+                            </div>
+                            <button onclick="app.toStep2()" class="w-full bg-black text-white font-semibold py-4 mt-4 hover:bg-accent transition-colors flex justify-between px-6 items-center group">
+                                <span>Continue to Payment</span>
+                                <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                            </button>
+                        </div>
+
+                        <!-- Step 2 -->
+                        <div id="step-2" class="hidden fade-in space-y-6">
+                            <div class="bg-gray-50 p-4 rounded border border-gray-100 mb-6">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-sm text-gray-600">Total Due Today</span>
+                                    <span class="text-xl font-bold text-black" id="summ-total">$0.00</span>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="text-xs font-bold uppercase tracking-widest text-gray-400">Payment Method</label>
+                                <div class="input-minimal flex items-center gap-3">
+                                    <i class="fa-regular fa-credit-card text-gray-400"></i>
+                                    <input placeholder="Card Number" class="w-full outline-none bg-transparent">
+                                </div>
+                                <div class="grid grid-cols-2 gap-4 mt-2">
+                                    <input placeholder="MM / YY" class="input-minimal text-center">
+                                    <input placeholder="CVC" class="input-minimal text-center">
+                                </div>
+                            </div>
+
+                            <div class="flex gap-4 pt-4">
+                                <button onclick="app.toStep1()" class="w-1/3 py-4 text-sm font-semibold text-gray-400 hover:text-black transition-colors">Back</button>
+                                <button onclick="app.pay()" id="pay-btn" class="w-2/3 bg-black text-white font-semibold py-4 hover:bg-accent transition-colors">
+                                    <span>Confirm & Book</span>
+                                    <span class="loader hidden ml-2 align-middle"></span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Step 3 -->
+                        <div id="step-3" class="hidden fade-in h-full flex flex-col items-center justify-center text-center py-8">
+                            <div class="w-16 h-16 bg-black text-white rounded-full flex items-center justify-center text-2xl mb-6">
+                                <i class="fa-solid fa-check"></i>
+                            </div>
+                            <h2 class="text-2xl font-bold mb-2">Booking Confirmed</h2>
+                            <p class="text-gray-500 mb-8 text-sm">A confirmation email has been sent to your inbox.</p>
+                            <div class="bg-gray-50 px-6 py-3 rounded border border-gray-100 mb-8">
+                                <span class="text-xs text-gray-400 uppercase tracking-widest block mb-1">Order Reference</span>
+                                <span id="final-id" class="text-lg font-mono font-bold text-black"></span>
+                            </div>
+                            <button onclick="app.closeBooking(); app.goHome()" class="text-sm font-bold border-b border-black pb-1 hover:text-accent hover:border-accent transition-colors">Return to Home</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PICKUP MODAL -->
+    <div id="pickup-modal" class="fixed inset-0 z-50 hidden" aria-hidden="true">
+        <div class="absolute inset-0 bg-white/80 backdrop-blur-xl" onclick="app.closePickup()"></div>
+        <div class="absolute inset-0 flex items-center justify-center p-4 pointer-events-none">
+            <div class="bg-white w-full max-w-sm border border-gray-100 shadow-2xl p-8 pointer-events-auto fade-in">
+                <div class="flex justify-between items-center mb-8">
+                    <h3 class="font-bold text-lg">Schedule Pickup</h3>
+                    <button onclick="app.closePickup()"><i class="fa-solid fa-times text-gray-400"></i></button>
+                </div>
+                
+                <div id="pickup-form" class="space-y-4">
+                    <input id="pickup-id" class="input-minimal" placeholder="Existing Order ID (#)">
+                    <input id="pickup-date" class="input-minimal" placeholder="Preferred Pickup Date">
+                    <button onclick="app.submitPickup()" class="w-full bg-black text-white font-bold py-4 mt-4 hover:bg-accent transition-colors">Request Pickup</button>
+                </div>
+                
+                <div id="pickup-success" class="hidden text-center py-8">
+                    <div class="text-green-600 text-3xl mb-3"><i class="fa-solid fa-circle-check"></i></div>
+                    <p class="font-bold text-black text-lg">Request Received</p>
+                    <p class="text-sm text-gray-500 mt-2">Our logistics team will confirm shortly.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- LOGIC -->
+    <script>
+        const products = [
+            { id: 1, name: "16' Storage Pod", cat: 'storage', price: 150, term: 'mo', transport: 50, desc: "Weather-resistant steel container. Fits 3-4 rooms.", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQHJcMiP1VaOfukDDhosMgcj7JdSJiHrk-BHw&s" },
+            { id: 2, name: "20' Shipping Container", cat: 'storage', price: 190, term: 'mo', transport: 100, desc: "Heavy duty commercial grade storage unit.", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR5rzs2LQtM58YOQ3uTeza6SyoFmbd7P3BALQ&s" },
+            { id: 3, name: "15-Yard Dumpster", cat: 'waste', price: 299, term: 'wk', transport: 75, desc: "Ideal for home renovation debris and cleanouts.", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQN6RTG9GSC34sL43JwA8cuXAsLiyvFXgLIkQ&s" },
+            { id: 4, name: "10-Yard Mini Bin", cat: 'waste', price: 225, term: 'wk', transport: 75, desc: "Compact size for driveway friendly projects.", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTyRVGmHbIGDw2JEnAIFIsomj9j9f70aScT_A&s" },
+            { id: 5, name: "Site Restroom", cat: 'waste', price: 120, term: 'mo', transport: 30, desc: "Standard portable unit with weekly service.", img: "https://expressportables.com.au/cdn/shop/articles/Bailey_Crescent_3.png?v=1660709540&width=1100" },
+            { id: 6, name: "Moving Box Truck", cat: 'vehicle', price: 89, term: 'day', transport: 0, desc: "26' truck with ramp. Unlimited mileage included.", img: "https://nelsonwesterberg.com/wp-content/uploads/2021/05/moving-truck-sizes-e1715619925952.jpeg" }
+        ];
+
+        let orders = [
+            { id: '#88301', name: 'James Cameron', item: '16\' Storage Pod', date: '2023-10-12', total: 200 }
+        ];
+
+        const app = {
+            state: { prod: null, form: {} },
+
+            init() {
+                this.renderGrid('all');
+                flatpickr("#date-picker", { minDate: "today", disableMobile: "true" });
+                flatpickr("#pickup-date", { minDate: "today", disableMobile: "true" });
+                this.renderAdmin();
+            },
+
+            filter(category) {
+                // Style Tabs
+                document.querySelectorAll('.filter-tab').forEach(b => {
+                    const isMatch = (category === 'all' && b.innerText.includes('All')) || 
+                                    (category === 'storage' && b.innerText.includes('Storage')) || 
+                                    (category === 'waste' && b.innerText.includes('Waste')) || 
+                                    (category === 'vehicle' && b.innerText.includes('Fleet'));
+                    
+                    if (isMatch) {
+                        b.classList.add('border-black', 'text-black');
+                        b.classList.remove('border-transparent', 'text-gray-400');
+                    } else {
+                        b.classList.remove('border-black', 'text-black');
+                        b.classList.add('border-transparent', 'text-gray-400');
+                    }
+                });
+                this.renderGrid(category);
+            },
+
+            renderGrid(cat) {
+                const grid = document.getElementById('product-grid');
+                grid.innerHTML = '';
+                const filtered = cat === 'all' ? products : products.filter(p => p.cat === cat);
+
+                filtered.forEach(p => {
+                    grid.innerHTML += `
+                        <div class="product-card group cursor-pointer" onclick="app.openBooking(${p.id})">
+                            <div class="img-container h-64 w-full bg-gray-100 overflow-hidden relative mb-6">
+                                <img src="${p.img}" alt="${p.name}" class="w-full h-full object-cover">
+                                <div class="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors"></div>
+                            </div>
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <h3 class="font-bold text-lg text-black mb-1 leading-none group-hover:text-accent transition-colors">${p.name}</h3>
+                                    <p class="text-sm text-gray-500 line-clamp-1">${p.desc}</p>
+                                </div>
+                                <div class="text-right pl-4">
+                                    <span class="block font-bold text-black">$${p.price}</span>
+                                    <span class="text-xs text-gray-400">/${p.term}</span>
+                                </div>
+                            </div>
+                            <div class="mt-4 pt-4 border-t border-gray-100 opacity-0 group-hover:opacity-100 transition-opacity flex items-center text-sm font-bold text-accent">
+                                RESERVE NOW <i class="fa-solid fa-arrow-right ml-2"></i>
+                            </div>
+                        </div>
+                    `;
+                });
+            },
+
+            openBooking(id) {
+                this.state.prod = products.find(p => p.id === id);
+                const p = this.state.prod;
+
+                document.getElementById('modal-img').src = p.img;
+                document.getElementById('modal-item-name').innerText = p.name;
+                document.getElementById('modal-item-desc').innerText = p.desc;
+                document.getElementById('modal-item-price').innerText = `$${p.price} / ${p.term}`;
+                document.getElementById('modal-item-transport').innerText = p.transport > 0 ? `$${p.transport}` : 'Free';
+
+                document.getElementById('step-1').classList.remove('hidden');
+                document.getElementById('step-2').classList.add('hidden');
+                document.getElementById('step-3').classList.add('hidden');
+                document.getElementById('booking-modal').classList.remove('hidden');
+            },
+
+            closeBooking() {
+                document.getElementById('booking-modal').classList.add('hidden');
+            },
+
+            toStep2() {
+                const date = document.getElementById('date-picker').value;
+                const addr = document.getElementById('input-address').value;
+                const name = document.getElementById('input-name').value;
+                const email = document.getElementById('input-email').value;
+
+                if (!date || !addr || !name || !email) {
+                    alert('Please complete all details.');
+                    return;
+                }
+                this.state.form = { date, name, email };
+                const total = this.state.prod.price + this.state.prod.transport;
+                document.getElementById('summ-total').innerText = `$${total.toFixed(2)}`;
+                document.getElementById('step-1').classList.add('hidden');
+                document.getElementById('step-2').classList.remove('hidden');
+            },
+
+            toStep1() {
+                document.getElementById('step-2').classList.add('hidden');
+                document.getElementById('step-1').classList.remove('hidden');
+            },
+
+            pay() {
+                const btn = document.getElementById('pay-btn');
+                const spin = btn.querySelector('.loader');
+                const text = btn.querySelector('span');
+                
+                text.classList.add('hidden');
+                spin.classList.remove('hidden');
+                btn.disabled = true;
+
+                setTimeout(() => {
+                    const oid = '#BXD-' + Math.floor(1000 + Math.random() * 9000);
+                    orders.unshift({
+                        id: oid,
+                        name: this.state.form.name,
+                        item: this.state.prod.name,
+                        date: this.state.form.date,
+                        total: this.state.prod.price + this.state.prod.transport
+                    });
+                    
+                    document.getElementById('final-id').innerText = oid;
+                    document.getElementById('step-2').classList.add('hidden');
+                    document.getElementById('step-3').classList.remove('hidden');
+                    
+                    text.classList.remove('hidden');
+                    spin.classList.add('hidden');
+                    btn.disabled = false;
+                    this.renderAdmin();
+                }, 1500);
+            },
+
+            toggleAdmin() {
+                const home = document.getElementById('view-home');
+                const admin = document.getElementById('view-admin');
+                if (home.classList.contains('hidden')) {
+                    home.classList.remove('hidden');
+                    admin.classList.add('hidden');
+                } else {
+                    home.classList.add('hidden');
+                    admin.classList.remove('hidden');
+                    this.renderAdmin();
+                }
+            },
+            goHome() {
+                document.getElementById('view-home').classList.remove('hidden');
+                document.getElementById('view-admin').classList.add('hidden');
+            },
+            renderAdmin() {
+                const tbody = document.getElementById('admin-table-body');
+                tbody.innerHTML = '';
+                let rev = 0;
+                orders.forEach(o => {
+                    rev += o.total;
+                    tbody.innerHTML += `
+                        <tr class="hover:bg-gray-50 transition-colors">
+                            <td class="py-4 text-gray-500 font-mono text-xs">${o.id}</td>
+                            <td class="py-4 font-semibold text-black">${o.name}</td>
+                            <td class="py-4 text-gray-500">${o.item}</td>
+                            <td class="py-4 text-gray-400 text-xs uppercase">${o.date}</td>
+                            <td class="py-4 font-bold text-black text-right">$${o.total}</td>
+                        </tr>
+                    `;
+                });
+                document.getElementById('admin-revenue').innerText = '$' + rev.toLocaleString();
+            },
+            openPickupModal() {
+                document.getElementById('pickup-modal').classList.remove('hidden');
+                document.getElementById('pickup-form').classList.remove('hidden');
+                document.getElementById('pickup-success').classList.add('hidden');
+            },
+            closePickup() {
+                document.getElementById('pickup-modal').classList.add('hidden');
+            },
+            submitPickup() {
+                if(!document.getElementById('pickup-id').value) return;
+                document.getElementById('pickup-form').classList.add('hidden');
+                document.getElementById('pickup-success').classList.remove('hidden');
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', () => app.init());
+    </script>
+</body>
+</html>
