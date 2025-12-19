@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QREW_SYSTEM_OS_V3.0</title>
+    <style>
+        :root {
+            --bg-black: #080808;
+            --bg-panel: #121214;
+            --bg-sidebar: #0f0f11;
+            --accent-lavender: #c5b3e6;
+            --terminal-green: #00ff41;
+            --terminal-dim: rgba(0, 255, 65, 0.15);
+            --border: #252528;
+            --text: #e1e1e3;
+            --text-dim: #6a6a6e;
+            --font-mono: 'IBM Plex Mono', 'Courier New', monospace;
+        }
+
+        * { box-sizing: border-box; cursor: crosshair; outline: none; }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: var(--bg-black); }
+        ::-webkit-scrollbar-thumb { background: var(--border); }
+
+        body, html {
+            margin: 0; padding: 0;
+            background-color: var(--bg-black);
+            color: var(--text);
+            font-family: var(--font-mono);
+            height: 100vh; overflow: hidden;
+            font-size: 11px; text-transform: uppercase;
+        }
+
+        /* Scanline CRT Effect */
+        body::after {
+            content: " "; display: block; position: fixed; top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), 
+                        linear-gradient(90deg, rgba(255, 0, 0, 0.02), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.02));
+            z-index: 999; background-size: 100% 2px, 3px 100%; pointer-events: none;
+        }
+
+        /* Layout Grid */
+        .system-container {
+            display: grid;
+            grid-template-columns: 280px 1fr 320px;
+            grid-template-rows: 45px 1fr 35px;
+            height: 100vh;
+            border: 1px solid var(--border);
+        }
+
+        /* --- Header --- */
+        header {
+            grid-column: 1 / span 3;
+            background: var(--bg-panel);
+            border-bottom: 1px solid var(--border);
+            display: flex; align-items: center; padding: 0 20px;
+            justify-content: space-between;
+            letter-spacing: 2px;
+        }
+
+        .sys-id { color: var(--accent-lavender); font-weight: bold; }
+        .blink { animation: blink-anim 1s infinite; color: var(--terminal-green); }
+
+        /* --- Sidebar (Navigation) --- */
+        .sidebar-left {
+            background: var(--bg-sidebar);
+            border-right: 1px solid var(--border);
+            padding: 20px 0;
+            overflow-y: auto;
+        }
+
+        .sidebar-label { color: var(--text-dim); padding: 0 20px; font-size: 9px; margin: 15px 0 5px 0; }
+        
+        .nav-link {
+            padding: 12px 20px; display: flex; align-items: center;
+            justify-content: space-between; transition: 0.2s;
+            border-left: 2px solid transparent; color: var(--text);
+        }
+
+        .nav-link:hover { background: #1a1a1d; border-left-color: var(--accent-lavender); }
+        .nav-link.active { background: #1a1a1d; border-left-color: var(--terminal-green); color: var(--terminal-green); }
+
+        /* --- Main Content --- */
+        main {
+            padding: 40px; overflow-y: auto; background: var(--bg-black);
+            position: relative;
+        }
+
+        .view-section { display: none; }
+        .view-section.active { display: block; animation: sectionIn 0.3s ease-out; }
+
+        /* --- Sidebar (Diagnostics) --- */
+        .sidebar-right {
+            background: var(--bg-sidebar);
+            border-left: 1px solid var(--border);
+            padding: 20px; display: flex; flex-direction: column; gap: 20px;
+        }
+
+        .diag-box {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid var(--border);
+            padding: 15px;
+        }
+
+        .bar-container { height: 4px; background: #222; margin-top: 8px; position: relative; }
+        .bar-fill { height: 100%; background: var(--accent-lavender); width: 0%; transition: width 0.5s; }
+
+        .log-window {
+            flex-grow: 1; background: #050505; border: 1px solid var(--border);
+            font-size: 9px; padding: 10px; color: var(--terminal-green);
+            overflow-y: hidden; display: flex; flex-direction: column-reverse;
+        }
+
+        /* --- Product Elements --- */
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 25px; }
+        .card {
+            border: 1px solid var(--border); padding: 10px; transition: 0.3s;
+        }
+        .card:hover { border-color: var(--accent-lavender); transform: translateY(-2px); }
+        .card-img { height: 180px; background: #151517; display: flex; align-items: center; justify-content: center; color: #333; margin-bottom: 12px; }
+
+        /* --- Gate Section --- */
+        .gate-wrapper {
+            max-width: 400px; margin: 60px auto; text-align: center;
+            border: 1px solid var(--terminal-green); padding: 40px;
+            box-shadow: inset 0 0 20px var(--terminal-dim);
+        }
+
+        .gate-input {
+            background: transparent; border: none; border-bottom: 1px solid var(--terminal-green);
+            color: var(--terminal-green); width: 100%; padding: 10px;
+            text-align: center; font-family: var(--font-mono); font-size: 16px; margin: 20px 0;
+        }
+
+        .btn {
+            background: transparent; border: 1px solid var(--accent-lavender);
+            padding: 10px 20px; color: var(--accent-lavender); transition: 0.3s;
+        }
+        .btn:hover { background: var(--accent-lavender); color: #000; }
+
+        /* --- Animations --- */
+        @keyframes blink-anim { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+        @keyframes sectionIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        footer {
+            grid-column: 1 / span 3; background: var(--bg-panel);
+            border-top: 1px solid var(--border); display: flex;
+            align-items: center; padding: 0 20px; justify-content: space-between;
+            font-size: 9px; color: var(--text-dim);
+        }
+
+        #boot-loader {
+            position: fixed; inset: 0; background: black; z-index: 9999;
+            padding: 40px; color: var(--terminal-green); overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="boot-loader">
+        <div id="boot-text"></div>
+    </div>
+
+    <div class="system-container">
+        <header>
+            <div class="sys-id">QREW_SECURE_OS // <span class="blink">●</span> STANDBY</div>
+            <div id="clock">00:00:00</div>
+        </header>
+
+        <aside class="sidebar-left">
+            <div class="sidebar-label">PRIMARY_DIRECTORIES</div>
+            <div class="nav-link active" onclick="navTo('products', this)">
+                <span>/ROOT/PRODUCTS</span>
+                <span>[01]</span>
+            </div>
+            <div class="nav-link" onclick="navTo('members', this)">
+                <span>/ROOT/MEMBERS_DATA</span>
+                <span>[02]</span>
+            </div>
+            <div class="nav-link" onclick="navTo('info', this)">
+                <span>/ROOT/SYSTEM_INFO</span>
+                <span>[03]</span>
+            </div>
+
+            <div class="sidebar-label">ENCRYPTED_CHANNELS</div>
+            <div class="nav-link" style="color: var(--accent-lavender);" onclick="navTo('exclusive', this)">
+                <span>[!] QREW_EXCLUSIVE</span>
+                <span>[LOCKED]</span>
+            </div>
+        </aside>
+
+        <main id="viewport">
+            <!-- PRODUCTS SECTION -->
+            <section id="products" class="view-section active">
+                <h2 style="margin-top: 0;">PUBLIC_CATALOGUE</h2>
+                <div class="grid">
+                    <div class="card">
+                        <div class="card-img">[DATA_BLOB_01]</div>
+                        <div>STAPLE_LOG_TEE</div>
+                        <div style="color: var(--accent-lavender);">$55.00</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-img">[DATA_BLOB_02]</div>
+                        <div>CARGO_UTILITY_V1</div>
+                        <div style="color: var(--accent-lavender);">$140.00</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-img">[DATA_BLOB_03]</div>
+                        <div>OS_BEANIE_BLK</div>
+                        <div style="color: var(--accent-lavender);">$35.00</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- MEMBERS SECTION -->
+            <section id="members" class="view-section">
+                <h2>MEMBERS_PORTAL</h2>
+                <div class="diag-box" style="border-style: dashed;">
+                    <p>> AUTHENTICATING HANDSHAKE...</p>
+                    <p>> NO ACTIVE MEMBER TOKEN FOUND.</p>
+                    <p>> PLEASE CONNECT VIA QREW_CORE DISCORD TO SYNC ASSETS.</p>
+                </div>
+            </section>
+
+            <!-- SYSTEM INFO -->
+            <section id="info" class="view-section">
+                <h2>SYSTEM_INFO</h2>
+                <div style="max-width: 600px; color: var(--text-dim); line-height: 1.8;">
+                    <p>QREW IS A UTILITY-FIRST COLLECTIVE. THE SITE IS DESIGNED AS A FUNCTIONAL TERMINAL FOR ASSET ACQUISITION.</p>
+                    <p>KERNEL VERSION: 3.0.12-STABLE<br>SERVER: PRIVATE_NODE_19<br>LOCATION: [ENCRYPTED]</p>
+                </div>
+            </section>
+
+            <!-- QREW EXCLUSIVE (THE GATE) -->
+            <section id="exclusive" class="view-section">
+                <div id="gate-ui">
+                    <div class="gate-wrapper">
+                        <div style="color: var(--terminal-green);">SYSTEM_OVERRIDE_REQUIRED</div>
+                        <p style="font-size: 10px; margin: 10px 0;">ACCESS TO THIS DIRECTORY IS LOGGED AND ENCRYPTED.</p>
+                        <input type="password" id="pass-field" class="gate-input" placeholder="ACCESS_CODE">
+                        <button class="btn" onclick="checkGate()">INITIATE_AUTH</button>
+                        <div id="gate-error" style="color: #ff3a3a; margin-top: 15px; font-size: 10px;"></div>
+                    </div>
+                </div>
+
+                <div id="exclusive-content" style="display: none;">
+                    <h2 style="color: var(--terminal-green);">[ACCESS_GRANTED] // EXCLUSIVE_PREORDER</h2>
+                    <div class="grid">
+                        <div class="card" style="border-color: var(--terminal-green);">
+                            <div class="card-img" style="color: var(--terminal-green);">[REDACTED_PREORDER]</div>
+                            <div>QREW_PROTOTYPE_JACKET</div>
+                            <div style="color: var(--terminal-green);">$280.00</div>
+                            <button class="btn" style="width: 100%; margin-top: 10px; font-size: 9px;">SECURE_PREORDER</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <aside class="sidebar-right">
+            <div class="diag-box">
+                <div style="display: flex; justify-content: space-between;">
+                    <span>CPU_LOAD</span>
+                    <span id="cpu-val">42%</span>
+                </div>
+                <div class="bar-container"><div id="cpu-bar" class="bar-fill" style="width: 42%;"></div></div>
+                
+                <div style="display: flex; justify-content: space-between; margin-top: 15px;">
+                    <span>MEM_USAGE</span>
+                    <span id="mem-val">1.2GB</span>
+                </div>
+                <div class="bar-container"><div id="mem-bar" class="bar-fill" style="width: 18%; background: var(--terminal-green);"></div></div>
+            </div>
+
+            <div class="sidebar-label">NETWORK_ACTIVITY</div>
+            <div class="log-window" id="log-feed">
+                <!-- Dynamic Logs -->
+            </div>
+        </aside>
+
+        <footer>
+            <div>NODE: QREW_PRIMARY</div>
+            <div>STATUS: ENCRYPTED</div>
+            <div>LATENCY: 24ms</div>
+        </footer>
+    </div>
+
+    <script>
+        // 1. Defend against Null elements during Navigation
+        function navTo(targetId, navElement) {
+            const targetSection = document.getElementById(targetId);
+            
+            // Check if section exists to prevent the 'classList of null' error
+            if (!targetSection) {
+                console.error(`Error: Section ID '${targetId}' not found.`);
+                return;
+            }
+
+            // Remove active classes from all sections and links
+            document.querySelectorAll('.view-section').forEach(sec => sec.classList.remove('active'));
+            document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+
+            // Add active class to target
+            targetSection.classList.add('active');
+            if (navElement) navElement.classList.add('active');
+
+            addLog(`NAVIGATED_TO: /${targetId.toUpperCase()}`);
+        }
+
+        // 2. Gate Verification logic
+        function checkGate() {
+            const val = document.getElementById('pass-field').value;
+            const error = document.getElementById('gate-error');
+            
+            // DEMO PASSWORD: 'QREW'
+            if (val.toUpperCase() === 'QREW') {
+                document.getElementById('gate-ui').style.display = 'none';
+                document.getElementById('exclusive-content').style.display = 'block';
+                addLog("AUTH_SUCCESS: OVERRIDE_GRANTED");
+            } else {
+                error.textContent = "ERR: UNAUTHORIZED_ACCESS_CODE_INVALID";
+                addLog("AUTH_FAILURE: ATTEMPT_LOGGED");
+                setTimeout(() => error.textContent = "", 3000);
+            }
+        }
+
+        // 3. System Logs & Diagnostics
+        const logs = ["SQL_INJECT_CHECK", "BUFFER_SYNC", "PING_LOCAL", "ENCRYPT_NODE", "CACHE_CLEARED"];
+        function addLog(msg) {
+            const feed = document.getElementById('log-feed');
+            const time = new Date().toLocaleTimeString().split(' ')[0];
+            const div = document.createElement('div');
+            div.textContent = `[${time}] ${msg}`;
+            feed.prepend(div);
+        }
+
+        setInterval(() => {
+            const randomMsg = logs[Math.floor(Math.random() * logs.length)];
+            addLog(randomMsg);
+            
+            // Randomize meters
+            const cpu = Math.floor(Math.random() * 100);
+            document.getElementById('cpu-val').textContent = cpu + "%";
+            document.getElementById('cpu-bar').style.width = cpu + "%";
+        }, 4000);
+
+        // 4. Clock
+        setInterval(() => {
+            document.getElementById('clock').textContent = new Date().toLocaleTimeString();
+        }, 1000);
+
+        // 5. Boot Sequence
+        const bootLines = ["INITIALIZING...", "MOUNTING_DRIVES...", "DECRYPTING_GUI...", "READY."];
+        let lineIdx = 0;
+        function runBoot() {
+            if (lineIdx < bootLines.length) {
+                const p = document.createElement('div');
+                p.textContent = "> " + bootLines[lineIdx];
+                document.getElementById('boot-text').appendChild(p);
+                lineIdx++;
+                setTimeout(runBoot, 400);
+            } else {
+                setTimeout(() => document.getElementById('boot-loader').style.display = 'none', 800);
+            }
+        }
+        runBoot();
+    </script>
+</body>
+</html>
