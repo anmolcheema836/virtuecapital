@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Encore Project | Purpose, Connection, Fulfillment for Senior Men</title>
+    
+    <!-- Premium Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            /* Heritage Palette */
+            --color-bg: #FDFCF8;         
+            --color-ink: #0A0A0A;        
+            --color-navy: #1A2B3C;       
+            --color-accent: #A68A56;     
+            --color-text: #2D2D2D;       
+            --color-border: rgba(26, 43, 60, 0.1);
+            --color-white: #FFFFFF;
+            
+            --font-serif: 'Playfair Display', serif;
+            --font-sans: 'Poppins', sans-serif;
+            
+            --max-width: 1400px;
+            --transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* Base Resets */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { 
+            background-color: var(--color-bg); 
+            font-family: var(--font-sans); 
+            color: var(--color-text); 
+            line-height: 1.8; 
+            overflow-x: hidden;
+            font-size: 18px; /* Optimized for 65+ readability */
+        }
+
+        /* Billion Dollar Alignment Framework */
+        .container { max-width: var(--max-width); margin: 0 auto; padding: 0 5%; }
+        section { padding: 100px 0; }
+        .grid { display: grid; gap: 40px; }
+
+        /* Typography */
+        h1, h2, h3, h4 { font-family: var(--font-serif); color: var(--color-ink); line-height: 1.1; }
+        p { margin-bottom: 1.5rem; font-weight: 300; }
+        .badge { 
+            display: inline-block; font-size: 0.75rem; text-transform: uppercase; 
+            letter-spacing: 3px; color: var(--color-accent); font-weight: 700; margin-bottom: 20px; 
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed; top: 0; width: 100%; padding: 20px 0;
+            background: rgba(253, 252, 248, 0.98); backdrop-filter: blur(10px);
+            z-index: 2000; border-bottom: 1px solid var(--color-border);
+        }
+        nav .container { display: flex; justify-content: space-between; align-items: center; }
+        .logo img { 
+            height: 48px; 
+            filter: brightness(0) contrast(100%) !important; 
+        }
+        .nav-links { display: flex; gap: 35px; align-items: center; }
+        .nav-links a { font-size: 0.9rem; font-weight: 500; text-decoration: none; color: var(--color-ink); }
+        .nav-links a:hover { color: var(--color-accent); }
+        .btn-cta { 
+            background: var(--color-navy); color: var(--color-white) !important; 
+            padding: 12px 30px; border-radius: 2px; font-weight: 600; font-size: 0.85rem; 
+        }
+
+        /* Hero Section */
+        .hero { min-height: 90vh; display: flex; align-items: center; padding-top: 150px; }
+        .hero-grid { grid-template-columns: 1fr 1fr; align-items: center; }
+        .hero h1 { font-size: clamp(3rem, 6vw, 4.8rem); margin-bottom: 30px; }
+        .hero h1 span { color: var(--color-accent); font-style: italic; font-weight: 400; }
+        .hero p { font-size: 1.4rem; color: #555; margin-bottom: 40px; max-width: 600px; }
+        
+        .hero-images { position: relative; }
+        .hero-main-img { border-radius: 4px; box-shadow: 0 40px 100px rgba(0,0,0,0.1); width: 100%; height: 600px; object-fit: cover; }
+        .hero-shape { position: absolute; bottom: -40px; left: -40px; width: 250px; z-index: -1; opacity: 0.6; }
+
+        /* Why Join Us & Pillars */
+        .pillars { background: #F4F1EA; }
+        .pillar-grid { grid-template-columns: repeat(3, 1fr); }
+        .pillar-card { background: var(--color-white); padding: 50px; border-radius: 4px; transition: var(--transition); border: 1px solid var(--color-border); }
+        .pillar-card:hover { transform: translateY(-10px); box-shadow: 0 30px 60px rgba(0,0,0,0.05); }
+        .pillar-card img { height: 60px; margin-bottom: 30px; }
+        .pillar-card h3 { font-size: 1.8rem; margin-bottom: 20px; }
+
+        /* Importance Statement */
+        .importance { text-align: center; max-width: 1000px; margin: 0 auto; }
+        .importance h2 { font-size: 3rem; margin-bottom: 30px; }
+
+        /* Founder Narrative */
+        .founder-grid { grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+        .founder-img img { border-radius: 4px; box-shadow: 30px 30px 0 var(--color-accent); }
+        .signature { height: 75px; margin-top: 40px; }
+
+        /* Resource/Category Grid */
+        .categories { background: var(--color-white); }
+        .cat-grid { grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); }
+        .cat-card { 
+            padding: 40px; border: 1px solid var(--color-border); border-radius: 4px; 
+            display: flex; flex-direction: column; justify-content: space-between; 
+            min-height: 450px; transition: var(--transition);
+        }
+        .cat-card:hover { border-color: var(--color-accent); background: var(--color-bg); }
+        .cat-card img { height: 50px; margin-bottom: 25px; }
+        .cat-card h4 { font-size: 1.6rem; margin-bottom: 15px; }
+        .cat-card p { font-size: 0.95rem; color: #666; }
+        .btn-text { font-weight: 700; text-transform: uppercase; letter-spacing: 2px; font-size: 0.75rem; color: var(--color-accent); }
+
+        /* Testimonial Slider Mockup */
+        .testimonials { background: var(--color-navy); color: var(--color-white); text-align: center; }
+        .testimonial-content { max-width: 900px; margin: 0 auto; }
+        .testimonial-content p { font-family: var(--font-serif); font-size: 1.8rem; font-style: italic; margin-bottom: 30px; }
+        .testimonial-content h5 { letter-spacing: 2px; color: var(--color-accent); text-transform: uppercase; }
+
+        /* Recent Posts Grid */
+        .posts-grid { grid-template-columns: repeat(3, 1fr); }
+        .post-card { border-radius: 4px; overflow: hidden; background: var(--color-white); box-shadow: 0 5px 15px rgba(0,0,0,0.02); }
+        .post-card img { height: 250px; width: 100%; object-fit: cover; }
+        .post-card-body { padding: 30px; }
+        .post-card-body .cat { font-size: 0.7rem; font-weight: 700; color: var(--color-accent); text-transform: uppercase; }
+        .post-card-body h3 { font-size: 1.4rem; margin: 10px 0 20px; }
+
+        /* Newsletter & Footer */
+        .newsletter { background: var(--color-accent); padding: 80px 0; color: var(--color-white); text-align: center; }
+        .newsletter h2 { color: var(--color-white); font-size: 3rem; margin-bottom: 20px; }
+        .cta-footer-btn { background: var(--color-navy); color: var(--color-white); padding: 18px 45px; display: inline-block; font-weight: 600; margin-top: 30px; }
+
+        footer { background: #0A0A0A; color: rgba(255,255,255,0.6); padding: 100px 0 40px; }
+        .footer-grid { grid-template-columns: 1.5fr 1fr 1fr 1fr; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 60px; margin-bottom: 40px; }
+        .footer-col h4 { color: var(--color-white); margin-bottom: 25px; font-size: 1.2rem; }
+        .footer-col ul { list-style: none; }
+        .footer-col li { margin-bottom: 12px; font-size: 0.9rem; }
+        .footer-col a { color: inherit; text-decoration: none; }
+        .footer-col a:hover { color: var(--color-accent); }
+
+        /* Mobile Adjustments */
+        @media (max-width: 1100px) {
+            .hero-grid, .pillar-grid, .founder-grid, .posts-grid, .footer-grid { grid-template-columns: 1fr; }
+            .hero { text-align: center; padding-top: 120px; }
+            .hero p { margin: 0 auto 40px; }
+            .founder-img { order: -1; }
+            .newsletter-form { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header & Navigation -->
+    <nav>
+        <div class="container">
+            <a href="#" class="logo">
+                <img src="https://theencoreproject.org/wp-content/uploads/2024/05/Logo-3.svg" alt="The Encore Project">
+            </a>
+            <div class="nav-links">
+                <a href="#about">About</a>
+                <a href="#categories">Categories</a>
+                <a href="#blog">Blog</a>
+                <a href="#donate">Donate</a>
+                <a href="#" class="btn-cta">Volunteer</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="grid hero-grid">
+                <div class="hero-content">
+                    <span class="badge">A Life of Vitality</span>
+                    <h1>Empowering Senior Men. Inspiring <span>Purpose.</span></h1>
+                    <p>Explore, Find Inspiration, Connect, Thrive in the Digital Age. Join Today, Stay Connected and Nurture Your Spirit.</p>
+                    <div style="display: flex; gap: 20px;">
+                        <a href="#" class="btn-cta" style="padding: 18px 45px; font-size: 1rem;">Join The Community</a>
+                        <a href="#categories" class="btn-cta" style="background: transparent; border: 1px solid var(--color-navy); color: var(--color-navy) !important; padding: 18px 45px; font-size: 1rem;">Explore Resources</a>
+                    </div>
+                </div>
+                <div class="hero-images">
+                    <img src="https://theencoreproject.org/wp-content/uploads/2025/11/old-guy-flipped-768x768.webp" class="hero-main-img" alt="Old guy flipped">
+                    <img src="https://theencoreproject.org/wp-content/uploads/2024/07/Senio-Men-Shape.png" class="hero-shape" alt="Senio Men Shape">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Join Us Section -->
+    <section class="pillars" id="about">
+        <div class="container">
+            <div class="importance">
+                <span class="badge">The Mission</span>
+                <h2>Why Join us?</h2>
+                <p>Because at The Encore Project, we believe in empowering you to unlock your fullest potential, stay informed, and find inspiration every step of the way.</p>
+            </div>
+            <div class="grid pillar-grid" style="margin-top: 80px;">
+                <div class="pillar-card">
+                    <img src="https://theencoreproject.org/wp-content/uploads/2024/05/goal.png" alt="goal">
+                    <h3>Unlock Your Potential</h3>
+                    <p>Discover a wealth of resources, articles, and expert insights tailored to empower senior men on their journey of personal growth and fulfillment. Whether you're seeking inspiration, guidance, or practical advice, our curated content will help you unlock your fullest potential.</p>
+                </div>
+                <div class="pillar-card">
+                    <img src="https://theencoreproject.org/wp-content/uploads/2024/05/idea.png" alt="idea">
+                    <h3>Stay Informed & Inspired</h3>
+                    <p>Stay up-to-date with the latest trends, tips, and insights relevant to senior men in the digital age. From health and wellness to finance and relationships, our platform offers a diverse range of topics to keep you informed, inspired, and empowered.</p>
+                </div>
+                <div class="pillar-card">
+                    <img src="https://theencoreproject.org/wp-content/uploads/2024/05/group.png" alt="group">
+                    <h3>Connect with Others</h3>
+                    <p>Join a vibrant community of senior men who share your interests, experiences, and aspirations. Engage in discussions, share stories, and forge meaningful connections with fellow members who understand and support you on your path.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Founder Section -->
+    <section class="founder">
+        <div class="container">
+            <div class="grid founder-grid">
+                <div class="founder-img">
+                    <img src="https://theencoreproject.org/wp-content/uploads/2025/11/SLUH6836-768x725-1.webp" style="width:100%" alt="Bill Leighty">
+                </div>
+                <div class="founder-content">
+                    <span class="badge">A Message From Bill Leighty</span>
+                    <h2>Let Me Introduce Myself</h2>
+                    <h3>A Personal Journey of Inspiration and Purpose</h3>
+                    <p>Bill Leighty’s journey into The Encore Project was ignited by a profound realization—an awakening of both personal and professional significance. After 35 years of dedicated service in the real estate industry, he yearned for more than just financial and emotional fulfillment.</p>
+                    <p>Driven by an unwavering commitment to provide for his family and maintain their stability, Bill embarked on a deliberate process of self-reflection and exploration, seeking answers to life’s timeless questions.</p>
+                    <p>Drawing from in-depth market research and a profound understanding of the needs of senior men, The Encore Project seeks to create an immersive digital experience. Through a dynamic blend of captivating articles, compelling videos, thought-provoking podcasts, and interactive content.</p>
+                    <div style="display:flex; gap:20px;">
+                        <a href="#" class="btn-cta">About Us</a>
+                        <a href="#" class="btn-cta" style="background:#EEE; color:#111 !important">Read The Blog</a>
+                    </div>
+                    <img src="https://theencoreproject.org/wp-content/uploads/2024/07/Bill_Leighty_Signature-01-300x85.png" class="signature" alt="Bill Leighty Signature">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Importance Statement -->
+    <section style="background: var(--color-navy); color: var(--color-white); text-align: center;">
+        <div class="container">
+            <div class="importance">
+                <h2 style="color: var(--color-white);">Why is this important?</h2>
+                <p style="font-size: 1.4rem;">By connecting with others and sharing experiences, you’ll discover new opportunities for growth, connection, and fulfillment. Join us on this transformative journey and embrace the possibilities that lie ahead.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Categories Grid -->
+    <section class="categories" id="categories">
+        <div class="container">
+            <div class="importance">
+                <span class="badge">Our Expertise</span>
+                <h2>Online Resources For Senior Men</h2>
+                <p>Explore a curated collection of online resources tailored for senior men. From articles to podcasts, videos, and interactive tools.</p>
+            </div>
+            
+            <div class="grid cat-grid" style="margin-top: 60px;">
+                <!-- Category 1 -->
+                <div class="cat-card">
+                    <div>
+                        <img src="https://theencoreproject.org/wp-content/uploads/2024/05/broken-heart.png" alt="broken">
+                        <h4>Coping With Grief And Loss</h4>
+                        <p>Navigate the complexities of grief and loss with compassion, understanding, and resilience. Discover a supportive space where you can explore the emotions, challenges, and healing journey associated with loss. Access valuable resources and heartfelt stories.</p>
+                    </div>
+                    <a href="#" class="btn-text">Discover Resources →</a>
+                </div>
+                <!-- Category 2 -->
+                <div class="cat-card">
+                    <div>
+                        <img src="https://theencoreproject.org/wp-content/uploads/2024/05/creativity.png" alt="creativity">
+                        <h4>Creative Pursuits</h4>
+                        <p>Unleash your creativity and ignite your passion for artistic expression. Dive into a vibrant world of artistic endeavors tailored for senior men eager to explore new avenues of self-expression. From painting and photography to writing and music.</p>
+                    </div>
+                    <a href="#" class="btn-text">Discover Resources →</a>
+                </div>
+                <!-- Category 3 -->
+                <div class="cat-card">
+                    <div>
+                        <img src="https://theencoreproject.org/wp-content/uploads/2024/05/inclusion.png" alt="inclusion">
+                        <h4>Financial Empowerment</h4>
+                        <p>Take control of your financial future. Gain access to invaluable insights, strategies, and tools aimed at securing financial stability and prosperity for yourself and your loved ones. From retirement planning to investment advice.</p>
+                    </div>
+                    <a href="#" class="btn-text">Discover Resources →</a>
+                </div>
+                <!-- Category 4 -->
+                <div class="cat-card">
+                    <div>
+                        <img src="https://theencoreproject.org/wp-content/uploads/2024/08/faith_4118167-e1724424202481.png" alt="faith">
+                        <h4>Faith and Fulfillment</h4>
+                        <p>Discover the deeper aspects of life through spirituality and personal growth. Find insightful content that encourages senior men to explore their spiritual journeys, find peace, and embrace a more meaningful existence.</p>
+                    </div>
+                    <a href="#" class="btn-text">Discover Resources →</a>
+                </div>
+                <!-- Category 5 -->
+                <div class="cat-card">
+                    <div>
+                        <img src="https://theencoreproject.org/wp-content/uploads/2024/05/exercise.png" alt="exercise">
+                        <h4>Health And Wellness</h4>
+                        <p>Embark on a journey towards holistic well-being. Delve into expert advice and practical tips designed to optimize your physical, mental, and emotional health. Fitness regimens and stress management for the senior years.</p>
+                    </div>
+                    <a href="#" class="btn-text">Discover Resources →</a>
+                </div>
+                <!-- Category 6 -->
+                <div class="cat-card">
+                    <div>
+                        <img src="https://theencoreproject.org/wp-content/uploads/2024/05/collaboration.png" alt="collaboration">
+                        <h4>Inspiration & Personal Growth</h4>
+                        <p>Unlock your potential and ignite your passion for life. Embrace new challenges, discover fresh perspectives, and pursue continuous self-improvement with a focus on motivation and resilience.</p>
+                    </div>
+                    <a href="#" class="btn-text">Discover Resources →</a>
+                </div>
+                <!-- Category 7 -->
+                <div class="cat-card">
+                    <div>
+                        <img src="https://theencoreproject.org/wp-content/uploads/2024/05/artificial-intelligence.png" alt="AI">
+                        <h4>Relationships & Companionship</h4>
+                        <p>Embark on a journey exploring the intricate world of human connections. Dive into the art of building meaningful relationships, navigating romance, and family dynamics with genuine bonds.</p>
+                    </div>
+                    <a href="#" class="btn-text">Discover Resources →</a>
+                </div>
+                <!-- Category 8 -->
+                <div class="cat-card">
+                    <div>
+                        <img src="https://theencoreproject.org/wp-content/uploads/2024/05/reinvented.png" alt="reinvented">
+                        <h4>Retirement Reimagined</h4>
+                        <p>Reimagine retirement as a vibrant chapter filled with purpose. Discover innovative ways to redefine retirement on your own terms, whether it's starting a business or pursuing a lifelong passion.</p>
+                    </div>
+                    <a href="#" class="btn-text">Discover Resources →</a>
+                </div>
+                <!-- Category 9 -->
+                <div class="cat-card">
+                    <div>
+                        <img src="https://theencoreproject.org/wp-content/uploads/2024/05/settings.png" alt="settings">
+                        <h4>Tech Savvy Seniors</h4>
+                        <p>Unlock the power of technology. Navigate the digital landscape with confidence. From mastering smartphones to social media, stay connected, informed, and engaged in today's rapidly evolving age.</p>
+                    </div>
+                    <a href="#" class="btn-text">Discover Resources →</a>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 60px;">
+                <a href="#" class="btn-cta" style="padding: 18px 60px;">DISCOVER ALL CATEGORIES</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Slider Mockup -->
+    <section class="testimonials">
+        <div class="container">
+            <div class="testimonial-content">
+                <p>"Discovering The Encore Project has been a game-changer for me. After early retirement and the loss of my spouse, I felt adrift and uncertain about the future. But this platform has given me a new sense of purpose and connection."</p>
+                <h5>Richard Sullivan</h5>
+                <div style="margin-top: 40px; display: flex; justify-content: center; gap: 15px;">
+                    <span style="width: 12px; height: 12px; background: var(--color-accent); border-radius: 50%;"></span>
+                    <span style="width: 12px; height: 12px; background: rgba(255,255,255,0.2); border-radius: 50%;"></span>
+                    <span style="width: 12px; height: 12px; background: rgba(255,255,255,0.2); border-radius: 50%;"></span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Recent Posts Section -->
+    <section class="recent-posts" id="blog">
+        <div class="container">
+            <div class="importance" style="margin-bottom: 60px;">
+                <h2>Fascinating Recent Posts</h2>
+                <p>Discover the latest insights and stories. From health tips to financial strategies, we offer a wealth of knowledge to enrich your life.</p>
+            </div>
+            <div class="grid posts-grid">
+                <!-- Post 1 -->
+                <div class="post-card">
+                    <img src="https://theencoreproject.org/wp-content/uploads/2024/12/Feature-Image-12-e1734420367742.jpeg" alt="Healing">
+                    <div class="post-card-body">
+                        <span class="cat">Coping with Grief & Loss</span>
+                        <h3>Healing in Old Age: Feeling Stuck in Grief</h3>
+                        <p>Many senior men find themselves stuck in grief. This article offers 9 practical strategies to heal emotionally.</p>
+                        <a href="#" class="btn-text">Read More →</a>
+                    </div>
+                </div>
+                <!-- Post 2 -->
+                <div class="post-card">
+                    <img src="https://theencoreproject.org/wp-content/uploads/2024/12/Feature-Image-20-e1734458073510.jpeg" alt="Nonprofit">
+                    <div class="post-card-body">
+                        <span class="cat">Retirement Reimagined</span>
+                        <h3>Starting a Nonprofit with No Money</h3>
+                        <p>Retirement is a time to look into new opportunities. A beginner’s guide for retirees to change the world.</p>
+                        <a href="#" class="btn-text">Read More →</a>
+                    </div>
+                </div>
+                <!-- Post 3 -->
+                <div class="post-card">
+                    <img src="https://theencoreproject.org/wp-content/uploads/2024/12/Feature-Image-19-e1734457872262.jpeg" alt="Dating">
+                    <div class="post-card-body">
+                        <span class="cat">Relationships</span>
+                        <h3>I Hate Dating But Want Relationship</h3>
+                        <p>Overcoming senior love struggles. The desire for meaningful companionship remains regardless of age.</p>
+                        <a href="#" class="btn-text">Read More →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter CTA -->
+    <section class="newsletter">
+        <div class="container">
+            <h2>Get more out of your senior years</h2>
+            <p style="font-size: 1.3rem;">Sign Up for Our Newsletter & Join Our Community</p>
+            <p>Explore, Find Inspiration, Connect, Thrive in the Digital Age</p>
+            <a href="#" class="cta-footer-btn">JOIN TODAY & NURTURE YOUR SPIRIT</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="grid footer-grid">
+                <div class="footer-col">
+                    <div class="logo">
+                        <img src="https://theencoreproject.org/wp-content/uploads/2024/05/Logo.svg" alt="Logo">
+                    </div>
+                    <p style="margin-top: 20px;">Join The Encore Project today and unlock a world of resources tailored for senior men. Gain access to insightful articles and a supportive community.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Categories</a></li>
+                        <li><a href="#">Stories</a></li>
+                        <li><a href="#">Newsletter</a></li>
+                        <li><a href="#">Share Your Story</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Recent Articles</h4>
+                    <ul>
+                        <li><a href="#">Stuck in Grief?</a></li>
+                        <li><a href="#">Starting a Nonprofit</a></li>
+                        <li><a href="#">Dating Struggles</a></li>
+                        <li><a href="#">Aging Myths</a></li>
+                        <li><a href="#">Sleep Apnea Management</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Contact Info</h4>
+                    <p>THE ENCORE PROJECT</p>
+                    <p>410 W. 7th St #1925</p>
+                    <p>Tulsa, OK 74119-1055</p>
+                    <p>918 605-5529</p>
+                </div>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <p>&copy; 2025 The Encore Project. All Rights Reserved.</p>
+                <div style="display: flex; gap: 20px;">
+                    <!-- SVG Icons Placeholder -->
+                    <span class="badge" style="margin: 0;">Facebook</span>
+                    <span class="badge" style="margin: 0;">Twitter</span>
+                    <span class="badge" style="margin: 0;">LinkedIn</span>
+                    <span class="badge" style="margin: 0;">Instagram</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
