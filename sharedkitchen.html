@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Schedule a Tour | Shared Kitchen Network</title>
+    
+    <!-- Branding Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700">
+    
+    <!-- Global Stylesheets (Mirrored from your site) -->
+    <link href="https://sharedkitchen.network/assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css">
+    <link href="https://sharedkitchen.network/assets/css/style.bundle.css" rel="stylesheet" type="text/css">
+    
+    <!-- FIX: External CDN for Icons to bypass CORS errors -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <style>
+        :root {
+            --sk-navy: #2b468d;
+            --sk-gold: #ffc107;
+            --sk-grey: #646464;
+        }
+
+        body { font-family: 'Poppins', sans-serif; }
+
+        /* HERO AREA */
+        .hero-banner {
+            background: linear-gradient(rgba(43, 70, 141, 0.9), rgba(26, 45, 95, 0.9)), 
+                        url('https://sharedkitchen.network/assets/img/home-banner-scaled.jpg');
+            background-size: cover;
+            background-position: center;
+            padding: 80px 0 120px 0;
+            color: white;
+            text-align: center;
+        }
+
+        .hero-banner h1 {
+            font-size: clamp(2rem, 5vw, 3.75rem);
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 20px;
+        }
+
+        .hero-banner p {
+            font-size: 1.25rem;
+            max-width: 800px;
+            margin: 0 auto 30px;
+            opacity: 0.9;
+        }
+
+        /* CALENDAR CONTAINER (Above the Fold) */
+        .calendar-wrapper {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+            margin-top: -80px;
+            padding: 30px;
+            position: relative;
+            z-index: 100;
+            border-bottom: 8px solid var(--sk-navy);
+        }
+
+        /* Photoshop Placeholder Marking */
+        .psd-placeholder {
+            background: #f1f4f9;
+            border: 3px dashed #cbd5e0;
+            border-radius: 12px;
+            height: 600px; /* Standard Google Calendar Height */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #718096;
+        }
+
+        /* Sales Content Styling */
+        .pain-point-box {
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 15px;
+            padding: 40px;
+            height: 100%;
+            transition: all 0.3s ease;
+        }
+        .pain-point-box:hover {
+            border-color: var(--sk-navy);
+            box-shadow: 0 10px 25px rgba(43, 70, 141, 0.1);
+        }
+
+        .trust-badge {
+            background: #f8f9fa;
+            border-radius: 50px;
+            padding: 10px 25px;
+            display: inline-flex;
+            align-items: center;
+            margin: 10px;
+            font-weight: 600;
+            color: var(--sk-navy);
+            font-size: 0.9rem;
+        }
+
+        .footer-cta {
+            background: var(--sk-navy);
+            padding: 80px 0;
+            color: white;
+            text-align: center;
+        }
+
+        /* Replicating site's Support Bar */
+        .sk-support-bar {
+            background: var(--sk-navy);
+            padding: 12px 0;
+            font-size: 14px;
+        }
+
+        .btn-sk-gold {
+            background-color: var(--sk-gold);
+            color: #000;
+            font-weight: 700;
+            padding: 15px 35px;
+            border-radius: 50px;
+            text-transform: uppercase;
+            transition: transform 0.2s;
+        }
+        .btn-sk-gold:hover { transform: scale(1.05); color: #000; }
+    </style>
+</head>
+<body>
+
+<!-- Support Bar -->
+<div class="sk-support-bar">
+    <div class="container d-flex justify-content-between align-items-center">
+        <div class="text-white">
+            <i class="bi bi-chat-left-text-fill text-warning me-2"></i> 
+            TEXT US ANY TIME: <strong>385-386-1233</strong>
+        </div>
+        <div class="text-white d-none d-md-block">
+            <span class="me-4"><i class="bi bi-geo-alt-fill text-warning me-1"></i> South Salt Lake</span>
+            <span><i class="bi bi-clock-fill text-warning me-1"></i> 24/7 Member Access</span>
+        </div>
+    </div>
+</div>
+
+<!-- Header / Navigation Placeholder -->
+<nav class="py-4 bg-white border-bottom">
+    <div class="container d-flex justify-content-between align-items-center">
+        <img src="https://sharedkitchen.network/assets/media/logos/logo.png" height="80" alt="Shared Kitchen Network">
+        <a href="tel:3853861233" class="btn btn-outline-primary fw-bold d-none d-md-block">Call Now</a>
+    </div>
+</nav>
+
+<!-- Hero Section -->
+<section class="hero-banner">
+    <div class="container">
+        <h1>Stop Worrying About Permits.<br><span style="color: var(--sk-gold)">Start Your Food Business.</span></h1>
+        <p>Book a free 20-minute tour. We'll show you the equipment, explain the health department process, and help you get licensed this week.</p>
+        
+        <div class="mt-4">
+            <div class="trust-badge"><i class="bi bi-shield-check me-2"></i> Health Dept. Approved</div>
+            <div class="trust-badge"><i class="bi bi-lightning-fill me-2"></i> 24h Setup Available</div>
+        </div>
+    </div>
+</section>
+
+<!-- Calendar Section (THE CONVERSION ENGINE) -->
+<section class="container mb-20">
+    <div class="row justify-content-center">
+        <div class="col-xl-10">
+            <div class="calendar-wrapper">
+                <div class="row mb-8 align-items-center">
+                    <div class="col-md-7">
+                        <h2 class="fw-bolder mb-0"><i class="bi bi-calendar-check text-primary me-2"></i> Schedule Your Private Tour</h2>
+                        <p class="text-muted mb-0">Select an available time slot below to meet our manager.</p>
+                    </div>
+                    <div class="col-md-5 text-md-end mt-4 mt-md-0">
+                        <span class="badge badge-light-success fs-7 fw-bold p-3">
+                            <i class="bi bi-people-fill me-2"></i> Only 3 slots left today
+                        </span>
+                    </div>
+                </div>
+
+                <!-- SMART OBJECT PLACEHOLDER -->
+                <div class="psd-placeholder">
+                    <i class="bi bi-calendar3 fs-4x mb-4"></i>
+                    <h3 class="fw-bold">GOOGLE CALENDAR EMBED PLACEHOLDER</h3>
+                    <p class="fs-6">Placeholder for iFrame at 1920px wide layout</p>
+                    <p class="text-muted small">Dimensions: 100% width x 600px height</p>
+                </div>
+                
+                <div class="text-center mt-8">
+                    <p class="fw-bold text-gray-700">Can't find a time that works? Text us: <a href="tel:3853861233">385-386-1233</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Why It Works (Pain Points & Trust) -->
+<section class="py-20 bg-light">
+    <div class="container">
+        <div class="text-center mb-15">
+            <h2 class="fs-2x fw-bolder text-dark">We Solve the 3 Biggest Obstacles<br>for Food Startups</h2>
+        </div>
+        
+        <div class="row g-8">
+            <!-- Problem 1 -->
+            <div class="col-lg-4">
+                <div class="pain-point-box">
+                    <div class="symbol symbol-60px symbol-circle bg-light-danger mb-6">
+                        <span class="symbol-label"><i class="bi bi-file-earmark-lock2 fs-2x text-danger"></i></span>
+                    </div>
+                    <h3 class="fw-bolder">The "Red Tape"</h3>
+                    <p class="text-gray-600 fs-5">Paperwork is a nightmare. During your tour, we provide the <strong>Commissary Agreement</strong> and the exact licensing steps that local health inspectors require.</p>
+                </div>
+            </div>
+
+            <!-- Problem 2 -->
+            <div class="col-lg-4">
+                <div class="pain-point-box">
+                    <div class="symbol symbol-60px symbol-circle bg-light-primary mb-6">
+                        <span class="symbol-label"><i class="bi bi-box-seam fs-2x text-primary"></i></span>
+                    </div>
+                    <h3 class="fw-bolder">Zero Storage Space</h3>
+                    <p class="text-gray-600 fs-5">Stop hauling equipment. We have <strong>Dry, Cold, and Freezer storage</strong> ready for you. See our secure lockers and walk-ins during the walkthrough.</p>
+                </div>
+            </div>
+
+            <!-- Problem 3 -->
+            <div class="col-lg-4">
+                <div class="pain-point-box">
+                    <div class="symbol symbol-60px symbol-circle bg-light-warning mb-6">
+                        <span class="symbol-label"><i class="bi bi-cash-stack fs-2x text-warning"></i></span>
+                    </div>
+                    <h3 class="fw-bolder">Expensive Overhead</h3>
+                    <p class="text-gray-600 fs-5">Don't sign a $5,000/mo lease. Our <strong>hourly rates</strong> mean you only pay for the time you cook. We’ll calculate your estimated savings during the tour.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Imagery Section (Using existing site assets) -->
+<section class="py-20">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 mb-10 mb-lg-0">
+                <div class="position-relative">
+                    <img src="https://sharedkitchen.network/assets/img/kitchen.jpg" class="img-fluid rounded-3 shadow-lg" alt="Kitchen Tour">
+                    <div class="position-absolute bottom-0 end-0 bg-white p-6 m-6 rounded-3 shadow d-none d-md-block" style="max-width: 250px;">
+                        <div class="stars mb-2">
+                            <i class="bi bi-star-fill text-warning"></i>
+                            <i class="bi bi-star-fill text-warning"></i>
+                            <i class="bi bi-star-fill text-warning"></i>
+                            <i class="bi bi-star-fill text-warning"></i>
+                            <i class="bi bi-star-fill text-warning"></i>
+                        </div>
+                        <p class="fw-bold mb-0">"The best licensed facility in SSL. Super clean and professional."</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 ps-lg-15">
+                <h2 class="fs-2x fw-bolder mb-6">Everything You Need To Scale</h2>
+                <ul class="list-unstyled">
+                    <li class="d-flex align-items-center mb-5">
+                        <i class="bi bi-check-circle-fill text-success fs-2 me-4"></i>
+                        <span class="fs-5 fw-bold">Commercial Grade Ovens & Prep Tables</span>
+                    </li>
+                    <li class="d-flex align-items-center mb-5">
+                        <i class="bi bi-check-circle-fill text-success fs-2 me-4"></i>
+                        <span class="fs-5 fw-bold">30 Quart Stainless Steel Mixers</span>
+                    </li>
+                    <li class="d-flex align-items-center mb-5">
+                        <i class="bi bi-check-circle-fill text-success fs-2 me-4"></i>
+                        <span class="fs-5 fw-bold">24/7 Security & Keyless Entry</span>
+                    </li>
+                    <li class="d-flex align-items-center mb-5">
+                        <i class="bi bi-check-circle-fill text-success fs-2 me-4"></i>
+                        <span class="fs-5 fw-bold">Food Truck Grey Water & Fresh Water Filling</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Final CTA Section -->
+<section class="footer-cta">
+    <div class="container">
+        <h2 class="fs-3x fw-bolder mb-6">Ready to See It in Person?</h2>
+        <p class="fs-4 opacity-75 mb-10 mx-auto" style="max-width: 700px;">Take the first step toward a fully legal, profitable food business. Book your tour today—no obligation, just information.</p>
+        <a href="#" class="btn btn-sk-gold">Back to Calendar <i class="bi bi-arrow-up ms-2"></i></a>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="py-10 bg-dark text-center">
+    <div class="container">
+        <img src="https://sharedkitchen.network/assets/media/logos/logo-default.png" height="50" class="mb-5">
+        <p class="text-muted mb-0">© 2025 Shared Kitchen Network. All Rights Reserved.</p>
+    </div>
+</footer>
+
+<script src="https://sharedkitchen.network/assets/plugins/global/plugins.bundle.js"></script>
+<script src="https://sharedkitchen.network/assets/js/scripts.bundle.js"></script>
+
+</body>
+</html>
