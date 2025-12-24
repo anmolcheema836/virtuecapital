@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ISAG | Tactical Intelligence Unit (TIU)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --tiu-navy: #020617;
+            --tiu-slate: #0f172a;
+            --tiu-border: #1e293b;
+            --tiu-accent: #3b82f6;
+            --tiu-alert: #f59e0b;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--tiu-navy);
+            color: #f8fafc;
+            overflow-x: hidden;
+        }
+        .mono { font-family: 'JetBrains Mono', monospace; }
+        
+        /* Tactical HUD Elements */
+        .corner-bracket {
+            position: relative;
+        }
+        .corner-bracket::before, .corner-bracket::after {
+            content: "";
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            border-color: var(--tiu-accent);
+            border-style: solid;
+        }
+        .bracket-tl::before { top: -2px; left: -2px; border-width: 2px 0 0 2px; }
+        .bracket-br::after { bottom: -2px; right: -2px; border-width: 0 2px 2px 0; }
+
+        .scanline {
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--tiu-border), transparent);
+        }
+
+        /* Specialized Buttons */
+        .btn-command {
+            position: relative;
+            background: transparent;
+            border: 1px solid var(--tiu-border);
+            padding: 1rem 2rem;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.2em;
+            transition: all 0.3s;
+        }
+        .btn-command:hover {
+            border-color: var(--tiu-accent);
+            background: rgba(59, 130, 246, 0.05);
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.1);
+        }
+
+        /* Data Block Grid */
+        .data-grid {
+            background-image: linear-gradient(var(--tiu-border) 1px, transparent 1px), 
+                              linear-gradient(90deg, var(--tiu-border) 1px, transparent 1px);
+            background-size: 40px 40px;
+            background-position: center center;
+        }
+
+        .section-tag {
+            background: var(--tiu-accent);
+            color: white;
+            padding: 2px 8px;
+            font-size: 10px;
+            font-family: 'JetBrains Mono';
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- NAVIGATION -->
+    <nav class="sticky top-0 z-50 bg-slate-950/90 backdrop-blur-xl border-b border-slate-800">
+        <div class="max-w-7xl mx-auto px-6 flex justify-between items-center h-24">
+            <div class="flex items-center gap-6">
+                <img src="https://cdn.prod.website-files.com/64ddf48d86081f9712b34cb6/64e3771369cc69e994673542_ISAG_Source_Logo-p-500.png" alt="ISAG Logo" class="h-10">
+                <div class="h-10 w-px bg-slate-800 hidden md:block"></div>
+                <div class="hidden md:block">
+                    <p class="mono text-[10px] text-blue-500 font-bold tracking-[0.3em] leading-none">UNIT DESIGNATION</p>
+                    <p class="text-xs font-bold uppercase tracking-tighter">Tactical Intelligence Unit</p>
+                </div>
+            </div>
+
+            <div class="hidden lg:flex items-center space-x-10 text-[10px] font-bold uppercase tracking-[0.2em]">
+                <a href="#" class="text-blue-500">Home</a>
+                <a href="#" class="text-slate-400 hover:text-white transition">About The TIU</a>
+                <a href="#" class="text-slate-400 hover:text-white transition">Inside The TIU</a>
+                <a href="#" class="text-slate-400 hover:text-white transition">Mission Statement</a>
+                <a href="#" class="text-slate-400 hover:text-white transition">About ISAG</a>
+            </div>
+
+            <button class="bg-blue-600 px-6 py-3 text-[10px] font-bold uppercase tracking-widest hover:bg-blue-500 transition">
+                Contact Us
+            </button>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <header class="relative min-h-screen flex items-center pt-20 data-grid">
+        <div class="absolute inset-0 bg-gradient-to-b from-slate-950 via-slate-950/80 to-slate-950"></div>
+        
+        <div class="max-w-7xl mx-auto px-6 relative z-10">
+            <div class="grid lg:grid-cols-12 gap-12 items-center">
+                <div class="lg:col-span-8">
+                    <div class="flex items-center gap-4 mb-6">
+                        <span class="section-tag">Directives v4.0</span>
+                        <div class="h-px flex-1 bg-slate-800"></div>
+                    </div>
+                    <h1 class="text-6xl md:text-8xl font-black leading-[0.95] mb-8 tracking-tighter uppercase">
+                        The Future of <br>
+                        <span class="text-blue-500">Law Enforcement</span><br>
+                        Intelligence
+                    </h1>
+                    <h2 class="text-xl md:text-2xl font-bold text-slate-300 mb-8 border-l-4 border-blue-600 pl-6 max-w-2xl uppercase tracking-tight">
+                        Introducing the ISAG Tactical Intelligence Unit (TIU)
+                    </h2>
+                    <p class="text-lg text-slate-400 mb-12 max-w-2xl leading-relaxed">
+                        In today’s rapidly evolving landscape, effectively managing and leveraging field intelligence is crucial for every law enforcement agency. We bridge the gap for small to mid-sized departments.
+                    </p>
+                    <div class="flex flex-wrap gap-6">
+                        <button class="btn-command bg-white !text-black border-white hover:!bg-slate-200">
+                            Deploy TIU Model
+                        </button>
+                        <button class="btn-command">
+                            View Capability Matrix
+                        </button>
+                    </div>
+                </div>
+                <div class="lg:col-span-4 hidden lg:block">
+                    <div class="corner-bracket bracket-tl bracket-br p-12 bg-slate-900/50 backdrop-blur-sm border border-slate-800">
+                        <div class="mono text-[10px] space-y-4 text-blue-400">
+                            <p>> SYSTEM: ONLINE</p>
+                            <p>> AGENCY_LINK: ACTIVE</p>
+                            <p>> INTEL_FLOW: 100%</p>
+                            <p>> STATUS: READY</p>
+                        </div>
+                        <div class="mt-20">
+                            <img src="https://cdn.prod.website-files.com/64ddf48d86081f9712b34cb6/64e3771369cc69e994673542_ISAG_Source_Logo-p-500.png" alt="ISAG" class="opacity-20 grayscale">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- SECTION #1: THE LOSS -->
+    <section class="py-32 relative bg-slate-950 border-y border-slate-900">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid lg:grid-cols-2 gap-24">
+                <div class="relative">
+                    <div class="sticky top-32">
+                        <h2 class="mono text-blue-500 text-xs font-bold uppercase tracking-[0.4em] mb-4">Operational Threat</h2>
+                        <h3 class="text-4xl font-black uppercase mb-8 leading-tight">What Happens to Most <br>Field Intelligence?</h3>
+                        <p class="text-slate-400 text-lg leading-relaxed mb-8">
+                            Every law enforcement agency collects valuable field intelligence each day, yet most of it becomes <span class="text-white font-bold">lost, overlooked, or underutilized.</span>
+                        </p>
+                        <div class="p-6 bg-red-950/20 border-l-4 border-red-600">
+                            <p class="text-sm italic text-red-200">
+                                "This breakdown places officers at risk, allows criminal activity to continue unchecked, and weakens investigations."
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="space-y-12">
+                    <div class="p-10 border border-slate-800 bg-slate-900/30 corner-bracket bracket-tl">
+                        <p class="text-slate-300 leading-relaxed">
+                            Information is captured informally, buried in disconnected systems, or never analyzed to support real-time operations. This critical data decay is the primary obstacle to modern policing.
+                        </p>
+                    </div>
+                    <div class="p-10 border border-blue-900/30 bg-blue-950/10 corner-bracket bracket-br">
+                        <h4 class="text-blue-400 font-bold uppercase tracking-widest mb-4">The TIU Intervention</h4>
+                        <p class="text-slate-300 leading-relaxed">
+                            A Tactical Intelligence Unit (TIU) solves this problem by creating a <span class="text-white font-bold">structured process</span> to capture, centralize, analyze, and distribute field intelligence. Designed for small- and mid-sized departments, the TIU transforms disconnected observations into actionable intelligence.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION #2: DEFINITION (The Bold Statement) -->
+    <section class="py-32 bg-white text-slate-950">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="mb-20">
+                <h2 class="text-7xl md:text-9xl font-black uppercase tracking-tighter opacity-10 absolute">DEFINITION</h2>
+                <div class="relative pt-12">
+                    <h3 class="text-5xl font-black uppercase tracking-tight mb-4">The ISAG TIU</h3>
+                    <p class="mono text-blue-600 font-bold tracking-widest">A Specialized Internal Capability</p>
+                </div>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-12 mb-20">
+                <div class="bg-slate-950 p-12 text-white flex flex-col justify-between">
+                    <div>
+                        <div class="w-12 h-1 bg-blue-500 mb-6"></div>
+                        <h4 class="text-3xl font-bold mb-4">It is not software. <br>It is not a dashboard.</h4>
+                    </div>
+                    <p class="mono text-xs text-slate-500">REF_ID: OPERATIONAL_UNIT_NOT_TOOL</p>
+                </div>
+                <div class="border-4 border-slate-950 p-12">
+                    <h4 class="text-2xl font-black uppercase mb-8">It is a new operational unit:</h4>
+                    <ul class="space-y-6">
+                        <li class="flex items-start gap-4">
+                            <span class="bg-slate-950 text-white px-2 py-1 mono text-xs">01</span>
+                            <span class="font-bold uppercase text-lg">Staffed by your officers</span>
+                        </li>
+                        <li class="flex items-start gap-4">
+                            <span class="bg-slate-950 text-white px-2 py-1 mono text-xs">02</span>
+                            <span class="font-bold uppercase text-lg">Powered by ISAG’s infrastructure</span>
+                        </li>
+                        <li class="flex items-start gap-4">
+                            <span class="bg-slate-950 text-white px-2 py-1 mono text-xs">03</span>
+                            <span class="font-bold uppercase text-lg">Collects intelligence that would otherwise vanish</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8 py-16 border-t border-slate-200">
+                <p class="text-2xl font-bold leading-tight uppercase italic">"The intelligence your department already has… finally working for you."</p>
+                <p class="text-slate-600 leading-relaxed">
+                    The TIU transforms everyday encounters into intelligence products your officers and investigators can act on. It brings order, structure, and continuity to information management. You will know more. Officers will be safer. Your community will be better protected.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION #3: THE 7 POINTS (Risk Assessment) -->
+    <section class="py-32 bg-slate-950 data-grid">
+        <div class="max-w-7xl mx-auto px-6 relative z-10">
+            <div class="flex flex-col items-center text-center mb-24">
+                <span class="section-tag mb-4">Risk Assessment</span>
+                <h2 class="text-5xl font-black uppercase mb-6">Disconnected Information Creates Operational Blind Spots</h2>
+                <p class="text-slate-400 max-w-2xl">The problem is not a lack of skill. It is a lack of structure, continuity, and centralization.</p>
+            </div>
+
+            <div class="grid lg:grid-cols-12 gap-12">
+                <div class="lg:col-span-7 space-y-4">
+                    <h3 class="mono text-amber-500 text-xs font-bold uppercase tracking-widest mb-8">Seven Common Intelligence Disruptions</h3>
+                    
+                    <!-- Item 1 -->
+                    <div class="group flex items-center justify-between p-6 bg-slate-900/50 border border-slate-800 hover:border-amber-500/50 transition">
+                        <div class="flex items-center gap-6">
+                            <span class="mono text-slate-500">01</span>
+                            <p class="font-bold text-slate-300 group-hover:text-white">Field notes never formally captured</p>
+                        </div>
+                        <div class="h-2 w-2 rounded-full bg-amber-500 shadow-[0_0_10px_#f59e0b]"></div>
+                    </div>
+                    <!-- Item 2 -->
+                    <div class="group flex items-center justify-between p-6 bg-slate-900/50 border border-slate-800 hover:border-amber-500/50 transition">
+                        <div class="flex items-center gap-6">
+                            <span class="mono text-slate-500">02</span>
+                            <p class="font-bold text-slate-300 group-hover:text-white">Informal observations kept in personal notebooks</p>
+                        </div>
+                        <div class="h-2 w-2 rounded-full bg-amber-500 shadow-[0_0_10px_#f59e0b]"></div>
+                    </div>
+                    <!-- Item 3 -->
+                    <div class="group flex items-center justify-between p-6 bg-slate-900/50 border border-slate-800 hover:border-amber-500/50 transition">
+                        <div class="flex items-center gap-6">
+                            <span class="mono text-slate-500">03</span>
+                            <p class="font-bold text-slate-300 group-hover:text-white">Gang information stored inconsistently or siloed</p>
+                        </div>
+                        <div class="h-2 w-2 rounded-full bg-amber-500 shadow-[0_0_10px_#f59e0b]"></div>
+                    </div>
+                    <!-- Item 4 -->
+                    <div class="group flex items-center justify-between p-6 bg-slate-900/50 border border-slate-800 hover:border-amber-500/50 transition">
+                        <div class="flex items-center gap-6">
+                            <span class="mono text-slate-500">04</span>
+                            <p class="font-bold text-slate-300 group-hover:text-white">Vehicle intelligence scattered between CAD and memory</p>
+                        </div>
+                        <div class="h-2 w-2 rounded-full bg-amber-500 shadow-[0_0_10px_#f59e0b]"></div>
+                    </div>
+                    <!-- Item 5 -->
+                    <div class="group flex items-center justify-between p-6 bg-slate-900/50 border border-slate-800 hover:border-amber-500/50 transition">
+                        <div class="flex items-center gap-6">
+                            <span class="mono text-slate-500">05</span>
+                            <p class="font-bold text-slate-300 group-hover:text-white">No standardized process for connecting data points</p>
+                        </div>
+                        <div class="h-2 w-2 rounded-full bg-amber-500 shadow-[0_0_10px_#f59e0b]"></div>
+                    </div>
+                    <!-- Item 6 -->
+                    <div class="group flex items-center justify-between p-6 bg-slate-900/50 border border-slate-800 hover:border-amber-500/50 transition">
+                        <div class="flex items-center gap-6">
+                            <span class="mono text-slate-500">06</span>
+                            <p class="font-bold text-slate-300 group-hover:text-white">High personnel turnover causing knowledge loss</p>
+                        </div>
+                        <div class="h-2 w-2 rounded-full bg-amber-500 shadow-[0_0_10px_#f59e0b]"></div>
+                    </div>
+                    <!-- Item 7 -->
+                    <div class="group flex items-center justify-between p-6 bg-slate-900/50 border border-slate-800 hover:border-amber-500/50 transition">
+                        <div class="flex items-center gap-6">
+                            <span class="mono text-slate-500">07</span>
+                            <p class="font-bold text-slate-300 group-hover:text-white">Investigators working without access to patrol intelligence</p>
+                        </div>
+                        <div class="h-2 w-2 rounded-full bg-amber-500 shadow-[0_0_10px_#f59e0b]"></div>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-5">
+                    <div class="sticky top-32 space-y-8">
+                        <div class="bg-red-950/20 border-l-4 border-red-600 p-8">
+                            <h4 class="text-red-500 font-black uppercase text-xs tracking-[0.3em] mb-6">Operational Impact</h4>
+                            <ul class="space-y-4 text-slate-200 font-bold uppercase text-sm">
+                                <li class="flex items-center gap-3">[-] Missed offender identification</li>
+                                <li class="flex items-center gap-3">[-] Unlinked criminal activity</li>
+                                <li class="flex items-center gap-3">[-] Lower case clearance</li>
+                                <li class="flex items-center gap-3">[-] Higher officer risk</li>
+                                <li class="flex items-center gap-3">[-] Incomplete threat awareness</li>
+                            </ul>
+                        </div>
+                        <p class="text-3xl font-black uppercase leading-[1.1] text-white">
+                            The Intelligence Exists. <br>
+                            <span class="text-slate-600 text-2xl">Your Department Just Can’t See It.</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-slate-950 border-t border-slate-900 py-24">
+        <div class="max-w-7xl mx-auto px-6 text-center">
+            <img src="https://cdn.prod.website-files.com/64ddf48d86081f9712b34cb6/64e3771369cc69e994673542_ISAG_Source_Logo-p-500.png" alt="ISAG" class="h-12 mx-auto mb-12 grayscale opacity-50">
+            <h2 class="text-2xl font-black uppercase tracking-[0.2em] mb-8">Ready to formalize your intelligence unit?</h2>
+            <button class="btn-command bg-blue-600 border-blue-600 !text-white px-12 py-5 mb-16">
+                Request Command Briefing
+            </button>
+            
+            <div class="grid md:grid-cols-3 gap-12 pt-16 border-t border-slate-900 text-[10px] mono text-slate-600 uppercase tracking-widest">
+                <div class="text-left">
+                    © 2024 ISAG TACTICAL INTELLIGENCE UNIT<br>
+                    ALL OPERATIONAL RIGHTS RESERVED.
+                </div>
+                <div>
+                    UNITED STATES OF AMERICA<br>
+                    FEDERAL / STATE / LOCAL PARTNER
+                </div>
+                <div class="text-right">
+                    SECURED ACCESS ONLY<br>
+                    ENCRYPTION: AES-256 ACTIVE
+                </div>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

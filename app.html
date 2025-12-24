@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Magic Heidi Onboarding</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #fcfcfd; }
+        .screen-enter { animation: slideUp 0.4s ease-out forwards; }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .gradient-text { background: linear-gradient(90deg, #FF4B2B, #FF416C); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .glass { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); }
+    </style>
+</head>
+<body class="antialiased text-slate-900" x-data="{ step: 1, businessName: '', goals: [], stage: '' }">
+
+    <!-- Progress Bar -->
+    <div class="fixed top-0 left-0 w-full h-1.5 bg-slate-100 z-50">
+        <div class="h-full bg-red-500 transition-all duration-500" :style="`width: ${(step/11)*100}%`"></div >
+    </div>
+
+    <!-- Mobile Container -->
+    <div class="max-w-md mx-auto min-h-screen flex flex-col p-6 pt-12 relative">
+        
+        <!-- Navigation -->
+        <button x-show="step > 1 && step < 11" @click="step--" class="absolute top-8 left-6 text-slate-400 hover:text-slate-900">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
+        </button>
+
+        <!-- SCREEN 1: Welcome -->
+        <div x-show="step === 1" class="screen-enter flex-1 flex flex-col justify-center text-center">
+            <div class="mb-8">
+                <span class="bg-red-50 text-red-600 px-4 py-1.5 rounded-full text-sm font-bold tracking-wide">🇨🇭 SWISS MADE</span>
+            </div>
+            <h1 class="text-4xl font-extrabold mb-4 leading-tight">Invoicing that <br><span class="gradient-text">feels like magic.</span></h1>
+            <p class="text-slate-500 mb-8 px-4 text-lg">The #1 accounting app for Swiss freelancers and dreamers.</p>
+            <div class="bg-white p-6 rounded-3xl shadow-xl shadow-slate-100 mb-10 border border-slate-50">
+                <div class="flex justify-center mb-2">
+                    <span class="text-yellow-400 text-xl">★★★★★</span>
+                </div>
+                <p class="font-bold text-slate-800">10k+ Swiss Freelancers</p>
+                <p class="text-sm text-slate-400">Trusted for speed and simplicity</p>
+            </div>
+            <button @click="step = 2" class="w-full bg-slate-900 text-white py-5 rounded-2xl font-bold text-lg shadow-lg hover:bg-black transition-all">Get Started</button>
+        </div>
+
+        <!-- SCREEN 2: Goals -->
+        <div x-show="step === 2" class="screen-enter flex-1">
+            <h2 class="text-3xl font-extrabold mt-12 mb-2">What are your goals?</h2>
+            <p class="text-slate-500 mb-8">Select all that apply.</p>
+            <div class="space-y-4 mb-10">
+                <template x-for="goal in ['Starting a business', 'Growing my business', 'Being more organized']">
+                    <button @click="goals.includes(goal) ? goals = goals.filter(g => g !== goal) : goals.push(goal)" 
+                        :class="goals.includes(goal) ? 'border-red-500 bg-red-50' : 'border-slate-100 bg-white'"
+                        class="w-full p-5 text-left border-2 rounded-2xl font-semibold transition-all flex justify-between items-center">
+                        <span x-text="goal"></span>
+                        <div x-show="goals.includes(goal)" class="h-6 w-6 bg-red-500 rounded-full flex items-center justify-center">
+                            <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                        </div>
+                    </button>
+                </template>
+            </div>
+            <button @click="step = 3" class="w-full bg-slate-900 text-white py-5 rounded-2xl font-bold text-lg shadow-lg">Continue</button>
+        </div>
+
+        <!-- SCREEN 3: Motivational 1 -->
+        <div x-show="step === 3" class="screen-enter flex-1 flex flex-col justify-center">
+            <div class="bg-orange-50 p-8 rounded-[40px] text-center mb-8">
+                <span class="text-5xl mb-6 block">🚀</span>
+                <h2 class="text-2xl font-bold mb-4">Starting a business is hard...</h2>
+                <p class="text-slate-600 leading-relaxed">But you're not alone. <span class="font-bold text-slate-900">90% of Magic Heidi users</span> doubled their yearly revenue by automating their admin.</p>
+            </div>
+            <button @click="step = 4" class="w-full bg-slate-900 text-white py-5 rounded-2xl font-bold text-lg">I'm ready to grow</button>
+        </div>
+
+        <!-- SCREEN 4: Stage -->
+        <div x-show="step === 4" class="screen-enter flex-1">
+            <h2 class="text-3xl font-extrabold mt-12 mb-8">What stage are you currently in?</h2>
+            <div class="space-y-4 mb-10">
+                <template x-for="s in ['Thinking of starting', 'I have an idea', 'I have customers', 'Scaling my team']">
+                    <button @click="stage = s; step = 5" 
+                        class="w-full p-5 text-left bg-white border border-slate-100 rounded-2xl font-semibold shadow-sm hover:border-red-200 transition-all">
+                        <span x-text="s"></span>
+                    </button>
+                </template>
+            </div>
+        </div>
+
+        <!-- SCREEN 5: Ask for Review -->
+        <div x-show="step === 5" class="screen-enter flex-1 flex flex-col justify-center text-center">
+            <div class="mb-6"><span class="text-6xl">❤️</span></div>
+            <h2 class="text-2xl font-bold mb-4">Help us help others</h2>
+            <p class="text-slate-500 mb-8">Magic Heidi is built by entrepreneurs like you. A quick review helps other Swiss dreamers find us.</p>
+            <div class="flex flex-col gap-4">
+                <button @click="step = 6" class="w-full bg-red-500 text-white py-5 rounded-2xl font-bold text-lg shadow-lg">Rate us 5-stars</button>
+                <button @click="step = 6" class="text-slate-400 font-medium">Maybe later</button>
+            </div>
+        </div>
+
+        <!-- SCREEN 6: With vs Without -->
+        <div x-show="step === 6" class="screen-enter flex-1">
+            <h2 class="text-2xl font-extrabold mt-12 mb-8 text-center">Life with Magic Heidi</h2>
+            <div class="space-y-4 mb-10">
+                <div class="bg-green-50 p-6 rounded-2xl border border-green-100">
+                    <h3 class="font-bold text-green-700 flex items-center">✅ With Magic Heidi</h3>
+                    <p class="text-sm text-green-600 mt-1 italic">Paid 3x faster, perfectly organized, stress-free VAT.</p>
+                </div>
+                <div class="bg-slate-50 p-6 rounded-2xl border border-slate-100 grayscale opacity-60">
+                    <h3 class="font-bold text-slate-700 flex items-center">❌ Without Magic Heidi</h3>
+                    <p class="text-sm text-slate-600 mt-1 italic">Lost invoices, late payments, Excel hell.</p>
+                </div>
+            </div>
+            <button @click="step = 7" class="w-full bg-slate-900 text-white py-5 rounded-2xl font-bold text-lg">That's what I want</button>
+        </div>
+
+        <!-- SCREEN 7: Login -->
+        <div x-show="step === 7" class="screen-enter flex-1 flex flex-col justify-center">
+            <h2 class="text-3xl font-extrabold mb-8 text-center">Secure your account</h2>
+            <div class="space-y-3">
+                <button @click="step = 8" class="w-full py-4 px-6 border border-slate-200 rounded-xl font-bold flex items-center justify-center gap-3">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" class="w-5 h-5"> Continue with Google
+                </button>
+                <button @click="step = 8" class="w-full py-4 px-6 bg-black text-white rounded-xl font-bold flex items-center justify-center gap-3">
+                    <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.67-1.48 3.671-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701z"/></svg>
+                    Continue with Apple
+                </button>
+                <div class="py-4 text-center text-slate-400 text-sm">or</div>
+                <input type="email" placeholder="Enter your email" class="w-full p-4 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-red-500">
+                <button @click="step = 8" class="w-full py-4 bg-slate-100 rounded-xl font-bold text-slate-600">Continue with Email</button>
+            </div>
+        </div>
+
+        <!-- SCREEN 8: Business Name -->
+        <div x-show="step === 8" class="screen-enter flex-1 pt-12">
+            <h2 class="text-3xl font-extrabold mb-4">How should we call your business?</h2>
+            <input x-model="businessName" type="text" placeholder="e.g. Heidi Creative Studio" class="w-full text-2xl font-bold border-b-2 border-slate-200 focus:border-red-500 py-4 outline-none transition-all">
+            <p class="text-slate-400 mt-4">You can change this later.</p>
+            <div class="mt-12 flex flex-col gap-4">
+                <button @click="step = 9" class="w-full bg-slate-900 text-white py-5 rounded-2xl font-bold text-lg disabled:opacity-50" :disabled="!businessName">Continue</button>
+                <button @click="step = 9" class="text-slate-400 font-medium">Skip for now</button>
+            </div>
+        </div>
+
+        <!-- SCREEN 9: Paywall -->
+        <div x-show="step === 9" class="screen-enter flex-1">
+            <h2 class="text-3xl font-extrabold mt-8 mb-2">Unlock everything for <span x-text="businessName || 'your business'"></span></h2>
+            <p class="text-slate-500 mb-8">Try all features free for 7 days.</p>
+            
+            <div class="bg-red-50 border-2 border-red-500 p-6 rounded-3xl mb-4 relative overflow-hidden">
+                <div class="absolute top-0 right-0 bg-red-500 text-white px-4 py-1 text-xs font-bold rounded-bl-xl">POPULAR</div>
+                <h3 class="text-xl font-bold">Annual Plan</h3>
+                <p class="text-3xl font-extrabold mt-2">CHF 299<span class="text-sm font-normal text-slate-500">/year</span></p>
+                <ul class="mt-4 space-y-2 text-sm text-slate-600 font-medium">
+                    <li>✨ Unlimited Invoices</li>
+                    <li>📊 Tax Export & VAT</li>
+                    <li>🏦 Bank Sync</li>
+                </ul>
+            </div>
+            
+            <p class="text-center text-slate-400 text-sm mb-6">7-day free trial, then CHF 299/year. Cancel anytime.</p>
+            
+            <button @click="step = 10" class="w-full bg-slate-900 text-white py-5 rounded-2xl font-bold text-lg shadow-lg">Start Free Trial & Pay</button>
+            <button @click="step = 10" class="w-full mt-4 text-slate-400 font-medium text-sm">Not ready? Continue with limited version</button>
+        </div>
+
+        <!-- SCREEN 10: Address & IBAN -->
+        <div x-show="step === 10" class="screen-enter flex-1">
+            <h2 class="text-2xl font-extrabold mt-8 mb-6">Let's get your details ready</h2>
+            <div class="space-y-4 mb-8">
+                <div>
+                    <label class="text-xs font-bold text-slate-400 uppercase tracking-wider">Business Name</label>
+                    <input x-model="businessName" type="text" class="w-full p-4 rounded-xl border border-slate-100 bg-slate-50">
+                </div>
+                <div>
+                    <label class="text-xs font-bold text-slate-400 uppercase tracking-wider">Address</label>
+                    <input type="text" placeholder="Street 12, 8000 Zurich" class="w-full p-4 rounded-xl border border-slate-100 bg-slate-50">
+                </div>
+                <div>
+                    <label class="text-xs font-bold text-slate-400 uppercase tracking-wider">IBAN</label>
+                    <input type="text" placeholder="CH76 0000 0000..." class="w-full p-4 rounded-xl border border-slate-100 bg-slate-50 uppercase">
+                </div>
+            </div>
+            <button @click="step = 11" class="w-full bg-slate-900 text-white py-5 rounded-2xl font-bold text-lg">Save & Finish</button>
+            <button @click="step = 11" class="w-full mt-4 text-slate-400 font-medium">I'll do this later</button>
+        </div>
+
+        <!-- SCREEN 11: Success -->
+        <div x-show="step === 11" class="screen-enter flex-1 flex flex-col justify-center text-center">
+            <div class="mb-8 relative mx-auto">
+                <div class="h-32 w-32 bg-green-100 rounded-full flex items-center justify-center animate-bounce">
+                    <svg class="w-16 h-16 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                </div>
+            </div>
+            <h2 class="text-3xl font-extrabold mb-4">You're all set!</h2>
+            <p class="text-slate-500 mb-10 px-6 text-lg">You've unlocked all features. You're now one step closer to reaching your goals with <span class="font-bold text-slate-900">Magic Heidi.</span></p>
+            
+            <button onclick="location.reload()" class="w-full bg-red-500 text-white py-5 rounded-2xl font-bold text-lg shadow-xl shadow-red-200">Go to Dashboard</button>
+        </div>
+
+    </div>
+</body>
+</html>
