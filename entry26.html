@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ideal Portraits | Fine Art Light Mockup</title>
+    
+    <!-- GOOGLE FONTS: Commercial Free (OFL) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;1,9..144,300&family=Tenor+Sans&family=Inter:wght@300;400&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            /* 2025 Warm Neutral Palette */
+            --bg-ivory: #FAF9F6;
+            --bg-accent: #F2EFE9;
+            --text-charcoal: #2D2D2D;
+            --text-muted: #7A7267;
+            --line-color: rgba(45, 45, 45, 0.1);
+            --gold-accent: #A68B67;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background: url('https://business.jerradjohnson.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fhp.368d66c6.jpg&w=3840&q=75') no-repeat center center fixed;
+            background-size: cover;
+            font-family: 'Tenor Sans', sans-serif;
+            color: var(--text-charcoal);
+            display: flex;
+            justify-content: center;
+            overflow-x: hidden;
+        }
+
+        /* THE MAIN COLUMN (Redesigned Area) */
+        .main-column {
+            max-width: 1200px;
+            width: 95%;
+            background: var(--bg-ivory);
+            margin: 60px 0;
+            padding: 100px 80px;
+            box-sizing: border-box;
+            box-shadow: 0 40px 100px rgba(0,0,0,0.1);
+            position: relative;
+        }
+
+        /* ARCHIVE STAMP ELEMENT */
+        .archive-stamp {
+            position: absolute;
+            top: 40px;
+            right: 40px;
+            border: 1px solid var(--gold-accent);
+            padding: 5px 12px;
+            color: var(--gold-accent);
+            font-size: 0.7rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+        }
+
+        /* HERO SECTION */
+        .intro-grid {
+            display: grid;
+            grid-template-columns: 0.8fr 1.2fr;
+            gap: 80px;
+            align-items: start;
+            margin-bottom: 120px;
+        }
+
+        h1.main-headline {
+            font-family: 'Fraunces', serif;
+            font-size: clamp(3rem, 6vw, 4.5rem);
+            font-weight: 300;
+            line-height: 1.1;
+            margin: 0;
+            letter-spacing: -1px;
+        }
+
+        .philosophy-text {
+            font-family: 'Inter', sans-serif;
+            font-size: 1.1rem;
+            line-height: 1.9;
+            font-weight: 300;
+            color: var(--text-muted);
+            margin-top: 40px;
+        }
+
+        /* ASYMMETRICAL PORTFOLIO GRID */
+        .portfolio-spread {
+            position: relative;
+            margin: 100px 0;
+        }
+
+        .spread-label {
+            font-size: 0.8rem;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 30px;
+            display: block;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 20px;
+        }
+
+        .img-box {
+            background: var(--bg-accent);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .img-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+            display: block;
+        }
+
+        .img-box:hover img { transform: scale(1.03); }
+
+        /* Custom Asymmetry */
+        .p-1 { grid-column: 1 / 7; height: 500px; margin-top: 40px; } /* Large Main */
+        .p-2 { grid-column: 8 / 13; height: 400px; } /* Elevated Secondary */
+        .p-3 { grid-column: 2 / 5; height: 300px; margin-top: -60px; border: 15px solid var(--bg-ivory); box-shadow: 0 20px 40px rgba(0,0,0,0.05); } /* Floating Overlay */
+        .p-4 { grid-column: 6 / 10; height: 350px; margin-top: 20px; } /* Mid Horizontal */
+
+        /* SERVICES LIST (High-End Boutique Style) */
+        .service-list {
+            margin-top: 150px;
+            border-top: 1px solid var(--line-color);
+        }
+
+        .service-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 40px 0;
+            border-bottom: 1px solid var(--line-color);
+            transition: all 0.4s;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .service-item:hover {
+            padding-left: 20px;
+            background: rgba(166, 139, 103, 0.03);
+        }
+
+        .service-item h2 {
+            font-family: 'Fraunces', serif;
+            font-size: 2.5rem;
+            margin: 0;
+            font-weight: 300;
+        }
+
+        .service-desc {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            max-width: 400px;
+            text-align: right;
+        }
+
+        /* CONTACT FOOTER */
+        .contact-section {
+            margin-top: 150px;
+            text-align: center;
+        }
+
+        .contact-section h3 {
+            font-family: 'Fraunces', serif;
+            font-size: 3rem;
+            font-style: italic;
+            font-weight: 300;
+            margin-bottom: 20px;
+        }
+
+        .email-link {
+            font-size: 1.5rem;
+            color: var(--gold-accent);
+            text-decoration: none;
+            letter-spacing: 1px;
+            border-bottom: 1px solid var(--line-color);
+            padding-bottom: 5px;
+        }
+
+        .phone-callout {
+            margin-top: 40px;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            color: var(--text-muted);
+        }
+
+        /* MOBILE OPTIMIZATION */
+        @media (max-width: 900px) {
+            .main-column { padding: 60px 25px; }
+            .intro-grid { grid-template-columns: 1fr; gap: 40px; }
+            .grid-container { display: flex; flex-direction: column; }
+            .p-1, .p-2, .p-3, .p-4 { height: auto; margin: 20px 0; border: none; }
+            .service-item { flex-direction: column; align-items: flex-start; gap: 10px; }
+            .service-desc { text-align: left; }
+            h1.main-headline { font-size: 2.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <main class="main-column">
+        <div class="archive-stamp">Fine Art Est. 2017</div>
+
+        <!-- HERO SECTION -->
+        <section class="intro-grid">
+            <h1 class="main-headline">
+                The Beauty of<br>
+                <span style="font-style: italic; color: var(--gold-accent);">Deliberate</span><br>
+                Portraiture.
+            </h1>
+            <div class="philosophy-text">
+                <p>
+                    I believe you deserve the opportunity to be seen at your absolute best. While candids show life as it happens, my traditional portraiture style shows you with the elegance and polish you'll want to share even decades from now.
+                </p>
+                <p>
+                    Across seven years and hundreds of sessions, I’ve refined a process where I guide every pose and craft every light—so you never have to cross your fingers and hope for a good shot.
+                </p>
+            </div>
+        </section>
+
+        <!-- ASYMMETRICAL PORTFOLIO DISPLAY -->
+        <div class="portfolio-spread">
+            <span class="spread-label">Featured Works from the Archive</span>
+            <div class="grid-container">
+                <div class="img-box p-1">
+                    <img src="https://businessbackend.jerradjohnson.com/galleries/1920px_photos/Children/Children_4-Skyline Portrait of Woman Holding Child-.jpg" alt="Gallery Selection">
+                </div>
+                <div class="img-box p-2">
+                    <img src="https://business.jerradjohnson.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fwedding.83cd1021.png&w=1200&q=75" alt="Wedding Portrait">
+                </div>
+                <div class="img-box p-3">
+                    <img src="https://businessbackend.jerradjohnson.com/galleries/thumbnails/Children/Children_1-Child%20with%20Thumb%20in%20her%20Mouth-.jpg" alt="Detail Shot">
+                </div>
+                <div class="img-box p-4">
+                    <img src="https://business.jerradjohnson.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fcouple2.87927019.png&w=1200&q=75" alt="Couple Session">
+                </div>
+            </div>
+        </div>
+
+        <!-- BOUTIQUE SERVICES LIST -->
+        <section class="service-list">
+            <a href="/gallery" class="service-item">
+                <h2>Weddings</h2>
+                <div class="service-desc">Timeless, high-fashion coverage of your most significant milestones.</div>
+            </a>
+            <a href="/gallery" class="service-item">
+                <h2>Senior Portraits</h2>
+                <div class="service-desc">Confident, polished imagery for the next generation of leaders.</div>
+            </a>
+            <a href="/gallery" class="service-item">
+                <h2>Family & Couples</h2>
+                <div class="service-desc">Capturing connection through professional lighting and expert posing.</div>
+            </a>
+        </section>
+
+        <!-- MINIMAL CONTACT -->
+        <footer class="contact-section">
+            <h3>Start a Conversation</h3>
+            <a href="mailto:jerrad.johnson3@gmail.com" class="email-link">jerrad.johnson3@gmail.com</a>
+            <div class="phone-callout">
+                (605) 646-8941 — PLEASE TEXT FIRST
+            </div>
+            <div style="margin-top: 60px; font-size: 0.6rem; opacity: 0.4; letter-spacing: 2px;">
+                IDEAL PORTRAITS &copy; 2025 ALL RIGHTS RESERVED
+            </div>
+        </footer>
+
+    </main>
+
+</body>
+</html>

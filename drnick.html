@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ascensus Society | Elite Strategic Membership</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy: #0A0E17;
+            --gold: #D4AF37; /* Metallic Gold */
+            --silk: #FCFCFC;
+            --gray: #64748B;
+            --border: rgba(212, 175, 55, 0.3);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        .nav-logo img {
+    filter: brightness(0) saturate(100%);
+}
+
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: var(--silk); 
+            color: var(--navy); 
+            line-height: 1.7; 
+            -webkit-font-smoothing: antialiased;
+        }
+
+        h1, h2, h3, h4 { font-family: 'Playfair Display', serif; font-weight: 700; line-height: 1.2; }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 20px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background: rgba(252, 252, 252, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+        .nav-links { display: flex; gap: 30px; list-style: none; }
+        .nav-links a { text-decoration: none; color: var(--navy); font-size: 0.8rem; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; transition: 0.3s; }
+        .nav-links a:hover { color: var(--gold); }
+        .nav-logo img { height: 40px; width: auto; }
+
+        /* Buttons */
+        .cta-gold {
+            background: var(--gold);
+            color: white;
+            padding: 16px 32px;
+            text-decoration: none;
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            display: inline-block;
+            transition: 0.4s;
+            border: 1px solid var(--gold);
+        }
+        .cta-gold:hover { background: transparent; color: var(--gold); }
+
+        .cta-outline {
+            border: 1px solid var(--navy);
+            color: var(--navy);
+            padding: 14px 28px;
+            text-decoration: none;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: 0.3s;
+        }
+        .cta-outline:hover { background: var(--navy); color: white; }
+
+        /* Hero */
+        header {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background: linear-gradient(rgba(10, 14, 23, 0.7), rgba(10, 14, 23, 0.7)), 
+                        url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=2000');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding-top: 80px;
+        }
+        header .logo-hero { width: 220px; margin-bottom: 30px; filter: brightness(0) invert(1); }
+        header h1 { font-size: clamp(2.5rem, 5vw, 4.5rem); margin-bottom: 20px; }
+        header p { font-size: 1.2rem; max-width: 650px; margin: 0 auto 40px; font-weight: 300; color: #cbd5e1; }
+
+        /* Section Styling */
+        .section { padding: 140px 10%; }
+        .dark-section { background: var(--navy); color: white; }
+        .section-tag { color: var(--gold); text-transform: uppercase; letter-spacing: 4px; font-size: 0.8rem; display: block; margin-bottom: 15px; }
+        .section-title { font-size: 3rem; margin-bottom: 50px; }
+
+        /* Grid System */
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; }
+
+        /* Why Join Cards */
+        .benefit-item { border-left: 1px solid var(--border); padding-left: 30px; margin-bottom: 40px; }
+        .benefit-item h3 { margin-bottom: 10px; font-size: 1.5rem; }
+        .benefit-item p { color: var(--gray); font-size: 0.95rem; }
+
+        /* Service Cards */
+        .card { background: #111827; padding: 50px; border: 1px solid rgba(255,255,255,0.05); position: relative; }
+        .card h3 { font-size: 1.8rem; margin-bottom: 20px; color: var(--gold); }
+        .card ul { list-style: none; margin-bottom: 30px; }
+        .card li { margin-bottom: 12px; font-size: 0.9rem; color: #94a3b8; display: flex; gap: 10px; }
+        .card li::before { content: "→"; color: var(--gold); }
+
+        /* About Section */
+        .about-image-container { position: relative; }
+        .dr-nick-img { 
+            width: 100%; 
+            aspect-ratio: 1/1; 
+            object-fit: cover; 
+            border: 15px solid white; 
+            box-shadow: 0 30px 60px rgba(0,0,0,0.1); 
+        }
+        .experience-badge {
+            position: absolute;
+            bottom: -20px;
+            right: -20px;
+            background: var(--gold);
+            color: white;
+            padding: 20px;
+            font-family: 'Playfair Display';
+            font-size: 1.2rem;
+            text-align: center;
+        }
+
+        /* Membership Process */
+        .process-step { border-top: 1px solid rgba(0,0,0,0.1); padding: 30px 0; display: flex; justify-content: space-between; align-items: center; }
+        .step-info { display: flex; gap: 40px; align-items: center; }
+        .step-num { font-size: 1.5rem; font-family: 'Playfair Display'; color: var(--gold); }
+
+        /* Footer */
+        footer { padding: 80px 10%; background: #05070a; color: white; text-align: center; }
+        .footer-logo { width: 120px; margin-bottom: 30px; filter: brightness(0) invert(1); }
+        .footer-copy { font-size: 0.7rem; color: #475569; letter-spacing: 1px; text-transform: uppercase; }
+
+        @media (max-width: 900px) {
+            .grid-2, .grid-3 { grid-template-columns: 1fr; gap: 40px; }
+            nav .nav-links { display: none; }
+            header h1 { font-size: 2.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="nav-logo">
+            <img src="https://drnick.me/wp-content/uploads/2025/04/logo-1.png" alt="Ascensus Logo">
+        </div>
+        <ul class="nav-links">
+            <li><a href="#about">About</a></li>
+            <li><a href="#services">Mastermind</a></li>
+            <li><a href="#apply">Application</a></li>
+        </ul>
+        <a href="#apply" class="cta-outline">Request Entry</a>
+    </nav>
+
+    <header>
+        <div class="container">
+            <img src="https://drnick.me/wp-content/uploads/2025/04/logo-1.png" alt="Ascensus Logo" class="logo-hero">
+            <h1>The Gold Standard <br>of Strategic Growth.</h1>
+            <p>A private, invitation-only society for service-based business owners moving from high-performance to industry authority.</p>
+            <a href="#apply" class="cta-gold">Request Your Seat</a>
+        </div>
+    </header>
+
+    <section class="section" id="why">
+        <span class="section-tag">The Society</span>
+        <h2 class="section-title">Why Established Founders <br>Join Ascensus.</h2>
+        <div class="grid-2">
+            <div class="benefits-container">
+                <div class="benefit-item">
+                    <h3>Predictable Acceleration</h3>
+                    <p>Stop guessing. Implement the proprietary systems that scale service businesses with surgical precision.</p>
+                </div>
+                <div class="benefit-item">
+                    <h3>Elite Peer Intelligence</h3>
+                    <p>Gain access to the collective wisdom of business owners who have already solved the problems you’re facing.</p>
+                </div>
+                <div class="benefit-item">
+                    <h3>Radical Accountability</h3>
+                    <p>Through monthly "Hot Seats," we ensure your strategy is not just documented, but executed.</p>
+                </div>
+            </div>
+            <div>
+                <img src="https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&q=80&w=1000" alt="Strategy" style="width: 100%; box-shadow: 40px 40px 0px var(--gold);">
+            </div>
+        </div>
+    </section>
+
+    <section class="section dark-section" id="services">
+        <span class="section-tag">Core Offerings</span>
+        <h2 class="section-title" style="color: white;">Strategic Ecosystem</h2>
+        <div class="grid-3">
+            <div class="card">
+                <h3>Weekly Mastermind</h3>
+                <ul>
+                    <li>Wednesdays 6:30pm (UK)</li>
+                    <li>Offer & Pricing Strategy</li>
+                    <li>Live Hot Seats</li>
+                    <li>Member Resource Library</li>
+                </ul>
+                <a href="#apply" class="cta-gold" style="padding: 10px 20px; font-size: 0.6rem;">Inquire</a>
+            </div>
+            <div class="card">
+                <h3>Private Strategy</h3>
+                <ul>
+                    <li>30-60 Min Dedicated 1:1</li>
+                    <li>Personalized Roadmaps</li>
+                    <li>Accountability Tracking</li>
+                    <li>Direct Expert Access</li>
+                </ul>
+                <a href="#apply" class="cta-gold" style="padding: 10px 20px; font-size: 0.6rem;">Inquire</a>
+            </div>
+            <div class="card">
+                <h3>Luxury Events</h3>
+                <ul>
+                    <li>In-Person Gatherings</li>
+                    <li>Meaningful Networking</li>
+                    <li>Non-Pitch Environment</li>
+                    <li>Life-long Partnerships</li>
+                </ul>
+                <a href="#apply" class="cta-gold" style="padding: 10px 20px; font-size: 0.6rem;">Inquire</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="about">
+        <div class="grid-2">
+            <div class="about-image-container">
+                <img src="https://media.licdn.com/dms/image/v2/D4E03AQGrCea-vI5z6Q/profile-displayphoto-shrink_800_800/B4EZmfBDZTKgAc-/0/1759309478311?e=1768435200&v=beta&t=px9aODDRCWp3mpCiN3b98ucpTqav5mgu4U2Nhq_8FAE" alt="Dr Nick" class="dr-nick-img">
+                <div class="experience-badge">25+ Years <br>Expertise</div>
+            </div>
+            <div>
+                <span class="section-tag">The Host</span>
+                <h2 class="section-title">Dr. Nick</h2>
+                <p style="margin-bottom: 25px; font-size: 1.1rem; color: var(--gray);">Multi-award-winning growth consultant, MBA, and Doctorate holder. Dr. Nick has scaled service companies across education, construction, and marketing globally.</p>
+                <p style="margin-bottom: 30px; font-weight: 300;">"Ascensus Society is not for side-hustles. It is a disciplined growth environment for business owners who value a higher standard of strategic discussion."</p>
+                <a href="#apply" class="cta-outline">Read Full Biography</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="apply" style="background: #f8fafc;">
+        <div style="max-width: 800px; margin: 0 auto;">
+            <span class="section-tag" style="text-align: center; display: block;">The Path to Entry</span>
+            <h2 class="section-title" style="text-align: center;">Membership Selection</h2>
+            
+            <div class="process-step">
+                <div class="step-info"><span class="step-num">01</span> <span>Submit Application</span></div>
+                <span>Phase I</span>
+            </div>
+            <div class="process-step">
+                <div class="step-info"><span class="step-num">02</span> <span>Short Verification Call</span></div>
+                <span>Phase II</span>
+            </div>
+            <div class="process-step">
+                <div class="step-info"><span class="step-num">03</span> <span>Membership Confirmation</span></div>
+                <span>Phase III</span>
+            </div>
+            
+            <div style="background: var(--navy); color: white; padding: 40px; margin-top: 50px; text-align: center;">
+                <h4 style="font-size: 1.5rem; margin-bottom: 10px;">Membership Investment</h4>
+                <p style="color: var(--gold); font-size: 2rem; font-family: 'Playfair Display'; margin-bottom: 20px;">£495 / month</p>
+                <p style="font-size: 0.8rem; opacity: 0.7; margin-bottom: 30px;">Includes all sessions, resources, and private community access.</p>
+                <a href="#" class="cta-gold">Request Your Application</a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <img src="https://drnick.me/wp-content/uploads/2025/04/logo-1.png" alt="Logo" class="footer-logo">
+        <p class="footer-copy">© 2025 Ascensus Society | Handcrafted for Dr. Nick</p>
+        <p class="footer-copy" style="margin-top: 10px; opacity: 0.5;">Private Growth Environment • Service-Based Excellence</p>
+    </footer>
+
+</body>
+</html>
