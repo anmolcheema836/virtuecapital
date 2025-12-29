@@ -763,6 +763,8 @@
         // Display Results
         quizInterface.classList.add('hidden');
         resultScreen.classList.remove('hidden');
+        // ---> ADD THIS LINE HERE <---
+        enableAnswerReview(); 
 
         document.getElementById('result-player-name').textContent = playerName;
         document.getElementById('final-score').textContent = score;
@@ -813,7 +815,108 @@
             console.error(err);
         });
     }
+// --- NEW FEATURE: SHOW ANSWERS ---
+function enableAnswerReview() {
+    // Prevent creating buttons multiple times
+    if(document.getElementById('btn-show-answers')) return;
 
+    // 1. Create the Toggle Button
+    const btnShow = document.createElement('button');
+    btnShow.id = "btn-show-answers";
+    btnShow.className = "btn-next"; // Reusing your existing style
+    btnShow.style.marginTop = "15px";
+    btnShow.style.marginBottom = "15px";
+    btnShow.style.backgroundColor = "#4b5563"; // Dark grey to distinguish from restart
+    btnShow.textContent = "Show Detailed Solutions";
+    
+    // 2. Create the Container for the answers
+    const reviewContainer = document.createElement('div');
+    reviewContainer.id = "review-container";
+    reviewContainer.style.display = "none";
+    reviewContainer.style.textAlign = "left";
+    reviewContainer.style.paddingBottom = "50px";
+
+    // 3. Define what happens when clicked
+    btnShow.onclick = function() {
+        if (reviewContainer.style.display === "none") {
+            generateReviewContent(reviewContainer);
+            reviewContainer.style.display = "block";
+            btnShow.textContent = "Hide Solutions";
+            // Scroll to answers
+            reviewContainer.scrollIntoView({ behavior: 'smooth' });
+        } else {
+            reviewContainer.style.display = "none";
+            btnShow.textContent = "Show Detailed Solutions";
+        }
+    };
+
+    // 4. Insert these elements into the Result Screen
+    const scoreCard = document.querySelector('.score-card');
+    // Insert button after the score card
+    scoreCard.parentNode.insertBefore(btnShow, scoreCard.nextSibling);
+    // Insert container after the button
+    btnShow.parentNode.insertBefore(reviewContainer, btnShow.nextSibling);
+}
+
+function generateReviewContent(container) {
+    let html = '<h3 style="text-align:center; margin-top:20px;">Detailed Analysis</h3>';
+    
+    questionsData.forEach((q, index) => {
+        const userAns = userAnswers[index];
+        const correctAns = answerKey[index];
+        
+        // Determine status text
+        let statusHtml = '';
+        if (userAns === null) statusHtml = '<span style="color:#f59e0b; font-size:0.8rem;">Skipped</span>';
+        else if (userAns === correctAns) statusHtml = '<span style="color:#10b981; font-size:0.8rem;">Correct</span>';
+        else statusHtml = '<span style="color:#ef4444; font-size:0.8rem;">Wrong</span>';
+
+        html += `
+        <div style="background:white; border:1px solid #e5e7eb; padding:15px; margin-bottom:15px; border-radius:12px; box-shadow:0 2px 4px rgba(0,0,0,0.05);">
+            <div style="font-weight:600; margin-bottom:10px; display:flex; justify-content:space-between;">
+                <span>Q${index + 1}. ${q.q}</span>
+                <span style="margin-left:10px; white-space:nowrap;">${statusHtml}</span>
+            </div>
+            <ul style="list-style:none; padding:0; margin:0;">
+        `;
+
+        q.o.forEach((opt, optIndex) => {
+            let bg = 'transparent';
+            let border = '1px solid #f3f4f6';
+            let icon = '<div class="option-circle" style="width:15px; height:15px; margin-right:10px; transform:scale(0.8);"></div>';
+            
+            // LOGIC FOR COLORING
+            // 1. If this is the correct answer: GREEN
+            if (optIndex === correctAns) {
+                bg = '#ecfdf5'; // Light green bg
+                border = '1px solid #10b981';
+                icon = '<span style="margin-right:10px; color:#10b981;">✔</span>';
+            }
+            
+            // 2. If user picked this and it was wrong: RED
+            if (optIndex === userAns && userAns !== correctAns) {
+                bg = '#fef2f2'; // Light red bg
+                border = '1px solid #ef4444';
+                icon = '<span style="margin-right:10px; color:#ef4444;">✖</span>';
+            }
+
+            // 3. If user picked this and it was correct: Stronger Green
+            if (optIndex === userAns && userAns === correctAns) {
+                bg = '#d1fae5';
+            }
+
+            html += `
+                <li style="display:flex; align-items:center; padding:8px 10px; margin-bottom:5px; background:${bg}; border:${border}; border-radius:8px; font-size:0.95rem;">
+                    ${icon} ${opt}
+                </li>
+            `;
+        });
+
+        html += `</ul></div>`;
+    });
+
+    container.innerHTML = html;
+}
 </script>
 
 </body>
