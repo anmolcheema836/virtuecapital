@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ASP Jails Mock Test</title>
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --primary-dark: #1e40af;
+            --secondary-bg: #f3f4f6;
+            --white: #ffffff;
+            --text-dark: #1f2937;
+            --text-light: #6b7280;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+        }
+
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--secondary-bg);
+            color: var(--text-dark);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            background: var(--white);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            box-shadow: 0 0 20px rgba(0,0,0,0.05);
+        }
+
+        header {
+            background: var(--white);
+            padding: 15px 20px;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10;
+        }
+
+        h1 {
+            font-size: 1.2rem;
+            color: var(--primary-color);
+            margin: 0;
+            font-weight: 700;
+        }
+
+        .status-bar {
+            background: #f8fafc;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+            color: var(--text-light);
+            border-bottom: 1px solid #e5e7eb;
+            font-weight: 600;
+        }
+
+        .timer-badge {
+            background: #e0e7ff;
+            color: var(--primary-color);
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-variant-numeric: tabular-nums; /* Prevents jitter */
+        }
+        
+        .timer-badge.low-time {
+            background: #fee2e2;
+            color: #ef4444;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+
+        .content-area {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            padding-bottom: 80px;
+        }
+
+        #start-screen {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .input-group {
+            width: 100%;
+            margin: 25px 0;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 15px;
+            font-size: 1.1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            outline: none;
+            transition: border-color 0.3s;
+            text-align: center;
+        }
+
+        input[type="text"]:focus {
+            border-color: var(--primary-color);
+        }
+
+        .question-text {
+            font-size: 1.15rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            line-height: 1.6;
+            color: var(--text-dark);
+        }
+
+        .options-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .option-item {
+            background: var(--white);
+            border: 2px solid #e5e7eb;
+            padding: 15px;
+            margin-bottom: 12px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            font-size: 1rem;
+        }
+
+        .option-item:active {
+            transform: scale(0.98);
+        }
+
+        .option-item.selected {
+            border-color: var(--primary-color);
+            background-color: #eff6ff;
+            color: var(--primary-color);
+            font-weight: 500;
+        }
+
+        .option-circle {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid #cbd5e1;
+            margin-right: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .option-item.selected .option-circle {
+            border-color: var(--primary-color);
+            background: var(--primary-color);
+        }
+
+        .option-circle::after {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: white;
+            border-radius: 50%;
+            display: none;
+        }
+
+        .option-item.selected .option-circle::after {
+            display: block;
+        }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0; 
+            right: 0;
+            margin: 0 auto;
+            max-width: 600px;
+            background: var(--white);
+            padding: 15px 20px;
+            border-top: 1px solid #e5e7eb;
+            display: flex;
+            gap: 10px;
+            z-index: 100;
+            box-shadow: 0 -4px 10px rgba(0,0,0,0.05);
+        }
+
+        button {
+            border: none;
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s;
+            flex: 1;
+        }
+
+        button:active { opacity: 0.8; }
+        .btn-prev { background-color: #f3f4f6; color: var(--text-dark); flex: 0.5; }
+        .btn-next, .btn-submit, .btn-start { background-color: var(--primary-color); color: white; flex: 1.5; }
+        .btn-clear { background: transparent; color: var(--text-light); font-size: 0.8rem; flex: 0.5; text-decoration: underline; }
+        button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        .score-card {
+            background: var(--primary-color);
+            color: white;
+            padding: 30px;
+            border-radius: 20px;
+            margin-bottom: 25px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.3);
+        }
+
+        .score-big { font-size: 3rem; font-weight: 800; margin: 10px 0; }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-item {
+            background: white;
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid #e5e7eb;
+        }
+
+        .stat-value { display: block; font-size: 1.2rem; font-weight: 700; }
+        .stat-label { font-size: 0.8rem; color: var(--text-light); }
+        .text-green { color: var(--success); }
+        .text-red { color: var(--danger); }
+
+        .watermark {
+            text-align: center;
+            margin-top: 30px;
+            color: var(--text-light);
+            font-size: 0.85rem;
+            padding: 15px;
+            background: #f8fafc;
+            border-radius: 8px;
+            border: 1px dashed #cbd5e1;
+        }
+        
+        .watermark a { color: var(--primary-color); text-decoration: none; font-weight: bold; }
+        #save-status { text-align: center; font-weight: 600; margin-top: 10px; }
+        .hidden { display: none !important; }
+
+        #restore-msg {
+            background-color: #d1fae5;
+            color: #065f46;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+            text-align: center;
+            display: none;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    
+    <!-- HEADER -->
+    <header>
+        <h1>ASP Jails Mock Test</h1>
+        <div id="header-name" style="font-size: 0.9rem; font-weight: 600;"></div>
+    </header>
+
+    <!-- START SCREEN -->
+    <div id="start-screen">
+        <div style="margin-bottom: 20px;">
+            <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                <polyline points="14 2 14 8 20 8"></polyline>
+                <line x1="16" y1="13" x2="8" y2="13"></line>
+                <line x1="16" y1="17" x2="8" y2="17"></line>
+                <polyline points="10 9 9 9 8 9"></polyline>
+            </svg>
+        </div>
+        <h2>Welcome Candidate</h2>
+        <p style="color:#6b7280;">Enter your name to begin the test.</p>
+        <p style="color:#ef4444; font-weight:bold; font-size: 0.9rem;">Duration: 2 Hours</p>
+        
+        <div class="input-group">
+            <input type="text" id="user-name-input" placeholder="Enter Full Name" autocomplete="off">
+        </div>
+        
+        <button class="btn-start" onclick="initNewQuiz()">Start Test</button>
+    </div>
+
+    <!-- QUIZ INTERFACE -->
+    <div id="quiz-interface" class="hidden">
+        <div class="status-bar">
+            <span id="q-progress">Q 1 of 100</span>
+            <span class="timer-badge" id="timer">02:00:00</span>
+        </div>
+
+        <div class="content-area">
+            <div id="restore-msg">Session Restored</div>
+            <div class="question-text" id="question-text">
+                <!-- Question loaded here -->
+            </div>
+            
+            <ul class="options-list" id="options-list">
+                <!-- Options loaded here -->
+            </ul>
+
+            <div class="watermark" style="margin-top: 50px;">
+                Join Telegram: <a href="https://t.me/punjabjailwarder" target="_blank">@punjabjailwarder</a>
+            </div>
+        </div>
+
+        <div class="bottom-nav">
+            <button class="btn-prev" id="btn-prev" onclick="changeQuestion(-1)" disabled>Back</button>
+            <button class="btn-clear" onclick="clearSelection()">Clear</button>
+            <button class="btn-next" id="btn-next" onclick="changeQuestion(1)">Next</button>
+            <button class="btn-submit hidden" id="btn-finish" onclick="submitQuiz()">Submit</button>
+        </div>
+    </div>
+
+    <!-- RESULT SCREEN -->
+    <div id="result-screen" class="hidden content-area">
+        <h2 style="text-align: center;">Test Result</h2>
+        <p style="text-align: center; color: #6b7280; margin-top: -10px;" id="result-player-name"></p>
+
+        <div class="score-card">
+            <span>Total Score</span>
+            <div class="score-big" id="final-score">0</div>
+            <span style="font-size: 0.9rem; opacity: 0.9;">out of 100</span>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-item">
+                <span class="stat-value text-green" id="total-correct">0</span>
+                <span class="stat-label">Correct</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-value text-red" id="total-wrong">0</span>
+                <span class="stat-label">Wrong</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-value" style="color: #f59e0b;" id="total-skipped">0</span>
+                <span class="stat-label">Skipped</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-value" id="result-status">Completed</span>
+                <span class="stat-label">Status</span>
+            </div>
+        </div>
+
+        <div id="save-status" style="color: #2563eb;">Saving data...</div>
+
+        <button class="btn-start" style="margin-top: 20px; width: 100%; background-color:#ef4444;" onclick="hardReset()">Restart Test (Clear Data)</button>
+
+        <div class="watermark">
+            Join Telegram: <a href="https://t.me/punjabjailwarder" target="_blank">@punjabjailwarder</a>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    // ============================================
+    // CONFIGURATION
+    // ============================================
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzq-o1BFAXx6kvC0wEWrHDspVOx9RZUhR3pSWYPJFH5MCCFsFsX2W6l45pXYDJsjCCo/exec";
+    const QUIZ_DURATION_MS = 2 * 60 * 60 * 1000; // 2 Hours in Milliseconds
+
+    // Storage Keys
+    const KEY_NAME = 'asp_quiz_name';
+    const KEY_START_TIME = 'asp_quiz_start_ts';
+    const KEY_ANSWERS = 'asp_quiz_answers';
+    const KEY_SUBMITTED = 'asp_quiz_submitted';
+
+    // --- DATA ---
+    const answerKey = [
+        0, 0, 1, 1, 2, 3, 3, 0, 1, 1, // 1-10
+        3, 1, 1, 2, 3, 0, 1, 0, 1, 0, // 11-20
+        0, 3, 2, 2, 3, 1, 3, 0, 0, 1, // 21-30
+        1, 0, 2, 0, 1, 0, 0, 3, 2, 3, // 31-40
+        2, 3, 0, 0, 3, 0, 0, 3, 0, 3, // 41-50
+        0, 1, 0, 3, 1, 3, 3, 3, 2, 2, // 51-60
+        0, 1, 0, 3, 1, 3, 2, 1, 0, 3, // 61-70
+        2, 0, 1, 0, 0, 1, 2, 3, 3, 2, // 71-80
+        1, 2, 2, 3, 1, 2, 0, 0, 3, 2, // 81-90
+        2, 1, 0, 3, 2, 0, 1, 1, 0, 2  // 91-100
+    ];
+
+    const questionsData = [
+        { q: "ਖਾਸ ਨਾਂਵ ਦਾ ਦੂਜਾ ਨਾਮ ਕੀ ਹੈ?", o: ["ਨਿੱਜਵਾਚਕ ਨਾਂਵ", "ਜਾਤੀਵਾਚਕ ਨਾਂਵ", "ਸਮੂਹਵਾਚਕ ਨਾਂਵ", "ਕੋਈ ਨਹੀਂ"] },
+        { q: "ਇਨ੍ਹਾਂ ਵਿਚੋਂ ਕੰਬਵਾਂ ਵਿਅੰਜਨ ਕਿਹੜਾ ਹੈ?", o: ["ਰ", "ਵ", "ਸ", "ਯ"] },
+        { q: "ਉਹ ਕੁਰਸੀ ਸਾਡੀ ਹੈ। ਲਕੀਰ ਸ਼ਬਦ ਦਾ ਉੱਤਰ ਦੇਵੋ।", o: ["ਪੜਨਾਂਵ", "ਪੜਨਾਂਵੀ ਵਿਸ਼ੇਸ਼ਣ", "ਨਾਂਵ", "ਵਿਸ਼ੇਸ਼ਣ"] },
+        { q: "ਫਰਨੀਚਰ ਕੀ ਹੈ?", o: ["ਇੱਕ ਵਚਨ", "ਬਹੁ ਵਚਨ", "ਦੋਨੋਂ", "ਕੋਈ ਨਹੀਂ"] },
+        { q: "“ਖਾਲਸਾ” ਸ਼ਬਦ ਕਿਹੜੀ ਭਾਸ਼ਾ ਦਾ ਹੈ?", o: ["ਪੰਜਾਬੀ", "ਉਰਦੂ", "ਫਾਰਸੀ", "ਸੰਸਕ੍ਰਿਤ"] },
+        { q: "ਉਹ ਧਰਤੀ ਜਿਸ ਵਿੱਚ ਸ਼ੋਰ ਹੋਵੇ?", o: ["ਉਪਜਾਊ", "ਮੱਲ਼ਾ", "ਖੇਤਲੀ", "ਕੱਲਰ"] },
+        { q: "ਪੰਜਾਬੀ ਭਾਸ਼ਾ ਕਿਹੜੀ ਜਗ੍ਹਾ ਤੇ ਸਭ ਤੋਂ ਵੱਧ ਬੋਲੀ ਜਾਂਦੀ ਹੈ?", o: ["ਪੰਜਾਬ", "ਹਰਿਆਣਾ", "ਹਿਮਾਚਲ ਪ੍ਰਦੇਸ਼", "ਪਾਕਿਸਤਾਨ"] },
+        { q: "“ਨਿਜਾਤ” ਸ਼ਬਦ ਦਾ ਕੀ ਅਰਥ ਹੈ?", o: ["ਮੁਕਤੀ", "ਪ੍ਰਭੂ", "ਅਰਦਾਸ", "ਸਿੱਖਿਆ"] },
+        { q: "“ਮੱਤ” ਸ਼ਬਦ ਦਾ ਕੀ ਅਰਥ ਹੈ?", o: ["ਧਰਮ", "ਅਕਲ", "ਭੇਡਾਂ", "ਗੁਰੂ"] },
+        { q: "ਪਾਕਿਸਤਾਨ ਪੰਜਾਬ ਵਿੱਚ ਪੰਜਾਬੀ ਭਾਸ਼ਾ ਦੀ ਕਿਹੜੀ ਲਿੱਪੀ ਦੀ ਵਰਤੋਂ ਕੀਤੀ ਜਾਂਦੀ ਹੈ?", o: ["ਗੁਰਮੁਖੀ ਲਿੱਪੀ", "ਸ਼ਾਹਮੁਖੀ ਲਿੱਪੀ", "ਰੋਮਨ ਲਿੱਪੀ", "ਦੇਵਨਾਗਰੀ ਲਿੱਪੀ"] },
+        { q: "ਇਲਾਕੇ ਦੇ ਅਧਾਰ ਤੇ ਬੋਲੀ ਜਾਣ ਵਾਲੀ ਬੋਲੀ ਨੂੰ ਕੀ ਆਖਦੇ ਹਨ?", o: ["ਭਾਸ਼ਾ", "ਦੇਸੀ ਭਾਸ਼ਾ", "ਮਾਤ ਭਾਸ਼ਾ", "ਉਪ ਭਾਸ਼ਾ"] },
+        { q: "ਉਜੜੇ ਬਾਗਾਂ ਦੇ ਗਾਲੜ ਪਟਵਾਰੀ........", o: ["ਜਦੋਂ ਕੋਈ ਐਵੇਂ ਹੀ ਬਹਾਨਾ ਲੱਭ ਕੇ ਕਿਸੇ ਦੇ ਨੁਕਸ ਕੱਢੇ", "ਜਦੋਂ ਕਿਸੇ ਚੰਗੇ ਵਿਅਕਤੀ ਦੀ ਅਣਹੋਂਦ ਕਾਰਨ ਨਿਕੰਮੇ ਦੀ ਕਦਰ ਹੋਵੇ", "ਇਹ ਮੁਹਾਵਰਾ ਬੇਅਕਲਾਂ ਸ਼ਬਦਾਂ ਮੂਰਖਾਂ ਲਈ ਵਰਤਿਆ ਜਾਂਦਾ ਹੈ", "ਆਪਣੀ ਸਿਫ਼ਤ ਆਪ ਕਰਨ ਵਾਲੇ ਲਈ ਕਿਹਾ ਜਾਂਦਾ ਹੈ"] },
+        { q: "ਉੱਚਾ ਲੰਮਾ ਗਾਭਰੂ ...............?", o: ["ਜੇਬ ਖਾਲੀ", "ਪੱਲੇ ਠੀਕਰੀ", "ਪੱਲੇ ਨਹੀਂ ਧੇਲਾ", "ਜੇਬ ਪਾਟੀ"] },
+        { q: "Direction: Select the alternative which is the best substitute of the phrase.\nOne skilled in telling stories", o: ["Ventral", "Fanatic", "Raconteur", "Tyro"] },
+        { q: "Directions: Which phrase should replace the bold phrase to make the sentence correct?\nWhen I (go) to Paris, I shall visit the Eiffel Tower.", o: ["shall go", "will be going", "have to go", "No improvement"] },
+        { q: "Direction: Choose the one which can be substituted for the given words/sentence.\nA dramatic performance", o: ["Masque", "Matins", "Cosmocrat", "Bronco"] },
+        { q: "He said to his brother, “Why are you shouting so loudly?”", o: ["He asked his brother why he had been shouting so loudly.", "He asked his brother why he was shouting so loudly.", "He asked his brother why was he shouting so loudly.", "He said to his brother why he shouted so loudly."] },
+        { q: "Directions: Choose the one which best expresses the meaning of the given word.\nHEDGE", o: ["Confine", "Deceive", "Belittle", "Compete"] },
+        { q: "Find the incorrectly spelt word.", o: ["Bureaucratic", "Misdemeaneur", "Expropriate", "Capitulation"] },
+        { q: "Fill in the blanks with Prepositions.\nThe waves dashed ___ the shore.", o: ["against", "after", "over", "before"] },
+        { q: "We were all___ by the interesting war stories told by him.", o: ["enthralled", "subsumed", "involved", "coerced"] },
+        { q: "Find the grammatical error:\n(a) We have done everything\n(b) that can be done\n(c) to avert the storm which is now hiting the state.\n(d) No error.", o: ["a", "b", "c", "d"] },
+        { q: "Select the meaning of the idiom:\nOnce in a blue moon, we meet each other.", o: ["frequently", "hardly ever", "very seldom indeed", "in light of a blue moon"] },
+        { q: "Choose the word most nearly opposite in meaning to:\nLANK", o: ["Witty", "Timid", "Fat", "Dark"] },
+        { q: "A judge cannot discriminate ___ either of the parties.", o: ["out", "in", "from", "between"] },
+        { q: "Which of the following is billionth of a second?", o: ["Microsecond", "Nanosecond", "Terabyte", "Gigabyte"] },
+        { q: "Hardware devices that are not part of the main computer system and are often added later to the system are", o: ["Clip art", "Highlight", "Execute", "Peripherals"] },
+        { q: "A collection of 8 bits is called", o: ["byte", "record", "word", "nibble"] },
+        { q: "Which of the following Key is not found in normal computers / laptops?", o: ["Turn key", "Alt key", "del key", "shift key"] },
+        { q: "What is “P” stand for in MPEG?", o: ["Pixels", "Pictures", "Parts", "Protocol"] },
+        { q: "The point at which the flow of text in a document moves to the top of a new page-", o: ["Page insert", "Page break", "Page format", "All of the above"] },
+        { q: "Which among the following key combination can be used to search in Windows Explorer?", o: ["Ctrl+F", "Ctrl+S", "Ctrl+G", "Alt+S"] },
+        { q: "Which among the following is the shortcut key combination to copy formatting from text?", o: ["Alt + Shift + C", "Tab + Shift + C", "Ctrl + Shift + C", "F1 + Shift+C"] },
+        { q: "3 years ago, the ratio of age of A and B is 5: 4. C is 8 years younger than A. The present age of C is 4 times of D’s present age. Find the present age of B, if the age of D, after 7 years is 12 years?", o: ["23 years", "26 years", "28 years", "32 years"] },
+        { q: "A can do 3/5 of work in 15 days. Efficiency of B is 25% more than that of A. Both A and B started working together and left the work after five days. C completed the remaining work in 11 days. Efficiency of C is what percent more/less than that of A?", o: ["20% less", "25% more", "20% more", "25% less"] },
+        { q: "The mean wage of 150 labourers working in a factory running three shifts with 60, 40 and 50 labourers is Rs. 114. The mean wage of 60 labourers working in the first shift is Rs. 121.50 and that of 40 labourers working the second shift is Rs. 107.75. Find the mean wage of those who are working in the third shift.", o: ["Rs. 110", "Rs. 100", "Rs. 120", "Rs. 115.75"] },
+        { q: "The rates of simple interest in two banks x and y are in the ratio of 10: 8. Rajni wants to deposit her total savings in two banks in such a way that she receives equal half-yearly interest from both. She should deposit the savings in banks x and y in the ratio of", o: ["4:5", "3:5", "5:4", "2:1"] },
+        { q: "A person invested sum of the amount at the rate of 12% SI per annum for 5 years and received total amount of Rs. 48000. He invested the same sum at the rate of x % per annum compounded annually for two years and he received interest Rs. 900 less as compared to the Simple Interest for 2 years. Then find the value of x?", o: ["12", "8", "15", "10"] },
+        { q: "Train A crosses 450 m long platform in 42 seconds and the train also crosses a man running in opposite direction at speed of 12 kmph in 12.5 seconds. If train A crosses another z m long train B running in opposite direction at the speed of 30 kmph in 24 seconds, then find the value of z?", o: ["200m", "280 m", "350m", "420m"] },
+        { q: "A can complete 75% of the work in 15 days and B alone complete 60% of the work in 18 days. If A and B works alternatively starting from A and then B so on, in how many days half of the total work in completed?", o: ["5 days", "6 days", "4 days", "None of these"] },
+        { q: "A milkman has 50 litres mixture of milk and water in the ratio of 3: 2. If he sold 20 litres of the mixture and replaced by water and this process is repeated one more time, and then find the quantity of the milk in the final mixture?", o: ["8.8 litres", "9.8 litres", "10.8 litres", "12.8 litres"] },
+        { q: "A shopkeeper bought 30 kg of wheat at the rate of Rs. 45 per kg. He sold forty percent of the total quantity at the rate of Rs. 50 per kg. Approximately, at what price per kg, should he sell the remaining quantity to make 25% overall profit:", o: ["Rs 54", "Rs. 52", "Rs. 50", "Rs. 60"] },
+        { q: "A does half as much work as B in three-fourth of the time. If together they take 18 days to complete the work, how much time shall B take to do it?", o: ["30", "35", "40", "None of these"] },
+        { q: "Pragya spends 24% of her monthly income on food and 15% on the education of her children. Of the remaining salary, she spends 25% on entertainment and 20% on conveyance. She is now left with Rs. 10,736. What is the monthly salary of Pragya?", o: ["Rs. 32,000", "Rs. 28,000", "Rs. 31,200", "Rs. 33,000"] },
+        { q: "Rohit invested Rs 19500 in a bank which offers interest at a rate of 7% per annum for 5 years but due to urgent need he withdrew his investment after 3 years then find the amount he received after 3 years if the bank charges Rs 840 as penalty for early withdrawal?", o: ["24555", "21753", "23220", "None of these"] },
+        { q: "Looking at a portrait of a man, Harsh said, “His mother is the wife of my father’s son. Brothers and sisters I have none.” At whose portrait was Harish looking?", o: ["His Son", "His cousin", "His Uncle", "His nephew"] },
+        { q: "Find the missing term in the alphanumerical series:\n225, 7Y7, 14X9, 23W11, 34V13, ?", o: ["47U15", "47V14", "45U15", "27U24"] },
+        { q: "If A+ B means A is the brother of B; A % B means A is the father of B and A x B means A is the sister of B.\nWhich of the following means M is the uncle of P?", o: ["M%NxP", "NxP%M", "M+S%R%P", "M+K%TxP"] },
+        { q: "Which digit will appear on the face opposite to the face with number 4?\n(Given dice showing 2,6 on other faces, implying standard or specific logic)", o: ["3", "5", "6", "2/3"] },
+        { q: "Four out of Three are alike in a certain manner, find the different one:", o: ["Poland", "Greece", "Spain", "Korea"] },
+        { q: "A father said to his son, \"I was as old as you are at the present at the time of your birth\". If the father's age is 38 years now, the son's age five years back was: (Correct answer fixed based on logic: If Father 38 now, Son is 19. 5 years ago Son was 14)", o: ["14 years", "19 years", "33 years", "38 years"] },
+        { q: "If MADRAS can be written as ARSARS, how can ROOPNAGAR be written in that code?", o: ["OPARRONGR", "OPAARONGR", "OPAARRNGR", "OPAROONNR"] },
+        { q: "Relate the word in given logical pattern. Assam : Bihu :: Kerala :?", o: ["Kathakali", "Kuchipudi", "Kathak", "Bharatnatyam"] },
+        { q: "Four out of three are alike in a certain manner, find the different one:", o: ["Tonnes", "Quintals", "Grams", "Kilometres"] },
+        { q: "Find the next number in the given series:\n24, 60, 120, 210, ?", o: ["300", "336", "420", "525"] },
+        { q: "Relate the word in given logical pattern. Newspaper: Press :: Cloth : ?", o: ["Tailor", "Textile", "Fibre", "Mill"] },
+        { q: "In a row of children, Rama is 37th from the left and Sajan is 41th from the right. When they interchange their places among themselves, Rama becomes 18th from the left. Then what will be Sajan present position from the right?", o: ["11", "59", "60", "22"] },
+        { q: "Statements: All the pencils are pens. All the pens are inks.\nConclusions:\n(1) All the pencils are inks.\n(2) Some inks are pencils.", o: ["Only (1) conclusion follows", "Only (2) conclusion follows", "Either (1) or (2) follows", "Both (1) and (2) follow"] },
+        { q: "Karthi folk dance form of Punjab is performed by", o: ["Females only", "Males Only", "Both", "None of these"] },
+        { q: "Jeev Milkha Singh associated with which Sport", o: ["Cricket", "Hockey", "Golfer", "Runner"] },
+        { q: "Le Corbusier the Architect of Chandigarh was a", o: ["French architect", "Greek architect", "Russian architect", "Spanish architect"] },
+        { q: "Who was the Governor of Punjab for the shortest period of time?", o: ["Dutt Pande", "Hokeshe Seema", "Chandulal", "None of these"] },
+        { q: "In which battle was Sirajud-Daulah was defeated by Lord Clive?", o: ["Battle of Plassey", "Battle of Buxer", "Battle of Panipat", "Battle of Haldighati"] },
+        { q: "Who of the following people was not the member of boundary commission of Punjab?", o: ["Din Mohammad", "Mohammad Munir", "Mehar chand", "Clement Attlee"] },
+        { q: "Bohr ornament of women is worn on__", o: ["Ear", "Nose", "Neck", "Head"] },
+        { q: "In old Punjab Sun temple was situated in which city?", o: ["Amritsar", "Hoshairpur", "Peshawar", "Multan"] },
+        { q: "Who was the ‘Rajpramukh’ of PEPSU at the time of its creation?", o: ["Gian Singh Rarewala", "Jagatjit Singh", "Yadavindra Singh", "Raghbir Singh"] },
+        { q: "Sidh Gosht was compiled by which sikh guru?", o: ["Guru Gobind Singh Ji", "Guru Nanak Dev Ji", "Guru Angad Dev ji", "Guru Ramdas Ji"] },
+        { q: "Which district of Punjab having highest forest area after Hoshiarpur?", o: ["Ropar", "NawanSehar", "Pathankot", "Gurdaspur"] },
+        { q: "Who was not the member of Shah Commission in 1966?", o: ["J.S Shah", "S. Dutt", "M phillps", "Mehar Chand"] },
+        { q: "Which region of Punjab has maximum districts?", o: ["Doaba", "Majha", "Malwa", "None of these"] },
+        { q: "Namdhari movement is also known as", o: ["Kuka movement", "Singh sabha movement", "Nirankari movement", "Radhaswami movement"] },
+        { q: "Gurumukhi was standardized by", o: ["Guru Nanak Dev ji", "Guru Angad Dev ji", "Guru Teg Bahadur ji", "Guru Gobind Singh ji"] },
+        { q: "What is the Greek name of River Beas?", o: ["Hyphasis", "Hesidros", "Hydospes", "Hydroatis"] },
+        { q: "Who was the founder of Bhangi Misl?", o: ["Chhajja Singh", "Jassa Singh", "Nanak Singh", "Balak Singh"] },
+        { q: "In which of the following states Bonalu festival is celebrated?", o: ["Tamil Nadu", "Telangana", "Karnataka", "Kerala"] },
+        { q: "Azlan shah cup is associated with:", o: ["Cricket", "Golf", "Hockey", "Badminton"] },
+        { q: "How Many languages are present in the Eighth Schedule to the Constitution?", o: ["16", "18", "20", "22"] },
+        { q: "Which of the following does not constitute the electoral college for electing the President of India?", o: ["Elected members of the Lok Sabha", "Elected members of the Rajya Sabha", "Elected members of the state legislative assemblies", "Elected members of the legislative Council"] },
+        { q: "A judge of the Supreme Court can be impeached or removed from office only on the ground of", o: ["Gross inefficiency and Negligence", "Unsound mind and Insolvency", "Proved misbehavior or Incapacity", "Non-delivery of judgment"] },
+        { q: "The President gives his resignation to the", o: ["Chief Justice of India", "Vice President", "Prime Minister", "Attorney General"] },
+        { q: "Coolie is a famous work of....", o: ["Khushwant Singh", "V.S. Naipaul", "Mulk Raj Anand", "R.K. Narayan"] },
+        { q: "This personality is credited with the invention of e-mail?", o: ["T. Leo Burns", "Larry Page", "Ray Tomlinson", "None of these"] },
+        { q: "When did the Second Round Table conference took place?", o: ["1915", "1922", "1928", "1931"] },
+        { q: "Metals which chemically behave both as metals and non-metals is called.", o: ["alloys", "metalloids", "halogens", "chalkogens"] },
+        { q: "Match the following:\nNational Parks - States\n(a) Gir National Park - 1. Rajasthan\n(b) Corbet National Park - 2. Jharkhand\n(c) Rajkir National Park - 3. Gujarat\n(d) Ranthambore National Park - 4. Uttarakhand", o: ["2,4,3,1", "2,3,1,4", "3,4,2,1", "3,1,2,4"] },
+        { q: "Which of the following statements about Bhagat Singh are true?\n(i) In 1930, Bhagat Singh attacked the Chittagong armouries\n(ii) In 1929, Bhagat Singh and B.K Dutt threw a smoke bomb inside the Central Legislative Assembly Hall\n(iii) In 1925, Bhagat Singh formed Hindustan Republican Army", o: ["(ii) only", "(i) and (ii) only", "(i) and (iii) only", "(ii) and (iii) only"] },
+        { q: "The 86th Constitutional Amendment Act, 2002, has introduced the fundamental duty under 51 A(K) is", o: ["to provide free and compulsory educational opportunities to all the children until they attain the age of fourteen.", "To value the rich heritage of our composite culture", "To defend the country and render national service when called upon to do so", "To protect the natural environment"] },
+        { q: "Name the person who threw a bomb along with Bhagat Singh on the Central assembly in Delhi?", o: ["Sukh Dev", "SohanSingh", "Rajguru", "Batukeshwar Dutt"] },
+        { q: "Rabindranath Tagore renounced his knighthood in protest against.", o: ["Home Rule League", "Khilafat Movement", "Jallian Wala Bagh Massacre", "August Declaration"] },
+        { q: "The primary contaminant included in cigar smoke is", o: ["Carbon monoxide and dioxide", "Carbon monoxide and Nicotine", "Carbon monoxide and Benzene", "Dioxicine and benzene"] },
+        { q: "In which annual sessions of the Indian National Congress made the historic Purna Swaraj' declaration?", o: ["1907 Surat", "1929 Lahore", "1920 Nagpur", "1940 Karachi"] },
+        { q: "The instrument used to measure the atmospheric ozone concentration is", o: ["Dobsonmeter", "Barometer", "Hygrometer", "Anemometer"] },
+        { q: "The abbreviated term VVPAT stands for", o: ["Voter Verifiable Paper Account Trail", "Voter Visit Poll Account Trail", "Voter Vivid Press Audit Trail", "Voter Verifiable Paper Audit Trail"] },
+        { q: "Who has been awarded the PEN Pinter Prize 2024?", o: ["Amitav Ghosh", "Salman Rushdie", "Arundhati Roy", "Jhumpa Lahiri"] },
+        { q: "Which has become the 100th country to join the International Solar Alliance (ISA) as a full member?", o: ["Paraguay", "Brazil", "Kenya", "Ecuador"] },
+        { q: "Which country won the Sultan Azlan Shah Hockey Cup 2024?", o: ["Pakistan", "Japan", "India", "Malaysia"] },
+        { q: "Abdel Fattah al-Sisi was sworn in for his third term as the President of:", o: ["Oman", "Egypt", "Iraq", "Syria"] },
+        { q: "In April 2024, Who was appointed as the next Chief of the Indian Navy?", o: ["Dinesh K Tripathi", "Sanjay Jasjit Singh", "Rajesh Pendharkar", "Vennam Srinivas"] },
+        { q: "Who has been appointed as the first woman vice-chancellor of Aligarh Muslim University?", o: ["Ayesha Farooq", "Tasneem Fatma", "Naima Khatoon", "Shagufta jamal"] }
+    ];
+
+    // --- STATE VARIABLES ---
+    let currentQuestionIndex = 0;
+    let userAnswers = new Array(100).fill(null);
+    let quizStartTime = null;
+    let timerInterval;
+    let playerName = "";
+
+    // --- DOM REFERENCES ---
+    const qTextEl = document.getElementById('question-text');
+    const qOptionsEl = document.getElementById('options-list');
+    const qProgressEl = document.getElementById('q-progress');
+    const btnPrev = document.getElementById('btn-prev');
+    const btnNext = document.getElementById('btn-next');
+    const btnFinish = document.getElementById('btn-finish');
+    const timerEl = document.getElementById('timer');
+    const startScreen = document.getElementById('start-screen');
+    const quizInterface = document.getElementById('quiz-interface');
+    const resultScreen = document.getElementById('result-screen');
+    const headerName = document.getElementById('header-name');
+    const restoreMsg = document.getElementById('restore-msg');
+
+    // --- INITIALIZATION ---
+    window.onload = function() {
+        checkExistingSession();
+    };
+
+    function checkExistingSession() {
+        const storedName = localStorage.getItem(KEY_NAME);
+        const storedStart = localStorage.getItem(KEY_START_TIME);
+        const storedAnswers = localStorage.getItem(KEY_ANSWERS);
+        const storedSubmitted = localStorage.getItem(KEY_SUBMITTED);
+
+        // If previously submitted, clear or show start? 
+        // Logic: if submitted, let them start fresh. If active, restore.
+        if (storedSubmitted === 'true') {
+            localStorage.clear(); // Clean state for new run
+            return; 
+        }
+
+        if (storedName && storedStart) {
+            // Restore Session
+            playerName = storedName;
+            quizStartTime = parseInt(storedStart);
+            if (storedAnswers) {
+                userAnswers = JSON.parse(storedAnswers);
+            }
+
+            // Check if time expired while away
+            const now = Date.now();
+            const elapsed = now - quizStartTime;
+            if (elapsed >= QUIZ_DURATION_MS) {
+                alert("Time Expired while you were away!");
+                submitQuiz(true); // Force submit
+            } else {
+                // Resume
+                headerName.textContent = playerName;
+                startScreen.classList.add('hidden');
+                quizInterface.classList.remove('hidden');
+                restoreMsg.style.display = 'block';
+                setTimeout(() => restoreMsg.style.display = 'none', 3000);
+                
+                loadQuestion(0);
+                startTimer();
+            }
+        }
+    }
+
+    function initNewQuiz() {
+        const nameInput = document.getElementById('user-name-input');
+        if (nameInput.value.trim() === "") {
+            alert("Please enter your name!");
+            return;
+        }
+        
+        // Set State
+        playerName = nameInput.value.trim();
+        quizStartTime = Date.now();
+        userAnswers = new Array(100).fill(null);
+
+        // Save to Storage
+        localStorage.setItem(KEY_NAME, playerName);
+        localStorage.setItem(KEY_START_TIME, quizStartTime);
+        localStorage.setItem(KEY_ANSWERS, JSON.stringify(userAnswers));
+        localStorage.setItem(KEY_SUBMITTED, 'false');
+
+        // UI Updates
+        headerName.textContent = playerName;
+        startScreen.classList.add('hidden');
+        quizInterface.classList.remove('hidden');
+
+        loadQuestion(0);
+        startTimer();
+    }
+
+    function startTimer() {
+        // Update immediately
+        updateTimerDisplay();
+
+        timerInterval = setInterval(() => {
+            const isFinished = updateTimerDisplay();
+            if (isFinished) {
+                clearInterval(timerInterval);
+                alert("Time is up! Submitting your test automatically.");
+                submitQuiz(true);
+            }
+        }, 1000);
+    }
+
+    function updateTimerDisplay() {
+        const now = Date.now();
+        const elapsed = now - quizStartTime;
+        const remaining = QUIZ_DURATION_MS - elapsed;
+
+        if (remaining <= 0) {
+            timerEl.textContent = "00:00:00";
+            return true; // Finished
+        }
+
+        const totalSeconds = Math.floor(remaining / 1000);
+        const h = Math.floor(totalSeconds / 3600);
+        const m = Math.floor((totalSeconds % 3600) / 60);
+        const s = totalSeconds % 60;
+
+        const timeString = 
+            String(h).padStart(2, '0') + ":" + 
+            String(m).padStart(2, '0') + ":" + 
+            String(s).padStart(2, '0');
+        
+        timerEl.textContent = timeString;
+
+        // Visual alert if less than 5 mins
+        if (remaining < 5 * 60 * 1000) {
+            timerEl.classList.add('low-time');
+        }
+
+        return false;
+    }
+
+    function loadQuestion(index) {
+        currentQuestionIndex = index;
+        const qData = questionsData[index];
+        
+        qProgressEl.textContent = `Q ${index + 1} of 100`;
+        qTextEl.textContent = `${index + 1}. ${qData.q}`;
+        qOptionsEl.innerHTML = '';
+
+        qData.o.forEach((opt, idx) => {
+            const li = document.createElement('li');
+            li.className = 'option-item';
+            
+            if (userAnswers[index] === idx) {
+                li.classList.add('selected');
+            }
+            
+            li.onclick = () => selectOption(idx);
+
+            const circle = document.createElement('div');
+            circle.className = 'option-circle';
+            const textNode = document.createTextNode(opt);
+
+            li.appendChild(circle);
+            li.appendChild(textNode);
+            qOptionsEl.appendChild(li);
+        });
+
+        // Navigation state
+        btnPrev.disabled = index === 0;
+        if (index === 99) {
+            btnNext.classList.add('hidden');
+            btnFinish.classList.remove('hidden');
+        } else {
+            btnNext.classList.remove('hidden');
+            btnFinish.classList.add('hidden');
+        }
+    }
+
+    function selectOption(optionIndex) {
+        userAnswers[currentQuestionIndex] = optionIndex;
+        
+        // Update Storage Immediately
+        localStorage.setItem(KEY_ANSWERS, JSON.stringify(userAnswers));
+        
+        // Update UI
+        const options = qOptionsEl.children;
+        for (let i = 0; i < options.length; i++) {
+            options[i].classList.remove('selected');
+        }
+        options[optionIndex].classList.add('selected');
+    }
+
+    function clearSelection() {
+        userAnswers[currentQuestionIndex] = null;
+        localStorage.setItem(KEY_ANSWERS, JSON.stringify(userAnswers)); // Update Storage
+
+        const options = qOptionsEl.children;
+        for (let i = 0; i < options.length; i++) {
+            options[i].classList.remove('selected');
+        }
+    }
+
+    function changeQuestion(dir) {
+        const newIndex = currentQuestionIndex + dir;
+        if (newIndex >= 0 && newIndex < 100) {
+            loadQuestion(newIndex);
+        }
+    }
+
+    function submitQuiz(force = false) {
+        if (!force && !confirm("Are you sure you want to submit the test?")) return;
+        
+        clearInterval(timerInterval);
+        
+        // Mark as submitted in storage so refresh doesn't restart timer
+        localStorage.setItem(KEY_SUBMITTED, 'true');
+
+        let score = 0;
+        let correct = 0;
+        let wrong = 0;
+        let skipped = 0;
+
+        for (let i = 0; i < 100; i++) {
+            const userAns = userAnswers[i];
+            const correctAns = answerKey[i];
+
+            if (userAns === null) {
+                skipped++;
+            } else if (userAns === correctAns) {
+                correct++;
+                score += 1;
+            } else {
+                wrong++;
+                score -= 0.25;
+            }
+        }
+
+        // Display Results
+        quizInterface.classList.add('hidden');
+        resultScreen.classList.remove('hidden');
+
+        document.getElementById('result-player-name').textContent = playerName;
+        document.getElementById('final-score').textContent = score;
+        document.getElementById('total-correct').textContent = correct;
+        document.getElementById('total-wrong').textContent = wrong;
+        document.getElementById('total-skipped').textContent = skipped;
+        
+        if(force) {
+            document.getElementById('result-status').textContent = "Time Expired";
+            document.getElementById('result-status').style.color = "#ef4444";
+        }
+
+        // Send to Google Sheet
+        sendDataToSheet(playerName, score, correct, wrong, skipped);
+    }
+
+    function hardReset() {
+        if(confirm("This will clear all test data and allow you to start a fresh test. Continue?")) {
+            localStorage.clear();
+            location.reload();
+        }
+    }
+
+    function sendDataToSheet(name, score, correct, wrong, skipped) {
+        const statusMsg = document.getElementById('save-status');
+        
+        const data = {
+            name: name,
+            score: score,
+            correct: correct,
+            wrong: wrong,
+            skipped: skipped
+        };
+
+        fetch(GOOGLE_SCRIPT_URL, {
+            method: "POST",
+            body: JSON.stringify(data),
+            mode: "no-cors", 
+            headers: {
+                "Content-Type": "application/json"
+            }
+        }).then(() => {
+            statusMsg.textContent = "✔ Results saved successfully!";
+            statusMsg.style.color = "#10b981";
+        }).catch(err => {
+            statusMsg.textContent = "⚠ Error saving results.";
+            statusMsg.style.color = "#ef4444";
+            console.error(err);
+        });
+    }
+
+</script>
+
+</body>
+</html>
