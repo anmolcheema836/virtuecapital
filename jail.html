@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PSSSB Jail Warder Mock Test (Full) - Cheema Group</title>
+    <style>
+        :root {
+            --primary: #0d6efd;
+            --secondary: #6c757d;
+            --success: #198754;
+            --danger: #dc3545;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --telegram: #0088cc;
+            --bg-color: #eef2f7;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 900px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.1);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 80vh;
+        }
+
+        /* --- Screens --- */
+        .screen {
+            padding: 30px;
+            display: none;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .active { display: flex; }
+
+        /* --- Header & Branding --- */
+        .brand-header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        .brand-header h1 {
+            color: var(--dark);
+            font-size: 1.8rem;
+            margin: 0 0 10px 0;
+        }
+        .brand-header p {
+            color: var(--secondary);
+            margin: 0;
+        }
+
+        /* --- Quiz Area --- */
+        .quiz-top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--light);
+            padding: 10px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-weight: bold;
+            color: var(--dark);
+        }
+
+        .question-text {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+
+        .options-grid {
+            display: grid;
+            gap: 12px;
+        }
+
+        .option-btn {
+            padding: 16px 20px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            background: white;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 1rem;
+            color: #495057;
+            position: relative;
+        }
+
+        .option-btn:hover {
+            border-color: var(--primary);
+            background-color: #f8fbff;
+        }
+
+        .option-btn.selected {
+            background-color: #e7f1ff;
+            border-color: var(--primary);
+            color: var(--primary);
+            font-weight: 700;
+            box-shadow: 0 0 0 1px var(--primary);
+        }
+
+        /* --- Navigation --- */
+        .nav-footer {
+            margin-top: auto;
+            padding-top: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* --- Watermark --- */
+        .watermark {
+            margin-top: 20px;
+            padding: 12px;
+            background-color: #f0f8ff;
+            border: 1px dashed var(--telegram);
+            border-radius: 6px;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #555;
+        }
+        .watermark a {
+            color: var(--telegram);
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        /* --- Result Section --- */
+        .score-box {
+            background: var(--dark);
+            color: white;
+            padding: 25px;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        .score-val { font-size: 3.5rem; font-weight: 700; line-height: 1; }
+        .score-label { font-size: 1rem; opacity: 0.8; }
+
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        .stat-card {
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            color: white;
+        }
+        .bg-success { background-color: var(--success); }
+        .bg-danger { background-color: var(--danger); }
+        .bg-secondary { background-color: var(--secondary); }
+
+        .review-panel {
+            height: 400px;
+            overflow-y: auto;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 15px;
+            background: #fff;
+        }
+        .review-item {
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 10px;
+        }
+        .review-item:last-child { border-bottom: none; }
+        .ans-row { margin-top: 5px; font-size: 0.95rem; }
+        .ans-correct { color: var(--success); font-weight: bold; }
+        .ans-wrong { color: var(--danger); font-weight: bold; }
+
+        /* --- Buttons --- */
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1rem;
+            color: white;
+            transition: opacity 0.2s;
+        }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .btn-primary { background-color: var(--primary); }
+        .btn-secondary { background-color: var(--secondary); }
+        .btn-success { background-color: var(--success); }
+        .btn-warning { background-color: #ffc107; color: #333; }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #ccc; border-radius: 4px; }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+
+    <!-- 1. START SCREEN -->
+    <div id="start-screen" class="screen active">
+        <div class="brand-header">
+            <h1>PSSSB Jail Warder Mock Test 2025</h1>
+            <p>Created by Cheema</p>
+        </div>
+
+        <div style="background: #e9ecef; padding: 25px; border-radius: 10px; margin-bottom: 30px;">
+            <h3 style="margin-top:0;">📋 Instructions</h3>
+            <ul style="line-height: 1.8;">
+                <li><strong>Total Questions:</strong> <span id="total-info"></span> MCQs (Part A & B)</li>
+                <li><strong>Positive Marking:</strong> +1 Mark</li>
+                <li><strong>Negative Marking:</strong> -0.25 Mark</li>
+                <li><strong>Unattempted:</strong> 0 Mark</li>
+                <li><strong>Navigation:</strong> Move Next/Previous freely.</li>
+                <li><strong>Result:</strong> Shown after clicking Submit.</li>
+            </ul>
+        </div>
+
+        <div style="text-align: center; margin-top: auto;">
+            <button class="btn btn-primary" onclick="startTest()">Start Test Now</button>
+        </div>
+
+        <div class="watermark">
+            Join Group: <a href="https://t.me/punjabjailwarder" target="_blank">t.me/punjabjailwarder</a>
+        </div>
+    </div>
+
+    <!-- 2. QUIZ SCREEN -->
+    <div id="quiz-screen" class="screen">
+        <div class="quiz-top-bar">
+            <span>Question <span id="curr-q">1</span> / <span id="total-q">100</span></span>
+            <span style="color: var(--primary);">Time: <span id="timer">00:00</span></span>
+        </div>
+
+        <div class="question-text" id="question-text">Loading Question...</div>
+        
+        <div class="options-grid" id="options-area">
+            <!-- Options injected by JS -->
+        </div>
+
+        <div class="watermark">
+            Created by Cheema | Join: <a href="https://t.me/punjabjailwarder" target="_blank">t.me/punjabjailwarder</a>
+        </div>
+
+        <div class="nav-footer">
+            <button class="btn btn-secondary" id="prev-btn" onclick="changeQuestion(-1)">Previous</button>
+            <button class="btn btn-primary" id="next-btn" onclick="changeQuestion(1)">Next</button>
+            <button class="btn btn-success" id="submit-btn" style="display:none;" onclick="submitTest()">Submit Test</button>
+        </div>
+    </div>
+
+    <!-- 3. RESULT SCREEN -->
+    <div id="result-screen" class="screen">
+        <div class="brand-header">
+            <h1>Result Card</h1>
+        </div>
+
+        <div class="score-box">
+            <div class="score-val" id="final-score">0.00</div>
+            <div class="score-label">Total Marks (Out of <span id="max-marks"></span>)</div>
+        </div>
+
+        <div class="stats-row">
+            <div class="stat-card bg-success">
+                <div style="font-size: 1.5rem; font-weight:bold;" id="res-correct">0</div>
+                <div>Correct (+1)</div>
+            </div>
+            <div class="stat-card bg-danger">
+                <div style="font-size: 1.5rem; font-weight:bold;" id="res-wrong">0</div>
+                <div>Wrong (-0.25)</div>
+            </div>
+            <div class="stat-card bg-secondary">
+                <div style="font-size: 1.5rem; font-weight:bold;" id="res-skip">0</div>
+                <div>Unattempted</div>
+            </div>
+        </div>
+
+        <h3>📝 Detailed Answer Key</h3>
+        <div class="review-panel" id="review-list">
+            <!-- Review Items -->
+        </div>
+
+        <div class="watermark">
+            Join for more tests: <a href="https://t.me/punjabjailwarder" target="_blank">t.me/punjabjailwarder</a>
+        </div>
+
+        <div style="text-align: center; margin-top: 20px;">
+            <button class="btn btn-warning" onclick="location.reload()">Retake Test</button>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    // --- FULL QUESTION DATABASE ---
+    // Extracted from the provided PSSSB Mock Test text
+    const questionDB = [
+        // PART A: PUNJABI (50 Questions)
+        { t: "ਜਪੁਜੀ ਸਾਹਿਬ ਦੀ ਰਚਨਾ ਕਿਸ ਗੁਰੂ ਸਾਹਿਬ ਨੇ ਕੀਤੀ?", o: ["ਗੁਰੂ ਅੰਗਦ ਦੇਵ ਜੀ", "ਗੁਰੂ ਨਾਨਕ ਦੇਵ ਜੀ", "ਗੁਰੂ ਅਰਜਨ ਦੇਵ ਜੀ", "ਗੁਰੂ ਗੋਬਿੰਦ ਸਿੰਘ ਜੀ"], a: 1 },
+        { t: "ਗੁਰੂ ਅੰਗਦ ਦੇਵ ਜੀ ਨੇ ਕਿਸ ਲਿਪੀ ਨੂੰ ਪ੍ਰਚਲਿਤ ਕੀਤਾ?", o: ["ਦੇਵਨਾਗਰੀ", "ਫਾਰਸੀ", "ਗੁਰਮੁਖੀ", "ਬਰਾਹਮੀ"], a: 2 },
+        { t: "ਸੁਖਮਨੀ ਸਾਹਿਬ ਦੀ ਰਚਨਾ ਕਿਸ ਗੁਰੂ ਸਾਹਿਬ ਦੀ ਹੈ?", o: ["ਗੁਰੂ ਨਾਨਕ ਦੇਵ ਜੀ", "ਗੁਰੂ ਰਾਮਦਾਸ ਜੀ", "ਗੁਰੂ ਅਰਜਨ ਦੇਵ ਜੀ", "ਗੁਰੂ ਤੇਗ ਬਹਾਦਰ ਜੀ"], a: 2 },
+        { t: "ਗੁਰੂ ਗੋਬਿੰਦ ਸਿੰਘ ਜੀ ਦੀ ਪ੍ਰਸਿੱਧ ਰਚਨਾ ਕਿਹੜੀ ਹੈ?", o: ["ਆਸਾ ਦੀ ਵਾਰ", "ਜਾਪ ਸਾਹਿਬ", "ਸਿਧ ਗੋਸਟ", "ਬਾਰਾਂ ਮਾਹ"], a: 1 },
+        { t: "“ਸੂਰਜ” ਦਾ ਸਮਾਨਾਰਥਕ ਸ਼ਬਦ ਕਿਹੜਾ ਹੈ?", o: ["ਚੰਦਰਮਾ", "ਭਾਨੁ", "ਤਾਰਾ", "ਅੰਧਕਾਰ"], a: 1 },
+        { t: "“ਅੰਧਕਾਰ” ਦਾ ਵਿਰੋਧਾਰਥਕ ਸ਼ਬਦ ਹੈ—", o: ["ਹਨੇਰਾ", "ਕਾਲਾ", "ਚਾਨਣ", "ਧੁੰਦ"], a: 2 },
+        { t: "“ਮਿੱਤਰ” ਦਾ ਸਮਾਨਾਰਥਕ ਸ਼ਬਦ ਨਹੀਂ ਹੈ—", o: ["ਦੋਸਤ", "ਸਾਥੀ", "ਵੈਰੀ", "ਸੱਜਣ"], a: 2 },
+        { t: "“ਅੱਖਾਂ ਵਿੱਚ ਧੂੜ ਪਾਉਣਾ” ਦਾ ਅਰਥ ਹੈ—", o: ["ਸੱਚ ਦੱਸਣਾ", "ਧੋਖਾ ਦੇਣਾ", "ਮਦਦ ਕਰਨਾ", "ਡਰਨਾ"], a: 1 },
+        { t: "“ਜੈਸਾ ਬੀਜੋਗੇ, ਵੈਸਾ ਵੱਢੋਗੇ” ਕਿਸ ਕਿਸਮ ਦਾ ਹੈ?", o: ["ਮੁਹਾਵਰਾ", "ਸਮਾਨਾਰਥਕ", "ਅਖਾਣ", "ਵਿਰੋਧਾਰਥਕ"], a: 2 },
+        { t: "“ਨੱਕ ਕਟਾਉਣਾ” ਦਾ ਭਾਵ ਕੀ ਹੈ?", o: ["ਗੁੱਸਾ ਕਰਨਾ", "ਬੇਇੱਜਤੀ ਕਰਵਾਉਣਾ", "ਖੁਸ਼ ਹੋਣਾ", "ਮਾਣ ਮਹਿਸੂਸ ਕਰਨਾ"], a: 1 },
+        { t: "“ਪਾਠਕ” ਸ਼ਬਦ ਕਿਸ ਭੇਦ ਨਾਲ ਸੰਬੰਧਿਤ ਹੈ?", o: ["ਸੰਗਿਆ", "ਸਰਵਨਾਮ", "ਵਿਸ਼ੇਸ਼ਣ", "ਕਿਰਿਆ"], a: 0 },
+        { t: "“ਅਸੱਚ” ਵਿੱਚ “ਅ” ਕੀ ਹੈ?", o: ["ਪਿਛੇਤਰ", "ਮੂਲ ਸ਼ਬਦ", "ਅਗੇਤਰ", "ਸਮਾਸ"], a: 2 },
+        { t: "“ਸੁੰਦਰਤਾ” ਵਿੱਚ “ਤਾ” ਕੀ ਹੈ?", o: ["ਅਗੇਤਰ", "ਪਿਛੇਤਰ", "ਮੂਲ ਸ਼ਬਦ", "ਲਿੰਗ"], a: 1 },
+        { t: "“ਲੜਕਾ” ਦਾ ਬਹੁਵਚਨ ਕੀ ਹੈ?", o: ["ਲੜਕੇ", "ਲੜਕੀਆਂ", "ਲੜਕਾਪਣ", "ਲੜਕਿਓ"], a: 0 },
+        { t: "“ਰਾਜਾ” ਦਾ ਇਸਤਰੀ ਲਿੰਗ ਕੀ ਹੈ?", o: ["ਰਾਣੀ", "ਰਾਜਕੁਮਾਰੀ", "ਦੇਵੀ", "ਮਹਿਲਾ"], a: 0 },
+        { t: "ਪ੍ਰਸ਼ਨਵਾਚਕ ਵਾਕ ਦੇ ਅੰਤ ਵਿੱਚ ਕਿਹੜਾ ਚਿੰਨ੍ਹ ਲਗਦਾ ਹੈ?", o: ["।", ",", "?", "!"], a: 2 },
+        { t: "ਹੈਰਾਨੀ ਜਾਂ ਭਾਵਨਾ ਦਰਸਾਉਣ ਲਈ ਵਰਤਿਆ ਜਾਂਦਾ ਹੈ—", o: ["ਪੁਰਨ ਵਿਸਰਾਮ", "ਅਰਧ ਵਿਸਰਾਮ", "ਵਿਸਮਿਕ ਚਿੰਨ੍ਹ", "ਕੋਮਾ"], a: 2 },
+        { t: "ਕਿਹੜਾ ਸ਼ਬਦ ਸ਼ੁੱਧ ਹੈ?", o: ["ਵਿਦਿਆਰਥੀ", "ਵਿਦਿਆਰਥੀਅ", "ਵਿਦਿਆਰਥੀਯ", "ਵਿਦਿਆਰਥਿ"], a: 0 },
+        { t: "“ਸੰਸਾਰ” ਦਾ ਸ਼ੁੱਧ ਉਚਾਰਨ ਹੈ—", o: ["ਸੰਸਾਰ", "ਸੰਸਾਰਾ", "ਸੰਸਕਰ", "ਸੰਸਾਰੀ"], a: 0 },
+        { t: "“Hospital” ਦਾ ਸ਼ੁੱਧ ਪੰਜਾਬੀ ਰੂਪ ਹੈ—", o: ["ਦਵਾਖਾਨਾ", "ਹਸਪਤਾਲ", "ਚਿਕਿਤਸਾਲਯ", "ਦਵਾਈਘਰ"], a: 1 },
+        { t: "“School” ਦਾ ਪੰਜਾਬੀ ਰੂਪ ਕੀ ਹੈ?", o: ["ਵਿਦਿਆਲੇ", "ਸਕੂਲ", "ਪਾਠਸ਼ਾਲਾ", "ਦੋਵੇਂ (B) ਅਤੇ (C)"], a: 1 },
+        { t: "“January” ਦਾ ਪੰਜਾਬੀ ਮਹੀਨਾ ਕਿਹੜਾ ਹੈ?", o: ["ਮਾਘ", "ਚੇਤ", "ਪੁੱਸ", "ਫੱਗਣ"], a: 0 },
+        { t: "“ਸੱਤਵਾਂ ਦਿਨ” ਕਿਹੜਾ ਹੈ?", o: ["ਸ਼ੁੱਕਰਵਾਰ", "ਐਤਵਾਰ", "ਸ਼ਨੀਵਾਰ", "ਸੋਮਵਾਰ"], a: 2 },
+        { t: "ਗੁਰਮੁਖੀ ਲਿਪੀ ਕਿਸ ਭਾਸ਼ਾ ਨਾਲ ਸੰਬੰਧਿਤ ਹੈ?", o: ["ਹਿੰਦੀ", "ਪੰਜਾਬੀ", "ਉਰਦੂ", "ਸੰਸਕ੍ਰਿਤ"], a: 1 },
+        { t: "ਭੰਗੜਾ ਕਿਸ ਖੇਤਰ ਨਾਲ ਜੁੜਿਆ ਲੋਕ ਨਾਚ ਹੈ?", o: ["ਮਾਲਵਾ", "ਮਾਝਾ", "ਦੋਆਬਾ", "ਪੂਰਾ ਪੰਜਾਬ"], a: 3 },
+        { t: "ਗੁਰੂ ਅਰਜਨ ਦੇਵ ਜੀ ਵੱਲੋਂ ਸੰਪਾਦਿਤ ਆਦਿ ਗ੍ਰੰਥ ਸਾਹਿਬ ਵਿੱਚ ਕਿਸ ਗੁਰੂ ਸਾਹਿਬ ਦੀ ਬਾਣੀ ਸ਼ਾਮਲ ਨਹੀਂ?", o: ["ਗੁਰੂ ਨਾਨਕ ਦੇਵ ਜੀ", "ਗੁਰੂ ਅੰਗਦ ਦੇਵ ਜੀ", "ਗੁਰੂ ਤੇਗ ਬਹਾਦਰ ਜੀ", "ਗੁਰੂ ਰਾਮਦਾਸ ਜੀ"], a: 2 },
+        { t: "ਗੁਰੂ ਗੋਬਿੰਦ ਸਿੰਘ ਜੀ ਵੱਲੋਂ ਖਾਲਸਾ ਪੰਥ ਦੀ ਸਿਰਜਣਾ ਦਾ ਮੁੱਖ ਉਦੇਸ਼ ਕੀ ਸੀ?", o: ["ਧਾਰਮਿਕ ਪ੍ਰਚਾਰ", "ਰਾਜਨੀਤਿਕ ਸ਼ਕਤੀ", "ਧਰਮ ਅਤੇ ਨਿਆਂ ਦੀ ਰੱਖਿਆ", "ਸਿੱਖ ਸੰਸਥਾਵਾਂ ਦੀ ਸਥਾਪਨਾ"], a: 2 },
+        { t: "“ਬਾਰਾਂ ਮਾਹ” ਰਚਨਾ ਕਿਸ ਗੁਰੂ ਸਾਹਿਬ ਨਾਲ ਸੰਬੰਧਿਤ ਹੈ?", o: ["ਗੁਰੂ ਨਾਨਕ ਦੇਵ ਜੀ", "ਗੁਰੂ ਅਰਜਨ ਦੇਵ ਜੀ", "ਗੁਰੂ ਤੇਗ ਬਹਾਦਰ ਜੀ", "ਗੁਰੂ ਗੋਬਿੰਦ ਸਿੰਘ ਜੀ"], a: 0 },
+        { t: "“ਸਾਹਸ” ਦਾ ਸਭ ਤੋਂ ਨਜ਼ਦੀਕੀ ਸਮਾਨਾਰਥਕ ਸ਼ਬਦ ਕਿਹੜਾ ਹੈ?", o: ["ਡਰ", "ਹੌਸਲਾ", "ਕੂਰਤਾ", "ਅਹੰਕਾਰ"], a: 1 },
+        { t: "“ਸਰਲਤਾ” ਦਾ ਸਹੀ ਵਿਰੋਧਾਰਥਕ ਸ਼ਬਦ ਹੈ—", o: ["ਸਾਦਗੀ", "ਸੁਗਮਤਾ", "ਜਟਿਲਤਾ", "ਸੁਭਾਵਿਕਤਾ"], a: 2 },
+        { t: "“ਘਰ ਦੀ ਮੁਰਗੀ ਦਾਲ ਬਰਾਬਰ” ਅਖਾਣ ਦਾ ਭਾਵ ਕੀ ਹੈ?", o: ["ਘਰੇਲੂ ਝਗੜਾ", "ਘਰ ਦੀ ਚੀਜ਼ ਦੀ ਕਦਰ ਨਾ ਕਰਨਾ", "ਗਰੀਬੀ", "ਸਾਦਾ ਜੀਵਨ"], a: 1 },
+        { t: "“ਪੈਰਾਂ ਹੇਠੋਂ ਜ਼ਮੀਨ ਖਿਸਕ ਜਾਣਾ” ਕਿਹੜੀ ਸਥਿਤੀ ਦਰਸਾਉਂਦਾ ਹੈ?", o: ["ਖੁਸ਼ੀ", "ਆਤਮਵਿਸ਼ਵਾਸ", "ਅਚਾਨਕ ਸਦਮਾ", "ਮਿਹਨਤ"], a: 2 },
+        { t: "“ਸ਼ਿਕਾਰੀ” ਸ਼ਬਦ ਕਿਹੜੇ ਭੇਦ ਵਿੱਚ ਆਉਂਦਾ ਹੈ?", o: ["ਭਾਵਵਾਚਕ ਸੰਗਿਆ", "ਵਿਅਕਤੀਵਾਚਕ ਸੰਗਿਆ", "ਜਾਤੀਵਾਚਕ ਸੰਗਿਆ", "ਸੰਕੇਤਵਾਚਕ"], a: 3 },
+        { t: "“ਉਹ ਬਹੁਤ ਸਿਆਣਾ ਹੈ” – ਇਸ ਵਾਕ ਵਿੱਚ “ਸਿਆਣਾ” ਕੀ ਹੈ?", o: ["ਸੰਗਿਆ", "ਕਿਰਿਆ", "ਵਿਸ਼ੇਸ਼ਣ", "ਸਰਵਨਾਮ"], a: 2 },
+        { t: "“ਬੇਇਨਸਾਫੀ” ਸ਼ਬਦ ਵਿੱਚ ਅਗੇਤਰ ਕਿਹੜਾ ਹੈ?", o: ["ਇਨਸਾਫ", "ਬੇ", "ਫੀ", "ਅਨ"], a: 1 },
+        { t: "“ਮਿੱਤਰਤਾ” ਵਿੱਚ “ਤਾ” ਦਰਸਾਉਂਦਾ ਹੈ—", o: ["ਅਗੇਤਰ", "ਪਿਛੇਤਰ", "ਮੂਲ ਸ਼ਬਦ", "ਸਮਾਸ"], a: 1 },
+        { t: "“ਪੁਰਸ਼” ਦਾ ਇਸਤਰੀ ਲਿੰਗ ਕਿਹੜਾ ਹੈ?", o: ["ਇਸਤਰੀ", "ਮਹਿਲਾ", "ਨਾਰੀ", "ਸਾਰੇ ਉਪਰੋਕਤ"], a: 2 },
+        { t: "“ਗਾਂ” ਦਾ ਬਹੁਵਚਨ ਕੀ ਹੈ?", o: ["ਗਾਂਵਾਂ", "ਗਾਈਆਂ", "ਗਾਂਵ", "ਗਾਂਏ"], a: 2 },
+        { t: "“ਰਾਮ ਨੇ ਕਿਹਾ ਮੈਂ ਆਵਾਂਗਾ” – ਇੱਥੇ ਸਹੀ ਵਿਸ਼ਰਾਮ ਚਿੰਨ੍ਹ ਕਿਹੜਾ ਹੈ?", o: [",", ":", ";", "!"], a: 2 },
+        { t: "ਹੇਠ ਲਿਖਿਆਂ ਵਿੱਚੋਂ ਕਿਹੜਾ ਸ਼ਬਦ ਅਸ਼ੁੱਧ ਹੈ?", o: ["ਵਿਵਸਥਾ", "ਵਿਵਸਥਿਤ", "ਵਿਵਸਤਾ", "ਵਿਵਸਥਾਪਕ"], a: 2 },
+        { t: "“Government” ਦਾ ਉਚਿਤ ਪੰਜਾਬੀ ਰੂਪ ਕਿਹੜਾ ਹੈ?", o: ["ਸਰਕਾਰ", "ਪ੍ਰਸ਼ਾਸਨ", "ਰਾਜ", "ਦਫ਼ਤਰ"], a: 0 },
+        { t: "ਪੰਜਾਬੀ ਮਹੀਨਾ “ਚੇਤ” ਗਰੇਗੋਰੀਅਨ ਕੈਲੰਡਰ ਦੇ ਕਿਸ ਸਮੇਂ ਨਾਲ ਮਿਲਦਾ ਹੈ?", o: ["ਜਨਵਰੀ–ਫਰਵਰੀ", "ਮਾਰਚ–ਅਪਰੈਲ", "ਅਪਰੈਲ–ਮਈ", "ਫਰਵਰੀ–ਮਾਰਚ"], a: 1 },
+        { t: "ਗੁਰਮੁਖੀ ਲਿਪੀ ਦਾ ਮੂਲ ਸੰਬੰਧ ਕਿਸ ਲਿਪੀ ਨਾਲ ਮੰਨਿਆ ਜਾਂਦਾ ਹੈ?", o: ["ਬਰਾਹਮੀ", "ਸ਼ਾਰਦਾ", "ਦੇਵਨਾਗਰੀ", "ਫਾਰਸੀ"], a: 0 },
+        { t: "ਸਿੱਖ ਮਿਸਲ ਪ੍ਰਣਾਲੀ ਦਾ ਸਬੰਧ ਕਿਸ ਸਦੀ ਨਾਲ ਹੈ?", o: ["15ਵੀਂ", "16ਵੀਂ", "17ਵੀਂ", "18ਵੀਂ"], a: 3 },
+        { t: "“ਗਿੱਧਾ” ਲੋਕ ਨਾਚ ਮੁੱਖ ਤੌਰ ’ਤੇ ਕਿਸ ਨਾਲ ਸੰਬੰਧਿਤ ਹੈ?", o: ["ਧਾਰਮਿਕ ਰਸਮਾਂ", "ਔਰਤਾਂ ਦੀ ਲੋਕ ਕਲਾ", "ਕਿਸਾਨੀ ਤਿਉਹਾਰ", "ਵਿਆਹ ਦੀ ਰਸਮ"], a: 1 },
+        { t: "ਹੇਠ ਲਿਖਿਆਂ ਵਿੱਚੋਂ ਕਿਹੜਾ ਜੋੜ ਸਹੀ ਹੈ?", o: ["ਗੁਰੂ ਅੰਗਦ ਦੇਵ ਜੀ – ਆਦਿ ਗ੍ਰੰਥ", "ਗੁਰੂ ਅਰਜਨ ਦੇਵ ਜੀ – ਸੁਖਮਨੀ ਸਾਹਿਬ", "ਗੁਰੂ ਨਾਨਕ ਦੇਵ ਜੀ – ਦਸਮ ਗ੍ਰੰਥ", "ਗੁਰੂ ਤੇਗ ਬਹਾਦਰ ਜੀ – ਜਾਪ ਸਾਹਿਬ"], a: 1 },
+        { t: "“ਭਾਸ਼ਾ ਜੀਵੰਤ ਹੁੰਦੀ ਹੈ” – ਇਹ ਵਾਕ ਕਿਸ ਗੁਣ ਨੂੰ ਦਰਸਾਉਂਦਾ ਹੈ?", o: ["ਸਥਿਰਤਾ", "ਬਦਲਾਅਸ਼ੀਲਤਾ", "ਸਾਦਗੀ", "ਕਠੋਰਤਾ"], a: 1 },
+        { t: "ਪੰਜਾਬੀ ਭਾਸ਼ਾ ਕਿਸ ਭਾਸ਼ਾ ਪਰਿਵਾਰ ਨਾਲ ਸੰਬੰਧਿਤ ਹੈ?", o: ["ਦਰਾਵਿੜ", "ਸੈਮਿਟਿਕ", "ਇੰਡੋ–ਆਰੀਆਈ", "ਤੁਰਕਿਕ"], a: 2 },
+        { t: "“ਸੱਭਿਆਚਾਰ” ਸ਼ਬਦ ਦਾ ਮੂਲ ਅਰਥ ਕੀ ਹੈ?", o: ["ਰਸਮਾਂ", "ਪਹਿਰਾਵਾ", "ਜੀਵਨ ਦੀ ਸਮੂਹਿਕ ਪੱਧਤੀ", "ਲੋਕ ਨਾਚ"], a: 2 },
+        { t: "ਭਾਸ਼ਾ ਦੇ ਪ੍ਰਸ਼ਨਾਂ ਦਾ ਮੁੱਖ ਉਦੇਸ਼ ਕੀ ਹੁੰਦਾ ਹੈ?", o: ["ਸਾਹਿਤਕ ਗਿਆਨ", "ਵਿਆਕਰਣਕ ਸ਼ੁੱਧਤਾ ਅਤੇ ਸਮਝ", "ਲੰਬੇ ਉੱਤਰ ਲਿਖਵਾਉਣਾ", "ਕਾਵਿ ਵਿਸ਼ਲੇਸ਼ਣ"], a: 1 },
+        
+        // PART B: GK & REASONING (48 Questions)
+        { t: "Which country won the 2025 Women’s Cricket World Cup (ODI)?", o: ["Australia", "England", "India", "South Africa"], a: 2 },
+        { t: "Who won the Men’s Singles title at the US Open 2025?", o: ["Novak Djokovic", "Jannik Sinner", "Carlos Alcaraz", "Daniil Medvedev"], a: 2 },
+        { t: "Which team won the 2025–26 Duleep Trophy?", o: ["South Zone", "West Zone", "Central Zone", "North Zone"], a: 2 },
+        { t: "Who became Bihar’s first woman FIDE Master?", o: ["Tania Sachdev", "Divya Deshmukh", "Marium Fatima", "Vaishali Rameshbabu"], a: 2 },
+        { t: "Which state’s Cold Desert Biosphere Reserve was added to UNESCO’s list?", o: ["Uttarakhand", "Himachal Pradesh", "Sikkim", "Arunachal Pradesh"], a: 1 },
+        { t: "India achieved 20% ethanol blending in petrol under which programme?", o: ["National Bio-Energy Mission", "Green Fuel Mission", "Ethanol Blended Petrol Programme", "National Energy Policy"], a: 2 },
+        { t: "India obtained exclusive rights to explore polymetallic sulphides in which region?", o: ["Mariana Trench", "Mid-Atlantic Ridge", "Carlsberg Ridge", "Sunda Trench"], a: 2 },
+        { t: "Rodrigo Paz was elected President of which country?", o: ["Brazil", "Bolivia", "Chile", "Colombia"], a: 1 },
+        { t: "Sanae Takaichi became the first woman Prime Minister of:", o: ["South Korea", "Japan", "Thailand", "Vietnam"], a: 1 },
+        { t: "Catherine Connolly was elected President of which country?", o: ["Australia", "Ireland", "Canada", "New Zealand"], a: 1 },
+        { t: "Which country hosted the 25th SCO Summit in 2025?", o: ["India", "Kazakhstan", "China", "Iran"], a: 2 },
+        { t: "COP29 Climate Summit was hosted by which country?", o: ["UAE", "Azerbaijan", "Italy", "Brazil"], a: 1 },
+        { t: "The 2025 NATO Summit was held in:", o: ["France", "USA", "Netherlands", "Germany"], a: 2 },
+        { t: "India’s rank in the Global Hunger Index 2025 is:", o: ["95", "100", "102", "110"], a: 1 },
+        { t: "Which organisation releases the Global Innovation Index?", o: ["World Bank", "IMF", "WTO", "WIPO"], a: 3 },
+        { t: "Which institute topped the NIRF 2025 Overall Ranking?", o: ["IIT Bombay", "IIT Delhi", "IISc Bengaluru", "IIT Madras"], a: 3 },
+        { t: "Ayurveda Day will be celebrated annually on which date from 2025 onwards?", o: ["15 October", "5 November", "23 September", "29 August"], a: 2 },
+        { t: "World Rabies Day is observed on:", o: ["25 September", "27 September", "28 September", "30 September"], a: 2 },
+        { t: "India’s first Learning Accelerator was launched by:", o: ["Google", "Microsoft", "OpenAI", "NITI Aayog"], a: 2 },
+        { t: "India discovered the world’s rarest blood group ‘CRIB’ in which state?", o: ["Maharashtra", "Karnataka", "Tamil Nadu", "Kerala"], a: 1 },
+        { t: "India is building its first Polar Research Vessel in collaboration with:", o: ["Japan", "Canada", "France", "Norway"], a: 3 },
+        { t: "Who is the author of the book “Different But No Less”?", o: ["Anupam Kher", "Ruskin Bond", "Chetan Bhagat", "Vikram Seth"], a: 0 },
+        { t: "“The Rise of the Hitman – The Rohit Sharma Story” is written by:", o: ["Boria Majumdar", "Gulu Ezekiel", "R. Kaushik", "Sanjay Manjrekar"], a: 2 },
+        { t: "Who won the Nobel Peace Prize 2025?", o: ["Nihon Hidankyo", "John Hopfield", "Maria Corina Machado", "Victor Ambros"], a: 2 },
+        { t: "Who received the Dadasaheb Phalke Award 2025?", o: ["Rajinikanth", "Mithun Chakraborty", "Mohanlal", "Kamal Haasan"], a: 2 },
+        { t: "Punjab was known by which name during the Vedic period?", o: ["Aryavarta", "Sapta Sindhu", "Madhyadesha", "Trigartha"], a: 1 },
+        { t: "Which Veda is believed to have been compiled in the Punjab region?", o: ["Samaveda", "Yajurveda", "Atharvaveda", "Rigveda"], a: 3 },
+        { t: "What name was given to Punjab by the Greek historians?", o: ["Indica", "Ariana", "Pentapotamia", "Gandhara"], a: 2 },
+        { t: "Who is considered the first recorded poet of Punjabi language?", o: ["Shah Hussain", "Waris Shah", "Baba Farid", "Bulleh Shah"], a: 2 },
+        { t: "Which Sikh Guru invented and standardized the Gurmukhi script?", o: ["Guru Nanak Dev Ji", "Guru Amar Das Ji", "Guru Angad Dev Ji", "Guru Ram Das Ji"], a: 2 },
+        { t: "Under whose guidance was the Adi Granth compiled?", o: ["Guru Nanak Dev Ji", "Guru Gobind Singh Ji", "Guru Arjan Dev Ji", "Guru Tegh Bahadur Ji"], a: 2 },
+        { t: "How many ragas are used in the Guru Granth Sahib?", o: ["25", "29", "31", "36"], a: 2 },
+        { t: "Who laid the foundation stone of Sri Harmandir Sahib (Golden Temple)?", o: ["Guru Ram Das Ji", "Guru Arjan Dev Ji", "Akbar", "Mian Mir"], a: 3 },
+        { t: "The doctrine of Miri and Piri symbolizes the union of:", o: ["Religion and culture", "Spiritual and political authority", "Bhakti and Sufism", "Power and devotion"], a: 1 },
+        { t: "Which Sikh Guru is known as “Hind di Chadar”?", o: ["Guru Hargobind Ji", "Guru Gobind Singh Ji", "Guru Arjan Dev Ji", "Guru Tegh Bahadur Ji"], a: 3 },
+        { t: "Which Mughal ruler ordered the execution of Guru Tegh Bahadur Ji?", o: ["Jahangir", "Shah Jahan", "Aurangzeb", "Farrukhsiyar"], a: 2 },
+        { t: "The Khalsa Panth was founded in which year?", o: ["1675", "1688", "1699", "1708"], a: 2 },
+        { t: "Who established the Dal Khalsa as a military organization of the Sikhs?", o: ["Jassa Singh Ahluwalia", "Banda Singh Bahadur", "Nawab Kapur Singh", "Maharaja Ranjit Singh"], a: 2 },
+        { t: "Who among the following was popularly known as “Sher-e-Punjab”?", o: ["Banda Singh Bahadur", "Jassa Singh Ramgarhia", "Maharaja Ranjit Singh", "Dalip Singh"], a: 2 },
+        { t: "The Treaty of Amritsar (1809) was signed between Maharaja Ranjit Singh and:", o: ["Afghan rulers", "Marathas", "British East India Company", "French forces"], a: 2 },
+        { t: "Which movement aimed at reforming Sikh religious institutions during British rule?", o: ["Akali Movement", "Singh Sabha Movement", "Arya Samaj Movement", "Namdhari Movement"], a: 1 },
+        { t: "Who founded the Ghadar Party associated with Punjab’s freedom movement?", o: ["Bhagat Singh", "Lala Lajpat Rai", "Lala Har Dayal", "Udham Singh"], a: 2 },
+        { t: "Find the missing term in the series: 5824, 5242, ?, 4247, 3823", o: ["4467", "4718", "4856", "5164"], a: 1 },
+        { t: "Distil is related to Whisky in the same way as Brew is related to ______.", o: ["Ferment", "Gin", "Beer", "Sugar"], a: 2 },
+        { t: "Choose the odd one:", o: ["Canoe", "Igloo", "Yacht", "Raft"], a: 1 },
+        { t: "In a certain code, THANKS is written as SENTHA. How will STUPID be written in that code?", o: ["DIPUTS", "DISPUT", "DIPUST", "DIPSTU"], a: 0 },
+        { t: "'od ho pit la' means they welcome good people. 'na ho pa la' means they are very good. 'pit' = welcome, 'la' = good. Which word means 'people'?", o: ["od", "la", "ho", "pit"], a: 0 },
+        { t: "P’s father Q is B’s paternal uncle and A’s husband M is P’s paternal uncle. How is A related to B?", o: ["Cousin", "Mother", "Aunt", "None of these"], a: 1 }
+    ];
+
+    // --- APP STATE ---
+    let currIdx = 0;
+    let userAns = new Array(questionDB.length).fill(null);
+    let seconds = 0;
+    let timerInterval;
+
+    const quizScreen = document.getElementById('quiz-screen');
+    const resultScreen = document.getElementById('result-screen');
+    const startScreen = document.getElementById('start-screen');
+
+    // Init
+    document.getElementById('total-info').innerText = questionDB.length;
+
+    function startTest() {
+        startScreen.classList.remove('active');
+        quizScreen.classList.add('active');
+        
+        // Start Timer
+        timerInterval = setInterval(() => {
+            seconds++;
+            const m = Math.floor(seconds / 60).toString().padStart(2,'0');
+            const s = (seconds % 60).toString().padStart(2,'0');
+            document.getElementById('timer').innerText = `${m}:${s}`;
+        }, 1000);
+
+        loadQuestion(0);
+    }
+
+    function loadQuestion(index) {
+        currIdx = index;
+        const q = questionDB[index];
+
+        // Header Update
+        document.getElementById('curr-q').innerText = index + 1;
+        document.getElementById('total-q').innerText = questionDB.length;
+
+        // Question
+        document.getElementById('question-text').innerText = `Q${index + 1}. ${q.t}`;
+
+        // Options
+        const optContainer = document.getElementById('options-area');
+        optContainer.innerHTML = '';
+
+        q.o.forEach((optText, i) => {
+            const btn = document.createElement('button');
+            btn.className = 'option-btn';
+            if(userAns[index] === i) btn.classList.add('selected');
+            
+            // Add (A), (B)... prefix
+            const letter = String.fromCharCode(65 + i);
+            btn.innerText = `(${letter}) ${optText}`;
+            
+            btn.onclick = () => selectOption(i);
+            optContainer.appendChild(btn);
+        });
+
+        // Buttons
+        document.getElementById('prev-btn').disabled = (index === 0);
+        
+        const nextBtn = document.getElementById('next-btn');
+        const subBtn = document.getElementById('submit-btn');
+
+        if(index === questionDB.length - 1) {
+            nextBtn.style.display = 'none';
+            subBtn.style.display = 'inline-block';
+        } else {
+            nextBtn.style.display = 'inline-block';
+            subBtn.style.display = 'none';
+        }
+    }
+
+    function selectOption(optIndex) {
+        userAns[currIdx] = optIndex;
+        loadQuestion(currIdx); // Refresh to show selection
+    }
+
+    function changeQuestion(dir) {
+        const newIdx = currIdx + dir;
+        if(newIdx >= 0 && newIdx < questionDB.length) {
+            loadQuestion(newIdx);
+        }
+    }
+
+    function submitTest() {
+        if(!confirm("Are you sure you want to submit? You cannot change answers afterwards.")) return;
+
+        clearInterval(timerInterval);
+        calculateResults();
+        
+        quizScreen.classList.remove('active');
+        resultScreen.classList.add('active');
+        window.scrollTo(0, 0);
+    }
+
+    function calculateResults() {
+        let score = 0;
+        let correct = 0;
+        let wrong = 0;
+        let skipped = 0;
+
+        const reviewList = document.getElementById('review-list');
+        reviewList.innerHTML = '';
+
+        questionDB.forEach((q, i) => {
+            const u = userAns[i];
+            const div = document.createElement('div');
+            div.className = 'review-item';
+            
+            const qHeader = document.createElement('div');
+            qHeader.style.fontWeight = 'bold';
+            qHeader.innerText = `Q${i+1}: ${q.t}`;
+            div.appendChild(qHeader);
+
+            const ansRow = document.createElement('div');
+            ansRow.className = 'ans-row';
+
+            if(u === null) {
+                skipped++;
+                ansRow.innerHTML = `Your Answer: <span style="color:gray">Skipped</span> | Correct: <span class="ans-correct">${q.o[q.a]}</span>`;
+            } else if(u === q.a) {
+                score += 1;
+                correct++;
+                ansRow.innerHTML = `Your Answer: <span class="ans-correct">${q.o[u]}</span> (Correct)`;
+            } else {
+                score -= 0.25;
+                wrong++;
+                ansRow.innerHTML = `Your Answer: <span class="ans-wrong">${q.o[u]}</span> | Correct: <span class="ans-correct">${q.o[q.a]}</span>`;
+            }
+            div.appendChild(ansRow);
+            reviewList.appendChild(div);
+        });
+
+        document.getElementById('final-score').innerText = score.toFixed(2);
+        document.getElementById('max-marks').innerText = questionDB.length;
+        document.getElementById('res-correct').innerText = correct;
+        document.getElementById('res-wrong').innerText = wrong;
+        document.getElementById('res-skip').innerText = skipped;
+    }
+
+</script>
+
+</body>
+</html>

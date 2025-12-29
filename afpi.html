@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MRSAFPI Entrance Test - Mock Exam</title>
+    <style>
+        :root {
+            --primary: #1a237e;
+            --secondary: #283593;
+            --accent: #ffc107;
+            --light: #f5f5f5;
+            --success: #4caf50;
+            --danger: #f44336;
+            --text: #333;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #e8eaf6;
+            margin: 0;
+            padding: 20px;
+            color: var(--text);
+            padding-bottom: 80px; /* Space for footer */
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            color: var(--primary);
+            font-size: 1.5rem;
+            margin: 0;
+        }
+
+        .meta-info {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            font-weight: bold;
+            color: #555;
+            background: #eee;
+            padding: 10px;
+            border-radius: 4px;
+        }
+
+        /* Timer */
+        #timer {
+            color: var(--danger);
+            font-size: 1.2rem;
+        }
+
+        /* Question Section */
+        .question-box {
+            display: block;
+        }
+
+        .question-text {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .passage-box {
+            background-color: #fff3e0;
+            padding: 15px;
+            border-left: 4px solid var(--accent);
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .options-grid {
+            display: grid;
+            gap: 10px;
+        }
+
+        .option-label {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            background: #f8f9fa;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .option-label:hover {
+            background: #e3f2fd;
+            border-color: var(--secondary);
+        }
+
+        input[type="radio"] {
+            display: none;
+        }
+
+        input[type="radio"]:checked + .option-label {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        /* Navigation Footer */
+        .nav-footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: white;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-sizing: border-box;
+            z-index: 100;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1rem;
+        }
+
+        .btn-prev { background: #bdbdbd; color: #333; }
+        .btn-next { background: var(--primary); color: white; }
+        .btn-submit { background: var(--success); color: white; }
+        .btn-clear { background: var(--accent); color: #333; margin-right: auto; margin-left: 10px;}
+
+        /* Question Pallete */
+        .palette-container {
+            margin-top: 20px;
+            border-top: 1px solid #ddd;
+            padding-top: 10px;
+        }
+        
+        .palette-toggle {
+            cursor: pointer;
+            color: var(--primary);
+            text-decoration: underline;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .palette {
+            display: none; /* Hidden by default */
+            grid-template-columns: repeat(auto-fill, minmax(35px, 1fr));
+            gap: 5px;
+        }
+
+        .p-btn {
+            padding: 5px;
+            background: #fff;
+            border: 1px solid #ccc;
+            text-align: center;
+            font-size: 0.8rem;
+            cursor: pointer;
+        }
+
+        .p-btn.active { border: 2px solid var(--primary); }
+        .p-btn.answered { background: var(--secondary); color: white; }
+
+        /* Results */
+        #result-section {
+            display: none;
+            text-align: center;
+        }
+
+        .score-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .score-big {
+            font-size: 3rem;
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .stat-box { padding: 10px; border-radius: 4px; color: white; }
+        .stat-correct { background: var(--success); }
+        .stat-wrong { background: var(--danger); }
+        .stat-unattempted { background: #9e9e9e; }
+
+        .review-list {
+            text-align: left;
+            margin-top: 30px;
+        }
+
+        .review-item {
+            border-bottom: 1px solid #eee;
+            padding: 10px 0;
+        }
+        .review-item.correct { border-left: 4px solid var(--success); padding-left: 10px; background: #e8f5e9;}
+        .review-item.wrong { border-left: 4px solid var(--danger); padding-left: 10px; background: #ffebee;}
+
+        /* Math helper */
+        sup { vertical-align: super; font-size: smaller; }
+        sub { vertical-align: sub; font-size: smaller; }
+
+    </style>
+</head>
+<body>
+
+<div class="container" id="quiz-container">
+    <header>
+        <h1>MRSAFPI Entrance Test</h1>
+        <p>12 January 2025 | Code B</p>
+        <div class="meta-info">
+            <span>Question: <span id="q-number">1</span>/150</span>
+            <span>Time Left: <span id="timer">03:00:00</span></span>
+        </div>
+    </header>
+
+    <div id="passage-display" class="passage-box" style="display:none;"></div>
+
+    <div class="question-box">
+        <div class="question-text" id="q-text">Loading...</div>
+        <div class="options-grid" id="options-container">
+            <!-- Options injected by JS -->
+        </div>
+    </div>
+
+    <div class="palette-container">
+        <span class="palette-toggle" onclick="togglePalette()">Show/Hide Question Palette</span>
+        <div class="palette" id="palette-grid"></div>
+    </div>
+</div>
+
+<div class="container" id="result-section">
+    <h1>Test Result</h1>
+    <div class="score-card">
+        <div>Total Score</div>
+        <div class="score-big"><span id="total-score">0</span> / 600</div>
+        
+        <div class="stats-grid">
+            <div class="stat-box stat-correct">Correct: <span id="count-correct">0</span></div>
+            <div class="stat-box stat-wrong">Wrong: <span id="count-wrong">0</span></div>
+            <div class="stat-box stat-unattempted">Unattempted: <span id="count-empty">0</span></div>
+        </div>
+    </div>
+    <h3>Detailed Review</h3>
+    <div class="review-list" id="review-container"></div>
+    <button class="btn btn-next" onclick="location.reload()">Restart Test</button>
+</div>
+
+<div class="nav-footer" id="footer-nav">
+    <button class="btn btn-prev" onclick="prevQuestion()">Previous</button>
+    <button class="btn btn-clear" onclick="clearSelection()">Clear</button>
+    <button class="btn btn-next" id="next-btn" onclick="nextQuestion()">Next</button>
+</div>
+
+<script>
+    // --- DATA ---
+    // Note: Answers are derived based on the provided text.
+    // Marking: +4, -1, 0.
+    
+    const passage1 = `<strong>PASSAGE-1</strong><br>1. The Mastermind quiz is billed as a “battle of minds’. This battle is fought in two halves. In the
+first, each of four participants faces a barrage of questions, for two minutes, on any topic of his or
+her choice. In the second round, the questions are on general knowledge. There are two points for
+each correct answer and zero for wrong answers and passes. In the event of a tie, the person who has
+passed fewer questions wins.
+2. Questions can be bizarre, but they are answered none the less. “It absolutely amazes you that
+these guys know so much. In KBC, it used to be, that this guy knows so little,” says Basu after the
+show. Siddhartha Basu was the director of Kaun Banega Crorepati (KBC).
+3. This year’s Mastermind final was won by Ramanand Janardhana, a 22 year-old software
+engineer from Pune. Janardhana had Agatha Christie’s ‘Tommy and Tupence’ novels as his
+specialist topic. He even knew that Tommy used asofoetida to create a stink in his room.
+4. There are, of course, all sorts of quizzers. The diary-toting, Manorama yearbook, wielding
+variety will typically prepare for a contest by ‘studying’. He knows that the best questions, the ones
+that get the ‘wah-wahs’, are always repeated. He is a solid quizzer, because he knows the obvious.
+5. There is the other kind, like Janardhana, who claim they do nothing extra to prepare for quizzes.
+They read the papers and magazines, watch TV and become quizzers because they enjoy the test of
+recall.
+6. It was a test the nation took when KBC fever was at its height. But long before KBC, there were
+quiz societies across the country, in places from Guwahati to Gandhinagar. Kolkata was the hub of
+the game; quizzing in India began here in 1967. Even now, the majority of quizzers are from
+Kolkata. Of the four 2002 Mastermind finalists, two were from that city.
+7. Quizzing is big in school and college festivals. It’s the ‘literary’ highlight of all fests. There are
+even professional quizzers, who, like mercenaries, play for money and the thrill of the game. They
+represent various organizations at different times.
+8. Most quizzers grow out of active quizzing after college. Some, the really hardcore devotees of
+the game, keep at it. “I don’t get tired of quizzing,” says Pinaki Prasad Roy, a Mastermind finalist.
+“I get excited.” Roy is a 46-year old finance professional from Kolkata, and has been a quizzer for
+three decades.
+9. Curiosity is the most essential quality for a quizzer. A fantastic memory and instant recall help.
+And for Mastermind at least, the choice of specialist subject is critical. In this year’s event,
+Janardhana took an unassailable lead in the specialist round itself.`;
+    const passage2 = `<strong>PASSAGE-2</strong><br>1. We live in an age of wonders and miracles. It has been called the ‘Age of Science’ as different
+aspects of our life that changed in the preceding centuries have been attributed to science. This is
+completely true, but it is only one side of the coin. The flip side is that as we have advanced more
+in the field of technology, something fundamental to humanity has been left behind. Values such as
+empathy and concern for our fellow human beings are gradually being eroded due to the onslaught
+of our ever-evolving lifestyles, aided by the marvels of technological advancements.
+2. Take the example of the Internet. On the one hand, access to information and knowledge at the
+click of a button is a veritable boon to everyone (especially students) and this has made our lives
+much simpler. On the other hand, it has severely limited actual contact with teachers, friends and
+elders. Thus, the learning that a person gains is incomplete as he or she cannot easily take the
+advice that another person can give on the basis of knowledge and practical experience that is at his
+or her disposal.
+3. Today, a small child can access and navigate the Internet with an ease that still astounds those
+from the older generation. But what is even more astounding is the neglect of the basic human traits
+of friendship, relationships and family values. Owing to all the technological advancements and the
+gadgets available today, children often miss out on the most enriching childhood experiences such
+as playing outdoor games with friends, which apart from being immensely enjoyable and physically
+exhilarating, also develop traits such as teamwork and discipline at an early age.
+4. But now when the concept of friends is gradually being limited to virtual friends on social
+networking sites, one shudders to think of the implications for the personality development of a
+child because the time spent with computers or mobile phones for entertainment can never really
+substitute for the holistic benefits of outdoor play. Such examples can be found in plenty. Now if
+we compare the hustle and bustle of modern city life and the peace and calm of a rustic village life,
+we can see that in cities, life is a race with a variety of factors. It is a race that everyone tries their
+level best to win, but nobody actually wins as it never ends.
+5. As for me, I think this age of rapid development has created at least as many problems as it has
+solved, if not more. The reason is that the basic goal of life, which should be the pursuit of
+happiness, has now been replaced by the pursuit of money. Money and happiness are considered
+analogous in our present society, but they actually are not so. In this mindless pursuit of money,
+nobody has time now to appreciate the beauty of life, which consists not of multi-billion-dollar
+skyscrapers, but a simple act of kindness to someone in a time of need.
+6. So there is an urgent need to stop for a moment and think about where we are actually heading, is
+it development or destruction? Do we have to wait until people have grown so much apart from each
+other that we cannot see the suffering of our own species due to our mindless greed, or can we still
+mend our ways? To answer this question, I will take the help of that most magnificent of human
+feelings-hope. I sincerely wish that we, as the most intelligent species on earth, would take our fair
+share of responsibility and sincerely think about the path we should follow. Though mankind will
+possibly last for a long time thanks to its determination and sheer ingenuity, we have to make sure
+we do not lose our humanity somewhere along the way.`;
+
+    const questions = [
+        // ENGLISH
+        { id: 1, type: 'passage', passage: passage1, q: "The participants in the quiz seem ‘masterminds’ because...", options: ["they seem to know so little", "they have very polished manner", "they show lot of self confidence", "they seem to know so much"], ans: 3 },
+        { id: 2, type: 'passage', passage: passage1, q: "Ramanand Janardhana won as...", options: ["he had mastery over the specialist topic", "he had gone through the quiz columns in magazines", "he had chinks in his memory/recall", "he knew all the often repeated questions asked by quizmasters"], ans: 0 },
+        { id: 3, type: 'passage', passage: passage1, q: "The studious quizzers are called ‘solid’ quizzers because...", options: ["they prepare expected questions", "they know the obvious", "they bank on general awareness", "they enjoy the test of recall"], ans: 1 },
+        { id: 4, type: 'passage', passage: passage1, q: "The quality most essential for a quizzer is...", options: ["love of learning", "mathematical accuracy", "curiosity to know", "comprehensive learning"], ans: 2 },
+        { id: 5, type: 'passage', passage: passage1, q: "The word ‘mercenaries’ in para 7 means...", options: ["those who seek mercy", "those who work on machines", "those who are lively and quick", "those who fight for money"], ans: 3 },
+        { id: 6, q: "Find the correctly spelt word:", options: ["laison", "liaison", "liasion", "laision"], ans: 1 },
+        { id: 7, q: "Find the correctly spelt word:", options: ["narcissistic", "narcisisstic", "naricissistic", "narcisisistic"], ans: 0 },
+        { id: 8, q: "Find the correctly spelt word:", options: ["enterpreneur", "entreperneur", "entrepreneur", "entrepernuer"], ans: 2 },
+        { id: 9, q: "Find the correctly spelt word:", options: ["naueseous", "nuaseous", "nauseuos", "nauseous"], ans: 3 },
+        { id: 10, q: "Find the correctly spelt word:", options: ["mischievous", "mischivous", "mischieveus", "mischeivous"], ans: 0 },
+        { id: 11, q: "The Indian Cricket team found their _________ in the Australian team.", options: ["beating", "match", "captain", "invited"], ans: 1 },
+        { id: 12, q: "Solubility of silver chloride _________ in the presence of sodium chloride because of common ion effect.", options: ["decreases", "positive", "negative", "lesser"], ans: 0 },
+        { id: 13, type: 'passage', passage: passage2, q: "Which of the following is not true about the internet?", options: ["It provides an easy access to information and knowledge.", "It has made our lives simpler.", "It has limited actual contact with teachers and friends.", "It can easily give advice based on personal experience."], ans: 3 },
+        { id: 14, type: 'passage', passage: passage2, q: "Internet hampers the holistic growth of a child by ...", options: ["encouraging human traits of friendship, society and family.", "enriching childhood experiences of outdoor games.", "providing virtual friends and gadgets.", "developing teamwork and discipline."], ans: 2 },
+        { id: 15, type: 'passage', passage: passage2, q: "According to the passage, true happiness lies in ...", options: ["simple acts of kindness", "rapid development", "multi-billion-dollar skyscrapers", "pursuit of money"], ans: 0 },
+        { id: 16, type: 'passage', passage: passage2, q: "The word ‘veritable’ in para 2 means:", options: ["Actual", "Big", "Latest", "Perfect"], ans: 0 },
+        { id: 17, type: 'passage', passage: passage2, q: "Antonym of holistic is", options: ["Agonistic", "Individualistic", "Optimistic", "Pessimistic"], ans: 1 },
+        { id: 18, q: "Choose word which is NOT an antonym of: Famous", options: ["Obscure", "Unknown", "Typical", "Powerful"], ans: 3 }, // Typical/Powerful - context dependent, but obscure/unknown are def antonyms. Famous usually implies powerful/well known. 'Typical' is unrelated. Question asks NOT an antonym. Powerful is synonym-ish.
+        { id: 19, q: "Choose word which is NOT an antonym of: Rigid", options: ["Coarse", "Pliable", "Pliant", "Soft"], ans: 0 }, // Pliable, Pliant, Soft are antonyms. Coarse is unrelated/texture.
+        { id: 20, q: "Choose word which is NOT an antonym of: Prudent", options: ["Foolish", "Indiscreet", "Tedious", "Stupid"], ans: 2 }, // Foolish, Indiscreet, Stupid are antonyms. Tedious is unrelated.
+        { id: 21, q: "Choose word which is NOT an antonym of: Cruel", options: ["Kind", "Gentle", "Compassionate", "Harsh"], ans: 3 }, // Harsh is synonym.
+        { id: 22, q: "Choose word which is NOT an antonym of: Knowledge", options: ["Inanity", "Ignorance", "Ratification", "Stupidity"], ans: 2 }, // Ignorance/Stupidity/Inanity are opposites. Ratification means confirmation.
+        { id: 23, q: "Choose word which is NOT a synonym of: Think", options: ["Contemplate", "Reflect", "Meditate", "Narrative"], ans: 3 },
+        { id: 24, q: "Choose word which is NOT a synonym of: Interesting", options: ["Maintain", "Fascinating", "Animated", "Bright"], ans: 0 },
+        { id: 25, q: "Choose word which is NOT a synonym of: False", options: ["Corpulent", "Spurious", "Counterfeit", "Fraudulent"], ans: 0 },
+        { id: 26, q: "Choose word which is NOT a synonym of: Predicament", options: ["Impish", "Quandary", "Plight", "Dilemma"], ans: 0 },
+        { id: 27, q: "Choose word which is NOT a synonym of: Amazing", options: ["Astonishing", "Dauntless", "Incredible", "Unbelievable"], ans: 1 },
+        { id: 28, q: "Reorder P(two days) Q(she left) R(for Amritsar) S(after her birthday)", options: ["PRSQ", "QRPS", "SQRP", "RQSP"], ans: 1 }, // QRPS: She left for Amritsar two days after her birthday.
+        { id: 29, q: "Reorder P(gymnasium regularly) Q(he doesn't) R(the local) S(go to)", options: ["SRQP", "QSPR", "RPSQ", "QSRP"], ans: 3 }, // QSRP: He doesn't go to the local gymnasium regularly.
+        { id: 30, q: "Reorder P(has been) Q(my mother) R(since 2002) S(working here)", options: ["RQPS", "QRSP", "RSQP", "PQRS"], ans: 1 }, // QRSP: My mother has been working here since 2002.
+        { id: 31, q: "Improve: When he lived in Hyderabad, he <u>go</u> to the cinema once a week.", options: ["went", "was going", "no improvement", "goes"], ans: 0 },
+        { id: 32, q: "Improve: Ashok fell off the ladder when he <u>mends</u> the roof.", options: ["is mending", "was mending", "mended", "no improvement"], ans: 1 },
+        { id: 33, q: "Improve: He used to visit us every week, but he <u>never now</u>.", options: ["is rarely coming", "have rarely come", "no improvement", "rarely comes"], ans: 3 },
+        { id: 34, q: "Improve: Mohali <u>changing</u> its appearance completely since 1980.", options: ["is changing", "no improvement", "changed", "has changed"], ans: 3 },
+        { id: 35, q: "Improve: My wife always keeps <u>having</u> for more money at the end of the week.", options: ["no improvement", "ask", "asking", "asked"], ans: 2 },
+        { id: 36, q: "The defence services credits __________ to the country over everything else.", options: ["loyalism", "physical fitness", "loyalty", "intelligence"], ans: 2 },
+        { id: 37, q: "The Delhi Metro has __________ travel in Delhi.", options: ["turned", "changed", "easier", "modern"], ans: 1 },
+        { id: 38, q: "Life in the cities has become less ____________ over the years because of modern technology.", options: ["stressful", "easier", "difference", "faster"], ans: 0 },
+        { id: 39, q: "Challenges must be overcome, to ensure that _________ reach all citizens.", options: ["money", "facilities", "work", "transport"], ans: 1 },
+        { id: 40, q: "They had been _________ for the bus for an hour before it arrived.", options: ["waiting", "expected", "hope", "driving"], ans: 0 },
+        
+        // MATHEMATICS
+        { id: 41, q: "The x co-ordinate of a point P is thrice its y co-ordinates. If P is equidistant from Q (3,-5) and R (2,5), then the co-ordinates of P are", options: ["(1,3)", "(3/2, 1/2)", "(1/2, 3/2)", "(-15/14, -5/14)"], ans: 3 },
+        { id: 42, q: "Find the equation of the perpendicular bisector of AB, where A and B are the points (4, 5) and (-2, 3) respectively.", options: ["2x - y + 7 = 0", "3x + 2y - 7 = 0", "3x - y - 7 = 0", "3x + y - 7 = 0"], ans: 3 },
+        { id: 43, q: "Find the value of k if the points (k, 3), (6, -2) and (-3, 4) are co-linear.", options: ["-1/2", "-3/2", "1/2", "3/2"], ans: 1 },
+        { id: 44, q: "If tan θ + cot θ = 2 , then the value of tan<sup>2n</sup>θ + cot<sup>2n</sup>θ is", options: ["2<sup>n</sup>", "0", "2", "2n"], ans: 2 },
+        { id: 45, q: "If a = cos A + sin A and b = cos A – sin A, then the value of √(a/b) + √(b/a) is", options: ["2 cos A", "2 / √(1+ sec²A)", "2 / √(1- tan²A)", "2√(1 - tan²A)"], ans: 2 },
+        { id: 46, q: "For right angled triangle ∆ABC, the value of sin²A + sin²B + sin²C is", options: ["2", "1", "0", "-1"], ans: 0 },
+        { id: 47, q: "In ∆ABC, ∠B = 90°, AB = 20 cm, AC + BC = 50 cm, then sin A is", options: ["2/5", "20/21", "20/29", "21/29"], ans: 3 },
+        { id: 48, q: "A shopkeeper purchases 11 knives in ₹ 10 and sells them at the rate of 10 knives for ₹ 11. He earns a profit of", options: ["11%", "15%", "20%", "21%"], ans: 3 },
+        { id: 49, q: "3 men or 7 women can do a piece of work in 32 days. The number of days required by 7 men and 5 women to do a piece of work twice as large is", options: ["19", "21", "27", "36"], ans: 1 },
+        { id: 50, q: "If corresponding sides of two similar triangles ∆MAP and ∆ROW are in the ratio 4:7 and area of ∆MAP is 16 cm², then area of ∆ROW is", options: ["25 cm²", "14 cm²", "49 cm²", "98 cm²"], ans: 2 },
+        { id: 51, q: "In ∆ ABC . DE ∥ BC such that AD = 5 cm , AE = 4 cm, BD = (x- 2) cm and CE = (x – 3) cm, then the value of x is", options: ["7 cm", "9 cm", "11 cm", "12 cm"], ans: 3 },
+        { id: 52, q: "If the distance between the points A (1, 1) and B(x, 1) is 5 units, then the value of x is", options: ["3, -7", "2, -3", "4, -3", "-4, 6"], ans: 3 },
+        { id: 53, q: "Three numbers are in the ratio 5: 6: 7 and their HCF is 7. Then, the square root of largest number is", options: ["5", "7", "8", "10"], ans: 1 },
+        { id: 54, q: "The least number which is a perfect square and is divisible by each of 16, 20 and 24 is", options: ["240", "2400", "1600", "3600"], ans: 3 },
+        { id: 55, q: "The LCM of 2 numbers is 14 times their HCF. The sum of LCM and HCF is 600. If one number is 80, then the other number is", options: ["1000", "180", "280", "400"], ans: 2 },
+        { id: 56, q: "If tan θ = 1/√5 and θ lies in the 1st Quadrant, then the value of cos θ is", options: ["1/√6", "√5/√6", "-1/√6", "-√5/√6"], ans: 1 },
+        { id: 57, q: "Find the last digit (unit digit) of 22<sup>12</sup>", options: ["8", "4", "2", "6"], ans: 3 },
+        { id: 58, q: "If α and β are roots of polynomial 3x² + 6x + k such that α² + β² + αβ = 8/3. Then the value of k is", options: ["-8", "8", "-4", "4"], ans: 3 },
+        { id: 59, q: "If the nth term of an A.P is 2n + 1, then sum of first n terms of the A.P. is", options: ["n(n - 2)", "n(n + 2)", "n(n + 1)", "n(n - 1)"], ans: 1 },
+        { id: 60, q: "If the sum of n terms of an A.P. is 3n² + n and its common difference is 6, then its first term is", options: ["2", "3", "1", "4"], ans: 3 },
+        { id: 61, q: "If the A.P. 8, 10, 12,…… has 60 terms, then sum of last 10 terms is", options: ["1100", "1150", "1170", "1190"], ans: 3 },
+        { id: 62, q: "In a garden, there are 10 rows and 12 columns of mango trees. The distance between two trees is 2 m and a distance of 1m is left from all sides of the boundary of the garden. The length of the garden is", options: ["20 m", "22 m", "24 m", "26 m"], ans: 2 },
+        { id: 63, q: "LCM of two prime numbers x and y (x > y) is 161. The value of 3y - x is", options: ["-2", "-1", "1", "2"], ans: 0 },
+        { id: 64, q: "A man wears socks of two colours - black and brown. He has altogether 20 black socks and 20 brown socks in a drawer. Supposing he has to take out the socks in the dark, how many must be taken out to be sure that he has a matching pair?", options: ["20", "3", "39", "None of these"], ans: 1 },
+        { id: 65, q: "A group of 1200 persons consisting of captains and soldiers is traveling in a train. For every 15 soldiers there is one captain. The number of captains in the group is", options: ["85", "80", "75", "70"], ans: 2 },
+        { id: 66, q: "If you write down all the numbers from 1 to 100, then how many times do you write 3?", options: ["20", "18", "11", "21"], ans: 0 },
+        { id: 67, q: "A total of 324 coins of 20 paise and 25 paise make a sum of ₹ 71. The number of 25 paise coins is", options: ["120", "124", "144", "200"], ans: 1 },
+        { id: 68, q: "Today is Varun’s birthday. One year from today he will be twice as old as he was 12 years ago. How old is Varun today?", options: ["20 years", "22 years", "25 years", "27 years"], ans: 3 }, // (x+1) = 2(x-12) => x+1 = 2x - 24 => x = 25. Option 3.
+        { id: 69, q: "Ayush was born two years after his father’s marriage. His mother is five years younger than his father but 20 years older than Ayush who is 10 years old. At what age did the father get married?", options: ["23 years", "25 years", "33 years", "35 years"], ans: 0 },
+        { id: 70, q: "If one of the interior angles of a regular polygon is found to be equal to 9/8 times of one of the interior angles of a regular hexagon, then the number of sides of the polygon is", options: ["5", "8", "7", "4"], ans: 1 },
+        { id: 71, q: "If x - 1/x = 1/2, then the value of 4x² + 4/x² is", options: ["7", "-9", "9", "-7"], ans: 2 },
+        { id: 72, q: "From the top of a vertical tower it is observed that top of the tree and its foot is at angles of depression 30° and 45° respectively. If the height of the tree is 10 m, then the height of the tower (in meters) is", options: ["10(√3 + 1)", "5(√3 + 1)", "5(√3 + 3)", "10(3 + √3)"], ans: 2 },
+        { id: 73, q: "If the sum of two numbers is 91 and their difference is 37, then their product is", options: ["1728", "8040", "2378", "1736"], ans: 0 },
+        { id: 74, q: "A dishonest trader uses a 940 gm weight in place of a kg weight. If he sells articles at cost price, his gain percent is", options: ["5 3/11 %", "6 18/47 %", "6 2/47 %", "None of these"], ans: 1 },
+        { id: 75, q: "Two numbers are 50% and 60% less than a third number. How many percent the first number is to the second number?", options: ["110 %", "80%", "125 %", "10%"], ans: 2 },
+        { id: 76, q: "The sides of an equilateral ∆ABC are 12 cm each. D is the foot of the perpendicular from A to BC and E is the mid-point of AD. Then the length of BE is", options: ["12 cm", "6√2 cm", "√63 cm", "None of these"], ans: 2 },
+        { id: 77, q: "A circle is inscribed in an equilateral triangle and a square is inscribed in the circle. The ratio of the area of the triangle to that of the square is", options: ["√3 : 1", "√3 : √2", "3√3 : 2", "3√3 : √2"], ans: 2 },
+        { id: 78, q: "A sphere of radius 2 cm is put into water contained in a cylinder of radius 4 cm. If the sphere is completely immersed, the water level in the cylinder rises by", options: ["2 cm", "1/3 cm", "1/2 cm", "2/3 cm"], ans: 3 },
+        { id: 79, q: "A shopkeeper marks his goods at 25% above his cost and allows a discount of 20% on cash payments. In the transaction he gets", options: ["5% profit", "5% loss", "10% loss", "no profit no loss"], ans: 3 },
+        { id: 80, q: "If the points A(7, 3), B(9, 4), C(8, k) and D(6, 1) taken in order, are the vertices of the rectangle, then the value of k is", options: ["5", "2", "6", "3"], ans: 1 },
+        { id: 81, q: "The compound interest on ₹100 at the rate of 10% per annum, interested compounded half yearly, after one year is", options: ["₹10", "₹ 11", "₹10.50", "₹10.25"], ans: 3 },
+        { id: 82, q: "The number of times, the two hands of a clock make a right angle between 12 noon to 12 mid-night is", options: ["12", "22", "23", "24"], ans: 1 },
+        { id: 83, q: "Two natural numbers are such that their product, sum and difference are in the ratio 24:7:1. The product of the two numbers is", options: ["48", "24", "12", "6"], ans: 0 },
+        { id: 84, q: "Nineteen boys turn out for baseball. Of these 11 are wearing baseball shirts and 14 are wearing baseball pants. There are no boys without one or the other. The number of boys wearing full uniforms is", options: ["3", "5", "6", "8"], ans: 2 },
+        { id: 85, q: "If the sum of the two radii of two circles is 7 cm and the difference of their circumference is 8 cm, the two circumferences will be", options: ["34 cm and 26 cm", "28 cm and 20 cm", "26 cm and 18 cm", "20 cm and 12 cm"], ans: 2 },
+        { id: 86, q: "Factors of the quadratic expression x² + 4√2 x + 6 is", options: ["(x + √2)(x + 3√2)", "(x - 2)(x + 3√2)", "(x - √2)(x - 3√2)", "(x + 2)(x + 3√2)"], ans: 0 },
+        { id: 87, q: "The median of the data 30, 25, 27, 25.8, 29, 35, 38, 28 is", options: ["28.5", "29.5", "28", "29"], ans: 0 },
+        { id: 88, q: "A train is moving with a uniform speed. It crosses a railway platform 120 metres long in 12 seconds and another platform 170 metres long in 16 seconds. The speed of the train per second is", options: ["12 1/2 m/sec", "10 m/sec", "10 5/10 m/sec", "10 3/4 m/sec"], ans: 0 },
+        { id: 89, q: "The sum of the squares of the first n natural numbers is", options: ["n(n+1)/2", "n(n+1)(2n+1)/6", "n(n+1)(n+2)/12", "n(n+1)(2n+1)/12"], ans: 1 },
+        { id: 90, q: "The diameters of two cylinders are in the ratio of 2:1 and their volumes are equal. The ratio of their heights will be", options: ["1:6", "1:2", "1:4", "3:4"], ans: 2 },
+        { id: 91, q: "The price of sugar has risen by 50%. By what fraction must a house holder reduce his consumption of sugar so as not to increase his expenditure?", options: ["1/4", "1/3", "1/2", "2/3"], ans: 1 },
+        { id: 92, q: "A sphere of diameter 10 cm weighs 4.4 kg. The weight of a sphere of the same material whose diameter is 6 cm is", options: ["2.64 kg", "1.584 kg", "0.950 kg", "1.675 kg"], ans: 2 },
+        { id: 93, q: "What comes next in the sequence 1, 3, 11, 43,……..?", options: ["161", "171", "181", "191"], ans: 1 },
+        { id: 94, q: "The sum of the squares of two consecutive positive integers exceeds their product by 91. Find the integers.", options: ["9 and 10", "10 and 11", "11 and 12", "12 and 13"], ans: 0 },
+        { id: 95, q: "The 20th term of the A.P. 7, 3, -1, -5,……. Is", options: ["-59", "-69", "-37", "-45"], ans: 1 },
+        { id: 96, q: "Find the last two digits of the product 2345 × 6789.", options: ["15", "05", "25", "35"], ans: 1 },
+        { id: 97, q: "A Merchant lent out Rs. 10,000 in two parts, one at 8% and other at 10% interest. The yearly average comes out to be 9.2%. Find the amount lent in two parts.", options: ["Rs 8000, Rs 2000", "Rs 7000, Rs 3000", "Rs 5000, Rs 5000", "Rs 6000, Rs 4000"], ans: 3 },
+        { id: 98, q: "A man can row a boat in still water at the rate of 4 km/hr. He finds that it takes him twice as long to row upstream of a river as to row downstream of the same river. Find the speed of the current of the river.", options: ["4/3 km/hr", "3/4 km/hr", "7/4 km/hr", "6/5 Km/hr"], ans: 0 },
+        { id: 99, q: "One pipe can fill a tank three times as fast as another pipe. If together the two pipes can fill the tank in 36 minutes, how much time the slower pipe alone take to fill the tank?", options: ["90 min", "144 min", "120 min", "110 min"], ans: 1 },
+        { id: 100, q: "If the standard deviation of 5, 7, 9 and 11 is 2, then coefficient of variation is", options: ["15", "25", "17", "19"], ans: 1 },
+        { id: 101, q: "In a kilometre race, A beats B by 50 metres or 10 seconds. The time taken by A to complete the race is", options: ["90 seconds", "120 seconds", "190 seconds", "200 seconds"], ans: 2 },
+        { id: 102, q: "It is 10:00 am currently in the digital watch. What time will the watch show (in am or pm) after 400 hours", options: ["4:00 am", "3:00 pm", "5:00 pm", "2:00 am"], ans: 3 },
+        { id: 103, q: "The ratio in which a grocer mixes two varieties of pulses costing ₹85 per kg and ₹100 per kg respectively, so as to get a mixture worth ₹92 per kg is", options: ["7:8", "8:7", "5:7", "7:5"], ans: 1 },
+        { id: 104, q: "If cos A = 2 sin A, find the value of cosec A is", options: ["1", "±√5", "1/2", "±√3"], ans: 1 },
+        { id: 105, q: "An agent makes a profit of 20% even after giving 10% discount on the advertised price. If he makes a profit of ₹750 on the sale of a scooter, the advertised price is", options: ["₹4500", "₹4750", "₹5000", "₹5250"], ans: 2 },
+        { id: 106, q: "If 3<sup>4x-2</sup> = 729, then the value of x is", options: ["3", "1.2", "2", "None of these"], ans: 2 },
+        { id: 107, q: "20 litres of a mixture contains alcohol and water in the ration 3:1. Find the amount of alcohol to be added to the mixture so as to have alcohol and water in the ratio 4:1.", options: ["5 litres", "7 litres", "3 litres", "10 litres"], ans: 0 },
+        { id: 108, q: "Pure milk costs ₹72 per litre. If a milkman adds water to 25 litres of pure milk and sells the mixture at ₹60 per litre, then the quantity of water added is", options: ["3 litres", "5 litres", "7 litres", "None of these"], ans: 1 },
+        { id: 109, q: "A man drives his car to his office at the rate of 40 km per hour and returns along the same route at the rate of 60 km per hour; his average speed in km per hour for the entire round trip is", options: ["45", "48", "50", "None of these"], ans: 1 },
+        { id: 110, q: "In what time a train 100 metres long with a speed of 50 km/hr cross a pillar?", options: ["7.0 seconds", "72 seconds", "7.2 seconds", "70 seconds"], ans: 2 },
+        { id: 111, q: "The edge of a cube is 4 cm. The greatest sphere is cut out of the cube. The surface of the sphere will be", options: ["16π sq.cm", "64π sq.cm", "16/3 π sq.cm", "64/3 π sq.cm"], ans: 0 },
+        { id: 112, q: "If the co-ordinates of opposite vertices of a square are (1, 3) and (6, 0), then the length of a side of a square is", options: ["√34", "√17", "17", "12"], ans: 1 },
+        { id: 113, q: "In a class of 28 boys, 15 boys play football, 18 boys play hockey and 10 boys play football and hockey both. How many boys play neither football nor hockey?", options: ["10", "5", "8", "15"], ans: 1 },
+        { id: 114, q: "A sum becomes twice in 3 years at a certain rate of compound interest. In how many years will it become 16 times at the same rate of interest?", options: ["16 years", "12 years", "24 years", "6 years"], ans: 1 },
+        { id: 115, q: "The distance of the origin from the point of intersection of x + y = 11 and x - y - 3 = 0 is", options: ["7", "14", "√65", "√33"], ans: 2 },
+        { id: 116, q: "A pump can fill a tank with water in 2 hours. Due to leakage, it took 2 1/3 hours to fill the tank. If the leakage can drain all the water of tank in x hours, then the value of x is", options: ["14 hours", "15 hours", "16 hours", "12 hours"], ans: 0 },
+        { id: 117, q: "Two equal circles in the same plane can have at the most the following number of common tangents", options: ["3", "2", "4", "1"], ans: 2 },
+        { id: 118, q: "The cost of 9 chairs and 3 tables is ₹306, while the cost of 8 chairs and 2 tables is ₹246. Then the cost of 6 chairs and 1 table is", options: ["₹ 164", "₹ 165", "₹166", "₹ 186"], ans: 1 },
+        { id: 119, q: "If a - b = 3 and a³ - b³ = 117, then a + b is equal to", options: ["5", "7", "9", "11"], ans: 1 },
+        { id: 120, q: "Two pipes A and B can fill a tank in 24 minutes and 32 minutes respectively. If both the pipes are opened simultaneously, after how much time B should be closed so that the tank is full in 18 minutes?", options: ["8 minutes", "7 minutes", "10 minutes", "15 minutes"], ans: 0 },
+
+        // SOCIAL STUDIES
+        { id: 121, q: "A ‘Utopian Society’ is", options: ["(i) and (ii)", "(ii) and (iii)", "(ii) only", "(iii) only"], ans: 2 },
+        { id: 122, q: "The World Bank classifies countries based on which criteria to determine whether they are low, middle, or high income countries?", options: ["Per Capita Income", "Gross Domestic Product (GDP)", "Human Development Index (HDI)", "Life Expectancy"], ans: 0 },
+        { id: 123, q: "Oceanic resources beyond 200 km of the Exclusive Economic Zone can be termed as:", options: ["Individual resources", "Community-owned resources", "National Resources", "International resources"], ans: 3 },
+        { id: 124, q: "Which of the following is not one of the reasons for criticism of multipurpose river valley projects?", options: ["They create a rockier stream-bed", "They create poorer habitats for the river’s aquatic life", "The reservoirs created in the floodplains submerge vegetation", "They help in the generation of hydroelectricity"], ans: 3 },
+        { id: 125, q: "‘Slash and burn agriculture’ is:", options: ["Shifting agriculture", "Intensive agriculture", "Commercial agriculture", "None of these"], ans: 0 },
+        { id: 126, q: "Sariska Wildlife Sanctuary is located in …………", options: ["Rajasthan", "Uttar Pradesh", "Gujarat", "West Bengal"], ans: 0 },
+        { id: 127, q: "Government in which power is shared by two or more political parties is known as:", options: ["Community Govt.", "Unitary Govt.", "Federal Govt.", "Coalition Govt."], ans: 3 },
+        { id: 128, q: "Which one of the following is not true regarding the Gandhi-Irwin Pact of 1931?", options: ["Mahatma Gandhiji decided to call off the Civil Disobedience Movement", "Gandhiji consented to participate in a Round Table Conference", "The British government agreed to release the political prisoners", "The British government agreed to grant independence"], ans: 3 },
+        { id: 129, q: "Which one of the following is not a cause of communalism?", options: ["Religion is taken as the basis of the nation", "When one religion is discriminated against another", "State has no official religion", "Demands of one religious group are formed in opposition to another"], ans: 2 },
+        { id: 130, q: "How can industrialisation assist in bringing in foreign exchange?", options: ["Modernisation of agriculture", "Removing dependence on agriculture by providing alternative employment", "Export of manufactured goods", "Import of manufactured goods"], ans: 2 },
+        { id: 131, q: "Large reserves of natural gas of India have been discovered in _____.", options: ["Arabian Sea", "Andaman Nicobar Islands", "Krishna Godavari Basin", "Gulf of Mannar"], ans: 2 },
+        { id: 132, q: "Which one of the following is the main cause of land degradation in Punjab?", options: ["Extensive cultivation", "Deforestation", "Over-grazing", "Over-irrigation"], ans: 3 },
+        { id: 133, q: "A system that values men more and gives them power over women is called:", options: ["Feminist", "Socialist", "Patriarchy", "Communist"], ans: 2 },
+        { id: 134, q: "Which of the following groups of states has the largest number of cotton textile centers?", options: ["Gujarat and Maharashtra", "Karnataka and Tamil Nadu", "Maharashtra and Madhya Pradesh", "Uttar Pradesh and Gujarat"], ans: 0 },
+        { id: 135, q: "What system governs international oceanic resources?", options: ["National laws", "Community agreements", "United Nations conventions", "Exclusive zones"], ans: 2 },
+        { id: 136, q: "Which one of the following factors is responsible for the sugar mills to shift and concentrate in the southern and western states of India?", options: ["Sugarcane is a bulky raw material", "The sucrose content reduces with distance", "The sugarcane produced has higher sucrose content", "The cooperative is not successful"], ans: 2 },
+        { id: 137, q: "Which of the following is NOT a reason for power sharing in a democracy?", options: ["It helps to reduce the possibility of conflict", "It ensures the stability of the government", "It decreases public participation in government", "It accommodates the diversity of the society"], ans: 2 },
+        { id: 138, q: "Which one of the following is not true regarding the importance of manufacturing industries?", options: ["They generate jobs in the secondary and tertiary sectors", "Export of manufactured goods brings in foreign exchange", "Manufacturing industries encourage trade and commerce", "The economic strength of a country is measured in terms of the raw material it possesses"], ans: 3 },
+        { id: 139, q: "What does a democratic government ensure?", options: ["Effective military dictatorship", "Equal rights for all citizens", "Unequal distribution of power", "Lack of accountability"], ans: 1 },
+        { id: 140, q: "Who amongst the following led the Civil Disobedience Movement in Peshawar?", options: ["Abdul Gaffar Khan", "Maulana Abul Kalam Azad", "Lala Lajpat Rai", "Jawaharlal Nehru"], ans: 0 },
+        { id: 141, q: "Who among the following formed the secret society called ‘Young Italy’?", options: ["Otto von Bismarck", "Giuseppe Mazzini", "Metternich", "Johann Gottfried Herder"], ans: 1 },
+        { id: 142, q: "Print culture in France led to:", options: ["Spread of enlightened ideas", "Mockery of monarchy", "Public debates and discussions", "All of the above"], ans: 3 },
+        { id: 143, q: "The resolution of Poorna Swaraj was adopted at which session of the Congress?", options: ["Karachi", "Haripur", "Lahore", "Lucknow"], ans: 2 },
+        { id: 144, q: "Which of the following statements about the ‘French Revolution’ are correct?", options: ["(ii) and (iii)", "(ii) and (iv)", "(i) and (iii)", "(iii) and (iv)"], ans: 2 },
+        { id: 145, q: "Which of the following statements is correct regarding the distribution of economic benefits in democracies?", options: ["Incomes of both the rich and the poor have been increasing", "Incomes of both the rich and the poor have been declining", "Incomes of the rich have been increasing and those of the poor have been declining", "None of the above"], ans: 2 },
+        { id: 146, q: "Which one of the following is not one of the aspects of the federal division of powers?", options: ["Sharing of powers among central, provincial, and local governments", "Division of powers involving higher and lower levels of government", "The Constitution clearly lays down the powers of different levels of government", "There is no vertical division of powers"], ans: 3 },
+        { id: 147, q: "Arrange the following statements in sequential order based on the events that shaped the Non-Cooperation movement.", options: ["4, 3, 2, 1", "2, 1, 4, 3", "1, 4, 3, 2", "1, 2, 3, 4"], ans: 1 },
+        { id: 148, q: "Who first painted Bharat Mata as a divine figure dispensing learning, food, and clothing?", options: ["Rabindranath Tagore", "Abnindranath Tagore", "Bankim Chandra Chattopadhyay", "None of these"], ans: 1 },
+        { id: 149, q: "Assertion (A): Napoleon destroyed monarchy from France. Reason (R): Napoleon simplified administrative divisions...", options: ["A is true but R is false.", "A is false but R is true", "Both A and R are true & R is the correct explanation of A.", "Both A and R are true & R is not the correct explanation of A."], ans: 1 }, // Napoleon actually destroyed democracy and restored monarchy (imperial rule). A is technically False. R is True.
+        { id: 150, q: "The Maha Kumbh Mela is celebrated every 12 years to match with one revolution of ________ around the sun.", options: ["Earth", "Mars", "Jupiter", "None of the above"], ans: 2 },
+    ];
+
+    // --- STATE ---
+    let currentIdx = 0;
+    const userAnswers = new Array(questions.length).fill(null);
+    let timeLeft = 180 * 60; // 180 minutes in seconds
+
+    // --- ELEMENTS ---
+    const qText = document.getElementById('q-text');
+    const optionsContainer = document.getElementById('options-container');
+    const qNumber = document.getElementById('q-number');
+    const passageDisplay = document.getElementById('passage-display');
+    const paletteGrid = document.getElementById('palette-grid');
+    const quizContainer = document.getElementById('quiz-container');
+    const resultSection = document.getElementById('result-section');
+    const footerNav = document.getElementById('footer-nav');
+    const nextBtn = document.getElementById('next-btn');
+
+    // --- INIT ---
+    function init() {
+        createPalette();
+        loadQuestion(0);
+        startTimer();
+    }
+
+    // --- CORE FUNCTIONS ---
+
+    function loadQuestion(index) {
+        currentIdx = index;
+        qNumber.innerText = index + 1;
+        const q = questions[index];
+
+        // Handle Passage
+        if (q.type === 'passage') {
+            passageDisplay.style.display = 'block';
+            passageDisplay.innerHTML = q.passage;
+        } else {
+            passageDisplay.style.display = 'none';
+        }
+
+        // Set Question Text
+        qText.innerHTML = q.q;
+
+        // Generate Options
+        optionsContainer.innerHTML = '';
+        q.options.forEach((opt, i) => {
+            const inputId = `opt_${i}`;
+            const checked = userAnswers[index] === i ? 'checked' : '';
+            
+            const html = `
+                <input type="radio" name="option" id="${inputId}" value="${i}" ${checked} onchange="selectOption(${i})">
+                <label class="option-label" for="${inputId}">
+                    <span style="font-weight:bold; margin-right:10px;">(${i+1})</span> ${opt}
+                </label>
+            `;
+            optionsContainer.insertAdjacentHTML('beforeend', html);
+        });
+
+        // Update Buttons
+        nextBtn.innerText = (index === questions.length - 1) ? "Submit Test" : "Next";
+        updatePaletteUI();
+    }
+
+    function selectOption(optIndex) {
+        userAnswers[currentIdx] = optIndex;
+        updatePaletteUI();
+    }
+
+    function clearSelection() {
+        userAnswers[currentIdx] = null;
+        const radios = document.getElementsByName('option');
+        radios.forEach(r => r.checked = false);
+        updatePaletteUI();
+    }
+
+    function nextQuestion() {
+        if (currentIdx < questions.length - 1) {
+            loadQuestion(currentIdx + 1);
+            window.scrollTo(0, 0);
+        } else {
+            finishTest();
+        }
+    }
+
+    function prevQuestion() {
+        if (currentIdx > 0) {
+            loadQuestion(currentIdx - 1);
+            window.scrollTo(0, 0);
+        }
+    }
+
+    // --- PALETTE ---
+    function createPalette() {
+        paletteGrid.innerHTML = '';
+        questions.forEach((_, i) => {
+            const btn = document.createElement('div');
+            btn.className = 'p-btn';
+            btn.innerText = i + 1;
+            btn.onclick = () => loadQuestion(i);
+            btn.id = `p-btn-${i}`;
+            paletteGrid.appendChild(btn);
+        });
+    }
+
+    function updatePaletteUI() {
+        for(let i=0; i<questions.length; i++) {
+            const btn = document.getElementById(`p-btn-${i}`);
+            btn.className = 'p-btn';
+            if (i === currentIdx) btn.classList.add('active');
+            if (userAnswers[i] !== null) btn.classList.add('answered');
+        }
+    }
+
+    function togglePalette() {
+        const p = document.getElementById('palette-grid');
+        p.style.display = p.style.display === 'grid' ? 'none' : 'grid';
+    }
+
+    // --- TIMER ---
+    function startTimer() {
+        const timerEl = document.getElementById('timer');
+        const interval = setInterval(() => {
+            if (timeLeft <= 0) {
+                clearInterval(interval);
+                finishTest();
+                return;
+            }
+            timeLeft--;
+            const h = Math.floor(timeLeft / 3600);
+            const m = Math.floor((timeLeft % 3600) / 60);
+            const s = timeLeft % 60;
+            timerEl.innerText = `${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+        }, 1000);
+    }
+
+    // --- SCORING & RESULTS ---
+    function finishTest() {
+        if(!confirm("Are you sure you want to submit?")) return;
+
+        let score = 0;
+        let correctCount = 0;
+        let wrongCount = 0;
+        let emptyCount = 0;
+        
+        const reviewContainer = document.getElementById('review-container');
+        reviewContainer.innerHTML = '';
+
+        questions.forEach((q, i) => {
+            const userAns = userAnswers[i];
+            let statusClass = '';
+            let statusText = '';
+
+            if (userAns === null) {
+                emptyCount++;
+                statusClass = '';
+                statusText = 'Unattempted';
+            } else if (userAns === q.ans) {
+                score += 4;
+                correctCount++;
+                statusClass = 'correct';
+                statusText = 'Correct (+4)';
+            } else {
+                score -= 1;
+                wrongCount++;
+                statusClass = 'wrong';
+                statusText = 'Incorrect (-1)';
+            }
+
+            // Populate review
+            const userAnsText = userAns !== null ? `(${userAns+1}) ${q.options[userAns]}` : "None";
+            const correctAnsText = `(${q.ans+1}) ${q.options[q.ans]}`;
+            
+            const reviewItem = `
+                <div class="review-item ${statusClass}">
+                    <strong>Q${i+1}:</strong> ${q.q.substring(0, 100)}...<br>
+                    <small>Your Answer: ${userAnsText}</small><br>
+                    <small>Correct Answer: <b>${correctAnsText}</b></small><br>
+                    <small>Status: ${statusText}</small>
+                </div>
+            `;
+            reviewContainer.insertAdjacentHTML('beforeend', reviewItem);
+        });
+
+        // UI Updates
+        document.getElementById('total-score').innerText = score;
+        document.getElementById('count-correct').innerText = correctCount;
+        document.getElementById('count-wrong').innerText = wrongCount;
+        document.getElementById('count-empty').innerText = emptyCount;
+
+        quizContainer.style.display = 'none';
+        footerNav.style.display = 'none';
+        resultSection.style.display = 'block';
+        window.scrollTo(0,0);
+    }
+
+    // Start
+    init();
+     // ==========================================
+    // FIXED AUTO-SAVE & RESTORE FUNCTIONALITY
+    // ==========================================
+    
+    const STORAGE_KEY_ANSWERS = 'MRSAFPI_answers';
+    const STORAGE_KEY_TIME = 'MRSAFPI_time';
+    const STORAGE_KEY_INDEX = 'MRSAFPI_index';
+
+    // 1. Function to save current state
+    function saveProgress() {
+        localStorage.setItem(STORAGE_KEY_ANSWERS, JSON.stringify(userAnswers));
+        localStorage.setItem(STORAGE_KEY_TIME, timeLeft);
+        localStorage.setItem(STORAGE_KEY_INDEX, currentIdx);
+    }
+
+    // 2. Function to load state
+    function loadProgress() {
+        const savedAnswers = localStorage.getItem(STORAGE_KEY_ANSWERS);
+        const savedTime = localStorage.getItem(STORAGE_KEY_TIME);
+        const savedIndex = localStorage.getItem(STORAGE_KEY_INDEX);
+
+        if (savedAnswers) {
+            const parsedAns = JSON.parse(savedAnswers);
+            for (let i = 0; i < parsedAns.length; i++) {
+                userAnswers[i] = parsedAns[i];
+            }
+        }
+
+        if (savedTime !== null) {
+            timeLeft = parseInt(savedTime);
+            // Update Timer UI Immediately so it doesn't look like it restarted
+            const h = Math.floor(timeLeft / 3600);
+            const m = Math.floor((timeLeft % 3600) / 60);
+            const s = timeLeft % 60;
+            const timerEl = document.getElementById('timer');
+            if(timerEl) {
+                timerEl.innerText = `${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+            }
+        }
+
+        if (savedIndex !== null) {
+            currentIdx = parseInt(savedIndex);
+        }
+    }
+
+    // 3. Inject Save Logic into existing functions
+    const originalSelectOption = selectOption;
+    selectOption = function(i) {
+        originalSelectOption(i); 
+        saveProgress();
+    };
+
+    const originalClearSelection = clearSelection;
+    clearSelection = function() {
+        originalClearSelection();
+        saveProgress();
+    };
+
+    // 4. CRITICAL FIX: Save immediately when page is closed or refreshed
+    window.addEventListener('beforeunload', function() {
+        saveProgress();
+    });
+
+    // 5. Override Finish Test to clear storage on Submit
+    const originalFinishTest = finishTest;
+    finishTest = function() {
+        if(confirm("Are you sure you want to submit?")) {
+            // Replicate score logic
+            let score = 0;
+            let correctCount = 0;
+            let wrongCount = 0;
+            let emptyCount = 0;
+            const reviewContainer = document.getElementById('review-container');
+            reviewContainer.innerHTML = '';
+
+            questions.forEach((q, i) => {
+                const userAns = userAnswers[i];
+                let statusClass = '', statusText = '';
+
+                if (userAns === null) {
+                    emptyCount++;
+                    statusText = 'Unattempted';
+                } else if (userAns === q.ans) {
+                    score += 4;
+                    correctCount++;
+                    statusClass = 'correct';
+                    statusText = 'Correct (+4)';
+                } else {
+                    score -= 1;
+                    wrongCount++;
+                    statusClass = 'wrong';
+                    statusText = 'Incorrect (-1)';
+                }
+
+                const userAnsText = userAns !== null ? `(${userAns+1}) ${q.options[userAns]}` : "None";
+                const correctAnsText = `(${q.ans+1}) ${q.options[q.ans]}`;
+                
+                const reviewItem = `
+                    <div class="review-item ${statusClass}">
+                        <strong>Q${i+1}:</strong> ${q.q.substring(0, 100)}...<br>
+                        <small>Your Answer: ${userAnsText}</small><br>
+                        <small>Correct Answer: <b>${correctAnsText}</b></small><br>
+                        <small>Status: ${statusText}</small>
+                    </div>
+                `;
+                reviewContainer.insertAdjacentHTML('beforeend', reviewItem);
+            });
+
+            document.getElementById('total-score').innerText = score;
+            document.getElementById('count-correct').innerText = correctCount;
+            document.getElementById('count-wrong').innerText = wrongCount;
+            document.getElementById('count-empty').innerText = emptyCount;
+
+            quizContainer.style.display = 'none';
+            footerNav.style.display = 'none';
+            resultSection.style.display = 'block';
+            window.scrollTo(0,0);
+
+            // Clear storage so next test starts fresh
+            localStorage.removeItem(STORAGE_KEY_ANSWERS);
+            localStorage.removeItem(STORAGE_KEY_TIME);
+            localStorage.removeItem(STORAGE_KEY_INDEX);
+        }
+    };
+
+    // 6. INITIALIZE RESTORE
+    // We run this immediately to overwrite the default variables
+    loadProgress(); 
+    
+    // Refresh the question view to show the restored question
+    loadQuestion(currentIdx);
+    
+    console.log("Auto-save system initialized with Refresh Protection.");
+
+</script>
+</body>
+</html>
