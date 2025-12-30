@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <title>Punjab Mock Test - 2</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1e40af;
+            --secondary: #64748b;
+            --success: #22c55e;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --light: #f8fafc;
+            --dark: #1e293b;
+        }
+        /* Add this inside your <style> tag */
+
+.support-footer {
+    margin-top: 30px;
+    padding-top: 15px;
+    border-top: 2px dashed #e2e8f0;
+    text-align: center;
+    background-color: #f8fafc;
+    border-radius: 8px;
+    padding-bottom: 5px;
+}
+
+.support-footer p {
+    margin: 5px 0;
+    color: var(--secondary);
+    font-size: 0.9rem;
+}
+
+.telegram-link {
+    color: #0088cc; /* Telegram Blue */
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.upi-badge {
+    background: #e0f2fe;
+    color: #0369a1;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-family: monospace;
+    font-weight: bold;
+    border: 1px solid #bae6fd;
+    display: inline-block;
+    margin-top: 5px;
+}
+
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            -webkit-user-select: none; /* Safari */
+            -ms-user-select: none; /* IE 10 and IE 11 */
+            user-select: none; /* Standard syntax */
+        }
+
+        body {
+            margin: 0;
+            background-color: #f1f5f9;
+            color: var(--dark);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Login Overlay */
+        #loginScreen {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: white;
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            padding: 20px;
+        }
+
+        .login-card {
+            background: var(--light);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #cbd5e1;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        /* Header */
+        header {
+            background: white;
+            padding: 10px 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .timer {
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: var(--danger);
+            background: #fee2e2;
+            padding: 5px 10px;
+            border-radius: 5px;
+            min-width: 90px;
+            text-align: center;
+        }
+
+        .timer.paused {
+            background: #fef3c7;
+            color: var(--warning);
+        }
+
+        .title {
+            font-weight: bold;
+            font-size: 1.1rem;
+            color: var(--primary-dark);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Main Layout */
+        .main-container {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Sidebar (Question Palette) */
+        .sidebar {
+            width: 280px;
+            background: white;
+            border-right: 1px solid #e2e8f0;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease;
+            position: absolute;
+            height: 100%;
+            z-index: 20;
+            transform: translateX(-100%);
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+        }
+
+        .sidebar.active { transform: translateX(0); }
+
+        @media (min-width: 900px) {
+            .sidebar {
+                position: static;
+                transform: translateX(0);
+                box-shadow: none;
+            }
+        }
+
+        .palette-header {
+            padding: 15px;
+            background: var(--light);
+            border-bottom: 1px solid #e2e8f0;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .palette-grid {
+            padding: 10px;
+            overflow-y: auto;
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 8px;
+            flex: 1;
+            align-content: start;
+        }
+
+        .q-btn {
+            aspect-ratio: 1;
+            border: 1px solid #cbd5e1;
+            background: white;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .q-btn.active { border: 2px solid var(--primary); transform: scale(1.1); font-weight: bold; }
+        .q-btn.answered { background-color: var(--success); color: white; border-color: var(--success); }
+        .q-btn.visited { background-color: var(--danger); color: white; border-color: var(--danger); }
+        .q-btn.marked { background-color: var(--warning); color: white; border-color: var(--warning); }
+
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background: var(--success);
+            color: white;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        /* Question Area */
+        .quiz-area {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            max-width: 900px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .question-card {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+        }
+
+        .q-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            color: var(--secondary);
+            font-size: 0.9rem;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+
+        .q-text {
+            font-size: 1.2rem;
+            font-weight: 500;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .q-image {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            display: none;
+        }
+
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option {
+            padding: 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+        }
+
+        .option:hover { background-color: #f8fafc; border-color: #cbd5e1; }
+        
+        .option.selected {
+            background-color: #eff6ff;
+            border-color: var(--primary);
+            color: var(--primary-dark);
+        }
+
+        /* Review Mode Styles */
+        .option.correct-answer { background-color: #dcfce7; border-color: var(--success); }
+        .option.wrong-answer { background-color: #fee2e2; border-color: var(--danger); }
+        .review-explanation { margin-top: 10px; color: var(--secondary); font-style: italic; display: none; }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: auto;
+            padding-top: 20px;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: opacity 0.2s;
+        }
+        .btn:active { transform: scale(0.98); }
+
+        .btn-prev { background: #cbd5e1; color: var(--dark); }
+        .btn-next { background: var(--primary); color: white; }
+        .btn-toggle-sidebar { background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--dark); }
+
+        @media (min-width: 900px) {
+            .btn-toggle-sidebar { display: none; }
+        }
+
+        /* Results Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85);
+            z-index: 100;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+            position: relative;
+        }
+
+        .score-circle {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: conic-gradient(var(--primary) 0%, #e2e8f0 0%);
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .score-circle::before {
+            content: "";
+            position: absolute;
+            width: 130px;
+            height: 130px;
+            background: white;
+            border-radius: 50%;
+        }
+
+        .score-text {
+            position: absolute;
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--dark);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .stat-box {
+            padding: 15px;
+            border-radius: 8px;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        .stat-correct { background: var(--success); }
+        .stat-wrong { background: var(--danger); }
+        .stat-skip { background: var(--secondary); }
+
+        .loading-spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--primary);
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+            display: none;
+        }
+
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+    </style>
+</head>
+<body oncontextmenu="return false;">
+
+    <!-- Login Screen -->
+    <div id="loginScreen">
+        <div class="login-card">
+            <h2 style="color:var(--primary)">Welcome to Mock Test</h2>
+            <p>Please enter your details to start.</p>
+            <input type="text" id="userName" placeholder="Enter Full Name" required>
+            <select id="userYears">
+                <option value="" disabled selected>From how much time are you preparing?</option>
+                <option value="< 1 Year">Less than 1 year</option>
+                <option value="1 Year">1 year</option>
+                <option value="2 Years">2 years</option>
+                <option value="3 Years">3 years</option>
+                <option value="4 Years">4 years</option>
+                <option value="5 Years">5 years</option>
+                <option value="6 Years">6 years</option>
+                <option value="7 Years">7 years</option>
+                <option value="8+ Years">8+ years</option>
+            </select>
+            <button class="btn btn-next" style="width:100%; margin-top:10px" onclick="startQuiz()">START TEST</button>
+            <p style="font-size:0.8rem; color:var(--secondary); margin-top:20px">Your progress is saved automatically.</p>
+        </div>
+    </div>
+
+    <header>
+        <div style="display:flex; align-items:center; gap:10px">
+            <button class="btn-toggle-sidebar" id="toggleSidebar">☰</button>
+            <div class="title">Punjab Mock Test-2</div>
+        </div>
+        <div class="timer" id="timer">02:00:00</div>
+    </header>
+
+    <div class="main-container">
+        <!-- Sidebar -->
+        <div class="sidebar" id="sidebar">
+            <div class="palette-header">
+                <span>Question Palette</span>
+                <span onclick="toggleSidebar()" style="cursor:pointer; display:block; padding:0 10px">✕</span>
+            </div>
+            <div class="palette-grid" id="paletteGrid">
+                <!-- Generated by JS -->
+            </div>
+            <div style="padding:15px; border-top:1px solid #e2e8f0">
+                <div style="display:flex; gap:10px; margin-bottom:15px; flex-wrap:wrap; font-size:0.7rem; justify-content:center">
+                    <div style="display:flex; align-items:center; gap:4px"><span style="width:10px; height:10px; background:var(--success)"></span>Ans</div>
+                    <div style="display:flex; align-items:center; gap:4px"><span style="width:10px; height:10px; background:var(--danger)"></span>Visited</div>
+                    <div style="display:flex; align-items:center; gap:4px"><span style="width:10px; height:10px; background:white; border:1px solid #ccc"></span>Left</div>
+                </div>
+                <button class="submit-btn" id="submitBtnMain" onclick="confirmSubmit()">SUBMIT TEST</button>
+                <button class="btn" id="reviewBtnMain" style="width:100%; background:var(--secondary); color:white; display:none" onclick="exitReview()">EXIT REVIEW</button>
+            </div>
+        </div>
+
+        <!-- Question Area -->
+        <div class="quiz-area">
+            <div class="question-card">
+                <div class="q-header">
+                    <span>Question <span id="currentQNum">1</span> / 120</span>
+                    <div>
+                        <span style="color:var(--success); margin-right:5px">+1.0</span>
+                        <span style="color:var(--danger)">-0.25</span>
+                    </div>
+                </div>
+                
+                <div class="q-text" id="questionText">Loading...</div>
+                <img id="questionImage" class="q-image" src="" alt="Question Image">
+                
+                <div class="options-list" id="optionsContainer">
+                    <!-- Generated by JS -->
+                </div>
+                <div class="review-explanation" id="reviewExplanation">Correct Answer: <span id="correctOptionText"></span></div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn btn-prev" onclick="prevQuestion()">Previous</button>
+                <button class="btn btn-next" onclick="nextQuestion()">Next</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Result Modal -->
+    <div class="modal" id="resultModal">
+        <div class="modal-content">
+            <h2>Test Summary</h2>
+            <div id="savingText" style="color:var(--warning); display:none; margin-bottom:10px">Saving to Database...</div>
+            <div class="loading-spinner" id="spinner"></div>
+            
+            <div class="score-circle" id="scoreCircle">
+                <div class="score-text" id="finalScore">0</div>
+            </div>
+            
+            <div class="stats-grid">
+                <div class="stat-box stat-correct">
+                    <span style="font-size:0.8rem; opacity:0.8">Correct</span>
+                    <span style="font-size:1.5rem; font-weight:bold" id="correctCount">0</span>
+                </div>
+                <div class="stat-box stat-wrong">
+                    <span style="font-size:0.8rem; opacity:0.8">Wrong</span>
+                    <span style="font-size:1.5rem; font-weight:bold" id="wrongCount">0</span>
+                </div>
+                <div class="stat-box stat-skip">
+                    <span style="font-size:0.8rem; opacity:0.8">Unattempted</span>
+                    <span style="font-size:1.5rem; font-weight:bold" id="unattemptedCount">0</span>
+                </div>
+            </div>
+            
+            <div style="display:flex; gap:10px; justify-content:center">
+                <button class="btn btn-prev" onclick="startReviewMode()">Review Answers</button>
+                <button class="btn btn-next" onclick="clearAndReload()">New Test</button>
+            </div>
+        </div>
+    </div>
+
+<script>
+    // --- CONFIGURATION ---
+    // REPLACE THIS URL WITH YOUR GOOGLE APPS SCRIPT WEB APP URL
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxysV-znp64ilYBR7ilR3RaXIyOJ0ipJFW3AhvEUTG5Q3NY-xjwcP61Lmfeq_A9tQtW/exec";
+    const LS_KEY = "punjab_mock_v2";
+
+    // --- DATA ---
+    const answerKeyString = "C,C,C,C,D,C,B,D,C,C,B,D,B,C,C,D,A,D,D,A,C,C,D,A,D,B,B,B,C,B,C,C,B,B,A,B,C,C,D,A,D,B,D,B,A,B,C,B,B,A,D,A,A,B,A,B,B,A,B,C,A,C,C,A,A,D,D,C,C,C,A,D,D,D,C,C,B,A,D,D,B,A,A,A,C,B,B,A,C,B,C,A,A,B,B,D,C,C,A,A,A,B,C,A,A,C,C,B,B,A,C,A,B,C,D,B,C,D,D,D";
+    const correctAnswers = answerKeyString.split(',').map(k => k.trim());
+
+    // Questions Data with Image Mapping
+    const quizData = [
+        { q: "1. Which two wetlands of Rajasthan were newly designated as Ramsar Sites?", o: ["Sambhar and Bharatpur", "Sambhar and Keoladeo", "Khichan and Menar", "Jodhpur and Udaipur"] },
+        { q: "2. Which city was declared as India’s ‘Leopard Capital’?", o: ["Delhi", "Mumbai", "Bengaluru", "Hyderabad"] },
+        { q: "3. What is the name of the first India-US Special Forces joint exercise held in 2025?", o: ["Vajra Shakti", "Garuda Strike", "Tiger Claw", "Desert Storm"] },
+        { q: "4. What is the name of India’s operation to evacuate citizens from conflict-hit Iran?", o: ["Operation Suraksha", "Operation Maitri", "Operation Sindhu", "Operation Raksha"] },
+        { q: "5. Which state became India’s 3rd Fully Literate State in 2025?", o: ["Goa", "Sikkim", "Mizoram", "Tripura"] },
+        { q: "6. EPFO increased the auto-settlement limit for advance claims to?", o: ["Rs 1 lakh", "Rs 2 lakh", "Rs 5 lakh", "Rs 10 lakh"] },
+        { q: "7. Which countries were elected to lead UN-Habitat General Assembly for 2025-2029?", o: ["India & USA", "UAE & Malaysia", "Germany & Canada", "Brazil & France"] },
+        { q: "8. In 2024, which country became the world’s largest creditor nation?", o: ["China", "USA", "Japan", "Germany"] },
+        { q: "9. What is the rank of India in the WEF Global Gender Gap Report 2025?", o: ["129", "130", "131", "132"] },
+        { q: "10. Where was the 3rd United Nations Ocean Conference (UNCO3) held?", o: ["Rome", "Geneva", "Nice", "Paris"] },
+        { q: "11. What portal did India launch during the UNCO3?", o: ["PRAVAH", "SAHAV", "MAHITI", "JALDOOT"] },
+        { q: "12. In which country is the ‘Angkor-Wat Temple’ complex located?", o: ["Indonesia", "Myanmar", "Sri Lanka", "Kampuchea (Cambodia)"] },
+        { q: "13. Firdausi, the author of Shahnama, was associated with the court of:", o: ["Subuktagin", "Mahmud Ghazanavi", "Muhammad Ghori", "Alaptagin"] },
+        { q: "14. Balban served as naib to which of the following sult of Delhi?", o: ["Iltutmish", "Razia", "Nasiruddin Mahmud", "Qutb ud-Din Aibak"] },
+        { q: "15. Which among the following Rajput rulers is known to have written a book on music?", o: ["Jayachandra Gahadavala", "Prithviraj Chauhan", "Rana Kumbha", "Man Singh"] },
+        { q: "16. Which one of the following is not a Balkan country?", o: ["Slovenia", "Bulgaria", "Romania", "Austria"] },
+        { q: "17. The Great Barrier Reef is located in:", o: ["Pacific Ocean", "Indian Ocean", "Mediterranean Sea", "Atlantic Ocean"] },
+        { q: "18. ‘Jarwa Tribe’ is found in:", o: ["Arunachal Pradesh", "Meghalaya", "Mizoram", "Nicobar Island"] },
+        { q: "19. ‘Operation Flood’ is associated with:", o: ["Flood control", "Irrigation Project", "Storage of food grains", "Milk production and Distribution"] },
+        { q: "20. World Ozone day is celebrated on:", o: ["16 September", "21 April", "25 December", "30 January"] },
+        { q: "21. The apparatus used to measure the intensity of light is known as:", o: ["Anemometer", "Calorimeter", "Luxmeter", "Altimeter"] },
+        { q: "22. Mirage formation is an example of:", o: ["Refraction", "Dispersion", "Total internal reflection", "Diffraction"] },
+        { q: "23. Operation ‘Smiling Buddha’ is associated with:", o: ["India’s first HYV seed", "India’s first GM crop", "India’s first cloned baby", "India’s first nuclear test"] },
+        { q: "24. Which part of India remained under Portuguese control after 15th August, 1947?", o: ["Goa", "Sikkim", "Pondicherry", "Andaman & Nicobar"] },
+        { q: "25. ‘Operation Polo’ is associated/connected with:", o: ["Quit India Movement", "Civil Disobedience Movement", "Military Action in Junagarh State", "Military Action in Hyderabad State"] },
+        { q: "26. Panama Canal connects:", o: ["North America and South America", "Pacific Ocean and Atlantic Ocean", "Red Sea and Mediterranean Sea", "Indian Ocean and Pacific Ocean"] },
+        { q: "27. Which scholar came to India with Mahmud Ghazni?", o: ["Ibn Battuta", "Al-Biruni", "Amir Khusrau", "Farishta"] },
+        { q: "28. Amir Khusrau was court poet of:", o: ["Muhammad-Bin-Tughluq", "Alauddin Khalji", "Sher Shah Suri", "Humayun"] },
+        { q: "29. A balloon filled with helium rises in air because", o: ["air exerts an upward force on the balloon", "the balloon is weightless", "helium is less dense than air", "helium pushes down on the air below the balloon"] },
+        { q: "30. Which one of the following is found in kidney stones?", o: ["Sodium oxalate", "Calcium oxalate", "Sodium chloride", "Calcium acetate"] },
+        { q: "31. In excel, a new workbook opens with:", o: ["One sheet", "Two sheets", "Three sheets", "Four Sheets"] },
+        { q: "32. Which of the following places the common data elements in order from smallest to largest:", o: ["Character, file, record, field, database", "Character, record, field, database, file", "Character, field, record, file, database", "Character, record, file, field"] },
+        { q: "33. ________ is the process of dividing the disk into tracks and sectors", o: ["Tracking", "Formatting", "Crashing", "Allotting"] },
+        { q: "34. The box that contains the central electronic components of the computer is the ..............", o: ["Motherboard", "System Unit", "Peripheral", "RAM"] },
+        { q: "35. A program written in machine language is called........ Program.", o: ["Machine Code", "computer", "assembler", "high level"] },
+        { q: "36. ___Key we use to select row", o: ["SHIFT+TAB", "SHIFT+ Spacebar", "CTRL+ Spacebar", "SHIFT+ Enter"] },
+        { q: "37. Firewalls are used to protect against", o: ["Phishing", "Vishing", "Unauthorized Attacks", "Data Driven Attacks"] },
+        { q: "38. The resolution of a VGA screen is", o: ["1024 × 768", "512 × 512", "640 × 480", "800 × 600"] },
+        { q: "39. A smaller version of an image is called a :", o: ["clipart", "bitmap", "portable network graphic", "thumbnail"] },
+        { q: "40. Which Decimal equivalent of the binary number 11100011", o: ["227", "226", "224", "228"] },
+        { q: "41. A bag contains an equal number of 50 paisa, 25 paisa, 20 paisa and 5 paisa coins respectively. If the total amount is Rs 50, how many coins of each type are there in the bag?", o: ["67", "35", "48", "50"] },
+        { q: "42. A person travels for 3 hours at the speed of 25 km/hr and for 2 hours at the speed of 40 km/hr. At the end of it, he finds that he has covered 1/3 of the total distance. At what speed should he travel to cover the remaining distance in 5 hours?", o: ["55 km/hr", "62 km/hr", "48 km/hr", "60 km/hr"] },
+        { q: "43. In a mixture of 240 liters, the ratio of milk to water is 7 : 5. If this ratio is to be 7 : 8, then find the quantity of water should be added to the mixture?", o: ["40 liters", "50 liters", "25 liters", "60 liters"] },
+        { q: "44. A and B undertake to complete a piece of work for Rupees 1200. A can do it in 8 days, B can do it in 12 days and with the help of C they complete the work in 4 days. Find the share of C?", o: ["100", "200", "300", "400"] },
+        { q: "45. Vaishali got 40 % of total marks in an examination and failed by 5 marks. However, Preethi who took the same examination got 50 % of the total marks and got 10 marks more than the passing marks. What were the passing marks in the examination?", o: ["65", "73", "68", "78"] },
+        { q: "46. The average height of a group of 12 boys increases by 2 inches when a boy a height 52 inches is replace by another boy. What is the height of the new boy?", o: ["54", "76", "72", "48"] },
+        { q: "47. For which of the given years is the percent rise (from the previous year) in the percent rise the least? (years 2001 and 2003 not to be considered)", o: ["2000", "2004", "2006", "Cannot be determined"], image: "47.png" },
+        { q: "48. If the production in 1998 was 10,000 units how much is the production in 2002?", o: ["35,280 units", "64,680 units", "46,200 units", "Cannot be determined"], image: "48.png" },
+        { q: "49. The average annual income earned by Indira over the given years is approximately what percent of the average income earned by Jasmeet over the given years?", o: ["10.15", "75.50", "13.44", "24.50"], image: "49.png" },
+        { q: "50. What is the ratio of the annual income of Indira to that of Manish in the year 2005?", o: ["23:35", "23:37", "32:35", "43:70"], image: "50.png" },
+        { q: "51. Find the correct spelt word.", o: ["irrelevant", "irrelavent", "irelevent", "irrelevant"] },
+        { q: "52. Buying a home is one of the most ______ financial decisions we need to take.", o: ["Important", "Impatient", "Honest", "Drastic"] },
+        { q: "53. Select the correct indirect speech: He said, “My father is playing tennis with me.”", o: ["He said that his father was playing tennis with him.", "That his father was playing tennis with him was said by him.", "He said that his father is playing tennis with him.", "He said that tennis was being played by his father."] },
+        { q: "54. Select the correct passive form: The members of the parliament elect their group leader either by consensus or by voice vote.", o: ["The group leader has been elected by the members of the parliament either by consensus or by voice vote", "The group leader is elected by the members of the parliament either by consensus or by voice vote", "The group leader was elected by the members of the parliament either by consensus or by voice vote", "The members of the parliament are elected by their group leader either by consensus or by voice vote"] },
+        { q: "55. China’s Belt and Road Initiative (BRI) already has contracts of ______ $1 trillion covering _______ 60 countries.", o: ["over, over", "over, across", "including, over", "above, of"] },
+        { q: "56. Choose the one which conveys the meaning of the sentence correctly. The teacher asked the student to leave the room with a frown on his face.", o: ["The teacher asked the student to leave the room with a frown on his face.", "With a frown on his face, the teacher asked the students to leave the room.", "The teacher asked the students with a frown on his face, to leave the room.", "The teacher asked with a frown on his face the student to leave the room,"] },
+        { q: "57. Idioms: From the horse’s mouth", o: ["To make to bear the sins for others", "From an authoritative or dependable source", "Take a subordinate position", "Worried for frivolous things"] },
+        { q: "58. Choose the antonym: ERROR", o: ["Correctness", "Unsuitability", "Impropriety", "Fallacy"] },
+        { q: "59. Incapable of making errors", o: ["Erroneous.", "Infallible.", "Incorrigible.", "Irreparable."] },
+        { q: "60. They are not beware of all the facts.", o: ["are not to be aware", "are not beware", "are not aware of", "No improvement"] },
+        { q: "61. He is indebted _______ his friend ________ a large sum.", o: ["to, for", "for, to", "by, for", "to, to"] },
+        { q: "62. Synonym: PACIFY", o: ["Gather", "Allot", "Calm", "Remit"] },
+        { q: "63. Synonym: GRAPHIC", o: ["Moving", "Timid", "Obvious", "Instructive"] },
+        { q: "64. Despite of their differences on matters principles, they all agree on the demand of hike in salary.", o: ["Despite their", "Despite for their", "Despite of there", "No improvement"] },
+        { q: "65. Idiom: Take something with a pinch of salt", o: ["Believing something with a doubt", "To keep people at a distance", "To interfere in someone’s affairs", "To lose a sustained share/position"] },
+        { q: "66. Select the set in which the numbers are related in the same way as (3, 24, 4)", o: ["(6, 35, 11)", "(2, 30, 8)", "(12, 84, 4)", "(4, 72, 9)"] },
+        { q: "67. Pick the odd one out.", o: ["CFIL", "GHIJ", "MOQS", "PSUX"] },
+        { q: "68. ‘Lawyer’ is related to ‘Justice’ in the same way as ‘Arbitrator’ is related to ‘____________’.", o: ["Judgment", "Injustice", "Settlement", "Communication"] },
+        { q: "69. CEGI : AGEK : : DFHJ : ?", o: ["CHFI", "CGIK", "BHFL", "BDJK"] },
+        { q: "70. Select the figure in which the given figure (Z shape) is embedded.", o: ["Figure a", "Figure b", "Figure c", "Figure d"], image: "70.png" },
+        { q: "71. Select the number-pair related in the same way as 36 : 84", o: ["27 : 63", "21 : 51", "57 : 135", "45 : 95"] },
+        { q: "72. The following venn diagram shows the number of students passed in English (5+12+4+2), Math (7+12+4+6), and Hindi (8+6+4+2). How many students were passed in English?", o: ["5", "9", "21", "23"], image: "72.png" },
+        { q: "73. Find the missing number: Matrix [38, 54, 61, 79], [21, ?, 12, 24], [19, 09, 14, ?]", o: ["18, 46", "28, 51", "42, 62", "18, 44"], image: "73.png" },
+        { q: "74. 37 boys are standing in a row facing the cinema hall. Rohan is fifteenth from the left end. If he shifted six places to the right, then what is his position from the right end?", o: ["16th", "21st", "20th", "None of these"] },
+        { q: "75. K is to the north of B. M is to the south of D. L is to the south of P. M is to the west of P. N is to the south of M and M is to the east of B. If N is to the west of L then what will be the position of D with respect to K?", o: ["North-east", "East", "Any of the above", "South-east"] },
+        { q: "76. Series: 1240 1140 1019 875 706 ?", o: ["428", "439", "510", "498"] },
+        { q: "77. 12. xx__yz__xyz__xx__yyz__z", o: ["yyxyz", "yzxyz", "yzyyz", "yxxyz"] },
+        { q: "78. Select the mirror image of the given figure when the mirror is placed to the right.", o: ["Figure a", "Figure b", "Figure c", "Figure d"], image: "78.png" },
+        { q: "79. Select the figure that will come next in the following figure series.", o: ["Figure a", "Figure b", "Figure c", "Figure d"], image: "79.png" },
+        { q: "80. Picture a clock displaying the time 4:20. If you could freeze time and measure the angle formed between the hour hand and the minute hand, what would that angle be?", o: ["40°", "20°", "30°", "10°"] },
+        { q: "81. Calendars repeat themselves every few years. Which of the following years will have the same calendar as 2024?", o: ["2030", "2052", "2056", "2060"] },
+        { q: "82. If a clock shows 8:40, what will the time be in the mirror reflection?", o: ["3:20", "4:20", "5:20", "3:40"] },
+        { q: "83. Select the combination of letters: ac__d__b__cbdd__a__bddb", o: ["bdabc", "bdbca", "bdcab", "cbdbc"] },
+        { q: "84. Which number will replace the question mark (?): 2, 5, 11, 23, 44, ?", o: ["77", "51", "63", "66"] },
+        { q: "85. Arrange the following in a meaningful sequence: 1. Hecto 2. Centi 3. Deca 4. kilo 5.Deci", o: ["1, 3, 4, 5, 2", "1, 5, 3, 4, 2", "2, 5, 3, 1, 4", "5, 1, 4, 2, 3"] },
+        { q: "86. ਸੰਗਲ ਤੁੜਾਉਣਾ ਮੁਹਾਵਰੇ ਦਾ ਉੱਤਰ ਦੇਵੋ।", o: ["ਜੋਸ਼ ਵਿੱਚ ਆਉਣਾ", "ਪਿੱਛਾ ਛੁੜਾਉਣਾ", "ਘਰੋਂ ਭੱਜ ਜਾਣਾ", "ਕਿਸੇ ਨਾਲ ਲੜ ਪੈਣਾ।"] },
+        { q: "87. ਪਾਕਿਸਤਾਨ ਵਿੱਚ ਪੰਜਾਬੀ ਦੀ ਕਿਹੜੀ ਲਿੱਪੀ ਹੈ।", o: ["ਗੁਰਮੁਖੀ", "ਸ਼ਾਹਮੁਖੀ", "ਦੇਵਨਾਗਰੀ", "ਬਰਹਮੀ"] },
+        { q: "88. ਕਾਰਕ ਕਿੰਨੀ ਪ੍ਰਕਾਰ ਦੇ ਹੁੰਦੇ ਹਨ।", o: ["8", "5", "6", "4"] },
+        { q: "89. ਭੂਆ ਸ਼ਬਦ ਕੀ ਹੈ।", o: ["ਇੱਕ ਵਚਨ", "ਬਹੁ ਵਚਨ", "ਦੋਨੋ", "ਕੋਈ ਨਹੀ"] },
+        { q: "90. ਦੁਆਬੀ ਸ਼ਬਦ ਕਿਹੜੀ ਭਾਸ਼ਾ ਦਾ ਹੈ।", o: ["ਉਰਦੂ", "ਫਾਰਸੀ", "ਪੰਜਾਬੀ", "ਕੋਈ ਨਹੀ।"] },
+        { q: "91. ਆਮ ਨਾਂਵ ਚੁਣੋ।", o: ["ਤੱਬਲਾ", "ਪੁਸ਼ਾਕ", "ਦੋਨੋ", "ਕੋਈ ਨਹੀ।"] },
+        { q: "92. ਭਾਸ਼ਾ ਦੀ ਛੋਟੀ ਇਕਾਈ ਕਿਹੜੀ ਹੈ।", o: ["ਧੁਨੀ", "ਸ਼ਬਦ", "ਵਾਕ", "ਅਰਥ"] },
+        { q: "93. (ਕ) ਪਿਛੇਤਰ ਲੱਗ ਕੇ ਬਣਿਆ ਸ਼ਬਦ ਕਿਹੜਾ ਹੈ।", o: ["ਚਾਲਕ", "ਉਡੀਕ", "ਪੁਸਤਕ", "ਕੋਈ ਨਹੀ।"] },
+        { q: "94. ਇਆਣਾ ਦਾ ਵਿਰੋਦੀ ਸ਼ਬਦ ਦਿੱਸੋ।", o: ["ਮੂਰਖ", "ਸਿਆਣਾ", "ਸੰਤ", "ਅਮੀਰ"] },
+        { q: "95. ਕਰ ਲਿਖ ਸੁਣ ਕੀ ਹੈ।", o: ["ਧਾਤੂ", "ਕਿਰਿਆ", "ਪੜਨਾਵ", "ਕਿਰਿਆ ਵਿਸ਼ੇਸ਼ਣ"] },
+        { q: "96. ਜਿਠੁੱਤਰ ਸ਼ਬਦ ਦਾ ਇਸਤਰੀ ਲਿੰਗ ਬਦਲੋ।", o: ["ਜਿਠੀ", "ਜਿੱਠ", "ਜਿੱਠੀ", "ਜਿਠੜੀ"] },
+        { q: "97. ਕੰਡਾ ਸ਼ਬਦ ਦਾ ਇੱਕ ਅਰਥ ਹੁੰਦਾ ਹੈ ਸੂਲ ਚੁੱਬਣ ਵਾਲਾ ਦੂਜਾ ਅਰਥ ਹੋਰ ਕੀ ਹੋ ਸਕਦਾ ਹੈ।", o: ["ਭਾਰ ਤੋਲਣ ਵਾਲਾ ਸੰਦ", "ਕਿਨਾਰਾ", "ਦੋਨੋ (a,b)", "ਪੌਦਾ"] },
+        { q: "98. ਜੇ ਉਹ ਨਾ ਆਇਆ ਤਾਂ ਮੈਂ ਵੀ ਉਸਨੂੰ ਨਹੀ ਬੁਲਾਵਾ ਗਾਂ। ਵਾਕ ਕਿਹੜਾ ਹੈ।", o: ["ਸਧਾਰਨ ਵਾਕ", "ਸਯੁਕਤ ਵਾਕ", "ਮਿਸ਼ਰਤ ਵਾਕ", "ਸਾਰੇ।"] },
+        { q: "99. ਸ਼ੁੱਧ ਸ਼ਬਦ ਚੁਣੋ।", o: ["ਵਾਤਾਵਰਨ", "ਵਾਤਾਵਰਣ", "ਵਾਤਾਿਰਣ", "ਲਾਹੋਰ।"] },
+        { q: "100. (ਅੰਨੀ ਪੈਣੀ) ਮੁਹਾਵਰਾ ਦਾ ਕੀ ਅਰਥ ਹੈ।", o: ["ਹਨੇਰ ਗਰਦੀ ਮੱਚ ਜਾਣੀ", "ਹਨੇਰਾ ਹੋ ਜਾਣਾ", "ਚੋਰੀ ਕਰਨੀ", "ਠੱਗ ਲੈਣਾ।"] },
+        { q: "101. Who was the governor of Punjab at the time of Banda Singh Bahadur’s martyrdom?", o: ["Abdus Samad Khan", "Zakriya Khan", "Wazir Khan", "Sayyid Jallaludin Beg"] },
+        { q: "102. Before becoming the disciple of Guru Gobind Singh Ji, Banda Singh was the disciple of:", o: ["Bahadur Shah", "Augharnath", "Farrukhsiyar", "mohammad shah"] },
+        { q: "103. The battle of Sirhind was fought at which place:", o: ["samana", "kapuri", "chappar Chiri", "none of these"] },
+        { q: "104. ‘Fateh Darshan and Fateh Dharam’ is the slogan of which organization:", o: ["Bandai Khalsa", "Tat Khalsa", "Sarbatt Khalsa", "Niranjani"] },
+        { q: "105. What was the chief of Sikh Misls called:", o: ["misldar", "sardar", "mukaddam", "kardar"] },
+        { q: "106. Which of the following was the Supreme Court of the Sikhs during the period of misls:", o: ["Bandai Khalsa", "Tat Khalsa", "Sarbat Khalsa", "Niranjani"] },
+        { q: "107. Who was the chief commander of Dal Khalsa:", o: ["Nawab Kapoor Singh", "Jassa singh Ahluwalia", "Sardar Sauda Singh", "Chadat Singh"] },
+        { q: "108. Patiala state was under which Misl:", o: ["kanhiya misl", "phulkian misl", "bhangi misl", "Nakai misl"] },
+        { q: "109. Who built Fort Mubarak in Patiala:", o: ["sahib Singh", "baba Ala Singh", "sardar Amar Singh", "jassa Singh Ahluwalia"] },
+        { q: "110. Which misl was led by Sada Kaur:", o: ["kanhiya misl", "phulkian misl", "bhangi misl", "Nakai misl"] },
+        { q: "111. How many major Sikh Misls were there in Punjab:", o: ["5", "10", "12", "14"] },
+        { q: "112. Followers of Tat Khalsa regarded which of the following as their Guru:", o: ["Guru gobind singh", "Banda Bahadur", "Bhai Gurdas Bhalla", "Guru Nanak Dev"] },
+        { q: "113. Followers of Bandai Khalsa regarded which of the following as their Guru:", o: ["Guru gobind singh", "Banda Bahadur", "Bhai Gurdas Bhalla", "Guru Nanak Dev"] },
+        { q: "114. Which sikh chief was given the title of Nawab by Zakriya Khan:", o: ["Jassa Singh Ramgarhia", "Khushal singh", "Kapoor singh", "Jassa singh ahluwalia"] },
+        { q: "115. Who amongst the following was the last Muslim to invade Punjab:", o: ["Bahadur Shah", "Aurangzeb", "Farrukhsiyar", "Ahmed Shah Abdali"] },
+        { q: "116. When did Nadir Shah Invade Punjab:", o: ["1735", "1739", "1748", "1762"] },
+        { q: "117. Nadir Shah was the ruler of which present day country:", o: ["kabul", "iraq", "Iran", "Greece"] },
+        { q: "118. Who was the governor of Punjab at the time of Nadir shah’s invasion:", o: ["Yahya Khan", "Mir Mannu", "Abdus Sammad Khan", "Zakarya Khan"] },
+        { q: "119. Who was the founder of the Durrani Dynasty:", o: ["Bahadur Shah", "Aurangzeb", "Farrukhsiyar", "ahmed Shah abdali"] },
+        { q: "120. Where did Ahmed Shah Abdali rule from;", o: ["kabul", "iraq", "iran", "Afghanistan"] }
+    ];
+
+    // --- STATE ---
+    let state = {
+        name: "",
+        years: "",
+        currentQ: 0,
+        answers: new Array(quizData.length).fill(null),
+        visited: new Array(quizData.length).fill(false),
+        timeLeft: 120 * 60, // 2 hours
+        isPaused: false,
+        submitted: false
+    };
+
+    let timerInterval;
+    let reviewMode = false;
+
+    // --- DOM ELEMENTS ---
+    const dom = {
+        loginScreen: document.getElementById('loginScreen'),
+        userName: document.getElementById('userName'),
+        userYears: document.getElementById('userYears'),
+        timer: document.getElementById('timer'),
+        sidebar: document.getElementById('sidebar'),
+        paletteGrid: document.getElementById('paletteGrid'),
+        questionText: document.getElementById('questionText'),
+        questionImage: document.getElementById('questionImage'),
+        optionsContainer: document.getElementById('optionsContainer'),
+        currentQNum: document.getElementById('currentQNum'),
+        resultModal: document.getElementById('resultModal'),
+        reviewExplanation: document.getElementById('reviewExplanation'),
+        reviewBtnMain: document.getElementById('reviewBtnMain'),
+        submitBtnMain: document.getElementById('submitBtnMain'),
+        correctOptionText: document.getElementById('correctOptionText')
+    };
+
+    // --- INITIALIZATION ---
+    function init() {
+        // Load from Local Storage
+        const saved = localStorage.getItem(LS_KEY);
+        if (saved) {
+            const parsed = JSON.parse(saved);
+            state = { ...state, ...parsed };
+            if (state.name) {
+                dom.loginScreen.style.display = 'none';
+                if (!state.submitted) startTimer();
+                else showResults(false); // Show results immediately if already submitted
+            }
+        }
+        renderPalette();
+        loadQuestion(state.currentQ);
+        
+        // Anti-Copy Listeners
+        document.addEventListener('keydown', handleKeydown);
+        document.addEventListener('selectstart', e => e.preventDefault());
+    }
+
+    // --- CORE LOGIC ---
+
+    function startQuiz() {
+        const name = dom.userName.value.trim();
+        const years = dom.userYears.value;
+        if (!name || !years) {
+            alert("Please fill all details");
+            return;
+        }
+        state.name = name;
+        state.years = years;
+        state.visited[0] = true;
+        saveState();
+        dom.loginScreen.style.display = 'none';
+        startTimer();
+    }
+
+    function startTimer() {
+        if (timerInterval) clearInterval(timerInterval);
+        timerInterval = setInterval(() => {
+            if (state.isPaused || state.submitted) return;
+            
+            if (state.timeLeft <= 0) {
+                clearInterval(timerInterval);
+                submitQuiz();
+                return;
+            }
+            state.timeLeft--;
+            updateTimerDisplay();
+            if (state.timeLeft % 5 === 0) saveState(); // Save every 5 seconds
+        }, 1000);
+        updateTimerDisplay();
+    }
+
+    function updateTimerDisplay() {
+        const hours = Math.floor(state.timeLeft / 3600);
+        const minutes = Math.floor((state.timeLeft % 3600) / 60);
+        const seconds = state.timeLeft % 60;
+        dom.timer.innerText = 
+            `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        
+        if (state.isPaused) dom.timer.classList.add('paused');
+        else dom.timer.classList.remove('paused');
+    }
+
+    // Hidden Pause Feature (Ctrl+W simulation)
+ function handleKeydown(e) {
+        // Prevent F12, Ctrl+Shift+I, Ctrl+U
+        if(e.key === 'F12' || (e.ctrlKey && e.shiftKey && e.key === 'I') || (e.ctrlKey && e.key === 'u')) {
+            e.preventDefault();
+        }
+
+        // --- CHANGED: Pause on 'P' key instead of Ctrl+W ---
+        if (e.key === 'p' || e.key === 'P') {
+            state.isPaused = !state.isPaused;
+            updateTimerDisplay();
+            
+            // Visual feedback
+            if(state.isPaused) {
+                alert("Timer Paused. Press 'P' to resume.");
+            } else {
+                // Optional: Auto-close alert not possible, but user knows it resumed
+            }
+        }
+    }
+
+    function loadQuestion(index) {
+        state.currentQ = index;
+        if (!state.submitted) state.visited[index] = true;
+        saveState();
+
+        dom.currentQNum.innerText = index + 1;
+        const qData = quizData[index];
+        dom.questionText.innerText = qData.q;
+
+        // Image Handling
+        if (qData.image) {
+            dom.questionImage.src = qData.image;
+            dom.questionImage.style.display = 'block';
+        } else {
+            dom.questionImage.style.display = 'none';
+        }
+
+        // Options
+        dom.optionsContainer.innerHTML = '';
+        dom.reviewExplanation.style.display = 'none';
+
+        // 1. Remove existing footer if it exists to avoid duplicates
+        const existingFooter = document.getElementById('dynamicFooter');
+        if(existingFooter) existingFooter.remove();
+
+        qData.o.forEach((opt, i) => {
+            const div = document.createElement('div');
+            div.className = 'option';
+            
+            const letters = ["A", "B", "C", "D"];
+            div.innerText = `${letters[i]}) ${opt}`;
+
+            if (reviewMode) {
+                // Review Logic
+                const correctIndex = letters.indexOf(correctAnswers[index]);
+                const userIndex = state.answers[index];
+
+                if (i === correctIndex) div.classList.add('correct-answer');
+                if (i === userIndex && userIndex !== correctIndex) div.classList.add('wrong-answer');
+                
+                // Show Correct Text below
+                dom.correctOptionText.innerText = `Option ${correctAnswers[index]}`;
+                dom.reviewExplanation.style.display = 'block';
+
+            } else {
+                // Quiz Logic
+                if (state.answers[index] === i) div.classList.add('selected');
+                div.onclick = () => selectOption(i);
+            }
+            
+            dom.optionsContainer.appendChild(div);
+        });
+
+        // --- NEW: Insert Support Footer dynamically ---
+        const footerHTML = `
+            <div id="dynamicFooter" class="support-footer">
+                <p>Join Telegram: <a href="https://t.me/punjabjailwarder" target="_blank" class="telegram-link">@punjabjailwarder</a></p>
+                <p>We appreciate support 🙏</p>
+                <div class="upi-badge">anmol09863rr@oksbi</div>
+            </div>
+        `;
+        
+        // Append inside the question card, after options
+        document.querySelector('.question-card').insertAdjacentHTML('beforeend', footerHTML);
+
+        updatePalette();
+    }
+    function selectOption(optionIndex) {
+        if (state.submitted) return;
+        state.answers[state.currentQ] = optionIndex;
+        loadQuestion(state.currentQ);
+    }
+
+    function nextQuestion() {
+        if (state.currentQ < quizData.length - 1) loadQuestion(state.currentQ + 1);
+    }
+
+    function prevQuestion() {
+        if (state.currentQ > 0) loadQuestion(state.currentQ - 1);
+    }
+
+    function renderPalette() {
+        dom.paletteGrid.innerHTML = '';
+        quizData.forEach((_, i) => {
+            const btn = document.createElement('div');
+            btn.className = 'q-btn';
+            btn.innerText = i + 1;
+            btn.onclick = () => {
+                loadQuestion(i);
+                if(window.innerWidth < 900) toggleSidebar();
+            };
+            dom.paletteGrid.appendChild(btn);
+        });
+    }
+
+    function updatePalette() {
+        const btns = dom.paletteGrid.children;
+        for (let i = 0; i < quizData.length; i++) {
+            let className = 'q-btn';
+            if (i === state.currentQ) className += ' active';
+            
+            if (state.answers[i] !== null) {
+                className += ' answered';
+            } else if (state.visited[i]) {
+                className += ' visited';
+            }
+            btns[i].className = className;
+        }
+    }
+
+    function toggleSidebar() {
+        dom.sidebar.classList.toggle('active');
+    }
+
+    document.getElementById('toggleSidebar').onclick = toggleSidebar;
+
+    function confirmSubmit() {
+        if (confirm("Are you sure you want to submit the test?")) {
+            submitQuiz();
+        }
+    }
+
+    function submitQuiz() {
+        state.submitted = true;
+        clearInterval(timerInterval);
+        saveState();
+        calculateAndShowResults();
+    }
+
+    function calculateAndShowResults() {
+        let correct = 0;
+        let wrong = 0;
+        let unattempted = 0;
+        let score = 0;
+
+        state.answers.forEach((ans, i) => {
+            if (ans === null) {
+                unattempted++;
+            } else {
+                const charAns = ["A", "B", "C", "D"][ans];
+                if (charAns === correctAnswers[i]) {
+                    correct++;
+                    score += 1;
+                } else {
+                    wrong++;
+                    score -= 0.25;
+                }
+            }
+        });
+
+        // Update UI
+        document.getElementById('finalScore').innerText = score;
+        document.getElementById('correctCount').innerText = correct;
+        document.getElementById('wrongCount').innerText = wrong;
+        document.getElementById('unattemptedCount').innerText = unattempted;
+        
+        // Gradient Circle
+        const total = 120;
+        const percentage = Math.max(0, (score / total) * 100);
+        document.getElementById('scoreCircle').style.background = 
+            `conic-gradient(var(--success) ${percentage}%, #e2e8f0 0%)`;
+
+        dom.resultModal.style.display = 'flex';
+
+        // Send to Google Sheet
+        sendToGoogleSheet(score, correct, wrong, unattempted);
+    }
+
+    function sendToGoogleSheet(score, correct, wrong, unattempted) {
+        const savingText = document.getElementById('savingText');
+        const spinner = document.getElementById('spinner');
+        
+        savingText.style.display = 'block';
+        spinner.style.display = 'block';
+
+        const payload = {
+            name: state.name,
+            years: state.years,
+            score: score,
+            correct: correct,
+            wrong: wrong,
+            unattempted: unattempted
+        };
+
+        fetch(GOOGLE_SCRIPT_URL, {
+            method: 'POST',
+            mode: 'no-cors', // Crucial for Google Apps Script
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payload)
+        })
+        .then(() => {
+            savingText.innerText = "Saved Successfully!";
+            savingText.style.color = "var(--success)";
+            spinner.style.display = 'none';
+        })
+        .catch(err => {
+            console.error(err);
+            savingText.innerText = "Error Saving to Sheet.";
+            savingText.style.color = "var(--danger)";
+            spinner.style.display = 'none';
+        });
+    }
+
+    function saveState() {
+        localStorage.setItem(LS_KEY, JSON.stringify(state));
+    }
+
+    function showResults(showModal) {
+        calculateAndShowResults();
+        if(!showModal) dom.resultModal.style.display = 'none';
+    }
+
+    // --- REVIEW MODE ---
+    function startReviewMode() {
+        dom.resultModal.style.display = 'none';
+        reviewMode = true;
+        dom.submitBtnMain.style.display = 'none';
+        dom.reviewBtnMain.style.display = 'block';
+        
+        loadQuestion(0);
+        // Reset sidebar state visualization for review
+        renderPalette(); 
+        updatePalette();
+    }
+
+    function exitReview() {
+        dom.resultModal.style.display = 'flex';
+    }
+
+    function clearAndReload() {
+        localStorage.removeItem(LS_KEY);
+        location.reload();
+    }
+
+    // Run
+    init();
+
+</script>
+</body>
+</html>
