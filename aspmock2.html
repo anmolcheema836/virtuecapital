@@ -686,6 +686,7 @@
 
     // --- INITIALIZATION ---
     function init() {
+                renderPalette();
         // Load from Local Storage
         const saved = localStorage.getItem(LS_KEY);
         if (saved) {
@@ -693,11 +694,25 @@
             state = { ...state, ...parsed };
             if (state.name) {
                 dom.loginScreen.style.display = 'none';
-                if (!state.submitted) startTimer();
-                else showResults(false); // Show results immediately if already submitted
+                
+                if (!state.submitted) {
+                    startTimer();
+                } else {
+                    // FIX: Restore Review Mode UI if already submitted
+                    reviewMode = true; 
+                    dom.submitBtnMain.style.display = 'none';
+                    dom.reviewBtnMain.style.display = 'block';
+                    
+                    // Re-render the current question to show correct/wrong colors
+                    loadQuestion(state.currentQ);
+                    
+                    // Calculate scores silently so the modal is ready when "Exit Review" is clicked
+                    calculateAndShowResults();
+                    dom.resultModal.style.display = 'none'; 
+                }
             }
         }
-        renderPalette();
+
         loadQuestion(state.currentQ);
         
         // Anti-Copy Listeners
