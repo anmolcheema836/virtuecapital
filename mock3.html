@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <title>Mock test - 3</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1e40af;
+            --secondary: #64748b;
+            --success: #22c55e;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --light: #f8fafc;
+            --dark: #1e293b;
+        }
+
+        /* Matrix Table Style for Reasoning Questions */
+        .matrix-table {
+            margin: 15px 0;
+            border-collapse: collapse;
+            background: #fff;
+        }
+        .matrix-table td {
+            border: 2px solid #cbd5e1;
+            padding: 10px 20px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: var(--dark);
+        }
+
+        .support-footer {
+            margin-top: 30px;
+            padding-top: 15px;
+            border-top: 2px dashed #e2e8f0;
+            text-align: center;
+            background-color: #f8fafc;
+            border-radius: 8px;
+            padding-bottom: 5px;
+        }
+
+        .support-footer p {
+            margin: 5px 0;
+            color: var(--secondary);
+            font-size: 0.9rem;
+        }
+
+        .telegram-link {
+            color: #0088cc;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .upi-badge {
+            background: #e0f2fe;
+            color: #0369a1;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-family: monospace;
+            font-weight: bold;
+            border: 1px solid #bae6fd;
+            display: inline-block;
+            margin-top: 5px;
+        }
+
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Raavi', 'Arial', sans-serif; /* Added Raavi for Punjabi */
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        body {
+            margin: 0;
+            background-color: #f1f5f9;
+            color: var(--dark);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Login Overlay */
+        #loginScreen {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: white;
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            padding: 20px;
+        }
+
+        .login-card {
+            background: var(--light);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #cbd5e1;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        /* Header */
+        header {
+            background: white;
+            padding: 10px 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .timer {
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: var(--danger);
+            background: #fee2e2;
+            padding: 5px 10px;
+            border-radius: 5px;
+            min-width: 90px;
+            text-align: center;
+        }
+
+        .timer.paused {
+            background: #fef3c7;
+            color: var(--warning);
+        }
+
+        .title {
+            font-weight: bold;
+            font-size: 1.1rem;
+            color: var(--primary-dark);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Main Layout */
+        .main-container {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Sidebar (Question Palette) */
+        .sidebar {
+            width: 280px;
+            background: white;
+            border-right: 1px solid #e2e8f0;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease;
+            position: absolute;
+            height: 100%;
+            z-index: 20;
+            transform: translateX(-100%);
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+        }
+
+        .sidebar.active { transform: translateX(0); }
+
+        @media (min-width: 900px) {
+            .sidebar {
+                position: static;
+                transform: translateX(0);
+                box-shadow: none;
+            }
+        }
+
+        .palette-header {
+            padding: 15px;
+            background: var(--light);
+            border-bottom: 1px solid #e2e8f0;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .palette-grid {
+            padding: 10px;
+            overflow-y: auto;
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 8px;
+            flex: 1;
+            align-content: start;
+        }
+
+        .q-btn {
+            aspect-ratio: 1;
+            border: 1px solid #cbd5e1;
+            background: white;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .q-btn.active { border: 2px solid var(--primary); transform: scale(1.1); font-weight: bold; }
+        .q-btn.answered { background-color: var(--success); color: white; border-color: var(--success); }
+        .q-btn.visited { background-color: var(--danger); color: white; border-color: var(--danger); }
+        .q-btn.marked { background-color: var(--warning); color: white; border-color: var(--warning); }
+
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background: var(--success);
+            color: white;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        /* Question Area */
+        .quiz-area {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            max-width: 900px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .question-card {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+        }
+
+        .q-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            color: var(--secondary);
+            font-size: 0.9rem;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+
+        .q-text {
+            font-size: 1.2rem;
+            font-weight: 500;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .q-image {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            display: none;
+        }
+
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option {
+            padding: 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+        }
+
+        .option:hover { background-color: #f8fafc; border-color: #cbd5e1; }
+        
+        .option.selected {
+            background-color: #eff6ff;
+            border-color: var(--primary);
+            color: var(--primary-dark);
+        }
+
+        /* Review Mode Styles */
+        .option.correct-answer { background-color: #dcfce7; border-color: var(--success); }
+        .option.wrong-answer { background-color: #fee2e2; border-color: var(--danger); }
+        .review-explanation { margin-top: 10px; color: var(--secondary); font-style: italic; display: none; }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: auto;
+            padding-top: 20px;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: opacity 0.2s;
+        }
+        .btn:active { transform: scale(0.98); }
+
+        .btn-prev { background: #cbd5e1; color: var(--dark); }
+        .btn-next { background: var(--primary); color: white; }
+        .btn-toggle-sidebar { background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--dark); }
+
+        @media (min-width: 900px) {
+            .btn-toggle-sidebar { display: none; }
+        }
+
+        /* Results Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85);
+            z-index: 100;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+            position: relative;
+        }
+
+        .score-circle {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: conic-gradient(var(--primary) 0%, #e2e8f0 0%);
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .score-circle::before {
+            content: "";
+            position: absolute;
+            width: 130px;
+            height: 130px;
+            background: white;
+            border-radius: 50%;
+        }
+
+        .score-text {
+            position: absolute;
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--dark);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .stat-box {
+            padding: 15px;
+            border-radius: 8px;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        .stat-correct { background: var(--success); }
+        .stat-wrong { background: var(--danger); }
+        .stat-skip { background: var(--secondary); }
+
+        .loading-spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--primary);
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+            display: none;
+        }
+
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+    </style>
+</head>
+<body oncontextmenu="return false;">
+
+    <!-- Login Screen -->
+    <div id="loginScreen">
+        <div class="login-card">
+            <h2 style="color:var(--primary)">Mock test - 3</h2>
+            <p>Please enter your details to start.</p>
+            <input type="text" id="userName" placeholder="Enter Full Name" required>
+            <select id="userLang">
+                <option value="en">English Medium</option>
+                <option value="pb">Punjabi Medium</option>
+            </select>
+            <button class="btn btn-next" style="width:100%; margin-top:10px" onclick="startQuiz()">START TEST</button>
+            <p style="font-size:0.8rem; color:var(--secondary); margin-top:20px">Your progress is saved automatically.</p>
+        </div>
+    </div>
+
+    <header>
+        <div style="display:flex; align-items:center; gap:10px">
+            <button class="btn-toggle-sidebar" id="toggleSidebar">☰</button>
+            <div class="title">Mock test - 3</div>
+        </div>
+        <div class="timer" id="timer">02:00:00</div>
+    </header>
+
+    <div class="main-container">
+        <!-- Sidebar -->
+        <div class="sidebar" id="sidebar">
+            <div class="palette-header">
+                <span>Question Palette</span>
+                <span onclick="toggleSidebar()" style="cursor:pointer; display:block; padding:0 10px">✕</span>
+            </div>
+            <div class="palette-grid" id="paletteGrid">
+                <!-- Generated by JS -->
+            </div>
+            <div style="padding:15px; border-top:1px solid #e2e8f0">
+                <div style="display:flex; gap:10px; margin-bottom:15px; flex-wrap:wrap; font-size:0.7rem; justify-content:center">
+                    <div style="display:flex; align-items:center; gap:4px"><span style="width:10px; height:10px; background:var(--success)"></span>Ans</div>
+                    <div style="display:flex; align-items:center; gap:4px"><span style="width:10px; height:10px; background:var(--danger)"></span>Visited</div>
+                    <div style="display:flex; align-items:center; gap:4px"><span style="width:10px; height:10px; background:white; border:1px solid #ccc"></span>Left</div>
+                </div>
+                <button class="submit-btn" id="submitBtnMain" onclick="confirmSubmit()">SUBMIT TEST</button>
+                <button class="btn" id="reviewBtnMain" style="width:100%; background:var(--secondary); color:white; display:none" onclick="exitReview()">EXIT REVIEW</button>
+            </div>
+        </div>
+
+        <!-- Question Area -->
+        <div class="quiz-area">
+            <div class="question-card">
+                <div class="q-header">
+                    <span>Question <span id="currentQNum">1</span> / 120</span>
+                    <div>
+                        <span style="color:var(--success); margin-right:5px">+1.0</span>
+                        <span style="color:var(--danger)">-0.25</span>
+                    </div>
+                </div>
+                
+                <div class="q-text" id="questionText">Loading...</div>
+                <img id="questionImage" class="q-image" src="" alt="Question Image">
+                
+                <div class="options-list" id="optionsContainer">
+                    <!-- Generated by JS -->
+                </div>
+                <div class="review-explanation" id="reviewExplanation">Correct Answer: <span id="correctOptionText"></span></div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn btn-prev" onclick="prevQuestion()">Previous</button>
+                <button class="btn btn-next" onclick="nextQuestion()">Next</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Result Modal -->
+    <div class="modal" id="resultModal">
+        <div class="modal-content">
+            <h2>Test Summary</h2>
+            <div id="savingText" style="color:var(--warning); display:none; margin-bottom:10px">Saving to Database...</div>
+            <div class="loading-spinner" id="spinner"></div>
+            
+            <div class="score-circle" id="scoreCircle">
+                <div class="score-text" id="finalScore">0</div>
+            </div>
+            
+            <div class="stats-grid">
+                <div class="stat-box stat-correct">
+                    <span style="font-size:0.8rem; opacity:0.8">Correct</span>
+                    <span style="font-size:1.5rem; font-weight:bold" id="correctCount">0</span>
+                </div>
+                <div class="stat-box stat-wrong">
+                    <span style="font-size:0.8rem; opacity:0.8">Wrong</span>
+                    <span style="font-size:1.5rem; font-weight:bold" id="wrongCount">0</span>
+                </div>
+                <div class="stat-box stat-skip">
+                    <span style="font-size:0.8rem; opacity:0.8">Unattempted</span>
+                    <span style="font-size:1.5rem; font-weight:bold" id="unattemptedCount">0</span>
+                </div>
+            </div>
+            
+            <div style="display:flex; gap:10px; justify-content:center">
+                <button class="btn btn-prev" onclick="startReviewMode()">Review Answers</button>
+                <button class="btn btn-next" onclick="clearAndReload()">New Test</button>
+            </div>
+        </div>
+    </div>
+
+<script>
+    // --- CONFIGURATION ---
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxF8IuqZBKfCIgSp_qglBBKB3k01gweoFNrhvGOmP3R-G_6gQFbWIySEXuBe_Py-wgPyw/exec";
+    const LS_KEY = "senior_assistant_test_5_v2_fixe";
+
+    // --- DATA ---
+    const answerKeyString = "A,D,D,D,D,A,A,A,C,C,C,A,B,A,B,B,B,A,C,D,C,D,B,A,D,C,B,C,C,D,B,C,A,C,B,B,B,C,B,C,B,C,C,A,C,C,B,B,B,C,C,A,B,B,A,A,D,D,B,A,A,B,D,B,C,B,C,B,C,C,A,C,A,B,A,B,A,C,D,B,A,A,A,C,C,B,B,A,C,A,C,A,D,D,C,A,C,A,A,D,B,C,D,C,A,C,A,A,A,B,A,C,C,C,D,B,A,A,B,B";
+    const correctAnswers = answerKeyString.split(',').map(k => k.trim());
+
+    // Bilingual Data with Corrected Punjabi
+    const quizData = [
+    { en: "1. Which of the following is a technopolis?", pb: "1. ਇਹਨਾਂ ਵਿੱਚੋਂ ਕਿਹੜਾ ਟੈਕਨੋਪੋਲਿਸ (Technopolis) ਹੈ?", o_en: ["Silicon Valley", "London", "Paris", "Moscow"], o_pb: ["ਸਿਲੀਕਾਨ ਵੈਲੀ", "ਲੰਡਨ", "ਪੈਰਿਸ", "ਮਾਸਕੋ"] },
+    { en: "2. Which of the following acids is secreted in the stomach?", pb: "2. ਹੇਠ ਲਿਖਿਆਂ ਵਿੱਚੋਂ ਕਿਹੜਾ ਐਸਿਡ ਪੇਟ ਵਿੱਚ ਪੈਦਾ ਹੁੰਦਾ ਹੈ (secreted)?", o_en: ["Sulphuric acid", "Nitric acid", "Phosphoric acid", "Hydrochloric acid"], o_pb: ["ਸਲਫਿਊਰਿਕ ਐਸਿਡ", "ਨਾਈਟ੍ਰਿਕ ਐਸਿਡ", "ਫਾਸਫੋਰਿਕ ਐਸਿਡ", "ਹਾਈਡ੍ਰੋਕਲੋਰਿਕ ਐਸਿਡ"] },
+    { en: "3. The meter that is used to measure the distance moved by the vehicle is known as", pb: "3. ਵਾਹਨ ਦੁਆਰਾ ਤੈਅ ਕੀਤੀ ਦੂਰੀ ਨੂੰ ਮਾਪਣ ਲਈ ਵਰਤੇ ਜਾਣ ਵਾਲੇ ਮੀਟਰ ਨੂੰ ਕੀ ਕਿਹਾ ਜਾਂਦਾ ਹੈ?", o_en: ["Ammeter", "Speedometer", "Chronometer", "Odometer"], o_pb: ["ਐਮਮੀਟਰ", "ਸਪੀਡੋਮੀਟਰ", "ਕ੍ਰੋਨੋਮੀਟਰ", "ਓਡੋਮੀਟਰ"] },
+    { en: "4. Which Amendment to the Constitution abolished the two seats reserved for the Anglo-Indian community?", pb: "4. ਸੰਵਿਧਾਨ ਦੀ ਕਿਹੜੀ ਸੋਧ ਨੇ ਐਂਗਲੋ-ਇੰਡੀਅਨ ਭਾਈਚਾਰੇ ਲਈ ਰਾਖਵੀਆਂ ਦੋ ਸੀਟਾਂ ਨੂੰ ਖਤਮ ਕਰ ਦਿੱਤਾ?", o_en: ["108th", "100th", "102nd", "104th"], o_pb: ["108ਵੀਂ", "100ਵੀਂ", "102ਵੀਂ", "104ਵੀਂ"] },
+    { en: "5. Which of the following ports is an artificial port?", pb: "5. ਹੇਠ ਲਿਖੀਆਂ ਬੰਦਰਗਾਹਾਂ ਵਿੱਚੋਂ ਕਿਹੜੀ ਇੱਕ ਨਕਲੀ (Artificial) ਬੰਦਰਗਾਹ ਹੈ?", o_en: ["Marmugao", "Mumbai", "Kochi", "Chennai"], o_pb: ["ਮਾਰਮੁਗਾਓ", "ਮੁੰਬਈ", "ਕੋਚੀ", "ਚੇਨਈ"] },
+    { en: "6. Heat transfer that does not require a medium is called:", pb: "6. ਗਰਮੀ ਦਾ ਤਬਾਦਲਾ (Heat transfer) ਜਿਸ ਲਈ ਕਿਸੇ ਮਾਧਿਅਮ ਦੀ ਲੋੜ ਨਹੀਂ ਹੁੰਦੀ, ਉਸਨੂੰ ਕੀ ਕਿਹਾ ਜਾਂਦਾ ਹੈ?", o_en: ["Radiation", "Advection", "Conduction", "Convection"], o_pb: ["ਵਿਕਿਰਣ (Radiation)", "ਐਡਵੈਕਸ਼ਨ", "ਚਾਲਨ (Conduction)", "ਸੰਵਹਨ (Convection)"] },
+    { en: "7. Which type of rock is formed from the cooling and solidification of lava?", pb: "7. ਲਾਵੇ ਦੇ ਠੰਢਾ ਹੋਣ ਅਤੇ ਜੰਮਣ ਨਾਲ ਕਿਸ ਕਿਸਮ ਦੀ ਚੱਟਾਨ ਬਣਦੀ ਹੈ?", o_en: ["Igneous", "Sedimentary", "Crystal", "Metamorphic"], o_pb: ["ਅਗਨੀ ਚੱਟਾਨ (Igneous)", "ਤਲਛੱਟੀ (Sedimentary)", "ਕ੍ਰਿਸਟਲ", "ਰੂਪਾਂਤਰਿਤ (Metamorphic)"] },
+    { en: "8. After elections to the 18th Lok Sabha, who was appointed as the Union Minister of Textiles in the Modi government?", pb: "8. 18ਵੀਂ ਲੋਕ ਸਭਾ ਦੀਆਂ ਚੋਣਾਂ ਤੋਂ ਬਾਅਦ, ਮੋਦੀ ਸਰਕਾਰ ਵਿੱਚ ਕੇਂਦਰੀ ਕੱਪੜਾ ਮੰਤਰੀ ਵਜੋਂ ਕਿਸਨੂੰ ਨਿਯੁਕਤ ਕੀਤਾ ਗਿਆ ਸੀ?", o_en: ["Giriraj Singh (Begusarai)", "Bhupendra Yadav (Alwar)", "Rajiv Ranjan Singh alias Lalan Singh (Munger)", "Gajendra Singh Shekhawat (Jodhpur)"], o_pb: ["ਗਿਰੀਰਾਜ ਸਿੰਘ (ਬੇਗੂਸਰਾਏ)", "ਭੂਪੇਂਦਰ ਯਾਦਵ (ਅਲਵਰ)", "ਰਾਜੀਵ ਰੰਜਨ ਸਿੰਘ ਉਰਫ ਲਲਨ ਸਿੰਘ (ਮੁੰਗੇਰ)", "ਗਜੇਂਦਰ ਸਿੰਘ ਸ਼ੇਖਾਵਤ (ਜੋਧਪੁਰ)"] },
+    { en: "9. Which of the following human races inhabits China, Mongolia, and Japan?", pb: "9. ਹੇਠ ਲਿਖੀਆਂ ਮਨੁੱਖੀ ਨਸਲਾਂ ਵਿੱਚੋਂ ਕਿਹੜੀਆਂ ਚੀਨ, ਮੰਗੋਲੀਆ ਅਤੇ ਜਾਪਾਨ ਵਿੱਚ ਰਹਿੰਦੀਆਂ ਹਨ?", o_en: ["Australoid", "Negro", "Mongoloid", "Nordic"], o_pb: ["ਆਸਟ੍ਰੇਲੋਇਡ", "ਨੀਗਰੋ", "ਮੰਗੋਲਾਇਡ", "ਨੋਰਡਿਕ"] },
+    { en: "10. “Chach Nama” was translated into Persian by:", pb: "10. “ਚੱਚ ਨਾਮਾ” ਦਾ ਅਨੁਵਾਦ ਫਾਰਸੀ ਵਿੱਚ ਕਿਸ ਦੁਆਰਾ ਕੀਤਾ ਗਿਆ ਸੀ?", o_en: ["Nuruddin Muhammad Aufi", "Shams-i-Siraj", "Muhammad Ali Bin Abu Bakr Kufi", "More than one of the above"], o_pb: ["ਨੂਰੂਦੀਨ ਮੁਹੰਮਦ ਔਫੀ", "ਸ਼ਮਸ-ਏ-ਸਿਰਾਜ", "ਮੁਹੰਮਦ ਅਲੀ ਬਿਨ ਅਬੂ ਬਕਰ ਕੁਫ਼ੀ", "ਉਪਰੋਕਤ ਵਿੱਚੋਂ ਇੱਕ ਤੋਂ ਵੱਧ"] },
+    { en: "11. Which of the following is an iron ore?", pb: "11. ਇਹਨਾਂ ਵਿੱਚੋਂ ਕਿਹੜਾ ਲੋਹਾ ਧਾਤ (Iron ore) ਹੈ?", o_en: ["Cinnabar", "Bauxite", "Limonite", "Pyrite"], o_pb: ["ਸਿਨਾਬਾਰ", "ਬਾਕਸਾਈਟ", "ਲਿਮੋਨਾਈਟ", "ਪਾਈਰਾਈਟ"] },
+    { en: "12. Who was the founder of the Farazi Movement?", pb: "12. ਫਰਾਜੀ ਲਹਿਰ ਦਾ ਸੰਸਥਾਪਕ ਕੌਣ ਸੀ?", o_en: ["Haji Shariatullah", "Sayyid Ahmad", "Dudhu Mian", "More than one of the above"], o_pb: ["ਹਾਜੀ ਸ਼ਰੀਅਤਉੱਲਾ", "ਸੱਯਦ ਅਹਿਮਦ", "ਦੁੱਧੂ ਮੀਆਂ", "ਉਪਰੋਕਤ ਵਿੱਚੋਂ ਇੱਕ ਤੋਂ ਵੱਧ"] },
+    { en: "13. Which component of fertilizer is used for stimulating early growth purpose?", pb: "13. ਖਾਦ ਦੇ ਕਿਹੜੇ ਹਿੱਸੇ ਦੀ ਵਰਤੋਂ ਸ਼ੁਰੂਆਤੀ ਵਿਕਾਸ ਦੇ ਉਦੇਸ਼ ਨੂੰ ਉਤੇਜਿਤ ਕਰਨ ਲਈ ਕੀਤੀ ਜਾਂਦੀ ਹੈ?", o_en: ["Potassium", "Nitrogen", "Oxygen", "Phosphorus"], o_pb: ["ਪੋਟਾਸ਼ੀਅਮ", "ਨਾਈਟ੍ਰੋਜਨ", "ਆਕਸੀਜਨ", "ਫਾਸਫੋਰਸ"] },
+    { en: "14. Malik Kafur, also known as “Hazar Dinari,” was bought by whom?", pb: "14. ਮਲਿਕ ਕਾਫੂਰ, ਜਿਸਨੂੰ \"ਹਜ਼ਾਰ ਦਿਨਾਰੀ\" ਵੀ ਕਿਹਾ ਜਾਂਦਾ ਹੈ, ਨੂੰ ਕਿਸਨੇ ਖਰੀਦਿਆ ਸੀ?", o_en: ["Alauddin Khilji", "Ghiyasuddin Tughlaq", "Nusrat Khan", "None of the above"], o_pb: ["ਅਲਾਉਦੀਨ ਖਿਲਜੀ", "ਗਿਆਸੁਦੀਨ ਤੁਗਲਕ", "ਨੁਸਰਤ ਖਾਨ", "ਉਪਰੋਕਤ ਵਿੱਚੋਂ ਕੋਈ ਨਹੀਂ"] },
+    { en: "15. Who wrote “New Lamps for the Old”?", pb: "15. \"New Lamps for the Old\" ਕਿਸਨੇ ਲਿਖਿਆ?", o_en: ["Surendranath", "Aurobindo Ghosh", "Motilal Ghosh", "None of the above"], o_pb: ["ਸੁਰੇਂਦਰਨਾਥ", "ਅਰਬਿੰਦੋ ਘੋਸ਼", "ਮੋਤੀਲਾਲ ਘੋਸ਼", "ਉਪਰੋਕਤ ਵਿੱਚੋਂ ਕੋਈ ਨਹੀਂ"] },
+    { en: "16. Which was the theme of International Olympic Day 2025, celebrated on June 23?", pb: "16. 23 ਜੂਨ ਨੂੰ ਮਨਾਏ ਜਾਣ ਵਾਲੇ ਅੰਤਰਰਾਸ਼ਟਰੀ ਓਲੰਪਿਕ ਦਿਵਸ 2025 ਦਾ ਥੀਮ ਕੀ ਸੀ?", o_en: ["“Together, For a Peaceful World”", "“Let’s Move”", "“Move, learn, discover - Together for a better world”", "“Let’s Move and Celebrate”"], o_pb: ["“ਇਕੱਠੇ, ਇੱਕ ਸ਼ਾਂਤੀਪੂਰਨ ਸੰਸਾਰ ਲਈ”", "“ਆਓ ਅੱਗੇ ਵਧੀਏ”", "“ਅੱਗੇ ਵਧੀਏ, ਸਿੱਖੀਏ, ਖੋਜੀਏ - ਇੱਕ ਬਿਹਤਰ ਸੰਸਾਰ ਲਈ ਇਕੱਠੇ”", "“ਆਓ ਅੱਗੇ ਵਧੀਏ ਅਤੇ ਜਸ਼ਨ ਮਨਾਈਏ”"] },
+    { en: "17. Which of the following bacterial diseases is called splenic fever?", pb: "17. ਹੇਠ ਲਿਖੀਆਂ ਬੈਕਟੀਰੀਆ ਦੀਆਂ ਬਿਮਾਰੀਆਂ ਵਿੱਚੋਂ ਕਿਹੜੀ ਨੂੰ 'ਤਿੱਲੀ ਦਾ ਬੁਖਾਰ' (Splenic fever) ਕਿਹਾ ਜਾਂਦਾ ਹੈ?", o_en: ["Typhoid", "Anthrax", "Cholera", "None of the above"], o_pb: ["ਟਾਈਫਾਈਡ", "ਐਂਥ੍ਰੈਕਸ", "ਹੈਜ਼ਾ", "ਉਪਰੋਕਤ ਵਿੱਚੋਂ ਕੋਈ ਨਹੀਂ"] },
+    { en: "18. Which of the following radiation is used to get relief from body aches?", pb: "18. ਸਰੀਰ ਦੇ ਦਰਦ ਤੋਂ ਰਾਹਤ ਪਾਉਣ ਲਈ ਹੇਠ ਲਿਖਿਆਂ ਵਿੱਚੋਂ ਕਿਹੜੀਆਂ ਕਿਰਨਾਂ (radiation) ਦੀ ਵਰਤੋਂ ਕੀਤੀ ਜਾਂਦੀ ਹੈ?", o_en: ["Infra-red radiation", "UV radiation", "Visible radiation", "None of these"], o_pb: ["ਇਨਫਰਾਰੈੱਡ ਰੇਡੀਏਸ਼ਨ", "ਯੂਵੀ ਰੇਡੀਏਸ਼ਨ", "ਦਿਖਾਈ ਦੇਣ ਵਾਲੀ ਰੇਡੀਏਸ਼ਨ", "ਇਹਨਾਂ ਵਿੱਚੋਂ ਕੋਈ ਨਹੀਂ"] },
+    { en: "19. Zoji-la Tunnel will connect which of the following places?", pb: "19. ਜ਼ੋਜੀ-ਲਾ ਸੁਰੰਗ ਹੇਠ ਲਿਖੀਆਂ ਕਿਹੜੀਆਂ ਥਾਵਾਂ ਨੂੰ ਜੋੜੇਗੀ?", o_en: ["Manali and Jammu", "Manali and Lahaul Spiti valley", "Srinagar and Leh", "Srinagar and Jammu"], o_pb: ["ਮਨਾਲੀ ਅਤੇ ਜੰਮੂ", "ਮਨਾਲੀ ਅਤੇ ਲਾਹੌਲ ਸਪਿਤੀ ਘਾਟੀ", "ਸ਼੍ਰੀਨਗਰ ਅਤੇ ਲੇਹ", "ਸ਼੍ਰੀਨਗਰ ਅਤੇ ਜੰਮੂ"] },
+    { en: "20. Which of the following is the author of the autobiography “I Have the Streets: A Kutti Cricket Story”?", pb: "20. ਇਹਨਾਂ ਵਿੱਚੋਂ ਕੌਣ \"I Have the Streets: A Kutti Cricket Story\" ਸਵੈ-ਜੀਵਨੀ ਦਾ ਲੇਖਕ ਹੈ?", o_en: ["S. Sreesanth", "Suresh Raina", "Rahul Dravid", "R. Ashwin and S. Monga"], o_pb: ["ਐਸ. ਸ਼੍ਰੀਸੰਤ", "ਸੁਰੇਸ਼ ਰੈਨਾ", "ਰਾਹੁਲ ਦ੍ਰਾਵਿੜ", "ਆਰ. ਅਸ਼ਵਿਨ ਅਤੇ ਐਸ. ਮੋਂਗਾ"] },
+    { en: "21. Where is the 14th Ministerial Conference (MC14) of the World Trade Organization (WTO) scheduled to take place in March 2026?", pb: "21. ਵਿਸ਼ਵ ਵਪਾਰ ਸੰਗਠਨ (WTO) ਦੀ 14ਵੀਂ ਮੰਤਰੀ ਪੱਧਰੀ ਕਾਨਫਰੰਸ (MC14) ਮਾਰਚ 2026 ਵਿੱਚ ਕਿੱਥੇ ਹੋਣ ਵਾਲੀ ਹੈ?", o_en: ["Geneva, Switzerland", "New Delhi, India", "Yaoundé, Cameroon", "Nairobi, Kenya"], o_pb: ["ਜਨੇਵਾ, ਸਵਿਟਜ਼ਰਲੈਂਡ", "ਨਵੀਂ ਦਿੱਲੀ, ਭਾਰਤ", "ਯਾਂਊਂਡੇ, ਕੈਮਰੂਨ", "ਨੈਰੋਬੀ, ਕੀਨੀਆ"] },
+    { en: "22. Which of the following elements was first produced artificially?", pb: "22. ਹੇਠ ਲਿਖਿਆਂ ਵਿੱਚੋਂ ਕਿਹੜਾ ਤੱਤ ਸਭ ਤੋਂ ਪਹਿਲਾਂ ਨਕਲੀ (Artificially) ਤੌਰ 'ਤੇ ਪੈਦਾ ਕੀਤਾ ਗਿਆ ਸੀ?", o_en: ["Neptunium", "Plutonium", "Francium", "Technetium"], o_pb: ["ਨੈਪਟੂਨੀਅਮ", "ਪਲੂਟੋਨੀਅਮ", "ਫ੍ਰਾਂਸੀਅਮ", "ਟੈਕਨੀਸ਼ੀਅਮ"] },
+    { en: "23. Which of the following is the fluid part of the blood?", pb: "23. ਇਹਨਾਂ ਵਿੱਚੋਂ ਕਿਹੜਾ ਖੂਨ ਦਾ ਤਰਲ ਹਿੱਸਾ (Fluid part) ਹੈ?", o_en: ["WBC", "Plasma", "Blood platelets", "RBC"], o_pb: ["WBC", "ਪਲਾਜ਼ਮਾ", "ਖੂਨ ਦੇ ਪਲੇਟਲੈਟਸ", "RBC"] },
+    { en: "24. Which of the following cities is located along the side of river Seine?", pb: "24. ਹੇਠ ਲਿਖਿਆਂ ਵਿੱਚੋਂ ਕਿਹੜਾ ਸ਼ਹਿਰ ਸੀਨ (Seine) ਨਦੀ ਦੇ ਕੰਢੇ ਸਥਿਤ ਹੈ?", o_en: ["Paris", "Belgrade", "Lisbon", "Budapest"], o_pb: ["ਪੈਰਿਸ", "ਬੈਲਗ੍ਰੇਡ", "ਲਿਸਬਨ", "ਬੁਡਾਪੇਸਟ"] },
+    { en: "25. According to the Reserve Bank of India, what is one of the eligibility criteria for a Small Finance Bank (SFB) to transition into a Universal Bank?", pb: "25. ਭਾਰਤੀ ਰਿਜ਼ਰਵ ਬੈਂਕ ਦੇ ਅਨੁਸਾਰ, ਇੱਕ ਸਮਾਲ ਫਾਈਨੈਂਸ ਬੈਂਕ (SFB) ਨੂੰ ਯੂਨੀਵਰਸਲ ਬੈਂਕ ਵਿੱਚ ਬਦਲਣ ਲਈ ਯੋਗਤਾ ਮਾਪਦੰਡਾਂ ਵਿੱਚੋਂ ਇੱਕ ਕੀ ਹੈ?", o_en: ["Minimum net worth of ₹ 1,500 crore", "Minimum net worth of ₹ 500 crore", "Minimum net worth of ₹ 2,000 crore", "Minimum net worth of ₹ 1,000 crore"], o_pb: ["ਘੱਟੋ-ਘੱਟ ₹ 1,500 ਕਰੋੜ ਦੀ ਕੁੱਲ ਜਾਇਦਾਦ", "ਘੱਟੋ-ਘੱਟ ₹ 500 ਕਰੋੜ ਦੀ ਕੁੱਲ ਜਾਇਦਾਦ", "ਘੱਟੋ-ਘੱਟ ₹ 2,000 ਕਰੋੜ ਦੀ ਕੁੱਲ ਜਾਇਦਾਦ", "ਘੱਟੋ-ਘੱਟ ₹ 1,000 ਕਰੋੜ ਦੀ ਕੁੱਲ ਜਾਇਦਾਦ"] },
+    { en: "26. When did the Muslim League observe “Direct Action Day”?", pb: "26. ਮੁਸਲਿਮ ਲੀਗ ਨੇ \"ਡਾਇਰੈਕਟ ਐਕਸ਼ਨ ਡੇ\" (ਸਿੱਧੀ ਕਾਰਵਾਈ ਦਾ ਦਿਨ) ਕਦੋਂ ਮਨਾਇਆ?", o_en: ["14 August 1946", "15 August 1947", "16 August 1946", "None of the above"], o_pb: ["14 ਅਗਸਤ 1946", "15 ਅਗਸਤ 1947", "16 ਅਗਸਤ 1946", "ਉਪਰੋਕਤ ਵਿੱਚੋਂ ਕੋਈ ਨਹੀਂ"] },
+    { en: "27. Under Article “243J”, which of the following can make provisions for the maintenance of accounts by Panchayats?", pb: "27. ਅਨੁਛੇਦ “243J” ਦੇ ਤਹਿਤ, ਹੇਠ ਲਿਖਿਆਂ ਵਿੱਚੋਂ ਕੌਣ ਪੰਚਾਇਤਾਂ ਦੁਆਰਾ ਖਾਤਿਆਂ ਦੀ ਸਾਂਭ-ਸੰਭਾਲ ਲਈ ਉਪਬੰਧ ਕਰ ਸਕਦਾ ਹੈ?", o_en: ["Parliament", "State Legislature", "District Collector", "State Finance Commission"], o_pb: ["ਸੰਸਦ", "ਰਾਜ ਵਿਧਾਨ ਸਭਾ", "ਜ਼ਿਲ੍ਹਾ ਕੁਲੈਕਟਰ", "ਰਾਜ ਵਿੱਤ ਕਮਿਸ਼ਨ"] },
+    { en: "28. Which one of the following statements about Ruchira Kamboj, the first woman Indian Ambassador to the United Nations (recently retired), is true?", pb: "28. ਸੰਯੁਕਤ ਰਾਸ਼ਟਰ ਵਿੱਚ ਪਹਿਲੀ ਮਹਿਲਾ ਭਾਰਤੀ ਰਾਜਦੂਤ (ਹਾਲ ਹੀ ਵਿੱਚ ਸੇਵਾਮੁਕਤ), ਰੁਚਿਰਾ ਕੰਬੋਜ ਬਾਰੇ ਹੇਠ ਲਿਖਿਆਂ ਵਿੱਚੋਂ ਕਿਹੜਾ ਕਥਨ ਸੱਚ ਹੈ?", o_en: ["She was a member of the NITI Ayog", "She was a member of Indian Council of World Affairs", "She held the position of Permanent Representative of India to UNESCO-Paris", "She was the first woman Indian Ambassador to USA"], o_pb: ["ਉਹ ਨੀਤੀ ਆਯੋਗ ਦੀ ਮੈਂਬਰ ਸੀ", "ਉਹ ਵਿਸ਼ਵ ਮਾਮਲਿਆਂ ਦੀ ਭਾਰਤੀ ਕੌਂਸਲ ਦੀ ਮੈਂਬਰ ਸੀ", "ਉਹ ਯੂਨੈਸਕੋ-ਪੈਰਿਸ ਵਿੱਚ ਭਾਰਤ ਦੇ ਸਥਾਈ ਪ੍ਰਤੀਨਿਧੀ ਦੇ ਅਹੁਦੇ 'ਤੇ ਰਹੀ", "ਉਹ ਅਮਰੀਕਾ ਵਿੱਚ ਪਹਿਲੀ ਮਹਿਲਾ ਭਾਰਤੀ ਰਾਜਦੂਤ ਸੀ"] },
+    { en: "29. The political strategy Struggle – Truce – Struggle (S-T-S) came into prominence with a call for:", pb: "29. ਰਾਜਨੀਤਿਕ ਰਣਨੀਤੀ ਸੰਘਰਸ਼ - ਜੰਗਬੰਦੀ - ਸੰਘਰਸ਼ (S-T-S) ਕਿਸ ਦੇ ਸੱਦੇ ਨਾਲ ਪ੍ਰਮੁੱਖਤਾ ਵਿੱਚ ਆਈ?", o_en: ["Swadeshi Movement", "Quit India", "Boycott of Simon Commission", "Khilafat issue"], o_pb: ["ਸਵਦੇਸ਼ੀ ਅੰਦੋਲਨ", "ਭਾਰਤ ਛੱਡੋ", "ਸਾਈਮਨ ਕਮਿਸ਼ਨ ਦਾ ਬਾਈਕਾਟ", "ਖਿਲਾਫ਼ਤ ਮੁੱਦਾ"] },
+    { en: "30. In October 1943, Subhash Chandra Bose set up a provisional government of free India which was recognized by how many countries including Japan?", pb: "30. ਅਕਤੂਬਰ 1943 ਵਿੱਚ, ਸੁਭਾਸ਼ ਚੰਦਰ ਬੋਸ ਨੇ ਆਜ਼ਾਦ ਭਾਰਤ ਦੀ ਇੱਕ ਅਸਥਾਈ ਸਰਕਾਰ ਸਥਾਪਤ ਕੀਤੀ ਜਿਸਨੂੰ ਜਾਪਾਨ ਸਮੇਤ ਕਿੰਨੇ ਦੇਸ਼ਾਂ ਨੇ ਮਾਨਤਾ ਦਿੱਤੀ?", o_en: ["4", "5", "10", "9"], o_pb: ["4", "5", "10", "9"] },
+    { en: "31. When was Murree made the summer capital of Punjab during the tenure of Sir Robert Henry Davis?", pb: "31. ਸਰ ਰੌਬਰਟ ਹੈਨਰੀ ਡੇਵਿਸ ਦੇ ਕਾਰਜਕਾਲ ਦੌਰਾਨ ਮਰੀ ਨੂੰ ਪੰਜਾਬ ਦੀ ਗਰਮੀਆਂ ਦੀ ਰਾਜਧਾਨੀ ਕਦੋਂ ਬਣਾਇਆ ਗਿਆ ਸੀ?", o_en: ["1871", "1873", "1875", "1876"], o_pb: ["1871", "1873", "1875", "1876"] },
+    { en: "32. In which year did Baba Ram Singh Ji fix the minimum marriage age at 18 for girls and 20 for boys under the Kuka Movement?", pb: "32. ਬਾਬਾ ਰਾਮ ਸਿੰਘ ਜੀ ਨੇ ਕੂਕਾ ਲਹਿਰ ਅਧੀਨ ਕਿਸ ਸਾਲ ਵਿੱਚ ਕੁੜੀਆਂ ਲਈ ਵਿਆਹ ਦੀ ਘੱਟੋ-ਘੱਟ ਉਮਰ 18 ਸਾਲ ਅਤੇ ਮੁੰਡਿਆਂ ਲਈ 20 ਸਾਲ ਨਿਰਧਾਰਤ ਕੀਤੀ ਸੀ?", o_en: ["1837", "1847", "1857", "1867"], o_pb: ["1837", "1847", "1857", "1867"] },
+    { en: "33. Who was shot dead by Chandra Shekhar Azad when along with John Saunders?", pb: "33. ਜੌਨ ਸਾਂਡਰਸ ਦੇ ਨਾਲ ਚੰਦਰ ਸ਼ੇਖਰ ਆਜ਼ਾਦ ਨੇ ਕਿਸਨੂੰ ਗੋਲੀ ਮਾਰ ਕੇ ਮਾਰ ਦਿੱਤਾ ਸੀ?", o_en: ["Channan Singh", "Hans Raj Vohra", "Jai Gopal", "Phonindra Nath Ghosh"], o_pb: ["ਚੰਨਣ ਸਿੰਘ", "ਹੰਸ ਰਾਜ ਵੋਹਰਾ", "ਜੈ ਗੋਪਾਲ", "ਫੋਨਿੰਦਰ ਨਾਥ ਘੋਸ਼"] },
+    { en: "34. The Unionist Party was established as a result of which legislation?", pb: "34. ਯੂਨੀਅਨਿਸਟ ਪਾਰਟੀ ਕਿਸ ਕਾਨੂੰਨ ਦੇ ਨਤੀਜੇ ਵਜੋਂ ਸਥਾਪਿਤ ਹੋਈ ਸੀ?", o_en: ["Punjab Colonisation Act, 1906", "Government of India Act, 1909", "Punjab Land Alienation Act, 1900", "Rowlatt Act, 1919"], o_pb: ["ਪੰਜਾਬ ਕਾਲੋਨਾਈਜੇਸ਼ਨ ਐਕਟ, 1906", "ਭਾਰਤ ਸਰਕਾਰ ਐਕਟ, 1909", "ਪੰਜਾਬ ਲੈਂਡ ਏਲੀਨੇਸ਼ਨ ਐਕਟ, 1900", "ਰੋਲਟ ਐਕਟ, 1919"] },
+    { en: "35. February 23 is celebrated as which special day in Punjab?", pb: "35. 23 ਫਰਵਰੀ ਨੂੰ ਪੰਜਾਬ ਵਿੱਚ ਕਿਹੜੇ ਖਾਸ ਦਿਨ ਵਜੋਂ ਮਨਾਇਆ ਜਾਂਦਾ ਹੈ?", o_en: ["Shaheedi Diwas", "Pagri Sambhal Diwas", "Kisan Mazdoor Diwas", "Punjab Agriculture Day"], o_pb: ["ਸ਼ਹੀਦੀ ਦਿਵਸ", "ਪਗੜੀ ਸੰਭਾਲ ਦਿਵਸ", "ਕਿਸਾਨ ਮਜ਼ਦੂਰ ਦਿਵਸ", "ਪੰਜਾਬ ਖੇਤੀਬਾੜੀ ਦਿਵਸ"] },
+    { en: "36. What is the title of the Punjabi book written about Gulab Kaur?", pb: "36. ਗੁਲਾਬ ਕੌਰ ਬਾਰੇ ਲਿਖੀ ਪੰਜਾਬੀ ਪੁਸਤਕ ਦਾ ਸਿਰਲੇਖ ਕੀ ਹੈ?", o_en: ["Gadar Lehar Di Dhee Gulaabo", "Gadar Di Dhee Gulaab Kaur", "Shaheedan Di Kahani", "Punjab Di Virangna"], o_pb: ["ਗਦਰ ਲਹਿਰ ਦੀ ਧੀ ਗੁਲਾਬੋ", "ਗਦਰ ਦੀ ਧੀ ਗੁਲਾਬ ਕੌਰ", "ਸ਼ਹੀਦਾਂ ਦੀ ਕਹਾਣੀ", "ਪੰਜਾਬ ਦੀ ਵੀਰਾਂਗਣਾ"] },
+    { en: "37. Who launched the Punjabi monthly magazine Kirti?", pb: "37. ਪੰਜਾਬੀ ਮਾਸਿਕ ਰਸਾਲਾ 'ਕਿਰਤੀ' ਕਿਸਨੇ ਸ਼ੁਰੂ ਕੀਤਾ?", o_en: ["Ajit Singh", "Santokh Singh", "Bhagat Singh", "Lala Lajpat Rai"], o_pb: ["ਅਜੀਤ ਸਿੰਘ", "ਸੰਤੋਖ ਸਿੰਘ", "ਭਗਤ ਸਿੰਘ", "ਲਾਲਾ ਲਾਜਪਤ ਰਾਏ"] },
+    { en: "38. Who was the last Speaker of the Punjab Legislative Assembly from March 21, 1946 to July 4, 1947?", pb: "38. 21 ਮਾਰਚ, 1946 ਤੋਂ 4 ਜੁਲਾਈ, 1947 ਤੱਕ ਪੰਜਾਬ ਵਿਧਾਨ ਸਭਾ ਦਾ ਆਖਰੀ ਸਪੀਕਰ ਕੌਣ ਸੀ?", o_en: ["Sardar Kapur Singh", "Gurmukh Singh Musafir", "Diwan Bahadur S.P. Singha", "Giani Kartar Singh"], o_pb: ["ਸਰਦਾਰ ਕਪੂਰ ਸਿੰਘ", "ਗੁਰਮੁਖ ਸਿੰਘ ਮੁਸਾਫਿਰ", "ਦੀਵਾਨ ਬਹਾਦਰ ਐਸ.ਪੀ. ਸਿੰਘਾ", "ਗਿਆਨੀ ਕਰਤਾਰ ਸਿੰਘ"] },
+    { en: "39. Who represented the Sikh viewpoint to the Cripps Mission of 1942 and the Cabinet Mission Plan of 1946?", pb: "39. 1942 ਦੇ ਕ੍ਰਿਪਸ ਮਿਸ਼ਨ ਅਤੇ 1946 ਦੇ ਕੈਬਨਿਟ ਮਿਸ਼ਨ ਪਲਾਨ ਵਿੱਚ ਸਿੱਖ ਦ੍ਰਿਸ਼ਟੀਕੋਣ ਦੀ ਨੁਮਾਇੰਦਗੀ ਕਿਸਨੇ ਕੀਤੀ?", o_en: ["Master Tara Singh", "Baldev Singh", "Sardar Kapur Singh", "Baba Kharak Singh"], o_pb: ["ਮਾਸਟਰ ਤਾਰਾ ਸਿੰਘ", "ਬਲਦੇਵ ਸਿੰਘ", "ਸਰਦਾਰ ਕਪੂਰ ਸਿੰਘ", "ਬਾਬਾ ਖੜਕ ਸਿੰਘ"] },
+    { en: "40. Which operation was conducted from June to September 1984 in which nearly 10,000 Sikhs were imprisoned?", pb: "40. ਜੂਨ ਤੋਂ ਸਤੰਬਰ 1984 ਤੱਕ ਕਿਹੜਾ ਆਪਰੇਸ਼ਨ ਚਲਾਇਆ ਗਿਆ ਜਿਸ ਵਿੱਚ ਲਗਭਗ 10,000 ਸਿੱਖਾਂ ਨੂੰ ਕੈਦ ਕੀਤਾ ਗਿਆ ਸੀ?", o_en: ["Operation Sundown", "Operation Black Thunder", "Operation Woodrose", "Operation Night Dominance"], o_pb: ["ਆਪਰੇਸ਼ਨ ਸਨਡਾਊਨ", "ਆਪਰੇਸ਼ਨ ਬਲੈਕ ਥੰਡਰ", "ਆਪਰੇਸ਼ਨ ਵੁੱਡਰੋਜ਼", "ਆਪਰੇਸ਼ਨ ਨਾਈਟ ਡੋਮੀਨੈਂਸ"] },
+    { en: "41. Who served as the Governor from 27 June 1966 to 1 June 1967?", pb: "41. 27 ਜੂਨ 1966 ਤੋਂ 1 ਜੂਨ 1967 ਤੱਕ ਰਾਜਪਾਲ ਵਜੋਂ ਕਿਸਨੇ ਸੇਵਾ ਨਿਭਾਈ?", o_en: ["B.D. Pande", "Dharam Vira", "Hokishe Sema", "Sunith Francis Rodrigues"], o_pb: ["ਬੀ.ਡੀ. ਪਾਂਡੇ", "ਧਰਮ ਵੀਰਾ", "ਹੋਕੀਸ਼ੇ ਸੇਮਾ", "ਸੁਨੀਤ ਫਰਾਂਸਿਸ ਰੋਡਰਿਗਜ਼"] },
+    { en: "42. Who were the other members of the Shah Commission besides Justice J.C. Shah?", pb: "42. ਜਸਟਿਸ ਜੇ.ਸੀ. ਸ਼ਾਹ ਤੋਂ ਇਲਾਵਾ ਸ਼ਾਹ ਕਮਿਸ਼ਨ ਦੇ ਹੋਰ ਮੈਂਬਰ ਕੌਣ ਸਨ?", o_en: ["H.R. Khanna and P.N. Bhagwati", "Hukam Singh and K. Santhanam", "S. Dutt and M.M. Philips", "Dharam Vira and B.D. Pande"], o_pb: ["ਐਚ.ਆਰ. ਖੰਨਾ ਅਤੇ ਪੀ.ਐਨ. ਭਗਵਤੀ", "ਹੁਕਮ ਸਿੰਘ ਅਤੇ ਕੇ. ਸੰਥਾਨਮ", "ਐਸ. ਦੱਤ ਅਤੇ ਐਮ.ਐਮ. ਫਿਲਿਪਸ", "ਧਰਮ ਵੀਰਾ ਅਤੇ ਬੀ.ਡੀ. ਪਾਂਡੇ"] },
+    { en: "43. Which of the following were non-salute states of PEPSU?", pb: "43. ਪੈਪਸੂ ਦੇ ਕਿਹੜੇ ਰਾਜ ਸਲਾਮੀ ਤੋਂ ਬਿਨਾਂ (Non-salute states) ਸਨ?", o_en: ["Patiala and Nabha", "Faridkot and Malerkotla", "Kalsia and Nalagarh", "Kapurthala and Jind"], o_pb: ["ਪਟਿਆਲਾ ਅਤੇ ਨਾਭਾ", "ਫਰੀਦਕੋਟ ਅਤੇ ਮਲੇਰਕੋਟਲਾ", "ਕਲਸੀਆ ਅਤੇ ਨਾਲਾਗੜ੍ਹ", "ਕਪੂਰਥਲਾ ਅਤੇ ਜੀਂਦ"] },
+    { en: "44. Tilla, Bela and Ghaarh are local names of which of the following?", pb: "44. ਟਿੱਲਾ, ਬੇਲਾ ਅਤੇ ਘਾੜ ਇਹਨਾਂ ਵਿੱਚੋਂ ਕਿਸ ਦੇ ਸਥਾਨਕ ਨਾਮ ਹਨ?", o_en: ["Area near the banks of rivers in Punjab", "Areas made up of old alluvial soil", "An elevated bank flanking the channel of river", "River cut cliff or steep slope on the banks of river"], o_pb: ["ਪੰਜਾਬ ਵਿੱਚ ਦਰਿਆਵਾਂ ਦੇ ਕੰਢਿਆਂ ਦੇ ਨੇੜੇ ਦਾ ਖੇਤਰ", "ਪੁਰਾਣੀ ਜਲੋੜ ਮਿੱਟੀ ਤੋਂ ਬਣੇ ਖੇਤਰ", "ਦਰਿਆ ਦੇ ਨਾਲ ਲੱਗਦੀ ਇੱਕ ਉੱਚੀ ਕਿਨਾਰੀ", "ਦਰਿਆ ਦੇ ਕੰਢੇ 'ਤੇ ਦਰਿਆ ਦੁਆਰਾ ਕੱਟੀ ਗਈ ਚੱਟਾਨ ਜਾਂ ਢਲਾਣ"] },
+    { en: "45. What additional facility is located within Bir Aishwan Wildlife Sanctuary to promote environmental awareness?", pb: "45. ਵਾਤਾਵਰਣ ਜਾਗਰੂਕਤਾ ਨੂੰ ਉਤਸ਼ਾਹਿਤ ਕਰਨ ਲਈ ਬੀਰ ਐਸ਼ਵਾਨ ਵਾਈਲਡਲਾਈਫ ਸੈਂਚੁਰੀ ਦੇ ਅੰਦਰ ਕਿਹੜੀ ਵਾਧੂ ਸਹੂਲਤ ਸਥਿਤ ਹੈ?", o_en: ["Forest research center", "Botanical garden", "Environment Chetna Kendra", "Zoological Park"], o_pb: ["ਜੰਗਲਾਤ ਖੋਜ ਕੇਂਦਰ", "ਬੋਟੈਨੀਕਲ ਗਾਰਡਨ", "ਵਾਤਾਵਰਣ ਚੇਤਨਾ ਕੇਂਦਰ", "ਜ਼ੂਆਲੋਜੀਕਲ ਪਾਰਕ"] },
+    { en: "46. The Upper Bari Doab Canal (UBDC) was first built in 1693 by which ruler?", pb: "46. ਅੱਪਰ ਬਾਰੀ ਦੁਆਬ ਨਹਿਰ (UBDC) ਪਹਿਲੀ ਵਾਰ 1693 ਵਿੱਚ ਕਿਸ ਸ਼ਾਸਕ ਦੁਆਰਾ ਬਣਾਈ ਗਈ ਸੀ?", o_en: ["Maharaja Ranjit Singh", "Akbar", "Shah Jehan", "Aurangzeb"], o_pb: ["ਮਹਾਰਾਜਾ ਰਣਜੀਤ ਸਿੰਘ", "ਅਕਬਰ", "ਸ਼ਾਹਜਹਾਂ", "ਔਰੰਗਜ਼ੇਬ"] },
+    { en: "47. Kandi Area of Punjab is famous for which type of vegetation?", pb: "47. ਪੰਜਾਬ ਦਾ ਕੰਢੀ ਖੇਤਰ ਕਿਸ ਕਿਸਮ ਦੀ ਬਨਸਪਤੀ ਲਈ ਮਸ਼ਹੂਰ ਹੈ?", o_en: ["Tropical Thorny Vegetation", "Tropical Dry Deciduous Vegetation", "Subtropical Pine Vegetation", "Subtropical Scrub Hill Vegetation"], o_pb: ["ਊਸ਼ਣ-ਕਟਿਬੰਧੀ ਕੰਡਿਆਲੀ ਬਨਸਪਤੀ", "ਊਸ਼ਣ-ਕਟਿਬੰਧੀ ਖੁਸ਼ਕ ਪਤਝੜੀ ਬਨਸਪਤੀ", "ਉਪ-ਊਸ਼ਣ-ਕਟਿਬੰਧੀ ਪਾਈਨ ਬਨਸਪਤੀ", "ਉਪ-ਊਸ਼ਣ-ਕਟਿਬੰਧੀ ਝਾੜੀਦਾਰ ਪਹਾੜੀ ਬਨਸਪਤੀ"] },
+    { en: "48. The Punjab Accord, also called the Rajiv–Longowal Accord, was signed on which date?", pb: "48. ਪੰਜਾਬ ਸਮਝੌਤਾ, ਜਿਸਨੂੰ ਰਾਜੀਵ-ਲੌਂਗੋਵਾਲ ਸਮਝੌਤਾ ਵੀ ਕਿਹਾ ਜਾਂਦਾ ਹੈ, ਕਿਸ ਮਿਤੀ ਨੂੰ ਦਸਤਖਤ ਕੀਤਾ ਗਿਆ ਸੀ?", o_en: ["June 5, 1984", "July 24, 1985", "August 15, 1986", "January 26, 1987"], o_pb: ["5 ਜੂਨ, 1984", "24 ਜੁਲਾਈ, 1985", "15 ਅਗਸਤ, 1986", "26 ਜਨਵਰੀ, 1987"] },
+    { en: "49. The Kiru Hydro-project is planned on which river?", pb: "49. ਕਿਰੂ ਹਾਈਡਰੋ-ਪ੍ਰੋਜੈਕਟ ਕਿਸ ਨਦੀ 'ਤੇ ਯੋਜਨਾਬੱਧ ਹੈ?", o_en: ["Sutlej", "Chenab", "Beas", "Jhelum"], o_pb: ["ਸਤਲੁਜ", "ਚਨਾਬ", "ਬਿਆਸ", "ਜੇਹਲਮ"] },
+    { en: "50. The Sirhind Canal, inaugurated in 1882 CE, originates from which river?", pb: "50. ਸਰਹਿੰਦ ਨਹਿਰ, ਜਿਸਦਾ ਉਦਘਾਟਨ 1882 ਈਸਵੀ ਵਿੱਚ ਹੋਇਆ ਸੀ, ਕਿਸ ਨਦੀ ਤੋਂ ਨਿਕਲਦੀ ਹੈ?", o_en: ["Beas", "Ravi", "Sutlej", "Chenab"], o_pb: ["ਬਿਆਸ", "ਰਾਵੀ", "ਸਤਲੁਜ", "ਚਨਾਬ"] },
+    { en: "51. If TODAY is coded as UQECZ, how will TODAY be coded?", pb: "51. ਜੇਕਰ TODAY ਨੂੰ UQECZ ਵਜੋਂ ਕੋਡ ਕੀਤਾ ਗਿਆ ਹੈ, ਤਾਂ TODAY ਨੂੰ ਕਿਵੇਂ ਕੋਡ ਕੀਤਾ ਜਾਵੇਗਾ? (Note: The provided answer key seems to refer to a specific pattern, but without the pattern logic from the source, please select based on standard coding logic).", o_en: ["rjuyh", "kjuvh", "rjuvh", "rjuvk"], o_pb: ["rjuyh", "kjuvh", "rjuvh", "rjuvk"] },
+    { en: "52. RIVET coded as", pb: "52. ਜੇਕਰ RIVET ਨੂੰ ਕਿਸੇ ਖਾਸ ਕੋਡ ਵਿੱਚ ਲਿਖਿਆ ਜਾਵੇ, ਤਾਂ ਇਹ ਕਿਵੇਂ ਲਿਖਿਆ ਜਾਵੇਗਾ?", o_en: ["wckou", "ckwiu", "wckov", "kcvow"], o_pb: ["wckou", "ckwiu", "wckov", "kcvow"] },
+    { en: "53. K is brother of N and X. Y is the mother of N and Z is the father of K. Which of the following statements is not definitely true?", pb: "53. K, N ਅਤੇ X ਦਾ ਭਰਾ ਹੈ। Y, N ਦੀ ਮਾਤਾ ਹੈ ਅਤੇ Z, K ਦਾ ਪਿਤਾ ਹੈ। ਹੇਠ ਲਿਖਿਆਂ ਵਿੱਚੋਂ ਕਿਹੜਾ ਕਥਨ ਨਿਸ਼ਚਿਤ ਤੌਰ 'ਤੇ ਸੱਚ ਨਹੀਂ ਹੈ?", o_en: ["K is son of Z", "N is brother of X", "Y is wife of Z", "K is son of Y"], o_pb: ["K, Z ਦਾ ਪੁੱਤਰ ਹੈ", "N, X ਦਾ ਭਰਾ ਹੈ", "Y, Z ਦੀ ਪਤਨੀ ਹੈ", "K, Y ਦਾ ਪੁੱਤਰ ਹੈ"] },
+    { en: "54. On the basis of information given below, answer the question that follows:<br>(i) 'A + B' means 'A is daughter of B'<br>(ii) 'A × B' means 'A is son of B'<br>(iii) ‘A − B' means 'A is wife of B'.<br>If Z × T – S × U + P, what is U to Z?", pb: "54. ਹੇਠਾਂ ਦਿੱਤੀ ਜਾਣਕਾਰੀ ਦੇ ਆਧਾਰ 'ਤੇ, ਅਗਲੇ ਪ੍ਰਸ਼ਨ ਦਾ ਉੱਤਰ ਦਿਓ:<br>(i) 'A + B' ਦਾ ਅਰਥ ਹੈ 'A, B ਦੀ ਧੀ ਹੈ'<br>(ii) 'A × B' ਦਾ ਅਰਥ ਹੈ 'A, B ਦਾ ਪੁੱਤਰ ਹੈ'<br>(iii) 'A − B' ਦਾ ਅਰਥ ਹੈ 'A, B ਦੀ ਪਤਨੀ ਹੈ'।<br>ਜੇਕਰ Z × T – S × U + P, ਤਾਂ U ਦਾ Z ਨਾਲ ਕੀ ਰਿਸ਼ਤਾ ਹੈ?", o_en: ["Mother", "Grandmother", "Father", "None of these"], o_pb: ["ਮਾਤਾ", "ਦਾਦੀ", "ਪਿਤਾ", "ਇਹਨਾਂ ਵਿੱਚੋਂ ਕੋਈ ਨਹੀਂ"] },
+    { en: "55. Six children B, D, C, M, J and K are split into two groups of three each and made to stand in two rows in such a way that a child in one row is exactly facing a child in the other row. M is not at the ends of any row and is to the right of J, who is facing C. K is to the left of D, who is facing M. Who is to the immediate left of B?", pb: "55. ਛੇ ਬੱਚੇ B, D, C, M, J ਅਤੇ K ਨੂੰ ਤਿੰਨ-ਤਿੰਨ ਦੇ ਦੋ ਸਮੂਹਾਂ ਵਿੱਚ ਵੰਡਿਆ ਗਿਆ ਹੈ ਅਤੇ ਦੋ ਕਤਾਰਾਂ ਵਿੱਚ ਇਸ ਤਰ੍ਹਾਂ ਖੜ੍ਹਾ ਕੀਤਾ ਗਿਆ ਹੈ ਕਿ ਇੱਕ ਕਤਾਰ ਵਿੱਚ ਬੱਚਾ ਦੂਜੀ ਕਤਾਰ ਵਿੱਚ ਬੱਚੇ ਦਾ ਬਿਲਕੁਲ ਸਾਹਮਣਾ ਕਰ ਰਿਹਾ ਹੈ। M ਕਿਸੇ ਕਤਾਰ ਦੇ ਸਿਰੇ 'ਤੇ ਨਹੀਂ ਹੈ ਅਤੇ J ਦੇ ਸੱਜੇ ਪਾਸੇ ਹੈ, ਜੋ ਕਿ C ਦੇ ਸਾਹਮਣੇ ਹੈ। K, D ਦੇ ਖੱਬੇ ਪਾਸੇ ਹੈ, ਜੋ M ਦੇ ਸਾਹਮਣੇ ਹੈ। ਤਾਂ B ਦੇ ਤੁਰੰਤ ਖੱਬੇ ਪਾਸੇ ਕੌਣ ਹੈ?", o_en: ["M", "J", "D", "None of these"], o_pb: ["M", "J", "D", "ਇਹਨਾਂ ਵਿੱਚੋਂ ਕੋਈ ਨਹੀਂ"] },
+    { en: "56. Directions: A, B, C and D are to be seated in a row. But C and D cannot be together. Also, B cannot be at the third place. <br>Which of the following must be false?", pb: "56. ਨਿਰਦੇਸ਼: A, B, C ਅਤੇ D ਨੂੰ ਇੱਕ ਕਤਾਰ ਵਿੱਚ ਬੈਠਣਾ ਹੈ। ਪਰ C ਅਤੇ D ਇਕੱਠੇ ਨਹੀਂ ਹੋ ਸਕਦੇ। ਨਾਲ ਹੀ, B ਤੀਜੇ ਸਥਾਨ 'ਤੇ ਨਹੀਂ ਹੋ ਸਕਦਾ। <br>ਹੇਠ ਲਿਖਿਆਂ ਵਿੱਚੋਂ ਕਿਹੜਾ ਗਲਤ ਹੋਣਾ ਚਾਹੀਦਾ ਹੈ?", o_en: ["A is at the first place", "A is at the second place", "A is at the 3rd place", "A is at the 4th place"], o_pb: ["A ਪਹਿਲੇ ਸਥਾਨ 'ਤੇ ਹੈ", "A ਦੂਜੇ ਸਥਾਨ 'ਤੇ ਹੈ", "A ਤੀਜੇ ਸਥਾਨ 'ਤੇ ਹੈ", "A ਚੌਥੇ ਸਥਾਨ 'ਤੇ ਹੈ"] },
+    { en: "57. (Based on Q.56 Logic) If A and B are together, then which of the following must be necessarily true?", pb: "57. (ਪ੍ਰਸ਼ਨ 56 ਦੇ ਤਰਕ ਅਧਾਰਤ) ਜੇਕਰ A ਅਤੇ B ਇਕੱਠੇ ਹਨ, ਤਾਂ ਹੇਠ ਲਿਖਿਆਂ ਵਿੱਚੋਂ ਕਿਹੜਾ ਲਾਜ਼ਮੀ ਤੌਰ 'ਤੇ ਸੱਚ ਹੋਣਾ ਚਾਹੀਦਾ ਹੈ?", o_en: ["C is at the 1st place", "D is at the 1st Place", "C is not at the 1st place", "A is at the 3rd place"], o_pb: ["C ਪਹਿਲੇ ਸਥਾਨ 'ਤੇ ਹੈ", "D ਪਹਿਲੇ ਸਥਾਨ 'ਤੇ ਹੈ", "C ਪਹਿਲੇ ਸਥਾਨ 'ਤੇ ਨਹੀਂ ਹੈ", "A ਤੀਜੇ ਸਥਾਨ 'ਤੇ ਹੈ"] },
+    { en: "58. A meaningful word starting with A is formed with the 1st, 2nd, 4th, 5th and 6th letters of the word CONTRACT, what will be middle letter of that word?", pb: "58. A ਤੋਂ ਸ਼ੁਰੂ ਹੋਣ ਵਾਲਾ ਇੱਕ ਅਰਥਪੂਰਨ ਸ਼ਬਦ CONTRACT ਸ਼ਬਦ ਦੇ 1st, 2nd, 4th, 5th ਅਤੇ 6th ਅੱਖਰਾਂ ਨਾਲ ਬਣਦਾ ਹੈ, ਉਸ ਸ਼ਬਦ ਦਾ ਵਿਚਕਾਰਲਾ ਅੱਖਰ ਕੀ ਹੋਵੇਗਾ?", o_en: ["C", "O", "R", "T"], o_pb: ["C", "O", "R", "T"] },
+    { en: "59. Replace the question marks (?) in the Fig.<br><table class='matrix-table'><tr><td>2</td><td>5</td><td>10</td></tr><tr><td>5</td><td>?</td><td>37</td></tr><tr><td>50</td><td>65</td><td>82</td></tr></table>", pb: "59. ਚਿੱਤਰ ਵਿੱਚ ਪ੍ਰਸ਼ਨ ਚਿੰਨ੍ਹ (?) ਬਦਲੋ।<br><table class='matrix-table'><tr><td>2</td><td>5</td><td>10</td></tr><tr><td>5</td><td>?</td><td>37</td></tr><tr><td>50</td><td>65</td><td>82</td></tr></table>", o_en: ["20", "26", "27", "32"], o_pb: ["20", "26", "27", "32"] },
+    { en: "60. The difference between 3/5th of 2/3rd of number and 2/5th of 1/4th of the same number is 288. What is the number?", pb: "60. ਕਿਸੇ ਸੰਖਿਆ ਦੇ 2/3 ਦੇ 3/5 ਅਤੇ ਉਸੇ ਸੰਖਿਆ ਦੇ 1/4 ਦੇ 2/5 ਵਿਚਕਾਰ ਅੰਤਰ 288 ਹੈ। ਉਹ ਸੰਖਿਆ ਕੀ ਹੈ?", o_en: ["960", "850", "895", "955"], o_pb: ["960", "850", "895", "955"] },
+    { en: "61. Three sets of English, Maths and Science books containing 336, 240 and 96 books respectively have to be stacked in such a way that all the books are stored subject wise and height of each stack is the same. The total number of stacks will be", pb: "61. ਅੰਗਰੇਜ਼ੀ, ਗਣਿਤ ਅਤੇ ਵਿਗਿਆਨ ਦੀਆਂ ਕਿਤਾਬਾਂ ਦੇ ਤਿੰਨ ਸੈੱਟ ਕ੍ਰਮਵਾਰ 336, 240 ਅਤੇ 96 ਕਿਤਾਬਾਂ ਵਾਲੇ ਹਨ, ਨੂੰ ਇਸ ਤਰ੍ਹਾਂ ਸਟੈਕ ਕੀਤਾ ਜਾਣਾ ਹੈ (ਢੇਰੀ ਲਗਾਈ ਜਾਣੀ ਹੈ) ਕਿ ਸਾਰੀਆਂ ਕਿਤਾਬਾਂ ਵਿਸ਼ੇ ਅਨੁਸਾਰ ਸਟੋਰ ਕੀਤੀਆਂ ਜਾਣ ਅਤੇ ਹਰੇਕ ਸਟੈਕ ਦੀ ਉਚਾਈ ਬਰਾਬਰ ਹੋਵੇ। ਸਟੈਕਾਂ ਦੀ ਕੁੱਲ ਗਿਣਤੀ ਕਿੰਨੀ ਹੋਵੇਗੀ?", o_en: ["14", "21", "22", "48"], o_pb: ["14", "21", "22", "48"] },
+    { en: "62. The position of the 1st and 5th digits in the number 83256479 is interchanged. Similarly the positions of the 2nd and 6th digits are interchanged and so on. Which of the following will be the 3rd to the right of 7th digit from the right end after rearrangement?", pb: "62. ਨੰਬਰ 83256479 ਵਿੱਚ 1st ਅਤੇ 5th ਅੰਕਾਂ ਦੀ ਸਥਿਤੀ ਨੂੰ ਆਪਸ ਵਿੱਚ ਬਦਲਿਆ ਗਿਆ ਹੈ। ਇਸੇ ਤਰ੍ਹਾਂ 2nd ਅਤੇ 6th ਅੰਕਾਂ ਦੀਆਂ ਸਥਿਤੀਆਂ ਨੂੰ ਬਦਲਿਆ ਜਾਂਦਾ ਹੈ ਅਤੇ ਇਸੇ ਤਰ੍ਹਾਂ ਅੱਗੇ। ਪੁਨਰਗਠਨ ਤੋਂ ਬਾਅਦ ਹੇਠਾਂ ਦਿੱਤੇ ਵਿੱਚੋਂ ਕਿਹੜਾ ਸੱਜੇ ਸਿਰੇ ਤੋਂ 7th ਅੰਕ ਦੇ ਸੱਜੇ ਪਾਸੇ 3rd ਹੋਵੇਗਾ?", o_en: ["9", "8", "7", "4"], o_pb: ["9", "8", "7", "4"] },
+    { en: "63. 18 buckets of water fill a tank when the capacity of each bucket is 9 litres. How many buckets will be needed to fill the same tank, if the capacity of the bucket is 13.5 litres?", pb: "63. ਪਾਣੀ ਦੀਆਂ 18 ਬਾਲਟੀਆਂ ਇੱਕ ਟੈਂਕ ਨੂੰ ਭਰਦੀਆਂ ਹਨ ਜਦੋਂ ਹਰੇਕ ਬਾਲਟੀ ਦੀ ਸਮਰੱਥਾ 9 ਲੀਟਰ ਹੁੰਦੀ ਹੈ। ਜੇਕਰ ਬਾਲਟੀ ਦੀ ਸਮਰੱਥਾ 13.5 ਲੀਟਰ ਹੈ ਤਾਂ ਉਸੇ ਟੈਂਕ ਨੂੰ ਭਰਨ ਲਈ ਕਿੰਨੀਆਂ ਬਾਲਟੀਆਂ ਦੀ ਲੋੜ ਪਵੇਗੀ?", o_en: ["26", "24", "13.5", "12"], o_pb: ["26", "24", "13.5", "12"] },
+    { en: "64. A farmer divides his herd of cows among his four sons so that first son gets one half of the herd, the second son gets one fourth of the herd, the third son gets one-fifth and fourth son gets 7 cows. The total number of cows in herd is", pb: "64. ਇੱਕ ਕਿਸਾਨ ਆਪਣੀਆਂ ਗਾਵਾਂ ਦੇ ਝੁੰਡ ਨੂੰ ਆਪਣੇ ਚਾਰ ਪੁੱਤਰਾਂ ਵਿੱਚ ਵੰਡਦਾ ਹੈ ਤਾਂ ਕਿ ਪਹਿਲੇ ਪੁੱਤਰ ਨੂੰ ਝੁੰਡ ਦਾ ਅੱਧਾ ਹਿੱਸਾ, ਦੂਜੇ ਪੁੱਤਰ ਨੂੰ ਝੁੰਡ ਦਾ ਚੌਥਾ ਹਿੱਸਾ, ਤੀਜੇ ਪੁੱਤਰ ਨੂੰ ਪੰਜਵਾਂ ਹਿੱਸਾ ਅਤੇ ਚੌਥੇ ਪੁੱਤਰ ਨੂੰ 7 ਗਾਵਾਂ ਮਿਲਦੀਆਂ ਹਨ। ਝੁੰਡ ਵਿੱਚ ਗਾਵਾਂ ਦੀ ਕੁੱਲ ਗਿਣਤੀ ਕਿੰਨੀ ਹੈ?", o_en: ["100", "140", "180", "240"], o_pb: ["100", "140", "180", "240"] },
+    { en: "65. 1250 oranges were distributed among a group of girls. Each girl got twice as many oranges as the number of girls in the group. The number of girls in the group was", pb: "65. ਕੁੜੀਆਂ ਦੇ ਸਮੂਹ ਵਿੱਚ 1250 ਸੰਤਰੇ ਵੰਡੇ ਗਏ। ਹਰ ਕੁੜੀ ਨੂੰ ਗਰੁੱਪ ਵਿੱਚ ਕੁੜੀਆਂ ਦੀ ਗਿਣਤੀ ਨਾਲੋਂ ਦੁੱਗਣੇ ਸੰਤਰੇ ਮਿਲੇ। ਗਰੁੱਪ ਵਿੱਚ ਕੁੜੀਆਂ ਦੀ ਗਿਣਤੀ ਕਿੰਨੀ ਸੀ?", o_en: ["45", "100", "25", "45"], o_pb: ["45", "100", "25", "45"] },
+    { en: "66. When the average age of the husband, wife and their son was 42 years, the son got married and child was been just one year after their marriage. When child turned to be 5 years, the average age of family became 36 years. What was the age of daughter-in-law at the time of marriage?", pb: "66. ਜਦੋਂ ਪਤੀ, ਪਤਨੀ ਅਤੇ ਉਨ੍ਹਾਂ ਦੇ ਪੁੱਤਰ ਦੀ ਔਸਤ ਉਮਰ 42 ਸਾਲ ਸੀ, ਤਾਂ ਪੁੱਤਰ ਦਾ ਵਿਆਹ ਹੋ ਗਿਆ ਅਤੇ ਵਿਆਹ ਤੋਂ ਇੱਕ ਸਾਲ ਬਾਅਦ ਬੱਚਾ ਹੋਇਆ। ਜਦੋਂ ਬੱਚਾ 5 ਸਾਲ ਦਾ ਹੋਇਆ ਤਾਂ ਪਰਿਵਾਰ ਦੀ ਔਸਤ ਉਮਰ 36 ਸਾਲ ਹੋ ਗਈ। ਵਿਆਹ ਸਮੇਂ ਨੂੰਹ ਦੀ ਉਮਰ ਕਿੰਨੀ ਸੀ?", o_en: ["26 years", "25 years", "24 years", "23 years"], o_pb: ["26 ਸਾਲ", "25 ਸਾਲ", "24 ਸਾਲ", "23 ਸਾਲ"] },
+    { en: "67. In a two-digit positive number, the unit digit is equal to the square of tens digit. The difference between the original number and the number formed by interchanging the digits is 54. What is 40% of the original number?", pb: "67. ਇੱਕ ਦੋ ਅੰਕਾਂ ਦੀ ਧਨਾਤਮਕ ਸੰਖਿਆ ਵਿੱਚ, ਇਕਾਈ ਦਾ ਅੰਕ ਦਹਾਈ ਦੇ ਅੰਕ ਦੇ ਵਰਗ (square) ਦੇ ਬਰਾਬਰ ਹੁੰਦਾ ਹੈ। ਅਸਲ ਸੰਖਿਆ ਅਤੇ ਅੰਕਾਂ ਨੂੰ ਆਪਸ ਵਿੱਚ ਬਦਲਣ ਨਾਲ ਬਣੀ ਸੰਖਿਆ ਵਿੱਚ ਅੰਤਰ 54 ਹੈ। ਅਸਲ ਸੰਖਿਆ ਦਾ 40% ਕੀ ਹੈ?", o_en: ["39", "37.2", "15.6", "24"], o_pb: ["39", "37.2", "15.6", "24"] },
+    { en: "68. The ages of Samir and Tanuj are in the ratio 8:15. After 9 years, the ratio of their ages will be 11:18. What is the difference between their ages?", pb: "68. ਸਮੀਰ ਅਤੇ ਤਨੁਜ ਦੀ ਉਮਰ 8:15 ਦੇ ਅਨੁਪਾਤ ਵਿੱਚ ਹੈ। 9 ਸਾਲ ਬਾਅਦ ਉਨ੍ਹਾਂ ਦੀ ਉਮਰ ਦਾ ਅਨੁਪਾਤ 11:18 ਹੋ ਜਾਵੇਗਾ। ਉਨ੍ਹਾਂ ਦੀ ਉਮਰ ਵਿੱਚ ਕੀ ਅੰਤਰ ਹੈ?", o_en: ["20 years", "21 years", "24 years", "33 years"], o_pb: ["20 ਸਾਲ", "21 ਸਾਲ", "24 ਸਾਲ", "33 ਸਾਲ"] },
+    { en: "&radic;2, &#8731;4, &#8732;6 in an ascending order are:", pb: "&radic;2, &#8731;4 ਅਤੇ &#8732;6 ਨੂੰ ਚੜ੍ਹਦੇ ਕ੍ਰਮ ਵਿੱਚ ਲਿਖੋ?", o_en: ["&#8732;6, &radic;2, &#8731;4", "&#8731;4, &radic;2, &#8732;6", "&radic;2, &#8731;4, &#8732;6", "&radic;2, &#8732;6, &#8731;4"], o_pb: ["&#8732;6, &radic;2, &#8731;4", "&#8731;4, &radic;2, &#8732;6", "&radic;2, &#8731;4, &#8732;6", "&radic;2, &#8732;6, &#8731;4"] },
+    { en: "70. The length of a rectangle is increased by 10% and breadth decreased by 10%. Then, the area of new rectangle", pb: "70. ਇੱਕ ਆਇਤਕਾਰ ਦੀ ਲੰਬਾਈ 10% ਵਧਾਈ ਜਾਂਦੀ ਹੈ ਅਤੇ ਚੌੜਾਈ 10% ਘਟਾਈ ਜਾਂਦੀ ਹੈ। ਫਿਰ, ਨਵੇਂ ਆਇਤਕਾਰ ਦਾ ਖੇਤਰਫਲ:", o_en: ["remains same", "increases by 1%", "decreases by 1%", "decreases by 10%"], o_pb: ["ਉਹੀ ਰਹਿੰਦਾ ਹੈ", "1% ਵਧਦਾ ਹੈ", "1% ਘਟਦਾ ਹੈ", "10% ਘਟਦਾ ਹੈ"] },
+    { en: "71. In a partnership, A invests 1/6 of the capital for 1/6 of the time, B invests 1/3 of the capital for 1/3 of the time and C invests rest of the capital for whole time. Out of a profit of Rs. 23000, B's share is", pb: "71. ਇੱਕ ਸਾਂਝੇਦਾਰੀ ਵਿੱਚ, A ਪੂੰਜੀ ਦਾ 1/6, 1/6 ਸਮੇਂ ਲਈ ਨਿਵੇਸ਼ ਕਰਦਾ ਹੈ, B ਪੂੰਜੀ ਦਾ 1/3, 1/3 ਸਮੇਂ ਲਈ ਨਿਵੇਸ਼ ਕਰਦਾ ਹੈ ਅਤੇ C ਪੂਰੇ ਸਮੇਂ ਲਈ ਬਾਕੀ ਦੀ ਪੂੰਜੀ ਨਿਵੇਸ਼ ਕਰਦਾ ਹੈ। 23000 ਰੁਪਏ ਦੇ ਮੁਨਾਫੇ ਵਿੱਚੋਂ B ਦਾ ਹਿੱਸਾ ਕਿੰਨਾ ਹੋਵੇਗਾ?", o_en: ["Rs. 4000", "Rs.5000", "Rs.3250", "Rs.4800"], o_pb: ["4000 ਰੁਪਏ", "5000 ਰੁਪਏ", "3250 ਰੁਪਏ", "4800 ਰੁਪਏ"] },
+    { en: "72. 25 men can reap a field in 20 days. When should 15 men leave the work, if the whole field is to be reaped in 37 &frac12; days after they leave the work?", pb: "72. 25 ਆਦਮੀ 20 ਦਿਨਾਂ ਵਿੱਚ ਇੱਕ ਖੇਤ ਦੀ ਵਾਢੀ ਕਰ ਸਕਦੇ ਹਨ। 15 ਆਦਮੀਆਂ ਨੂੰ ਕੰਮ ਕਦੋਂ ਛੱਡਣਾ ਚਾਹੀਦਾ ਹੈ, ਜੇਕਰ ਸਾਰੇ ਖੇਤ ਦੀ ਵਾਢੀ ਉਨ੍ਹਾਂ ਦੇ ਕੰਮ ਛੱਡਣ ਤੋਂ 37 &frac12; ਦਿਨਾਂ ਬਾਅਦ ਵਿੱਚ ਪੂਰੀ ਹੁੰਦੀ ਹੈ?", o_en: ["after 3 days", "after 4 days", "after 5 days", "after 6 days"], o_pb: ["3 ਦਿਨਾਂ ਬਾਅਦ", "4 ਦਿਨਾਂ ਬਾਅਦ", "5 ਦਿਨਾਂ ਬਾਅਦ", "6 ਦਿਨਾਂ ਬਾਅਦ"] },
+    { en: "73. A can cultivate 2/5th of the land in 6 days and B can cultivate 1/3 of the land in 10 days. Working together A and B cultivate 4/5th of the land in", pb: "73. A 6 ਦਿਨਾਂ ਵਿੱਚ ਜ਼ਮੀਨ ਦਾ 2/5 ਹਿੱਸਾ ਅਤੇ B 10 ਦਿਨਾਂ ਵਿੱਚ 1/3 ਜ਼ਮੀਨ ਦੀ ਖੇਤੀ ਕਰ ਸਕਦਾ ਹੈ। A ਅਤੇ B ਇਕੱਠੇ ਕੰਮ ਕਰਕੇ ਕਿੰਨੇ ਦਿਨਾਂ ਵਿੱਚ ਜ਼ਮੀਨ ਦੇ 4/5 ਹਿੱਸੇ ਦੀ ਖੇਤੀ ਕਰ ਸਕਦੇ ਹਨ?", o_en: ["8 days", "6 days", "5 days", "4 days"], o_pb: ["8 ਦਿਨ", "6 ਦਿਨ", "5 ਦਿਨ", "4 ਦਿਨ"] },
+    { en: "74. A train covered a certain distance at a uniform speed. If the train had been 6 km/hr faster, it would have taken 4 hrs less than the scheduled time. And if the train was slower by 6 km/hr., the train would have taken 6 hrs, more than the scheduled time. The length of journey is", pb: "74. ਇੱਕ ਰੇਲਗੱਡੀ ਨੇ ਇੱਕਸਾਰ ਰਫਤਾਰ ਨਾਲ ਕੁਝ ਦੂਰੀ ਤੈਅ ਕੀਤੀ। ਜੇਕਰ ਰੇਲਗੱਡੀ 6 ਕਿਲੋਮੀਟਰ ਪ੍ਰਤੀ ਘੰਟਾ ਤੇਜ਼ ਹੁੰਦੀ, ਤਾਂ ਇਸ ਨੂੰ ਨਿਰਧਾਰਤ ਸਮੇਂ ਤੋਂ 4 ਘੰਟੇ ਘੱਟ ਲੱਗਣੇ ਸਨ ਅਤੇ ਜੇਕਰ ਰੇਲਗੱਡੀ 6 ਕਿਲੋਮੀਟਰ ਪ੍ਰਤੀ ਘੰਟਾ ਦੀ ਰਫਤਾਰ ਨਾਲ ਧੀਮੀ ਹੁੰਦੀ, ਤਾਂ ਇਸ ਨੂੰ ਨਿਰਧਾਰਤ ਸਮੇਂ ਤੋਂ 6 ਘੰਟੇ ਵੱਧ ਲੱਗਣੇ ਸਨ ਤਾਂ ਦੱਸੋ ਯਾਤਰਾ ਦੀ ਲੰਬਾਈ ਕਿੰਨੀ ਹੈ?", o_en: ["700 km", "720 km", "740 kms", "760 kms"], o_pb: ["700 ਕਿ.ਮੀ", "720 ਕਿ.ਮੀ", "740 ਕਿ.ਮੀ", "760 ਕਿ.ਮੀ"] },
+    { en: "75. A man borrows Rs. 4000 from a bank at 7.5% per annum compound interest. At the end of every year, he pays Rs.1500 as a part of payment of loan and interest. How much does he still owe to the bank after 3 such installments?", pb: "75. ਇੱਕ ਵਿਅਕਤੀ ਬੈਂਕ ਤੋਂ 7.5% ਸਲਾਨਾ ਮਿਸ਼ਰਿਤ ਵਿਆਜ 'ਤੇ 4000 ਰੁਪਏ ਉਧਾਰ ਲੈਂਦਾ ਹੈ। ਹਰ ਸਾਲ ਦੇ ਅੰਤ ਵਿੱਚ ਉਹ ਕਰਜ਼ੇ ਅਤੇ ਵਿਆਜ ਦੇ ਭੁਗਤਾਨ ਦੇ ਹਿੱਸੇ ਵਜੋਂ 1500 ਰੁਪਏ ਅਦਾ ਕਰਦਾ ਹੈ। ਅਜਿਹੀਆਂ 3 ਕਿਸ਼ਤਾਂ ਤੋਂ ਬਾਅਦ ਵੀ ਬੈਂਕ ਦਾ ਕਿੰਨਾ ਬਕਾਇਆ ਉਸ ਵੱਲ ਦੇਣਾ ਬਾਕੀ ਹੈ?", o_en: ["Rs. 123.25", "Rs. 125", "Rs. 400", "Rs. 469.18"], o_pb: ["123.25 ਰੁਪਏ", "125 ਰੁਪਏ", "400 ਰੁਪਏ", "469.18 ਰੁਪਏ"] },
+    { en: "76. The letters of the English alphabet are numbered from 26 to 1 such that 26 stands for A, 25 stands for B, and so on. The assigned numbers are used to write the letters of the original alphabet.<br>What will be the sum total of all vowels in the sequence?", pb: "76. ਅੰਗਰੇਜ਼ੀ ਵਰਣਮਾਲਾ ਦੇ ਅੱਖਰਾਂ ਨੂੰ 26 ਤੋਂ 1 ਤੱਕ ਅੰਕਿਤ ਕੀਤਾ ਗਿਆ ਹੈ ਜਿਵੇਂ ਕਿ 26 ਦਾ ਅਰਥ A, 25 ਦਾ ਅਰਥ B, ਅਤੇ ਹੋਰ ਵੀ ਹੈ। ਨਿਰਧਾਰਤ ਸੰਖਿਆਵਾਂ ਦੀ ਵਰਤੋਂ ਮੂਲ ਵਰਣਮਾਲਾ ਦੇ ਅੱਖਰਾਂ ਨੂੰ ਲਿਖਣ ਲਈ ਕੀਤੀ ਜਾਂਦੀ ਹੈ।<br>ਕ੍ਰਮ ਵਿੱਚ ਸਾਰੇ ਸਵਰਾਂ (vowels) ਦਾ ਜੋੜ ਕੀ ਹੋਵੇਗਾ?", o_en: ["78", "84", "76", "None of these"], o_pb: ["78", "84", "76", "ਕੋਈ ਵੀ ਨਹੀਂ"] },
+    { en: "77. 1331, 2197, 3375, 4914, 6859, 9261, 12167. Identify the wrong number.", pb: "77. 1331, 2197, 3375, 4914, 6859, 9261, 12167. ਗਲਤ ਸੰਖਿਆ ਦੀ ਪਛਾਣ ਕਰੋ।", o_en: ["4919", "6859", "9261", "2197"], o_pb: ["4919", "6859", "9261", "2197"] },
+    { en: "78. ATTRIBUTION, TTRIBUTION, RIBUTIO, IBUTI, ... ?", pb: "78. ATTRIBUTION, TTRIBUTION, RIBUTIO, IBUTI, ... ?", o_en: ["IBU", "UT", "UTI", "BUT"], o_pb: ["IBU", "UT", "UTI", "BUT"] },
+    { en: "79. In five flats, one above the other, live five professionals. The professor has to go up to meet his IAS officer friend. The doctor is equally friendly to all, and has to go up as frequently as go down. The engineer has to go up to meet his MLA friend above whose flat lives the professor's friend. From the ground floor to the top floor, in what order do the five professionals live?", pb: "79. ਪੰਜ ਫਲੈਟਾਂ ਵਿੱਚ, ਇੱਕ ਦੂਜੇ ਦੇ ਉੱਪਰ, ਪੰਜ ਪੇਸ਼ੇਵਰ ਰਹਿੰਦੇ ਹਨ। ਪ੍ਰੋਫੈਸਰ ਨੂੰ ਆਪਣੇ IAS ਅਫਸਰ ਦੋਸਤ ਨੂੰ ਮਿਲਣ ਲਈ ਉੱਪਰ ਜਾਣਾ ਪੈਂਦਾ ਹੈ। ਡਾਕਟਰ ਸਾਰਿਆਂ ਲਈ ਬਰਾਬਰ ਦਾ ਦੋਸਤਾਨਾ ਹੁੰਦਾ ਹੈ, ਅਤੇ ਜਿੰਨੀ ਵਾਰ ਹੇਠਾਂ ਜਾਂਦਾ ਹੈ, ਉੱਪਰ ਜਾਣਾ ਪੈਂਦਾ ਹੈ। ਇੰਜਨੀਅਰ ਨੂੰ ਆਪਣੇ ਵਿਧਾਇਕ ਦੋਸਤ ਨੂੰ ਮਿਲਣ ਲਈ ਉੱਪਰ ਜਾਣਾ ਪੈਂਦਾ ਹੈ ਜਿਸ ਦੇ ਫਲੈਟ ਵਿੱਚ ਪ੍ਰੋਫੈਸਰ ਦਾ ਦੋਸਤ ਰਹਿੰਦਾ ਹੈ। ਹੇਠਲੀ ਮੰਜ਼ਿਲ ਤੋਂ ਉਪਰਲੀ ਮੰਜ਼ਿਲ ਤੱਕ, ਪੰਜ ਪੇਸ਼ੇਵਰ ਕਿਸ ਕ੍ਰਮ ਵਿੱਚ ਰਹਿੰਦੇ ਹਨ?", o_en: ["Engineer, Professor, Doctor, IAS officer, MLA", "Professor, Engineer, Doctor, IAS officer, MLA", "IAS officer, Engineer, Doctor, Professor, MLA", "Professor, Engineer, Doctor, MLA, IAS officer"], o_pb: ["ਇੰਜੀਨੀਅਰ, ਪ੍ਰੋਫੈਸਰ, ਡਾਕਟਰ, IAS ਅਧਿਕਾਰੀ, ਵਿਧਾਇਕ", "ਪ੍ਰੋਫੈਸਰ, ਇੰਜਨੀਅਰ, ਡਾਕਟਰ, IAS ਅਫਸਰ, MLA", "IAS ਅਫਸਰ, ਇੰਜੀਨੀਅਰ, ਡਾਕਟਰ, ਪ੍ਰੋਫੈਸਰ, MLA", "ਪ੍ਰੋਫੈਸਰ, ਇੰਜੀਨੀਅਰ, ਡਾਕਟਰ, ਵਿਧਾਇਕ, IAS"] },
+    { en: "80. In a survey regarding a proposed measure to be introduced, 2878 persons took part of which 1652 were males. 1226 persons voted against the proposal of which 796 were males. 1425 persons voted for the proposal. 196 females were undecided. How many females voted for the proposal?", pb: "80. ਪੇਸ਼ ਕੀਤੇ ਜਾਣ ਵਾਲੇ ਪ੍ਰਸਤਾਵਿਤ ਉਪਾਅ ਬਾਰੇ ਇੱਕ ਸਰਵੇਖਣ ਵਿੱਚ, 2878 ਵਿਅਕਤੀਆਂ ਨੇ ਹਿੱਸਾ ਲਿਆ, ਜਿਨ੍ਹਾਂ ਵਿੱਚੋਂ 1652 ਪੁਰਸ਼ ਸਨ। ਪ੍ਰਸਤਾਵ ਦੇ ਵਿਰੁੱਧ 1226 ਵਿਅਕਤੀਆਂ ਨੇ ਵੋਟ ਕੀਤਾ, ਜਿਨ੍ਹਾਂ ਵਿੱਚੋਂ 796 ਪੁਰਸ਼ ਸਨ। ਪ੍ਰਸਤਾਵ ਨੂੰ 1425 ਵਿਅਕਤੀਆਂ ਨੇ ਵੋਟ ਦਿੱਤਾ। 196 ਔਰਤਾਂ ਦਾ ਫੈਸਲਾ ਨਹੀਂ ਹੋਇਆ। ਕਿੰਨੀਆਂ ਔਰਤਾਂ ਨੇ ਪ੍ਰਸਤਾਵ ਲਈ ਵੋਟ ਦਿੱਤੀ?", o_en: ["430", "600", "624", "640"], o_pb: ["430", "600", "624", "640"] },
+    { en: "81. ‘Fifty-Nine’ in Punjabi is:", pb: "81. ‘Fifty-Nine’ ਦਾ ਪੰਜਾਬੀ ਰੂਪ ਹੈ:", o_en: ["ਉਣਾਹਠ", "ਉਨਾਹਰ", "ਉਹਠ", "ਉਹਰ"], o_pb: ["ਉਣਾਹਠ", "ਉਨਾਹਰ", "ਉਹਠ", "ਉਹਰ"] },
+    { en: "82. Tone, Nasality are ................. in Punjabi Language:", pb: "82. ਸੁਰ, ਨਾਸਿਕਤਾ ਪੰਜਾਬੀ ਭਾਸ਼ਾ ਵਿੱਚ ............................. ਹਨ:", o_en: ["Suprasegmental phonemes", "Segmental phonemes", "Consonant", "Vowels"], o_pb: ["ਅਖੰਡੀ ਧੁਨੀਆਂ", "ਖੰਡੀ ਧੁਨੀਆਂ", "ਵਿਅੰਜਨ", "ਸਵਰ"] },
+    { en: "83. Which are the short vowels in Punjabi language?", pb: "83. ਪੰਜਾਬੀ ਭਾਸ਼ਾ ਵਿੱਚ ਲਘੂ ਸਵਰ ਕਿਹੜੇ ਹਨ?", o_en: ["ਅ, ਇ, ਉ", "ਊ, ਐ, ਏ", "ਓ, ਆ, ਈ", "ਉ, ਔ, ਏ"], o_pb: ["ਅ, ਇ, ਉ", "ਊ, ਐ, ਏ", "ਓ, ਆ, ਈ", "ਉ, ਔ, ਏ"] },
+    { en: "84. Which characters of Gurmukhi express the tonality of Punjabi language?", pb: "84. ਗੁਰਮੁਖੀ ਦੇ ਕਿਹੜੇ ਅੱਖਰ ਪੰਜਾਬੀ ਭਾਸ਼ਾ ਦੀ ਸੁਰਾਤਮਕਤਾ ਨੂੰ ਪ੍ਰਗਟ ਕਰਦੇ ਹਨ?", o_en: ["ੳ ਅ ੲ ਿ", "ਕ ਖ ਗ ਘ", "ਘ ਡ ਿ ਧ", "ੳ ਅ ੲ ਵ"], o_pb: ["ੳ ਅ ੲ ਸ", "ਕ ਖ ਗ ਘ", "ਘ ਝ ਢ ਧ ਭ", "ੳ ਅ ੲ ਵ"] },
+    { en: "85. Which statement is correct about the nature and function of Taksali language?", pb: "85. ਟਕਸਾਲੀ ਭਾਸ਼ਾ ਦੇ ਸਰੂਪ ਤੇ ਕਾਰਜ ਬਾਰੇ ਕਿਹੜਾ ਕਥਨ ਸਹੀ ਹੈ?", o_en: ["It is approved by Damdami Taksal", "Used in Finance Dept", "Used for writing, education, literature and institutions", "Official language created by govt officials"], o_pb: ["ਉਹ ਭਾਸ਼ਾ ਜਿਹੜੀ ਦਮਦਮੀ ਟਕਸਾਲ ਵੱਲੋਂ ਪ੍ਰਵਾਨਿਤ ਹੈ ਅਤੇ ਧਾਰਮਿਕ ਸਿੱਖਿਆਵਾਂ ਲਈ ਵਰਤੀ ਜਾਂਦੀ ਹੈ।", "ਉਹ ਭਾਸ਼ਾ ਜਿਹੜੀ ਆਮਦਨ ਤੇ ਖਰਚੇ ਆਦਿ ਦਾ ਹਿਸਾਬ ਰੱਖਣ ਲਈ ਸਰਕਾਰੀ ਵਿੱਤ ਵਿਭਾਗ ਵਿੱਚ ਵਰਤੀ ਜਾਂਦੀ ਹੈ।", "ਉਹ ਭਾਸ਼ਾ ਜਿਹੜੀ ਬੋਲਾਂ ਨੂੰ ਉਚੇਚੇ ਤੌਰ ਉੱਤੇ ਲਿਖਣ ਲਈ, ਸਿੱਖਿਆ, ਸਾਹਿਤ ਅਤੇ ਸੰਸਥਾਈ ਪੱਧਰ 'ਤੇ ਵਰਤੀ ਜਾਂਦੀ ਹੈ।", "ਜਿਹੜੀ ਭਾਸ਼ਾ ਸਰਕਾਰੇ ਦਰਬਾਰੇ ਅਧਿਕਾਰੀਆਂ ਵੱਲੋਂ ਦਫ਼ਤਰੀ ਕੰਮਕਾਜ ਲਈ ਬਣਾਈ, ਅਧਿਕਾਰਿਕ ਤੌਰ 'ਤੇ ਪ੍ਰਵਾਨ ਕੀਤੀ ਅਤੇ ਵਰਤੀ ਜਾਂਦੀ ਹੈ।"] },
+    { en: "86. 'Aayi u aa' (has come) and 'Gaye o aa' (have gone) verb phrases belong to which sub-dialect of Punjabi?", pb: "86. 'ਆਈ ਊ ਆ' (ਆਈ ਹੋਈ ਹੈ) ਅਤੇ 'ਗਏ ਓ ਆ' (ਗਏ ਹੋਏ ਹਨ) ਕਿਰਿਆ ਵਾਕੰਸ਼ ਪੰਜਾਬੀ ਦੀ ਕਿਸ ਉਪ-ਭਾਸ਼ਾ ਨਾਲ ਸੰਬੰਧਿਤ ਹਨ?", o_en: ["Puadhi", "Doabi", "Malwai", "Majhi"], o_pb: ["ਪੁਆਧੀ", "ਦੁਆਬੀ", "ਮਲਵਈ", "ਮਾਝੀ"] },
+    { en: "87. How many types of words are there based on meaning in basic form?", pb: "87. ਮੂਲ ਰੂਪ ਵਿੱਚ ਅਰਥ ਪੱਖੋਂ ਸ਼ਬਦ ਕਿੰਨੀ ਪ੍ਰਕਾਰ ਦੇ ਹਨ?", o_en: ["Seven", "Two", "Four", "Five"], o_pb: ["ਸਤ", "ਦੋ", "ਚਾਰ", "ਪੰਜ"] },
+    { en: "88. The birth-source of Punjabi language is:", pb: "88. ਪੰਜਾਬੀ ਭਾਸ਼ਾ ਦਾ ਜਨਮ-ਸਰੋਤ ਹੈ:", o_en: ["Sanskrit", "Hindi", "Brahmi", "Arabic"], o_pb: ["ਸੰਸਕ੍ਰਿਤ (ਵੈਦਿਕ)", "ਹਿੰਦੀ", "ਬ੍ਰਹਮੀ", "ਅਰਬੀ"] },
+    { en: "89. Suffix in the word ‘Murtayi’ is:", pb: "89. ‘ਮੂਰਖਤਾਈ’ ਸ਼ਬਦ ਵਿੱਚ ਪਿਛੇਤਰ ਹੈ:", o_en: ["ਈ", "ਖਤਾਈ", "ਤਾਈ", "ਕੋਈ ਨਹੀ ਾਂ"], o_pb: ["ਈ", "ਖਤਾਈ", "ਤਾਈ", "ਕੋਈ ਨਹੀਂ"] },
+    { en: "90. Which letter was included last in the 'Navin Toli/Varg' of Gurmukhi alphabet?", pb: "90. ਗੁਰਮੁਖੀ ਵਰਨਮਾਲਾ ਦੀ ‘ਨਵੀਨ ਟੋਲੀ/ਵਰਗ' ਦਾ ਕਿਹੜਾ ਅੱਖਰ ਸਭ ਤੋਂ ਅੰਤ ਵਿੱਚ ਸ਼ਾਮਲ ਕੀਤਾ ਗਿਆ?", o_en: ["ਲ਼", "ਜ", "ਫ਼", "ਗ"], o_pb: ["ਲ਼", "ਜ", "ਫ਼", "ਗ"] },
+    { en: "91. Gurmukhi script is born from which script family?", pb: "91. ਗੁਰਮੁਖੀ ਲਿਪੀ ਕਿਹੜੇ ਲਿਪੀ ਪਰਿਵਾਰ ਵਿੱਚੋਂ ਜਨਮੀ ਹੈ?", o_en: ["Persian", "Roman", "Brahmi", "Shahmukhi"], o_pb: ["ਫ਼ਾਰਸੀ", "ਰੋਮਨ", "ਬ੍ਰਹਮੀ", "ਸ਼ਾਹਮੁਖੀ"] },
+    { en: "92. What is the largest grammatical unit of language called?", pb: "92. ਭਾਸ਼ਾ ਦੀ ਸਭ ਤੋਂ ਵੱਡੀ ਵਿਆਕਰਨਿਕ ਇਕਾਈ ਨੂੰ ਕੀ ਕਿਹਾ ਜਾਂਦਾ ਹੈ?", o_en: ["Sentence", "Clause", "Phrase", "Verb"], o_pb: ["ਵਾਕ", "ਉਪਵਾਕ", "ਭਾਵੰਸ਼", "ਕਿਰਿਆ"] },
+    { en: "93. Orthography includes .................... ", pb: "93. ਔਰਥੋਗ੍ਰਾਫੀ (Orthography) ਵਿੱਚ ………………………. ਸ਼ਾਮਲ ਹਨ", o_en: ["Language and dialect", "Verb and Adjective", "Noun and Pronoun", "Script and Pronunciation"], o_pb: ["ਭਾਸ਼ਾ ਤੇ ਉਪਭਾਸ਼ਾ", "ਕਿਰਿਆ ਤੇ ਵਿਸ਼ੇਸ਼ਣ", "ਨਾਾਂਵ ਤੇ ਪੜਨਾਾਂਵ", "ਲਿਪੀ ਅਤੇ ਉਚਾਰਨ/ਸ਼ਬਦ ਜੋੜ"] },
+    { en: "94. “Mali paudian di paneeri te pani chhidak riha hai”. Which is NOT a noun in the sentence?", pb: "94. “ਮਾਲੀ ਪੌਦਿਆਂ ਦੀ ਪਨੀਰੀ ਤੇ ਪਾਣੀ ਛਿੜਕ ਰਿਹਾ ਹੈ”। ਵਾਕ ਵਿੱਚ ਕਿਹੜਾ ਸ਼ਬਦ ਨਾਂਵ ਨਹੀਂ ਹੈ?", o_en: ["Mali", "Paneeri", "Pani", "Chhidak"], o_pb: ["ਮਾਲੀ", "ਪਨੀਰੀ", "ਪਾਣੀ", "ਛਿੜਕ"] },
+    { en: "95. “Nagpur bahut purana shahir hai”. Nouns Nagpur and Shahir belong to which category?", pb: "95. “ਨਾਗਪੁਰ ਬਹੁਤ ਪੁਰਾਣਾ ਸ਼ਹਿਰ ਹੈ”। ਵਾਕ ਵਿੱਚ ਨਾਗਪੁਰ ਅਤੇ ਸ਼ਹਿਰ ਨਾਂਵ ਕਿਸ ਵਰਗ ਨਾਲ ਸੰਬੰਧਿਤ ਹਨ?", o_en: ["Common Noun, Material Noun", "Proper Noun, Collective Noun", "Proper Noun, Common Noun", "Proper Noun, Material Noun"], o_pb: ["ਆਮ ਨਾਂਵ, ਵਸਤੂ ਵਾਚਕ ਨਾਂਵ", "ਖਾਸ ਨਾਂਵ, ਇਕੱਠ ਵਾਚਕ ਨਾਂਵ", "ਖਾਸ ਨਾਂਵ, ਆਮ ਨਾਂਵ", "ਖਾਸ ਨਾਂਵ, ਵਸਤੂ ਵਾਚਕ ਨਾਂਵ"] },
+    { en: "96. Directions: Mark the correct synonym of the given word. <br>Gratuitous", pb: "96. Directions: Mark the correct synonym of the given word. <br>Gratuitous", o_en: ["Kind", "Cruel", "Unjustified", "Jealous"], o_pb: ["Kind", "Cruel", "Unjustified", "Jealous"] },
+    { en: "97. Directions: Mark the correct synonym of the given word. <br>Execrate", pb: "97. Directions: Mark the correct synonym of the given word. <br>Execrate", o_en: ["Exercise", "Detest", "Endear", "Edify"], o_pb: ["Exercise", "Detest", "Endear", "Edify"] },
+    { en: "98. Mark the correct preposition to be filled in the blanks:<br>Ramesh was accused _______ theft.", pb: "98. Mark the correct preposition to be filled in the blanks:<br>Ramesh was accused _______ theft.", o_en: ["of", "off", "with", "from"], o_pb: ["of", "off", "with", "from"] },
+    { en: "99. Choose the correct synonym of the given word: Casuistry", pb: "99. Choose the correct synonym of the given word: Casuistry", o_en: ["sophistry", "Hatred", "anger", "clarity"], o_pb: ["sophistry", "Hatred", "anger", "clarity"] },
+    { en: "100. Choose the correct synonym of the given word: Hoary", pb: "100. Choose the correct synonym of the given word: Hoary", o_en: ["hairy", "hourly", "airy", "old"], o_pb: ["hairy", "hourly", "airy", "old"] },
+    { en: "101. Choose the correct meaning of idiom/phrase: To be on the rack", pb: "101. Choose the correct meaning of idiom/phrase: To be on the rack", o_en: ["to be in the limelight", "to be in state of torture", "to be in a state of doubt", "to trust somebody"], o_pb: ["to be in the limelight", "to be in state of torture", "to be in a state of doubt", "to trust somebody"] },
+    { en: "102. Choose the correct meaning of idiom/phrase: To be at the end of one's tether", pb: "102. Choose the correct meaning of idiom/phrase: To be at the end of one's tether", o_en: ["to be full of hope", "to break the ice", "to be so far as one is able to proceed", "to be a source of annoyance"], o_pb: ["to be full of hope", "to break the ice", "to be so far as one is able to proceed", "to be a source of annoyance"] },
+    { en: "103. Choose the correct form of indirect narration:<br>She said to me, \"Do not trust such a man.\"", pb: "103. Choose the correct form of indirect narration:<br>She said to me, \"Do not trust such a man.\"", o_en: ["She asked me not to trust such a man.", "She told me if I trust such a man.", "She ordered me to trust such a man.", "She advised me not to trust such a man."], o_pb: ["She asked me not to trust such a man.", "She told me if I trust such a man.", "She ordered me to trust such a man.", "She advised me not to trust such a man."] },
+    { en: "104. Choose the correct form of phrasal verb to be filled in the blanks:<br>Sita _____ a rage when she heard the news.", pb: "104. Choose the correct form of phrasal verb to be filled in the blanks:<br>Sita _____ a rage when she heard the news.", o_en: ["went down", "cried off", "flew into", "came off"], o_pb: ["went down", "cried off", "flew into", "came off"] },
+    { en: "105. Choose the correct form of phrasal verb to be filled in the blanks:<br>Various causes have _______ the power of the people.", pb: "105. Choose the correct form of phrasal verb to be filled in the blanks:<br>Various causes have _______ the power of the people.", o_en: ["whittled away at", "carried off", "cried off", "gone off"], o_pb: ["whittled away at", "carried off", "cried off", "gone off"] },
+    { en: "106. One who is difficult to please?", pb: "106. One who is difficult to please?", o_en: ["Angry", "Atheist", "Fastidious", "Indignant"], o_pb: ["Angry", "Atheist", "Fastidious", "Indignant"] },
+    { en: "107. Choose the right spelling", pb: "107. Choose the right spelling", o_en: ["benefited", "benefitted", "bennefited", "bennifitted"], o_pb: ["benefited", "benefitted", "bennefited", "bennifitted"] },
+    { en: "108. Choose the correct preposition:<br>Sachin Tendulkar was endowed.......an extraordinary sporting talent.", pb: "108. Choose the correct preposition:<br>Sachin Tendulkar was endowed.......an extraordinary sporting talent.", o_en: ["with", "of", "in", "upon"], o_pb: ["with", "of", "in", "upon"] },
+    { en: "109. Choose the correct preposition:<br>The Indian economy is beset......problems at present.", pb: "109. Choose the correct preposition:<br>The Indian economy is beset......problems at present.", o_en: ["of", "with", "off", "upon"], o_pb: ["of", "with", "off", "upon"] },
+    { en: "110. Choose the correct synonym of the given word: Covert", pb: "110. Choose the correct synonym of the given word: Covert", o_en: ["secret", "intense", "open", "direct"], o_pb: ["secret", "intense", "open", "direct"] },
+    { en: "111. Sometimes sudden power failure lead to the loss of data if a desktop computer is directly connected power plug. Which device should be attached to computer for saving this kind of data loss?", pb: "111. ਕਈ ਵਾਰ ਅਚਾਨਕ ਬਿਜਲੀ ਬੰਦ ਹੋਣ ਨਾਲ ਡਾਟਾ ਦਾ ਨੁਕਸਾਨ ਹੋ ਸਕਦਾ ਹੈ ਜੇਕਰ ਇੱਕ ਡੈਸਕਟੌਪ ਕੰਪਿਊਟਰ ਸਿੱਧਾ ਪਾਵਰ ਪਲੱਗ ਨਾਲ ਜੁੜਿਆ ਹੋਵੇ। ਇਸ ਤਰ੍ਹਾਂ ਦੇ ਡਾਟਾ ਦੇ ਨੁਕਸਾਨ ਨੂੰ ਬਚਾਉਣ ਲਈ ਕੰਪਿਊਟਰ ਨਾਲ ਕਿਹੜਾ ਯੰਤਰ (device) ਜੋੜਿਆ ਜਾਣਾ ਚਾਹੀਦਾ ਹੈ?", o_en: ["Printer", "Hard Disk", "UPS", "Nuclear Power Plant"], o_pb: ["ਪ੍ਰਿੰਟਰ", "ਹਾਰਡ ਡਿਸਕ", "ਯੂ.ਪੀ.ਐੱਸ. (UPS)", "ਨਿਊਕਲੀਅਰ ਪਾਵਰ ਪਲਾਂਟ"] },
+    { en: "112. What is the default subnet mask for class C network?", pb: "112. ਕਲਾਸ C ਨੈੱਟਵਰਕ ਲਈ ਡਿਫੌਲਟ ਸਬਨੈੱਟ ਮਾਸਕ ਕੀ ਹੈ?", o_en: ["127.0.0.1", "255.0.0.0", "255.255.0.0", "255.255.255.0"], o_pb: ["127.0.0.1", "255.0.0.0", "255.255.0.0", "255.255.255.0"] },
+    { en: "113. In SQL, which command is used to add new rows to a table?", pb: "113. SQL ਵਿੱਚ, ਇੱਕ ਟੇਬਲ ਵਿੱਚ ਨਵੀਆਂ ਕਤਾਰਾਂ (rows) ਜੋੜਨ ਲਈ ਕਿਹੜੀ ਕਮਾਂਡ ਵਰਤੀ ਜਾਂਦੀ ਹੈ?", o_en: ["ALTER TABLE", "ADD ROW", "INSERT", "APPEND"], o_pb: ["ALTER TABLE", "ADD ROW", "INSERT", "APPEND"] },
+    { en: "114. Assume the URL: https://www.india.com/login. Correct URL is:", pb: "114. ਮੰਨ ਲਓ URL: https://www.india.com/login ਹੈ। ਸਹੀ URL ਕੀ ਹੈ?", o_en: ["http://www.india.com/login", "https://india.com/login", "http://india.com/login", "Assumed URL is correct"], o_pb: ["http://www.india.com/login", "https://india.com/login", "http://india.com/login", "ਮੰਨਿਆ ਗਿਆ URL ਸਹੀ ਹੈ"] },
+    { en: "115. In the Internet business, ISP stands for:", pb: "115. ਇੰਟਰਨੈਟ ਵਪਾਰ ਵਿੱਚ, ISP ਦਾ ਕੀ ਅਰਥ ਹੈ?", o_en: ["Internet System Protocol", "Internet Service Provider", "Internet System Provider", "Internet Service Protocol"], o_pb: ["ਇੰਟਰਨੈਟ ਸਿਸਟਮ ਪ੍ਰੋਟੋਕੋਲ", "ਇੰਟਰਨੈਟ ਸਰਵਿਸ ਪ੍ਰੋਵਾਈਡਰ", "ਇੰਟਰਨੈਟ ਸਿਸਟਮ ਪ੍ਰੋਵਾਈਡਰ", "ਇੰਟਰਨੈਟ ਸਰਵਿਸ ਪ੍ਰੋਟੋਕੋਲ"] },
+    { en: "116. In a presentation made using MS-PowerPoint, there are 20 slides, Speaker wants to show only 18 slides during slide show. Slide number 11 and 15 he does not want to show as well as delete. How this can be performed appropriate?", pb: "116. MS-PowerPoint ਦੀ ਵਰਤੋਂ ਕਰਕੇ ਬਣਾਈ ਗਈ ਇੱਕ ਪੇਸ਼ਕਾਰੀ ਵਿੱਚ, 20 ਸਲਾਈਡਾਂ ਹਨ, ਸਪੀਕਰ ਸਲਾਈਡ ਸ਼ੋਅ ਦੌਰਾਨ ਸਿਰਫ 18 ਸਲਾਈਡਾਂ ਦਿਖਾਉਣਾ ਚਾਹੁੰਦਾ ਹੈ। ਉਹ ਸਲਾਈਡ ਨੰਬਰ 11 ਅਤੇ 15 ਨੂੰ ਦਿਖਾਉਣਾ ਨਹੀਂ ਚਾਹੁੰਦਾ ਅਤੇ ਨਾ ਹੀ ਮਿਟਾਉਣਾ ਚਾਹੁੰਦਾ ਹੈ। ਇਸ ਨੂੰ ਉਚਿਤ ਢੰਗ ਨਾਲ ਕਿਵੇਂ ਕੀਤਾ ਜਾ ਸਕਦਾ ਹੈ?", o_en: ["Using ‘Hide Slide’ option for slide number 11 and 15", "Only option is to delete slide number 11 and 15", "Keep slide number 11 and 15 after the last slide", "This is not possible"], o_pb: ["ਸਲਾਈਡ ਨੰਬਰ 11 ਅਤੇ 15 ਲਈ 'ਹਾਈਡ ਸਲਾਈਡ' (Hide Slide) ਵਿਕਲਪ ਦੀ ਵਰਤੋਂ ਕਰਕੇ", "ਸਿਰਫ ਵਿਕਲਪ ਸਲਾਈਡ ਨੰਬਰ 11 ਅਤੇ 15 ਨੂੰ ਮਿਟਾਉਣਾ ਹੈ", "ਸਲਾਈਡ ਨੰਬਰ 11 ਅਤੇ 15 ਨੂੰ ਆਖਰੀ ਸਲਾਈਡ ਤੋਂ ਬਾਅਦ ਰੱਖੋ", "ਇਹ ਸੰਭਵ ਨਹੀਂ ਹੈ"] },
+    { en: "117. To host a web site which of following is required?", pb: "117. ਇੱਕ ਵੈੱਬ ਸਾਈਟ ਨੂੰ ਹੋਸਟ ਕਰਨ ਲਈ ਹੇਠ ਲਿਖਿਆਂ ਵਿੱਚੋਂ ਕਿਸ ਦੀ ਲੋੜ ਹੈ?", o_en: ["Web server", "Exchange Server", "Mail Server", "Database Server"], o_pb: ["ਵੈੱਬ ਸਰਵਰ", "ਐਕਸਚੇਂਜ ਸਰਵਰ", "ਮੇਲ ਸਰਵਰ", "ਡਾਟਾਬੇਸ ਸਰਵਰ"] },
+    { en: "118. Which of the following would best fit the following description – software is copied and given to a friend without the permission of the copyright owner?", pb: "118. ਹੇਠ ਲਿਖਿਆਂ ਵਿੱਚੋਂ ਕਿਹੜਾ ਵਰਣਨ ਸਭ ਤੋਂ ਵਧੀਆ ਢੁਕਦਾ ਹੈ - ਜਦੋਂ ਸਾਫਟਵੇਅਰ ਦੀ ਨਕਲ ਕੀਤੀ ਜਾਂਦੀ ਹੈ ਅਤੇ ਕਾਪੀਰਾਈਟ ਮਾਲਕ ਦੀ ਇਜਾਜ਼ਤ ਤੋਂ ਬਿਨਾਂ ਕਿਸੇ ਦੋਸਤ ਨੂੰ ਦਿੱਤੀ ਜਾਂਦੀ ਹੈ?", o_en: ["freeware", "piracy", "shareware", "public domain"], o_pb: ["ਫ੍ਰੀਵੇਅਰ", "ਪਾਇਰੇਸੀ (Piracy)", "ਸ਼ੇਅਰਵੇਅਰ", "ਪਬਲਿਕ ਡੋਮੇਨ"] },
+    { en: "119. Which one of the following is measurement of the capacity of a telecommunications line?", pb: "119. ਇਹਨਾਂ ਵਿੱਚੋਂ ਕਿਹੜਾ ਦੂਰਸੰਚਾਰ ਲਾਈਨ (telecommunications line) ਦੀ ਸਮਰੱਥਾ ਦਾ ਮਾਪ ਹੈ?", o_en: ["Cookies", "Bandwidth", "Netiquette", "URL"], o_pb: ["ਕੂਕੀਜ਼", "ਬੈਂਡਵਿਡਥ (Bandwidth)", "ਨੈਟੀਕੇਟ", "URL"] },
+    { en: "120. Which of the following was the first computer with a single-circuit board?", pb: "120. ਹੇਠ ਲਿਖਿਆਂ ਵਿੱਚੋਂ ਕਿਹੜਾ 'ਸਿੰਗਲ-ਸਰਕਟ ਬੋਰਡ' (single-circuit board) ਵਾਲਾ ਪਹਿਲਾ ਕੰਪਿਊਟਰ ਸੀ?", o_en: ["Apple IX", "Apple IV", "Apple X", "Apple I"], o_pb: ["ਐਪਲ IX", "ਐਪਲ IV", "ਐਪਲ X", "ਐਪਲ I"] }
+    ];
+
+    // --- STATE ---
+    let state = {
+        name: "",
+        lang: "en", 
+        currentQ: 0,
+        answers: new Array(quizData.length).fill(null),
+        visited: new Array(quizData.length).fill(false),
+        timeLeft: 120 * 60, // 2 hours
+        isPaused: false,
+        submitted: false
+    };
+
+    let timerInterval;
+    let reviewMode = false;
+
+    // --- DOM ELEMENTS ---
+    const dom = {
+        loginScreen: document.getElementById('loginScreen'),
+        userName: document.getElementById('userName'),
+        userLang: document.getElementById('userLang'),
+        timer: document.getElementById('timer'),
+        sidebar: document.getElementById('sidebar'),
+        paletteGrid: document.getElementById('paletteGrid'),
+        questionText: document.getElementById('questionText'),
+        questionImage: document.getElementById('questionImage'),
+        optionsContainer: document.getElementById('optionsContainer'),
+        currentQNum: document.getElementById('currentQNum'),
+        resultModal: document.getElementById('resultModal'),
+        reviewExplanation: document.getElementById('reviewExplanation'),
+        reviewBtnMain: document.getElementById('reviewBtnMain'),
+        submitBtnMain: document.getElementById('submitBtnMain'),
+        correctOptionText: document.getElementById('correctOptionText')
+    };
+
+    // --- INITIALIZATION ---
+    function init() {
+        renderPalette();
+        // Load from Local Storage
+        const saved = localStorage.getItem(LS_KEY);
+        if (saved) {
+            const parsed = JSON.parse(saved);
+            // Verify if stored data matches current quiz size
+            if (parsed.answers.length === quizData.length) {
+                state = { ...state, ...parsed };
+                if (state.name) {
+                    dom.loginScreen.style.display = 'none';
+                    if (!state.submitted) {
+                        startTimer();
+                    } else {
+                        reviewMode = true; 
+                        dom.submitBtnMain.style.display = 'none';
+                        dom.reviewBtnMain.style.display = 'block';
+                        loadQuestion(state.currentQ);
+                        calculateAndShowResults();
+                        dom.resultModal.style.display = 'none'; 
+                    }
+                }
+            } else {
+                localStorage.removeItem(LS_KEY); // Clear old data if size mismatch
+            }
+        }
+
+        // Anti-Copy Listeners
+        document.addEventListener('keydown', handleKeydown);
+        document.addEventListener('selectstart', e => e.preventDefault());
+    }
+
+    // --- CORE LOGIC ---
+
+    function startQuiz() {
+        const name = dom.userName.value.trim();
+        const lang = dom.userLang.value;
+        if (!name) {
+            alert("Please enter your name");
+            return;
+        }
+        state.name = name;
+        state.lang = lang;
+        state.visited[0] = true;
+        saveState();
+        dom.loginScreen.style.display = 'none';
+        loadQuestion(0);
+        startTimer();
+    }
+
+    function startTimer() {
+        if (timerInterval) clearInterval(timerInterval);
+        timerInterval = setInterval(() => {
+            if (state.isPaused || state.submitted) return;
+            
+            if (state.timeLeft <= 0) {
+                clearInterval(timerInterval);
+                submitQuiz();
+                return;
+            }
+            state.timeLeft--;
+            updateTimerDisplay();
+            if (state.timeLeft % 5 === 0) saveState(); // Save every 5 seconds
+        }, 1000);
+        updateTimerDisplay();
+    }
+
+    function updateTimerDisplay() {
+        const hours = Math.floor(state.timeLeft / 3600);
+        const minutes = Math.floor((state.timeLeft % 3600) / 60);
+        const seconds = state.timeLeft % 60;
+        dom.timer.innerText = 
+            `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        
+        if (state.isPaused) dom.timer.classList.add('paused');
+        else dom.timer.classList.remove('paused');
+    }
+
+    function handleKeydown(e) {
+        if(e.key === 'F12' || (e.ctrlKey && e.shiftKey && e.key === 'I') || (e.ctrlKey && e.key === 'u')) {
+            e.preventDefault();
+        }
+        if (e.key === 'p' || e.key === 'P') {
+            state.isPaused = !state.isPaused;
+            updateTimerDisplay();
+            if(state.isPaused) {
+                alert("Timer Paused. Press 'P' to resume.");
+            }
+        }
+    }
+
+    function loadQuestion(index) {
+        state.currentQ = index;
+        if (!state.submitted) state.visited[index] = true;
+        saveState();
+
+        dom.currentQNum.innerText = index + 1;
+        const qData = quizData[index];
+        
+        // Language Logic
+        if (state.lang === 'pb' && qData.pb) {
+            dom.questionText.innerHTML = qData.pb;
+        } else {
+            dom.questionText.innerHTML = qData.en;
+        }
+
+        if (qData.image) {
+            dom.questionImage.src = qData.image;
+            dom.questionImage.style.display = 'block';
+        } else {
+            dom.questionImage.style.display = 'none';
+        }
+
+        dom.optionsContainer.innerHTML = '';
+        dom.reviewExplanation.style.display = 'none';
+
+        const existingFooter = document.getElementById('dynamicFooter');
+        if(existingFooter) existingFooter.remove();
+
+        const letters = ["A", "B", "C", "D", "E"]; 
+        const options = (state.lang === 'pb' && qData.o_pb) ? qData.o_pb : qData.o_en;
+        
+        options.forEach((opt, i) => {
+            const div = document.createElement('div');
+            div.className = 'option';
+            
+            div.innerHTML = `${letters[i]}) ${opt}`;
+
+            if (reviewMode) {
+                const correctIndex = letters.indexOf(correctAnswers[index]);
+                const userIndex = state.answers[index];
+
+                if (i === correctIndex) div.classList.add('correct-answer');
+                if (i === userIndex && userIndex !== correctIndex) div.classList.add('wrong-answer');
+                
+                dom.correctOptionText.innerText = `Option ${correctAnswers[index]}`;
+                dom.reviewExplanation.style.display = 'block';
+
+            } else {
+                if (state.answers[index] === i) div.classList.add('selected');
+                div.onclick = () => selectOption(i);
+            }
+            
+            dom.optionsContainer.appendChild(div);
+        });
+
+        const footerHTML = `
+            <div id="dynamicFooter" class="support-footer">
+                <p>Join Telegram: <a href="https://t.me/punjabjailwarder" target="_blank" class="telegram-link">@punjabjailwarder</a></p>
+                <p>We appreciate support 🙏</p>
+                <div class="upi-badge">anmol09863rr@oksbi</div>
+            </div>
+        `;
+        document.querySelector('.question-card').insertAdjacentHTML('beforeend', footerHTML);
+
+        updatePalette();
+    }
+
+    function selectOption(optionIndex) {
+        if (state.submitted) return;
+        state.answers[state.currentQ] = optionIndex;
+        loadQuestion(state.currentQ);
+    }
+
+    function nextQuestion() {
+        if (state.currentQ < quizData.length - 1) loadQuestion(state.currentQ + 1);
+    }
+
+    function prevQuestion() {
+        if (state.currentQ > 0) loadQuestion(state.currentQ - 1);
+    }
+
+    function renderPalette() {
+        dom.paletteGrid.innerHTML = '';
+        quizData.forEach((_, i) => {
+            const btn = document.createElement('div');
+            btn.className = 'q-btn';
+            btn.innerText = i + 1;
+            btn.onclick = () => {
+                loadQuestion(i);
+                if(window.innerWidth < 900) toggleSidebar();
+            };
+            dom.paletteGrid.appendChild(btn);
+        });
+    }
+
+    function updatePalette() {
+        const btns = dom.paletteGrid.children;
+        for (let i = 0; i < quizData.length; i++) {
+            let className = 'q-btn';
+            if (i === state.currentQ) className += ' active';
+            
+            if (state.answers[i] !== null) {
+                className += ' answered';
+            } else if (state.visited[i]) {
+                className += ' visited';
+            }
+            btns[i].className = className;
+        }
+    }
+
+    function toggleSidebar() {
+        dom.sidebar.classList.toggle('active');
+    }
+
+    document.getElementById('toggleSidebar').onclick = toggleSidebar;
+
+    function confirmSubmit() {
+        if (confirm("Are you sure you want to submit the test?")) {
+            submitQuiz();
+        }
+    }
+
+    function submitQuiz() {
+        state.submitted = true;
+        clearInterval(timerInterval);
+        saveState();
+        calculateAndShowResults();
+    }
+
+    function calculateAndShowResults() {
+        let correct = 0;
+        let wrong = 0;
+        let unattempted = 0;
+        let score = 0;
+
+        state.answers.forEach((ans, i) => {
+            if (ans === null) {
+                unattempted++;
+            } else {
+                const charAns = ["A", "B", "C", "D", "E"][ans];
+                if (charAns === correctAnswers[i]) {
+                    correct++;
+                    score += 1;
+                } else {
+                    wrong++;
+                    score -= 0.25;
+                }
+            }
+        });
+
+        document.getElementById('finalScore').innerText = score;
+        document.getElementById('correctCount').innerText = correct;
+        document.getElementById('wrongCount').innerText = wrong;
+        document.getElementById('unattemptedCount').innerText = unattempted;
+        
+        const total = 100;
+        const percentage = Math.max(0, (score / total) * 100);
+        document.getElementById('scoreCircle').style.background = 
+            `conic-gradient(var(--success) ${percentage}%, #e2e8f0 0%)`;
+
+        dom.resultModal.style.display = 'flex';
+
+        sendToGoogleSheet(score, correct, wrong, unattempted);
+    }
+
+    function sendToGoogleSheet(score, correct, wrong, unattempted) {
+        const savingText = document.getElementById('savingText');
+        const spinner = document.getElementById('spinner');
+        
+        savingText.style.display = 'block';
+        spinner.style.display = 'block';
+
+        const payload = {
+            name: state.name,
+            lang: state.lang,
+            score: score,
+            correct: correct,
+            wrong: wrong,
+            unattempted: unattempted
+        };
+
+        fetch(GOOGLE_SCRIPT_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payload)
+        })
+        .then(() => {
+            savingText.innerText = "Saved Successfully!";
+            savingText.style.color = "var(--success)";
+            spinner.style.display = 'none';
+        })
+        .catch(err => {
+            console.error(err);
+            savingText.innerText = "Error Saving to Sheet.";
+            savingText.style.color = "var(--danger)";
+            spinner.style.display = 'none';
+        });
+    }
+
+    function saveState() {
+        localStorage.setItem(LS_KEY, JSON.stringify(state));
+    }
+
+    function showResults(showModal) {
+        calculateAndShowResults();
+        if(!showModal) dom.resultModal.style.display = 'none';
+    }
+
+    function startReviewMode() {
+        dom.resultModal.style.display = 'none';
+        reviewMode = true;
+        dom.submitBtnMain.style.display = 'none';
+        dom.reviewBtnMain.style.display = 'block';
+        
+        loadQuestion(0);
+        renderPalette(); 
+        updatePalette();
+    }
+
+    function exitReview() {
+        dom.resultModal.style.display = 'flex';
+    }
+
+    function clearAndReload() {
+        localStorage.removeItem(LS_KEY);
+        location.reload();
+    }
+
+    init();
+
+</script>
+</body>
+</html>

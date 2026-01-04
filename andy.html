@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expert Tree Trimming - Andy's Tree Service</title>
+    
+    <!-- Professional Fonts & Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-dark: #034B0D;
+            --primary-light: #52c962;
+            --secondary-dark: #1f1f1f;
+            --bg-offwhite: #fcfcfc;
+            --bg-grey: #f4f4f4;
+            --shadow-card: 0 10px 30px -5px rgba(0, 0, 0, 0.1);
+            --shadow-hover: 0 20px 40px -5px rgba(0, 0, 0, 0.2);
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            color: #444;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        h1, h2, h3, h4, h5 {
+            font-family: 'Playfair Display', serif;
+            color: var(--primary-dark);
+            font-weight: 700;
+        }
+
+        a { text-decoration: none; transition: 0.3s; }
+
+        /* --- Utility Classes --- */
+        .text-green { color: var(--primary-light) !important; }
+        .bg-green { background-color: var(--primary-dark); }
+        .section-padding { padding: 100px 0; }
+        .section-padding-sm { padding: 60px 0; }
+
+        /* --- Buttons --- */
+        .btn-custom {
+            background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 15px 40px;
+            border-radius: 50px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            border: none;
+            box-shadow: 0 4px 15px rgba(3, 75, 13, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .btn-custom:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(3, 75, 13, 0.4);
+            color: white;
+        }
+
+        .btn-outline {
+            border: 2px solid var(--primary-dark);
+            color: var(--primary-dark);
+            padding: 12px 35px;
+            border-radius: 50px;
+            font-weight: 600;
+            background: transparent;
+        }
+
+        .btn-outline:hover {
+            background: var(--primary-dark);
+            color: white;
+        }
+
+        /* --- Header / Nav --- */
+        .top-bar {
+            background: var(--primary-dark);
+            color: white;
+            padding: 10px 0;
+            font-size: 0.9rem;
+        }
+        .main-nav {
+            background: white;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .nav-link {
+            color: var(--secondary-dark);
+            font-weight: 500;
+            margin: 0 15px;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.1rem;
+        }
+        .nav-link:hover { color: var(--primary-light); }
+
+        /* --- Hero Section --- */
+        .hero-wrap {
+            height: 85vh;
+            min-height: 600px;
+            background-image: url('https://andys-treeservice.com/wp-content/uploads/2023/07/Layer-52-copy-111.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed; /* Parallax */
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        @media (max-width: 768px) {
+            .hero-wrap { background-attachment: scroll; } /* Fix mobile blur */
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.4); 
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            color: white;
+            max-width: 900px;
+            padding: 0 20px;
+        }
+
+        .hero-content h1 {
+            font-size: 4.5rem;
+            color: white;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.5);
+            margin-bottom: 10px;
+        }
+        .hero-content h2 {
+            font-family: 'Roboto', sans-serif;
+            font-weight: 300;
+            font-size: 2rem;
+            color: #f0f0f0;
+            margin-bottom: 30px;
+        }
+        .hero-badge {
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.3);
+            padding: 10px 25px;
+            border-radius: 30px;
+            display: inline-block;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        /* --- USP Section --- */
+        .usp-box {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: var(--shadow-card);
+            text-align: center;
+            transition: 0.3s;
+            height: 100%;
+            border-top: 5px solid var(--primary-light);
+        }
+        .usp-box:hover { transform: translateY(-10px); }
+        .usp-icon { font-size: 3rem; color: var(--primary-light); margin-bottom: 20px; }
+
+        /* --- Comparison Section (The "Good" vs "Bad") --- */
+        .comparison-section {
+            background: #fff;
+            position: relative;
+        }
+        .comparison-card {
+            padding: 40px;
+            border-radius: 15px;
+            height: 100%;
+        }
+        .comp-good {
+            background: #f0fff4; /* Light Green */
+            border: 1px solid #c6f6d5;
+        }
+        .comp-bad {
+            background: #fff5f5; /* Light Red */
+            border: 1px solid #fed7d7;
+        }
+        .check-list li {
+            list-style: none;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+        }
+        .check-list i { margin-right: 15px; font-size: 1.2rem; }
+        .icon-good { color: var(--primary-light); }
+        .icon-bad { color: #e53e3e; }
+
+        /* --- Image Styling --- */
+        .styled-img {
+            border-radius: 15px;
+            box-shadow: var(--shadow-card);
+            width: 100%;
+            height: auto;
+            transition: 0.4s;
+        }
+        .styled-img:hover {
+            transform: scale(1.02);
+            box-shadow: var(--shadow-hover);
+        }
+        .img-caption {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 10px;
+            font-style: italic;
+            text-align: center;
+        }
+
+        /* --- Testimonial Cards --- */
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        .testimonial-card {
+            background: white;
+            padding: 35px;
+            border-radius: 15px;
+            box-shadow: var(--shadow-card);
+            position: relative;
+            margin-bottom: 20px;
+        }
+        .quote-icon {
+            font-size: 40px;
+            color: rgba(3, 75, 13, 0.1);
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+        .client-name {
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin-top: 15px;
+            display: block;
+        }
+        .client-date {
+            font-size: 0.85rem;
+            color: #999;
+        }
+
+        /* --- FAQ Tabs --- */
+        .nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+            background-color: var(--primary-dark);
+        }
+        .nav-pills .nav-link {
+            color: var(--primary-dark);
+            font-weight: 600;
+            border: 1px solid var(--primary-dark);
+            margin-right: 10px;
+            margin-bottom: 10px;
+            border-radius: 30px;
+        }
+
+        /* --- Footer --- */
+        .site-footer {
+            background: #1a1a1a;
+            color: #bbb;
+            padding: 70px 0 30px;
+        }
+        .footer-heading {
+            color: white;
+            font-size: 1.5rem;
+            margin-bottom: 25px;
+        }
+        .footer-links li {
+            list-style: none;
+            margin-bottom: 12px;
+        }
+        .footer-links a { color: #bbb; }
+        .footer-links a:hover { color: var(--primary-light); padding-left: 5px; }
+        .social-icons a {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background: #333;
+            color: white;
+            text-align: center;
+            line-height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        .social-icons a:hover { background: var(--primary-light); }
+
+        /* --- Form --- */
+        .cta-box {
+            background: var(--primary-dark);
+            color: white;
+            padding: 50px;
+            border-radius: 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .cta-box h2 { color: white; }
+        .cta-box::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: url('https://andys-treeservice.com/wp-content/uploads/2023/07/Layer-52-copy-2-11-2.png');
+            opacity: 0.1;
+            background-size: cover;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header / Nav -->
+    <div class="top-bar text-center">
+        <div class="container">
+            <span class="me-3"><i class="fas fa-phone-alt me-2"></i>(760) 286-8563</span>
+            <span class="d-none d-md-inline">Licensed, Bonded & Insured | 30 Year Pro Company</span>
+        </div>
+    </div>
+
+    <nav class="main-nav">
+        <div class="container d-flex justify-content-between align-items-center">
+            <a href="/" class="navbar-brand">
+                <!-- Assuming logo exists, using text fallback as per prompt content -->
+                <h3 class="m-0 text-green" style="font-weight: 800;">ANDY'S<span style="color:var(--secondary-dark)">TREE SERVICE</span></h3>
+            </a>
+            <div class="d-none d-lg-flex align-items-center">
+                <a href="#" class="nav-link">Services</a>
+                <a href="#" class="nav-link">Blog</a>
+                <a href="#" class="nav-link">Service Areas</a>
+                <a href="#" class="nav-link">Contact Us</a>
+                <a href="tel:7602868563" class="btn-custom ms-3">Free Estimate</a>
+            </div>
+            <!-- Mobile Menu Toggle Placeholder -->
+            <div class="d-lg-none"><i class="fas fa-bars fa-2x"></i></div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-wrap">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <div class="hero-badge" data-aos="fade-down">Trims Trees To Be Beautiful And Safe</div>
+            <h1 data-aos="fade-up" data-aos-delay="100">Expert Tree Trimming</h1>
+            <h2 data-aos="fade-up" data-aos-delay="200">30 Year Pro Company</h2>
+            <div class="mt-4" data-aos="fade-up" data-aos-delay="300">
+                <a href="tel:7602868563" class="btn-custom btn-lg me-3">Call (760) 286-8563</a>
+                <a href="#contact" class="btn-custom btn-lg" style="background: white; color: var(--primary-dark);">Get Free Quote</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- USP Section -->
+    <section class="section-padding">
+        <div class="container">
+            <div class="text-center mb-5" data-aos="fade-up">
+                <h4 class="text-green text-uppercase ls-2">Why Hire Andy's?</h4>
+                <h2>Bring Out The Safety, Strength, And Beauty In Your Trees</h2>
+                <p class="lead text-muted mt-3">Get A Free Consultation About Your Trees</p>
+            </div>
+
+            <div class="row align-items-center">
+                <div class="col-md-6 mb-4" data-aos="fade-right">
+                    <img src="https://andys-treeservice.com/wp-content/uploads/2023/09/ash-after.png" alt="Ash tree after trimming" class="styled-img">
+                    <p class="img-caption">Ash tree after trimming by Andy's Tree Service in Escondido</p>
+                </div>
+                <div class="col-md-6" data-aos="fade-left">
+                    <div class="testimonial-card">
+                        <i class="fas fa-quote-right quote-icon"></i>
+                        <p class="mb-3">"Andy’s Tree Service team beautifully shaped, amazingly pruned, came in with care and precision, while leaving the yard better than when they arrived..."</p>
+                        <span class="client-name">Chris B.</span>
+                        <span class="client-date">4/10/24</span>
+                        <div class="mt-3 text-warning">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    <div class="testimonial-card mt-4">
+                        <i class="fas fa-quote-right quote-icon"></i>
+                        <p class="mb-3">"I wish I had taken before and after pictures of my two trees that Andy trimmed. The transformation was astounding. The trees look absolutely manicured."</p>
+                        <span class="client-name">Jonathan T.</span>
+                        <span class="client-date">2/12/24</span>
+                        <div class="mt-3 text-warning">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Comparison Section -->
+    <section class="section-padding bg-grey comparison-section">
+        <div class="container">
+            <div class="text-center mb-5" data-aos="fade-up">
+                <h2>The Andy's Difference</h2>
+                <p>Not all tree trimmers are created equal.</p>
+            </div>
+            
+            <div class="row g-0">
+                <!-- Good Work -->
+                <div class="col-md-6" data-aos="fade-right">
+                    <div class="comparison-card comp-good">
+                        <h3 class="mb-4"><i class="fas fa-check-circle text-green me-2"></i> Andy's Trimming Work</h3>
+                        <ul class="check-list">
+                            <li><i class="fas fa-leaf icon-good"></i> Trims for health of trees, naturally reveals trees beauty</li>
+                            <li><i class="fas fa-tools icon-good"></i> Uses proper pruning tools</li>
+                            <li><i class="fas fa-hand-holding-heart icon-good"></i> Is conservative, doesn't overtrim</li>
+                            <li><i class="fas fa-seedling icon-good"></i> Tree can continue growing naturally</li>
+                        </ul>
+                        <div class="mt-4 text-center">
+                            <img src="https://andys-treeservice.com/wp-content/uploads/elementor/thumbs/Ornamental-Pear-after-scaled1-qaiwv7s5fhu3yibhfijalpcl98hlapvqdk1a0bhml0.jpg" alt="Ornamental Pear after trimming" class="styled-img" style="max-height: 300px; object-fit: cover;">
+                            <p class="img-caption">Ornamental Pear after trimming</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bad Work -->
+                <div class="col-md-6" data-aos="fade-left">
+                    <div class="comparison-card comp-bad">
+                        <h3 class="mb-4 text-danger"><i class="fas fa-times-circle me-2"></i> Other Work Around Town</h3>
+                        <ul class="check-list">
+                            <li><i class="fas fa-ban icon-bad"></i> Trims way too hard, trees look destroyed</li>
+                            <li><i class="fas fa-exclamation-triangle icon-bad"></i> Uses chainsaw, much faster but damaging</li>
+                            <li><i class="fas fa-skull-crossbones icon-bad"></i> Over trims - shocks the tree</li>
+                            <li><i class="fas fa-cut icon-bad"></i> Tree will never grow naturally again</li>
+                        </ul>
+                        <div class="mt-4 text-center">
+                            <img src="https://andys-treeservice.com/wp-content/uploads/elementor/thumbs/post-office-zoomed-scaled1-qfxxzrq3t7z9q1ifbnkt1gil2vw2a1rd256wgswa6s.jpg" alt="Tree topped now dormant" class="styled-img" style="max-height: 300px; object-fit: cover; filter: grayscale(80%);">
+                            <p class="img-caption">Tree topped now dormant in winter (Not our work)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- More Testimonials & Value -->
+    <section class="section-padding">
+        <div class="container">
+            <div class="row align-items-center mb-5">
+                <div class="col-md-6" data-aos="fade-right">
+                    <div class="testimonial-card">
+                        <i class="fas fa-quote-right quote-icon"></i>
+                        <p class="mb-3">"Andy's team was everything you want in a tree trimmer - licensed, easy to work with, and clean. They did an excellent tree trimming job..."</p>
+                        <span class="client-name">Jeff B.</span>
+                        <span class="client-date">5/19/23</span>
+                    </div>
+                </div>
+                <div class="col-md-6" data-aos="fade-left">
+                    <div class="testimonial-card">
+                        <i class="fas fa-quote-right quote-icon"></i>
+                        <p class="mb-3">"Really incredible job trimming our huge lemon eucalyptus tree and Andy and his crew were the nicest, in addition to having the best prices."</p>
+                        <span class="client-name">David P.</span>
+                        <span class="client-date">11/19/23</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="cta-box mt-5" data-aos="zoom-in">
+                <h2 class="mb-3">Why Hire Andy's Tree Service To Trim Your Trees?</h2>
+                <h4 class="mb-4 text-white" style="font-weight: 400;">Do you want your trees looking good for years to come?</h4>
+                <p class="mb-4" style="max-width: 800px; margin: 0 auto; font-size: 1.1rem;">Trees that are trimmed properly look natural and beautiful. They're also much stronger as their weight is reduced, especially on the outside.</p>
+                <div class="row mt-4 justify-content-center">
+                    <div class="col-md-5 mb-3">
+                        <img src="https://andys-treeservice.com/wp-content/uploads/2025/11/carrotwood-before-1-captioned-cropped.jpg" alt="Before Trimming" class="styled-img">
+                        <p class="text-white mt-2 small">Ornamental Pear before trimming by Andy's Tree Service</p>
+                    </div>
+                    <div class="col-md-5 mb-3">
+                        <img src="https://andys-treeservice.com/wp-content/uploads/2025/11/carrotwood-after-6-captioned-cropped11.jpg" alt="After Trimming" class="styled-img">
+                        <p class="text-white mt-2 small">Carrotwood tree after trimming by Andy's Tree Service</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Info Tabs Section -->
+    <section class="section-padding bg-grey">
+        <div class="container" data-aos="fade-up">
+            <ul class="nav nav-pills mb-3 justify-content-center" id="pills-tab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="pills-area-tab" data-bs-toggle="pill" data-bs-target="#pills-area" type="button" role="tab">Service Areas</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="pills-insured-tab" data-bs-toggle="pill" data-bs-target="#pills-insured" type="button" role="tab">Are You Insured And Licensed?</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="pills-services-tab" data-bs-toggle="pill" data-bs-target="#pills-services" type="button" role="tab">What Services Do You Provide?</button>
+                </li>
+            </ul>
+            <div class="tab-content text-center bg-white p-5 rounded shadow-sm" id="pills-tabContent">
+                <div class="tab-pane fade show active" id="pills-area" role="tabpanel">
+                    <h3>We are located in Escondido California, and service the surrounding area.</h3>
+                </div>
+                <div class="tab-pane fade" id="pills-insured" role="tabpanel">
+                    <h3>Yes, Andy’s Tree Service is fully licensed and insured (state contractor’s license #752448).</h3>
+                </div>
+                <div class="tab-pane fade" id="pills-services" role="tabpanel">
+                    <h3>We provide tree removal, tree cutting, tree trimming and tree pruning services. We also provide consulting and emergency services.</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Choose / Google Reviews -->
+    <section class="section-padding">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto text-center" data-aos="fade-up">
+                    <h2 class="mb-4">Why Choose Andy's Tree Service?</h2>
+                    <p class="lead mb-4">It’s important to know what other customers think of our work. Here you can read all our reviews right on the site. We would also like to take this opportunity to thank all of our loyal customers for their continued support and confidence in our services.</p>
+                    <a href="https://g.co/kgs/rqQHhSk" target="_blank" class="btn-outline mb-3"><i class="fab fa-google me-2"></i>Read reviews about our Tree Trimming Service on Google</a>
+                    
+                    <div class="mt-5 p-4 bg-green rounded text-white text-start">
+                        <h3 class="text-white">Experience Matters</h3>
+                        <p>Andy’s Tree Service has been providing the highest quality tree service around the Escondido, CA area for over 30 years. Their dedication to providing the best service and price for their customers has been like a welcome surprise for many down the years. Count on Andy’s for quality workmanship and expertise for all your tree needs!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final CTA & Map -->
+    <section class="section-padding bg-grey" id="contact">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6" data-aos="fade-right">
+                    <h2 class="mb-4">Tell Us Your Tree Service Needs<br>And Get A Free Consultation</h2>
+                    <div class="d-flex align-items-center mb-3">
+                        <i class="fas fa-phone-alt fa-2x text-green me-3"></i>
+                        <div>
+                            <h4 class="m-0">(760) 286-8563</h4>
+                            <small>Call us anytime</small>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center mb-3">
+                        <i class="fas fa-map-marker-alt fa-2x text-green me-3"></i>
+                        <div>
+                            <h5 class="m-0">311 E Washington Ave Ste 106</h5>
+                            <p class="m-0">Escondido CA 92025</p>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center mb-4">
+                        <i class="far fa-clock fa-2x text-green me-3"></i>
+                        <div>
+                            <h5 class="m-0">7 days / week:</h5>
+                            <p class="m-0">7:00AM - 7:00PM</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Icons Row -->
+                    <div class="d-flex gap-3 mb-4">
+                        <img src="https://andys-treeservice.com/wp-content/uploads/elementor/thumbs/174254_yelp_icon-qllvf0fji1iazu8knvwxfmvx4cb47iv7bn6lwvwi2c.png" width="40" alt="Yelp">
+                        <img src="https://andys-treeservice.com/wp-content/uploads/elementor/thumbs/facebook-logo-png-23201-qlboiyo4b30e59m6fp1ur2q6kw9ptv0auxvb8ks5fy.png" width="60" alt="Facebook">
+                        <img src="https://andys-treeservice.com/wp-content/uploads/elementor/thumbs/next-door1-qlbomii5tl6f7vr4oirfrxps7fbs28anuxtih3j1ko.webp" width="50" alt="NextDoor">
+                        <img src="https://andys-treeservice.com/wp-content/uploads/elementor/thumbs/Pinterest-Logo-PNG3-qllvop5nvdtw33mk3fjky8qih49x5xre5o9dr4cbuq.png" width="40" alt="Pinterest">
+                    </div>
+                </div>
+                <div class="col-md-6" data-aos="fade-left">
+                    <img src="https://andys-treeservice.com/wp-content/uploads/elementor/thumbs/map-e16828928277891-q9uygalkla07vonrg7rt9usop8eq8bntlshk7x6uo6.jpg" class="styled-img" alt="Service Area Map">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <h4 class="footer-heading">Andy's Tree Service</h4>
+                    <p>Expert tree removal and tree trimming company in Escondido and the surrounding area!</p>
+                    <p class="mt-3">© 2023 Andy's Tree Service<br><a href="#" class="text-white">Privacy Policy</a></p>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h4 class="footer-heading">Our Services</h4>
+                    <ul class="footer-links p-0">
+                        <li><a href="#"><i class="fas fa-chevron-right me-2 text-green"></i>Tree Removal</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right me-2 text-green"></i>Tree Trimming</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right me-2 text-green"></i>Tree Pruning</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right me-2 text-green"></i>Palm Tree Trimming</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right me-2 text-green"></i>Crown Reduction</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right me-2 text-green"></i>Lacing Canopy</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right me-2 text-green"></i>Tree Thinning</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right me-2 text-green"></i>Emergency Tree Care</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right me-2 text-green"></i>Storm Damage - Clean ups</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h4 class="footer-heading">Contact Info</h4>
+                    <p><i class="fas fa-phone me-2 text-green"></i> (760) 286-8563</p>
+                    <p><i class="fas fa-map-marker-alt me-2 text-green"></i> 311 E Washington Ave Ste 106, Escondido CA 92025</p>
+                    <div class="social-icons mt-3">
+                        <a href="#"><i class="fab fa-yelp"></i></a>
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-pinterest"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 800,
+            once: true,
+            offset: 100
+        });
+    </script>
+</body>
+</html>
