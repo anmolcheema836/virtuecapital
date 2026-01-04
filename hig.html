@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HIG Companies | Shaping Environments, Building Legacy</title>
+    
+    <!-- Tailwind CSS for utility-first styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- GSAP for smooth high-end animations (Optional but recommended for production) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
+    <!-- Google Fonts: 'Cormorant Garamond' (Serif/Luxury) and 'Manrope' (Sans/Technical) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=Manrope:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+            --color-dark: #0a0a0a;
+            --color-light: #f4f4f0;
+            --color-accent: #c6a87c; /* Muted Gold */
+        }
+
+        body {
+            font-family: 'Manrope', sans-serif;
+            background-color: var(--color-dark);
+            color: var(--color-light);
+            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Cormorant Garamond', serif;
+        }
+
+        /* The Curtain Layout */
+        .gateway-container {
+            display: flex;
+            height: 100vh;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .division-panel {
+            position: relative;
+            flex: 1;
+            height: 100%;
+            transition: flex 0.8s var(--ease-out-expo);
+            border-right: 1px solid rgba(255,255,255,0.1);
+            cursor: pointer;
+            overflow: hidden;
+        }
+
+        .division-panel:last-child {
+            border-right: none;
+        }
+
+        /* Hover State: Expand focused panel */
+        .division-panel:hover {
+            flex: 2.5;
+        }
+
+        /* Dim others on hover */
+        .gateway-container:hover .division-panel:not(:hover) .bg-image {
+            opacity: 0.3;
+            transform: scale(1.0);
+            filter: grayscale(100%);
+        }
+
+        /* Background Image Handling */
+        .bg-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: all 0.8s var(--ease-out-expo);
+            opacity: 0.5;
+            z-index: 0;
+            filter: grayscale(30%) contrast(110%);
+        }
+
+        .division-panel:hover .bg-image {
+            opacity: 0.8;
+            transform: scale(1.05);
+            filter: grayscale(0%);
+        }
+
+        /* Content Positioning */
+        .panel-content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 3rem;
+            z-index: 10;
+            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+            transform: translateY(0);
+            transition: all 0.6s var(--ease-out-expo);
+        }
+
+        .panel-number {
+            font-size: 0.8rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--color-accent);
+            margin-bottom: 1rem;
+            display: block;
+            opacity: 0.8;
+        }
+
+        .panel-title {
+            font-size: 2.5rem;
+            font-weight: 400;
+            line-height: 1.1;
+            color: #fff;
+            margin-bottom: 0;
+            transition: transform 0.6s var(--ease-out-expo);
+        }
+
+        .panel-desc {
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            font-size: 1rem;
+            font-weight: 300;
+            color: rgba(255,255,255,0.8);
+            margin-top: 0;
+            transition: all 0.6s var(--ease-out-expo);
+            width: 80%;
+        }
+
+        .cta-arrow {
+            margin-top: 1.5rem;
+            opacity: 0;
+            transform: translateX(-20px);
+            transition: all 0.6s 0.1s var(--ease-out-expo);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Active/Hover Content States */
+        .division-panel:hover .panel-title {
+            transform: translateY(-10px);
+        }
+        
+        .division-panel:hover .panel-desc {
+            max-height: 200px;
+            opacity: 1;
+            margin-top: 1.5rem;
+        }
+
+        .division-panel:hover .cta-arrow {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* Mobile Adjustments */
+        @media (max-width: 768px) {
+            .gateway-container {
+                flex-direction: column;
+            }
+            .division-panel {
+                border-right: none;
+                border-bottom: 1px solid rgba(255,255,255,0.1);
+            }
+            .panel-title {
+                font-size: 1.8rem;
+            }
+            .panel-content {
+                padding: 1.5rem;
+            }
+        }
+        
+        /* Navigation Overlay */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 2rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 50;
+            pointer-events: none; /* Allow clicking through to panels */
+        }
+        
+        .logo {
+            font-family: 'Manrope', sans-serif;
+            font-weight: 700;
+            font-size: 1.2rem;
+            letter-spacing: -0.02em;
+            color: white;
+            pointer-events: auto;
+            text-transform: uppercase;
+        }
+
+        .nav-links {
+            pointer-events: auto;
+        }
+
+        .contact-btn {
+            border: 1px solid rgba(255,255,255,0.3);
+            padding: 0.75rem 2rem;
+            border-radius: 2px;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.1em;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .contact-btn:hover {
+            background: white;
+            color: black;
+            border-color: white;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation (Overlay) -->
+    <nav>
+        <div class="logo">HIG <span style="font-weight:300; opacity:0.7">Companies</span></div>
+        <div class="nav-links">
+            <a href="#contact" class="contact-btn">Get in Touch</a>
+        </div>
+    </nav>
+
+    <!-- Main Gateway Container -->
+    <main class="gateway-container">
+        
+        <!-- 1. Hotel Development -->
+        <a href="/hotel-development" class="division-panel group">
+            <img src="https://images.unsplash.com/photo-1590381105924-c72589b9ef3f?q=80&w=2071&auto=format&fit=crop" alt="Luxury Hotel Architecture" class="bg-image">
+            <div class="panel-content">
+                <span class="panel-number">Division 01</span>
+                <h2 class="panel-title">Hotel<br>Development</h2>
+                <div class="panel-desc">
+                    <p>Creating high-yield hospitality assets through strategic acquisition and innovative design. Tailored for investors and industry partners.</p>
+                </div>
+                <div class="cta-arrow">
+                    Explore Division 
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </div>
+            </div>
+        </a>
+
+        <!-- 2. Affordable Housing -->
+        <a href="/affordable-housing" class="division-panel group">
+            <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop" alt="Modern Community Housing" class="bg-image">
+            <div class="panel-content">
+                <span class="panel-number">Division 02</span>
+                <h2 class="panel-title">Affordable<br>Housing</h2>
+                <div class="panel-desc">
+                    <p>Partnering with government agencies to deliver compliant, high-quality LIHTC and community housing solutions.</p>
+                </div>
+                <div class="cta-arrow">
+                    View Qualifications 
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </div>
+            </div>
+        </a>
+
+        <!-- 3. Property Management -->
+        <a href="/property-management" class="division-panel group">
+            <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=2069&auto=format&fit=crop" alt="Professional Property Management" class="bg-image">
+            <div class="panel-content">
+                <span class="panel-number">Division 03</span>
+                <h2 class="panel-title">Property<br>Management</h2>
+                <div class="panel-desc">
+                    <p>Operational excellence for housing authorities and owners. Ensuring compliance, maintenance, and tenant satisfaction.</p>
+                </div>
+                <div class="cta-arrow">
+                    Our Capabilities 
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </div>
+            </div>
+        </a>
+
+    </main>
+
+    <!-- Minimal Footer (Revealed slightly or usually kept simple on gateway pages) -->
+    <footer class="fixed bottom-0 right-0 p-6 z-50 mix-blend-difference pointer-events-none hidden md:block">
+        <div class="text-xs text-white uppercase tracking-widest opacity-60">
+            HIG Companies &copy; 2024
+        </div>
+    </footer>
+
+    <!-- Simple JS to handle mobile interaction subtleties -->
+    <script>
+        // If on mobile, clicking once reveals text, clicking twice navigates
+        const panels = document.querySelectorAll('.division-panel');
+        
+        if (window.innerWidth < 768) {
+            panels.forEach(panel => {
+                panel.addEventListener('click', (e) => {
+                    // Simple logic: if not active, prevent default navigation and make active
+                    // This allows users to read the description before clicking through
+                    // Implementation depends on desired UX, here we keep it simple native link behavior
+                });
+            });
+        }
+
+        // Optional: GSAP Intro Animation
+        window.addEventListener('load', () => {
+            gsap.from('.division-panel', {
+                duration: 1.5,
+                y: '100%',
+                stagger: 0.2,
+                ease: 'power4.out'
+            });
+            
+            gsap.from('.logo, .contact-btn', {
+                duration: 1,
+                opacity: 0,
+                y: -20,
+                delay: 1,
+                ease: 'power2.out'
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Regency Café | The Original London Breakfast | Est. 1946</title>
+    <meta name="description" content="The official website of Regency Café, Westminster. Voted London's best breakfast. Famous filming location for Layer Cake & Rocketman. Order collection online.">
+
+    <!-- Preloading Fonts for Performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Fonts: Playfair Display (Heritage/Headlines) + Inter (Utility/Body) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- DESIGN TOKENS --- */
+        :root {
+            --c-black: #0F0F0F; /* Matches exterior tiling */
+            --c-cream: #F4F1EA; /* Vintage walls */
+            --c-red: #B83B3B;   /* The Curtains */
+            --c-gold: #C5A059;  /* Signage */
+            --c-grey: #666666;
+            
+            --f-head: 'Playfair Display', serif;
+            --f-body: 'Inter', sans-serif;
+            
+            --site-width: 1280px;
+            --ease: cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        /* --- RESET & BASE --- */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        html { scroll-behavior: smooth; }
+        
+        body {
+            background-color: var(--c-cream);
+            color: var(--c-black);
+            font-family: var(--f-body);
+            font-size: 16px;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: var(--f-head);
+            font-weight: 700;
+            line-height: 1.1;
+            color: var(--c-black);
+        }
+
+        p { margin-bottom: 1.5rem; color: #333; }
+        a { text-decoration: none; color: inherit; transition: all 0.3s ease; }
+        img { display: block; max-width: 100%; height: auto; object-fit: cover; }
+        ul { list-style: none; }
+
+        /* --- UTILITIES --- */
+        .container {
+            max-width: var(--site-width);
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        .text-center { text-align: center; }
+        .text-upper { text-transform: uppercase; letter-spacing: 1px; }
+        .accent { color: var(--c-red); }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem 2.5rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 1.5px;
+            border: 1px solid transparent;
+            cursor: pointer;
+            transition: all 0.4s var(--ease);
+        }
+
+        .btn-primary {
+            background-color: var(--c-red);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--c-black);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .btn-outline {
+            border-color: var(--c-black);
+            color: var(--c-black);
+            background: transparent;
+        }
+
+        .btn-outline:hover {
+            background-color: var(--c-black);
+            color: white;
+        }
+
+        /* --- NAVIGATION --- */
+        .navbar {
+            position: fixed;
+            top: 0; left: 0; width: 100%;
+            padding: 1.25rem 0;
+            z-index: 100;
+            background: rgba(244, 241, 234, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            transition: padding 0.3s ease;
+        }
+
+        .nav-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: var(--f-head);
+            font-size: 1.75rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: -0.5px;
+        }
+
+        .nav-menu { display: flex; gap: 2.5rem; align-items: center; }
+        .nav-link { font-size: 0.9rem; font-weight: 500; position: relative; }
+        
+        .nav-link::after {
+            content: ''; position: absolute; bottom: -5px; left: 0; width: 0; height: 1px;
+            background: var(--c-red); transition: width 0.3s ease;
+        }
+        .nav-link:hover::after { width: 100%; }
+
+        /* Mobile Toggle */
+        .menu-toggle { display: none; font-size: 1.5rem; cursor: pointer; }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            height: 100vh;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            /* EXTERIOR BETTER IMAGE */
+            background-image: url('https://assets-eu-01.kc-usercontent.com/6bb3df3c-b648-01ae-2357-22fa5c7d5f19/23f0f2b9-dfbf-41f0-8ffb-aebadacdc444/The%20Regency%20Cafe%20Image.jpg');
+            background-size: cover;
+            background-position: center bottom;
+            z-index: 1;
+            transform: scale(1.1); /* For parallax effect later if js added */
+            filter: brightness(0.85);
+        }
+
+        .hero-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(180deg, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.7) 100%);
+            z-index: 2;
+        }
+
+        .hero-content {
+            position: relative; z-index: 3;
+            text-align: center;
+            max-width: 800px;
+            margin-top: 4rem;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255,255,255,0.3);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 1.5rem;
+            color: var(--c-cream);
+        }
+
+        .hero-title {
+            font-size: clamp(3rem, 8vw, 6rem);
+            margin-bottom: 1rem;
+            line-height: 0.95;
+            color: white;
+            text-shadow: 0 4px 30px rgba(0,0,0,0.5);
+        }
+
+        .hero-sub {
+            font-size: 1.25rem;
+            color: white;
+            font-weight: 300;
+            opacity: 0.9;
+            margin-bottom: 2.5rem;
+        }
+
+        /* --- FILM STRIP (FAME) --- */
+        .film-strip {
+            background: var(--c-black);
+            color: #666;
+            padding: 1.5rem 0;
+            border-bottom: 1px solid #222;
+        }
+
+        .film-flex {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            align-items: center;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            flex-wrap: wrap;
+        }
+        
+        .film-flex span { color: white; margin-left: 0.5rem; }
+
+        /* --- STORY SECTION --- */
+        .story-section { padding: 8rem 0; }
+
+        .story-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5rem;
+            align-items: center;
+        }
+
+        .section-sup {
+            color: var(--c-red);
+            font-weight: 700;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            display: block;
+            margin-bottom: 1rem;
+        }
+
+        .story-title { font-size: 3rem; margin-bottom: 2rem; }
+        
+        .story-img-frame {
+            position: relative;
+        }
+        
+        .story-img-frame::before {
+            content:''; position: absolute; top: -20px; left: -20px;
+            width: 100%; height: 100%; border: 2px solid var(--c-gold);
+            z-index: -1;
+        }
+
+        /* --- MENU HIGHLIGHTS --- */
+        .menu-section {
+            background: white;
+            padding: 8rem 0;
+        }
+
+        .menu-header {
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto 4rem auto;
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 3rem;
+        }
+
+        .menu-card {
+            background: var(--c-cream);
+            padding: 2rem;
+            transition: transform 0.3s ease;
+        }
+
+        .menu-card:hover { transform: translateY(-5px); }
+
+        .dish-header {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+            padding-bottom: 1rem;
+            margin-bottom: 1rem;
+            font-family: var(--f-head);
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+
+        .dish-price { color: var(--c-red); }
+        .dish-desc { font-size: 0.9rem; color: #555; margin-bottom: 0; }
+        
+        .food-gallery {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-top: 4rem;
+        }
+        
+        .food-gallery img {
+            height: 300px;
+            width: 100%;
+            transition: filter 0.3s ease;
+        }
+
+        /* --- REVIEWS --- */
+        .reviews-section {
+            padding: 6rem 0;
+            background-color: var(--c-black);
+            color: white;
+            text-align: center;
+        }
+
+        .stars { color: var(--c-gold); margin-bottom: 1.5rem; font-size: 1.25rem; }
+        
+        .review-quote {
+            font-family: var(--f-head);
+            font-size: 2rem;
+            font-style: italic;
+            max-width: 900px;
+            color: white;
+            margin: 0 auto 2rem auto;
+            line-height: 1.4;
+        }
+
+        .reviewer {
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: #999;
+        }
+
+        /* --- VISIT & INFO --- */
+        .info-section {
+            padding: 0;
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .info-content {
+            flex: 1;
+            min-width: 400px;
+            padding: 6rem 4rem;
+            background: #1a1a1a;
+            color: var(--c-cream);
+        }
+
+        .info-map {
+            flex: 1;
+            min-width: 400px;
+            min-height: 500px;
+            filter: grayscale(1);
+            transition: filter 0.3s ease;
+        }
+        
+        .info-map:hover { filter: grayscale(0); }
+
+        .hours-grid {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 1rem 3rem;
+            margin: 2rem 0;
+            font-size: 0.95rem;
+            border-top: 1px solid #333;
+            padding-top: 2rem;
+        }
+
+        .hours-row { display: contents; }
+        .hours-row span:last-child { color: var(--c-gold); font-weight: 600; }
+
+        /* --- FOOTER --- */
+        footer {
+            background: var(--c-black);
+            color: #444;
+            padding: 3rem 0;
+            font-size: 0.8rem;
+            border-top: 1px solid #222;
+        }
+
+        .footer-flex {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* --- ANIMATIONS --- */
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        
+        .is-visible { opacity: 1; transform: translateY(0); }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 900px) {
+            .story-grid { grid-template-columns: 1fr; gap: 3rem; }
+            .food-gallery { grid-template-columns: 1fr; }
+            .info-section { flex-direction: column; }
+            .info-content { padding: 4rem 2rem; }
+            .nav-menu { display: none; } /* Simplified for this snippet */
+            .menu-toggle { display: block; }
+            .hero-title { font-size: 3.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVIGATION -->
+    <nav class="navbar">
+        <div class="container nav-inner">
+            <a href="#" class="logo">Regency <span class="accent">Café</span></a>
+            
+            <div class="nav-menu">
+                <a href="#story" class="nav-link">Our Story</a>
+                <a href="#menu" class="nav-link">Menu</a>
+                <a href="#visit" class="nav-link">Location</a>
+                <a href="#reviews" class="nav-link">Reviews</a>
+            </div>
+
+            <!-- CTA -->
+            <div style="display:flex; align-items: center; gap: 1rem;">
+                <a href="https://external-ordering-site.com" target="_blank" class="btn btn-primary">Order Collection</a>
+                <div class="menu-toggle">&#9776;</div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <header class="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-overlay"></div>
+        <div class="hero-content fade-in-up">
+            <div class="hero-badge">Est. 1946 • Westminster</div>
+            <h1 class="hero-title">London’s Most<br>Famous Fry-Up</h1>
+            <p class="hero-sub">Authentic Art Deco style. Unrivaled British breakfast.<br>As featured in <em>Rocketman</em> & <em>Layer Cake</em>.</p>
+            <div style="display: flex; gap: 1rem; justify-content: center;">
+                <a href="https://external-ordering-site.com" class="btn btn-primary">Order Collection Now</a>
+                <a href="#visit" class="btn btn-outline" style="border-color: rgba(255,255,255,0.5); color: white;">Find Us</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- FAME STRIP (Credibility) -->
+    <div class="film-strip">
+        <div class="container film-flex">
+            <div>As seen in:</div>
+            <div><i style="opacity:0.6">🎬</i> <span>Layer Cake (2004)</span></div>
+            <div><i style="opacity:0.6">🎬</i> <span>Rocketman (2019)</span></div>
+            <div><i style="opacity:0.6">🎬</i> <span>Judge John Deed</span></div>
+            <div><i style="opacity:0.6">🎬</i> <span>Brighton Rock</span></div>
+        </div>
+    </div>
+
+    <!-- OUR STORY -->
+    <section id="story" class="story-section container">
+        <div class="story-grid">
+            <div class="fade-in-up">
+                <span class="section-sup">Heritage</span>
+                <h2 class="story-title">A Proper London Café</h2>
+                <p>Opened in 1946 on Regency Street, we have stood as a beacon of traditional British dining for nearly 80 years. Step past our original black tiling and into a piece of Westminster history.</p>
+                <p>Voted the 5th best eating place in London (Yelp, 2013), we are known for our loud service, queueing crowds, and formica-topped tables. Whether you are a local politician or a visiting film fan, you get the same treatment: honest food, served hot.</p>
+                <img src="https://media-cdn.tripadvisor.com/media/photo-s/13/78/76/e4/photo4jpg.jpg" alt="Regency Menu Board" style="margin-top: 2rem; border-radius: 4px; filter: grayscale(100%); width: 150px;">
+            </div>
+            <div class="story-img-frame fade-in-up" style="transition-delay: 0.2s;">
+                <!-- INTERIOR IMAGE -->
+                <img src="https://dynamic-media-cdn.tripadvisor.com/media/photo-o/09/f6/59/4a/regency-cafe.jpg?w=900&h=-1&s=1" alt="Regency Cafe Interior">
+            </div>
+        </div>
+    </section>
+
+    <!-- MENU HIGHLIGHTS -->
+    <section id="menu" class="menu-section">
+        <div class="container">
+            <div class="menu-header fade-in-up">
+                <span class="section-sup">The Menu</span>
+                <h2>Taste the Tradition</h2>
+                <p>Standard menu, excellent value. While you can customize, these are the legends that cause the queues.</p>
+            </div>
+
+            <div class="menu-grid">
+                <!-- Highlight 1 -->
+                <div class="menu-card fade-in-up">
+                    <div class="dish-header">
+                        <span>Set Breakfast Deal</span>
+                        <span class="dish-price">£8.95</span>
+                    </div>
+                    <p class="dish-desc">The classic. 1 Egg, 2 Bacon, Sausage, Beans or Tomatoes, Bread or Toast, plus Tea or Coffee. No changes allowed!</p>
+                </div>
+                <!-- Highlight 2 -->
+                <div class="menu-card fade-in-up" style="transition-delay: 0.1s;">
+                    <div class="dish-header">
+                        <span>Homemade Steak Pie</span>
+                        <span class="dish-price">£7.95</span>
+                    </div>
+                    <p class="dish-desc">Served with 2 veg. A lunchtime staple. Also available: Steak & Kidney Pudding or Shepherd's Pie.</p>
+                </div>
+                <!-- Highlight 3 -->
+                <div class="menu-card fade-in-up" style="transition-delay: 0.2s;">
+                    <div class="dish-header">
+                        <span>Omelette & Chips</span>
+                        <span class="dish-price">£5.50</span>
+                    </div>
+                    <p class="dish-desc">Plain omelette with our famous homemade chips. Add Cheese, Ham, or Mushroom for £1 extra.</p>
+                </div>
+            </div>
+
+            <!-- VISUAL GALLERY -->
+            <div class="food-gallery fade-in-up">
+                <!-- Full English -->
+                <img src="https://cdn.shopify.com/s/files/1/0569/3390/8580/files/full-english-regency-cafe_1024x1024.jpg?v=1646056622" alt="Full English Breakfast">
+                <!-- Closeup -->
+                <img src="https://regencycafe.has.restaurant/wp-content/uploads/sites/5/2016/01/regency_11.jpg" alt="Fresh Eggs and Bacon">
+                <!-- Chips/Dish -->
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQkzPWcSUe8TmWtNZcqiOWlxFvAjXWodxDfcw&s" alt="Regency Cafe Chips">
+            </div>
+            
+            <div class="text-center" style="margin-top: 3rem;">
+                <a href="https://external-ordering-site.com" class="btn btn-primary">See Full Menu & Order</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- REVIEWS -->
+    <section id="reviews" class="reviews-section">
+        <div class="container fade-in-up">
+            <div class="stars">★★★★★</div>
+            <p class="review-quote">"Proper London brekkie, mate! Ain’t no place like Regency Café. Staff’s sound, prices fair, and the atmosphere’s just pure London. If you’re after a proper English breakfast, this is the spot."</p>
+            <span class="reviewer">— Reputatio Swiss (Google Review)</span>
+
+            <div style="margin-top: 3rem; opacity: 0.7;">
+                <p style="font-size: 0.9rem; margin-bottom: 0;">"The Regency Cafe is a true London classic! It was so big I ended up skipping lunch!"</p>
+                <span class="reviewer" style="font-size: 0.75rem;">— Joanna W. (Yelp)</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- INFO & MAP -->
+    <section id="visit" class="info-section">
+        <div class="info-content">
+            <span class="section-sup" style="color: var(--c-gold);">Visit Us</span>
+            <h2 style="color:white; margin-bottom: 2rem;">Plan Your Visit</h2>
+            
+            <p style="color: #aaa;"><strong>Regency Cafe</strong><br>17-19 Regency Street<br>Westminster, London<br>SW1P 4BY</p>
+            
+            <div class="hours-grid">
+                <div class="hours-row">
+                    <span>Mon – Friday</span>
+                    <span>07:00 – 14:30<br>16:00 – 19:15</span>
+                </div>
+                <div class="hours-row" style="margin-top:1rem; display:block;"></div> <!-- Spacer -->
+                <div class="hours-row">
+                    <span>Saturday</span>
+                    <span>07:00 – 12:00</span>
+                </div>
+                <div class="hours-row">
+                    <span>Sunday</span>
+                    <span style="color: #B83B3B;">Closed</span>
+                </div>
+            </div>
+
+            <p style="font-size: 0.85rem; color: #666; font-style: italic; margin-top: 2rem;">
+                *Queues move fast. Order at counter first, then find a seat.
+            </p>
+
+            <a href="tel:02078216596" style="color: white; text-decoration: underline; margin-right: 1rem;">020 7821 6596</a>
+            <a href="mailto:info@regencycafe.co.uk" style="color: white; text-decoration: underline;">Email Us</a>
+        </div>
+        
+        <!-- LIVE GOOGLE MAP -->
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2483.921356779836!2d-0.13454368423043812!3d51.49626277963327!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x487604dd79150001%3A0x64b07187900b77b1!2sRegency%20Cafe!5e0!3m2!1sen!2suk!4v1620000000000!5m2!1sen!2suk" class="info-map" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container">
+            <div class="footer-flex">
+                <div>
+                    <strong style="color: #fff; text-transform: uppercase; letter-spacing: 1px;">Regency Café</strong>
+                    <br><span style="opacity: 0.6">London Heritage Since 1946</span>
+                </div>
+                <div style="text-align: right;">
+                    <a href="#">Privacy</a> &nbsp;|&nbsp; <a href="#">Cookies</a>
+                    <br><span style="opacity: 0.6">© 2026 Regency Cafe</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- INTERACTION SCRIPT -->
+    <script>
+        // Scroll Observer for Fade-In Effects
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in-up').forEach((el) => {
+            observer.observe(el);
+        });
+
+        // Navbar Scroll Effect
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                nav.style.padding = '0.75rem 0';
+                nav.style.boxShadow = '0 5px 20px rgba(0,0,0,0.05)';
+            } else {
+                nav.style.padding = '1.25rem 0';
+                nav.style.boxShadow = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
