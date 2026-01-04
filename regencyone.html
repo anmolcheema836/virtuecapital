@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Regency Café | Westminster, London</title>
+    
+    <!-- Fonts: Playfair Display & Manrope -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,800;1,400&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <!-- Tailwind Config for Custom Colors -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        obsidian: '#080808',
+                        regencyRed: '#B83B3B',
+                        cream: '#F4F1EA',
+                        gold: '#D4AF37',
+                        charcoal: '#1a1a1a'
+                    },
+                    fontFamily: {
+                        display: ['"Playfair Display"', 'serif'],
+                        body: ['"Manrope"', 'sans-serif'],
+                    },
+                    letterSpacing: {
+                        editorial: '-0.04em',
+                    },
+                    backgroundImage: {
+                        'noise': "url('data:image/svg+xml,%3Csvg viewBox=\"0 0 200 200\" xmlns=\"http://www.w3.org/2000/svg\"%3E%3Cfilter id=\"noiseFilter\"%3E%3CfeTurbulence type=\"fractalNoise\" baseFrequency=\"0.65\" numOctaves=\"3\" stitchTiles=\"stitch\"/%3E%3C/filter%3E%3Crect width=\"100%25\" height=\"100%25\" filter=\"url(%23noiseFilter)\"/%3E%3C/svg%3E')",
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* --- Cinematic Global Styles --- */
+        body {
+            background-color: #080808;
+            color: #F4F1EA;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Film Grain Overlay */
+        .grain-overlay {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.06;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        /* Typography Utilities */
+        .text-reveal-wrapper { overflow: hidden; }
+        .text-reveal { transform: translateY(100%); opacity: 0; }
+        
+        /* Smooth Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #080808; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #B83B3B; }
+
+        /* Marquee */
+        @keyframes scroll-left {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        .marquee-container { display: flex; animation: scroll-left 30s linear infinite; }
+        
+        /* Hover Effects */
+        .hover-underline {
+            position: relative;
+            display: inline-block;
+        }
+        .hover-underline::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            transform: scaleX(0);
+            height: 1px;
+            bottom: 0;
+            left: 0;
+            background-color: #D4AF37;
+            transform-origin: bottom right;
+            transition: transform 0.4s ease-out;
+        }
+        .hover-underline:hover::after {
+            transform: scaleX(1);
+            transform-origin: bottom left;
+        }
+
+        /* Video/Image Parallax */
+        .parallax-wrapper { overflow: hidden; position: relative; }
+        .parallax-img { transform: scale(1.1); transition: transform 0.1s linear; }
+    </style>
+</head>
+<body class="selection:bg-regencyRed selection:text-white">
+
+    <div class="grain-overlay"></div>
+
+    <!-- Navigation -->
+    <nav id="navbar" class="fixed top-0 w-full z-50 px-6 py-5 transition-all duration-500 border-b border-white/5 bg-obsidian/80 backdrop-blur-sm">
+        <div class="max-w-[1400px] mx-auto flex justify-between items-center">
+            <a href="#" class="font-display font-black text-2xl tracking-tighter uppercase relative z-10 text-cream">
+                Regency <span class="text-regencyRed">Café</span>
+            </a>
+
+            <div class="hidden md:flex gap-10 font-body text-xs font-bold tracking-[0.2em] uppercase">
+                <a href="#story" class="hover:text-gold transition-colors">Story</a>
+                <a href="#menu" class="hover:text-gold transition-colors">Menu</a>
+                <a href="#media" class="hover:text-gold transition-colors">Media</a>
+                <a href="#reviews" class="hover:text-gold transition-colors">Reviews</a>
+                <a href="#contact" class="hover:text-gold transition-colors">Contact</a>
+            </div>
+
+            <a href="tel:02078216596" class="hidden md:block btn-magnet px-6 py-2 border border-cream/20 rounded-full font-body text-xs font-bold uppercase tracking-widest hover:bg-cream hover:text-obsidian transition-all duration-300">
+                020 7821 6596
+            </a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="relative h-screen w-full flex items-center justify-center overflow-hidden">
+        <div class="absolute inset-0 z-0">
+            <div class="parallax-wrapper w-full h-full">
+                <img src="https://assets-eu-01.kc-usercontent.com/6bb3df3c-b648-01ae-2357-22fa5c7d5f19/23f0f2b9-dfbf-41f0-8ffb-aebadacdc444/The%20Regency%20Cafe%20Image.jpg" 
+                     class="parallax-img w-full h-full object-cover object-center brightness-[0.5]" alt="Regency Cafe Interior">
+            </div>
+            <div class="absolute inset-0 bg-gradient-to-t from-obsidian via-obsidian/30 to-transparent"></div>
+        </div>
+
+        <div class="relative z-10 text-center px-4 flex flex-col items-center">
+            <!-- Live Status -->
+            <div id="status-badge" class="mb-8 px-5 py-2 border border-white/10 rounded-full bg-black/40 backdrop-blur-md inline-flex items-center gap-3">
+                <span id="status-dot" class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+                <span id="status-text" class="font-body text-[10px] uppercase tracking-[0.2em] text-cream">Calculating London Time...</span>
+            </div>
+
+            <h1 class="font-display font-medium text-5xl md:text-8xl lg:text-9xl leading-[0.9] tracking-editorial mb-6 text-cream mix-blend-screen">
+                <div class="text-reveal-wrapper"><span class="text-reveal block">London’s Cinematic</span></div>
+                <div class="text-reveal-wrapper"><span class="text-reveal block">Breakfast</span></div>
+            </h1>
+
+            <p class="font-body text-cream/70 text-sm md:text-lg max-w-lg mx-auto leading-relaxed mt-4 tracking-wide">
+                <span class="block">Est. 1946. Regency Street, Westminster.</span>
+                <span class="block text-gold/80 italic mt-1">Voted 5th Best Eating Place in London (Yelp).</span>
+            </p>
+        </div>
+    </header>
+
+    <!-- Marquee -->
+    <div class="bg-regencyRed text-cream py-3 overflow-hidden border-y border-obsidian relative z-20">
+        <div class="marquee-container whitespace-nowrap font-display font-bold italic text-lg tracking-wide">
+            <span>&nbsp;★ AS SEEN IN LAYER CAKE (2004) ★ ROCKETMAN (2019) ★ JUDGE JOHN DEED ★ LONDON SPY ★ PRIDE ★ WARRIORS (1999) ★ VOTED BEST BREAKFAST IN LONDON</span>
+            <span>&nbsp;★ AS SEEN IN LAYER CAKE (2004) ★ ROCKETMAN (2019) ★ JUDGE JOHN DEED ★ LONDON SPY ★ PRIDE ★ WARRIORS (1999) ★ VOTED BEST BREAKFAST IN LONDON</span>
+        </div>
+    </div>
+
+    <!-- Story Section -->
+    <section id="story" class="py-24 md:py-32 px-6 max-w-[1400px] mx-auto bg-obsidian">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-20 items-center">
+            <div class="order-2 md:order-1 relative">
+                <div class="absolute -top-6 -left-6 w-full h-full border border-gold/30 -z-10"></div>
+                <img src="https://dynamic-media-cdn.tripadvisor.com/media/photo-o/09/f6/59/4a/regency-cafe.jpg?w=900&h=-1&s=1" 
+                     alt="Regency Cafe Interior" class="w-full h-auto grayscale hover:grayscale-0 transition-all duration-700">
+                <p class="absolute bottom-4 left-4 text-[10px] font-body uppercase tracking-widest bg-black/80 px-2 py-1 text-gold">Art Deco Styling</p>
+            </div>
+            
+            <div class="order-1 md:order-2 space-y-8">
+                <h2 class="font-display text-4xl md:text-6xl tracking-editorial leading-none">
+                    Since 1946 <br>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-cream to-gray-500">A Proper Institution.</span>
+                </h2>
+                <div class="space-y-6 font-body text-cream/70 leading-relaxed text-lg">
+                    <p>
+                        Opened in 1946 on Regency Street, near Westminster. We are defined by our Art Deco tiling, original interior, and the photographs of Tottenham Hotspur players that line the walls.
+                    </p>
+                    <p>
+                        The tables are Formica-topped, the orders are shouted loudly, and the tea is hot. No fuss. Just honest food in a place that feels like a movie set—because it often is one.
+                    </p>
+                </div>
+                <div class="flex gap-4 pt-4">
+                    <span class="px-4 py-1 border border-white/20 rounded-full text-xs uppercase tracking-widest text-gold">Judge John Deed</span>
+                    <span class="px-4 py-1 border border-white/20 rounded-full text-xs uppercase tracking-widest text-gold">Rescue Me</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Menu Section -->
+    <section id="menu" class="py-24 bg-charcoal/30 border-y border-white/5">
+        <div class="max-w-[1200px] mx-auto px-6">
+            <div class="text-center mb-16">
+                <span class="font-body text-regencyRed text-xs font-bold tracking-[0.3em] uppercase">No Substitutions</span>
+                <h2 class="font-display text-5xl md:text-7xl mt-4 mb-2">The Menu</h2>
+                <p class="font-body text-sm text-gray-500">Prices subject to change. Order at the counter.</p>
+            </div>
+
+            <!-- Hero Dish -->
+            <div class="bg-obsidian border border-gold/30 p-8 md:p-12 relative overflow-hidden group mb-16">
+                <div class="flex flex-col md:flex-row items-center gap-12">
+                    <div class="w-full md:w-1/2">
+                        <h3 class="font-display text-4xl md:text-5xl text-cream mb-2">The Set Breakfast Deal</h3>
+                        <p class="font-body text-gold text-3xl font-bold mb-6">£8.95</p>
+                        <ul class="font-body text-cream/80 space-y-2 text-lg">
+                            <li class="flex items-center gap-3"><span class="w-1.5 h-1.5 bg-regencyRed rounded-full"></span> 1 Egg & 2 Bacon</li>
+                            <li class="flex items-center gap-3"><span class="w-1.5 h-1.5 bg-regencyRed rounded-full"></span> Sausage</li>
+                            <li class="flex items-center gap-3"><span class="w-1.5 h-1.5 bg-regencyRed rounded-full"></span> Beans <span class="text-xs text-gray-500">OR</span> Tomatoes</li>
+                            <li class="flex items-center gap-3"><span class="w-1.5 h-1.5 bg-regencyRed rounded-full"></span> Bread <span class="text-xs text-gray-500">OR</span> Toast</li>
+                            <li class="flex items-center gap-3"><span class="w-1.5 h-1.5 bg-regencyRed rounded-full"></span> Tea <span class="text-xs text-gray-500">OR</span> Coffee</li>
+                        </ul>
+                        <p class="mt-8 font-display italic text-gray-400">"Authentic English breakfast for excellent value."</p>
+                    </div>
+                    <div class="w-full md:w-1/2 relative">
+                        <div class="absolute inset-0 border border-white/10 rotate-3 transition-transform group-hover:rotate-0"></div>
+                        <img src="https://cdn.shopify.com/s/files/1/0569/3390/8580/files/full-english-regency-cafe_1024x1024.jpg?v=1646056622" alt="Full English" class="w-full h-auto grayscale group-hover:grayscale-0 transition-all duration-500">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Detailed Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                
+                <!-- Extras -->
+                <div class="p-8 bg-[#111] border border-white/5 hover:border-gold/30 transition-colors">
+                    <h4 class="font-display text-2xl mb-6 text-gold border-b border-white/10 pb-2">Breakfast Extras</h4>
+                    <ul class="space-y-4 font-body text-sm text-gray-300">
+                        <li class="flex justify-between"><span>Black Pudding</span> <span>£1.40</span></li>
+                        <li class="flex justify-between"><span>Bubble & Squeak</span> <span>£1.40</span></li>
+                        <li class="flex justify-between"><span>Hash Browns</span> <span>£1.40</span></li>
+                        <li class="flex justify-between"><span>Mushrooms</span> <span>£1.40</span></li>
+                    </ul>
+                </div>
+
+                <!-- Lunch Specials -->
+                <div class="p-8 bg-[#111] border border-white/5 hover:border-gold/30 transition-colors">
+                    <h4 class="font-display text-2xl mb-6 text-regencyRed border-b border-white/10 pb-2">Lunch Specials</h4>
+                    <ul class="space-y-4 font-body text-sm text-gray-300">
+                        <li class="flex justify-between">
+                            <span><strong class="text-white block">Monday & Wed</strong>Braised Steak</span>
+                            <span>£8.95</span>
+                        </li>
+                        <li class="flex justify-between">
+                            <span><strong class="text-white block">Tuesday</strong>Chicken Curry</span>
+                            <span>£8.95</span>
+                        </li>
+                        <li class="flex justify-between">
+                            <span><strong class="text-white block">Friday</strong>Fish & Chips</span>
+                            <span>£10.95</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Classics -->
+                <div class="p-8 bg-[#111] border border-white/5 hover:border-gold/30 transition-colors">
+                    <h4 class="font-display text-2xl mb-6 text-gold border-b border-white/10 pb-2">British Classics</h4>
+                    <ul class="space-y-4 font-body text-sm text-gray-300">
+                        <li class="flex justify-between"><span>Homemade Steak Pie</span> <span>£7.95</span></li>
+                        <li class="flex justify-between"><span>Liver, Bacon & Chips</span> <span>£7.15</span></li>
+                        <li class="flex justify-between"><span>Shepherd's Pie</span> <span>£7.95</span></li>
+                        <li class="flex justify-between"><span>Bread & Butter Pudding</span> <span>£3.95</span></li>
+                    </ul>
+                </div>
+
+            </div>
+            
+            <div class="text-center mt-12">
+                <a href="#" class="inline-block border-b border-regencyRed pb-1 font-body text-xs uppercase tracking-widest hover:text-regencyRed transition-colors">View Full Menu PDF</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Media / Film Section -->
+    <section id="media" class="py-24 bg-obsidian">
+        <div class="max-w-[1400px] mx-auto px-6">
+            <h3 class="font-body text-gold text-xs font-bold tracking-[0.3em] uppercase mb-12">As Seen On Screen</h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <!-- Layer Cake -->
+                <div class="group cursor-pointer">
+                    <div class="relative overflow-hidden aspect-video mb-4 border border-white/10">
+                        <iframe class="w-full h-full grayscale group-hover:grayscale-0 transition-all duration-500" src="https://www.youtube.com/embed/v2vCwd8OqIY?si=LayerCake" title="Layer Cake" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
+                    </div>
+                    <h4 class="font-display text-3xl group-hover:text-regencyRed transition-colors">Layer Cake (2004)</h4>
+                    <p class="font-body text-gray-500 text-sm mt-2">The iconic "Tea Pot Beating" scene.</p>
+                </div>
+                
+                <!-- Warriors -->
+                <div class="group cursor-pointer">
+                    <div class="relative overflow-hidden aspect-video mb-4 border border-white/10">
+                        <iframe class="w-full h-full grayscale group-hover:grayscale-0 transition-all duration-500" src="https://www.youtube.com/embed/gLg4sQ4oDw8" title="Warriors" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
+                    </div>
+                    <h4 class="font-display text-3xl group-hover:text-regencyRed transition-colors">Warriors (1999)</h4>
+                    <p class="font-body text-gray-500 text-sm mt-2">Classic BBC Drama filming location.</p>
+                </div>
+            </div>
+
+            <div class="mt-16 border-t border-white/10 pt-8 flex flex-wrap justify-between items-center opacity-60">
+                <span class="font-display italic text-xl">Featured in:</span>
+                <span class="font-body uppercase tracking-widest text-xs">Rocketman</span>
+                <span class="font-body uppercase tracking-widest text-xs">Pride</span>
+                <span class="font-body uppercase tracking-widest text-xs">London Spy</span>
+                <span class="font-body uppercase tracking-widest text-xs">Brighton Rock</span>
+                <span class="font-body uppercase tracking-widest text-xs">The Telegraph</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Reviews Section -->
+    <section id="reviews" class="py-24 bg-[#0c0c0c] relative overflow-hidden">
+        <!-- Decoration -->
+        <div class="absolute top-0 right-0 text-[300px] leading-none font-display font-black text-white/5 select-none -translate-y-1/2 translate-x-1/4">"</div>
+
+        <div class="max-w-[1200px] mx-auto px-6 relative z-10">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
+                <div>
+                    <h2 class="font-display text-5xl md:text-6xl mb-4">The Verdict</h2>
+                    <div class="flex items-center gap-4">
+                        <img src="https://static.tacdn.com/img2/brand_refresh/Tripadvisor_lockup_horizontal_secondary_registered.svg" alt="TripAdvisor" class="h-8 invert">
+                        <span class="font-body text-sm font-bold bg-green-600 text-white px-2 py-1">#404 of 27,772 Places</span>
+                    </div>
+                </div>
+                <div class="text-right">
+                    <span class="text-4xl font-display text-gold">4.7</span>
+                    <span class="text-sm font-body text-gray-400 block uppercase tracking-widest">Google Rating</span>
+                </div>
+            </div>
+
+            <!-- Horizontal Scroll / Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                
+                <!-- Review 1: Cody -->
+                <div class="bg-obsidian border border-white/10 p-8 hover:border-regencyRed/50 transition-colors duration-300">
+                    <div class="flex items-center gap-2 mb-4 text-gold text-xs">★★★★☆</div>
+                    <p class="font-display text-xl leading-relaxed mb-6">"I ordered probably the most chaotic breakfast... half a donut, raw salmon, eggs, beef bacon. It honestly looked like I picked items from five different menus, but weirdly it kind of worked."</p>
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-full bg-gray-700"></div>
+                        <div>
+                            <p class="font-body text-xs font-bold uppercase tracking-widest">Cody</p>
+                            <p class="font-body text-[10px] text-gray-500">Google Review</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Review 2: Reputatio -->
+                <div class="bg-obsidian border border-white/10 p-8 hover:border-regencyRed/50 transition-colors duration-300">
+                    <div class="flex items-center gap-2 mb-4 text-gold text-xs">★★★★★</div>
+                    <p class="font-display text-xl leading-relaxed mb-6">"Proper London brekkie, mate! Ain’t no place like Regency Café, innit? Tastes bangin’, and the place looks straight outta a movie. Staff’s sound, prices fair."</p>
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-full bg-gray-700"></div>
+                        <div>
+                            <p class="font-body text-xs font-bold uppercase tracking-widest">Reputatio Swiss</p>
+                            <p class="font-body text-[10px] text-gray-500">Google Review</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer / Contact -->
+    <footer id="contact" class="bg-white text-obsidian py-20 px-6">
+        <div class="max-w-[1400px] mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+                
+                <!-- Brand -->
+                <div class="col-span-1 md:col-span-2">
+                    <h2 class="font-display text-6xl font-black tracking-tighter mb-6 leading-none">REGENCY <br>CAFÉ</h2>
+                </div>
+
+                <!-- Address & Contact -->
+                <div>
+                    <h4 class="font-body text-xs font-bold uppercase tracking-widest mb-4 text-regencyRed">Location</h4>
+                    <address class="font-display text-xl not-italic leading-tight">
+                        17-19 Regency St,<br>
+                        Westminster,<br>
+                        London SW1P 4BY
+                    </address>
+                    <a href="tel:02078216596" class="block mt-4 font-body font-bold hover:text-regencyRed transition-colors">020 7821 6596</a>
+                </div>
+
+                <!-- Hours -->
+                <div>
+                    <h4 class="font-body text-xs font-bold uppercase tracking-widest mb-4 text-regencyRed">Opening Hours</h4>
+                    <ul class="font-body text-sm space-y-2">
+                        <li class="flex justify-between w-full max-w-[200px] border-b border-gray-200 pb-1">
+                            <span>Mon – Fri</span> 
+                            <span>7:00 – 14:30<br>16:00 – 19:15</span>
+                        </li>
+                        <li class="flex justify-between w-full max-w-[200px] border-b border-gray-200 pb-1">
+                            <span>Saturday</span> 
+                            <span>7:00 – 12:00</span>
+                        </li>
+                        <li class="flex justify-between w-full max-w-[200px] text-gray-400">
+                            <span>Sunday</span> 
+                            <span>Closed</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="border-t border-gray-200 pt-8 flex flex-col md:flex-row justify-between items-center text-xs font-body tracking-widest uppercase">
+                <span>© 2026 Regency Café. All Rights Reserved.</span>
+                <div class="flex gap-6 mt-4 md:mt-0">
+                    <a href="#" class="hover:text-regencyRed">Blog</a>
+                    <a href="#" class="hover:text-regencyRed">Cookies</a>
+                    <a href="#" class="hover:text-regencyRed">Privacy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // Register GSAP ScrollTrigger
+        gsap.registerPlugin(ScrollTrigger);
+
+        // 1. Precise London Time Status Logic
+        function updateStatus() {
+            const statusDot = document.getElementById('status-dot');
+            const statusText = document.getElementById('status-text');
+            
+            const now = new Date();
+            const londonTime = new Date(now.toLocaleString("en-US", {timeZone: "Europe/London"}));
+            const day = londonTime.getDay(); // 0=Sun, 1=Mon...
+            const hours = londonTime.getHours();
+            const minutes = londonTime.getMinutes();
+            const timeDecimal = hours + (minutes / 60);
+
+            let isOpen = false;
+
+            // Mon-Fri: 7:00-14:30 AND 16:00-19:15
+            if (day >= 1 && day <= 5) {
+                if ((timeDecimal >= 7 && timeDecimal < 14.5) || (timeDecimal >= 16 && timeDecimal < 19.25)) {
+                    isOpen = true;
+                }
+            } 
+            // Sat: 7:00-12:00
+            else if (day === 6) {
+                if (timeDecimal >= 7 && timeDecimal < 12) {
+                    isOpen = true;
+                }
+            }
+            // Sun: Closed
+
+            const timeString = `${hours.toString().padStart(2,'0')}:${minutes.toString().padStart(2,'0')}`;
+
+            if (isOpen) {
+                statusText.innerHTML = `OPEN NOW <span class="text-white/50 mx-1">|</span> LONDON ${timeString}`;
+                statusText.classList.remove('text-red-500');
+                statusText.classList.add('text-green-400');
+                statusDot.classList.remove('bg-red-500');
+                statusDot.classList.add('bg-green-500', 'animate-pulse');
+            } else {
+                statusText.innerHTML = `CLOSED <span class="text-white/50 mx-1">|</span> LONDON ${timeString}`;
+                statusText.classList.remove('text-green-400');
+                statusText.classList.add('text-red-500');
+                statusDot.classList.remove('bg-green-500', 'animate-pulse');
+                statusDot.classList.add('bg-red-500');
+            }
+        }
+        
+        updateStatus();
+        setInterval(updateStatus, 60000);
+
+        // 2. Animations
+        window.addEventListener("load", () => {
+            
+            // Hero Reveal
+            const tl = gsap.timeline();
+            tl.to(".text-reveal", {
+                y: 0,
+                opacity: 1,
+                duration: 1.2,
+                stagger: 0.1,
+                ease: "power4.out"
+            });
+
+            // Parallax
+            gsap.to(".parallax-img", {
+                scrollTrigger: {
+                    trigger: "header",
+                    start: "top top",
+                    end: "bottom top",
+                    scrub: true
+                },
+                y: 100,
+                scale: 1.2
+            });
+
+            // Section Fade Ins
+            gsap.utils.toArray("section").forEach(section => {
+                gsap.from(section.children, {
+                    scrollTrigger: {
+                        trigger: section,
+                        start: "top 80%",
+                    },
+                    y: 50,
+                    opacity: 0,
+                    duration: 1,
+                    stagger: 0.2,
+                    ease: "power3.out"
+                });
+            });
+
+            // Magnetic Button
+            const btns = document.querySelectorAll('.btn-magnet');
+            btns.forEach(btn => {
+                btn.addEventListener('mousemove', (e) => {
+                    const rect = btn.getBoundingClientRect();
+                    const x = e.clientX - rect.left - rect.width / 2;
+                    const y = e.clientY - rect.top - rect.height / 2;
+                    gsap.to(btn, { x: x * 0.4, y: y * 0.4, duration: 0.3 });
+                });
+                btn.addEventListener('mouseleave', () => {
+                    gsap.to(btn, { x: 0, y: 0, duration: 0.5, ease: "elastic.out(1, 0.5)" });
+                });
+            });
+        });
+
+        // 3. Navbar Interaction
+        const nav = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                nav.classList.add('py-3');
+                nav.classList.remove('py-5', 'bg-obsidian/80');
+                nav.classList.add('bg-obsidian/95');
+            } else {
+                nav.classList.add('py-5', 'bg-obsidian/80');
+                nav.classList.remove('py-3', 'bg-obsidian/95');
+            }
+        });
+    </script>
+</body>
+</html>
