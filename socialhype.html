@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SocialHype - The Best of The Internet</title>
+    
+    <!-- Fonts: Inter for clean, modern readability -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+    <style>
+        :root {
+            /* Brand Colors */
+            --primary: #FF2E63; /* SocialHype Red/Pink - Energetic */
+            --secondary: #08D9D6; /* Cyan for accents */
+            --dark: #252A34;
+            --light: #F7F9FC; /* Light gray background, easier on eyes than pure white */
+            --white: #FFFFFF;
+            --gray-text: #6c757d;
+            --border: #EAEAEA;
+            
+            /* Spacing & Layout */
+            --radius: 16px;
+            --header-height: 70px;
+            --container-width: 1280px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a { text-decoration: none; color: inherit; transition: 0.2s; }
+        ul { list-style: none; }
+
+        /* --- HEADER --- */
+        .site-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: var(--header-height);
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .header-inner {
+            width: 100%;
+            max-width: var(--container-width);
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-weight: 900;
+            font-size: 24px;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo span { color: var(--primary); }
+
+        .search-bar {
+            background: var(--light);
+            border-radius: 50px;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            width: 400px;
+            border: 1px solid transparent;
+            transition: 0.3s;
+        }
+
+        .search-bar:focus-within {
+            border-color: var(--primary);
+            background: var(--white);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .search-bar input {
+            border: none;
+            background: transparent;
+            outline: none;
+            width: 100%;
+            margin-left: 10px;
+            font-size: 15px;
+        }
+
+        .user-actions {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn {
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn-primary {
+            background: var(--dark);
+            color: var(--white);
+        }
+        .btn-primary:hover { background: var(--primary); }
+        
+        .btn-icon {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: var(--white);
+            border: 1px solid var(--border);
+        }
+        .btn-icon:hover { background: var(--light); }
+
+        /* --- LAYOUT GRID --- */
+        .main-container {
+            max-width: var(--container-width);
+            margin: calc(var(--header-height) + 30px) auto 40px;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 240px 1fr 320px; /* Sidebar - Feed - Sidebar */
+            gap: 30px;
+            align-items: start;
+        }
+
+        /* --- LEFT SIDEBAR (NAV) --- */
+        .left-sidebar {
+            position: sticky;
+            top: 100px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            border-radius: 12px;
+            font-weight: 600;
+            color: var(--gray-text);
+            margin-bottom: 5px;
+        }
+
+        .nav-item i { width: 25px; font-size: 18px; }
+        .nav-item:hover, .nav-item.active {
+            background: var(--white);
+            color: var(--primary);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+        }
+
+        .nav-section-title {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #aaa;
+            margin: 25px 15px 10px;
+            font-weight: 700;
+        }
+
+        /* --- CENTER FEED --- */
+        .feed-column {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        /* Stories / Featured Row (Optional, like IG Stories) */
+        .stories-container {
+            display: flex;
+            gap: 15px;
+            overflow-x: auto;
+            padding-bottom: 10px;
+        }
+        
+        .story-card {
+            min-width: 110px;
+            height: 160px;
+            border-radius: 12px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .story-card:hover { transform: translateY(-3px); }
+        .story-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 12px;
+            background: linear-gradient(to bottom, transparent 40%, rgba(0,0,0,0.7));
+        }
+        .story-user {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            color: white;
+            font-size: 12px;
+            font-weight: 600;
+            z-index: 2;
+        }
+
+        /* Content Card */
+        .card {
+            background: var(--white);
+            border-radius: var(--radius);
+            overflow: hidden;
+            border: 1px solid var(--border);
+            transition: box-shadow 0.3s;
+        }
+
+        .card:hover {
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+
+        /* Hero Card Special Styling */
+        .card.hero-card .card-image {
+            height: 350px;
+        }
+        .card.hero-card h2 {
+            font-size: 28px;
+            line-height: 1.2;
+        }
+
+        .card-image {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .card-body {
+            padding: 24px;
+        }
+
+        .card-meta {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 13px;
+            color: var(--gray-text);
+            margin-bottom: 12px;
+        }
+
+        .badge {
+            background: #FFE5EC;
+            color: var(--primary);
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 11px;
+        }
+
+        .card-title {
+            font-size: 22px;
+            font-weight: 800;
+            margin-bottom: 12px;
+            color: var(--dark);
+        }
+
+        .card-excerpt {
+            color: var(--gray-text);
+            font-size: 16px;
+            margin-bottom: 20px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 15px;
+            border-top: 1px solid var(--light);
+        }
+
+        .author {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        .author img {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+        }
+
+        .actions {
+            display: flex;
+            gap: 15px;
+            color: var(--gray-text);
+            font-size: 14px;
+        }
+        .action-item { cursor: pointer; display: flex; align-items: center; gap: 5px; }
+        .action-item:hover { color: var(--primary); }
+
+        /* Native Ad Slot */
+        .ad-slot-feed {
+            background: #f0f2f5;
+            border-radius: var(--radius);
+            padding: 20px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 250px;
+            border: 1px dashed #ccc;
+        }
+        .ad-label { font-size: 10px; color: #999; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
+
+        /* --- RIGHT SIDEBAR --- */
+        .right-sidebar {
+            position: sticky;
+            top: 100px;
+        }
+
+        .sidebar-widget {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border);
+        }
+
+        .widget-title {
+            font-size: 18px;
+            font-weight: 800;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Trending List styling */
+        .trending-list {
+            counter-reset: trend-counter;
+        }
+        .trending-item {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+            align-items: center;
+        }
+        .trending-item::before {
+            counter-increment: trend-counter;
+            content: counter(trend-counter);
+            font-size: 24px;
+            font-weight: 900;
+            color: #ddd;
+            width: 20px;
+        }
+        .trending-info h4 {
+            font-size: 14px;
+            font-weight: 600;
+            line-height: 1.4;
+        }
+        .trending-info span {
+            font-size: 12px;
+            color: var(--gray-text);
+        }
+
+        /* Newsletter Box */
+        .newsletter-box {
+            background: linear-gradient(135deg, var(--dark) 0%, #1a1d24 100%);
+            color: white;
+            text-align: center;
+        }
+        .newsletter-box input {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: none;
+            margin: 15px 0 10px;
+        }
+        .newsletter-box button {
+            width: 100%;
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 1024px) {
+            .main-container {
+                grid-template-columns: 80px 1fr 300px; /* Collapse nav text */
+            }
+            .nav-item span { display: none; }
+            .nav-item { justify-content: center; }
+            .nav-section-title { display: none; }
+            .logo { font-size: 20px; }
+            .search-bar { width: 250px; }
+        }
+
+        @media (max-width: 900px) {
+            .right-sidebar { display: none; }
+            .main-container { grid-template-columns: 80px 1fr; }
+        }
+
+        @media (max-width: 600px) {
+            .main-container { grid-template-columns: 1fr; padding: 0 15px; }
+            .left-sidebar { 
+                position: fixed; 
+                bottom: 0; 
+                top: auto; 
+                width: 100%; 
+                background: white; 
+                z-index: 999; 
+                border-top: 1px solid var(--border);
+                display: flex;
+                justify-content: space-around;
+                padding: 10px;
+                margin: 0;
+            }
+            .nav-item { margin: 0; flex-direction: column; font-size: 10px; gap: 4px; }
+            .nav-item span { display: block; }
+            .search-bar { display: none; } /* Hide search on mobile for clean look */
+            .logo { margin: 0 auto; }
+            .user-actions { position: absolute; right: 15px; }
+            .btn-primary { display: none; }
+            .feed-column { margin-bottom: 80px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header class="site-header">
+        <div class="header-inner">
+            <a href="#" class="logo"><i class="fa-solid fa-bolt"></i> Social<span>Hype</span></a>
+            
+            <div class="search-bar">
+                <i class="fa-solid fa-search" style="color: #999;"></i>
+                <input type="text" placeholder="Search trends, memes, news...">
+            </div>
+
+            <div class="user-actions">
+                <button class="btn-icon"><i class="fa-regular fa-bell"></i></button>
+                <button class="btn btn-primary">Sign In</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN GRID -->
+    <div class="main-container">
+
+        <!-- LEFT SIDEBAR (Navigation) -->
+        <aside class="left-sidebar">
+            <nav>
+                <a href="#" class="nav-item active">
+                    <i class="fa-solid fa-house"></i>
+                    <span>Home Feed</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fa-solid fa-fire"></i>
+                    <span>Trending</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fa-solid fa-video"></i>
+                    <span>Videos</span>
+                </a>
+                
+                <div class="nav-section-title">Topics</div>
+                
+                <a href="#" class="nav-item">
+                    <i class="fa-solid fa-film"></i>
+                    <span>Entertainment</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fa-solid fa-gamepad"></i>
+                    <span>Gaming</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fa-solid fa-robot"></i>
+                    <span>Tech</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fa-solid fa-ghost"></i>
+                    <span>Memes</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- CENTER FEED -->
+        <main class="feed-column">
+            
+            <!-- Story/Highlights Row -->
+            <div class="stories-container">
+                <div class="story-card" style="background-image: url('https://images.unsplash.com/photo-1511367461989-f85a21fda167?w=400&q=80')">
+                    <div class="story-user">@DailyVibes</div>
+                </div>
+                <div class="story-card" style="background-image: url('https://gizmodo.com/app/uploads/2025/12/InnAIO-AI-Translator-T10-4.jpg')">
+                    <div class="story-user">@TechInsider</div>
+                </div>
+                <div class="story-card" style="background-image: url('https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&q=80')">
+                    <div class="story-user">@FashionW</div>
+                </div>
+                <div class="story-card" style="background-image: url('https://images.unsplash.com/photo-1542206395-9feb3edaa68d?w=400&q=80')">
+                    <div class="story-user">@CarGuys</div>
+                </div>
+            </div>
+
+            <!-- HERO POST -->
+            <article class="card hero-card">
+                <img src="https://charming-card-d91ad3487b.media.strapiapp.com/large_file_5197ff2037.png" alt="Hero Image" class="card-image">
+                <div class="card-body">
+                    <div class="card-meta">
+                        <span class="badge">Viral</span>
+                        <span>• 2 hours ago</span>
+                    </div>
+                    <a href="#">
+                        <h2 class="card-title">The Internet Can't Stop Talking About This New AI Gadget</h2>
+                    </a>
+                    <p class="card-excerpt">It fits in your palm, projects screens onto your hand, and might just replace your smartphone. Here is everything you need to know.</p>
+                    
+                    <div class="card-footer">
+                        <div class="author">
+                            <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Author">
+                            <span>Sarah Jenkins</span>
+                        </div>
+                        <div class="actions">
+                            <div class="action-item"><i class="fa-regular fa-heart"></i> 12k</div>
+                            <div class="action-item"><i class="fa-regular fa-comment"></i> 342</div>
+                            <div class="action-item"><i class="fa-solid fa-share"></i></div>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- STANDARD POST 1 -->
+            <article class="card">
+                <div class="card-body">
+                    <div class="card-meta">
+                        <span class="badge" style="background:#e0f7fa; color:#006064;">Tech</span>
+                        <span>• 4 hours ago</span>
+                    </div>
+                    <h2 class="card-title">Why Everyone is Moving Back to "Dumb Phones" in 2026</h2>
+                    <p class="card-excerpt">Digital minimalism is the new trend sweeping Gen Z. Is giving up your iPhone actually freeing?</p>
+                    <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800&q=80" alt="Dumb phone" style="width:100%; border-radius: 8px; margin-top:15px; height: 250px; object-fit: cover;">
+                    
+                    <div class="card-footer">
+                        <div class="author">
+                            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Author">
+                            <span>Mike Ross</span>
+                        </div>
+                        <div class="actions">
+                            <div class="action-item"><i class="fa-regular fa-heart"></i> 8.5k</div>
+                            <div class="action-item"><i class="fa-regular fa-comment"></i> 120</div>
+                            <div class="action-item"><i class="fa-solid fa-share"></i></div>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- NATIVE AD SLOT (In-Feed) -->
+            <div class="ad-slot-feed">
+                <span class="ad-label">Sponsored</span>
+                <div style="font-weight: 700; font-size: 20px; max-width: 80%;">
+                    Streaming Service Bundle: Get 3 Months Free
+                </div>
+                <button class="btn btn-primary" style="margin-top: 15px;">Claim Offer</button>
+            </div>
+
+            <!-- STANDARD POST 2 -->
+            <article class="card">
+                <div class="card-body">
+                    <div class="card-meta">
+                        <span class="badge" style="background:#fff3e0; color:#e65100;">Movies</span>
+                        <span>• 6 hours ago</span>
+                    </div>
+                    <h2 class="card-title">The Hidden Easter Egg in the New Marvel Trailer</h2>
+                    <p class="card-excerpt">Did you spot the character in the reflection at the 2:14 mark? It changes everything for the next phase.</p>
+                    
+                    <div class="card-footer">
+                        <div class="author">
+                            <img src="https://randomuser.me/api/portraits/women/65.jpg" alt="Author">
+                            <span>Jessica Lee</span>
+                        </div>
+                        <div class="actions">
+                            <div class="action-item"><i class="fa-regular fa-heart"></i> 22k</div>
+                            <div class="action-item"><i class="fa-regular fa-comment"></i> 890</div>
+                            <div class="action-item"><i class="fa-solid fa-share"></i></div>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+        </main>
+
+        <!-- RIGHT SIDEBAR (Utility) -->
+        <aside class="right-sidebar">
+            
+            <!-- Newsletter Widget -->
+            <div class="sidebar-widget newsletter-box">
+                <i class="fa-regular fa-envelope" style="font-size: 32px; margin-bottom: 10px;"></i>
+                <h3>Get the Hype</h3>
+                <p style="font-size: 13px; opacity: 0.8; margin-top: 5px;">The best viral stories delivered daily.</p>
+                <input type="email" placeholder="Your email address">
+                <button>Subscribe</button>
+            </div>
+
+            <!-- Trending Widget -->
+            <div class="sidebar-widget">
+                <div class="widget-title">
+                    Trending Now
+                    <i class="fa-solid fa-arrow-trend-up" style="color: var(--primary); font-size: 16px;"></i>
+                </div>
+                <div class="trending-list">
+                    <a href="#" class="trending-item">
+                        <div class="trending-info">
+                            <h4>SpaceX Mars Landing</h4>
+                            <span>Science • 2m views</span>
+                        </div>
+                    </a>
+                    <a href="#" class="trending-item">
+                        <div class="trending-info">
+                            <h4>The Oscars Slap 2.0</h4>
+                            <span>Culture • 1.5m views</span>
+                        </div>
+                    </a>
+                    <a href="#" class="trending-item">
+                        <div class="trending-info">
+                            <h4>Bitcoin Hits $100k</h4>
+                            <span>Finance • 900k views</span>
+                        </div>
+                    </a>
+                    <a href="#" class="trending-item">
+                        <div class="trending-info">
+                            <h4>New Zelda Game</h4>
+                            <span>Gaming • 750k views</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Sticky Ad Placeholder -->
+            <div class="sidebar-widget" style="height: 300px; display: flex; align-items: center; justify-content: center; background: #f0f0f0; border: none;">
+                <span style="color: #ccc; font-weight: 600;">Advertisement</span>
+            </div>
+
+            <!-- Footer Links -->
+            <div style="font-size: 12px; color: #999; line-height: 1.8; padding: 0 10px;">
+                <a href="#">About</a> • <a href="#">Privacy</a> • <a href="#">Terms</a> • <a href="#">Careers</a>
+                <br> © 2026 SocialHype Media
+            </div>
+
+        </aside>
+
+    </div>
+
+    <script>
+        // Simple Interaction Script
+        document.querySelectorAll('.btn-icon, .action-item').forEach(btn => {
+            btn.addEventListener('click', function() {
+                // Add a little pop animation class
+                this.style.transform = 'scale(1.2)';
+                setTimeout(() => {
+                    this.style.transform = 'scale(1)';
+                }, 200);
+                
+                // Toggle heart icon if it is a heart
+                const icon = this.querySelector('.fa-heart');
+                if(icon) {
+                    icon.classList.toggle('fa-regular');
+                    icon.classList.toggle('fa-solid');
+                    icon.style.color = icon.classList.contains('fa-solid') ? '#FF2E63' : '';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expert Tree Trimming - Andy's Tree Service</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Manrope:wght@200;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Config & Custom CSS -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        forest: '#052e16',
+                        leaf: '#15803d',
+                        gold: '#D4AF37',
+                        cream: '#F5F5F0',
+                        charcoal: '#1a1a1a'
+                    },
+                    fontFamily: {
+                        serif: ['"Cormorant Garamond"', 'serif'],
+                        sans: ['"Manrope"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Smooth Scroll Fixes */
+        html.lenis { height: auto; }
+        .lenis.lenis-smooth { scroll-behavior: auto; }
+        .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+        .lenis.lenis-stopped { overflow: hidden; }
+        
+        body {
+            background-color: #F5F5F0;
+            overflow-x: hidden;
+            cursor: none; /* Custom cursor */
+        }
+
+        /* Typography Utilities */
+        .text-reveal-wrap { overflow: hidden; display: block; }
+        .text-reveal { transform: translateY(110%); display: block; }
+        
+        /* Custom Cursor */
+        #cursor {
+            position: fixed;
+            top: 0; left: 0;
+            width: 20px; height: 20px;
+            border: 1px solid #052e16;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: width 0.3s, height 0.3s, background-color 0.3s;
+        }
+        #cursor.hovered {
+            width: 50px; height: 50px;
+            background-color: rgba(212, 175, 55, 0.2);
+            border-color: #D4AF37;
+        }
+
+        /* Image Masks */
+        .img-mask {
+            overflow: hidden;
+            position: relative;
+        }
+        .img-mask img {
+            transition: transform 1.5s cubic-bezier(0.25, 1, 0.5, 1);
+            transform: scale(1.2);
+        }
+        .img-mask.in-view img {
+            transform: scale(1);
+        }
+
+        /* Navigation */
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        /* Button Hover */
+        .btn-hover {
+            position: relative;
+            overflow: hidden;
+            transition: color 0.4s;
+        }
+        .btn-hover::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #D4AF37;
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.4s cubic-bezier(0.7, 0, 0.3, 1);
+            z-index: -1;
+        }
+        .btn-hover:hover::before {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+        .btn-hover:hover { color: #000; border-color: #D4AF37; }
+
+    </style>
+</head>
+<body class="font-sans text-charcoal antialiased">
+
+    <!-- Custom Cursor -->
+    <div id="cursor"></div>
+
+    <!-- Preloader (Simulated) -->
+    <div id="loader" class="fixed inset-0 bg-forest z-[100] flex items-center justify-center text-white transition-all duration-1000">
+        <div class="text-center">
+            <h2 class="font-serif text-4xl italic mb-2">Andy's Tree Service</h2>
+            <div class="w-48 h-[1px] bg-white/20 mt-4 mx-auto overflow-hidden">
+                <div class="h-full bg-gold w-0" id="loader-bar"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 glass-nav transition-all duration-500 text-white" id="navbar">
+        <div class="bg-black/90 text-[10px] tracking-widest text-center py-2 uppercase font-bold text-gold">
+            (760) 286-8563 | Licensed, Bonded & Insured | 30 Year Pro Company
+        </div>
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="/" class="block w-40 relative z-50">
+                <img src="https://andys-treeservice.com/wp-content/uploads/2023/06/Layer-1111.png" alt="Andy's Tree Service" class="w-full brightness-0 invert">
+            </a>
+            
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="#" class="nav-link text-sm font-bold uppercase tracking-widest hover:text-gold transition-colors">Services</a>
+                <a href="#" class="nav-link text-sm font-bold uppercase tracking-widest hover:text-gold transition-colors">Blog</a>
+                <a href="#" class="nav-link text-sm font-bold uppercase tracking-widest hover:text-gold transition-colors">Service Areas</a>
+                <a href="#" class="nav-link text-sm font-bold uppercase tracking-widest hover:text-gold transition-colors">Contact Us</a>
+                <a href="tel:7602868563" class="btn-hover px-6 py-2 border border-white text-white text-xs font-bold uppercase tracking-widest">Free Estimate</a>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="relative h-screen flex items-center justify-center overflow-hidden">
+            <div class="absolute inset-0 z-0">
+                <div class="absolute inset-0 bg-gradient-to-b from-black/60 to-black/30 z-10"></div>
+                <img src="https://andys-treeservice.com/wp-content/uploads/2023/07/Layer-52-copy-111.png" 
+                     alt="Background" 
+                     class="w-full h-full object-cover"
+                     data-scroll data-scroll-speed="-0.5">
+            </div>
+
+            <div class="relative z-20 text-center px-4 max-w-5xl mx-auto">
+                <div class="inline-block border border-gold/50 bg-black/30 backdrop-blur-sm px-6 py-2 mb-8 rounded-full">
+                    <span class="text-gold text-xs font-bold uppercase tracking-[0.2em]">30 Year Pro Company</span>
+                </div>
+                
+                <h1 class="font-serif text-6xl md:text-8xl lg:text-9xl text-white leading-[0.9] mb-6 mix-blend-overlay opacity-90">
+                    <span class="text-reveal-wrap"><span class="text-reveal">Expert Tree</span></span>
+                    <span class="text-reveal-wrap"><span class="text-reveal italic text-gold">Trimming</span></span>
+                </h1>
+
+                <h3 class="text-white/80 text-xl md:text-2xl font-light mb-10 max-w-2xl mx-auto">
+                    <span class="text-reveal-wrap"><span class="text-reveal">Trims Trees To Be Beautiful And Safe</span></span>
+                </h3>
+
+                <div class="flex flex-col md:flex-row gap-6 justify-center opacity-0" id="hero-btns">
+                    <a href="tel:7602868563" class="btn-hover px-10 py-4 bg-white text-forest border border-white font-bold uppercase tracking-widest text-sm hover:text-white hover:border-gold">
+                        Call (760) 286-8563
+                    </a>
+                    <a href="#contact" class="btn-hover px-10 py-4 bg-transparent text-white border border-white font-bold uppercase tracking-widest text-sm hover:border-gold">
+                        Free Estimate
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Intro Editorial Layout -->
+        <section class="py-32 px-6 container mx-auto">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-16">
+                <!-- Sticky Text -->
+                <div class="lg:col-span-5 h-fit lg:sticky lg:top-32">
+                    <p class="text-forest font-bold uppercase tracking-widest text-xs mb-4">Tree Trimming</p>
+                    <h2 class="font-serif text-5xl md:text-6xl text-charcoal mb-8 leading-tight">
+                        Why Hire <br><span class="italic text-forest">Andy's?</span>
+                    </h2>
+                    <p class="text-xl text-gray-600 mb-6 font-medium">Bring Out The Safety, Strength, And Beauty In Your Trees</p>
+                    <p class="text-gray-500 mb-8 font-light leading-relaxed">Get A Free Consultation About Your Trees. Professional care ensures longevity and aesthetic appeal for your landscape.</p>
+                    
+                    <div class="img-mask aspect-[4/3] w-full mt-12 group cursor-pointer">
+                        <img src="https://andys-treeservice.com/wp-content/uploads/2023/09/ash-after.png" alt="Ash Tree" class="w-full h-full object-cover">
+                        <div class="absolute bottom-4 left-4 bg-white/90 px-4 py-2 text-xs text-forest font-bold backdrop-blur-md opacity-0 group-hover:opacity-100 transition-opacity">
+                            Ash tree after trimming by Andy's Tree Service in Escondido
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Scrolling Content -->
+                <div class="lg:col-span-7 flex flex-col gap-12">
+                    <!-- Testimonial 1 -->
+                    <div class="bg-white p-10 md:p-14 shadow-2xl shadow-gray-200/50 border-l-4 border-gold relative" data-scroll data-scroll-speed="0.1">
+                        <i class="fas fa-quote-right text-6xl text-gray-100 absolute top-8 right-8 font-serif"></i>
+                        <div class="flex text-gold mb-6 text-sm gap-1">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                        </div>
+                        <p class="font-serif text-2xl md:text-3xl italic text-gray-800 leading-relaxed mb-8">“Andy’s Tree Service team beautifully shaped, amazingly pruned, came in with care and precision, while leaving the yard better than when they arrived...”</p>
+                        <div class="flex justify-between items-end border-t border-gray-100 pt-6">
+                            <div>
+                                <h4 class="font-bold uppercase tracking-wider text-forest">Chris B.</h4>
+                                <span class="text-xs text-gray-400">4/10/24</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Testimonial 2 -->
+                    <div class="bg-white p-10 md:p-14 shadow-2xl shadow-gray-200/50 border-l-4 border-gold relative" data-scroll data-scroll-speed="0.2">
+                        <i class="fas fa-quote-right text-6xl text-gray-100 absolute top-8 right-8 font-serif"></i>
+                        <div class="flex text-gold mb-6 text-sm gap-1">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                        </div>
+                        <p class="font-serif text-2xl md:text-3xl italic text-gray-800 leading-relaxed mb-8">“I wish I had taken before and after pictures of my two trees that Andy trimmed. The transformation was astounding. The trees look absolutely manicured.”</p>
+                        <div class="flex justify-between items-end border-t border-gray-100 pt-6">
+                            <div>
+                                <h4 class="font-bold uppercase tracking-wider text-forest">Jonathan T.</h4>
+                                <span class="text-xs text-gray-400">2/12/24</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Comparative Section (Dark Mode Transition) -->
+        <section class="bg-charcoal text-white py-32 overflow-hidden">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-24">
+                    <h2 class="font-serif text-5xl md:text-7xl mb-4 text-cream">The Distinction</h2>
+                    <p class="text-gray-400 max-w-xl mx-auto">See the difference between professional care and amateur cutting.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-0 border border-white/10">
+                    
+                    <!-- Good Work -->
+                    <div class="p-12 md:p-16 bg-[#0a2f15] border-b md:border-b-0 md:border-r border-white/10 group hover:bg-[#0d3b1b] transition-colors duration-500">
+                        <div class="flex items-center gap-4 mb-8">
+                            <i class="fas fa-check-circle text-gold text-3xl"></i>
+                            <h3 class="font-serif text-3xl italic">Andy's Trimming Work</h3>
+                        </div>
+                        
+                        <ul class="space-y-6 mb-12">
+                            <li class="flex items-start gap-4">
+                                <i class="fas fa-leaf text-gold mt-1"></i>
+                                <span class="text-gray-300 font-light text-lg">Trims for health of trees, naturally reveals trees beauty</span>
+                            </li>
+                            <li class="flex items-start gap-4">
+                                <i class="fas fa-tools text-gold mt-1"></i>
+                                <span class="text-gray-300 font-light text-lg">Uses proper pruning tools</span>
+                            </li>
+                            <li class="flex items-start gap-4">
+                                <i class="fas fa-hand-holding-heart text-gold mt-1"></i>
+                                <span class="text-gray-300 font-light text-lg">Is conservative, doesn't overtrim</span>
+                            </li>
+                            <li class="flex items-start gap-4">
+                                <i class="fas fa-seedling text-gold mt-1"></i>
+                                <span class="text-gray-300 font-light text-lg">Tree can continue growing naturally</span>
+                            </li>
+                        </ul>
+
+                        <div class="img-mask w-full aspect-video grayscale group-hover:grayscale-0 transition-all duration-700">
+                            <img src="https://andys-treeservice.com/wp-content/uploads/elementor/thumbs/Ornamental-Pear-after-scaled1-qaiwv7s5fhu3yibhfijalpcl98hlapvqdk1a0bhml0.jpg" class="w-full h-full object-cover">
+                        </div>
+                        <p class="text-center text-xs text-gold mt-4 uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity">Ornamental Pear after trimming</p>
+                    </div>
+
+                    <!-- Bad Work -->
+                    <div class="p-12 md:p-16 bg-[#1a1a1a] group hover:bg-[#252525] transition-colors duration-500 relative overflow-hidden">
+                        <div class="flex items-center gap-4 mb-8">
+                            <i class="fas fa-times-circle text-red-500 text-3xl"></i>
+                            <h3 class="font-serif text-3xl italic text-gray-400">Other Work Around Town</h3>
+                        </div>
+                        
+                        <ul class="space-y-6 mb-12">
+                            <li class="flex items-start gap-4">
+                                <i class="fas fa-ban text-red-500 mt-1"></i>
+                                <span class="text-gray-500 font-light text-lg group-hover:text-gray-400 transition-colors">Trims way too hard, trees look destroyed</span>
+                            </li>
+                            <li class="flex items-start gap-4">
+                                <i class="fas fa-exclamation-triangle text-red-500 mt-1"></i>
+                                <span class="text-gray-500 font-light text-lg group-hover:text-gray-400 transition-colors">Uses chainsaw, much faster</span>
+                            </li>
+                            <li class="flex items-start gap-4">
+                                <i class="fas fa-skull-crossbones text-red-500 mt-1"></i>
+                                <span class="text-gray-500 font-light text-lg group-hover:text-gray-400 transition-colors">Over trims - shocks the tree</span>
+                            </li>
+                            <li class="flex items-start gap-4">
+                                <i class="fas fa-cut text-red-500 mt-1"></i>
+                                <span class="text-gray-500 font-light text-lg group-hover:text-gray-400 transition-colors">Tree will never grow naturally again</span>
+                            </li>
+                        </ul>
+
+                        <div class="img-mask w-full aspect-video opacity-50 grayscale group-hover:opacity-80 transition-all duration-700">
+                            <img src="https://andys-treeservice.com/wp-content/uploads/elementor/thumbs/post-office-zoomed-scaled1-qfxxzrq3t7z9q1ifbnkt1gil2vw2a1rd256wgswa6s.jpg" class="w-full h-full object-cover">
+                        </div>
+                        <p class="text-center text-xs text-red-400 mt-4 uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity">Tree topped now dormant in winter</p>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- More Testimonials (Horizontal Scroll Feel) -->
+        <section class="py-24 bg-cream">
+            <div class="container mx-auto px-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="bg-white p-12 hover:translate-y-[-10px] transition-transform duration-500 cursor-default">
+                        <p class="font-serif text-xl italic text-gray-700 mb-6">“Andy's team was everything you want in a tree trimmer - licensed, easy to work with, and clean. They did an excellent tree trimming job...”</p>
+                        <div class="flex items-center gap-3">
+                            <div class="h-[1px] w-10 bg-gold"></div>
+                            <span class="font-bold uppercase tracking-wider text-forest text-sm">Jeff B.</span>
+                            <span class="text-gray-400 text-xs ml-auto">5/19/23</span>
+                        </div>
+                    </div>
+                    <div class="bg-white p-12 hover:translate-y-[-10px] transition-transform duration-500 cursor-default md:mt-12">
+                        <p class="font-serif text-xl italic text-gray-700 mb-6">“Really incredible job trimming our huge lemon eucalyptus tree and Andy and his crew were the nicest, in addition to having the best prices.”</p>
+                        <div class="flex items-center gap-3">
+                            <div class="h-[1px] w-10 bg-gold"></div>
+                            <span class="font-bold uppercase tracking-wider text-forest text-sm">David P.</span>
+                            <span class="text-gray-400 text-xs ml-auto">11/19/23</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Parallax Dark Section -->
+        <section class="relative py-40 flex flex-col justify-center items-center overflow-hidden">
+            <div class="absolute inset-0 z-0">
+                <div class="absolute inset-0 bg-forest/90 z-10 mix-blend-multiply"></div>
+                <img src="https://andys-treeservice.com/wp-content/uploads/2023/07/Layer-52-copy-2-11-2.png" class="w-full h-full object-cover opacity-60" data-scroll data-scroll-speed="-0.3">
+            </div>
+
+            <div class="relative z-20 container mx-auto px-6 text-center">
+                <h2 class="font-serif text-5xl md:text-8xl text-white mb-6">Why Hire Andy's?</h2>
+                <h4 class="text-gold font-light text-2xl md:text-3xl mb-12 italic">Do you want your trees looking good for years to come?</h4>
+                
+                <p class="text-gray-300 text-lg max-w-2xl mx-auto leading-relaxed mb-20">Trees that are trimmed properly look natural and beautiful. They're also much stronger as their weight is reduced, especially on the outside.</p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-5xl mx-auto">
+                    <div class="group">
+                        <div class="img-mask border-8 border-white shadow-2xl rotate-[-2deg] group-hover:rotate-0 transition-transform duration-500">
+                            <img src="https://andys-treeservice.com/wp-content/uploads/2025/11/carrotwood-before-1-captioned-cropped.jpg" class="w-full h-auto">
+                        </div>
+                        <p class="text-white/60 text-xs mt-4 uppercase tracking-wider">Ornamental Pear before trimming</p>
+                    </div>
+                    <div class="group md:mt-12">
+                        <div class="img-mask border-8 border-white shadow-2xl rotate-[2deg] group-hover:rotate-0 transition-transform duration-500">
+                            <img src="https://andys-treeservice.com/wp-content/uploads/2025/11/carrotwood-after-6-captioned-cropped11.jpg" class="w-full h-auto">
+                        </div>
+                        <p class="text-white/60 text-xs mt-4 uppercase tracking-wider">Carrotwood tree after trimming</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Minimalist Info Grid -->
+        <section class="py-32 bg-cream">
+            <div class="container mx-auto px-6">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-16 text-center md:text-left">
+                    <div class="space-y-4">
+                        <h3 class="font-serif text-3xl italic text-forest">Service Areas</h3>
+                        <div class="w-12 h-[2px] bg-gold mx-auto md:mx-0"></div>
+                        <p class="text-gray-600 font-light">We are located in Escondido California, and service the surrounding area.</p>
+                    </div>
+                    <div class="space-y-4">
+                        <h3 class="font-serif text-3xl italic text-forest">Licensed & Insured?</h3>
+                        <div class="w-12 h-[2px] bg-gold mx-auto md:mx-0"></div>
+                        <p class="text-gray-600 font-light">Yes, Andy’s Tree Service is fully licensed and insured (state contractor’s license #752448).</p>
+                    </div>
+                    <div class="space-y-4">
+                        <h3 class="font-serif text-3xl italic text-forest">Our Services</h3>
+                        <div class="w-12 h-[2px] bg-gold mx-auto md:mx-0"></div>
+                        <p class="text-gray-600 font-light">We provide tree removal, tree cutting, tree trimming and tree pruning services. We also provide consulting and emergency services.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer id="contact" class="bg-black text-white pt-24 pb-12 rounded-t-[3rem]">
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-20 mb-20">
+                <!-- Left -->
+                <div>
+                    <h2 class="font-serif text-5xl mb-8 text-white">Why Choose Andy's?</h2>
+                    <p class="text-gray-400 mb-8 font-light leading-relaxed">It’s important to know what other customers think of our work. Here you can read all our reviews right on the site. We would also like to take this opportunity to thank all of our loyal customers for their continued support and confidence in our services. If you prefer, you can read reviews about our Tree Trimming Service on our Google Business Profile page.</p>
+                    
+                    <div class="p-8 border border-white/10 bg-white/5 relative">
+                        <div class="absolute top-0 left-0 w-1 h-full bg-gold"></div>
+                        <h4 class="text-xl font-bold mb-4 text-gold">Experience Matters</h4>
+                        <p class="text-sm text-gray-400 leading-relaxed">Andy’s Tree Service has been providing the highest quality tree service around the Escondido, CA area for over 30 years. Their dedication to providing the best service and price for their customers has been like a welcome surprise for many down the years. Count on Andy’s for quality workmanship and expertise for all your tree needs!</p>
+                    </div>
+                </div>
+
+                <!-- Right -->
+                <div>
+                    <h2 class="font-serif text-4xl mb-8">Tell Us Your Needs.<br><span class="text-gray-500 italic">Get A Free Consultation.</span></h2>
+                    
+                    <a href="tel:7602868563" class="inline-flex items-center gap-6 mb-12 group">
+                        <div class="w-16 h-16 rounded-full border border-white/20 flex items-center justify-center group-hover:bg-gold group-hover:border-gold transition-all duration-300">
+                            <i class="fas fa-phone-alt text-2xl"></i>
+                        </div>
+                        <span class="text-5xl md:text-6xl font-bold font-serif group-hover:text-gold transition-colors">(760) 286-8563</span>
+                    </a>
+
+                    <div class="grid grid-cols-2 gap-12 text-sm">
+                        <div>
+                            <h5 class="uppercase tracking-widest text-xs font-bold text-gold mb-4">Location</h5>
+                            <p class="text-gray-400">311 E Washington Ave Ste<br>106, Escondido CA 92025</p>
+                        </div>
+                        <div>
+                            <h5 class="uppercase tracking-widest text-xs font-bold text-gold mb-4">Hours</h5>
+                            <p class="text-gray-400">7 days / week:<br>7:00AM - 7:00PM</p>
+                        </div>
+                    </div>
+
+                    <div class="mt-12 flex gap-4 opacity-50 grayscale hover:grayscale-0 transition-all duration-500">
+                        <img src="https://andys-treeservice.com/wp-content/uploads/elementor/thumbs/174254_yelp_icon-qllvf0fji1iazu8knvwxfmvx4cb47iv7bn6lwvwi2c.png" class="h-8 w-auto">
+                        <img src="https://andys-treeservice.com/wp-content/uploads/elementor/thumbs/facebook-logo-png-23201-qlboiyo4b30e59m6fp1ur2q6kw9ptv0auxvb8ks5fy.png" class="h-8 w-auto">
+                        <img src="https://andys-treeservice.com/wp-content/uploads/elementor/thumbs/next-door1-qlbomii5tl6f7vr4oirfrxps7fbs28anuxtih3j1ko.webp" class="h-8 w-auto">
+                        <img src="https://andys-treeservice.com/wp-content/uploads/elementor/thumbs/Pinterest-Logo-PNG3-qllvop5nvdtw33mk3fjky8qih49x5xre5o9dr4cbuq.png" class="h-8 w-auto">
+                    </div>
+                </div>
+            </div>
+
+            <div class="border-t border-white/10 pt-8 text-center">
+                <p class="text-xs text-gray-600 uppercase tracking-widest">Andy's Tree Service © 2023 | (760) 286-8563 - Privacy Policy | All rights reserved</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.19/bundled/lenis.min.js"></script>
+
+    <script>
+        // 1. Initialize Lenis (Smooth Scroll)
+        const lenis = new Lenis({
+            duration: 1.2,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            direction: 'vertical',
+            gestureDirection: 'vertical',
+            smooth: true,
+            mouseMultiplier: 1,
+            smoothTouch: false,
+            touchMultiplier: 2,
+        });
+
+        function raf(time) {
+            lenis.raf(time);
+            requestAnimationFrame(raf);
+        }
+        requestAnimationFrame(raf);
+
+        // 2. Custom Cursor Logic
+        const cursor = document.getElementById('cursor');
+        const hoverElements = document.querySelectorAll('a, button, .group, .img-mask');
+
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+
+        hoverElements.forEach(el => {
+            el.addEventListener('mouseenter', () => cursor.classList.add('hovered'));
+            el.addEventListener('mouseleave', () => cursor.classList.remove('hovered'));
+        });
+
+        // 3. GSAP Animations
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Preloader
+        window.addEventListener('load', () => {
+            const tl = gsap.timeline();
+            
+            tl.to("#loader-bar", { width: "100%", duration: 1, ease: "power2.inOut" })
+              .to("#loader", { height: 0, duration: 1, ease: "power4.inOut", delay: 0.2 })
+              .to(".text-reveal", { 
+                  y: 0, 
+                  duration: 1.5, 
+                  stagger: 0.2, 
+                  ease: "power4.out" 
+              }, "-=0.5")
+              .to("#hero-btns", { opacity: 1, y: 0, duration: 1 }, "-=1");
+        });
+
+        // Image Masks Reveal on Scroll
+        const images = document.querySelectorAll('.img-mask');
+        images.forEach(img => {
+            gsap.to(img, {
+                scrollTrigger: {
+                    trigger: img,
+                    start: "top 80%",
+                    toggleClass: "in-view",
+                    once: true
+                }
+            });
+        });
+
+        // Navbar bg change on scroll
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if(window.scrollY > 50) {
+                navbar.classList.add('bg-black');
+                navbar.classList.remove('glass-nav');
+            } else {
+                navbar.classList.remove('bg-black');
+                navbar.classList.add('glass-nav');
+            }
+        });
+
+        // Parallax Effects via GSAP
+        // Connect Lenis to ScrollTrigger
+        lenis.on('scroll', ScrollTrigger.update)
+        gsap.ticker.add((time)=>{
+          lenis.raf(time * 1000)
+        })
+        gsap.ticker.lagSmoothing(0)
+
+    </script>
+</body>
+</html>
