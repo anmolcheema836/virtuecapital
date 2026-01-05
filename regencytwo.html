@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Regency Café | London</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Josefin Sans (Logo), Playfair Display (Headings), Inter (Body) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=Playfair+Display:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+    
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <style>
+        /* --- RESET & VARIABLES --- */
+        :root {
+            --bg: #080808;
+            --text-main: #e6e6e6;
+            --text-muted: #888888;
+            --accent: #a33333; /* Deep Regency Red */
+            
+            --font-logo: 'Josefin Sans', sans-serif;
+            --font-serif: 'Playfair Display', serif;
+            --font-sans: 'Inter', sans-serif;
+            
+            --spacing-section: 18vh;
+            --container-width: 1200px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        html { scroll-behavior: smooth; }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text-main);
+            font-family: var(--font-sans);
+            font-weight: 300;
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        /* --- TYPOGRAPHY --- */
+        h1, h2, h3, h4 { font-weight: 400; color: var(--text-main); }
+        
+        .type-logo {
+            font-family: var(--font-logo);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            line-height: 1;
+        }
+
+        .type-heading {
+            font-family: var(--font-serif);
+            font-size: clamp(2rem, 4vw, 3.5rem);
+            line-height: 1.1;
+        }
+
+        .type-sub {
+            font-family: var(--font-sans);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: var(--accent);
+            margin-bottom: 2rem;
+            display: block;
+        }
+
+        a { color: inherit; text-decoration: none; transition: opacity 0.3s; }
+        a:hover { opacity: 0.7; }
+
+        /* --- LAYOUT UTILITIES --- */
+        .container {
+            max-width: var(--container-width);
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .grid-2 { display: grid; grid-template-columns: 1fr; gap: 4rem; }
+        .grid-3 { display: grid; grid-template-columns: 1fr; gap: 4rem; }
+        
+        @media(min-width: 768px) {
+            .grid-2 { grid-template-columns: 1fr 1fr; gap: 6rem; }
+            .grid-3 { grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+        }
+
+        /* --- NAVIGATION --- */
+        nav {
+            position: fixed;
+            top: 0; left: 0; width: 100%;
+            padding: 2.5rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 50;
+            mix-blend-mode: difference;
+        }
+
+        .nav-brand { font-size: 1.5rem; }
+        
+        .nav-menu { 
+            display: none; 
+            gap: 2rem; 
+            font-size: 0.8rem; 
+            text-transform: uppercase; 
+            letter-spacing: 0.1em; 
+        }
+
+        @media(min-width: 768px) { .nav-menu { display: flex; } }
+
+        /* --- HERO --- */
+        header {
+            height: 90vh;
+            display: flex;
+            align-items: flex-end;
+            padding-bottom: 6rem;
+            position: relative;
+        }
+
+        .hero-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.5;
+    filter: grayscale(100%) contrast(1.1);
+    z-index: -2;
+}
+
+
+       .hero-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+
+    background: linear-gradient(
+        to bottom,
+        rgba(5,5,5,0.2) 0%,
+        rgba(5,5,5,0.1) 40%,
+        rgba(5,5,5,0.8) 80%,
+        rgba(5,5,5,1) 100%
+    );
+}
+
+
+        /* --- CONTENT FLOW --- */
+        section {
+            margin-bottom: var(--spacing-section);
+        }
+
+        /* --- HOVER EFFECTS (NEW) --- */
+        
+        /* 1. Story Images */
+        .story-img {
+            width: 100%; 
+            aspect-ratio: 4/3; 
+            object-fit: cover; 
+            /* Start Grayscale */
+            filter: grayscale(100%); 
+            opacity: 0.8;
+            /* Smooth Transition */
+            transition: filter 0.5s ease, opacity 0.5s ease;
+            cursor: pointer;
+        }
+
+        .story-img:hover {
+            filter: grayscale(0%);
+            opacity: 1;
+        }
+
+        /* 2. Video Wrapper */
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+            height: 0;
+            background: #111;
+            margin-bottom: 1rem;
+            
+            /* Grayscale Filter on the wrapper affects the iframe content */
+            filter: grayscale(100%);
+            opacity: 0.8;
+            transition: filter 0.5s ease, opacity 0.5s ease;
+        }
+
+        .video-wrapper:hover {
+            filter: grayscale(0%);
+            opacity: 1;
+        }
+
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+        }
+
+        /* Menu Specifics */
+        .menu-list {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem 4rem;
+        }
+        @media(min-width: 900px) { .menu-list { grid-template-columns: 1fr 1fr; } }
+
+        .menu-category { margin-bottom: 4rem; break-inside: avoid; }
+        .menu-category h3 { 
+            font-family: var(--font-logo); 
+            font-size: 1.5rem; 
+            border-bottom: 1px solid rgba(255,255,255,0.1); 
+            padding-bottom: 1rem; 
+            margin-bottom: 2rem; 
+            letter-spacing: 0.1em;
+        }
+
+        .menu-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 0.75rem;
+        }
+        
+        .dish-name { font-size: 1.1rem; color: var(--text-main); }
+        .dish-price { font-size: 0.9rem; color: var(--text-muted); font-family: var(--font-sans); }
+        .dish-desc { 
+            font-size: 0.85rem; 
+            color: var(--text-muted); 
+            margin-bottom: 1.5rem; 
+            max-width: 90%; 
+            line-height: 1.5;
+        }
+
+        /* Review Styles */
+        .review-block { margin-bottom: 3rem; }
+        .stars { color: var(--accent); font-size: 0.8rem; margin-bottom: 0.5rem; letter-spacing: 2px; }
+        .review-text { font-family: var(--font-serif); font-size: 1.25rem; margin-bottom: 1rem; }
+        .review-meta { font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted); letter-spacing: 0.1em; }
+
+        /* Footer */
+        footer {
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding: 6rem 0;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        /* Utility */
+        .fade-in { opacity: 0; transform: translateY(20px); }
+    </style>
+</head>
+<body>
+
+    <!-- NAV -->
+    <nav>
+        <a href="#" class="type-logo nav-brand">REGENCY CAFE</a>
+        <div class="nav-menu">
+            <a href="#about">Story</a>
+            <a href="#menu">Menu</a>
+            <a href="#reviews">Reviews</a>
+            <a href="#contact">Contact</a>
+        </div>
+        <div style="font-size: 0.75rem; text-align: right; text-transform: uppercase; letter-spacing: 0.1em;">
+            <span id="status-indicator">Loading Time...</span>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <header>
+        <div class="hero-overlay"></div>
+        <img src="https://assets-eu-01.kc-usercontent.com/6bb3df3c-b648-01ae-2357-22fa5c7d5f19/23f0f2b9-dfbf-41f0-8ffb-aebadacdc444/The%20Regency%20Cafe%20Image.jpg" alt="Interior" class="hero-img">
+        
+        <div class="container" style="width: 100%;">
+            <span class="type-sub fade-in">Est. 1946 — Westminster, London</span>
+            <h1 class="type-heading fade-in" style="max-width: 600px;">
+                Best English Breakfast <br>in London.
+            </h1>
+        </div>
+    </header>
+
+    <!-- STORY (Formerly Home) -->
+    <section id="about" class="container">
+        <div class="grid-2">
+            <div>
+                <span class="type-sub">The Institution</span>
+                <h2 class="type-heading" style="margin-bottom: 2rem;">Authentic. Art Deco. <br>Filmed on location.</h2>
+            </div>
+            <div style="color: var(--text-muted);">
+                <p style="margin-bottom: 1.5rem;">The Regency Café opened in 1946 on Regency Street, near Westminster London. This popular place has been voted as the fifth best eating place in London on Yelp in 2013.</p>
+                <p style="margin-bottom: 1.5rem;">The cafe is designed in an art deco style. Interior decorations include photographs of Tottenham Hotspur football players, walls tiling is original but the tables are new and formica topped.</p>
+                <p>The cafe has been featured as a filming location in several BBC series such as <em>Judge John Deed</em>, <em>Rescue Me</em> and <em>London Spy</em>. It has also appeared in the films <em>Layer Cake</em> and <em>Brighton Rock</em> as well as <em>Pride</em>.</p>
+                <br>
+                <a href="#blog" style="border-bottom: 1px solid var(--accent); padding-bottom: 2px;">Read our Blog</a>
+            </div>
+        </div>
+        
+        <!-- Subtle Image Grid with NEW CLASS -->
+        <div class="grid-3" style="margin-top: 6rem;">
+            <!-- Added 'story-img' class, removed inline styles for filter -->
+            <img src="https://dynamic-media-cdn.tripadvisor.com/media/photo-o/09/f6/59/4a/regency-cafe.jpg?w=900&h=-1&s=1" class="story-img" alt="Regency Detail">
+            <img src="https://media-cdn.tripadvisor.com/media/photo-s/12/26/4a/19/regency-cafe-pimlico.jpg" class="story-img" alt="Regency Detail">
+            <img src="https://regencycafe.has.restaurant/wp-content/uploads/sites/5/2016/01/regency_13.jpg" class="story-img" alt="Regency Detail">
+        </div>
+    </section>
+
+    <!-- MENU -->
+    <section id="menu" class="container">
+        <div style="text-align: center; margin-bottom: 6rem;">
+            <span class="type-sub">The Menu</span>
+            <h2 class="type-heading">No Substitutions.</h2>
+            <p style="color: var(--text-muted); margin-top: 1rem;">Authentic English breakfast for excellent value.</p>
+        </div>
+
+        <div class="menu-list">
+            
+            <!-- BREAKFAST -->
+            <div class="menu-category">
+                <h3>Breakfast</h3>
+                
+                <div class="menu-item" style="border: 1px solid var(--text-muted); padding: 1.5rem; margin-bottom: 2rem; align-items: flex-start; flex-direction: column;">
+                    <div style="display: flex; justify-content: space-between; width: 100%; margin-bottom: 0.5rem;">
+                        <span class="dish-name" style="color: var(--accent);">Set Breakfast Deal</span>
+                        <span class="dish-price">£8.95</span>
+                    </div>
+                    <p class="dish-desc" style="margin-bottom: 0;">1 Egg + 2 Bacon + Sausage + (Beans OR Tomatoes) + (Bread OR Toast) + (Tea OR Coffee). <strong>No changes!</strong></p>
+                </div>
+
+                <div class="menu-item"><span class="dish-name">Egg & 2 Bacon</span><span class="dish-price">£3.75</span></div>
+                <div class="menu-item"><span class="dish-name">Egg, Sausage & Beans</span><span class="dish-price">£3.45</span></div>
+                <div class="menu-item"><span class="dish-name">Egg, Bacon & Sausage</span><span class="dish-price">£4.90</span></div>
+                <div class="menu-item"><span class="dish-name">2 Eggs & Chips</span><span class="dish-price">£4.60</span></div>
+                <div class="menu-item"><span class="dish-name">2 Sausages & Chips</span><span class="dish-price">£4.60</span></div>
+                <div class="menu-item"><span class="dish-name">Burger, Egg & Chips</span><span class="dish-price">£6.65</span></div>
+                <div class="menu-item"><span class="dish-name">Cornbeef, Egg & Chips</span><span class="dish-price">£5.85</span></div>
+                <div class="menu-item"><span class="dish-name">Liver & Bacon</span><span class="dish-price">£5.00</span></div>
+                <div class="menu-item"><span class="dish-name">2 Eggs on 2 Toast</span><span class="dish-price">£3.90</span></div>
+                <div class="menu-item"><span class="dish-name">Baked Beans on 2 Toast</span><span class="dish-price">£3.90</span></div>
+            </div>
+
+            <!-- EXTRAS -->
+            <div class="menu-category">
+                <h3>Extras</h3>
+                <div class="menu-item"><span class="dish-name">Black Pudding</span><span class="dish-price">£1.40</span></div>
+                <div class="menu-item"><span class="dish-name">Bubble & Squeak</span><span class="dish-price">£1.40</span></div>
+                <div class="menu-item"><span class="dish-name">Hash Browns</span><span class="dish-price">£1.40</span></div>
+                <div class="menu-item"><span class="dish-name">Mushrooms</span><span class="dish-price">£1.40</span></div>
+                <div class="menu-item"><span class="dish-name">Fried Tomatoes</span><span class="dish-price">£1.15</span></div>
+                <div class="menu-item"><span class="dish-name">Two Bread/Toast & Butter</span><span class="dish-price">£1.10 / £1.60</span></div>
+                <div class="menu-item"><span class="dish-name">Roll & Butter</span><span class="dish-price">£0.65</span></div>
+                <p class="dish-desc">Add Jam, Marmalade or Marmite +50p</p>
+                
+                <div style="margin-top: 2rem;">
+                    <div class="menu-item"><span class="dish-name">Omelettes</span><span class="dish-price">£5.50</span></div>
+                    <p class="dish-desc">Plain Omelette with Chips. Any extra Filling +£1</p>
+                </div>
+            </div>
+
+            <!-- LUNCH & SPECIALS -->
+            <div class="menu-category">
+                <h3>Lunch Specials</h3>
+                <div class="menu-item"><span class="dish-name">Monday: Braised Steak</span><span class="dish-price">£8.95</span></div>
+                <div class="menu-item"><span class="dish-name">Tuesday: Chicken Curry</span><span class="dish-price">£8.95</span></div>
+                <div class="menu-item"><span class="dish-name">Wednesday: Braised Steak</span><span class="dish-price">£8.95</span></div>
+                <div class="menu-item"><span class="dish-name">Friday: Fresh Fish & Chips</span><span class="dish-price">£10.95</span></div>
+                <p class="dish-desc">Cod, Rock, Plaice, Haddock or Pollock. Mushy Peas +£1.15</p>
+            </div>
+
+            <!-- MAINS -->
+            <div class="menu-category">
+                <h3>Mains</h3>
+                <div class="menu-item"><span class="dish-name">Homemade Steak Pie & 2 Veg</span><span class="dish-price">£7.95</span></div>
+                <div class="menu-item"><span class="dish-name">Steak & Kidney Pudding & 2 Veg</span><span class="dish-price">£7.15</span></div>
+                <div class="menu-item"><span class="dish-name">Liver, Bacon, Chips & Peas</span><span class="dish-price">£7.15</span></div>
+                <div class="menu-item"><span class="dish-name">Minute Steak & Chips</span><span class="dish-price">£7.95</span></div>
+                <div class="menu-item"><span class="dish-name">Gammon & Chips</span><span class="dish-price">£7.25</span></div>
+                <div class="menu-item"><span class="dish-name">Chicken & Chips</span><span class="dish-price">£7.95</span></div>
+                <div class="menu-item"><span class="dish-name">Scampi & Chips</span><span class="dish-price">£7.95</span></div>
+                <div class="menu-item"><span class="dish-name">Chicken Escalope & Chips</span><span class="dish-price">£7.95</span></div>
+                <p class="dish-desc">With Spag Bol £8.95 | Half/Half £8.95</p>
+            </div>
+
+            <!-- SANDWICHES -->
+            <div class="menu-category">
+                <h3>Sandwiches / Rolls</h3>
+                <div class="menu-item"><span class="dish-name">Bacon</span><span class="dish-price">£3.70 / £2.60</span></div>
+                <div class="menu-item"><span class="dish-name">Sausage</span><span class="dish-price">£3.40 / £2.40</span></div>
+                <div class="menu-item"><span class="dish-name">Fried Liver</span><span class="dish-price">£3.40 / £2.40</span></div>
+                <div class="menu-item"><span class="dish-name">Fried Egg</span><span class="dish-price">£3.40 / £1.80</span></div>
+                <div class="menu-item"><span class="dish-name">Ham / Cheese / Corn Beef</span><span class="dish-price">£2.50 / £1.80</span></div>
+            </div>
+
+            <!-- BURGERS / PASTA -->
+            <div class="menu-category">
+                <h3>Burgers & Pasta</h3>
+                <div class="menu-item"><span class="dish-name">6oz Large Burger</span><span class="dish-price">£4.85</span></div>
+                <div class="menu-item"><span class="dish-name">4oz Small Burger</span><span class="dish-price">£3.75</span></div>
+                <div class="menu-item"><span class="dish-name">Veggie Burger</span><span class="dish-price">£3.55</span></div>
+                <div class="menu-item"><span class="dish-name">Chicken Burger</span><span class="dish-price">£4.00</span></div>
+                <p class="dish-desc">Any Burger with Cheese +£1 | Homemade Chips £2.95</p>
+                <div style="margin-top: 1.5rem;"></div>
+                <div class="menu-item"><span class="dish-name">Spaghetti Bolognese</span><span class="dish-price">£7.95</span></div>
+                <div class="menu-item"><span class="dish-name">Bacon Arrabbiata</span><span class="dish-price">£7.95</span></div>
+                <div class="menu-item"><span class="dish-name">Vegetarian Arrabbiata</span><span class="dish-price">£7.95</span></div>
+                <div class="menu-item"><span class="dish-name">Penne Al Pesto (Basil)</span><span class="dish-price">£7.95</span></div>
+            </div>
+
+            <!-- PIES / SALADS -->
+            <div class="menu-category">
+                <h3>Pies & Salads</h3>
+                <div class="menu-item"><span class="dish-name">Chicken & Mushroom Pie</span><span class="dish-price">£6.95</span></div>
+                <div class="menu-item"><span class="dish-name">Cornish Pasty</span><span class="dish-price">£6.95</span></div>
+                <div class="menu-item"><span class="dish-name">Cheese & Onion Pasty</span><span class="dish-price">£6.95</span></div>
+                <p class="dish-desc">All served with (Chips+Beans) OR (Potatoes + Veg)</p>
+                <div style="margin-top: 1.5rem;"></div>
+                <div class="menu-item"><span class="dish-name">Ham / Cheese / Corn Beef Salad</span><span class="dish-price">£6.95</span></div>
+                <div class="menu-item"><span class="dish-name">Steak / Chicken / Scampi Salad</span><span class="dish-price">£7.95</span></div>
+                <div class="menu-item"><span class="dish-name">Side Salad</span><span class="dish-price">£3.50</span></div>
+            </div>
+
+             <!-- DRINKS -->
+             <div class="menu-category">
+                <h3>Drinks & Desserts</h3>
+                <div class="menu-item"><span class="dish-name">Tea</span><span class="dish-price">£1.35</span></div>
+                <div class="menu-item"><span class="dish-name">Coffee / Hot Chocolate</span><span class="dish-price">£1.55</span></div>
+                <div class="menu-item"><span class="dish-name">Glass of Milk</span><span class="dish-price">£1.10</span></div>
+                <div class="menu-item"><span class="dish-name">Cans / Orange Juice</span><span class="dish-price">£1.50 / £2.70</span></div>
+                <div style="margin-top: 1.5rem;"></div>
+                <div class="menu-item"><span class="dish-name">Bread & Butter Pudding</span><span class="dish-price">£3.95</span></div>
+                <p class="dish-desc">With Custard £3.95 | With Ice-cream £4.15</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- REVIEWS -->
+    <section id="reviews" class="container">
+        <div class="grid-2" style="margin-bottom: 4rem;">
+            <div>
+                <span class="type-sub">The Verdict</span>
+                <h2 class="type-heading">4.7 / 5 Stars</h2>
+                <p style="color: var(--text-muted); margin-top: 0.5rem;">Based on 4,541+ Reviews. <br>#403 of 27,777 places to eat in London (TripAdvisor)</p>
+            </div>
+        </div>
+
+        <div class="grid-2">
+            <!-- Review 1 -->
+            <div class="review-block">
+                <div class="stars">★★★★☆</div>
+                <p class="review-text">"I ordered probably the most chaotic breakfast plate I’ve had in a long time... half a donut, raw salmon, eggs, beef bacon. It honestly looked like I picked items from five different menus, but weirdly it kind of worked."</p>
+                <div class="review-meta">Cody — Google Review</div>
+            </div>
+
+            <!-- Review 2 -->
+            <div class="review-block">
+                <div class="stars">★★★★★</div>
+                <p class="review-text">"Proper London brekkie, mate! Ain’t no place like Regency Café, innit? Tastes bangin’, and the place looks straight outta a movie. Staff’s sound, prices fair."</p>
+                <div class="review-meta">Reputatio Swiss — Google Review</div>
+            </div>
+
+            <!-- Review 3 -->
+            <div class="review-block">
+                <div class="stars">★★★★★</div>
+                <p class="review-text">"Absolutely class, the breakfast was really good but the place itself, the people, the light, were the best part of all."</p>
+                <div class="review-meta">Sara Silva — Google Review</div>
+            </div>
+
+            <!-- Review 4 -->
+            <div class="review-block">
+                <div class="stars">★★★★★</div>
+                <p class="review-text">"Real English breakfast!! this is food that fills you up for a long time. there are a lot of people here and the place is very popular. glad to have eaten real English breakfast on this holiday."</p>
+                <div class="review-meta">Ole Zak — Google Review</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MEDIA -->
+    <section id="media" class="container">
+        <span class="type-sub">On Screen</span>
+        <h2 class="type-heading" style="margin-bottom: 3rem;">Filming Location</h2>
+        
+        <div class="grid-3">
+            <div>
+                <div class="video-wrapper">
+                    <!-- Added actual youtube video link so you can see it -->
+                    <iframe width="560" height="315" src="https://www.youtube.com/embed/U0z62IALjqM?si=mvPgjSg7beSVry76" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                </div>
+                <h4 class="dish-name" style="margin-top: 1rem;">Layer Cake (2004)</h4>
+            </div>
+            <div>
+                <div class="video-wrapper">
+                     <!-- Added actual youtube video link so you can see it -->
+                   <iframe width="560" height="315" src="https://www.youtube.com/embed/RIz4Sph-KRM?si=AzGiYVltC3UFt2NO" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                </div>
+                <h4 class="dish-name" style="margin-top: 1rem;">Warriors (1999)</h4>
+            </div>
+            <div>
+                <div class="video-wrapper">
+                     <!-- Added actual youtube video link so you can see it -->
+                   <iframe width="560" height="315" src="https://www.youtube.com/embed/B7UFOKQdu9E?si=mDsMjeHynoFp_NsQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                </div>
+                <h4 class="dish-name" style="margin-top: 1rem;">LondonMap Feature</h4>
+            </div>
+        </div>
+        <p style="margin-top: 2rem; color: var(--text-muted); font-size: 0.9rem;">Also seen in The Telegraph, Rocketman, Pride, Judge John Deed, London Spy.</p>
+    </section>
+
+    <!-- CONTACT / FOOTER -->
+    <footer id="contact">
+        <div class="container">
+            <div class="grid-2">
+                
+                <div>
+                    <h2 class="type-logo" style="font-size: 2.5rem; margin-bottom: 2rem;">REGENCY CAFE</h2>
+                    <p style="margin-bottom: 0.5rem;">17-19 Regency St, Westminster</p>
+                    <p style="margin-bottom: 0.5rem;">London SW1P 4BY, UK</p>
+                    <p><a href="tel:02078216596" style="color: var(--text-main);">020 7821 6596</a></p>
+                </div>
+
+                <div>
+                    <h4 class="type-sub" style="color: var(--text-muted);">Opening Hours</h4>
+                    <div style="display: flex; justify-content: space-between; max-width: 300px; margin-bottom: 0.5rem;">
+                        <span>Mon – Fri</span>
+                        <span>7:00 – 14:30, 16:00 – 19:15</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; max-width: 300px; margin-bottom: 0.5rem;">
+                        <span>Saturday</span>
+                        <span>7:00 – 12:00</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; max-width: 300px; color: #555;">
+                        <span>Sunday</span>
+                        <span>Closed</span>
+                    </div>
+                </div>
+
+            </div>
+
+            <div style="margin-top: 6rem; display: flex; justify-content: space-between; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em;">
+                <span>© 2026 REGENCY CAFE</span>
+                <span>
+                    <a href="#blog" style="margin-right: 20px;">Blog</a>
+                    <a href="#cookies">Cookies</a>
+                </span>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth Reveal Logic
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Simple fade ups for content
+        const elements = gsap.utils.toArray('h2, .menu-category, .review-block, .video-wrapper');
+        
+        elements.forEach(el => {
+            gsap.from(el, {
+                scrollTrigger: {
+                    trigger: el,
+                    start: "top 90%"
+                },
+                y: 30,
+                opacity: 0,
+                duration: 1.2,
+                ease: "power2.out"
+            });
+        });
+
+        // Hero Fade in
+        gsap.to(".fade-in", {
+            y: 0,
+            opacity: 1,
+            duration: 1.5,
+            stagger: 0.2,
+            ease: "power2.out",
+            delay: 0.2
+        });
+
+        // Time
+        function updateTime() {
+            const el = document.getElementById('status-indicator');
+            const now = new Date();
+            const londonTime = new Date(now.toLocaleString("en-US", {timeZone: "Europe/London"}));
+            const hours = londonTime.getHours().toString().padStart(2, '0');
+            const minutes = londonTime.getMinutes().toString().padStart(2, '0');
+            
+            // Simple open/closed logic for visual flair
+            const day = londonTime.getDay();
+            const h = londonTime.getHours();
+            let status = "Closed";
+            
+            // M-F 7-14:30, 16-19:15
+            if(day >= 1 && day <= 5) {
+                if((h >= 7 && h < 14) || (h === 14 && minutes <= 30) || (h >= 16 && h < 19) || (h === 19 && minutes <= 15)) {
+                    status = "Open";
+                }
+            } 
+            // Sat 7-12
+            else if(day === 6) {
+                if(h >= 7 && h < 12) status = "Open";
+            }
+
+            el.innerHTML = `London ${hours}:${minutes} — ${status}`;
+            el.style.color = status === "Open" ? "#e6e6e6" : "#a33333";
+        }
+        setInterval(updateTime, 1000);
+        updateTime();
+    </script>
+</body>
+</html>
