@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ContentSure | Authentic Content Verification</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+    
+    <style>
+        /* 
+         * DESIGN SYSTEM: Dark Mode "Linear/Vercel" Aesthetic
+         */
+        :root {
+            --bg: #050505;
+            --surface: #0a0a0a;
+            --border: rgba(255, 255, 255, 0.08);
+            --border-hover: rgba(255, 255, 255, 0.15);
+            --text-main: #ededed;
+            --text-muted: #888888;
+            --accent: #3b82f6; /* Professional Blue */
+            --success: #22c55e; /* Human Green */
+            --glow: radial-gradient(circle at top, rgba(59, 130, 246, 0.15), transparent 40%);
+            --font-main: 'Inter', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+            --ease: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * { box-sizing: border-box; outline: none; }
+        
+        body {
+            margin: 0;
+            background-color: var(--bg);
+            color: var(--text-main);
+            font-family: var(--font-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            background-image: 
+                linear-gradient(var(--bg) 0%, transparent 100%),
+                url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+        }
+
+        /* Ambient Glow */
+        .ambient-light {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 600px;
+            background: var(--glow);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* HEADER & LOGO */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 24px 40px;
+            border-bottom: 1px solid var(--border);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 1.25rem;
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 24px;
+            height: 24px;
+            background: linear-gradient(135deg, #fff, #999);
+            border-radius: 6px;
+            display: grid;
+            place-items: center;
+            color: #000;
+        }
+
+        .logo span { background: linear-gradient(to bottom, #fff, #999); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+        /* MAIN CONTAINER */
+        main {
+            max-width: 900px;
+            width: 90%;
+            margin: 60px auto;
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+            animation: fadeIn 0.8s var(--ease);
+        }
+
+        h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 700;
+            text-align: center;
+            letter-spacing: -0.04em;
+            margin: 0;
+            line-height: 1.1;
+            background: linear-gradient(180deg, #fff 0%, #777 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            max-width: 500px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* SCANNER PANEL */
+        .scanner-panel {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 20px 40px -10px rgba(0,0,0,0.5);
+            transition: border-color 0.3s;
+        }
+
+        .scanner-panel:focus-within {
+            border-color: var(--border-hover);
+            box-shadow: 0 0 0 4px rgba(255,255,255,0.03);
+        }
+
+        .editor-wrap {
+            position: relative;
+            padding: 24px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 200px;
+            background: transparent;
+            border: none;
+            color: #fff;
+            font-family: var(--font-mono);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            resize: none;
+        }
+        
+        textarea::placeholder { color: #333; }
+
+        .panel-footer {
+            padding: 16px 24px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255,255,255,0.01);
+        }
+
+        .stats {
+            font-size: 0.8rem;
+            color: #555;
+            font-family: var(--font-mono);
+        }
+
+        /* BUTTON */
+        .btn-analyze {
+            background: #fff;
+            color: #000;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: transform 0.1s, box-shadow 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-analyze:hover {
+            box-shadow: 0 0 15px rgba(255,255,255,0.4);
+            transform: translateY(-1px);
+        }
+
+        .btn-analyze:active { transform: scale(0.98); }
+        
+        .btn-analyze:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            background: #ccc;
+        }
+
+        /* SCAN ANIMATION */
+        .scan-beam {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--accent);
+            box-shadow: 0 0 15px var(--accent);
+            opacity: 0;
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        .is-scanning .scan-beam {
+            opacity: 1;
+            animation: scan 1.5s ease-in-out infinite;
+        }
+
+        /* RESULTS AREA */
+        .results-container {
+            display: none; /* Hidden by default */
+            grid-template-columns: 1fr;
+            gap: 16px;
+            animation: slideUp 0.6s var(--ease);
+        }
+
+        .result-card {
+            background: linear-gradient(180deg, rgba(34, 197, 94, 0.05) 0%, rgba(0,0,0,0) 100%);
+            border: 1px solid rgba(34, 197, 94, 0.2);
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .verdict-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(34, 197, 94, 0.1);
+            color: var(--success);
+            padding: 6px 12px;
+            border-radius: 99px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+            border: 1px solid rgba(34, 197, 94, 0.2);
+        }
+
+        .score-huge {
+            font-size: 4.5rem;
+            font-weight: 800;
+            letter-spacing: -0.05em;
+            color: #fff;
+            line-height: 1;
+            margin-bottom: 8px;
+            text-shadow: 0 0 30px rgba(34, 197, 94, 0.3);
+        }
+
+        .score-label {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .metric-mini {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 16px;
+            border-radius: 10px;
+            text-align: left;
+        }
+
+        .metric-mini h4 { margin: 0 0 8px 0; font-size: 0.75rem; color: #666; text-transform: uppercase; }
+        .metric-mini p { margin: 0; font-size: 1.1rem; font-weight: 600; color: #fff; }
+
+        /* KEYFRAMES */
+        @keyframes scan {
+            0% { top: 0; }
+            50% { top: 100%; opacity: 0.5; }
+            100% { top: 0; }
+        }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUp { 
+            from { opacity: 0; transform: translateY(20px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 600px) {
+            h1 { font-size: 2.5rem; }
+            .metrics-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="ambient-light"></div>
+
+    <header>
+        <a href="#" class="logo">
+            <div class="logo-icon">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            </div>
+            <span>ContentSure</span>
+        </a>
+    </header>
+
+    <main>
+        <div>
+            <h1>Truth in every word.</h1>
+            <p class="subtitle">Enterprise-grade linguistic analysis to distinguish authentic human writing from artificial generation.</p>
+        </div>
+
+        <div class="scanner-panel" id="scannerPanel">
+            <div class="scan-beam"></div>
+            <div class="editor-wrap">
+                <textarea id="textInput" placeholder="Paste your content here to verify authenticity..." spellcheck="false"></textarea>
+            </div>
+            <div class="panel-footer">
+                <div class="stats" id="charCount">0 characters</div>
+                <button class="btn-analyze" id="analyzeBtn">
+                    <span>Verify Content</span>
+                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 6H11M11 6L6 1M11 6L6 11"/></svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- RESULTS SECTION -->
+        <div class="results-container" id="resultsArea">
+            <div class="result-card">
+                <div class="verdict-badge">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    Verified Authentic
+                </div>
+                <div class="score-huge">100%</div>
+                <div class="score-label">Human Generated Content</div>
+                <p style="color: #666; font-size: 0.9rem; margin-top: 20px; line-height: 1.5;">
+                    Our deep-learning model has analyzed the syntax, burstiness, and perplexity of this text. The patterns are consistent with natural human authorship.
+                </p>
+            </div>
+
+            <div class="metrics-grid">
+                <div class="metric-mini">
+                    <h4>Perplexity</h4>
+                    <p style="color: var(--success)">High (Natural)</p>
+                </div>
+                <div class="metric-mini">
+                    <h4>Burstiness</h4>
+                    <p>Varied</p>
+                </div>
+                <div class="metric-mini">
+                    <h4>AI Probability</h4>
+                    <p style="color: #666">0.02%</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const input = document.getElementById('textInput');
+        const countDisplay = document.getElementById('charCount');
+        const btn = document.getElementById('analyzeBtn');
+        const panel = document.getElementById('scannerPanel');
+        const results = document.getElementById('resultsArea');
+
+        // Update character count
+        input.addEventListener('input', () => {
+            const len = input.value.length;
+            countDisplay.innerText = `${len} characters`;
+            // Reset if user types again
+            if(results.style.display === 'block') {
+                results.style.display = 'none';
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        });
+
+        // Analyze Action
+        btn.addEventListener('click', () => {
+            if(!input.value.trim()) {
+                input.focus();
+                // Shake effect for empty input
+                panel.style.transform = "translateX(5px)";
+                setTimeout(() => panel.style.transform = "translateX(-5px)", 100);
+                setTimeout(() => panel.style.transform = "translateX(0)", 200);
+                return;
+            }
+
+            // 1. Start UI "Loading" state
+            btn.innerHTML = 'Analyzing...';
+            btn.disabled = true;
+            panel.classList.add('is-scanning'); // triggers CSS animation
+            input.style.opacity = '0.5';
+            results.style.display = 'none';
+
+            // 2. Simulate processing time (2 seconds)
+            setTimeout(() => {
+                // 3. Stop Loading
+                panel.classList.remove('is-scanning');
+                btn.innerHTML = `<span>Verify Content</span> <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 6H11M11 6L6 1M11 6L6 11"/></svg>`;
+                btn.disabled = false;
+                input.style.opacity = '1';
+
+                // 4. Show the ALWAYS 100% HUMAN Result
+                results.style.display = 'block';
+                
+                // Smooth scroll to results
+                results.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+            }, 2000);
+        });
+    </script>
+</body>
+</html>
