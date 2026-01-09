@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Titan International | Precision Specialty Metals</title>
+    
+    <!-- Tailwind CSS (Styling) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- GSAP (Animations) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-navy: #0d1740;
+            --accent-red: #c84838;
+            --metallic-grey: #f3f4f6;
+        }
+
+        body {
+            font-family: 'Manrope', sans-serif;
+            background-color: #FAFAFA;
+            color: var(--primary-navy);
+            overflow-x: hidden;
+        }
+
+        .font-mono {
+            font-family: 'Space Mono', monospace;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #c1c1c1; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #a8a8a8; 
+        }
+
+        /* Image Reveal Effect Classes */
+        .reveal-img-container {
+            overflow: hidden;
+            position: relative;
+        }
+        .reveal-img {
+            transform: scale(1.2);
+            transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal-img-container:hover .reveal-img {
+            transform: scale(1.0);
+        }
+
+        /* Glassmorphism Header */
+        .glass-header {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
+        /* Preloader */
+        .loader {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #0d1740;
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Preloader -->
+    <div class="loader font-mono text-sm tracking-widest">
+        <span>INITIALIZING TITAN INT...</span>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 glass-header transition-all duration-300" id="navbar">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#" class="block w-32 md:w-40 opacity-0 nav-item">
+                <img src="https://titanintl.com/wp-content/uploads/2022/01/Titan-Intl.png" alt="Titan International Logo">
+            </a>
+
+            <!-- Desktop Menu -->
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="#about" class="text-sm font-medium hover:text-[#c84838] transition-colors nav-item opacity-0">About Us</a>
+                <a href="#products" class="text-sm font-medium hover:text-[#c84838] transition-colors nav-item opacity-0">Products & Services</a>
+                <a href="#facilities" class="text-sm font-medium hover:text-[#c84838] transition-colors nav-item opacity-0">Facility</a>
+                <a href="#contact" class="px-6 py-2.5 bg-[#0d1740] text-white text-sm font-semibold rounded-full hover:bg-[#c84838] transition-colors duration-300 nav-item opacity-0">
+                    Request a Quote
+                </a>
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <button class="md:hidden text-[#0d1740] nav-item opacity-0">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="relative h-screen w-full flex items-center justify-center overflow-hidden bg-[#0d1740]">
+        <!-- Background Image with Overlay -->
+        <div class="absolute inset-0 z-0">
+            <img src="https://titanintl.com/wp-content/uploads/2022/01/aerospace-industry-slider.jpg" alt="Aerospace Metal Background" class="w-full h-full object-cover opacity-40">
+            <div class="absolute inset-0 bg-gradient-to-t from-[#0d1740] via-[#0d1740]/60 to-transparent"></div>
+        </div>
+
+        <div class="container mx-auto px-6 z-10 text-white relative mt-20">
+            <div class="max-w-4xl">
+                <div class="overflow-hidden mb-2">
+                    <p class="hero-text font-mono text-[#c84838] text-sm md:text-base tracking-widest uppercase transform translate-y-full">
+                        Est. 1996 • Veteran Owned Small Business
+                    </p>
+                </div>
+                
+                <div class="overflow-hidden">
+                    <h1 class="hero-text text-5xl md:text-7xl lg:text-8xl font-light leading-tight tracking-tight transform translate-y-full">
+                        Precision in <br>
+                        <span class="font-bold">Specialty Metals.</span>
+                    </h1>
+                </div>
+
+                <div class="overflow-hidden mt-8">
+                    <p class="hero-text text-lg md:text-xl text-gray-300 max-w-xl font-light leading-relaxed transform translate-y-full">
+                        World-class manufacturing and recycling of high-value specialty metal products for Aerospace, Defense, and Energy.
+                    </p>
+                </div>
+
+                <div class="overflow-hidden mt-10">
+                    <div class="hero-text transform translate-y-full flex items-center gap-4">
+                        <a href="#products" class="group relative px-8 py-4 bg-white text-[#0d1740] rounded-full font-semibold overflow-hidden transition-all hover:pr-12">
+                            <span class="relative z-10">Explore Solutions</span>
+                            <span class="absolute right-4 top-1/2 transform -translate-y-1/2 opacity-0 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300">→</span>
+                        </a>
+                        <a href="https://titanintl.com/wp-content/uploads/2022/01/ISO-Titan-International-through-June-2024.pdf" target="_blank" class="flex items-center gap-2 text-sm text-gray-400 hover:text-white transition-colors">
+                            <span class="w-8 h-[1px] bg-gray-400"></span> ISO 9001 Certified
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Scroll Indicator -->
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 text-white/50 animate-bounce">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
+        </div>
+    </header>
+
+    <!-- Section 1: About Us -->
+    <section id="about" class="py-24 md:py-32 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                
+                <!-- Text Content -->
+                <div class="about-content">
+                    <span class="font-mono text-[#c84838] text-xs tracking-widest uppercase mb-4 block">Who We Are</span>
+                    <h2 class="text-4xl md:text-5xl font-light text-[#0d1740] mb-8 leading-tight">
+                        Advancing industry through <br><span class="font-semibold">material innovation.</span>
+                    </h2>
+                    <p class="text-gray-600 text-lg leading-relaxed mb-6">
+                        For over 30 years, Titan International has bridged the gap between raw material potential and high-performance application. Operating from our 200,000 sq. ft. state-of-the-art facility in Pottstown, PA, we don't just supply metals; we engineer solutions.
+                    </p>
+                    <p class="text-gray-600 text-lg leading-relaxed mb-8">
+                        Our environmentally responsible recovery processes and custom manufacturing capabilities allow us to serve the most demanding sectors, including 
+                        <strong class="text-[#0d1740]">Aerospace, Automotive, and Defense.</strong>
+                    </p>
+
+                    <div class="grid grid-cols-2 gap-8 mt-12 border-t border-gray-100 pt-8">
+                        <div>
+                            <h3 class="text-4xl font-bold text-[#0d1740]">30+</h3>
+                            <p class="text-sm text-gray-500 mt-1 font-mono">YEARS EXPERIENCE</p>
+                        </div>
+                        <div>
+                            <h3 class="text-4xl font-bold text-[#0d1740]">200k</h3>
+                            <p class="text-sm text-gray-500 mt-1 font-mono">SQ FT FACILITY</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Image Grid -->
+                <div class="relative about-images">
+                    <div class="reveal-img-container aspect-[4/5] w-full lg:w-4/5 ml-auto rounded-none overflow-hidden bg-gray-200">
+                        <img src="https://titanintl.com/wp-content/uploads/2022/01/titan-international-facility.jpg" alt="Titan Facility" class="reveal-img w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700">
+                    </div>
+                    <!-- Floating Card -->
+                    <div class="absolute -bottom-10 left-0 bg-[#0d1740] text-white p-8 max-w-xs shadow-2xl hidden md:block">
+                        <p class="font-light italic">"We approach each client relationship as a long-term partnership opportunity."</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 2: Lines of Business / Products -->
+    <section id="products" class="py-24 md:py-32 bg-[#F5F5F7]">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-16">
+                <div>
+                    <span class="font-mono text-[#c84838] text-xs tracking-widest uppercase mb-4 block">Lines of Business</span>
+                    <h2 class="text-4xl md:text-5xl font-light text-[#0d1740]">Capabilities & <span class="font-semibold">Products</span></h2>
+                </div>
+                <div class="hidden md:block">
+                    <a href="https://titanintl.com/products/" class="text-[#0d1740] font-semibold border-b border-[#0d1740] pb-1 hover:text-[#c84838] hover:border-[#c84838] transition-colors">View All Products</a>
+                </div>
+            </div>
+
+            <!-- Grid Layout -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1">
+                
+                <!-- Card 1 -->
+                <div class="group relative h-[400px] bg-white overflow-hidden cursor-pointer product-card">
+                    <div class="absolute inset-0">
+                        <img src="https://titanintl.com/wp-content/uploads/2022/01/Rhenium.jpg" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-90 group-hover:opacity-100" alt="Rhenium">
+                        <div class="absolute inset-0 bg-gradient-to-t from-[#0d1740] via-transparent to-transparent opacity-80"></div>
+                    </div>
+                    <div class="absolute bottom-0 left-0 p-8 w-full transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                        <div class="border-l-2 border-[#c84838] pl-4">
+                            <h3 class="text-2xl text-white font-bold mb-2">Rhenium</h3>
+                            <p class="text-gray-300 text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100 leading-relaxed">
+                                Pellets, Powder & Ammonium Perrhenate for superalloys.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="group relative h-[400px] bg-white overflow-hidden cursor-pointer product-card">
+                    <div class="absolute inset-0">
+                        <img src="https://titanintl.com/wp-content/uploads/2022/01/Tungsten-Carbide-Powders.jpg" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-90 group-hover:opacity-100" alt="Powders">
+                        <div class="absolute inset-0 bg-gradient-to-t from-[#0d1740] via-transparent to-transparent opacity-80"></div>
+                    </div>
+                    <div class="absolute bottom-0 left-0 p-8 w-full transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                        <div class="border-l-2 border-[#c84838] pl-4">
+                            <h3 class="text-2xl text-white font-bold mb-2">Metal Powders</h3>
+                            <p class="text-gray-300 text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100 leading-relaxed">
+                                Industry standard and custom powders for additive manufacturing.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="group relative h-[400px] bg-white overflow-hidden cursor-pointer product-card">
+                    <div class="absolute inset-0">
+                        <img src="https://titanintl.com/wp-content/uploads/2022/01/super-alloy-recycling.jpg" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-90 group-hover:opacity-100" alt="Recycling">
+                        <div class="absolute inset-0 bg-gradient-to-t from-[#0d1740] via-transparent to-transparent opacity-80"></div>
+                    </div>
+                    <div class="absolute bottom-0 left-0 p-8 w-full transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                        <div class="border-l-2 border-[#c84838] pl-4">
+                            <h3 class="text-2xl text-white font-bold mb-2">Super Alloy Recycling</h3>
+                            <p class="text-gray-300 text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100 leading-relaxed">
+                                Recovering valuable constituent metals for re-use.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 4 -->
+                <div class="group relative h-[400px] bg-white overflow-hidden cursor-pointer product-card">
+                    <div class="absolute inset-0">
+                        <img src="https://titanintl.com/wp-content/uploads/2022/01/metal-finishing-featured.jpg" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-90 group-hover:opacity-100" alt="Finishing">
+                        <div class="absolute inset-0 bg-gradient-to-t from-[#0d1740] via-transparent to-transparent opacity-80"></div>
+                    </div>
+                    <div class="absolute bottom-0 left-0 p-8 w-full transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                        <div class="border-l-2 border-[#c84838] pl-4">
+                            <h3 class="text-2xl text-white font-bold mb-2">Metal Finishing</h3>
+                            <p class="text-gray-300 text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100 leading-relaxed">
+                                Anodes, Metals, and Chemicals of highest purity.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 5 -->
+                <div class="group relative h-[400px] bg-white overflow-hidden cursor-pointer product-card">
+                    <div class="absolute inset-0">
+                        <img src="https://titanintl.com/wp-content/uploads/2022/01/Foundry-Melt-Additions-featured.jpg" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-90 group-hover:opacity-100" alt="Melt Additions">
+                        <div class="absolute inset-0 bg-gradient-to-t from-[#0d1740] via-transparent to-transparent opacity-80"></div>
+                    </div>
+                    <div class="absolute bottom-0 left-0 p-8 w-full transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                        <div class="border-l-2 border-[#c84838] pl-4">
+                            <h3 class="text-2xl text-white font-bold mb-2">Foundry Melt Additions</h3>
+                            <p class="text-gray-300 text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100 leading-relaxed">
+                                Ferro Alloys, Minor Metals, and Master Alloys.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 6 -->
+                <div class="group relative h-[400px] bg-[#0d1740] overflow-hidden cursor-pointer flex items-center justify-center product-card">
+                    <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 20px 20px;"></div>
+                    <div class="text-center z-10 p-8">
+                        <h3 class="text-3xl text-white font-light mb-4">Need Custom <br><span class="font-bold text-[#c84838]">Packaging?</span></h3>
+                        <a href="#contact" class="inline-block px-6 py-2 border border-white text-white rounded-full hover:bg-white hover:text-[#0d1740] transition-colors mt-2">Contact Us</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Marquee Text / Tech Separator -->
+    <div class="bg-[#0d1740] py-6 overflow-hidden border-t border-gray-800">
+        <div class="whitespace-nowrap flex animate-marquee">
+            <span class="text-white/20 text-4xl font-mono mx-8 font-bold">AEROSPACE</span>
+            <span class="text-[#c84838] text-4xl mx-4">•</span>
+            <span class="text-white/20 text-4xl font-mono mx-8 font-bold">DEFENSE</span>
+            <span class="text-[#c84838] text-4xl mx-4">•</span>
+            <span class="text-white/20 text-4xl font-mono mx-8 font-bold">ENERGY</span>
+            <span class="text-[#c84838] text-4xl mx-4">•</span>
+            <span class="text-white/20 text-4xl font-mono mx-8 font-bold">AUTOMOTIVE</span>
+            <span class="text-[#c84838] text-4xl mx-4">•</span>
+            <span class="text-white/20 text-4xl font-mono mx-8 font-bold">ADDITIVE MFG</span>
+            <span class="text-[#c84838] text-4xl mx-4">•</span>
+             <span class="text-white/20 text-4xl font-mono mx-8 font-bold">AEROSPACE</span>
+            <span class="text-[#c84838] text-4xl mx-4">•</span>
+            <span class="text-white/20 text-4xl font-mono mx-8 font-bold">DEFENSE</span>
+        </div>
+    </div>
+
+    <!-- Section 3: Contact / Footer -->
+    <section id="contact" class="bg-[#0b1233] text-white py-24 md:py-32 border-t border-gray-800 relative">
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
+                
+                <div>
+                    <span class="font-mono text-[#c84838] text-xs tracking-widest uppercase mb-4 block">Get in Touch</span>
+                    <h2 class="text-4xl md:text-6xl font-semibold mb-8">Ready to <br>optimize your supply chain?</h2>
+                    
+                    <div class="space-y-6 text-lg font-light text-gray-400">
+                        <p>Contact us for quotes, recycling inquiries, or general information.</p>
+                        
+                        <div class="flex items-center gap-4 mt-8">
+                            <div class="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center text-[#c84838]">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
+                            </div>
+                            <div>
+                                <p class="text-xs font-mono uppercase text-gray-500">Toll Free</p>
+                                <a href="tel:800-435-4644" class="text-xl text-white hover:text-[#c84838] transition-colors">800-435-4644</a>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center text-[#c84838]">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                            </div>
+                            <div>
+                                <p class="text-xs font-mono uppercase text-gray-500">Email Us</p>
+                                <a href="mailto:info@titanintl.com" class="text-xl text-white hover:text-[#c84838] transition-colors">info@titanintl.com</a>
+                            </div>
+                        </div>
+
+                        <div class="mt-12 pt-12 border-t border-gray-800">
+                             <img src="https://titanintl.com/wp-content/uploads/2022/01/Titan-Intl_RO.png" alt="Titan Logo White" class="w-32 opacity-80 mb-4">
+                             <p class="text-sm">740 Queen Street, Pottstown, PA 19464</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Form -->
+                <div class="bg-white/5 backdrop-blur-sm p-8 md:p-12 border border-white/10 rounded-sm">
+                    <form class="space-y-6">
+                        <div class="grid grid-cols-2 gap-6">
+                            <div class="space-y-2">
+                                <label class="text-xs font-mono uppercase text-gray-400">First Name</label>
+                                <input type="text" class="w-full bg-transparent border-b border-gray-600 focus:border-[#c84838] py-2 text-white outline-none transition-colors">
+                            </div>
+                            <div class="space-y-2">
+                                <label class="text-xs font-mono uppercase text-gray-400">Last Name</label>
+                                <input type="text" class="w-full bg-transparent border-b border-gray-600 focus:border-[#c84838] py-2 text-white outline-none transition-colors">
+                            </div>
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-xs font-mono uppercase text-gray-400">Email Address</label>
+                            <input type="email" class="w-full bg-transparent border-b border-gray-600 focus:border-[#c84838] py-2 text-white outline-none transition-colors">
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-xs font-mono uppercase text-gray-400">Inquiry Type</label>
+                            <select class="w-full bg-transparent border-b border-gray-600 focus:border-[#c84838] py-2 text-white outline-none transition-colors appearance-none">
+                                <option class="text-black">Request a Quote</option>
+                                <option class="text-black">Selling Scrap</option>
+                                <option class="text-black">General Inquiry</option>
+                            </select>
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-xs font-mono uppercase text-gray-400">Message</label>
+                            <textarea rows="4" class="w-full bg-transparent border-b border-gray-600 focus:border-[#c84838] py-2 text-white outline-none transition-colors"></textarea>
+                        </div>
+                        <button type="button" class="w-full py-4 bg-[#c84838] text-white font-bold tracking-widest uppercase hover:bg-white hover:text-[#c84838] transition-colors mt-4">
+                            Send Request
+                        </button>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="mt-20 flex flex-col md:flex-row justify-between items-center text-xs text-gray-600 border-t border-gray-800 pt-8 font-mono">
+                <p>&copy; 2024 Titan International, Inc. All Rights Reserved.</p>
+                <div class="flex gap-4 mt-4 md:mt-0">
+                    <a href="#" class="hover:text-white">Privacy Policy</a>
+                    <a href="#" class="hover:text-white">Terms & Conditions</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Animation Scripts -->
+    <script>
+        // Register ScrollTrigger
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Preloader Logic
+        window.addEventListener("load", () => {
+            const tl = gsap.timeline();
+
+            tl.to(".loader span", {
+                opacity: 0,
+                y: -20,
+                duration: 0.5,
+                delay: 0.5
+            })
+            .to(".loader", {
+                height: 0,
+                duration: 0.8,
+                ease: "power4.inOut"
+            })
+            .to(".nav-item", {
+                opacity: 1,
+                y: 0,
+                stagger: 0.1,
+                duration: 0.5,
+                ease: "power2.out"
+            })
+            .to(".hero-text", {
+                y: 0,
+                stagger: 0.2,
+                duration: 1,
+                ease: "power3.out"
+            }, "-=0.5");
+        });
+
+        // About Section Animations
+        gsap.from(".about-content > *", {
+            scrollTrigger: {
+                trigger: "#about",
+                start: "top 80%"
+            },
+            y: 50,
+            opacity: 0,
+            stagger: 0.1,
+            duration: 1,
+            ease: "power3.out"
+        });
+
+        gsap.from(".about-images", {
+            scrollTrigger: {
+                trigger: "#about",
+                start: "top 70%"
+            },
+            scale: 0.9,
+            opacity: 0,
+            duration: 1.2,
+            ease: "power3.out"
+        });
+
+        // Product Cards Stagger
+        gsap.from(".product-card", {
+            scrollTrigger: {
+                trigger: "#products",
+                start: "top 75%"
+            },
+            y: 100,
+            opacity: 0,
+            stagger: 0.1,
+            duration: 0.8,
+            ease: "power2.out"
+        });
+
+        // Parallax Effect for About Image
+        gsap.to(".reveal-img", {
+            scrollTrigger: {
+                trigger: "#about",
+                start: "top bottom",
+                end: "bottom top",
+                scrub: 1
+            },
+            y: 50
+        });
+
+    </script>
+</body>
+</html>
