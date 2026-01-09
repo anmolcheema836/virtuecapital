@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tuinstore.nl | Luxury Outdoor Living</title>
+    
+    <!-- Typography: Playfair Display for elegance, Lato for readability -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* 
+         * ==========================================
+         * CORE VARIABLES & RESET
+         * ==========================================
+         */
+        :root {
+            /* Palette - Earthy, Premium, Warm */
+            --color-bg: #FDFBF7; /* Cream/Off-white */
+            --color-bg-alt: #F2EFE9; /* Darker Beige */
+            --color-text-main: #000000; /* Soft Black */
+            --color-text-light: #666666;
+            --color-accent: #8C7B6C; /* Taupe/Bronze */
+            --color-white: #ffffff;
+            --color-overlay: rgba(0,0,0,0.4);
+
+            /* Typography */
+            --font-serif: 'Playfair Display', serif;
+            --font-sans: 'Lato', sans-serif;
+
+            /* Spacing */
+            --container-width: 1280px;
+            --section-padding: 100px;
+            --transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1); /* Smooth easing */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--color-bg);
+            color: var(--color-text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: var(--font-serif);
+            font-weight: 400;
+            color: var(--color-text-main);
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: var(--transition);
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* 
+         * ==========================================
+         * UTILITIES & ANIMATIONS
+         * ==========================================
+         */
+        .container {
+            max-width: var(--container-width);
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 14px 32px;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-weight: 700;
+            cursor: pointer;
+            border: 1px solid transparent;
+            transition: var(--transition);
+        }
+
+        .btn-primary {
+            background-color: var(--color-white);
+            color: var(--color-text-main);
+            border-color: var(--color-white);
+        }
+
+        .btn-primary:hover {
+            background-color: transparent;
+            color: var(--color-white);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border-color: var(--color-white);
+            color: var(--color-white);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--color-white);
+            color: var(--color-text-main);
+        }
+
+        .btn-dark {
+            background-color: var(--color-text-main);
+            color: var(--color-white);
+        }
+        
+        .btn-dark:hover {
+            background-color: var(--color-accent);
+        }
+
+        /* Scroll Reveal Animation Classes */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: var(--transition);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* 
+         * ==========================================
+         * HEADER
+         * ==========================================
+         */
+        header {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 100;
+            padding: 30px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.15);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: var(--font-serif);
+            font-size: 2rem;
+            color: var(--color-white);
+            font-weight: 600;
+            letter-spacing: -0.5px;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 40px;
+        }
+
+        nav a {
+            color: var(--color-white);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            position: relative;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0%;
+            height: 1px;
+            background-color: var(--color-white);
+            transition: var(--transition);
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        .mobile-toggle {
+            display: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* 
+         * ==========================================
+         * HERO SECTION
+         * ==========================================
+         */
+        .hero {
+            height: 100vh;
+            width: 100%;
+            background-image: url('https://planner5d.com/blog/content/images/2023/05/Capture-lounge_hive-hanging-chair-1.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed; /* Parallax feel */
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(rgba(0, 0, 0, 0.121), rgba(0,0,0,0.5));
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            color: var(--color-white);
+            max-width: 800px;
+            padding: 20px;
+        }
+
+        .hero-subtitle {
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+            display: block;
+            opacity: 0.9;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            line-height: 1.1;
+            margin-bottom: 40px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        /* 
+         * ==========================================
+         * INTRO / PHILOSOPHY
+         * ==========================================
+         */
+        .intro {
+            padding: var(--section-padding) 0;
+            text-align: center;
+            background-color: var(--color-bg);
+        }
+
+        .intro-text {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .intro h2 {
+            font-size: 2.5rem;
+            margin-bottom: 25px;
+            color: var(--color-text-main);
+        }
+
+        .intro p {
+            font-size: 1.1rem;
+            color: var(--color-text-light);
+            margin-bottom: 40px;
+        }
+
+        .icon-separator {
+            width: 50px;
+            margin: 0 auto 20px;
+            opacity: 0.5;
+        }
+
+        /* 
+         * ==========================================
+         * CATEGORIES (GRID)
+         * ==========================================
+         */
+        .categories {
+            padding-bottom: var(--section-padding);
+        }
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 5px; /* Minimal gap for luxury feel */
+        }
+
+        .cat-card {
+            position: relative;
+            height: 500px;
+            overflow: hidden;
+            group: cursor-pointer;
+        }
+
+        .cat-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 1.2s ease;
+        }
+
+        .cat-card:hover img {
+            transform: scale(1.1);
+        }
+
+        .cat-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 40px;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            color: white;
+            transform: translateY(20px);
+            transition: var(--transition);
+        }
+
+        .cat-card:hover .cat-overlay {
+            transform: translateY(0);
+        }
+
+        .cat-overlay h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .cat-link {
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            opacity: 0;
+            transition: var(--transition);
+            display: inline-block;
+        }
+
+        .cat-card:hover .cat-link {
+            opacity: 1;
+        }
+
+        /* 
+         * ==========================================
+         * FEATURES / USP
+         * ==========================================
+         */
+        .features {
+            background-color: var(--color-bg-alt);
+            padding: 60px 0;
+            border-top: 1px solid rgba(0,0,0,0.05);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .features-grid {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .feature-icon {
+            font-size: 2rem;
+            color: var(--color-accent);
+        }
+
+        .feature-text h4 {
+            font-size: 1rem;
+            font-family: var(--font-sans); /* Clean for USPs */
+            font-weight: 700;
+        }
+
+        .feature-text span {
+            font-size: 0.9rem;
+            color: var(--color-text-light);
+        }
+
+        /* 
+         * ==========================================
+         * EXCLUSIVE SELECTION
+         * ==========================================
+         */
+        .exclusive {
+            padding: var(--section-padding) 0;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+            position: relative;
+        }
+
+        .section-header::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 2px;
+            background-color: var(--color-accent);
+            margin: 20px auto 0;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 40px;
+        }
+
+        .product-card {
+            background: white;
+            transition: var(--transition);
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+        }
+
+        .product-img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            background-color: #eee;
+        }
+
+        .product-info {
+            padding: 30px;
+            text-align: center;
+        }
+
+        .product-info h3 {
+            font-size: 1.25rem;
+            margin-bottom: 15px;
+        }
+
+        /* 
+         * ==========================================
+         * INSPIRATION / BLOG
+         * ==========================================
+         */
+        .inspiration {
+            padding: var(--section-padding) 0;
+            background-color: #1a1a1a;
+            color: white;
+        }
+
+        .inspiration h2 {
+            color: white;
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+
+        .blog-card {
+            position: relative;
+        }
+
+        .blog-img {
+            width: 100%;
+            height: 350px;
+            object-fit: cover;
+            filter: brightness(0.8);
+            transition: var(--transition);
+        }
+
+        .blog-card:hover .blog-img {
+            filter: brightness(1);
+        }
+
+        .blog-title {
+            margin-top: 20px;
+            font-size: 1.1rem;
+            letter-spacing: 0.5px;
+            text-align: center;
+        }
+
+        /* 
+         * ==========================================
+         * FOOTER
+         * ==========================================
+         */
+        footer {
+            background-color: #111;
+            color: #888;
+            padding: 80px 0 30px;
+            font-size: 0.9rem;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 60px;
+        }
+
+        .footer-logo {
+            font-family: var(--font-serif);
+            font-size: 1.8rem;
+            color: white;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .footer-col h4 {
+            color: white;
+            margin-bottom: 20px;
+            font-family: var(--font-sans);
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .footer-col ul {
+            list-style: none;
+        }
+
+        .footer-col li {
+            margin-bottom: 10px;
+        }
+
+        .footer-col a:hover {
+            color: white;
+        }
+
+        .copyright {
+            text-align: center;
+            border-top: 1px solid #222;
+            padding-top: 30px;
+        }
+
+        /* 
+         * ==========================================
+         * RESPONSIVE DESIGN
+         * ==========================================
+         */
+        @media (max-width: 1024px) {
+            .category-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .blog-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.8rem;
+            }
+            
+            nav ul {
+                display: none; /* Hide Desktop Menu */
+            }
+
+            .mobile-toggle {
+                display: block;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                padding: 0 40px;
+            }
+
+            .category-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .blog-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="container nav-container">
+            <a href="#" class="logo">Tuinstore.nl</a>
+            <nav>
+                <ul>
+                    <li><a href="#">Collections</a></li>
+                    <li><a href="#">Projects</a></li>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </nav>
+            <div class="mobile-toggle">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content reveal">
+            <span class="hero-subtitle">The Home of Luxury Outdoor Living</span>
+            <h1>Bring luxury, comfort & design outdoors.</h1>
+            <div class="hero-buttons">
+                <a href="#collections" class="btn btn-primary">Discover Collection</a>
+                <a href="#advice" class="btn btn-outline">Personal Advice</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Introduction -->
+    <section class="intro">
+        <div class="container intro-text reveal">
+            <div class="icon-separator">
+                <i class="fas fa-crown" style="color: var(--color-accent); font-size: 1.5rem;"></i>
+            </div>
+            <h2>Discover a world of outdoor luxury.</h2>
+            <p>From elegant fire tables and premium lounge sets to outdoor kitchens — we bring style, comfort, and sustainability together in one exclusive collection. Curated for those who appreciate the finer things in life.</p>
+        </div>
+    </section>
+
+    <!-- Categories Grid -->
+    <section class="categories" id="collections">
+        <div class="category-grid">
+            <!-- Card 1 -->
+            <div class="cat-card reveal">
+                <img src="https://www.calmbyfire.com/cdn/shop/files/b1.jpg?v=1706676421" alt="Fire Tables">
+                <div class="cat-overlay">
+                    <h3>Fire Tables & Hearths</h3>
+                    <span class="cat-link">View Collection <i class="fas fa-arrow-right"></i></span>
+                </div>
+            </div>
+            <!-- Card 2 -->
+            <div class="cat-card reveal">
+                <img src="https://cdn.roveconcepts.com/sites/default/files/images/Dresden-Outdoor-Scene_C03.jpg" alt="Lounge Sets">
+                <div class="cat-overlay">
+                    <h3>Designer Lounge Sets</h3>
+                    <span class="cat-link">View Collection <i class="fas fa-arrow-right"></i></span>
+                </div>
+            </div>
+            <!-- Card 3 -->
+            <div class="cat-card reveal">
+                <img src="https://foyr.com/learn/wp-content/uploads/2022/06/best-outdoor-kitchen-ideas.jpg" alt="Outdoor Kitchens">
+                <div class="cat-overlay">
+                    <h3>Outdoor Kitchens & BBQ</h3>
+                    <span class="cat-link">View Collection <i class="fas fa-arrow-right"></i></span>
+                </div>
+            </div>
+            <!-- Card 4 -->
+            <div class="cat-card reveal">
+                <img src="https://images.unsplash.com/photo-1543489822-c49534f3271f?q=80&w=2532&auto=format&fit=crop" alt="Wellness">
+                <div class="cat-overlay">
+                    <h3>Outdoor Wellness</h3>
+                    <span class="cat-link">View Collection <i class="fas fa-arrow-right"></i></span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features / USP -->
+    <section class="features">
+        <div class="container">
+            <div class="features-grid reveal">
+                <div class="feature-item">
+                    <i class="fas fa-check-circle feature-icon"></i>
+                    <div class="feature-text">
+                        <h4>Sustainable Quality</h4>
+                        <span>Built to last lifetimes</span>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-truck feature-icon"></i>
+                    <div class="feature-text">
+                        <h4>White Glove Delivery</h4>
+                        <span>Free shipping over €1.000</span>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-comments feature-icon"></i>
+                    <div class="feature-text">
+                        <h4>Personal Advice</h4>
+                        <span>Expert design consultation</span>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-shield-alt feature-icon"></i>
+                    <div class="feature-text">
+                        <h4>100% Satisfaction</h4>
+                        <span>Guaranteed excellence</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Exclusive Selection -->
+    <section class="exclusive">
+        <div class="container">
+            <div class="section-header reveal">
+                <h2>Our Exclusive Selection</h2>
+            </div>
+            
+            <div class="product-grid">
+                <!-- Product 1 -->
+                <div class="product-card reveal">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTQfmj4ASxorSlQ5p3KnL_6YR7TwfOPADvltw&sp" alt="Modern Fire Table" class="product-img">
+                    <div class="product-info">
+                        <h3>Modern Fire Table</h3>
+                        <a href="#" class="btn btn-dark">View Product</a>
+                    </div>
+                </div>
+                <!-- Product 2 -->
+                <div class="product-card reveal">
+                    <img src="https://dealio.imgix.net/4x3/ID21512_glamour-light-outdoor-corner-lounge-with-coffee-tables.jpg?w=1920&ar=4:3&fit=crop&auto=format" alt="Corner Lounge Set" class="product-img">
+                    <div class="product-info">
+                        <h3>Luxe Corner Lounge</h3>
+                        <a href="#" class="btn btn-dark">View Product</a>
+                    </div>
+                </div>
+                <!-- Product 3 -->
+                <div class="product-card reveal">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRqj_w4LRJuIyVLpvL7kn2FlSz5BNQiJVBLsA&s" alt="Steel Kitchen" class="product-img">
+                    <div class="product-info">
+                        <h3>RVS Outdoor Kitchen</h3>
+                        <a href="#" class="btn btn-dark">View Product</a>
+                    </div>
+                </div>
+                <!-- Product 4 -->
+                <div class="product-card reveal">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQSNaDaqT6f69oKDtIOSHzO3T8_EPxxdVB5qA&s" alt="Outdoor Sauna" class="product-img">
+                    <div class="product-info">
+                        <h3>Barrel Sauna</h3>
+                        <a href="#" class="btn btn-dark">View Product</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Inspiration -->
+    <section class="inspiration">
+        <div class="container">
+            <h2 class="reveal">Outdoor Living with Style — Inspiration</h2>
+            <div class="blog-grid">
+                <div class="blog-card reveal">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS5nAEzZsLRFc-szUtFQEc66kXWUqvwz2biqQ&s" alt="Veranda" class="blog-img">
+                    <h4 class="blog-title">Luxury Seating Under the Veranda</h4>
+                </div>
+                <div class="blog-card reveal">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR7R5nW9d1YJWvX8EdIwRYlqroExq2gX8PzkQ&s" alt="Fireplaces" class="blog-img">
+                    <h4 class="blog-title">The Most Beautiful Fire Tables</h4>
+                </div>
+                <div class="blog-card reveal">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2h8vmk5FrEY_dot-D7B3VVq6kvKj4lbNu6w&s" alt="Wellness" class="blog-img">
+                    <h4 class="blog-title">Wellness in Your Own Garden</h4>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <a href="#" class="footer-logo">Tuinstore.nl</a>
+                    <p>The premier destination for high-end outdoor living. Transforming gardens into luxurious sanctuaries.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Shop</h4>
+                    <ul>
+                        <li><a href="#">Fire Tables</a></li>
+                        <li><a href="#">Lounge Sets</a></li>
+                        <li><a href="#">Outdoor Kitchens</a></li>
+                        <li><a href="#">Wellness</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Customer Service</h4>
+                    <ul>
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">Delivery & Returns</a></li>
+                        <li><a href="#">Showroom</a></li>
+                        <li><a href="#">Warranty</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Stay Connected</h4>
+                    <p style="margin-bottom: 10px;">Sign up for exclusive offers.</p>
+                    <div style="display: flex; gap: 10px;">
+                        <input type="email" placeholder="Email Address" style="padding: 10px; border: none; width: 100%;">
+                        <button class="btn btn-primary" style="padding: 10px 15px;">OK</button>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2024 Tuinstore.nl. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // 1. Mobile Menu Toggle
+        const toggleBtn = document.querySelector('.mobile-toggle');
+        const navUl = document.querySelector('nav ul');
+
+        toggleBtn.addEventListener('click', () => {
+            if (navUl.style.display === 'flex') {
+                navUl.style.display = 'none';
+            } else {
+                navUl.style.display = 'flex';
+                navUl.style.flexDirection = 'column';
+                navUl.style.position = 'absolute';
+                navUl.style.top = '80px';
+                navUl.style.left = '0';
+                navUl.style.width = '100%';
+                navUl.style.background = '#1a1a1a';
+                navUl.style.padding = '20px';
+                navUl.style.zIndex = '99';
+            }
+        });
+
+        // 2. Scroll Animation (The "Awwwards" Reveal)
+        function reveal() {
+            var reveals = document.querySelectorAll(".reveal");
+
+            for (var i = 0; i < reveals.length; i++) {
+                var windowHeight = window.innerHeight;
+                var elementTop = reveals[i].getBoundingClientRect().top;
+                var elementVisible = 100; // Trigger point
+
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add("active");
+                }
+            }
+        }
+
+        // Trigger on scroll and on load
+        window.addEventListener("scroll", reveal);
+        window.addEventListener("load", reveal);
+
+        // 3. Smooth Header Transition
+        const header = document.querySelector('header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                header.style.background = 'rgba(20,20,20,0.95)';
+                header.style.padding = '15px 0';
+                header.style.transition = '0.3s ease';
+            } else {
+                header.style.background = 'transparent';
+                header.style.padding = '30px 0';
+            }
+        });
+    </script>
+</body>
+</html>
