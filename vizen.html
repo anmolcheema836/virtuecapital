@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Masterclass: Get More Clients</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Space Grotesk', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            black: '#050505',
+                            dark: '#0a0a0a',
+                            gray: '#171717',
+                            lime: '#ccff00',
+                            white: '#f4f4f5'
+                        }
+                    },
+                    animation: {
+                        'spin-slow': 'spin 12s linear infinite',
+                        'marquee': 'marquee 30s linear infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        marquee: {
+                            '0%': { transform: 'translateX(0%)' },
+                            '100%': { transform: 'translateX(-100%)' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #050505; color: #f4f4f5; }
+        
+        /* Cinematic Grain Overlay */
+        .noise-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 50;
+            opacity: 0.05;
+            background: url('https://grainy-gradients.vercel.app/noise.svg');
+        }
+
+        /* Smooth Scrolling */
+        html { scroll-behavior: smooth; }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0a0a0a; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #ccff00; }
+        
+        .bento-card {
+            transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .bento-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            border-color: #ccff00;
+        }
+
+        /* Image Masking for soft edges */
+        .fade-bottom {
+            -webkit-mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
+            mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
+        }
+    </style>
+</head>
+<body class="font-sans antialiased overflow-x-hidden selection:bg-brand-lime selection:text-brand-black">
+
+    <!-- Noise Texture for Film Look -->
+    <div class="noise-overlay"></div>
+
+    <!-- NAV (Floating) -->
+    <nav class="fixed top-6 left-1/2 -translate-x-1/2 z-50 mix-blend-difference w-[90%] md:w-auto">
+        <div class="glass-effect px-6 py-3 rounded-full border border-white/10 bg-white/5 backdrop-blur-xl flex items-center justify-between gap-6 shadow-2xl">
+            <span class="font-bold tracking-tighter text-lg">VIZEN GROUP</span>
+            <div class="hidden md:flex items-center gap-6">
+                <a href="#curriculum" class="text-sm font-medium hover:text-brand-lime transition-colors">Curriculum</a>
+                <a href="#testimonials" class="text-sm font-medium hover:text-brand-lime transition-colors">Stories</a>
+            </div>
+            <a href="#reserve" class="bg-brand-white text-brand-black px-5 py-2 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-brand-lime transition-colors duration-300">Reserve Spot</a>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section class="relative min-h-screen flex flex-col justify-center px-6 md:px-20 pt-24 overflow-hidden">
+        
+        <!-- Background Image (Abstract Flow) -->
+        <div class="absolute inset-0 z-0 opacity-40">
+            <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop" 
+                 class="w-full h-full object-cover fade-bottom filter grayscale brightness-50 contrast-125" alt="Abstract Flow">
+        </div>
+        
+        <!-- Gradient Mesh Overlay -->
+        <div class="absolute top-[-20%] right-[-10%] w-[800px] h-[800px] bg-brand-lime/10 rounded-full blur-[150px] pointer-events-none z-0"></div>
+
+        <div class="max-w-8xl mx-auto w-full z-10 relative">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-8">
+                <span class="inline-flex items-center gap-2 py-1 px-3 border border-brand-lime/30 bg-brand-lime/10 text-brand-lime rounded-full text-xs uppercase tracking-widest mb-4 md:mb-0">
+                    <span class="w-2 h-2 rounded-full bg-brand-lime animate-pulse"></span>
+                    Live Masterclass
+                </span>
+                <span class="text-white/60 text-sm md:text-right font-mono">
+                    Tuesdays @ 7:30 PM <br> <span class="text-brand-lime">12 Seats Remaining</span>
+                </span>
+            </div>
+
+            <h1 class="text-6xl md:text-[8.5rem] leading-[0.85] font-medium tracking-tighter mb-12 mix-blend-overlay text-white">
+                GET CLIENTS <br>
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-white via-white to-gray-500 italic font-light">FOR FREE.</span>
+            </h1>
+
+            <div class="grid md:grid-cols-12 gap-12 mt-8 items-end">
+                <div class="md:col-span-5">
+                    <p class="text-xl text-white/70 leading-relaxed mb-8 border-l-2 border-brand-lime pl-6">
+                        Join our free masterclass and learn to build a weekly flow of high-quality clients—<span class="text-white font-semibold">no ads, no cold calls, no fluff.</span>
+                    </p>
+                    <a href="#reserve" class="group relative inline-flex items-center gap-4">
+                        <div class="h-16 px-8 rounded-full bg-brand-lime text-brand-black font-bold text-lg flex items-center hover:bg-white transition-colors duration-300">
+                            Reserve Your Free Spot
+                        </div>
+                        <div class="w-16 h-16 rounded-full border border-white/20 flex items-center justify-center group-hover:rotate-45 transition-transform duration-300">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-white"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Hero Visual: 3D Card Floating -->
+                <div class="md:col-span-7 flex justify-end relative">
+                    <!-- Dashboard Mockup Image -->
+                    <div class="relative w-full max-w-lg aspect-[4/3] rounded-2xl overflow-hidden border border-white/10 shadow-2xl shadow-brand-lime/5 animate-float">
+                        <div class="absolute inset-0 bg-gradient-to-b from-transparent to-black/80 z-10"></div>
+                        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2670&auto=format&fit=crop" 
+                             class="w-full h-full object-cover opacity-80" alt="Data Dashboard">
+                        
+                        <!-- Floating Data Point -->
+                        <div class="absolute bottom-8 left-8 z-20 bg-white/10 backdrop-blur-md border border-white/20 p-4 rounded-xl flex items-center gap-4 pr-8">
+                            <div class="w-10 h-10 rounded-full bg-brand-lime flex items-center justify-center text-black font-bold text-lg">
+                                ↗
+                            </div>
+                            <div>
+                                <div class="text-xs text-white/50 uppercase tracking-wider">Weekly Revenue</div>
+                                <div class="text-xl font-bold text-white">$12,450</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MARQUEE -->
+    <div class="py-6 border-y border-white/5 overflow-hidden bg-brand-dark relative z-20">
+        <div class="whitespace-nowrap animate-marquee flex gap-12 text-4xl md:text-6xl font-bold uppercase tracking-tighter text-white/5 opacity-50">
+            <span>Momentum</span> <span class="text-brand-lime">•</span> 
+            <span>Revenue</span> <span class="text-brand-lime">•</span>
+            <span>Freedom</span> <span class="text-brand-lime">•</span>
+            <span>Momentum</span> <span class="text-brand-lime">•</span>
+            <span>Revenue</span> <span class="text-brand-lime">•</span>
+            <span>Freedom</span> <span class="text-brand-lime">•</span>
+        </div>
+    </div>
+
+    <!-- PROBLEM SECTION (The Shift) -->
+    <section class="py-32 px-6 md:px-20 border-b border-white/5 bg-brand-black relative">
+        <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-20 items-center">
+            <div class="relative">
+                <!-- Image Stack -->
+                <div class="relative z-10 rounded-2xl overflow-hidden border border-white/10 grayscale hover:grayscale-0 transition-all duration-700">
+                    <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=2670&auto=format&fit=crop" 
+                         alt="Stressed work" class="w-full object-cover h-[500px]">
+                    <div class="absolute inset-0 bg-black/40"></div>
+                    <div class="absolute bottom-6 left-6 p-4 bg-red-500/10 backdrop-blur border border-red-500/20 rounded-lg text-red-500 font-mono text-sm">
+                        ⚠ Warning: Burnout Detected
+                    </div>
+                </div>
+                <!-- Decorative Border -->
+                <div class="absolute top-4 -left-4 w-full h-full border border-white/5 rounded-2xl z-0"></div>
+            </div>
+
+            <div>
+                <h2 class="text-4xl md:text-5xl font-medium tracking-tight mb-8">
+                    The "Grind" is <br><span class="text-gray-600 line-through decoration-brand-lime decoration-4">Broken</span>.
+                </h2>
+                <div class="space-y-8 text-lg text-white/60">
+                    <p>You deliver amazing service, but the backend of your business is a mess of expensive ads and unpredictable leads.</p>
+                    
+                    <div class="grid gap-6">
+                        <div class="flex items-start gap-4 p-4 border border-white/5 rounded-xl bg-white/5">
+                            <span class="text-xl">📉</span>
+                            <div>
+                                <h4 class="text-white font-bold text-sm uppercase mb-1">Inconsistent Revenue</h4>
+                                <p class="text-sm">Feast or famine months that make planning impossible.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4 p-4 border border-white/5 rounded-xl bg-white/5">
+                            <span class="text-xl">💸</span>
+                            <div>
+                                <h4 class="text-white font-bold text-sm uppercase mb-1">Ad Spend Waste</h4>
+                                <p class="text-sm">Burning cash on leads that never convert.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pt-8 border-t border-white/10">
+                        <p class="text-xl italic text-brand-lime">
+                            "There is a smarter way. And it doesn’t involve guesswork."
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CURRICULUM (Bento Grid) -->
+    <section id="curriculum" class="py-32 px-6 md:px-20 bg-brand-dark relative overflow-hidden">
+        <!-- Background Grain -->
+        <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5"></div>
+
+        <div class="max-w-7xl mx-auto relative z-10">
+            <div class="mb-16 md:flex justify-between items-end">
+                <h2 class="text-4xl md:text-6xl font-medium tracking-tight max-w-2xl">
+                    Build a <span class="text-brand-lime">Predictable</span> Client Engine.
+                </h2>
+                <p class="text-white/40 mt-4 md:mt-0 font-mono text-sm">MASTERCLASS CURRICULUM</p>
+            </div>
+
+            <div class="grid md:grid-cols-4 md:grid-rows-2 gap-6 h-auto md:h-[600px]">
+                
+                <!-- Large Card 1 -->
+                <div class="bento-card md:col-span-2 md:row-span-2 bg-brand-gray border border-white/5 p-8 rounded-3xl flex flex-col relative overflow-hidden group">
+                    <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=2670&auto=format&fit=crop" 
+                         class="absolute inset-0 w-full h-full object-cover opacity-20 group-hover:scale-110 transition-transform duration-700" alt="Meeting">
+                    <div class="absolute inset-0 bg-gradient-to-t from-brand-gray via-brand-gray/80 to-transparent"></div>
+                    
+                    <div class="relative z-10 mt-auto">
+                        <div class="w-12 h-12 bg-brand-lime rounded-full flex items-center justify-center text-black font-bold mb-6">01</div>
+                        <h3 class="text-3xl font-bold mb-4">The Organic Flow System</h3>
+                        <p class="text-white/60 mb-6 max-w-sm">Learn the exact framework to generate leads weekly without spending a dime on ads. We replace "luck" with "logic".</p>
+                        <ul class="text-sm space-y-2 text-white/80 font-mono">
+                            <li class="flex items-center gap-2">✓ No Cold Calling</li>
+                            <li class="flex items-center gap-2">✓ No Complex Funnels</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="bento-card md:col-span-1 bg-brand-gray border border-white/5 p-6 rounded-3xl flex flex-col justify-between group overflow-hidden">
+                    <div class="absolute -right-4 -top-4 w-24 h-24 bg-brand-lime blur-[60px] opacity-20 group-hover:opacity-40 transition-opacity"></div>
+                    <h3 class="text-xl font-bold">Momentum <br>Maintenance</h3>
+                    <div class="w-full h-16 flex items-end gap-1 mt-4">
+                        <div class="w-1/5 bg-white/10 h-[30%] rounded-t-sm"></div>
+                        <div class="w-1/5 bg-white/10 h-[50%] rounded-t-sm"></div>
+                        <div class="w-1/5 bg-white/10 h-[40%] rounded-t-sm"></div>
+                        <div class="w-1/5 bg-white/10 h-[70%] rounded-t-sm"></div>
+                        <div class="w-1/5 bg-brand-lime h-[90%] rounded-t-sm shadow-[0_0_15px_rgba(204,255,0,0.5)]"></div>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="bento-card md:col-span-1 bg-brand-gray border border-white/5 p-6 rounded-3xl flex flex-col justify-between group">
+                    <h3 class="text-xl font-bold">Calendar <br>Control</h3>
+                    <div class="mt-4 border border-white/10 rounded-lg p-3 bg-black/20">
+                        <div class="flex gap-2 mb-2">
+                            <div class="w-2 h-2 rounded-full bg-red-500"></div>
+                            <div class="w-2 h-2 rounded-full bg-yellow-500"></div>
+                            <div class="w-2 h-2 rounded-full bg-green-500"></div>
+                        </div>
+                        <div class="space-y-2">
+                            <div class="h-2 w-full bg-white/10 rounded"></div>
+                            <div class="h-2 w-3/4 bg-white/10 rounded"></div>
+                        </div>
+                    </div>
+                </div>
+
+                 <!-- Wide Card 4 -->
+                 <div class="bento-card md:col-span-2 bg-brand-lime text-brand-black border border-brand-lime p-8 rounded-3xl flex items-center justify-between relative overflow-hidden">
+                    <div class="relative z-10 max-w-xs">
+                        <h3 class="text-2xl font-bold mb-2">Stop Chasing. Start Attracting.</h3>
+                        <p class="font-medium opacity-80 text-sm">The psychology behind why clients choose you over competitors.</p>
+                    </div>
+                    <div class="text-6xl opacity-20 rotate-12 absolute right-4 bottom-[-10px]">🧲</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TESTIMONIALS (Stories) -->
+    <section id="testimonials" class="py-32 px-6 md:px-20 bg-brand-black overflow-hidden relative">
+        <div class="text-center mb-20">
+            <h2 class="text-sm font-bold uppercase tracking-[0.3em] text-brand-lime mb-4">Results</h2>
+            <h3 class="text-3xl md:text-5xl font-medium">Real Growth. No Hype.</h3>
+        </div>
+        
+        <div class="max-w-6xl mx-auto grid md:grid-cols-3 gap-8">
+            
+            <!-- Testimonial 1 -->
+            <div class="group relative p-1 bg-gradient-to-b from-white/10 to-transparent rounded-2xl hover:to-brand-lime/20 transition-all duration-500">
+                <div class="bg-brand-gray p-8 rounded-xl h-full flex flex-col justify-between relative z-10 border border-white/5">
+                    <p class="text-white/80 mb-8 leading-relaxed">"I finally started getting consistent inquiries without feeling like I’m constantly chasing leads. The system just works."</p>
+                    <div class="flex items-center gap-4">
+                        <img src="https://images.unsplash.com/photo-1568602471122-7832951cc4c5?q=80&w=200&auto=format&fit=crop" class="w-12 h-12 rounded-full object-cover grayscale group-hover:grayscale-0 transition-all duration-300" alt="Mike">
+                        <div>
+                            <div class="font-bold text-white">Mike T.</div>
+                            <div class="text-xs text-brand-lime uppercase tracking-wider">Fitness Coach</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Testimonial 2 (Featured) -->
+            <div class="group relative p-1 bg-gradient-to-b from-brand-lime to-transparent rounded-2xl transform md:-translate-y-4">
+                <div class="bg-[#1a1a1a] p-8 rounded-xl h-full flex flex-col justify-between relative z-10 border border-brand-lime/20 shadow-2xl shadow-brand-lime/5">
+                    <p class="text-white mb-8 text-lg font-medium">"It made growing my business feel achievable for the first time. Practical, simple, and realistic—exactly what I needed."</p>
+                    <div class="flex items-center gap-4">
+                        <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=200&auto=format&fit=crop" class="w-14 h-14 rounded-full object-cover grayscale group-hover:grayscale-0 transition-all duration-300 ring-2 ring-brand-lime" alt="Sara">
+                        <div>
+                            <div class="font-bold text-white">Sara L.</div>
+                            <div class="text-xs text-brand-lime uppercase tracking-wider">Salon Owner</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Testimonial 3 -->
+            <div class="group relative p-1 bg-gradient-to-b from-white/10 to-transparent rounded-2xl hover:to-brand-lime/20 transition-all duration-500">
+                <div class="bg-brand-gray p-8 rounded-xl h-full flex flex-col justify-between relative z-10 border border-white/5">
+                    <p class="text-white/80 mb-8 leading-relaxed">"No fluff, no gimmicks. I filled my calendar for next month in just two weeks using these exact steps."</p>
+                    <div class="flex items-center gap-4">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=200&auto=format&fit=crop" class="w-12 h-12 rounded-full object-cover grayscale group-hover:grayscale-0 transition-all duration-300" alt="David">
+                        <div>
+                            <div class="font-bold text-white">David P.</div>
+                            <div class="text-xs text-brand-lime uppercase tracking-wider">Consultant</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- FOOTER / CTA -->
+    <section id="reserve" class="relative py-32 px-6 md:px-20 bg-brand-lime text-brand-black mt-20 overflow-hidden">
+        <!-- Abstract Background for Footer -->
+        <img src="https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=2670&auto=format&fit=crop" 
+             class="absolute inset-0 w-full h-full object-cover mix-blend-overlay opacity-30 grayscale" alt="texture">
+
+        <div class="max-w-4xl mx-auto text-center relative z-10">
+            <h2 class="text-6xl md:text-[7rem] leading-[0.9] font-bold tracking-tighter mb-12">
+                READY TO <br> FLOW?
+            </h2>
+            
+            <div class="inline-block p-1 rounded-full bg-brand-black/10 backdrop-blur-sm mb-12">
+                <div class="flex items-center gap-6 px-8 py-4 border border-brand-black/20 rounded-full">
+                    <div class="text-left">
+                        <div class="text-xs font-bold uppercase opacity-60">Next Session</div>
+                        <div class="font-bold text-xl">Tuesday, 7:30 PM</div>
+                    </div>
+                    <div class="h-10 w-px bg-brand-black/20"></div>
+                    <div class="text-left">
+                        <div class="text-xs font-bold uppercase opacity-60">Location</div>
+                        <div class="font-bold text-xl">Zoom (Live)</div>
+                    </div>
+                </div>
+            </div>
+            
+            <br>
+
+            <button class="bg-brand-black text-white px-16 py-8 rounded-full text-2xl font-bold uppercase tracking-widest hover:scale-105 hover:bg-white hover:text-black transition-all duration-300 shadow-2xl hover:shadow-xl">
+                Save My Free Seat
+            </button>
+
+            <div class="mt-16 flex flex-wrap justify-center gap-8 text-sm font-bold uppercase tracking-widest opacity-60">
+                <span>• 100% Actionable</span>
+                <span>• No Gimmicks</span>
+                <span>• No Cold Calls</span>
+            </div>
+            
+            <div class="mt-20 pt-8 border-t border-brand-black/10 text-xs font-mono opacity-50 flex justify-between">
+                <span>&copy; 2024 Vizen Group Ltd.</span>
+                <a href="#" class="underline">Privacy Policy</a>
+            </div>
+        </div>
+    </section>
+
+</body>
+</html>
