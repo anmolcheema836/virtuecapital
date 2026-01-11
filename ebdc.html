@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EBEC | Education Intelligence Platform</title>
+    
+    <!-- Fonts: Manrope (UI) and Syne (Headings) for that modern tech feel -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* --- VARIABLES --- */
+        :root {
+            --bg-dark: #050505;
+            --bg-card: #0f1115;
+            --text-main: #ffffff;
+            --text-muted: #8892b0;
+            --accent: #2997ff; /* EBEC Blue */
+            --accent-glow: rgba(41, 151, 255, 0.4);
+            --border: rgba(255, 255, 255, 0.08);
+            --font-ui: 'Manrope', sans-serif;
+            --font-heading: 'Syne', sans-serif;
+            --ease: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* --- RESET & BASE --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
+        
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            font-family: var(--font-ui);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+
+        /* --- PRELOADER --- */
+        #preloader {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--bg-dark);
+            z-index: 10000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.8s var(--ease), visibility 0.8s;
+        }
+        .loader-content { text-align: center; }
+        .loader-bar {
+            width: 150px; height: 2px;
+            background: rgba(255,255,255,0.1);
+            margin-top: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        .loader-progress {
+            position: absolute; left: 0; top: 0; height: 100%; width: 0%;
+            background: var(--accent);
+            animation: load 1.5s var(--ease) forwards;
+        }
+        @keyframes load { to { width: 100%; } }
+
+        /* --- CUSTOM CURSOR --- */
+        .cursor-dot, .cursor-outline {
+            position: fixed; pointer-events: none; z-index: 9999;
+            border-radius: 50%; transform: translate(-50%, -50%);
+        }
+        .cursor-dot { width: 6px; height: 6px; background: var(--accent); }
+        .cursor-outline {
+            width: 40px; height: 40px;
+            border: 1px solid rgba(255,255,255,0.3);
+            transition: width 0.2s, height 0.2s, background 0.2s;
+        }
+        body.hovering .cursor-outline {
+            width: 70px; height: 70px;
+            background: rgba(41, 151, 255, 0.05);
+            border-color: var(--accent);
+            mix-blend-mode: screen;
+        }
+
+        /* --- HEADER --- */
+        header {
+            position: fixed; top: 0; width: 100%;
+            padding: 1.5rem 5%;
+            display: flex; justify-content: space-between; align-items: center;
+            z-index: 100;
+            mix-blend-mode: difference;
+            transition: transform 0.3s var(--ease);
+        }
+        .logo { font-family: var(--font-heading); font-weight: 800; font-size: 1.5rem; letter-spacing: -1px; }
+        .nav-items { display: flex; gap: 2rem; align-items: center; }
+        .nav-link { font-size: 0.9rem; font-weight: 500; opacity: 0.8; transition: opacity 0.3s; }
+        .nav-link:hover { opacity: 1; }
+        
+        .btn-login {
+            border: 1px solid rgba(255,255,255,0.2);
+            padding: 0.6rem 1.5rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+        }
+        .btn-login:hover { background: var(--text-main); color: var(--bg-dark); }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            height: 100vh;
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            text-align: center;
+            position: relative;
+            padding: 0 1rem;
+        }
+
+        .video-bg {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            object-fit: cover; opacity: 0.4; z-index: -1;
+            /* Filter to make it look techy/bw */
+            filter: saturate(0) contrast(1.2) brightness(0.8);
+        }
+
+        .hero h1 {
+            font-family: var(--font-heading);
+            font-size: clamp(3rem, 10vw, 9rem);
+            line-height: 0.9;
+            background: linear-gradient(180deg, #fff 0%, #aaa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 2rem;
+            transform: translateY(30px); opacity: 0;
+            animation: fadeUp 1s var(--ease) 1.8s forwards;
+        }
+
+        .hero p {
+            font-size: 1.2rem; color: var(--text-muted); margin-bottom: 3rem;
+            max-width: 600px;
+            transform: translateY(30px); opacity: 0;
+            animation: fadeUp 1s var(--ease) 2s forwards;
+        }
+
+        .hero-btns {
+            display: flex; gap: 1rem;
+            transform: translateY(30px); opacity: 0;
+            animation: fadeUp 1s var(--ease) 2.2s forwards;
+        }
+
+        .btn-primary {
+            background: var(--accent); color: white;
+            padding: 1rem 2.5rem; border-radius: 50px;
+            font-weight: 600; display: inline-flex; align-items: center; gap: 10px;
+            transition: transform 0.3s var(--ease), box-shadow 0.3s;
+        }
+        .btn-primary:hover { transform: scale(1.05); box-shadow: 0 0 30px var(--accent-glow); }
+
+        .scroll-indicator {
+            position: absolute; bottom: 40px;
+            display: flex; flex-direction: column; align-items: center; gap: 10px;
+            font-size: 0.8rem; color: var(--text-muted);
+            opacity: 0.7;
+        }
+        .mouse {
+            width: 20px; height: 32px;
+            border: 2px solid var(--text-muted);
+            border-radius: 20px;
+            position: relative;
+        }
+        .wheel {
+            width: 2px; height: 6px; background: white;
+            position: absolute; top: 6px; left: 50%; transform: translateX(-50%);
+            animation: scroll 2s infinite;
+        }
+        @keyframes scroll { 0% {top:6px; opacity:1;} 100% {top:18px; opacity:0;} }
+
+        /* --- ANIMATION CLASSES --- */
+        @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+        
+        .reveal-on-scroll {
+            opacity: 0; transform: translateY(50px);
+            transition: all 1s var(--ease);
+        }
+        .reveal-on-scroll.active { opacity: 1; transform: translateY(0); }
+
+        /* --- DASHBOARD/PLATFORM PREVIEW SECTION --- */
+        .platform-intro {
+            padding: 10vh 5%;
+            background: var(--bg-dark);
+            border-top: 1px solid var(--border);
+        }
+        .section-title {
+            font-family: var(--font-heading);
+            font-size: 3rem; margin-bottom: 1rem;
+        }
+        .section-sub { color: var(--text-muted); font-size: 1.1rem; max-width: 500px; margin-bottom: 4rem; }
+
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(2, 350px);
+            gap: 20px;
+        }
+
+        .bento-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+            display: flex; flex-direction: column; justify-content: space-between;
+            transition: transform 0.4s var(--ease), border-color 0.4s;
+        }
+        .bento-card:hover { transform: translateY(-5px); border-color: var(--accent); }
+        
+        .bento-card h3 { font-family: var(--font-heading); font-size: 1.8rem; z-index: 2; }
+        .bento-card p { color: var(--text-muted); font-size: 0.95rem; z-index: 2; max-width: 90%; }
+        
+        .card-img-bg {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            object-fit: cover; opacity: 0.2; transition: transform 0.6s var(--ease);
+        }
+        .bento-card:hover .card-img-bg { transform: scale(1.1); opacity: 0.1; }
+
+        /* Grid Spans */
+        .span-2 { grid-column: span 2; }
+        .span-1 { grid-column: span 1; }
+
+        .icon-box {
+            width: 50px; height: 50px; background: rgba(255,255,255,0.05);
+            border-radius: 12px; display: flex; align-items: center; justify-content: center;
+            font-size: 1.2rem; margin-bottom: 1rem; color: var(--accent);
+        }
+
+        /* --- FEATURES STRIP --- */
+        .features-strip {
+            padding: 5vh 0;
+            background: var(--accent);
+            color: white;
+            overflow: hidden;
+            white-space: nowrap;
+            position: relative;
+        }
+        .scrolling-text {
+            display: inline-block;
+            animation: marquee 20s linear infinite;
+            font-family: var(--font-heading);
+            font-size: 4rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+        @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+        /* --- FOOTER --- */
+        footer {
+            padding: 5rem 5% 2rem;
+            border-top: 1px solid var(--border);
+            background: #000;
+        }
+        .footer-top {
+            display: flex; flex-wrap: wrap; justify-content: space-between; gap: 3rem;
+            margin-bottom: 4rem;
+        }
+        .footer-logo { font-family: var(--font-heading); font-size: 2rem; margin-bottom: 1rem; display: block;}
+        .footer-col h4 { color: white; margin-bottom: 1.5rem; }
+        .footer-col a { display: block; color: var(--text-muted); margin-bottom: 0.8rem; transition: color 0.3s; }
+        .footer-col a:hover { color: var(--accent); }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 1024px) {
+            .bento-grid { grid-template-columns: repeat(2, 1fr); grid-template-rows: auto; }
+            .span-2 { grid-column: span 2; }
+            .hero h1 { font-size: 4rem; }
+        }
+        @media (max-width: 768px) {
+            .bento-grid { grid-template-columns: 1fr; }
+            .span-2 { grid-column: span 1; }
+            .nav-items { display: none; } /* Mobile menu hidden for demo */
+            .cursor-dot, .cursor-outline { display: none; }
+            * { cursor: auto; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- PRELOADER -->
+    <div id="preloader">
+        <div class="loader-content">
+            <h2 style="font-family: var(--font-heading); font-size: 2rem;">EBEC</h2>
+            <div class="loader-bar"><div class="loader-progress"></div></div>
+        </div>
+    </div>
+
+    <!-- CURSOR -->
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+
+    <!-- NAV -->
+    <header>
+        <a href="#" class="logo hover-target">EBEC.</a>
+        <nav class="nav-items">
+            <a href="#" class="nav-link hover-target">Platform</a>
+            <a href="#" class="nav-link hover-target">Districts</a>
+            <a href="#" class="nav-link hover-target">Corporate</a>
+            <a href="#" class="nav-link hover-target">Insights</a>
+            <a href="#" class="btn-login hover-target">Client Portal</a>
+        </nav>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero">
+        <!-- Replaced Video with reliable Pexels link and Poster fallback -->
+        <video class="video-bg" autoplay loop muted playsinline 
+            poster="https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop">
+            <source src="https://videos.pexels.com/video-files/3129671/3129671-hd_1920_1080_24fps.mp4" type="video/mp4">
+        </video>
+
+        <h1 class="hover-target">IGNITING<br>TOMORROW</h1>
+        <p>The intelligence platform for driving positive outcomes in schools, companies, and communities.</p>
+        
+        <div class="hero-btns">
+            <a href="#explore" class="btn-primary hover-target">
+                Explore Platform <i class="fa-solid fa-arrow-right"></i>
+            </a>
+            <a href="#" class="btn-login hover-target">View Reports</a>
+        </div>
+
+        <div class="scroll-indicator">
+            <div class="mouse"><div class="wheel"></div></div>
+            <span>Scroll to Explore</span>
+        </div>
+    </section>
+
+    <!-- SCROLLING TEXT BANNER -->
+    <div class="features-strip">
+        <div class="scrolling-text">
+            STRATEGIC CONSULTING — DATA DRIVEN RESULTS — COMMUNITY EMPOWERMENT — FUTURE EDUCATION — 
+            STRATEGIC CONSULTING — DATA DRIVEN RESULTS — COMMUNITY EMPOWERMENT — FUTURE EDUCATION —
+        </div>
+    </div>
+
+    <!-- MAIN PLATFORM CONTENT -->
+    <section class="platform-intro" id="explore">
+        <div class="reveal-on-scroll">
+            <h2 class="section-title">One Platform.<br>Endless Possibilities.</h2>
+            <p class="section-sub">Select your organization type to enter your tailored digital workspace.</p>
+        </div>
+
+        <div class="bento-grid">
+            <!-- School District (Large) -->
+            <div class="bento-card span-2 reveal-on-scroll hover-target">
+                <img src="https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=2000&auto=format&fit=crop" class="card-img-bg" alt="School">
+                <div class="icon-box"><i class="fa-solid fa-school"></i></div>
+                <div>
+                    <h3>School Districts</h3>
+                    <p style="margin-top: 10px;">Access strategic planning tools, student performance reports, and administrative resources.</p>
+                </div>
+            </div>
+
+            <!-- Corporate -->
+            <div class="bento-card span-1 reveal-on-scroll hover-target">
+                <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=2000&auto=format&fit=crop" class="card-img-bg" alt="Corporate">
+                <div class="icon-box"><i class="fa-solid fa-building"></i></div>
+                <div>
+                    <h3>Corporate</h3>
+                    <p>Partnership alignment & CSR metrics.</p>
+                </div>
+            </div>
+
+            <!-- Higher Ed -->
+            <div class="bento-card span-1 reveal-on-scroll hover-target">
+                <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=2000&auto=format&fit=crop" class="card-img-bg" alt="College">
+                <div class="icon-box"><i class="fa-solid fa-graduation-cap"></i></div>
+                <div>
+                    <h3>Higher Ed</h3>
+                    <p>Program development & retention.</p>
+                </div>
+            </div>
+
+            <!-- Community (Tall) -->
+            <div class="bento-card span-1 reveal-on-scroll hover-target">
+                <img src="https://images.unsplash.com/photo-1517048676732-d65bc937f952?q=80&w=2000&auto=format&fit=crop" class="card-img-bg" alt="Community">
+                <div class="icon-box"><i class="fa-solid fa-users"></i></div>
+                <div>
+                    <h3>Community</h3>
+                    <p>City initiatives & public data.</p>
+                </div>
+            </div>
+
+            <!-- Latest Insight (Large) -->
+            <div class="bento-card span-3 reveal-on-scroll hover-target" style="grid-column: span 3;">
+                <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2000&auto=format&fit=crop" class="card-img-bg" alt="Analytics">
+                <div class="icon-box"><i class="fa-solid fa-chart-line"></i></div>
+                <div>
+                    <h3>Latest Intelligence Report</h3>
+                    <p>Q4 Analysis: How digital transformation is reshaping NJ & NY school districts. <u>Read the full report.</u></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-top">
+            <div class="footer-col" style="flex: 2;">
+                <a href="#" class="footer-logo">EBEC.</a>
+                <p style="color: #666; max-width: 300px;">
+                    Empowering education through data, strategy, and community connection.
+                </p>
+            </div>
+            <div class="footer-col">
+                <h4>Platform</h4>
+                <a href="#">Login</a>
+                <a href="#">Register</a>
+                <a href="#">Demo</a>
+            </div>
+            <div class="footer-col">
+                <h4>Company</h4>
+                <a href="#">About Us</a>
+                <a href="#">Careers</a>
+                <a href="#">Contact</a>
+            </div>
+            <div class="footer-col">
+                <h4>Connect</h4>
+                <a href="#">Twitter</a>
+                <a href="#">LinkedIn</a>
+                <a href="#">Instagram</a>
+            </div>
+        </div>
+        <div style="border-top: 1px solid #222; padding-top: 2rem; display: flex; justify-content: space-between; color: #444; font-size: 0.8rem;">
+            <span>&copy; 2024 Earl Brown Education Consulting.</span>
+            <span>Privacy Policy • Terms of Service</span>
+        </div>
+    </footer>
+
+    <!-- SCRIPT -->
+    <script>
+        // Preloader Logic
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('preloader').style.opacity = '0';
+                document.getElementById('preloader').style.visibility = 'hidden';
+            }, 1000);
+        });
+
+        // Custom Cursor Logic
+        const cursorDot = document.querySelector('.cursor-dot');
+        const cursorOutline = document.querySelector('.cursor-outline');
+        
+        window.addEventListener('mousemove', (e) => {
+            const posX = e.clientX;
+            const posY = e.clientY;
+            
+            cursorDot.style.left = `${posX}px`;
+            cursorDot.style.top = `${posY}px`;
+            
+            cursorOutline.animate({
+                left: `${posX}px`,
+                top: `${posY}px`
+            }, { duration: 500, fill: "forwards" });
+        });
+
+        // Hover Effect for Cursor
+        document.querySelectorAll('.hover-target').forEach(el => {
+            el.addEventListener('mouseenter', () => document.body.classList.add('hovering'));
+            el.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
+        });
+
+        // Scroll Reveal Animation
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.reveal-on-scroll').forEach(el => observer.observe(el));
+    </script>
+</body>
+</html>

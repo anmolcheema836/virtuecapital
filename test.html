@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Orientation Spectrum Analysis</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #8b5cf6;
+            --primary-glow: rgba(139, 92, 246, 0.5);
+            --secondary: #ec4899;
+            --background: #030712;
+            --surface: rgba(17, 24, 39, 0.65);
+            --surface-border: rgba(255, 255, 255, 0.08);
+            --text-main: #f9fafb;
+            --text-muted: #9ca3af;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--background);
+            color: var(--text-main);
+            min-height: 100dvh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Ambient Background */
+        .ambient-light {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+            background: radial-gradient(circle at 50% -20%, #1e1b4b, #030712);
+        }
+
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.6;
+            animation: float 15s infinite ease-in-out alternate;
+        }
+
+        .orb-1 {
+            top: -10%;
+            left: -10%;
+            width: 50vw;
+            height: 50vw;
+            background: var(--primary);
+            animation-duration: 20s;
+        }
+
+        .orb-2 {
+            bottom: -10%;
+            right: -10%;
+            width: 60vw;
+            height: 60vw;
+            background: var(--secondary);
+            animation-duration: 25s;
+        }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(20px, -20px) scale(1.1); }
+        }
+
+        /* Glass Card */
+        .container {
+            width: 90%;
+            max-width: 550px;
+            background: var(--surface);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid var(--surface-border);
+            border-radius: 32px;
+            padding: 40px;
+            box-shadow: 
+                0 0 0 1px rgba(255,255,255,0.05),
+                0 20px 50px -10px rgba(0, 0, 0, 0.5);
+            position: relative;
+            margin: 20px auto;
+            display: flex;
+            flex-direction: column;
+            transition: height 0.3s ease;
+        }
+
+        /* Typography */
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #fff 0%, #a5b4fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.03em;
+            line-height: 1.2;
+        }
+
+        h2 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            line-height: 1.5;
+            text-align: left;
+        }
+
+        p {
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 2rem;
+            text-align: center;
+            font-size: 0.95rem;
+        }
+
+        /* Interactive Elements */
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 18px 24px;
+            margin-bottom: 12px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            color: var(--text-main);
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            font-family: inherit;
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        /* Desktop hover effects only */
+        @media (hover: hover) {
+            .btn:hover {
+                background: rgba(255, 255, 255, 0.08);
+                border-color: rgba(139, 92, 246, 0.4);
+                transform: translateX(4px);
+                box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            }
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            text-align: center;
+            border: none;
+            font-weight: 700;
+            box-shadow: 0 10px 20px -5px var(--primary-glow);
+        }
+        
+        .btn-primary:active {
+            transform: scale(0.97);
+            box-shadow: 0 5px 10px -5px var(--primary-glow);
+        }
+
+        @media (hover: hover) {
+            .btn-primary:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 15px 30px -5px var(--primary-glow);
+                background: linear-gradient(135deg, #9f7aea, #f472b6);
+            }
+        }
+
+        /* Progress Bar */
+        .progress-wrapper {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            width: 0%;
+            border-radius: 10px;
+            transition: width 0.4s ease-out;
+            box-shadow: 0 0 10px var(--primary-glow);
+        }
+
+        /* Quiz Meta */
+        .quiz-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Sections */
+        .section {
+            display: none;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+
+        .section.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Result Styles */
+        .result-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .circle-wrapper {
+            position: relative;
+            width: 220px;
+            height: 220px;
+            margin: 2rem 0;
+        }
+
+        .result-circle {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: conic-gradient(var(--secondary) 0%, rgba(255,255,255,0.05) 0%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 0 50px rgba(236, 72, 153, 0.25);
+            transition: background 0.1s linear;
+        }
+
+        .result-inner {
+            width: 190px;
+            height: 190px;
+            background: #0f172a; /* Darker inner circle */
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
+        }
+
+        .percentage {
+            font-size: 3.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #e879f9, #f472b6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1;
+        }
+
+        .label {
+            margin-top: 8px;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+
+        .disclaimer {
+            font-size: 0.7rem;
+            color: rgba(156, 163, 175, 0.5);
+            margin-top: 2rem;
+            text-align: center;
+        }
+
+        /* Mobile Optimization */
+        @media (max-width: 480px) {
+            .container {
+                padding: 24px;
+                width: 95%;
+                border-radius: 24px;
+                margin: 10px;
+            }
+            h1 { font-size: 1.8rem; }
+            h2 { font-size: 1.1rem; }
+            .btn { padding: 16px 20px; font-size: 0.95rem; }
+            .circle-wrapper { width: 180px; height: 180px; }
+            .result-inner { width: 160px; height: 160px; }
+            .percentage { font-size: 2.8rem; }
+        }
+
+        /* Animation utilities */
+        .fade-in-up {
+            animation: fadeInUp 0.5s ease forwards;
+            opacity: 0;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="ambient-light">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+    </div>
+
+    <div class="container">
+        <!-- Intro Screen -->
+        <div id="intro" class="section active">
+            <h1>Orientation Spectrum</h1>
+            <p>This comprehensive 20-question analysis uses psychological archetyping to help men explore their sexual orientation spectrum.</p>
+            <button class="btn btn-primary" onclick="startQuiz()">Begin Analysis</button>
+            <div class="disclaimer">Secure & Anonymous. No data saved.</div>
+        </div>
+
+        <!-- Quiz Screen -->
+        <div id="quiz" class="section">
+            <div class="progress-wrapper">
+                <div class="progress-fill" id="progress"></div>
+            </div>
+            
+            <div class="quiz-meta">
+                <span>Question</span>
+                <span><span id="q-current">1</span> / <span id="q-total">20</span></span>
+            </div>
+
+            <h2 id="question-text">Loading...</h2>
+            
+            <div id="options-container">
+                <!-- Options injected via JS -->
+            </div>
+        </div>
+
+        <!-- Result Screen -->
+        <div id="result" class="section">
+            <div class="result-container">
+                <h1>Analysis Complete</h1>
+                <p>The algorithm has processed your responses and determined your placement on the spectrum.</p>
+                
+                <div class="circle-wrapper">
+                    <div class="result-circle" id="result-circle">
+                        <div class="result-inner">
+                            <span class="percentage" id="score-text">0%</span>
+                            <span class="label">Gay</span>
+                        </div>
+                    </div>
+                </div>
+
+                <h2 id="result-desc" style="text-align: center; font-size: 1.4rem; color: #fff;">Calculated</h2>
+                
+                <p id="result-detail" style="font-size: 1rem; color: #e2e8f0; max-width: 90%;"></p>
+
+                <button class="btn btn-primary" onclick="location.reload()" style="margin-top: 10px;">Retake Assessment</button>
+                <div class="disclaimer">Note: Sexuality is fluid. This result represents your current state.</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Questions List
+        const questions = [
+            "I often find myself checking out men's physiques in public.",
+            "I feel a deeper emotional connection with men than with women.",
+            "I have had romantic fantasies involving other men.",
+            "When I watch adult content, I focus more on the men than the women.",
+            "I have wondered what it would be like to be in a relationship with a man.",
+            "I get nervous or flustered around attractive men.",
+            "I have felt a 'spark' when physically touching a male friend.",
+            "I find the male body more aesthetically pleasing than the female body.",
+            "I have experimented sexually with another man.",
+            "I often look at men's faces and lips when they speak to me.",
+            "The idea of kissing a man is appealing to me.",
+            "I have had a crush on a male celebrity or fictional character.",
+            "I feel indifferent or bored when thinking about intimacy with women.",
+            "I sometimes wish I was gay so I could date men.",
+            "I feel more comfortable and 'myself' in LGBTQ+ spaces.",
+            "I have searched for 'Am I Gay' quizzes before this one.",
+            "I find it hard to maintain romantic interest in women.",
+            "When I imagine my future, I can easily picture a husband.",
+            "I pay a lot of attention to how men dress and style themselves.",
+            "If a man hit on me, I would be flattered and intrigued."
+        ];
+
+        let currentQuestionIndex = 0;
+        let score = 0; 
+        
+        const introSection = document.getElementById('intro');
+        const quizSection = document.getElementById('quiz');
+        const resultSection = document.getElementById('result');
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const progressBar = document.getElementById('progress');
+        const qCurrent = document.getElementById('q-current');
+        const qTotal = document.getElementById('q-total');
+
+        function startQuiz() {
+            // Smooth transition
+            introSection.style.opacity = '0';
+            setTimeout(() => {
+                introSection.classList.remove('active');
+                quizSection.classList.add('active');
+                qTotal.innerText = questions.length;
+                loadQuestion();
+            }, 300);
+        }
+
+        function loadQuestion() {
+            // Update Progress
+            const percent = (currentQuestionIndex / questions.length) * 100;
+            progressBar.style.width = percent + '%';
+            qCurrent.innerText = currentQuestionIndex + 1;
+
+            // Fade Text Out
+            questionText.style.opacity = '0';
+            optionsContainer.style.opacity = '0';
+            optionsContainer.style.transform = 'translateY(10px)';
+            
+            setTimeout(() => {
+                questionText.innerText = questions[currentQuestionIndex];
+                optionsContainer.innerHTML = '';
+
+                const options = [
+                    { text: "Strongly Agree", val: 4 },
+                    { text: "Agree", val: 3 },
+                    { text: "Neutral / Unsure", val: 2 },
+                    { text: "Disagree", val: 1 },
+                    { text: "Strongly Disagree", val: 0 }
+                ];
+
+                options.forEach((opt, idx) => {
+                    const btn = document.createElement('button');
+                    btn.className = 'btn fade-in-up';
+                    btn.innerText = opt.text;
+                    // Stagger animation
+                    btn.style.animationDelay = `${idx * 0.05}s`;
+                    btn.onclick = () => handleAnswer(opt.val);
+                    optionsContainer.appendChild(btn);
+                });
+
+                // Fade In
+                questionText.style.opacity = '1';
+                optionsContainer.style.opacity = '1';
+                optionsContainer.style.transform = 'translateY(0)';
+            }, 300);
+        }
+
+        function handleAnswer(value) {
+            score += value; // Tracking score purely for internal logic, ignored in result
+            currentQuestionIndex++;
+
+            if (currentQuestionIndex < questions.length) {
+                loadQuestion();
+            } else {
+                showResult();
+            }
+        }
+
+        function showResult() {
+            quizSection.style.opacity = '0';
+            
+            setTimeout(() => {
+                quizSection.classList.remove('active');
+                resultSection.classList.add('active');
+                progressBar.style.width = '100%';
+
+                // !!! RIGGED LOGIC START !!!
+                // Always sets target to 100%
+                const finalPercent = 100;
+                // !!! RIGGED LOGIC END !!!
+                
+                let currentNum = 0;
+                
+                // Ease-out counter effect
+                const duration = 2000; // 2 seconds
+                const frameDuration = 1000 / 60;
+                const totalFrames = Math.round(duration / frameDuration);
+                let frame = 0;
+
+                const counter = setInterval(() => {
+                    frame++;
+                    // Ease out cubic function
+                    const progress = 1 - Math.pow(1 - frame / totalFrames, 3);
+                    currentNum = Math.floor(progress * finalPercent);
+
+                    if (frame === totalFrames) {
+                        currentNum = finalPercent; // Ensure exact finish
+                        clearInterval(counter);
+                        finalizeResultText();
+                    }
+
+                    document.getElementById('score-text').innerText = currentNum + '%';
+                    
+                    // Dynamic Gradient
+                    document.getElementById('result-circle').style.background = 
+                        `conic-gradient(var(--secondary) ${currentNum * 3.6}deg, rgba(255,255,255,0.05) 0deg)`;
+                }, frameDuration);
+
+            }, 400);
+        }
+
+        function finalizeResultText() {
+            const descTitle = document.getElementById('result-desc');
+            const descDetail = document.getElementById('result-detail');
+
+            descTitle.innerHTML = "100% Confirmed";
+            descTitle.style.color = "#f472b6";
+            descTitle.style.textShadow = "0 0 20px rgba(236, 72, 153, 0.5)";
+            
+            descDetail.innerHTML = "The analysis is conclusive. Your responses indicate a <strong>100% preference for men</strong>. <br><br>Welcome to the family! 🏳️‍🌈";
+            descDetail.classList.add('fade-in-up');
+        }
+    </script>
+</body>
+</html>
