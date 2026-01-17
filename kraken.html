@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kraken Seafood Kitchen | Canningvale</title>
+    <meta name="description" content="Premium seafood dining. Fresh catches, signature platters, and modern atmosphere.">
+
+    <!-- FONTS: 'Outfit' (Modern UI) and 'Playfair Display' (Editorial Headings) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+
+    <!-- ICONS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- GSAP ANIMATION LIBRARY (Industry Standard for High-End UI) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <style>
+        /* -----------------------------------------------------------
+           1. BRAND PALETTE & VARIABLES
+        ----------------------------------------------------------- */
+        :root {
+            /* Extracted from your PDF Brand Identity */
+            --navy-deep: #0A2647;    /* The Kraken Navy */
+            --navy-light: #144272;   /* Secondary Navy */
+            --blue-ocean: #205295;   /* Ocean Blue */
+            --blue-sky: #2C74B3;     /* Sky/Highlight Blue */
+            --white-foam: #F9FBFD;   /* Off-white background */
+            --sand: #E6DACE;         /* Subtle warmth */
+            
+            --font-heading: 'Playfair Display', serif;
+            --font-body: 'Outfit', sans-serif;
+            
+            --container: 1300px;
+            --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        /* -----------------------------------------------------------
+           2. GLOBAL RESET
+        ----------------------------------------------------------- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        html { overflow-x: hidden; scroll-behavior: smooth; }
+        
+        body {
+            background-color: var(--white-foam);
+            color: var(--navy-deep);
+            font-family: var(--font-body);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        h1, h2, h3, h4 { font-family: var(--font-heading); font-weight: 400; line-height: 1.1; }
+        
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+        img { display: block; width: 100%; height: auto; }
+        ul { list-style: none; }
+
+        /* Utilities */
+        .container {
+            max-width: var(--container);
+            margin: 0 auto;
+            padding: 0 5vw;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 18px 36px;
+            border-radius: 50px;
+            font-family: var(--font-body);
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.85rem;
+            transition: all 0.3s var(--ease-out);
+            border: 1px solid transparent;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background-color: var(--blue-sky);
+            color: white;
+        }
+        .btn-primary:hover {
+            background-color: var(--navy-deep);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(10, 38, 71, 0.2);
+        }
+
+        .btn-outline {
+            border-color: var(--navy-deep);
+            color: var(--navy-deep);
+        }
+        .btn-outline:hover {
+            background-color: var(--navy-deep);
+            color: white;
+        }
+
+        /* -----------------------------------------------------------
+           3. NAVIGATION
+        ----------------------------------------------------------- */
+        nav {
+            position: fixed;
+            top: 0; left: 0; width: 100%;
+            padding: 25px 0;
+            z-index: 1000;
+            transition: 0.4s ease;
+        }
+        
+        nav.scrolled {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            padding: 15px 0;
+            box-shadow: 0 5px 30px rgba(0,0,0,0.05);
+        }
+
+        .nav-inner { display: flex; justify-content: space-between; align-items: center; }
+
+        .logo {
+            font-family: var(--font-heading);
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--navy-deep);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo img { height: 75px; width: auto; }
+
+        .nav-links { display: flex; gap: 40px; align-items: center; }
+        
+        .nav-links a {
+            font-size: 0.95rem;
+            font-weight: 500;
+            position: relative;
+        }
+        
+        .nav-links a::after {
+            content: ''; position: absolute; bottom: -5px; left: 0; width: 0; height: 1px;
+            background: var(--blue-sky); transition: 0.3s var(--ease-out);
+        }
+        .nav-links a:hover::after { width: 100%; }
+
+        .mobile-toggle { display: none; font-size: 1.5rem; cursor: pointer; }
+
+        /* -----------------------------------------------------------
+           4. HERO SECTION (Oceanic Gradient)
+        ----------------------------------------------------------- */
+        header.hero {
+            height: 100vh;
+            min-height: 700px;
+            background: linear-gradient(135deg, #f0f4f8 0%, #dbeafe 100%);
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Abstract shapes for background */
+        .shape {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            z-index: 0;
+            opacity: 0.6;
+        }
+        .shape-1 { width: 500px; height: 500px; background: var(--blue-sky); top: -10%; right: -10%; opacity: 0.15; }
+        .shape-2 { width: 600px; height: 600px; background: var(--navy-light); bottom: -10%; left: -10%; opacity: 0.1; }
+
+        .hero-grid {
+            display: grid;
+            top: 50px;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-text h1 {
+            font-size: 5.5rem;
+            line-height: 1;
+            margin-bottom: 30px;
+            color: var(--navy-deep);
+        }
+        
+        .hero-text h1 span {
+            display: block;
+            color: var(--blue-sky);
+            font-family: var(--font-heading);
+            font-style: italic;
+            font-weight: 400;
+        }
+
+        .hero-text p {
+            font-size: 1.2rem;
+            color: #555;
+            max-width: 450px;
+            margin-bottom: 40px;
+        }
+
+        .hero-image-wrap {
+            position: relative;
+            height: 600px;
+            width: 100%;
+            border-radius: 200px 200px 0 0;
+            overflow: hidden;
+        }
+
+        .hero-image-wrap img {
+            width: 100%;
+            height: 120%; /* For parallax */
+            object-fit: cover;
+            transform: translateY(-10%);
+        }
+
+        /* -----------------------------------------------------------
+           5. STORY (Modern Clean)
+        ----------------------------------------------------------- */
+        .story-section { padding: 120px 0; }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+        
+        .section-title span {
+            display: block;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-size: 0.8rem;
+            color: var(--blue-sky);
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+        
+        .section-title h2 {
+            font-size: 3.5rem;
+            color: var(--navy-deep);
+        }
+
+        .story-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+        }
+
+        .story-text { font-size: 1.15rem; color: #444; }
+        .story-text p { margin-bottom: 25px; }
+        
+        .highlight-box {
+            border-left: 4px solid var(--blue-sky);
+            padding-left: 25px;
+            margin-top: 30px;
+            font-family: var(--font-heading);
+            font-size: 1.4rem;
+            color: var(--navy-light);
+            font-style: italic;
+        }
+
+        .story-img {
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 20px 20px 0px var(--blue-sky);
+        }
+
+        /* -----------------------------------------------------------
+           6. MENU (High-End List Layout)
+        ----------------------------------------------------------- */
+        .menu-section {
+            background-color: var(--navy-deep);
+            color: white;
+            padding: 120px 0;
+            position: relative;
+        }
+
+        .menu-wrapper {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .menu-category { margin-bottom: 80px; }
+        
+        .cat-title {
+            font-size: 2rem;
+            color: var(--blue-sky);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 20px;
+            margin-bottom: 40px;
+        }
+
+        .menu-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            padding: 25px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            transition: 0.3s;
+            cursor: default;
+        }
+        
+        .menu-item:hover {
+            padding-left: 20px;
+            background: rgba(255,255,255,0.03);
+        }
+
+        .item-left h3 {
+            font-size: 1.5rem;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+        
+        .item-left p {
+            font-size: 0.95rem;
+            color: rgba(255,255,255,0.6);
+            max-width: 500px;
+        }
+        
+        .item-right {
+            text-align: right;
+            min-width: 100px;
+        }
+        
+        .price {
+            font-size: 1.25rem;
+            font-family: var(--font-body);
+            color: var(--blue-sky);
+        }
+
+        /* -----------------------------------------------------------
+           7. GALLERY (Parallax Strip)
+        ----------------------------------------------------------- */
+        .gallery-section {
+            padding: 0;
+            height: 60vh;
+            display: flex;
+            overflow: hidden;
+        }
+        
+        .gallery-col {
+            flex: 1;
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+            border-right: 1px solid white;
+        }
+        
+        .gallery-col img {
+            width: 100%;
+            height: 110%;
+            object-fit: cover;
+            transition: transform 0.8s ease;
+        }
+        
+        .gallery-col:hover img { transform: scale(1.1); }
+
+        /* -----------------------------------------------------------
+           8. INFO / FOOTER
+        ----------------------------------------------------------- */
+        .footer-section {
+            background: var(--white-foam);
+            padding: 100px 0 40px 0;
+            border-top: 1px solid #eee;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr 1fr;
+            gap: 60px;
+            margin-bottom: 80px;
+        }
+
+        .f-col h4 {
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 30px;
+            color: var(--navy-deep);
+        }
+
+        .f-col ul li {
+            margin-bottom: 15px;
+            color: #666;
+            display: flex;
+            align-items: start;
+            gap: 10px;
+        }
+        
+        .f-col i { color: var(--blue-sky); margin-top: 5px; }
+
+        .big-cta {
+            font-size: 3rem;
+            font-family: var(--font-heading);
+            color: var(--navy-deep);
+            line-height: 1.2;
+            margin-bottom: 30px;
+            display: block;
+        }
+        
+        .big-cta:hover { color: var(--blue-sky); }
+
+        .copyright {
+            text-align: center;
+            border-top: 1px solid #ddd;
+            padding-top: 30px;
+            font-size: 0.9rem;
+            color: #888;
+        }
+
+        /* -----------------------------------------------------------
+           9. RESPONSIVE
+        ----------------------------------------------------------- */
+        @media (max-width: 992px) {
+            .hero-grid { grid-template-columns: 1fr; text-align: center; }
+            .hero-text p { margin: 0 auto 30px auto; }
+            .hero-image-wrap { height: 400px; border-radius: 20px; margin-top: 40px; }
+            .hero-text h1 { font-size: 4rem; }
+            .story-content { grid-template-columns: 1fr; }
+            .footer-grid { grid-template-columns: 1fr; gap: 40px; }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; } /* Simplified for single file */
+            .mobile-toggle { display: block; }
+            .hero-text h1 { font-size: 3rem; }
+            .menu-item { flex-direction: column; gap: 10px; }
+            .item-right { text-align: left; }
+            .gallery-section { flex-direction: column; height: auto; }
+            .gallery-col { height: 250px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAV -->
+    <nav>
+        <div class="container nav-inner">
+            <a href="#" class="logo">
+                <!-- Use your logo.png here. Fallback text provided. -->
+                <img src="krakenlogo.png" alt="Kraken" onerror="this.style.display='none'">
+            </a>
+            <ul class="nav-links">
+                <li><a href="#story">Our Story</a></li>
+                <li><a href="#menu">Menu</a></li>
+                <li><a href="#gallery">Gallery</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <li><a href="tel:0895208646" class="btn btn-primary">Book Table</a></li>
+            </ul>
+            <div class="mobile-toggle"><i class="fa-solid fa-bars"></i></div>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <header class="hero">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="container hero-grid">
+            <div class="hero-text">
+                <h1 class="anim-reveal">A Feast <br><span>Beyond The Deep</span></h1>
+                <p class="anim-reveal">Experience Canningvale's premier seafood kitchen. From Gold Band Snapper to our signature platters, taste the ocean's finest.</p>
+                <div class="anim-reveal">
+                    <a href="#menu" class="btn btn-primary">View Full Menu</a>
+                    <a href="#contact" class="btn btn-outline" style="margin-left: 15px;">Find Us</a>
+                </div>
+            </div>
+            <div class="hero-image-wrap anim-scale">
+                <img src="https://images.unsplash.com/photo-1534604973900-c43ab4c2e0ab?q=80&w=1500&auto=format&fit=crop" alt="Seafood Platter">
+            </div>
+        </div>
+    </header>
+
+    <!-- STORY -->
+    <section id="story" class="story-section">
+        <div class="container">
+            <div class="section-title anim-up">
+                <span>The Kitchen</span>
+                <h2>Fresh. Local. Wild.</h2>
+            </div>
+            <div class="story-content">
+                <div class="story-text anim-up">
+                    <p>At Kraken Seafood Kitchen, we believe seafood is best served simply and generously. Located in the heart of Canningvale, we source the freshest catches—from local <strong>Barramundi</strong> to <strong>Red Emperor</strong>.</p>
+                    <p>Whether you crave the crunch of our golden batter, the zest of our Greek Lemon dressing, or the heat of our Spicy Sambal, every dish is crafted to honor the produce.</p>
+                    <div class="highlight-box">
+                        "Ideally for sharing or seafood lovers. A satisfying and flavourful experience."
+                    </div>
+                </div>
+                <div class="story-img anim-scale">
+                    <img src="https://life.marriott.com/wp-content/uploads/2024/08/Chef-Chan-at-Work-2-scaled.jpg" alt="Chef Cooking">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MENU -->
+    <section id="menu" class="menu-section">
+        <div class="container">
+            <div class="section-title anim-up">
+                <span style="color: var(--white-foam); opacity: 0.7;">Selection</span>
+                <h2 style="color: white;">The Menu</h2>
+            </div>
+
+            <div class="menu-wrapper">
+                
+                <!-- Category 1 -->
+                <div class="menu-category anim-up">
+                    <div class="cat-title">Signatures</div>
+                    
+                    <div class="menu-item">
+                        <div class="item-left">
+                            <h3>Seafood Platter Grill</h3>
+                            <p>Crab, Scallops, Tiger Prawns, Squids, Mussels. Served with golden chips, aioli, tartare & garden salad. Choice of Fish Fillet.</p>
+                        </div>
+                        <div class="item-right">
+                            <div class="price">$99.90</div>
+                        </div>
+                    </div>
+
+                    <div class="menu-item">
+                        <div class="item-left">
+                            <h3>Seafood Basket</h3>
+                            <p>Generous mix: Scallops, Prawns, Squids. Cooked: Crumbed, Battered, or Grilled.</p>
+                        </div>
+                        <div class="item-right">
+                            <div class="price">$37.90</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Category 2 -->
+                <div class="menu-category anim-up">
+                    <div class="cat-title">From The Boat</div>
+                    
+                    <div class="menu-item">
+                        <div class="item-left">
+                            <h3>Gold Band Snapper</h3>
+                            <p>Freshly cooked, served with crispy golden chips and fresh garden salad.</p>
+                        </div>
+                        <div class="item-right">
+                            <div class="price">$27.90</div>
+                        </div>
+                    </div>
+
+                    <div class="menu-item">
+                        <div class="item-left">
+                            <h3>Barramundi</h3>
+                            <p>Australian favorite. Served with chips and salad.</p>
+                        </div>
+                        <div class="item-right">
+                            <div class="price">$27.90</div>
+                        </div>
+                    </div>
+
+                    <div class="menu-item">
+                        <div class="item-left">
+                            <h3>Chili Mussels (1KG)</h3>
+                            <p>Fresh juicy mussels cooked in a rich spicy chili and tomato-based sauce.</p>
+                        </div>
+                        <div class="item-right">
+                            <div class="price">$31.90</div>
+                        </div>
+                    </div>
+
+                    <div class="menu-item">
+                        <div class="item-left">
+                            <h3>Grilled Octopus</h3>
+                            <p>Charred to perfection, served with crispy leek, chips and garden salad.</p>
+                        </div>
+                        <div class="item-right">
+                            <div class="price">$31.90</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="text-align: center; margin-top: 60px;">
+                    <button class="btn btn-outline" style="border-color: rgb(255, 255, 255); color: white;background-color: transparent;">Download Full Menu PDF</button>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- GALLERY GRID -->
+    <section id="gallery" class="gallery-section">
+        <div class="gallery-col">
+            <img src="https://img.freepik.com/free-photo/seafood-plate-with-shrimps-mussels-lobsters-served-with-lemon_140725-8798.jpg?semt=ais_hybrid&w=740&q=80" alt="Food 1">
+        </div>
+        <div class="gallery-col">
+            <img src="https://media.istockphoto.com/id/1305699663/photo/seafood-platter-grilled-lobster-shrimps-scallops-langoustines-octopus-squid-on-white-plate.jpg?s=612x612&w=0&k=20&c=iEwdxon7CJ0wQEDy8-kwnz7TLdknVw05vaa-Qc_aHow=" alt="Interior">
+        </div>
+        <div class="gallery-col">
+            <img src="https://t3.ftcdn.net/jpg/02/19/70/66/360_F_219706680_lBTVyfxx3ECp2wBfHW1AMBuIiq7Jzixb.jpg" alt="Food 2">
+        </div>
+        <div class="gallery-col">
+            <img src="https://t3.ftcdn.net/jpg/02/68/22/20/360_F_268222004_kdPmrr5Mg4yrh3kq4Rhway1zNMHUX6d7.jpg" alt="Food 3">
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer id="contact" class="footer-section">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="f-col">
+                    <a href="tel:0895208646" class="big-cta">08 9520 8646</a>
+                    <p style="color: #666;">Call to reserve or order takeaway.</p>
+                </div>
+                
+                <div class="f-col">
+                    <h4>Location</h4>
+                    <ul>
+                        <li><i class="fa-solid fa-location-dot"></i> 27/271 Amherst Road,<br>Canningvale, WA</li>
+                        <li><i class="fa-solid fa-envelope"></i> info@krakenseafoodkitchen.com.au</li>
+                    </ul>
+                </div>
+
+                <div class="f-col">
+                    <h4>Hours</h4>
+                    <ul>
+                        <li><span style="font-weight: 700; color: var(--navy-deep); width: 80px;">Mon-Fri:</span> 4pm - 9pm</li>
+                        <li><span style="font-weight: 700; color: var(--navy-deep); width: 80px;">Sat-Sun:</span> 11:30am - 9pm</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                &copy; 2024 Kraken Seafood Kitchen.
+            </div>
+        </div>
+    </footer>
+
+    <!-- INTERACTION SCRIPT -->
+    <script>
+        // Initialize GSAP ScrollTrigger
+        gsap.registerPlugin(ScrollTrigger);
+
+        // 1. Hero Animations
+        const tl = gsap.timeline();
+        tl.from(".anim-reveal", {
+            y: 50,
+            opacity: 0,
+            duration: 1,
+            stagger: 0.2,
+            ease: "power3.out"
+        })
+        .from(".hero-image-wrap", {
+            scale: 0.9,
+            opacity: 0,
+            duration: 1.5,
+            ease: "expo.out"
+        }, "-=1");
+
+        // 2. Parallax Effect on Hero Image
+        gsap.to(".hero-image-wrap img", {
+            yPercent: 20,
+            ease: "none",
+            scrollTrigger: {
+                trigger: ".hero",
+                start: "top top",
+                end: "bottom top",
+                scrub: true
+            }
+        });
+
+        // 3. Scroll Reveal for Sections
+        gsap.utils.toArray('.anim-up').forEach(element => {
+            gsap.from(element, {
+                scrollTrigger: {
+                    trigger: element,
+                    start: "top 85%",
+                    toggleActions: "play none none reverse"
+                },
+                y: 40,
+                opacity: 0,
+                duration: 0.8,
+                ease: "power3.out"
+            });
+        });
+
+        gsap.utils.toArray('.anim-scale').forEach(element => {
+            gsap.from(element, {
+                scrollTrigger: {
+                    trigger: element,
+                    start: "top 80%",
+                },
+                scale: 0.95,
+                opacity: 0,
+                duration: 1,
+                ease: "power3.out"
+            });
+        });
+
+        // 4. Navbar Background on Scroll
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 50) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        });
+
+        // 5. Mobile Toggle
+        const toggle = document.querySelector('.mobile-toggle');
+        const navLinks = document.querySelector('.nav-links');
+        toggle.addEventListener('click', () => {
+            // Simple toggle for mobile view logic would go here
+            // For single file simplicity, we just alert or could slide it down
+            if(navLinks.style.display === 'flex') {
+                navLinks.style.display = 'none';
+            } else {
+                navLinks.style.display = 'flex';
+                navLinks.style.flexDirection = 'column';
+                navLinks.style.position = 'absolute';
+                navLinks.style.top = '70px';
+                navLinks.style.left = '0';
+                navLinks.style.width = '100%';
+                navLinks.style.background = 'white';
+                navLinks.style.padding = '20px';
+                navLinks.style.boxShadow = '0 5px 10px rgba(0,0,0,0.1)';
+            }
+        });
+
+    </script>
+</body>
+</html>
