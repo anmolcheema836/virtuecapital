@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VOGUE / REBEL - Official Store</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Italiana&family=Manrope:wght@400;600&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- 1. BULLETPROOF RESET --- */
+        :root {
+            --bg: #0a0a0a;
+            --text: #ffffff;
+            --accent: #FF3C00;
+            --font-head: 'Italiana', serif;
+            --font-body: 'Manrope', sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html {
+            background-color: var(--bg);
+            -webkit-text-size-adjust: 100%;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: var(--font-body);
+            overflow-x: hidden; /* Critical Fix */
+            width: 100%;
+            min-height: 100vh;
+            line-height: 1.4;
+        }
+
+        a { text-decoration: none; color: inherit; cursor: pointer; }
+        button { cursor: pointer; }
+
+        /* --- 2. LAYOUT UTILITIES --- */
+        .wrapper {
+            width: 100%;
+            overflow: hidden; /* Double protection against scrollbars */
+            position: relative;
+        }
+
+        .img-placeholder {
+            width: 100%;
+            height: 100%;
+            background-color: #1a1a1a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #333;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+        }
+
+        /* --- 3. CUSTOM CURSOR (Desktop Only) --- */
+        @media (min-width: 992px) {
+            body { cursor: none; }
+            a, button { cursor: none; }
+            
+            .cursor-outer {
+                position: fixed;
+                top: 0; left: 0;
+                width: 40px; height: 40px;
+                border: 1px solid rgba(255,255,255,0.5);
+                border-radius: 50%;
+                pointer-events: none;
+                z-index: 10000;
+                transform: translate(-50%, -50%);
+                transition: width 0.3s, height 0.3s, background-color 0.3s;
+                mix-blend-mode: difference;
+            }
+            .cursor-inner {
+                position: fixed;
+                top: 0; left: 0;
+                width: 6px; height: 6px;
+                background-color: white;
+                border-radius: 50%;
+                pointer-events: none;
+                z-index: 10001;
+                transform: translate(-50%, -50%);
+            }
+            body.hover-active .cursor-outer {
+                width: 80px; height: 80px;
+                background-color: white;
+                opacity: 0.1;
+                border-color: transparent;
+            }
+        }
+
+        /* --- 4. HEADER --- */
+        header {
+            position: fixed;
+            top: 0; left: 0; width: 100%;
+            height: 80px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 5%;
+            z-index: 999; /* Ensure it stays on top */
+            mix-blend-mode: difference;
+            color: white;
+        }
+
+        .logo { font-family: var(--font-head); font-size: 1.8rem; letter-spacing: -1px; }
+        .nav-links { display: flex; gap: 2rem; }
+        .nav-links a { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; } /* Hide nav on mobile for simplicity */
+        }
+
+        /* --- 5. HERO SECTION --- */
+        .hero {
+            height: 100dvh; /* Mobile browser friendly height */
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 1rem;
+            position: relative;
+            border-bottom: 1px solid #222;
+        }
+
+        .hero h1 {
+            font-family: var(--font-head);
+            font-size: clamp(3.5rem, 12vw, 9rem);
+            line-height: 0.9;
+            text-transform: uppercase;
+            margin-bottom: 2rem;
+            z-index: 2;
+        }
+
+        .cta-btn {
+            display: inline-block;
+            padding: 1rem 3rem;
+            background: var(--text);
+            color: var(--bg);
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            transition: transform 0.3s;
+            z-index: 2;
+        }
+        .cta-btn:hover { transform: scale(1.05); }
+
+        /* --- 6. MARQUEE --- */
+        .marquee-container {
+            width: 100%;
+            background: var(--accent);
+            color: #000;
+            padding: 1rem 0;
+            overflow: hidden; /* Prevents horizontal scroll */
+        }
+        .marquee-content {
+            display: flex;
+            white-space: nowrap;
+            animation: scroll 20s linear infinite;
+        }
+        .marquee-content span {
+            font-size: 1.5rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            margin-right: 3rem;
+        }
+
+        /* --- 7. GRID LAYOUT --- */
+        .products {
+            padding: 5rem 5%;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 4rem 2rem;
+        }
+
+        .card { position: relative; }
+        
+        /* Offset effect for desktop */
+        @media (min-width: 768px) {
+            .card:nth-child(even) { margin-top: 6rem; }
+        }
+
+        .card-image {
+            width: 100%;
+            aspect-ratio: 3/4;
+            background: #222;
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+        /* Using a colored div instead of img to prevent broken links */
+        .demo-img {
+            width: 100%; height: 100%;
+            background: linear-gradient(45deg, #1a1a1a, #2a2a2a);
+            transition: transform 0.5s ease;
+        }
+        .card:hover .demo-img { transform: scale(1.05); }
+
+        .card-details { display: flex; justify-content: space-between; font-family: var(--font-body); }
+        .price { color: var(--accent); }
+
+        /* --- 8. FOOTER --- */
+        footer {
+            padding: 5rem 5%;
+            border-top: 1px solid #222;
+            text-align: center;
+        }
+        .newsletter input {
+            background: transparent;
+            border: none;
+            border-bottom: 2px solid #333;
+            color: white;
+            font-size: 2rem;
+            text-align: center;
+            width: 100%;
+            max-width: 500px;
+            padding: 10px;
+            outline: none;
+        }
+
+        /* --- ANIMATIONS --- */
+        @keyframes scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
+
+    </style>
+</head>
+<body>
+
+    <div class="cursor-outer"></div>
+    <div class="cursor-inner"></div>
+
+    <div class="wrapper">
+        <header>
+            <div class="logo interactable">VOGUE / REBEL</div>
+            <nav class="nav-links">
+                <a href="#" class="interactable">Shop All</a>
+                <a href="#" class="interactable">Archive</a>
+                <a href="#" class="interactable">Cart (0)</a>
+            </nav>
+        </header>
+
+        <section class="hero">
+            <h1>Winter<br>Solstice</h1>
+            <p style="margin-bottom: 2rem; opacity: 0.7; letter-spacing: 2px;">THE ARCHIVE COLLECTION</p>
+            <a href="#products" class="cta-btn interactable">Shop Now</a>
+        </section>
+
+        <div class="marquee-container">
+            <div class="marquee-content">
+                <span>Worldwide Shipping • Limited Drops • </span>
+                <span>Worldwide Shipping • Limited Drops • </span>
+                <span>Worldwide Shipping • Limited Drops • </span>
+                <span>Worldwide Shipping • Limited Drops • </span>
+                <span>Worldwide Shipping • Limited Drops • </span>
+                <span>Worldwide Shipping • Limited Drops • </span>
+            </div>
+        </div>
+
+        <section id="products" class="products">
+            <div class="card interactable">
+                <div class="card-image">
+                    <div class="demo-img"></div> 
+                    </div>
+                <div class="card-details">
+                    <h3>Oversized Bomber</h3>
+                    <span class="price">$320</span>
+                </div>
+            </div>
+
+            <div class="card interactable">
+                <div class="card-image">
+                    <div class="demo-img" style="background: linear-gradient(45deg, #222, #333);"></div>
+                </div>
+                <div class="card-details">
+                    <h3>Cargo Trouser</h3>
+                    <span class="price">$180</span>
+                </div>
+            </div>
+
+            <div class="card interactable">
+                <div class="card-image">
+                    <div class="demo-img" style="background: linear-gradient(45deg, #151515, #252525);"></div>
+                </div>
+                <div class="card-details">
+                    <h3>Distressed Knit</h3>
+                    <span class="price">$210</span>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <div class="newsletter">
+                <p style="margin-bottom: 1rem; opacity: 0.6;">JOIN THE LIST</p>
+                <input type="email" placeholder="EMAIL ADDRESS" class="interactable">
+            </div>
+            <div style="margin-top: 4rem; font-size: 0.7rem; opacity: 0.4;">
+                &copy; 2024 VOGUE REBEL. ALL RIGHTS RESERVED.
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // SAFE CURSOR LOGIC
+        // This only runs if the elements exist, preventing "null" errors
+        const outer = document.querySelector('.cursor-outer');
+        const inner = document.querySelector('.cursor-inner');
+        const interactables = document.querySelectorAll('.interactable');
+
+        // Only activate custom cursor logic on non-touch devices
+        if (window.matchMedia("(pointer: fine)").matches) {
+            
+            document.addEventListener('mousemove', (e) => {
+                // Move inner dot instantly
+                inner.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
+                
+                // Move outer circle with slight delay (simulated via CSS transition)
+                outer.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
+            });
+
+            // Add hover effect
+            interactables.forEach(el => {
+                el.addEventListener('mouseenter', () => document.body.classList.add('hover-active'));
+                el.addEventListener('mouseleave', () => document.body.classList.remove('hover-active'));
+            });
+        }
+    </script>
+</body>
+</html>
