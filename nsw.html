@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NSW Corp | Boutique Asset Management</title>
+    <meta name="description" content="NSW Corporation is a boutique asset management firm overseeing a portfolio of workforce housing multifamily properties across Oregon and Washington.">
+
+    <!-- Fonts: Manrope (Sans) & Playfair Display (Serif) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- GSAP & Lenis -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+
+    <style>
+        /* ----------------------------------------------------------------
+           CORE STYLES
+        ---------------------------------------------------------------- */
+        :root {
+            --bg-color: #0c0c0c;
+            --text-main: #e8e6e1;
+            --text-muted: #888888;
+            --accent-olive: #8a8d7a; 
+            --font-display: 'Playfair Display', serif;
+            --font-body: 'Manrope', sans-serif;
+            --ease-smooth: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: var(--font-body);
+            overflow-x: hidden;
+            cursor: none;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        ::-webkit-scrollbar { width: 0px; background: transparent; }
+        
+        .display-font { font-family: var(--font-display); }
+        .h-hero { font-size: clamp(3.5rem, 9vw, 11rem); line-height: 0.9; letter-spacing: -0.03em; }
+        .h-section { font-size: clamp(2rem, 5vw, 5rem); line-height: 1; letter-spacing: -0.02em; }
+        .p-lead { font-size: clamp(1.1rem, 1.5vw, 1.8rem); line-height: 1.4; font-weight: 300; }
+        .p-body { font-size: clamp(0.9rem, 1vw, 1.1rem); line-height: 1.6; color: var(--text-muted); }
+
+        /* Loader */
+        .loader {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #121212; z-index: 9999;
+            display: flex; justify-content: center; align-items: center;
+        }
+        
+        /* Custom Cursor */
+        .cursor-dot {
+            width: 8px; height: 8px; background: var(--text-main);
+            position: fixed; top: 0; left: 0; border-radius: 50%;
+            z-index: 9998; pointer-events: none; transform: translate(-50%, -50%);
+        }
+        .cursor-circle { 
+            width: 40px; height: 40px; border: 1px solid rgba(255,255,255,0.3);
+            position: fixed; top: 0; left: 0; border-radius: 50%;
+            z-index: 9998; pointer-events: none; transform: translate(-50%, -50%);
+            transition: width 0.3s, height 0.3s, background-color 0.3s;
+        }
+        body.hovered .cursor-circle { 
+            width: 80px; height: 80px; 
+            background-color: rgba(255,255,255,0.05); 
+            border-color: transparent; backdrop-filter: blur(2px); 
+        }
+
+        /* Texture */
+        .noise {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 9000; opacity: 0.04;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        /* Animation Utilities */
+        .reveal-wrap { overflow: hidden; display: block; }
+        .reveal-text { transform: translateY(110%); display: block; will-change: transform; }
+        .sep-line { width: 100%; height: 1px; background: rgba(255,255,255,0.15); }
+
+        /* Logo Invert for Dark Mode */
+        .logo-img { filter: invert(1) brightness(2); width: 140px; height: auto; }
+
+        /* Horizontal Scroll - Modified Image Logic */
+        .portfolio-wrapper { overflow: hidden; width: 100%; }
+        .portfolio-container { display: flex; flex-wrap: nowrap; width: fit-content; height: 100vh; }
+        
+        .portfolio-item {
+            width: 60vw; height: 100vh; padding: 4vw;
+            flex-shrink: 0; display: flex; flex-direction: column; justify-content: flex-end;
+            border-right: 1px solid rgba(255,255,255,0.1); position: relative;
+            overflow: hidden; /* Ensure zoom stays within box */
+        }
+        
+        .portfolio-img-bg {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            object-fit: cover; 
+            z-index: -1;
+            
+            /* Default State: Visible, Grayscale, Darkened */
+            opacity: 0.25; 
+            filter: grayscale(100%) brightness(0.6);
+            transform: scale(1);
+            
+            /* Smooth Transition */
+            transition: all 0.7s var(--ease-smooth);
+        }
+        
+        .portfolio-item:hover .portfolio-img-bg { 
+            /* Hover State: Full Color, Brighter, Slight Zoom */
+            opacity: 0.8; 
+            filter: grayscale(0%) brightness(1);
+            transform: scale(1.05);
+        }
+
+        @media (max-width: 768px) {
+            .portfolio-container { flex-direction: column; width: 100%; height: auto; }
+            .portfolio-item { width: 100%; height: 60vh; border-right: none; border-bottom: 1px solid rgba(255,255,255,0.1); }
+            .portfolio-img-bg { opacity: 0.4; } /* Slightly more visible on mobile by default */
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Loader -->
+    <div class="loader">
+        <img src="https://images.squarespace-cdn.com/content/v1/6941c35b3c4da826892c8901/a468d055-73c1-4296-96d1-e05fbcb007e0/NSW+Logo+-+black.png?format=1500w" class="logo-img reveal-opacity" alt="NSW Loader">
+    </div>
+
+    <div class="noise"></div>
+    <div class="cursor-dot"></div>
+    <div class="cursor-circle"></div>
+
+    <!-- Nav -->
+    <nav class="fixed top-0 w-full p-6 md:p-8 flex justify-between items-center z-50 mix-blend-difference">
+        <a href="#" class="hover-trigger">
+            <img src="https://images.squarespace-cdn.com/content/v1/6941c35b3c4da826892c8901/a468d055-73c1-4296-96d1-e05fbcb007e0/NSW+Logo+-+black.png?format=1500w" class="logo-img" alt="NSW Corp">
+        </a>
+        <div class="hidden md:flex gap-8 text-xs uppercase tracking-widest text-white/90 font-medium">
+            <a href="#about" class="hover-trigger hover:text-[var(--accent-olive)] transition">About</a>
+            <a href="#portfolio" class="hover-trigger hover:text-[var(--accent-olive)] transition">Portfolio</a>
+            <a href="#team" class="hover-trigger hover:text-[var(--accent-olive)] transition">Team</a>
+            <a href="#news" class="hover-trigger hover:text-[var(--accent-olive)] transition">News</a>
+        </div>
+        <button class="md:hidden text-xs uppercase tracking-widest text-white hover-trigger">Menu</button>
+    </nav>
+
+    <main>
+        
+        <!-- Hero -->
+        <section class="min-h-screen flex flex-col justify-center px-6 md:px-12 pt-24 relative overflow-hidden">
+            <div class="w-full max-w-[95vw] z-10">
+                <h1 class="h-hero display-font text-white leading-none">
+                    <div class="reveal-wrap"><span class="reveal-text">Creating</span></div>
+                    <div class="reveal-wrap"><span class="reveal-text text-[var(--accent-olive)] italic">Desirable</span></div>
+                    <div class="reveal-wrap"><span class="reveal-text">Environments.</span></div>
+                </h1>
+            </div>
+            
+            <div class="mt-16 md:mt-24 grid grid-cols-1 md:grid-cols-12 gap-8 border-t border-white/10 pt-8">
+                <div class="md:col-span-5">
+                    <p class="p-lead reveal-opacity opacity-0">
+                        NSW Corporation is a boutique asset management firm overseeing a portfolio of workforce housing multifamily properties across Oregon and Washington.
+                    </p>
+                </div>
+                <div class="md:col-span-7 flex justify-end items-end">
+                    <span class="text-xs uppercase tracking-widest text-[var(--accent-olive)] animate-pulse">Scroll to Explore ↓</span>
+                </div>
+            </div>
+
+            <!-- Background Asset -->
+            <div class="absolute top-0 right-0 w-[50vw] h-screen opacity-20 z-0 pointer-events-none mix-blend-screen">
+                <img src="https://images.squarespace-cdn.com/content/v1/6941c35b3c4da826892c8901/45269ec0-8efc-400a-ade0-3d18b372e5cc/Millennium+%281+of+95%29.jpg" class="w-full h-full object-cover grayscale" data-speed="0.3">
+            </div>
+        </section>
+
+        <!-- Philosophy -->
+        <section id="about" class="py-32 px-6 md:px-12 bg-[#101010]">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-12">
+                <div class="md:col-span-3">
+                    <span class="text-xs uppercase tracking-widest text-[var(--accent-olive)] block mb-2">01 — Philosophy</span>
+                </div>
+                <div class="md:col-span-9">
+                    <h2 class="h-section display-font mb-12">
+                        We believe every resident deserves a well-maintained, dignified place to call home.
+                    </h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                        <div>
+                            <div class="sep-line mb-6"></div>
+                            <p class="p-body">
+                                As a multi-generational organization, we take pride in creating environments where residents can live comfortably and staff can thrive professionally. We recognize ownership, employees, residents, vendors, and properties as interdependent parts of a healthy system.
+                            </p>
+                        </div>
+                        <div>
+                            <div class="sep-line mb-6"></div>
+                            <p class="p-body">
+                                Through disciplined processes, lifecycle planning, and strong partner relationships, NSW ensures our properties remain resilient, well-managed, and positioned for long-term success.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Portfolio (Horizontal Scroll) -->
+        <section id="portfolio" class="bg-[var(--bg-color)] border-t border-white/10">
+            <div class="px-6 md:px-12 py-8">
+                <span class="text-xs uppercase tracking-widest text-[var(--accent-olive)]">02 — Selected Works</span>
+            </div>
+            
+            <div class="portfolio-wrapper">
+                <div class="portfolio-container">
+                    
+                    <!-- 1 -->
+                    <div class="portfolio-item hover-trigger">
+                        <img src="https://images.squarespace-cdn.com/content/v1/6941c35b3c4da826892c8901/6d88a0c3-34b7-4bdd-b47a-8805f3da0854/LBL_Exterior+Pic.jpg" class="portfolio-img-bg" alt="Lower Burnside">
+                        <div class="z-10 mix-blend-difference">
+                            <span class="text-xs uppercase tracking-widest mb-2 block">Portland, OR</span>
+                            <h3 class="display-font text-4xl md:text-6xl mb-4 text-white">Lower Burnside Lofts</h3>
+                            <a href="https://www.thelowerburnsidelofts.com/" target="_blank" class="inline-block border-b border-white/40 pb-1 text-sm hover:text-[var(--accent-olive)] hover:border-[var(--accent-olive)] transition text-white">Visit Property</a>
+                        </div>
+                    </div>
+
+                    <!-- 2 -->
+                    <div class="portfolio-item hover-trigger">
+                        <img src="https://images.squarespace-cdn.com/content/v1/6941c35b3c4da826892c8901/f2127b10-f188-41bf-bb7e-be18326cd24b/MStreet-Apt-Privacy-Upgrades.jpg" class="portfolio-img-bg" alt="M Street">
+                        <div class="z-10 mix-blend-difference">
+                            <span class="text-xs uppercase tracking-widest mb-2 block">Springfield, OR</span>
+                            <h3 class="display-font text-4xl md:text-6xl mb-4 text-white">M Street</h3>
+                            <a href="https://www.mstreetapts.com/" target="_blank" class="inline-block border-b border-white/40 pb-1 text-sm hover:text-[var(--accent-olive)] hover:border-[var(--accent-olive)] transition text-white">Visit Property</a>
+                        </div>
+                    </div>
+
+                    <!-- 3 -->
+                    <div class="portfolio-item hover-trigger">
+                        <img src="https://images.squarespace-cdn.com/content/v1/6941c35b3c4da826892c8901/23f98c1b-1231-4c5f-b488-2aa19a8f1537/pc-plant-roots-768x751.jpg" class="portfolio-img-bg" alt="Pacific Crest">
+                        <div class="z-10 mix-blend-difference">
+                            <span class="text-xs uppercase tracking-widest mb-2 block">Silverton, OR</span>
+                            <h3 class="display-font text-4xl md:text-6xl mb-4 text-white">Pacific Crest</h3>
+                            <a href="https://www.liveatpacificcrest.com/" target="_blank" class="inline-block border-b border-white/40 pb-1 text-sm hover:text-[var(--accent-olive)] hover:border-[var(--accent-olive)] transition text-white">Visit Property</a>
+                        </div>
+                    </div>
+
+                    <!-- 4 -->
+                    <div class="portfolio-item hover-trigger">
+                        <img src="https://images.squarespace-cdn.com/content/v1/6941c35b3c4da826892c8901/45269ec0-8efc-400a-ade0-3d18b372e5cc/Millennium+%281+of+95%29.jpg" class="portfolio-img-bg" alt="Millennium Park">
+                        <div class="z-10 mix-blend-difference">
+                            <span class="text-xs uppercase tracking-widest mb-2 block">Vancouver, WA</span>
+                            <h3 class="display-font text-4xl md:text-6xl mb-4 text-white">Millennium Park</h3>
+                            <a href="https://www.millenniumparkapts.com/" target="_blank" class="inline-block border-b border-white/40 pb-1 text-sm hover:text-[var(--accent-olive)] hover:border-[var(--accent-olive)] transition text-white">Visit Property</a>
+                        </div>
+                    </div>
+
+                    <!-- 5 -->
+                    <div class="portfolio-item hover-trigger">
+                        <img src="https://images.squarespace-cdn.com/content/v1/6941c35b3c4da826892c8901/f59e255e-fb8a-423b-8a87-bb2d45d0f10e/cedarhills-stanleyphoto-0428-012.jpg" class="portfolio-img-bg" alt="Cedar Hills">
+                        <div class="z-10 mix-blend-difference">
+                            <span class="text-xs uppercase tracking-widest mb-2 block">Portland, OR</span>
+                            <h3 class="display-font text-4xl md:text-6xl mb-4 text-white">Cedar Hills</h3>
+                            <a href="https://cedarhillspdx.com/" target="_blank" class="inline-block border-b border-white/40 pb-1 text-sm hover:text-[var(--accent-olive)] hover:border-[var(--accent-olive)] transition text-white">Visit Property</a>
+                        </div>
+                    </div>
+
+                    <!-- 6 -->
+                    <div class="portfolio-item hover-trigger">
+                        <img src="https://images.squarespace-cdn.com/content/v1/6941c35b3c4da826892c8901/b5741e45-1a66-4a40-b06c-2cb093fb621f/Chalet+Exterior.JPG" class="portfolio-img-bg" alt="Chalet Apartments">
+                        <div class="z-10 mix-blend-difference">
+                            <span class="text-xs uppercase tracking-widest mb-2 block">Springfield, OR</span>
+                            <h3 class="display-font text-4xl md:text-6xl mb-4 text-white">Chalet Apartments</h3>
+                            <a href="https://www.liveatchaletapts.com/" target="_blank" class="inline-block border-b border-white/40 pb-1 text-sm hover:text-[var(--accent-olive)] hover:border-[var(--accent-olive)] transition text-white">Visit Property</a>
+                        </div>
+                    </div>
+
+                    <!-- 7 -->
+                    <div class="portfolio-item hover-trigger">
+                        <img src="https://images.squarespace-cdn.com/content/v1/6941c35b3c4da826892c8901/2b97b80f-abae-47ad-818b-a36638c01021/Centennial+-+Exterior+%283%29.jpg" class="portfolio-img-bg" alt="Centennial">
+                        <div class="z-10 mix-blend-difference">
+                            <span class="text-xs uppercase tracking-widest mb-2 block">Springfield, OR</span>
+                            <h3 class="display-font text-4xl md:text-6xl mb-4 text-white">Centennial</h3>
+                            <a href="https://www.liveatcentennialapartments.com/" target="_blank" class="inline-block border-b border-white/40 pb-1 text-sm hover:text-[var(--accent-olive)] hover:border-[var(--accent-olive)] transition text-white">Visit Property</a>
+                        </div>
+                    </div>
+
+                    <!-- 8 -->
+                    <div class="portfolio-item hover-trigger">
+                        <img src="https://images.squarespace-cdn.com/content/v1/6941c35b3c4da826892c8901/957e5333-b50e-4981-a858-579dcd4a18a6/cp2.jpeg" class="portfolio-img-bg" alt="Conifer Place">
+                        <div class="z-10 mix-blend-difference">
+                            <span class="text-xs uppercase tracking-widest mb-2 block">Corvallis, OR</span>
+                            <h3 class="display-font text-4xl md:text-6xl mb-4 text-white">Conifer Place</h3>
+                            <a href="https://www.liveatconiferplace.com/" target="_blank" class="inline-block border-b border-white/40 pb-1 text-sm hover:text-[var(--accent-olive)] hover:border-[var(--accent-olive)] transition text-white">Visit Property</a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Leadership -->
+        <section id="team" class="py-32 px-6 md:px-12">
+            <div class="flex flex-col md:flex-row justify-between mb-20">
+                <span class="text-xs uppercase tracking-widest text-[var(--accent-olive)]">03 — Leadership</span>
+                <p class="max-w-xl text-xl md:text-2xl display-font mt-4 md:mt-0">
+                    Focused, approachable, and driven by results. Our team blends big-picture thinking with hands-on experience.
+                </p>
+            </div>
+
+            <!-- Team Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6">
+                
+                <!-- Laird -->
+                <div class="group hover-trigger cursor-pointer">
+                    <div class="aspect-[3/4] overflow-hidden mb-4 bg-gray-900">
+                        <img src="https://images.squarespace-cdn.com/content/v1/6941c35b3c4da826892c8901/edf43679-5939-40b1-8206-091ffc42e588/NSW+Awards+Banquet+2025-1008.jpg" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition duration-700 ease-out group-hover:scale-105" alt="Laird McCulloch">
+                    </div>
+                    <h4 class="display-font text-lg leading-tight">Laird McCulloch</h4>
+                    <span class="text-xs text-[var(--accent-olive)] uppercase tracking-wider">President & Founder</span>
+                </div>
+
+                <!-- Robert -->
+                <div class="group hover-trigger cursor-pointer">
+                    <div class="aspect-[3/4] overflow-hidden mb-4 bg-gray-900">
+                        <img src="https://images.squarespace-cdn.com/content/v1/6941c35b3c4da826892c8901/35d3a9fc-c7c6-493f-b739-bfd85344eb59/NSW+Awards+Banquet+2025-1011.jpg" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition duration-700 ease-out group-hover:scale-105" alt="Robert Deng">
+                    </div>
+                    <h4 class="display-font text-lg leading-tight">Robert Deng</h4>
+                    <span class="text-xs text-[var(--accent-olive)] uppercase tracking-wider">Head of Investments</span>
+                </div>
+
+                <!-- Catherine -->
+                <div class="group hover-trigger cursor-pointer">
+                    <div class="aspect-[3/4] overflow-hidden mb-4 bg-gray-900">
+                        <img src="https://images.squarespace-cdn.com/content/v1/6941c35b3c4da826892c8901/81acb6d1-5c71-4eb6-b8e2-be17ae0479db/NSW+Awards+Banquet+2025-1010.jpg" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition duration-700 ease-out group-hover:scale-105" alt="Catherine Walker">
+                    </div>
+                    <h4 class="display-font text-lg leading-tight">Catherine Walker</h4>
+                    <span class="text-xs text-[var(--accent-olive)] uppercase tracking-wider">Project Manager</span>
+                </div>
+
+                <!-- Katie -->
+                <div class="group hover-trigger cursor-pointer">
+                    <div class="aspect-[3/4] overflow-hidden mb-4 bg-gray-900">
+                        <img src="https://images.squarespace-cdn.com/content/v1/6941c35b3c4da826892c8901/a5f1825f-7fde-4400-b6c9-61d683408bec/NSW+Awards+Banquet+2025-1009.jpg" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition duration-700 ease-out group-hover:scale-105" alt="Katie O'Neal">
+                    </div>
+                    <h4 class="display-font text-lg leading-tight">Katie O'Neal</h4>
+                    <span class="text-xs text-[var(--accent-olive)] uppercase tracking-wider">Project Coordinator</span>
+                </div>
+
+                <!-- Elena -->
+                <div class="group hover-trigger cursor-pointer">
+                    <div class="aspect-[3/4] overflow-hidden mb-4 bg-gray-900">
+                        <img src="https://images.squarespace-cdn.com/content/v1/6941c35b3c4da826892c8901/36497a04-56f0-49ef-8b7b-6e8131cb4055/NSW+Awards+Banquet+2025-1012.jpg" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition duration-700 ease-out group-hover:scale-105" alt="Elena Eastwood">
+                    </div>
+                    <h4 class="display-font text-lg leading-tight">Elena Eastwood</h4>
+                    <span class="text-xs text-[var(--accent-olive)] uppercase tracking-wider">Controller</span>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- News -->
+        <section id="news" class="py-24 px-6 md:px-12 border-t border-white/10">
+            <span class="text-xs uppercase tracking-widest text-[var(--accent-olive)] mb-12 block">04 — In The News</span>
+            
+            <div class="flex flex-col">
+                <a href="https://www.multifamilydive.com/news/how-to-prepare-opportunity-zones-20/807804/" target="_blank" class="group py-12 border-b border-white/10 flex flex-col md:flex-row md:items-center justify-between hover-trigger">
+                    <span class="text-xs text-white/50 mb-2 md:mb-0">12.12.2025</span>
+                    <h3 class="display-font text-2xl md:text-4xl group-hover:text-[var(--accent-olive)] transition duration-300">5 Ways to Prepare for Opportunity Zones 2.0</h3>
+                    <span class="hidden md:block opacity-0 group-hover:opacity-100 transition-opacity transform translate-x-[-20px] group-hover:translate-x-0">Read →</span>
+                </a>
+                
+                <a href="https://www.hfore.com/pacific-northwest-multifamily-outlook-2025-26-portland-housing-shake-up-cooling-rents-and-washington-rent-caps/" target="_blank" class="group py-12 border-b border-white/10 flex flex-col md:flex-row md:items-center justify-between hover-trigger">
+                    <span class="text-xs text-white/50 mb-2 md:mb-0">12.03.2025</span>
+                    <h3 class="display-font text-2xl md:text-4xl group-hover:text-[var(--accent-olive)] transition duration-300">Pacific Northwest Multifamily Outlook 2025–26</h3>
+                    <span class="hidden md:block opacity-0 group-hover:opacity-100 transition-opacity transform translate-x-[-20px] group-hover:translate-x-0">Read →</span>
+                </a>
+
+                <a href="https://www.cbre.com/press-releases/cbre-arranges-14-million-sale-of-portland-multifamily-property" target="_blank" class="group py-12 border-b border-white/10 flex flex-col md:flex-row md:items-center justify-between hover-trigger">
+                    <span class="text-xs text-white/50 mb-2 md:mb-0">11.21.2025</span>
+                    <h3 class="display-font text-2xl md:text-4xl group-hover:text-[var(--accent-olive)] transition duration-300">NSW Corp. Buys the Lower Burnside Lofts</h3>
+                    <span class="hidden md:block opacity-0 group-hover:opacity-100 transition-opacity transform translate-x-[-20px] group-hover:translate-x-0">Read →</span>
+                </a>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="pt-32 pb-8 px-6 md:px-12 bg-[#0a0a0a] relative overflow-hidden">
+            <div class="relative z-10">
+                <a href="mailto:hello@nswcorporation.com" class="block mb-24 hover-trigger group">
+                    <span class="text-xs uppercase tracking-widest text-[var(--accent-olive)] block mb-4">Contact</span>
+                    <h2 class="h-hero display-font text-white group-hover:text-[var(--accent-olive)] transition duration-500">
+                        Let's Talk.
+                    </h2>
+                </a>
+
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-8 border-t border-white/10 pt-8 text-xs text-white/50 uppercase tracking-widest">
+                    <div>
+                        <p class="text-white mb-2">Office</p>
+                        <p>Portland, OR</p>
+                    </div>
+                    <div>
+                        <p class="text-white mb-2">Social</p>
+                        <a href="https://www.linkedin.com/company/nsw-corporation/" target="_blank" class="hover:text-white transition">LinkedIn</a>
+                    </div>
+                    <div class="md:col-span-2 flex md:justify-end">
+                        <p>© 2026 NSW Corp. All Rights Reserved.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer Stamp -->
+            <div class="absolute -bottom-20 -right-20 opacity-10 pointer-events-none animate-spin-slow">
+                <img src="https://images.squarespace-cdn.com/content/v1/6941c35b3c4da826892c8901/2507d463-ed41-4841-b4e0-498c78c9f05f/NSW+Stamp+Logo+-+olive+%283%29.png" width="400" height="400" alt="Stamp">
+            </div>
+        </footer>
+
+    </main>
+
+    <script>
+        // ----------------------------------------------------------------
+        // INITIALIZATION
+        // ----------------------------------------------------------------
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Lenis Smooth Scroll
+        const lenis = new Lenis({
+            duration: 1.2,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            direction: 'vertical',
+            gestureDirection: 'vertical',
+            smooth: true,
+            smoothTouch: false,
+        });
+
+        function raf(time) {
+            lenis.raf(time);
+            requestAnimationFrame(raf);
+        }
+        requestAnimationFrame(raf);
+
+        // ----------------------------------------------------------------
+        // LOADER ANIMATION
+        // ----------------------------------------------------------------
+        window.addEventListener('load', () => {
+            const tl = gsap.timeline();
+            
+            tl.to('.logo-img', { opacity: 1, duration: 0.5 })
+              .to('.loader', {
+                  yPercent: -100,
+                  duration: 1.2,
+                  ease: 'power4.inOut',
+                  delay: 0.5
+              })
+              .from('.h-hero .reveal-text', {
+                  y: 110,
+                  duration: 1.5,
+                  stagger: 0.1,
+                  ease: 'power4.out'
+              }, "-=0.8")
+              .to('.p-lead', { opacity: 1, duration: 1 }, "-=1");
+        });
+
+        // ----------------------------------------------------------------
+        // CUSTOM CURSOR
+        // ----------------------------------------------------------------
+        const cursorDot = document.querySelector('.cursor-dot');
+        const cursorCircle = document.querySelector('.cursor-circle');
+        const hoverTriggers = document.querySelectorAll('.hover-trigger');
+
+        document.addEventListener('mousemove', (e) => {
+            gsap.to(cursorDot, { x: e.clientX, y: e.clientY, duration: 0.1 });
+            gsap.to(cursorCircle, { x: e.clientX, y: e.clientY, duration: 0.25 });
+        });
+
+        hoverTriggers.forEach(el => {
+            el.addEventListener('mouseenter', () => document.body.classList.add('hovered'));
+            el.addEventListener('mouseleave', () => document.body.classList.remove('hovered'));
+        });
+
+        // ----------------------------------------------------------------
+        // SCROLL ANIMATIONS
+        // ----------------------------------------------------------------
+        
+        // Horizontal Scroll
+        if (window.innerWidth > 768) {
+            const container = document.querySelector('.portfolio-container');
+            const wrapper = document.querySelector('.portfolio-wrapper');
+            
+            gsap.to(container, {
+                x: () => -(container.scrollWidth - window.innerWidth),
+                ease: "none",
+                scrollTrigger: {
+                    trigger: wrapper,
+                    pin: true,
+                    scrub: 1,
+                    end: () => "+=" + container.scrollWidth
+                }
+            });
+        }
+
+        // Parallax
+        gsap.utils.toArray('[data-speed]').forEach(el => {
+            gsap.to(el, {
+                y: (i, target) => -ScrollTrigger.maxScroll(window) * target.dataset.speed,
+                ease: "none",
+                scrollTrigger: {
+                    trigger: el,
+                    start: "top top",
+                    end: "bottom top",
+                    scrub: 0
+                }
+            });
+        });
+
+        // Footer Spin
+        gsap.to(".animate-spin-slow", {
+            rotation: 360,
+            duration: 20,
+            repeat: -1,
+            ease: "linear"
+        });
+
+        // Fade Ups
+        gsap.utils.toArray('.sep-line, h2, h3, .p-body').forEach(el => {
+            gsap.from(el, {
+                y: 30,
+                opacity: 0,
+                duration: 1,
+                ease: 'power2.out',
+                scrollTrigger: {
+                    trigger: el,
+                    start: "top 90%"
+                }
+            });
+        });
+
+    </script>
+</body>
+</html>
