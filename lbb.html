@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LBB | The Professional Wine Decision System</title>
+    
+    <!-- Fonts: Playfair Display (Strict Adherence) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS (via CDN for single file delivery) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <!-- Tailwind Config for LBB Palette -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        lbb: {
+                            blue: '#25354B',   // Deep Blue-Grey (Core Interface)
+                            red: '#BA1628',    // Wine Red (Sparse Emphasis)
+                            bg: '#F3ECDA',     // Linen/Off-white (Background)
+                            cta: '#E06D54',    // Muted Coral (Action)
+                            text: '#4A4A4A',   // Slate Grey (Body)
+                            light: '#FFFDF5',  // Lighter card bg
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['"Playfair Display"', 'serif'], // Used for EVERYTHING per prompt
+                    },
+                    boxShadow: {
+                        'saas': '0 4px 6px -1px rgba(37, 53, 75, 0.05), 0 2px 4px -1px rgba(37, 53, 75, 0.03)',
+                        'floating': '0 20px 25px -5px rgba(37, 53, 75, 0.1), 0 10px 10px -5px rgba(37, 53, 75, 0.04)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Styles for Professional Polish */
+        body {
+            background-color: #F3ECDA;
+            color: #4A4A4A;
+            font-family: 'Playfair Display', serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Typography Tweaks to make Serif feel like UI */
+        .ui-text {
+            letter-spacing: 0.02em;
+        }
+        
+        .nav-link {
+            position: relative;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 1px;
+            bottom: -4px;
+            left: 0;
+            background-color: #25354B;
+            transition: width 0.3s ease;
+        }
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        /* Dashboard Mockup Animations */
+        @keyframes subtle-float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-5px); }
+            100% { transform: translateY(0px); }
+        }
+        .animate-float {
+            animation: subtle-float 6s ease-in-out infinite;
+        }
+
+        /* UI Card Styling */
+        .glass-card {
+            background: rgba(255, 253, 245, 0.8);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(37, 53, 75, 0.08);
+        }
+    </style>
+</head>
+<body class="overflow-x-hidden selection:bg-lbb-blue selection:text-white">
+
+    <!-- NAVIGATION -->
+    <nav class="fixed w-full z-50 transition-all duration-300 border-b border-lbb-blue/10 bg-lbb-bg/95 backdrop-blur-md">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <!-- Abstract Logo Mark -->
+                <div class="w-8 h-8 bg-lbb-blue flex items-center justify-center text-white font-bold text-lg">L</div>
+                <span class="text-2xl font-bold text-lbb-blue tracking-tight">LBB</span>
+            </div>
+
+            <div class="hidden md:flex items-center gap-8 text-lbb-blue text-lg font-medium ui-text">
+                <a href="#" class="nav-link">Method</a>
+                <a href="#" class="nav-link">Platform</a>
+                <a href="#" class="nav-link">Performance</a>
+            </div>
+
+            <div class="flex items-center gap-4">
+                <a href="#" class="hidden md:block text-lbb-blue font-medium hover:opacity-70 transition text-lg">Log in</a>
+                <a href="#" class="bg-lbb-cta text-white px-6 py-2.5 rounded-sm hover:bg-lbb-blue transition-colors duration-300 font-medium text-lg tracking-wide shadow-sm">
+                    Request Access
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
+        <div class="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center">
+            
+            <!-- Hero Content -->
+            <div class="relative z-10 max-w-2xl">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-lbb-blue/20 bg-white/50 text-lbb-blue text-sm font-medium mb-6">
+                    <span class="w-2 h-2 rounded-full bg-lbb-cta"></span>
+                    Professional Decision Tool v2.0
+                </div>
+                <h1 class="text-5xl lg:text-7xl font-bold text-lbb-blue leading-[1.1] mb-6">
+                    Stop Guessing. <br>
+                    <span class="italic font-normal">Start Managing.</span>
+                </h1>
+                <p class="text-xl lg:text-2xl text-lbb-text leading-relaxed mb-8 max-w-lg">
+                    LBB is the decision-making system for hospitality professionals. Secure your margins, optimize rotation, and gain peace of mind.
+                </p>
+                
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <button class="bg-lbb-cta text-white px-8 py-4 text-lg font-semibold rounded-sm shadow-saas hover:bg-lbb-blue transition-all duration-300 flex items-center justify-center gap-2">
+                        Discover the System <i class="ph ph-arrow-right"></i>
+                    </button>
+                    <button class="px-8 py-4 text-lg font-medium text-lbb-blue border border-lbb-blue/20 rounded-sm hover:bg-lbb-blue/5 transition-all duration-300">
+                        View Demo Interface
+                    </button>
+                </div>
+                
+                <div class="mt-10 flex items-center gap-4 text-sm text-lbb-text/80">
+                    <div class="flex -space-x-2">
+                        <div class="w-8 h-8 rounded-full bg-lbb-blue/10 border border-white flex items-center justify-center text-xs">HR</div>
+                        <div class="w-8 h-8 rounded-full bg-lbb-blue/20 border border-white flex items-center justify-center text-xs">LB</div>
+                        <div class="w-8 h-8 rounded-full bg-lbb-blue/30 border border-white flex items-center justify-center text-xs">SJ</div>
+                    </div>
+                    <p>Adopted by 500+ CHR professionals</p>
+                </div>
+            </div>
+
+            <!-- Hero Visual: The "System" (Abstract Interface) -->
+            <div class="relative z-10 animate-float hidden lg:block">
+                <!-- Main Dashboard Card -->
+                <div class="bg-white rounded-lg border border-lbb-blue/10 shadow-floating p-6 max-w-lg ml-auto relative">
+                    <!-- Header of UI -->
+                    <div class="flex justify-between items-center mb-8 border-b border-lbb-blue/5 pb-4">
+                        <div>
+                            <h3 class="text-lbb-blue font-bold text-lg">Performance Overview</h3>
+                            <p class="text-xs text-lbb-text uppercase tracking-wider">October 2024</p>
+                        </div>
+                        <div class="px-3 py-1 bg-green-50 text-green-700 text-xs font-bold rounded-full border border-green-100">
+                            OPTIMAL
+                        </div>
+                    </div>
+
+                    <!-- Metrics Grid -->
+                    <div class="grid grid-cols-2 gap-4 mb-8">
+                        <div class="p-4 bg-lbb-bg/50 rounded border border-lbb-blue/5">
+                            <p class="text-xs text-lbb-text mb-1">Rotation Velocity</p>
+                            <p class="text-2xl font-bold text-lbb-blue">4.2 <span class="text-sm font-normal text-green-600">↑ 12%</span></p>
+                        </div>
+                        <div class="p-4 bg-lbb-bg/50 rounded border border-lbb-blue/5">
+                            <p class="text-xs text-lbb-text mb-1">Margin Integrity</p>
+                            <p class="text-2xl font-bold text-lbb-blue">72% <span class="text-sm font-normal text-lbb-text/50">- Stable</span></p>
+                        </div>
+                    </div>
+
+                    <!-- List Visualization -->
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between p-3 border border-lbb-blue/5 rounded hover:bg-lbb-bg/30 transition">
+                            <div class="flex items-center gap-3">
+                                <div class="w-2 h-2 rounded-full bg-lbb-red"></div>
+                                <span class="text-sm font-medium text-lbb-blue">Stock Alert: Ref #402</span>
+                            </div>
+                            <span class="text-xs font-bold text-lbb-cta">Action Required</span>
+                        </div>
+                        <div class="flex items-center justify-between p-3 border border-lbb-blue/5 rounded hover:bg-lbb-bg/30 transition">
+                            <div class="flex items-center gap-3">
+                                <div class="w-2 h-2 rounded-full bg-lbb-blue"></div>
+                                <span class="text-sm font-medium text-lbb-blue">Purchasing Suggestion</span>
+                            </div>
+                            <span class="text-xs text-lbb-text">Review</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Floating Badge -->
+                <div class="absolute -bottom-6 -left-6 bg-lbb-blue text-white p-5 rounded shadow-lg max-w-[200px]">
+                    <div class="flex items-center gap-2 mb-2">
+                        <i class="ph-fill ph-check-circle text-lbb-cta"></i>
+                        <span class="font-bold text-sm">Inventory Synced</span>
+                    </div>
+                    <p class="text-xs text-white/70 italic">Automatic reconciliation completed in 0.4s</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Decorative Grid Background -->
+        <div class="absolute top-0 right-0 w-1/2 h-full opacity-5 pointer-events-none z-0" 
+             style="background-image: radial-gradient(#25354B 1px, transparent 1px); background-size: 24px 24px;">
+        </div>
+    </section>
+
+    <!-- PROBLEM SECTION (The "Why") -->
+    <section class="bg-lbb-blue py-20 text-white">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h2 class="text-4xl font-bold mb-6">The wine list should be an asset,<br><span class="text-white/60 italic">not a burden.</span></h2>
+                    <p class="text-xl text-white/80 font-light leading-relaxed mb-8">
+                        Most hospitality professionals are overwhelmed by spreadsheets, supplier emails, and intuition-based purchasing. LBB replaces chaos with a structured system.
+                    </p>
+                </div>
+                <div class="grid gap-6">
+                    <div class="flex items-start gap-4 p-4 border-l border-lbb-cta/50 bg-white/5">
+                        <i class="ph ph-clock text-2xl text-lbb-cta"></i>
+                        <div>
+                            <h4 class="font-bold text-lg">Time Wasted</h4>
+                            <p class="text-white/70 font-light">Hours spent cross-referencing PDFs and stock files instead of managing service.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-4 p-4 border-l border-lbb-cta/50 bg-white/5">
+                        <i class="ph ph-chart-line-down text-2xl text-lbb-cta"></i>
+                        <div>
+                            <h4 class="font-bold text-lg">Eroded Margins</h4>
+                            <p class="text-white/70 font-light">Pricing errors and forgotten stock killing your profitability silently.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-4 p-4 border-l border-lbb-cta/50 bg-white/5">
+                        <i class="ph ph-brain text-2xl text-lbb-cta"></i>
+                        <div>
+                            <h4 class="font-bold text-lg">Mental Load</h4>
+                            <p class="text-white/70 font-light">The constant stress of purchasing decisions without data backing.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SOLUTION SECTION (SaaS Features) -->
+    <section class="py-24">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="text-lbb-cta font-bold tracking-widest text-sm uppercase mb-4 block">The LBB Method</span>
+                <h2 class="text-4xl lg:text-5xl font-bold text-lbb-blue mb-6">A central cockpit for your wine program.</h2>
+                <p class="text-xl text-lbb-text">We don't sell bottles. We provide the intelligence to sell them better.</p>
+            </div>
+
+            <!-- Bento Grid Layout -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-[minmax(300px,auto)]">
+                
+                <!-- Card 1: Inventory -->
+                <div class="md:col-span-2 glass-card p-8 rounded-lg relative overflow-hidden group hover:border-lbb-blue/30 transition duration-300">
+                    <div class="relative z-10">
+                        <div class="w-12 h-12 bg-lbb-bg rounded-full flex items-center justify-center mb-6 text-lbb-blue border border-lbb-blue/10">
+                            <i class="ph ph-squares-four text-2xl"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-lbb-blue mb-3">Structured Inventory</h3>
+                        <p class="text-lbb-text text-lg max-w-md">Centralize all references. Visualize stock levels, supplier data, and movements in one clean, reliable interface.</p>
+                    </div>
+                    <!-- Abstract UI decoration -->
+                    <div class="absolute bottom-0 right-0 w-1/2 h-1/2 bg-white border-t border-l border-lbb-blue/10 rounded-tl-lg shadow-sm p-4 flex flex-col gap-2 opacity-80 group-hover:translate-y-[-5px] transition duration-500">
+                        <div class="h-2 w-3/4 bg-lbb-blue/10 rounded"></div>
+                        <div class="h-2 w-1/2 bg-lbb-blue/10 rounded"></div>
+                        <div class="h-2 w-full bg-lbb-blue/5 rounded mt-2"></div>
+                    </div>
+                </div>
+
+                <!-- Card 2: Decisions -->
+                <div class="glass-card p-8 rounded-lg relative overflow-hidden group hover:border-lbb-blue/30 transition duration-300">
+                    <div class="relative z-10">
+                        <div class="w-12 h-12 bg-lbb-bg rounded-full flex items-center justify-center mb-6 text-lbb-blue border border-lbb-blue/10">
+                            <i class="ph ph-git-branch text-2xl"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-lbb-blue mb-3">Guided Decisions</h3>
+                        <p class="text-lbb-text text-lg">Receive algorithmic suggestions based on your sales history and seasonality.</p>
+                    </div>
+                </div>
+
+                <!-- Card 3: Margins -->
+                <div class="glass-card p-8 rounded-lg relative overflow-hidden group hover:border-lbb-blue/30 transition duration-300">
+                    <div class="relative z-10">
+                        <div class="w-12 h-12 bg-lbb-bg rounded-full flex items-center justify-center mb-6 text-lbb-blue border border-lbb-blue/10">
+                            <i class="ph ph-shield-check text-2xl"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-lbb-blue mb-3">Margin Security</h3>
+                        <p class="text-lbb-text text-lg">Set pricing rules. Get alerts when costs change. Never sell below your target margin again.</p>
+                    </div>
+                    <div class="absolute top-8 right-8 text-lbb-cta opacity-20">
+                        <i class="ph-fill ph-lock-key text-6xl"></i>
+                    </div>
+                </div>
+
+                <!-- Card 4: Analytics -->
+                <div class="md:col-span-2 glass-card p-8 rounded-lg relative overflow-hidden group hover:border-lbb-blue/30 transition duration-300 flex flex-col justify-center">
+                    <div class="grid md:grid-cols-2 gap-8 items-center">
+                        <div>
+                            <div class="w-12 h-12 bg-lbb-bg rounded-full flex items-center justify-center mb-6 text-lbb-blue border border-lbb-blue/10">
+                                <i class="ph ph-chart-bar text-2xl"></i>
+                            </div>
+                            <h3 class="text-2xl font-bold text-lbb-blue mb-3">Performance & Rotation</h3>
+                            <p class="text-lbb-text text-lg">Identify dead stock instantly. Boost rotation of high-margin references. Turn data into cash flow.</p>
+                        </div>
+                        <!-- Stylized Graph -->
+                        <div class="bg-white p-4 rounded border border-lbb-blue/10 h-32 flex items-end justify-between px-6 pb-2 gap-2">
+                            <div class="w-full bg-lbb-blue/10 h-[40%] rounded-t hover:bg-lbb-cta/50 transition"></div>
+                            <div class="w-full bg-lbb-blue/20 h-[60%] rounded-t hover:bg-lbb-cta/60 transition"></div>
+                            <div class="w-full bg-lbb-blue/30 h-[30%] rounded-t hover:bg-lbb-cta/70 transition"></div>
+                            <div class="w-full bg-lbb-blue/40 h-[80%] rounded-t hover:bg-lbb-cta/80 transition relative">
+                                <span class="absolute -top-6 left-1/2 -translate-x-1/2 text-xs font-bold text-lbb-blue">+24%</span>
+                            </div>
+                            <div class="w-full bg-lbb-blue h-[70%] rounded-t"></div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- CREDIBILITY / IMAGE SECTION -->
+    <section class="py-12 border-y border-lbb-blue/10 bg-white/50">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <!-- Image Container: Professional Context (No bottles hero, implies service) -->
+                <div class="relative aspect-[4/3] bg-lbb-blue/5 overflow-hidden rounded-sm">
+                    <img src="https://images.unsplash.com/photo-1559339352-11d035aa65de?q=80&w=1974&auto=format&fit=crop" 
+                         alt="Sommelier focusing on inventory list" 
+                         class="w-full h-full object-cover grayscale opacity-90 hover:scale-105 transition duration-700">
+                    <div class="absolute inset-0 bg-lbb-blue/10 mix-blend-multiply"></div>
+                </div>
+                
+                <div>
+                    <h3 class="text-3xl font-bold text-lbb-blue mb-6">Built for the realities of service.</h3>
+                    <p class="text-xl text-lbb-text italic mb-8 border-l-4 border-lbb-cta pl-6">
+                        "Finally, a tool that speaks our language. It’s not about wine poetry; it’s about running a profitable establishment. LBB gave us back 5 hours a week."
+                    </p>
+                    <div class="flex items-center gap-4">
+                        <div class="h-px w-12 bg-lbb-text"></div>
+                        <span class="text-sm font-bold uppercase tracking-widest text-lbb-blue">Julien M. — Owner, Le Comptoir </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FINAL CTA -->
+    <section class="py-32 text-center px-6">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-5xl lg:text-6xl font-bold text-lbb-blue mb-8">Professionalize your wine management.</h2>
+            <p class="text-2xl text-lbb-text mb-12 font-light">Join the establishments that have turned their cellar into a performance engine.</p>
+            
+            <div class="flex flex-col sm:flex-row justify-center gap-6">
+                <button class="bg-lbb-cta text-white px-10 py-5 text-xl font-semibold rounded-sm shadow-xl hover:bg-lbb-blue hover:-translate-y-1 transition-all duration-300">
+                    Get Started Now
+                </button>
+                <button class="px-10 py-5 text-xl font-medium text-lbb-blue border-b border-lbb-blue hover:text-lbb-cta hover:border-lbb-cta transition-colors duration-300">
+                    Schedule a Demo
+                </button>
+            </div>
+            
+            <p class="mt-8 text-sm text-lbb-text/60">No credit card required for demo • Setup in minutes</p>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-lbb-blue text-white pt-20 pb-10 border-t-4 border-lbb-red">
+        <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-4 gap-12 mb-16">
+            <div class="col-span-1 md:col-span-2">
+                <div class="text-3xl font-bold mb-6 tracking-tight">LBB.</div>
+                <p class="text-white/60 max-w-sm text-lg">The operating system for hospitality professionals. Decision, control, and performance.</p>
+            </div>
+            <div>
+                <h4 class="font-bold text-lg mb-6 text-lbb-cta">Product</h4>
+                <ul class="space-y-4 text-white/70">
+                    <li><a href="#" class="hover:text-white transition">Inventory</a></li>
+                    <li><a href="#" class="hover:text-white transition">Purchasing</a></li>
+                    <li><a href="#" class="hover:text-white transition">Analytics</a></li>
+                    <li><a href="#" class="hover:text-white transition">Integrations</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-bold text-lg mb-6 text-lbb-cta">Company</h4>
+                <ul class="space-y-4 text-white/70">
+                    <li><a href="#" class="hover:text-white transition">About Us</a></li>
+                    <li><a href="#" class="hover:text-white transition">For Hotels</a></li>
+                    <li><a href="#" class="hover:text-white transition">For Restaurants</a></li>
+                    <li><a href="#" class="hover:text-white transition">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center border-t border-white/10 pt-8 text-sm text-white/40">
+            <p>&copy; 2024 LBB System. All rights reserved.</p>
+            <div class="flex gap-6 mt-4 md:mt-0">
+                <a href="#" class="hover:text-white">Privacy</a>
+                <a href="#" class="hover:text-white">Terms</a>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
