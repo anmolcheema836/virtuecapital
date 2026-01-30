@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canberra Tutoring | Confidence & Results</title>
+    <meta name="description" content="Premium Math & English tutoring in Canberra. Book your free assessment.">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- 1. VARIABLES & RESET (Strict Adherence to Brief) --- */
+        :root {
+            /* Brand Colours */
+            --ct-green: #4fa84b;
+            --ct-blue: #205ca4;
+            --ct-yellow: #f4cc23;
+            --ct-mint: #eafce3;
+            --ct-softgreen: #9bc89b;
+            --ink: #0f172a;
+            --muted: #475569;
+            --card: #ffffff;
+
+            /* Design Tokens */
+            --shadow-sm: 0 4px 6px -1px rgba(15, 23, 42, 0.05);
+            --shadow-lg: 0 20px 25px -5px rgba(15, 23, 42, 0.1), 0 8px 10px -6px rgba(15, 23, 42, 0.01);
+            --radius-md: 16px;
+            --radius-pill: 100px;
+            --font-head: 'Space Grotesk', sans-serif;
+            --font-body: 'Inter', sans-serif;
+            --max-w: 1200px;
+            --header-h: 80px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: var(--font-body);
+            color: var(--ink);
+            background-color: #FAFAFA;
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: var(--font-head);
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+            color: var(--ink);
+        }
+
+        a { text-decoration: none; transition: 0.3s ease; }
+        ul { list-style: none; }
+        img { max-width: 100%; display: block; }
+
+        /* --- 2. UTILITY & LAYOUT --- */
+        .container {
+            width: 100%;
+            max-width: var(--max-w);
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .section-pad { padding: 80px 0; }
+        
+        .text-center { text-align: center; }
+        .text-gradient {
+            background: linear-gradient(135deg, var(--ct-blue), var(--ct-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* --- 3. UI COMPONENTS --- */
+        
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px 32px;
+            font-weight: 600;
+            border-radius: var(--radius-pill);
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            font-size: 1rem;
+        }
+        
+        .btn-primary {
+            background: var(--ct-green);
+            color: white;
+            box-shadow: 0 10px 20px rgba(79, 168, 75, 0.25);
+        }
+        .btn-primary:hover {
+            background: #449640;
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px rgba(79, 168, 75, 0.35);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--ct-blue);
+            border: 1px solid rgba(32, 92, 164, 0.2);
+        }
+        .btn-secondary:hover {
+            background: var(--ct-mint);
+            border-color: var(--ct-green);
+        }
+
+        /* Tags */
+        .tag {
+            display: inline-block;
+            padding: 6px 16px;
+            background: var(--ct-mint);
+            color: var(--ct-green);
+            font-weight: 700;
+            font-size: 0.85rem;
+            border-radius: var(--radius-pill);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 16px;
+        }
+
+        /* --- 4. HEADER --- */
+        header {
+            height: var(--header-h);
+            display: flex;
+            align-items: center;
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+        .nav-flex {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo { font-family: var(--font-head); font-weight: 700; font-size: 1.5rem; color: var(--ct-blue); }
+        .logo span { color: var(--ct-green); }
+
+        /* --- 5. HERO SECTION --- */
+        .hero {
+            padding-top: calc(var(--header-h) + 60px);
+            padding-bottom: 100px;
+            background: radial-gradient(circle at top right, rgba(234, 252, 227, 0.6), transparent 40%),
+                        radial-gradient(circle at bottom left, rgba(240, 245, 255, 0.8), transparent 40%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .hero-content h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            margin-bottom: 24px;
+        }
+        
+        .hero-content p {
+            font-size: 1.25rem;
+            color: var(--muted);
+            margin-bottom: 40px;
+            max-width: 90%;
+        }
+
+        .trust-strip {
+            margin-top: 32px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            font-size: 0.9rem;
+            color: var(--muted);
+            font-weight: 500;
+        }
+        .stars { color: var(--ct-yellow); letter-spacing: 2px; }
+
+        /* OFFER CARD (Glass) */
+        .offer-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            padding: 40px;
+            border-radius: 24px;
+            box-shadow: var(--shadow-lg);
+            position: relative;
+            transition: transform 0.3s;
+        }
+        .offer-card:hover { transform: translateY(-5px); }
+
+        .price-lockup {
+            text-align: center;
+            border-bottom: 1px dashed rgba(15, 23, 42, 0.1);
+            padding-bottom: 24px;
+            margin-bottom: 24px;
+        }
+        .price-lg { font-size: 3.5rem; font-weight: 700; color: var(--ct-blue); line-height: 1; }
+        .price-sub { display: block; color: var(--muted); font-size: 1.1rem; margin-top: 4px; }
+        
+        .benefit-list li {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 16px;
+            font-weight: 500;
+            color: var(--ink);
+        }
+        .check-icon {
+            color: var(--ct-green);
+            margin-right: 12px;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        /* --- 6. AUDIENCE SELECTOR (The Hub) --- */
+        .audience-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-top: 40px;
+        }
+
+        .audience-card {
+            background: var(--card);
+            padding: 32px;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .audience-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--ct-blue);
+        }
+
+        .card-icon {
+            width: 56px; height: 56px;
+            background: var(--ct-mint);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 24px;
+            font-size: 1.5rem;
+        }
+
+        .subject-links {
+            margin-top: 24px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .subj-btn {
+            font-size: 0.85rem;
+            padding: 8px 16px;
+            background: #F1F5F9;
+            border-radius: 100px;
+            color: var(--muted);
+            font-weight: 600;
+        }
+        .subj-btn:hover { background: var(--ct-blue); color: white; }
+
+        /* --- 7. HOW IT WORKS --- */
+        .steps-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            position: relative;
+        }
+        /* Connecting Line (Desktop) */
+        .steps-row::before {
+            content: '';
+            position: absolute;
+            top: 24px; left: 15%; right: 15%;
+            height: 2px;
+            background: #e2e8f0;
+            z-index: 0;
+        }
+        .step-item {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+        }
+        .step-num {
+            width: 50px; height: 50px;
+            background: var(--ct-blue);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 24px;
+            font-weight: 700;
+            font-family: var(--font-head);
+            box-shadow: 0 0 0 8px #FAFAFA; /* Matches bg to cut line */
+        }
+
+        /* --- 8. TESTIMONIALS --- */
+        .review-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+        .review-card {
+            background: white;
+            padding: 32px;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-sm);
+        }
+
+        /* --- 9. FAQ --- */
+        .faq-item {
+            background: white;
+            border-radius: var(--radius-md);
+            margin-bottom: 16px;
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+        }
+        .faq-head {
+            width: 100%;
+            text-align: left;
+            padding: 24px;
+            background: none;
+            border: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: var(--ink);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+        }
+        .faq-body {
+            padding: 0 24px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s;
+            color: var(--muted);
+        }
+        .faq-item.active .faq-body {
+            padding-bottom: 24px;
+            max-height: 200px;
+        }
+        .icon-plus { transition: 0.3s; }
+        .faq-item.active .icon-plus { transform: rotate(45deg); }
+
+        /* --- 10. FOOTER & STICKY CTA --- */
+        footer {
+            background: var(--ink);
+            color: white;
+            padding: 60px 0 100px; /* Extra padding for sticky mobile bar */
+        }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+        
+        .sticky-bar {
+            position: fixed;
+            bottom: 0; left: 0; right: 0;
+            background: white;
+            padding: 16px 24px;
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
+            z-index: 999;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+        }
+        .sticky-bar.visible { transform: translateY(0); }
+
+        /* --- 11. ANIMATIONS & RESPONSIVE --- */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+        }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+        .stagger-1 { transition-delay: 0.1s; }
+        .stagger-2 { transition-delay: 0.2s; }
+
+        @media (max-width: 900px) {
+            .hero-grid { grid-template-columns: 1fr; text-align: center; }
+            .hero-content { margin-bottom: 40px; }
+            .hero-content p { margin: 0 auto 30px; }
+            .trust-strip { justify-content: center; }
+            .offer-card { max-width: 450px; margin: 0 auto; }
+            
+            .audience-grid, .steps-row, .review-grid { grid-template-columns: 1fr; }
+            .steps-row::before { display: none; }
+            .step-item { display: flex; text-align: left; align-items: flex-start; gap: 20px; }
+            .step-num { margin: 0; flex-shrink: 0; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container nav-flex">
+            <a href="#" class="logo">Canberra<span>Tutoring</span></a>
+            <a href="tel:0400000000" class="btn btn-secondary" style="padding: 10px 20px;">
+                📞 Call Us
+            </a>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <div class="hero-grid">
+                
+                <div class="hero-content reveal">
+                    <span class="tag">Term 1 Enrolments Open</span>
+                    <h1>Results you can see. Confidence they can <span class="text-gradient">feel.</span></h1>
+                    <p>Expert local tutoring that builds foundations, fills knowledge gaps, and reduces homework stress.</p>
+                    
+                    <a href="#audience" class="btn btn-primary">Book Free Assessment</a>
+
+                    <div class="trust-strip">
+                        <div class="stars">★★★★★</div>
+                        <span>Trusted by 500+ Canberra Families</span>
+                    </div>
+                </div>
+
+                <div class="offer-card reveal stagger-1">
+                    <div class="price-lockup">
+                        <span style="text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px; color: var(--ct-green); font-weight: 700;">Term Special Offer</span>
+                        <div class="price-lg">$55</div>
+                        <span class="price-sub">per lesson (11 lesson block)</span>
+                    </div>
+                    <ul class="benefit-list">
+                        <li><span class="check-icon">✓</span> Free Skills Assessment included</li>
+                        <li><span class="check-icon">✓</span> Individual Learning Plan (ILP)</li>
+                        <li><span class="check-icon">✓</span> Valid for Math or English</li>
+                        <li><span class="check-icon">✓</span> Optional Written Report (+$55)</li>
+                    </ul>
+                    <div class="text-center" style="margin-top: 24px;">
+                        <span style="font-size: 0.8rem; color: var(--muted);">No lock-in contracts. Term by term.</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="audience" class="section-pad">
+        <div class="container">
+            <div class="text-center reveal">
+                <h2>Choose your level.</h2>
+                <p style="color: var(--muted); margin-top: 10px;">Select a stage to see specific outcomes.</p>
+            </div>
+
+            <div class="audience-grid">
+                <div class="audience-card reveal stagger-1">
+                    <div>
+                        <div class="card-icon">🌱</div>
+                        <h3>Primary School</h3>
+                        <p style="color: var(--muted); margin-top: 10px; font-size: 0.95rem;">Build confidence, master basics, and stop homework battles.</p>
+                    </div>
+                    <div class="subject-links">
+                        <a href="/primary-maths" class="subj-btn">Maths</a>
+                        <a href="/primary-english" class="subj-btn">English</a>
+                    </div>
+                </div>
+
+                <div class="audience-card reveal stagger-2">
+                    <div>
+                        <div class="card-icon" style="background: #E0F2FE;">🚀</div>
+                        <h3>High School</h3>
+                        <p style="color: var(--muted); margin-top: 10px; font-size: 0.95rem;">Close gaps, improve grades, and prepare for exams.</p>
+                    </div>
+                    <div class="subject-links">
+                        <a href="/hs-maths" class="subj-btn">Maths</a>
+                        <a href="/hs-english" class="subj-btn">English</a>
+                    </div>
+                </div>
+
+                <div class="audience-card reveal stagger-2">
+                    <div>
+                        <div class="card-icon" style="background: #FEFCE8;">🎓</div>
+                        <h3>College (11-12)</h3>
+                        <p style="color: var(--muted); margin-top: 10px; font-size: 0.95rem;">Specialist support, AST prep, and university pathways.</p>
+                    </div>
+                    <div class="subject-links">
+                        <a href="/college-maths" class="subj-btn">Maths</a>
+                        <a href="/college-english" class="subj-btn">English</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-pad" style="background: white;">
+        <div class="container">
+            <div class="text-center reveal" style="margin-bottom: 60px;">
+                <h2>A simple path to certainty.</h2>
+            </div>
+            
+            <div class="steps-row">
+                <div class="step-item reveal">
+                    <div class="step-num">1</div>
+                    <h4>Free Assessment</h4>
+                    <p style="color: var(--muted); font-size: 0.95rem; margin-top: 8px;">We identify exactly what they know and where the gaps are.</p>
+                </div>
+                <div class="step-item reveal stagger-1">
+                    <div class="step-num">2</div>
+                    <h4>The Plan</h4>
+                    <p style="color: var(--muted); font-size: 0.95rem; margin-top: 8px;">We match the right tutor and create an Individual Learning Plan.</p>
+                </div>
+                <div class="step-item reveal stagger-2">
+                    <div class="step-num">3</div>
+                    <h4>Weekly Growth</h4>
+                    <p style="color: var(--muted); font-size: 0.95rem; margin-top: 8px;">Consistent lessons that build skills and confidence every week.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-pad">
+        <div class="container">
+            <div class="text-center reveal" style="margin-bottom: 40px;">
+                <h2>Parents love the peace of mind.</h2>
+            </div>
+            <div class="review-grid">
+                <div class="review-card reveal">
+                    <div class="stars" style="margin-bottom: 12px;">★★★★★</div>
+                    <p style="font-style: italic; color: var(--muted); margin-bottom: 16px;">"The change in confidence was almost immediate. We stopped fighting over homework within two weeks."</p>
+                    <strong>— Sarah J., Primary Parent</strong>
+                </div>
+                <div class="review-card reveal stagger-1">
+                    <div class="stars" style="margin-bottom: 12px;">★★★★★</div>
+                    <p style="font-style: italic; color: var(--muted); margin-bottom: 16px;">"My son went from failing math to getting a B in his finals. The tutor was incredibly patient."</p>
+                    <strong>— Mark D., High School Parent</strong>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-pad" style="background: white;">
+        <div class="container" style="max-width: 800px;">
+            <div class="text-center reveal" style="margin-bottom: 40px;">
+                <h2>Common Questions</h2>
+            </div>
+            
+            <div class="reveal">
+                <div class="faq-item">
+                    <button class="faq-head">Are there lock-in contracts? <span class="icon-plus">+</span></button>
+                    <div class="faq-body">No. We work in term blocks (11 lessons) for educational consistency, but you are not locked into long-term financial contracts.</div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-head">Where does tutoring take place? <span class="icon-plus">+</span></button>
+                    <div class="faq-body">We offer in-home tutoring across most Canberra suburbs, as well as online options for flexibility.</div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-head">How do you select tutors? <span class="icon-plus">+</span></button>
+                    <div class="faq-body">All tutors hold valid WWVP cards and are high-achievers. More importantly, they pass our training on how to teach, not just how to do the math.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <h3 style="color: white; margin-bottom: 16px;">CanberraTutoring</h3>
+                    <p style="color: var(--muted); font-size: 0.9rem;">Helping students thrive since 2015.</p>
+                </div>
+                <div style="text-align: right;">
+                    <p style="color: white; font-weight: 600;">Contact</p>
+                    <p style="color: var(--muted); font-size: 0.9rem; margin-top: 8px;">0400 000 000<br>hello@canberratutoring.com.au</p>
+                </div>
+            </div>
+            <div style="border-top: 1px solid #1e293b; margin-top: 40px; padding-top: 24px; text-align: center; font-size: 0.8rem; color: var(--muted);">
+                &copy; 2024 Canberra Tutoring. <a href="#" style="color: var(--muted); text-decoration: underline;">Terms & Conditions</a>.
+            </div>
+        </div>
+    </footer>
+
+    <div class="sticky-bar" id="stickyCta">
+        <div>
+            <div style="font-weight: 700; color: var(--ink); font-size: 0.9rem;">11 Lessons @ $55</div>
+            <div style="font-size: 0.75rem; color: var(--ct-green);">+ Free Assessment</div>
+        </div>
+        <a href="#audience" class="btn btn-primary" style="padding: 10px 20px; font-size: 0.9rem;">Book Now</a>
+    </div>
+
+    <script>
+        // 1. FAQ Accordion
+        document.querySelectorAll('.faq-head').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const item = btn.parentElement;
+                item.classList.toggle('active');
+            });
+        });
+
+        // 2. Scroll Animation
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('active');
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // 3. Sticky Mobile CTA
+        window.addEventListener('scroll', () => {
+            const cta = document.getElementById('stickyCta');
+            if (window.scrollY > 500) cta.classList.add('visible');
+            else cta.classList.remove('visible');
+        });
+    </script>
+</body>
+</html>
