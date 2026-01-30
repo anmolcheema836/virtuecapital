@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Primary Maths | Canberra Tutoring - Build Mathematical Confidence</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ct-green: #4fa84b;
+            --ct-blue: #205ca4;
+            --ct-yellow: #f4cc23;
+            --ct-mint: #eafce3;
+            --ct-softgreen: #9bc89b;
+            --ink: #0f172a;
+            --muted: #475569;
+            --card: #ffffff;
+            --radius: 24px;
+            --shadow: 0 20px 40px rgba(15, 23, 42, 0.08);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: #f8fafc; 
+            color: var(--ink); 
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3 { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; line-height: 1.1; }
+
+        /* --- Components --- */
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 18px 32px;
+            border-radius: 100px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+            cursor: pointer;
+            border: none;
+            font-size: 1rem;
+        }
+
+        .btn-primary { background: var(--ct-blue); color: white; box-shadow: 0 10px 20px rgba(32, 92, 164, 0.2); }
+        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(32, 92, 164, 0.3); }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        .pulse { animation: pulse 2s infinite ease-in-out; }
+
+        /* --- Hero Section --- */
+        .hero {
+            padding: 120px 0 80px;
+            background: radial-gradient(circle at top right, var(--ct-mint), transparent);
+            text-align: center;
+            position: relative;
+        }
+
+        .hero-badge {
+            background: var(--ct-yellow);
+            padding: 8px 16px;
+            border-radius: 100px;
+            font-weight: 700;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 24px;
+            display: inline-block;
+        }
+
+        .hero h1 { font-size: clamp(2.5rem, 8vw, 4.5rem); margin-bottom: 24px; color: var(--ink); }
+        .hero p { font-size: 1.25rem; color: var(--muted); max-width: 600px; margin: 0 auto 40px; }
+
+        /* --- Offer Card (The "Bento" Block) --- */
+        .offer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            margin-top: -40px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .card {
+            background: var(--card);
+            padding: 40px;
+            border-radius: var(--radius);
+            border: 1px solid rgba(0,0,0,0.05);
+            box-shadow: var(--shadow);
+            transition: transform 0.4s ease;
+        }
+
+        .offer-card {
+            background: var(--ink);
+            color: white;
+            grid-column: span 2;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .price-tag { font-size: 4rem; font-weight: 800; color: var(--ct-yellow); }
+        .price-sub { font-size: 1rem; color: #94a3b8; }
+
+        /* --- Features Section --- */
+        .section-title { text-align: center; margin: 100px 0 60px; }
+        .features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+        .feature-item { text-align: left; }
+        .feature-icon { 
+            width: 60px; height: 60px; background: var(--ct-mint); 
+            border-radius: 18px; display: flex; align-items: center; 
+            justify-content: center; margin-bottom: 20px;
+            color: var(--ct-green); font-size: 1.5rem;
+        }
+
+        /* --- Sticky Mobile CTA --- */
+        .sticky-cta {
+            position: fixed;
+            bottom: 24px;
+            left: 24px;
+            right: 24px;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            padding: 12px 24px;
+            border-radius: 100px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            z-index: 1000;
+            border: 1px solid rgba(255,255,255,0.3);
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .features { grid-template-columns: 1fr; }
+            .offer-card { grid-column: span 1; flex-direction: column; text-align: center; }
+            .hero h1 { font-size: 2.8rem; }
+            .sticky-cta { display: flex; }
+        }
+    </style>
+</head>
+<body>
+
+    <section class="hero">
+        <div class="container">
+            <span class="hero-badge">Canberra's #1 Primary Maths Support</span>
+            <h1>From Confused to <span style="color: var(--ct-green);">Confident.</span></h1>
+            <p>We build mathematical foundations that last a lifetime. Expert local tutors helping Primary students master numbers without the stress.</p>
+            <a href="#book" class="btn btn-primary pulse">Book Free Assessment</a>
+            <div style="margin-top: 20px; font-size: 0.9rem; color: var(--muted);">
+                ⭐️⭐️⭐️⭐️⭐️ 500+ Canberra parents trust us
+            </div>
+        </div>
+    </section>
+
+    <div class="container">
+        <div class="offer-grid">
+            <div class="card offer-card">
+                <div>
+                    <h3 style="font-size: 1.5rem; margin-bottom: 8px;">The Term Starter Pack</h3>
+                    <p style="color: #94a3b8; margin-bottom: 24px;">Everything your child needs to catch up and get ahead.</p>
+                    <ul style="list-style: none; margin-bottom: 24px;">
+                        <li>✅ 11 Personalized Lessons</li>
+                        <li>✅ Free Comprehensive Assessment</li>
+                        <li>✅ Canberra-local Tutors</li>
+                    </ul>
+                </div>
+                <div style="text-align: right;">
+                    <div class="price-tag">$55</div>
+                    <div class="price-sub">per lesson / billed per term</div>
+                </div>
+            </div>
+            <div class="card" style="background: var(--ct-blue); color: white;">
+                <h3>Free Assessment</h3>
+                <p>Identify learning gaps in 45 minutes. No obligation to continue.</p>
+            </div>
+        </div>
+
+        <section id="how-it-works">
+            <div class="section-title">
+                <h2>Our 3-Step Success Path</h2>
+            </div>
+            <div class="features">
+                <div class="feature-item">
+                    <div class="feature-icon">01</div>
+                    <h3>Discover Gaps</h3>
+                    <p>Our initial assessment pinpoints exactly where number sense or logic is stumbling.</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">02</div>
+                    <h3>Custom Match</h3>
+                    <p>We pair your child with a tutor who matches their personality and learning style.</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">03</div>
+                    <h3>Weekly Growth</h3>
+                    <p>Consistent 1-on-1 sessions focus on school alignment and confidence building.</p>
+                </div>
+            </div>
+        </section>
+
+        <section style="margin: 100px 0; background: var(--ct-mint); padding: 60px; border-radius: var(--radius);">
+            <div style="max-width: 600px;">
+                <h2 style="margin-bottom: 20px;">"My son actually looks forward to Maths now."</h2>
+                <p style="font-style: italic; font-size: 1.1rem; margin-bottom: 16px;">"The improvement in his confidence was visible within three weeks. He no longer feels 'dumb' when he sees long division."</p>
+                <strong>— Sarah M., Gungahlin Parent</strong>
+            </div>
+        </section>
+    </div>
+
+    <div class="sticky-cta">
+        <div style="font-weight: 800; font-size: 1.1rem;">$55<span style="font-size: 0.7rem; font-weight: 400;">/lesson</span></div>
+        <a href="#book" class="btn btn-primary" style="padding: 10px 20px; font-size: 0.9rem;">Book Now</a>
+    </div>
+
+    <footer style="padding: 60px 0; text-align: center; color: var(--muted); font-size: 0.8rem;">
+        <div class="container">
+            <p>&copy; 2026 Canberra Tutoring. All rights reserved.</p>
+            <p style="margin-top: 10px;">Term-limited offer. Assessment valid for new students only. Optional written report $55.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Simple scroll reveal observer
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = 1;
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.card, .feature-item').forEach(el => {
+            el.style.opacity = 0;
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'all 0.6s ease-out';
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
