@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiet Progress | Systems Group</title>
+    <style>
+        :root {
+            --bg: #020202;
+            --fg: #ffffff;
+            --accent: #4f46e5;
+            --muted: rgba(255, 255, 255, 0.5);
+            --border: rgba(255, 255, 255, 0.1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg);
+            color: var(--fg);
+            font-family: 'Inter', -apple-system, system-ui, sans-serif;
+            overflow-x: hidden;
+            height: 100vh;
+        }
+
+        #star-field {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .overlay {
+            position: relative;
+            z-index: 1;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 4rem 8%;
+            /* Vignette to ensure text clarity against bright stars */
+            background: radial-gradient(circle at 50% 50%, transparent 0%, rgba(2,2,2,0.6) 100%);
+        }
+
+        nav .logo {
+            font-weight: 800;
+            font-size: 0.75rem;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            border: 1px solid var(--fg);
+            padding: 0.5rem 1rem;
+            display: inline-block;
+        }
+
+        .hero {
+            max-width: 900px;
+            margin-top: 5vh;
+        }
+
+        h1 {
+            font-size: clamp(2rem, 7vw, 4.5rem);
+            font-weight: 400;
+            line-height: 1;
+            letter-spacing: -0.04em;
+            margin-bottom: 3rem;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+        }
+
+        .copy-main {
+            font-size: 1.15rem;
+            line-height: 1.6;
+            color: #fff;
+        }
+
+        .copy-sub {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: var(--muted);
+        }
+
+        .footer {
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .email-link {
+            color: var(--fg);
+            text-decoration: none;
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            background: var(--accent);
+            border-radius: 50%;
+            box-shadow: 0 0 15px var(--accent);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.4; transform: scale(1.2); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        @media (max-width: 768px) {
+            .content-grid { grid-template-columns: 1fr; gap: 2rem; }
+            h1 { font-size: 2.5rem; }
+            .overlay { padding: 2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="star-field"></canvas>
+
+    <div class="overlay">
+        <nav>
+            <div class="logo">SYSTEMS</div>
+        </nav>
+
+        <section class="hero">
+            <h1>Reducing friction by building practical tools and clear systems.</h1>
+            
+            <div class="content-grid">
+                <div class="copy-main">
+                    We are an early-stage technology group currently operating quietly behind the scenes. No, we are not one of those groups claiming to reinvent an entire industry overnight.
+                </div>
+                <div class="copy-sub">
+                    We leave that to those closest to the real problems. We believe that doing this well requires revisiting processes from the ground up to make progress feel straightforward.
+                </div>
+            </div>
+        </section>
+
+        <footer class="footer">
+            <a href="mailto:hello@example.com" class="email-link">
+                <div class="dot"></div>
+                CONTACT@SYSTEMS.GROUP
+            </a>
+        </footer>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('star-field');
+        const ctx = canvas.getContext('2d');
+
+        let width, height;
+        let particles = [];
+        
+        // HIGHER DENSITY SETTINGS
+        const gap = 22; // Reduced gap for more stars
+        const rows = 90; // Increased rows
+        const cols = 130; // Increased columns
+
+        function init() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+            particles = [];
+
+            for (let i = 0; i < cols; i++) {
+                for (let j = 0; j < rows; j++) {
+                    particles.push({
+                        x: i * gap - (cols * gap) / 2,
+                        y: j * gap - (rows * gap) / 2,
+                        z: j * gap,
+                        baseX: i * gap - (cols * gap) / 2,
+                        baseY: j * gap - (rows * gap) / 2,
+                        // Unique twinkle speed
+                        tSpeed: Math.random() * 0.05 + 0.01
+                    });
+                }
+            }
+        }
+
+        function draw() {
+            ctx.fillStyle = '#020202';
+            ctx.fillRect(0, 0, width, height);
+
+            const time = Date.now() * 0.001;
+            const centerX = width / 2;
+            const centerY = height / 2;
+            const fov = 700; 
+
+            // BRIGHTNESS ENHANCEMENT: Makes overlapping stars glow
+            ctx.globalCompositeOperation = 'lighter';
+
+            for (let i = 0; i < particles.length; i++) {
+                const p = particles[i];
+
+                // More dramatic wave logic
+                const wave1 = Math.sin(time * 0.8 + (p.x * 0.004) + (p.y * 0.004)) * 60;
+                const wave2 = Math.cos(time * 0.5 + (p.x * 0.002)) * 40;
+                const zPos = wave1 + wave2;
+
+                // 3D to 2D Projection
+                const scale = fov / (fov + p.z + zPos);
+                const x2d = (p.x * scale) + centerX;
+                const y2d = (p.y * scale) + centerY + (scale * 250); 
+
+                if (x2d > -50 && x2d < width + 50 && y2d > -50 && y2d < height + 50) {
+                    // Brightness based on scale + twinkle
+                    const twinkle = Math.sin(time * 2 + i) * 0.3 + 0.7;
+                    const opacity = Math.min(1, scale * twinkle);
+                    const size = scale * 1.8; // Slightly larger stars
+
+                    ctx.fillStyle = `rgba(255, 255, 255, ${opacity})`;
+                    ctx.beginPath();
+                    ctx.arc(x2d, y2d, size, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            }
+            
+            ctx.globalCompositeOperation = 'source-over';
+            requestAnimationFrame(draw);
+        }
+
+        window.addEventListener('resize', init);
+        init();
+        draw();
+    </script>
+</body>
+</html>
