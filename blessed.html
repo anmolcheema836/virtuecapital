@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blessed Journeys Texas | Home Between Homes</title>
+    <meta name="description" content="Fully furnished, pet-friendly mid-term rentals for families displaced by fire or water damage in the DFW area.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* --- 1. RESET & VARIABLES --- */
+        :root {
+            --color-primary: #800000; /* Brand Burgundy */
+            --color-primary-dark: #5a0000;
+            --color-text-dark: #1a1a1a;
+            --color-text-light: #555555;
+            --color-bg-cream: #F9F7F2;
+            --color-white: #ffffff;
+            --color-border: #e0e0e0;
+            
+            --font-serif: 'Playfair Display', serif;
+            --font-sans: 'Manrope', sans-serif;
+
+            --container-width: 1200px;
+            --spacing-section: 120px;
+            --spacing-mobile: 60px;
+            --border-radius: 4px; /* Sharp/Minimalist corners */
+            --transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: --font-sans;
+            background-color: var(--color-bg-cream);
+            color: var(--color-text-dark);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* --- 2. TYPOGRAPHY --- */
+        h1, h2, h3, h4 {
+            font-family: var(--font-serif);
+            font-weight: 600;
+            line-height: 1.2;
+            color: var(--color-text-dark);
+        }
+
+        h1 {
+            font-size: clamp(3rem, 5vw, 5rem); /* Responsive typography */
+        }
+
+        h2 {
+            font-size: clamp(2.5rem, 4vw, 3.5rem);
+            margin-bottom: 1.5rem;
+        }
+
+        p {
+            font-family: var(--font-sans);
+            font-size: 1.05rem;
+            color: var(--color-text-light);
+            margin-bottom: 1.5rem;
+        }
+
+        .eyebrow {
+            display: block;
+            font-family: var(--font-sans);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: var(--color-primary);
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: var(--transition);
+        }
+
+        /* --- 3. UTILITIES --- */
+        .container {
+            max-width: var(--container-width);
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 18px 36px;
+            border: 1px solid var(--color-primary);
+            background-color: var(--color-primary);
+            color: var(--color-white);
+            font-family: var(--font-sans);
+            font-weight: 600;
+            font-size: 0.9rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn:hover {
+            background-color: transparent;
+            color: var(--color-primary);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            color: var(--color-white);
+            border-color: var(--color-white);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--color-white);
+            color: var(--color-text-dark);
+        }
+
+        /* --- 4. NAVIGATION --- */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 5px 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            transition: var(--transition);
+        }
+
+        .nav-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 100px;
+            width: auto;
+            display: block;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            font-family: var(--font-sans);
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--color-text-dark);
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0%;
+            height: 1px;
+            background-color: var(--color-primary);
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-phone {
+            font-family: var(--font-serif);
+            font-weight: 700;
+            color: var(--color-primary);
+            font-size: 1.1rem;
+        }
+
+        .mobile-toggle {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* --- 5. HERO SECTION --- */
+        .hero {
+            position: relative;
+            height: 100vh;
+            min-height: 600px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -2;
+            animation: zoomSlow 20s infinite alternate;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.6));
+            z-index: -1;
+        }
+
+        .hero h1 {
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            color: rgba(255,255,255,0.9);
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto 40px auto;
+        }
+
+        .hero-btns {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        /* --- 6. ABOUT / MISSION --- */
+        .section-padding {
+            padding: var(--spacing-section) 0;
+        }
+
+        .split-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+        }
+
+        .about-image-wrapper {
+            position: relative;
+            overflow: hidden;
+            border-radius: var(--border-radius);
+        }
+
+        .about-image-wrapper img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 1s ease;
+        }
+
+        .about-image-wrapper:hover img {
+            transform: scale(1.05);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 30px;
+            border: 1px solid var(--color-border);
+            transition: var(--transition);
+        }
+
+        .feature-card:hover {
+            border-color: var(--color-primary);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+
+        .feature-card i {
+            color: var(--color-primary);
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .feature-card h4 {
+            margin-bottom: 10px;
+            font-family: var(--font-sans);
+            font-size: 1.1rem;
+        }
+
+        .feature-card p {
+            font-size: 0.9rem;
+            margin-bottom: 0;
+        }
+
+        /* --- 7. PROPERTIES --- */
+        .filter-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 50px;
+        }
+
+        .filter-btn {
+            padding: 10px 25px;
+            background: transparent;
+            border: 1px solid var(--color-border);
+            border-radius: 50px;
+            font-family: var(--font-sans);
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .filter-btn.active, .filter-btn:hover {
+            background: var(--color-primary);
+            color: white;
+            border-color: var(--color-primary);
+        }
+
+        .property-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 40px;
+        }
+
+        .property-card {
+            background: white;
+            border: 1px solid var(--color-border);
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .property-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+        }
+
+        .property-img-box {
+            height: 280px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .property-img-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        .property-card:hover .property-img-box img {
+            transform: scale(1.1);
+        }
+
+        .property-details {
+            padding: 30px;
+        }
+
+        .property-city {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--color-primary);
+            margin-bottom: 5px;
+            font-weight: 700;
+        }
+
+        .property-title {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            font-family: var(--font-serif);
+        }
+
+        /* --- 8. REVIEWS --- */
+        .reviews-section {
+            background-color: white;
+            text-align: center;
+        }
+
+        .reviews-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            text-align: left;
+        }
+
+        .review-card {
+            background: var(--color-bg-cream);
+            padding: 40px;
+            border-radius: var(--border-radius);
+            position: relative;
+        }
+
+        .review-card::before {
+            content: '“';
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-family: var(--font-serif);
+            font-size: 5rem;
+            color: rgba(128, 0, 0, 0.1);
+            line-height: 1;
+        }
+
+        .stars {
+            color: #D4AF37; /* Gold */
+            font-size: 0.8rem;
+            margin-bottom: 20px;
+        }
+
+        .review-text {
+            font-family: var(--font-serif);
+            font-style: italic;
+            font-size: 1.2rem;
+            color: var(--color-text-dark);
+        }
+
+        .review-author {
+            margin-top: 20px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--color-text-dark);
+        }
+
+        .review-date {
+            font-size: 0.8rem;
+            color: var(--color-text-light);
+            font-weight: 400;
+        }
+
+        /* --- 9. CONTACT --- */
+        .contact-section {
+            background-color: #111;
+            color: white;
+        }
+
+        .contact-section h2, .contact-section p, .contact-section .eyebrow {
+            color: white;
+        }
+        
+        .contact-section .eyebrow {
+            color: var(--color-primary);
+        }
+
+        .contact-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+        }
+
+        .contact-info-item {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .contact-icon {
+            width: 50px;
+            height: 50px;
+            border: 1px solid rgba(255,255,255,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: var(--color-primary);
+        }
+
+        form {
+            background: white;
+            padding: 40px;
+            border-radius: var(--border-radius);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #888;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid #ddd;
+            background: #f9f9f9;
+            font-family: var(--font-sans);
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--color-primary);
+            background: white;
+        }
+
+        /* --- 10. FOOTER --- */
+        footer {
+            background-color: black;
+            color: #666;
+            padding: 40px 0;
+            font-size: 0.9rem;
+            border-top: 1px solid #222;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* --- ANIMATIONS --- */
+        @keyframes zoomSlow {
+            from { transform: scale(1); }
+            to { transform: scale(1.1); }
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- MEDIA QUERIES --- */
+        @media (max-width: 900px) {
+            .split-layout, .contact-layout, .reviews-container {
+                grid-template-columns: 1fr;
+                gap: 50px;
+            }
+            .hero-btns {
+                flex-direction: column;
+            }
+            .nav-links {
+                display: none; /* Hide Desktop Menu */
+            }
+            .mobile-toggle {
+                display: block;
+            }
+            /* Mobile Menu Overlay Styles would go here */
+            .section-padding {
+                padding: var(--spacing-mobile) 0;
+            }
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+        }
+        
+        /* Helper for the mobile menu */
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: white;
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 30px;
+            transform: translateX(100%);
+            transition: transform 0.4s ease;
+        }
+        
+        .mobile-menu.active {
+            transform: translateX(0);
+        }
+        
+        .mobile-menu a {
+            font-family: var(--font-serif);
+            font-size: 2rem;
+            color: var(--color-text-dark);
+        }
+        
+        .close-menu {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 2rem;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="container nav-wrapper">
+            <a href="#" class="logo">
+                <img src="https://www.freelancer.com/fs/download-api.php?type=contest&id=2695398&filename=logo%20blessed%20journeys%20for%20square.jpg" alt="Blessed Journeys Logo">
+            </a>
+            
+            <div class="nav-links">
+                <a href="#mission">Our Mission</a>
+                <a href="#properties">Our Homes</a>
+                <a href="#reviews">Reviews</a>
+                <a href="#contact">Contact</a>
+                <a href="tel:6783138321" class="nav-phone">678-313-8321</a>
+            </div>
+
+            <div class="mobile-toggle" onclick="toggleMenu()">
+                <i class="fa-solid fa-bars"></i>
+            </div>
+        </div>
+    </nav>
+
+    <div class="mobile-menu" id="mobileMenu">
+        <div class="close-menu" onclick="toggleMenu()">&times;</div>
+        <a href="#mission" onclick="toggleMenu()">Our Mission</a>
+        <a href="#properties" onclick="toggleMenu()">Our Homes</a>
+        <a href="#reviews" onclick="toggleMenu()">Reviews</a>
+        <a href="#contact" onclick="toggleMenu()">Contact</a>
+        <a href="tel:6783138321" style="color: var(--color-primary); font-size: 1.5rem;">678-313-8321</a>
+    </div>
+
+    <header class="hero">
+        <img src="https://img1.wsimg.com/isteam/ip/52e7b5d4-cd49-4fda-a894-e6e645830931/zl2404153-1000.jpg/:/rs=w:2000,m" alt="Luxury Living Room" class="hero-bg">
+        <div class="hero-overlay"></div>
+        
+        <div class="container fade-in">
+            <span class="eyebrow" style="color: white; opacity: 0.8;">Welcome to Blessed Journeys Texas</span>
+            <h1>Find Your Home <br> <span style="font-style: italic; font-weight: 400;">Between Homes</span></h1>
+            <p>When life disrupts your home, we provide a haven. Fully furnished, pet-friendly housing for families displaced by fire or water damage.</p>
+            
+            <div class="hero-btns">
+                <a href="#properties" class="btn">View Available Homes</a>
+                <a href="tel:6783138321" class="btn btn-outline">Call 678-313-8321</a>
+            </div>
+        </div>
+    </header>
+
+    <section id="mission" class="section-padding">
+        <div class="container">
+            <div class="split-layout">
+                <div class="about-image-wrapper fade-in">
+                    <img src="https://img1.wsimg.com/isteam/ip/52e7b5d4-cd49-4fda-a894-e6e645830931/zl2311061-2002.jpg/:/rs=w:1200,m" alt="Comfortable Bedroom">
+                </div>
+                <div class="fade-in">
+                    <span class="eyebrow">What Makes Us Different?</span>
+                    <h2>More than a rental.<br>A sanctuary.</h2>
+                    <p>We own and manage 31+ properties with attention to style, comfort, and cleanliness. Unlike traditional "flippers," we infuse love into every project. We collaborate directly with relocation companies to help you find peace while your home is restored.</p>
+                    <p style="font-family: var(--font-serif); font-size: 1.2rem; color: var(--color-primary); font-style: italic;">"May God bless you on your journey!"</p>
+                    
+                    <div class="features-grid">
+                        <div class="feature-card">
+                            <i class="fa-solid fa-paw"></i>
+                            <h4>Pet Friendly</h4>
+                            <p>No carpet and fully fenced backyards for your furry family members.</p>
+                        </div>
+                        <div class="feature-card">
+                            <i class="fa-regular fa-calendar-check"></i>
+                            <h4>Flexible Terms</h4>
+                            <p>One reservation until you are ready. 30-day notice to vacate.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="properties" class="section-padding" style="background-color: white;">
+        <div class="container">
+            <div style="text-align: center; margin-bottom: 60px;" class="fade-in">
+                <span class="eyebrow">Inventory</span>
+                <h2>Our Homes</h2>
+                <p style="max-width: 600px; margin: 0 auto;">Browse our inventory of fully furnished homes. Availability changes often, so please contact us for real-time status.</p>
+            </div>
+
+            <div class="filter-container fade-in">
+                <button class="filter-btn active" onclick="filterHomes('all', this)">All Locations</button>
+                <button class="filter-btn" onclick="filterHomes('Frisco', this)">Frisco</button>
+                <button class="filter-btn" onclick="filterHomes('McKinney', this)">McKinney</button>
+                <button class="filter-btn" onclick="filterHomes('Plano', this)">Plano</button>
+                <button class="filter-btn" onclick="filterHomes('Little Elm', this)">Little Elm</button>
+                <button class="filter-btn" onclick="filterHomes('The Colony', this)">The Colony</button>
+            </div>
+
+            <div id="propertyGrid" class="property-grid fade-in">
+                </div>
+        </div>
+    </section>
+
+    <section id="reviews" class="section-padding">
+        <div class="container">
+            <div style="text-align: center; margin-bottom: 60px;" class="fade-in">
+                <span class="eyebrow">Guest Experiences</span>
+                <h2>What Our Guests Say</h2>
+            </div>
+
+            <div class="reviews-container fade-in">
+                <div class="review-card">
+                    <div class="stars">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="review-text">I had a fabulous stay! I spent a month while my house was being renovated and this was a perfect house! I would 100% stay in this house again!</p>
+                    <div class="review-author">Lisa <span class="review-date">| April 2024</span></div>
+                </div>
+
+                <div class="review-card">
+                    <div class="stars">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="review-text">Just what we needed while having home repairs done. Nice backyard and walkable neighborhood. Close to grocery stores and a park.</p>
+                    <div class="review-author">Jacqueline <span class="review-date">| March 2024</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="contact-section section-padding">
+        <div class="container">
+            <div class="contact-layout">
+                <div class="fade-in">
+                    <span class="eyebrow">Get in Touch</span>
+                    <h2>Let us find your<br>Home Between Homes.</h2>
+                    <p style="margin-bottom: 40px; color: #aaa;">Urgent placements are our specialty. Whether you are a displaced homeowner or an adjuster, reach out anytime.</p>
+                    
+                    <div class="contact-info-item">
+                        <div class="contact-icon"><i class="fa-solid fa-phone"></i></div>
+                        <div>
+                            <span class="eyebrow" style="color: #666; margin-bottom: 5px;">Call or Text</span>
+                            <a href="tel:6783138321" style="font-size: 1.5rem; font-family: var(--font-serif);">678-313-8321</a>
+                        </div>
+                    </div>
+
+                    <div class="contact-info-item">
+                        <div class="contact-icon"><i class="fa-solid fa-map-location-dot"></i></div>
+                        <div>
+                            <span class="eyebrow" style="color: #666; margin-bottom: 5px;">Service Areas</span>
+                            <p style="color: white; margin-bottom: 0;">Frisco, McKinney, Plano, Little Elm, Prosper, The Colony, Denton, Fort Worth</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="fade-in">
+                    <form action="#" method="POST">
+                        <h3 style="margin-bottom: 20px;">Request Inventory</h3>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                            <div class="form-group">
+                                <label>First Name</label>
+                                <input type="text" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Last Name</label>
+                                <input type="text" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Email Address</label>
+                            <input type="email" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Message / Requirements</label>
+                            <textarea rows="4" class="form-control" placeholder="e.g. Need 4 bedroom in Plano starting next week..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn" style="width: 100%; border: none;">Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container footer-content">
+            <div>
+                <strong style="color: white; font-family: var(--font-serif); font-size: 1.2rem;">Blessed Journeys Texas</strong>
+                <div style="margin-top: 5px;">© 2026 All Rights Reserved.</div>
+            </div>
+            <div style="display: flex; gap: 20px;">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Data
+        const properties = [
+            { id: 1, city: 'Frisco', title: 'The Frisco Haven', desc: 'Remodeled Kitchen • King Bed Master', img: 'https://img1.wsimg.com/isteam/ip/52e7b5d4-cd49-4fda-a894-e6e645830931/lw2307181-2005.jpg/:/rs=w:600,h:400,cg:true,m' },
+            { id: 2, city: 'McKinney', title: 'McKinney Retreat', desc: 'Spacious Bedroom • Office Setup', img: 'https://img1.wsimg.com/isteam/ip/52e7b5d4-cd49-4fda-a894-e6e645830931/hs2208312-2015.jpg/:/rs=w:600,h:400,cg:true,m' },
+            { id: 3, city: 'Plano', title: 'Plano Modern', desc: 'Luxury Bath • Fenced Yard', img: 'https://img1.wsimg.com/isteam/ip/52e7b5d4-cd49-4fda-a894-e6e645830931/au2408091-1035.jpg/:/rs=w:600,h:400,cg:true,m' },
+            { id: 4, city: 'The Colony', title: 'Lakeside Comfort', desc: 'Open Concept • Pet Friendly', img: 'https://img1.wsimg.com/isteam/ip/52e7b5d4-cd49-4fda-a894-e6e645830931/zl2404153-1000.jpg/:/rs=w:600,h:400,cg:true,m' },
+            { id: 5, city: 'Little Elm', title: 'Little Elm Sanctuary', desc: 'Dual Vanity • Walk-in Closet', img: 'https://img1.wsimg.com/isteam/ip/52e7b5d4-cd49-4fda-a894-e6e645830931/au2408091-1025.jpg/:/rs=w:600,h:400,cg:true,m' },
+            { id: 6, city: 'Prosper', title: 'Prosper Family Home', desc: 'Fully Equipped • Quiet Street', img: 'https://img1.wsimg.com/isteam/ip/52e7b5d4-cd49-4fda-a894-e6e645830931/lw2211052-2017.jpg/:/rs=w:600,h:400,cg:true,m' }
+        ];
+
+        // Render Properties
+        const grid = document.getElementById('propertyGrid');
+
+        function renderHomes(filter = 'all') {
+            grid.innerHTML = ''; 
+            const filtered = filter === 'all' ? properties : properties.filter(p => p.city === filter);
+
+            if(filtered.length === 0) {
+                grid.innerHTML = `<div style="grid-column: 1/-1; text-align: center; padding: 40px; border: 1px dashed #ccc; color: #666;">No properties currently displayed for ${filter}. <a href="#contact" style="color: var(--color-primary); font-weight: bold;">Contact us</a> for upcoming availability.</div>`;
+                return;
+            }
+
+            filtered.forEach((p, index) => {
+                const card = document.createElement('div');
+                card.className = 'property-card fade-in';
+                card.innerHTML = `
+                    <div class="property-img-box">
+                        <img src="${p.img}" alt="${p.title}">
+                    </div>
+                    <div class="property-details">
+                        <div class="property-city">${p.city}</div>
+                        <h3 class="property-title">${p.title}</h3>
+                        <p style="font-size: 0.9rem; margin-bottom: 20px;">${p.desc}</p>
+                        <a href="#contact" style="font-weight: 700; font-size: 0.85rem; border-bottom: 2px solid var(--color-primary);">VIEW DETAILS</a>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+            
+            // Re-trigger animations for new elements
+            observeElements(); 
+        }
+
+        // Filtering Logic
+        function filterHomes(city, btn) {
+            // Update buttons
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            
+            // Render
+            renderHomes(city);
+        }
+
+        // Mobile Menu Toggle
+        function toggleMenu() {
+            document.getElementById('mobileMenu').classList.toggle('active');
+        }
+
+        // Scroll Animation (Intersection Observer)
+        function observeElements() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+        }
+
+        // Init
+        document.addEventListener('DOMContentLoaded', () => {
+            renderHomes();
+            observeElements();
+        });
+    </script>
+</body>
+</html>

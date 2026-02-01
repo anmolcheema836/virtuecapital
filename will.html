@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Be My Valentine? 💖</title>
+    <!-- Importing Premium Rounded Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&family=Pacifico&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- RESET & CORE --- */
+        * {
+            box-sizing: border-box;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            /* ORIGINAL THEME RESTORED */
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%);
+            font-family: 'Nunito', sans-serif;
+        }
+
+        /* --- BACKGROUND BALLOONS --- */
+        .balloon {
+            position: absolute;
+            bottom: -50px;
+            width: 30px;
+            height: 30px;
+            background-color: rgba(255, 255, 255, 0.6);
+            border-radius: 50%;
+            animation: floatUp 15s linear infinite;
+            z-index: 0;
+        }
+        
+        .balloon::before, .balloon::after {
+             content: '';
+             position: absolute;
+             width: 100%;
+             height: 100%;
+             background: inherit;
+             border-radius: 50%;
+        }
+        .balloon::before { left: -15px; }
+        .balloon::after { top: -15px; }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.8; }
+            100% { transform: translateY(-110vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* --- MAIN GLASS CARD --- */
+        .card {
+            position: relative;
+            z-index: 10;
+            background: rgba(255, 255, 255, 0.90); /* Slightly more opaque for readability */
+            backdrop-filter: blur(12px);
+            width: 90%;
+            max-width: 500px;
+            min-height: 550px; /* Fixed height for movement space */
+            border-radius: 30px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+            border: 2px solid rgba(255,255,255,0.8);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 30px 20px;
+        }
+
+        /* --- CONTENT STYLING --- */
+        .gif-area {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            margin-bottom: 15px;
+            pointer-events: none; 
+        }
+
+        .gif-area img {
+            width: 180px;
+            height: auto;
+            border-radius: 15px;
+            filter: drop-shadow(0 5px 10px rgba(0,0,0,0.1));
+        }
+
+        h1 {
+            font-family: 'Pacifico', cursive;
+            color: #ff3366;
+            font-size: 2.2rem;
+            text-align: center;
+            margin: 10px 0 30px 0;
+            text-shadow: 2px 2px 0px rgba(255,255,255,0.8);
+        }
+
+        /* --- BUTTON LAYOUT --- */
+        .btn-container {
+            position: relative;
+            width: 100%;
+            height: 60px; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+        }
+
+        button {
+            padding: 14px 32px;
+            font-size: 1.1rem;
+            font-weight: 800;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-family: 'Nunito', sans-serif;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.2s; /* Only for click effect */
+        }
+
+        #yes-btn {
+            background: linear-gradient(to right, #ff4d6d, #ff3366);
+            color: white;
+            z-index: 100; /* Yes is always on top */
+            position: relative;
+        }
+        
+        #yes-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(255, 51, 102, 0.4);
+        }
+
+        #no-btn {
+            background: white;
+            color: #ff3366;
+            border: 2px solid #ff3366;
+            position: relative; /* Starts strictly relative next to Yes */
+            z-index: 90; 
+            /* Smooth movement animation */
+            transition: left 0.2s ease-out, top 0.2s ease-out;
+        }
+
+        .shy-text {
+            margin-top: auto;
+            color: #ff8fab;
+            font-weight: 700;
+            font-size: 1rem;
+            padding-top: 20px;
+        }
+
+        .hidden { display: none !important; }
+        
+        #success-view {
+            text-align: center;
+            animation: popIn 0.5s ease;
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div id="balloons-container"></div>
+
+    <div class="card" id="main-card">
+        
+        <!-- ASKING VIEW -->
+        <div id="asking-view" style="width:100%; height:100%; display:flex; flex-direction:column; align-items:center;">
+            <div class="gif-area">
+                <!-- ORIGINAL MOCHI BEAR GIF -->
+                <img src="https://i.pinimg.com/originals/09/1d/17/091d176dcb68fc33b11444d99becfd7d.gif" alt="Cute Bear">
+            </div>
+
+            <h1>Will you be my Valentine?</h1>
+
+            <div class="btn-container">
+                <button id="yes-btn">Yes</button>
+                <button id="no-btn">No</button>
+            </div>
+
+            <p class="shy-text" id="status-msg">"No" is feeling a bit shy...</p>
+        </div>
+
+        <!-- SUCCESS VIEW -->
+        <div id="success-view" class="hidden">
+            <div class="gif-area">
+                <img src="https://media1.tenor.com/m/gUiu1zyxfzYAAAAC/bear-kiss-bear-kisses.gif" alt="Bear Kiss">
+            </div>
+            <h1>YAY! I knew it! 💖</h1>
+            <p style="color: #555; font-size: 1.2rem;">Can't wait! 🥰</p>
+        </div>
+
+    </div>
+
+    <script>
+        const noBtn = document.getElementById('no-btn');
+        const yesBtn = document.getElementById('yes-btn');
+        const card = document.getElementById('main-card');
+        const statusMsg = document.getElementById('status-msg');
+        
+        let yesScale = 1;
+        let isAbsolute = false;
+
+        // Balloons Logic
+        function createBalloons() {
+            const container = document.getElementById('balloons-container');
+            for(let i=0; i < 15; i++){
+                let balloon = document.createElement('div');
+                balloon.className = 'balloon';
+                balloon.style.left = Math.random() * 100 + 'vw';
+                balloon.style.animationDuration = (Math.random() * 5 + 10) + 's';
+                balloon.style.animationDelay = Math.random() * 5 + 's';
+                container.appendChild(balloon);
+            }
+        }
+        createBalloons();
+
+        // --- BUTTON MOVEMENT LOGIC ---
+        function runAway() {
+            // 1. First time interaction: Switch to absolute positioning
+            if (!isAbsolute) {
+                const btnRect = noBtn.getBoundingClientRect();
+                const cardRect = card.getBoundingClientRect();
+                
+                // Calculate position relative to the card
+                const leftPos = btnRect.left - cardRect.left;
+                const topPos = btnRect.top - cardRect.top;
+
+                // Apply absolute position freezing it in current place
+                noBtn.style.position = 'absolute';
+                noBtn.style.left = leftPos + 'px';
+                noBtn.style.top = topPos + 'px';
+                isAbsolute = true;
+            }
+
+            // 2. Define Boundaries (Inside the card padding)
+            // Padding of 30px ensures it never touches the edge
+            const padding = 30;
+            const maxX = card.offsetWidth - noBtn.offsetWidth - padding;
+            const maxY = card.offsetHeight - noBtn.offsetHeight - padding;
+            const minX = padding;
+            const minY = padding;
+
+            // 3. Calculate New Position (Short Hops)
+            // Move max 60px in any direction
+            const moveRange = 60; 
+            
+            // Get current values
+            let currentX = parseFloat(noBtn.style.left);
+            let currentY = parseFloat(noBtn.style.top);
+
+            let safe = false;
+            let attempts = 0;
+            let finalX, finalY;
+
+            // Try to find a spot that is (A) Inside card and (B) Not on top of YES button
+            while (!safe && attempts < 20) {
+                // Generate random small movement
+                let randomX = (Math.random() * moveRange * 2) - moveRange;
+                let randomY = (Math.random() * moveRange * 2) - moveRange;
+
+                let tempX = currentX + randomX;
+                let tempY = currentY + randomY;
+
+                // Clamp within boundaries
+                if (tempX < minX) tempX = minX;
+                if (tempX > maxX) tempX = maxX;
+                if (tempY < minY) tempY = minY;
+                if (tempY > maxY) tempY = maxY;
+
+                // Check collision with YES button
+                const yesRect = yesBtn.getBoundingClientRect();
+                const cardRect = card.getBoundingClientRect();
+                
+                // Convert Yes button global coords to card-relative coords
+                const yesX = yesRect.left - cardRect.left;
+                const yesY = yesRect.top - cardRect.top;
+                const yesW = yesRect.width;
+                const yesH = yesRect.height;
+
+                // Check simple rectangle overlap
+                // We add a 10px buffer so they don't even touch
+                const buffer = 10;
+                const noW = noBtn.offsetWidth;
+                const noH = noBtn.offsetHeight;
+
+                // Collision formula
+                const isOverlapping = !(
+                    (tempX + noW + buffer < yesX) ||
+                    (tempX > yesX + yesW + buffer) ||
+                    (tempY + noH + buffer < yesY) ||
+                    (tempY > yesY + yesH + buffer)
+                );
+
+                if (!isOverlapping) {
+                    finalX = tempX;
+                    finalY = tempY;
+                    safe = true;
+                }
+                attempts++;
+            }
+
+            // If we couldn't find a safe spot in 20 tries (rare), just move slightly
+            if (!safe) {
+                finalX = currentX + 10;
+                finalY = currentY + 10;
+            }
+
+            // 4. Apply new coordinates
+            noBtn.style.left = finalX + 'px';
+            noBtn.style.top = finalY + 'px';
+
+            // 5. Expand Yes Button
+            yesScale += 0.1;
+            yesBtn.style.transform = `scale(${yesScale})`;
+
+            // 6. Update Text
+            const phrases = ["Oops!", "Missed!", "Try again!", "Too slow!", "Not here!", "Almost!"];
+            statusMsg.innerText = phrases[Math.floor(Math.random() * phrases.length)];
+        }
+
+        // Mouseover for desktop
+        noBtn.addEventListener('mouseover', runAway);
+        
+        // Touchstart for mobile (prevents clicking)
+        noBtn.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            runAway();
+        });
+
+        // Yes Button Logic
+        yesBtn.addEventListener('click', () => {
+            document.getElementById('asking-view').classList.add('hidden');
+            document.getElementById('success-view').classList.remove('hidden');
+        });
+
+    </script>
+</body>
+</html>
