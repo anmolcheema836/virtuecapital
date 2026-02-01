@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bio Link Builder • Ultimate</title>
+    
+    <!-- Premium Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Cinzel:wght@700&family=DM+Sans:wght@400;500;700&family=Fredoka:wght@400;600&family=Inter:wght@300;400;600;800&family=Orbitron:wght@500;900&family=Playfair+Display:ital,wght@0,600;1,600&family=Press+Start+2P&family=Space+Grotesk:wght@500;700&family=Special+Elite&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- APP UI RESET --- */
+        :root {
+            --ui-bg: #f8fafc;
+            --ui-panel: #ffffff;
+            --ui-border: #e2e8f0;
+            --ui-text-main: #0f172a;
+            --ui-text-muted: #64748b;
+            --ui-accent: #2563eb;
+            --radius: 12px;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; outline: none; -webkit-tap-highlight-color: transparent; }
+        body { font-family: 'Inter', sans-serif; height: 100vh; overflow: hidden; color: var(--ui-text-main); background: var(--ui-bg); }
+
+        /* --- LAYOUT GRID --- */
+        .app-shell { display: flex; width: 100vw; height: 100vh; }
+        
+        .sidebar { width: 300px; background: var(--ui-panel); border-right: 1px solid var(--ui-border); display: flex; flex-direction: column; z-index: 10; }
+        .sidebar-right { border-right: none; border-left: 1px solid var(--ui-border); width: 340px; }
+        
+        .panel-header { padding: 20px; border-bottom: 1px solid var(--ui-border); background: #fff; }
+        .panel-header h2 { font-size: 16px; font-weight: 700; }
+        .panel-header p { font-size: 12px; color: var(--ui-text-muted); margin-top: 4px; }
+        
+        .panel-scroll { flex: 1; overflow-y: auto; padding: 16px; scrollbar-width: thin; }
+        
+        /* CENTER CANVAS */
+        .canvas-area { flex: 1; display: flex; flex-direction: column; background: #f1f5f9; position: relative; }
+        .canvas-header { height: 60px; background: rgba(255,255,255,0.8); backdrop-filter: blur(10px); border-bottom: 1px solid var(--ui-border); display: flex; align-items: center; justify-content: space-between; padding: 0 24px; }
+        
+        .preview-container { flex: 1; display: flex; align-items: center; justify-content: center; overflow: hidden; padding: 40px; }
+        
+        /* PHONE SIMULATOR */
+        .phone-frame {
+            width: 320px; height: 650px;
+            background: #fff; border-radius: 45px;
+            border: 10px solid #1e293b;
+            box-shadow: 0 50px 100px -20px rgba(0,0,0,0.3);
+            position: relative; overflow: hidden;
+            transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        
+        /* --- INTERNAL PHONE CONTENT --- */
+        .bio-page {
+            height: 100%; width: 100%; overflow-y: auto;
+            padding: 50px 20px 20px 20px;
+            display: flex; flex-direction: column; align-items: center;
+            /* Default Theme Vars */
+            --bg: #fff; --text: #000; --btn-bg: #eee; --btn-text: #000;
+            background: var(--bg); color: var(--text);
+            font-family: 'Inter', sans-serif;
+            position: relative;
+            scrollbar-width: none;
+        }
+        .bio-page::-webkit-scrollbar { display: none; }
+        
+        /* GAME CANVAS LAYER */
+        #game-canvas {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 0; opacity: 0; transition: opacity 0.5s; pointer-events: none;
+        }
+
+        /* Content Z-Index */
+        .bio-avatar, .bio-name, .bio-desc, .links-stack { z-index: 2; position: relative; }
+
+        .bio-avatar {
+            width: 90px; height: 90px; border-radius: 50%; margin-bottom: 16px;
+            background: #ddd; background-size: cover; background-position: center;
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s;
+        }
+        .bio-avatar:hover { transform: scale(1.05); }
+
+        .bio-name { font-size: 22px; font-weight: 800; margin-bottom: 4px; letter-spacing: -0.5px; text-align: center; }
+        .bio-desc { font-size: 14px; opacity: 0.8; margin-bottom: 32px; text-align: center; line-height: 1.4; max-width: 250px; }
+        
+        .links-stack { width: 100%; display: flex; flex-direction: column; gap: 12px; padding-bottom: 40px; }
+        
+        .link-item {
+            display: flex; align-items: center; justify-content: center;
+            width: 100%; min-height: 54px; padding: 12px 20px;
+            text-decoration: none; font-weight: 600; font-size: 14px;
+            cursor: pointer; position: relative;
+            background: var(--btn-bg); color: var(--btn-text);
+            border-radius: 12px;
+            transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+            opacity: 0; 
+            user-select: none;
+            animation: slideUpFade 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        .link-item:active { transform: scale(0.95) !important; }
+        
+        .link-item svg { width: 20px; height: 20px; position: absolute; left: 16px; transition: transform 0.2s; }
+        .link-text { text-align: center; width: 100%; }
+
+        .link-item:nth-child(1) { animation-delay: 0.1s; }
+        .link-item:nth-child(2) { animation-delay: 0.2s; }
+        .link-item:nth-child(3) { animation-delay: 0.3s; }
+        .link-item:nth-child(4) { animation-delay: 0.4s; }
+
+        /* --- GLOBAL KEYFRAMES --- */
+        @keyframes slideUpFade { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+        @keyframes glitch { 0% { transform: translate(0); } 20% { transform: translate(-2px, 2px); } 40% { transform: translate(-2px, -2px); } 60% { transform: translate(2px, 2px); } 80% { transform: translate(2px, -2px); } 100% { transform: translate(0); } }
+        @keyframes neonPulse { 0%,100% { box-shadow: 0 0 10px #0ff; } 50% { box-shadow: 0 0 25px #0ff, 0 0 50px #0ff; } }
+        @keyframes spinSlow { to { transform: rotate(360deg); } }
+        @keyframes shake { 0%,100% {transform:rotate(0deg);} 25% {transform:rotate(2deg);} 75% {transform:rotate(-2deg);} }
+        @keyframes scanline { 0% {background-position: 0 0;} 100% {background-position: 0 100%;} }
+
+        /* --- THEME LIBRARY --- */
+
+        /* 1. CLEAN */
+        [data-theme="clean"] { --bg: #fff; --text: #111; --btn-bg: #f3f4f6; --btn-text: #000; }
+        [data-theme="clean"] .link-item:hover { background: #e2e8f0; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+
+        /* 2. DARK MODE */
+        [data-theme="dark"] { --bg: #0f172a; --text: #fff; --btn-bg: #1e293b; --btn-text: #fff; }
+        [data-theme="dark"] .link-item:hover { background: #334155; transform: translateY(-2px); }
+
+        /* 3. OCEAN (Gradient) */
+        [data-theme="ocean"] {
+            background: linear-gradient(180deg, #d4fc79 0%, #96e6a1 100%); color: #064e3b;
+            --btn-bg: rgba(255,255,255,0.6); --btn-text: #064e3b;
+        }
+        [data-theme="ocean"] .bio-avatar { border: 4px solid #fff; animation: float 6s ease-in-out infinite; }
+        [data-theme="ocean"] .link-item { backdrop-filter: blur(5px); border: 1px solid #fff; }
+        [data-theme="ocean"] .link-item:hover { background: #fff; transform: translateY(-3px) scale(1.02); box-shadow: 0 10px 20px rgba(6, 78, 59, 0.15); }
+
+        /* 4. CYBERPUNK */
+        [data-theme="cyber"] {
+            background: #050505; color: #0ff; font-family: 'Orbitron', sans-serif;
+            background-image: linear-gradient(rgba(0, 255, 255, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 255, 255, 0.05) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+        [data-theme="cyber"] .bio-name { text-shadow: 2px 2px 0 #f0f; animation: glitch 3s infinite steps(1); }
+        [data-theme="cyber"] .bio-avatar { border: 2px solid #0ff; box-shadow: 0 0 15px #0ff; border-radius: 8px; }
+        [data-theme="cyber"] .link-item {
+            background: rgba(0,0,0,0.8); border: 1px solid #0ff; color: #0ff; border-radius: 2px;
+            clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+        }
+        [data-theme="cyber"] .link-item:hover { background: #0ff; color: #000; box-shadow: 0 0 20px #0ff; transform: translate(-2px, -2px); }
+        [data-theme="cyber"] .link-item:hover svg { transform: rotate(90deg); }
+
+        /* 5. RETRO 90s (Triggers PONG Game) */
+        [data-theme="retro"] {
+            background: #000000; color: #fff; font-family: 'Press Start 2P', cursive;
+        }
+        [data-theme="retro"] .bio-name { font-size: 14px; margin-top:10px; text-shadow: 2px 2px #555; }
+        [data-theme="retro"] .bio-desc { font-size: 10px; font-family: 'Inter', sans-serif; margin-bottom: 20px; }
+        [data-theme="retro"] .bio-avatar { border-radius: 0; border: 4px solid #fff; }
+        [data-theme="retro"] .link-item {
+            border-radius: 0; background: #000; border: 2px solid #fff;
+            box-shadow: 4px 4px 0 #fff; color: #fff;
+            font-size: 10px; margin-bottom: 8px;
+        }
+        [data-theme="retro"] .link-item:active { box-shadow: 0px 0px 0 #fff; transform: translate(4px, 4px) !important; }
+        [data-theme="retro"] .link-item:hover { background: #fff; color: #000; }
+
+        /* 6. GLASSMORPHISM */
+        [data-theme="glass"] {
+            color: #fff; font-family: 'DM Sans', sans-serif;
+            background: linear-gradient(45deg, #FF9A9E 0%, #FECFEF 99%, #FECFEF 100%);
+        }
+        [data-theme="glass"] .bio-page::before {
+            content: ''; position: absolute; top: -50px; right: -50px; width: 200px; height: 200px;
+            background: #84fab0; filter: blur(60px); opacity: 0.6; animation: float 8s infinite alternate; z-index: 1;
+        }
+        [data-theme="glass"] .link-item {
+            background: rgba(255, 255, 255, 0.25); border: 1px solid rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(10px); color: #fff; border-radius: 16px; box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+        [data-theme="glass"] .link-item:hover { background: rgba(255,255,255,0.4); transform: scale(1.03); border-color: #fff; }
+
+        /* 7. WIZARD (Paper) */
+        [data-theme="wizard"] {
+            background: #f3e5ab; color: #3e2723; font-family: 'Cinzel', serif;
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 2.24 5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 2.24 5 5 2.24 5 5 2.24 5 5 2.24 5 5 2.24 5 5 2.24 5 5 2.24 5 5 2.24 5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 2.24 5 5 2.24 5 5 2.24 5 5 2.24 5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23d7ccc8' fill-opacity='0.4' fill-rule='evenodd'/%3E%3C/svg%3E");
+        }
+        [data-theme="wizard"] .bio-avatar { border: 3px double #3e2723; padding: 2px; }
+        [data-theme="wizard"] .link-item {
+            background: transparent; border: 1px solid #5d4037; border-radius: 4px; color: #3e2723;
+            box-shadow: 0 4px 0 rgba(62, 39, 35, 0.1);
+        }
+        [data-theme="wizard"] .link-item:hover { transform: translateY(-2px); box-shadow: 0 6px 12px rgba(62, 39, 35, 0.2); background: rgba(62, 39, 35, 0.05); }
+
+        /* 8. FORTNITE / BATTLE (Triggers RACING Game) */
+        [data-theme="battle"] {
+            background: #581c87;
+            color: #fff; font-family: 'Bangers', cursive;
+        }
+        [data-theme="battle"] .bio-name { font-size: 32px; letter-spacing: 2px; text-shadow: 3px 3px 0 #000; transform: skew(-3deg); }
+        [data-theme="battle"] .bio-avatar { border: 4px solid #fbbf24; box-shadow: 5px 5px 0 #000; border-radius: 12px; }
+        [data-theme="battle"] .link-item {
+            background: #2563eb; border: 3px solid #000; color: #fff; border-radius: 4px; transform: skew(-3deg);
+            box-shadow: 6px 6px 0 rgba(0,0,0,0.4); font-size: 18px; letter-spacing: 1px;
+        }
+        [data-theme="battle"] .link-item:hover { transform: skew(-3deg) scale(1.05) rotate(1deg); background: #fbbf24; color: #000; }
+
+        /* 9. MINECRAFT / BLOCK */
+        [data-theme="block"] {
+            background: #5d4037; color: #fff; font-family: 'Press Start 2P', cursive;
+            background-image: repeating-linear-gradient(0deg, transparent, transparent 19px, #ffffff10 20px), repeating-linear-gradient(90deg, transparent, transparent 19px, #ffffff10 20px);
+        }
+        [data-theme="block"] .bio-avatar { border-radius: 8px; border: 4px solid #000; }
+        [data-theme="block"] .bio-name { text-shadow: 2px 2px #000; font-size: 16px; margin-top: 10px; }
+        [data-theme="block"] .bio-desc { font-family: 'Inter', sans-serif; font-size: 11px; background: rgba(0,0,0,0.3); padding: 4px; }
+        [data-theme="block"] .link-item {
+            background: #795548; border: 3px solid #000; border-bottom-width: 6px; border-radius: 0; color: #fff;
+            text-transform: uppercase; font-size: 11px; line-height: 1.5;
+        }
+        [data-theme="block"] .link-item:active { transform: translateY(6px) !important; border-bottom-width: 0px; margin-bottom: 6px; }
+        [data-theme="block"] .link-item:hover { background: #8d6e63; }
+
+        /* 10. NEUMORPHISM (Soft) */
+        [data-theme="soft"] { background: #e0e5ec; color: #4a5568; }
+        [data-theme="soft"] .bio-avatar { box-shadow: 9px 9px 16px rgb(163,177,198,0.6), -9px -9px 16px rgba(255,255,255, 0.5); border: 4px solid #e0e5ec; }
+        [data-theme="soft"] .link-item {
+            background: #e0e5ec; box-shadow: 6px 6px 12px #b8b9be, -6px -6px 12px #ffffff; color: #4a5568; border-radius: 16px;
+        }
+        [data-theme="soft"] .link-item:hover { transform: scale(0.99); box-shadow: 9px 9px 16px #b8b9be, -9px -9px 16px #ffffff; }
+        [data-theme="soft"] .link-item:active { box-shadow: inset 4px 4px 8px #b8b9be, inset -4px -4px 8px #ffffff; transform: scale(0.98) !important; }
+
+        /* 11. STRANGER (Horror) */
+        [data-theme="stranger"] {
+            background: #100000; color: #e11d48; font-family: 'Bangers', cursive;
+        }
+        [data-theme="stranger"] .bio-page::before {
+            content: ''; position: absolute; inset: 0; background: radial-gradient(circle, transparent 20%, #000 120%); pointer-events: none; z-index: 10;
+        }
+        [data-theme="stranger"] .bio-name { letter-spacing: 2px; text-shadow: 0 0 10px #f00; animation: neonPulse 3s infinite; }
+        [data-theme="stranger"] .bio-avatar { filter: sepia(1) hue-rotate(-50deg) contrast(1.2); border: 2px solid #500; }
+        [data-theme="stranger"] .link-item {
+            background: rgba(30,0,0,0.8); border: 1px solid #e11d48; color: #e11d48; letter-spacing: 1px;
+            box-shadow: 0 0 10px rgba(225, 29, 72, 0.2);
+        }
+        [data-theme="stranger"] .link-item:hover { background: #e11d48; color: #000; box-shadow: 0 0 20px #e11d48; }
+
+        /* 12. LUXURY (Gold) */
+        [data-theme="luxury"] { background: #0f0f0f; color: #fbfbfb; font-family: 'Playfair Display', serif; }
+        [data-theme="luxury"] .bio-name {
+            background: linear-gradient(to right, #bf953f, #fcf6ba, #bf953f);
+            -webkit-background-clip: text; color: transparent;
+        }
+        [data-theme="luxury"] .bio-avatar { border: 2px solid #bf953f; }
+        [data-theme="luxury"] .link-item {
+            background: #1a1a1a; border: 1px solid #333; color: #bf953f; text-transform: uppercase; letter-spacing: 2px; font-size: 11px;
+        }
+        [data-theme="luxury"] .link-item:hover { border-color: #bf953f; box-shadow: 0 0 15px rgba(191, 149, 63, 0.3); background: #222; }
+
+        /* 13. CLAY (Trendy 3D) */
+        [data-theme="clay"] { background: #f0f4f8; color: #102a43; font-family: 'Fredoka', sans-serif; }
+        [data-theme="clay"] .bio-avatar { border-radius: 35px; box-shadow: inset -10px -10px 20px rgba(0,0,0,0.05), 10px 10px 20px #fff; }
+        [data-theme="clay"] .link-item {
+            background: #fff; border-radius: 20px; color: #102a43;
+            box-shadow: 15px 15px 35px rgba(0,0,0,0.05), -15px -15px 35px #fff;
+            transform: scale(0.98);
+        }
+        [data-theme="clay"] .link-item:hover { transform: scale(1.02); background: #3fa9f5; color: #fff; }
+
+        /* 14. NOOK (Animal Crossing) - Triggers SNAKE Game */
+        [data-theme="nook"] { background: #fcfbf5; color: #7c7662; font-family: 'Fredoka', sans-serif; }
+        [data-theme="nook"] .bio-avatar { border: 4px solid #85d2b8; border-radius: 40%; animation: float 3s ease-in-out infinite; }
+        [data-theme="nook"] .link-item {
+            background: rgba(255,255,255,0.9); border-radius: 30px; border: 2px solid #f2f0e4; color: #7c7662; font-weight: 700;
+        }
+        [data-theme="nook"] .link-item:hover { background: #85d2b8; color: #fff; transform: rotate(-1deg) scale(1.02); border-color: #85d2b8; }
+
+        /* 15. MATRIX (Triggers MATRIX Game) */
+        [data-theme="matrix"] { background: #000; color: #0f0; font-family: monospace; }
+        [data-theme="matrix"] .link-item { border: 1px solid #0f0; background: #000; color: #0f0; border-radius: 0; }
+        [data-theme="matrix"] .link-item:hover { background: #0f0; color: #000; font-weight: bold; }
+
+        /* 16. BLUEPRINT */
+        [data-theme="print"] {
+            background: #1e3a8a; color: #fff; font-family: 'Special Elite', cursive;
+            background-size: 40px 40px;
+            background-image: linear-gradient(to right, rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.1) 1px, transparent 1px);
+        }
+        [data-theme="print"] .bio-avatar { border: 2px dashed #fff; border-radius: 8px; }
+        [data-theme="print"] .link-item { border: 2px solid #fff; background: transparent; color: #fff; border-radius: 2px; }
+        [data-theme="print"] .link-item:hover { background: rgba(255,255,255,0.1); border-style: dashed; }
+
+        /* 17. CANDY */
+        [data-theme="candy"] { background: #ffe4e6; color: #be185d; font-family: 'Fredoka', sans-serif; }
+        [data-theme="candy"] .link-item {
+            background: #fff; border-radius: 50px; color: #be185d; border: 4px solid #fbcfe8;
+        }
+        [data-theme="candy"] .link-item:hover { background: #fbcfe8; transform: scale(1.05) rotate(1deg); }
+
+        /* 18. VAMPIRE */
+        [data-theme="vamp"] { background: #2a0a0a; color: #fecdd3; font-family: 'Cinzel', serif; }
+        [data-theme="vamp"] .bio-avatar { border: 2px solid #e11d48; }
+        [data-theme="vamp"] .link-item { border: 1px solid #e11d48; background: #000; color: #e11d48; }
+        [data-theme="vamp"] .link-item:hover { background: #e11d48; color: #000; box-shadow: 0 0 15px #e11d48; }
+
+        /* 19. BOTANICAL */
+        [data-theme="leaf"] { background: #ecfdf5; color: #064e3b; font-family: 'Playfair Display', serif; }
+        [data-theme="leaf"] .bio-avatar { border: 3px solid #10b981; padding: 4px; }
+        [data-theme="leaf"] .link-item {
+            background: #fff; border: 1px solid #a7f3d0; border-radius: 20px 4px 20px 4px; color: #065f46;
+        }
+        [data-theme="leaf"] .link-item:hover { background: #059669; color: #fff; border-radius: 4px 20px 4px 20px; }
+
+        /* 20. SPACE (Triggers SPACE Game) */
+        [data-theme="space"] {
+            background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%); color: #fff; font-family: 'Inter', sans-serif;
+        }
+        [data-theme="space"] .link-item { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.3); backdrop-filter: blur(4px); }
+        [data-theme="space"] .link-item:hover { background: rgba(255,255,255,0.2); border-color: #fff; box-shadow: 0 0 15px rgba(255,255,255,0.5); }
+
+        /* 21. SWISS (Minimal) */
+        [data-theme="swiss"] { background: #f3f3f3; color: #000; font-family: 'Inter', sans-serif; }
+        [data-theme="swiss"] .bio-avatar { border-radius: 0; }
+        [data-theme="swiss"] .bio-name { text-transform: uppercase; font-weight: 900; letter-spacing: -1px; font-size: 32px; }
+        [data-theme="swiss"] .link-item { background: transparent; border-bottom: 2px solid #000; border-radius: 0; justify-content: flex-start; padding-left: 0; }
+        [data-theme="swiss"] .link-item svg { left: 0; display: none; }
+        [data-theme="swiss"] .link-text { text-align: left; font-weight: 700; font-size: 18px; }
+        [data-theme="swiss"] .link-item:hover { padding-left: 20px; background: #000; color: #fff; }
+
+        /* 22. TERMINAL */
+        [data-theme="cmd"] { background: #1e1e1e; color: #fff; font-family: monospace; }
+        [data-theme="cmd"] .link-item { background: #333; border-left: 4px solid #fff; border-radius: 0; }
+        [data-theme="cmd"] .link-item:hover { background: #444; border-left-color: #007acc; padding-left: 25px; }
+
+        /* 23. BUBBLEGUM */
+        [data-theme="gum"] { background: #fdf2f8; color: #db2777; font-family: 'Fredoka', sans-serif; }
+        [data-theme="gum"] .link-item { background: linear-gradient(to right, #f472b6, #db2777); color: #fff; border-radius: 50px; box-shadow: 0 4px 15px rgba(219, 39, 119, 0.4); }
+        [data-theme="gum"] .link-item:hover { transform: translateY(-3px) scale(1.02); filter: brightness(1.1); }
+        
+        /* 24. SKETCH */
+        [data-theme="sketch"] { background: #fff; color: #333; font-family: 'Fredoka', sans-serif; }
+        [data-theme="sketch"] .bio-avatar { border: 3px solid #333; border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; animation: float 6s ease-in-out infinite; }
+        [data-theme="sketch"] .link-item { border: 2px solid #333; background: #fff; border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px; }
+        [data-theme="sketch"] .link-item:hover { background: #333; color: #fff; transform: rotate(-1deg); }
+
+        /* --- SIDEBAR COMPONENTS --- */
+        .block-item {
+            padding: 12px; background: #fff; border: 1px solid var(--ui-border);
+            border-radius: 8px; margin-bottom: 8px; cursor: grab;
+            display: flex; align-items: center; gap: 12px;
+            transition: 0.2s;
+        }
+        .block-item:active { cursor: grabbing; transform: scale(0.98); }
+        .block-item:hover { border-color: var(--ui-accent); box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .block-icon { width: 32px; height: 32px; background: #f1f5f9; border-radius: 6px; display: flex; align-items: center; justify-content: center; color: var(--ui-text-muted); }
+        .block-info h4 { font-size: 13px; font-weight: 600; }
+        .block-info p { font-size: 11px; color: var(--ui-text-muted); }
+
+        /* --- THEME GRID --- */
+        .theme-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+        .theme-card {
+            background: #fff; border: 1px solid var(--ui-border); border-radius: 8px;
+            cursor: pointer; overflow: hidden; transition: all 0.2s;
+        }
+        .theme-card:hover { border-color: var(--ui-text-main); transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.05); }
+        .theme-card.active { border-color: var(--ui-accent); box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2); }
+        
+        .theme-preview { height: 60px; width: 100%; position: relative; }
+        .theme-label { font-size: 12px; font-weight: 600; padding: 8px; text-align: center; border-top: 1px solid var(--ui-border); }
+
+        /* Theme Preview Colors */
+        .tp-clean { background: #fff; }
+        .tp-dark { background: #1e293b; }
+        .tp-ocean { background: linear-gradient(135deg, #d4fc79, #96e6a1); }
+        .tp-cyber { background: #000; border-bottom: 2px solid #0ff; }
+        .tp-retro { background: #000; border-bottom: 2px solid #fff; } /* Pong Preview */
+        .tp-glass { background: linear-gradient(45deg, #FF9A9E, #FECFEF); }
+        .tp-wizard { background: #f3e5ab; }
+        .tp-battle { background: #6b21a8; }
+        .tp-block { background: #5d4037; }
+        .tp-soft { background: #e0e5ec; }
+        .tp-stranger { background: #100000; border-bottom: 2px solid #e11d48; }
+        .tp-luxury { background: #000; border-bottom: 2px solid #bf953f; }
+        .tp-clay { background: #f0f4f8; }
+        .tp-nook { background: #fcfbf5; border-bottom: 2px solid #85d2b8; } /* Snake Preview */
+        .tp-matrix { background: #000; color: #0f0; } /* Matrix Preview */
+        .tp-print { background: #1e3a8a; }
+        .tp-candy { background: #ffe4e6; }
+        .tp-vamp { background: #2a0a0a; }
+        .tp-leaf { background: #ecfdf5; }
+        .tp-space { background: #1B2735; } /* Space Preview */
+        .tp-swiss { background: #f3f3f3; }
+        .tp-cmd { background: #1e1e1e; }
+        .tp-gum { background: #fdf2f8; }
+        .tp-sketch { background: #fff; border: 1px dashed #000; }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .app-shell { flex-direction: column; height: auto; overflow: auto; }
+            .sidebar, .sidebar-right { width: 100%; height: auto; border: none; }
+            .canvas-area { height: 750px; }
+        }
+        
+        .btn {
+            background: #000; color: #fff; border: none; padding: 8px 16px; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 13px; transition: 0.2s;
+        }
+        .btn:hover { opacity: 0.8; transform: translateY(-1px); }
+        .btn:active { transform: translateY(0); }
+        .btn-outline { background: transparent; color: #000; border: 1px solid #e2e8f0; }
+        .btn-outline:hover { background: #f8fafc; }
+
+    </style>
+</head>
+<body>
+
+<div class="app-shell">
+
+    <!-- LEFT SIDEBAR: EDITOR -->
+    <aside class="sidebar">
+        <div class="panel-header">
+            <h2>Content Blocks</h2>
+            <p>Drag to reorder your page</p>
+        </div>
+        <div class="panel-scroll">
+            <button class="btn" style="width: 100%; margin-bottom: 16px;">+ Add New Link</button>
+            
+            <div class="block-item" draggable="true">
+                <div class="block-icon">👤</div>
+                <div class="block-info">
+                    <h4>Profile Header</h4>
+                    <p>Image, Title, Bio</p>
+                </div>
+            </div>
+            
+            <div class="block-item" draggable="true">
+                <div class="block-icon">🔗</div>
+                <div class="block-info">
+                    <h4>Links Group</h4>
+                    <p>4 Active Links</p>
+                </div>
+            </div>
+            
+            <div class="block-item" draggable="true">
+                <div class="block-icon">🎵</div>
+                <div class="block-info">
+                    <h4>Music Player</h4>
+                    <p>Spotify Embed (Hidden)</p>
+                </div>
+            </div>
+
+            <div class="block-item" draggable="true">
+                <div class="block-icon">📧</div>
+                <div class="block-info">
+                    <h4>Newsletter</h4>
+                    <p>Email Signup</p>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- CENTER: CANVAS -->
+    <main class="canvas-area">
+        <header class="canvas-header">
+            <div style="font-weight: 600; font-size: 14px;">mysite.bio/anmol</div>
+            <div style="display: flex; gap: 8px;">
+                <button class="btn btn-outline">Preview</button>
+                <button class="btn">Publish Changes</button>
+            </div>
+        </header>
+        
+        <div class="preview-container">
+            <div class="phone-frame">
+                
+                <!-- THEME CONTENT STARTS HERE -->
+                <div id="bio-content" class="bio-page" data-theme="clean">
+                    <canvas id="game-canvas"></canvas> <!-- GAME ENGINE -->
+                    
+                    <div class="bio-avatar" style="background-image: url('https://api.dicebear.com/7.x/avataaars/svg?seed=Felix');"></div>
+                    <h1 class="bio-name">Anmol</h1>
+                    <p class="bio-desc">Digital Creator • Designer • Tech<br>Building cool things for the web.</p>
+                    
+                    <div class="links-stack">
+                        <a href="#" class="link-item">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1 4-10z"/></svg>
+                            <span class="link-text">Official Website</span>
+                        </a>
+                        <a href="#" class="link-item">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+                            <span class="link-text">Instagram</span>
+                        </a>
+                        <a href="#" class="link-item">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/></svg>
+                            <span class="link-text">Twitter / X</span>
+                        </a>
+                        <a href="#" class="link-item">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.33 29 29 0 0 0-.46-5.33z"/><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"/></svg>
+                            <span class="link-text">Latest Video</span>
+                        </a>
+                    </div>
+                </div>
+                <!-- END THEME CONTENT -->
+                
+            </div>
+        </div>
+    </main>
+
+    <!-- RIGHT SIDEBAR: THEMES -->
+    <aside class="sidebar sidebar-right">
+        <div class="panel-header">
+            <h2>Design Library</h2>
+            <p>24 Premium Themes</p>
+        </div>
+        <div class="panel-scroll">
+            
+            <div style="margin-bottom: 20px;">
+                <h5 style="margin-bottom: 10px; font-size: 12px; text-transform: uppercase; color: var(--ui-text-muted);">Minimal & Clean</h5>
+                <div class="theme-grid">
+                    <div class="theme-card active" onclick="setTheme('clean', this)">
+                        <div class="theme-preview tp-clean"></div><div class="theme-label">Clean White</div>
+                    </div>
+                    <div class="theme-card" onclick="setTheme('dark', this)">
+                        <div class="theme-preview tp-dark"></div><div class="theme-label">Dark Mode</div>
+                    </div>
+                    <div class="theme-card" onclick="setTheme('swiss', this)">
+                        <div class="theme-preview tp-swiss"></div><div class="theme-label">Swiss Grid</div>
+                    </div>
+                    <div class="theme-card" onclick="setTheme('soft', this)">
+                        <div class="theme-preview tp-soft"></div><div class="theme-label">Neumorph</div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-bottom: 20px;">
+                <h5 style="margin-bottom: 10px; font-size: 12px; text-transform: uppercase; color: var(--ui-text-muted);">Interactive & Game Loop</h5>
+                <div class="theme-grid">
+                    <div class="theme-card" onclick="setTheme('retro', this)">
+                        <div class="theme-preview tp-retro"></div><div class="theme-label">Retro (Live Pong)</div>
+                    </div>
+                    <div class="theme-card" onclick="setTheme('nook', this)">
+                        <div class="theme-preview tp-nook"></div><div class="theme-label">Nook (Live Snake)</div>
+                    </div>
+                     <div class="theme-card" onclick="setTheme('matrix', this)">
+                        <div class="theme-preview tp-matrix"></div><div class="theme-label">Matrix (Live Code)</div>
+                    </div>
+                    <div class="theme-card" onclick="setTheme('space', this)">
+                        <div class="theme-preview tp-space"></div><div class="theme-label">Space (Warp)</div>
+                    </div>
+                    <div class="theme-card" onclick="setTheme('battle', this)">
+                        <div class="theme-preview tp-battle"></div><div class="theme-label">Fortnite (Racer)</div>
+                    </div>
+                    <div class="theme-card" onclick="setTheme('block', this)">
+                        <div class="theme-preview tp-block"></div><div class="theme-label">Minecraft</div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-bottom: 20px;">
+                <h5 style="margin-bottom: 10px; font-size: 12px; text-transform: uppercase; color: var(--ui-text-muted);">Creative & Colorful</h5>
+                <div class="theme-grid">
+                    <div class="theme-card" onclick="setTheme('ocean', this)">
+                        <div class="theme-preview tp-ocean"></div><div class="theme-label">Ocean</div>
+                    </div>
+                    <div class="theme-card" onclick="setTheme('glass', this)">
+                        <div class="theme-preview tp-glass"></div><div class="theme-label">Glass</div>
+                    </div>
+                    <div class="theme-card" onclick="setTheme('candy', this)">
+                        <div class="theme-preview tp-candy"></div><div class="theme-label">Candy</div>
+                    </div>
+                    <div class="theme-card" onclick="setTheme('gum', this)">
+                        <div class="theme-preview tp-gum"></div><div class="theme-label">Bubblegum</div>
+                    </div>
+                    <div class="theme-card" onclick="setTheme('clay', this)">
+                        <div class="theme-preview tp-clay"></div><div class="theme-label">Clay 3D</div>
+                    </div>
+                    <div class="theme-card" onclick="setTheme('leaf', this)">
+                        <div class="theme-preview tp-leaf"></div><div class="theme-label">Botanical</div>
+                    </div>
+                     <div class="theme-card" onclick="setTheme('cyber', this)">
+                        <div class="theme-preview tp-cyber"></div><div class="theme-label">Cyberpunk</div>
+                    </div>
+                     <div class="theme-card" onclick="setTheme('wizard', this)">
+                        <div class="theme-preview tp-wizard"></div><div class="theme-label">Wizardry</div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-bottom: 20px;">
+                <h5 style="margin-bottom: 10px; font-size: 12px; text-transform: uppercase; color: var(--ui-text-muted);">Atmospheric</h5>
+                <div class="theme-grid">
+                    <div class="theme-card" onclick="setTheme('stranger', this)">
+                        <div class="theme-preview tp-stranger"></div><div class="theme-label">Upside Down</div>
+                    </div>
+                    <div class="theme-card" onclick="setTheme('luxury', this)">
+                        <div class="theme-preview tp-luxury"></div><div class="theme-label">Gold Luxury</div>
+                    </div>
+                    <div class="theme-card" onclick="setTheme('vamp', this)">
+                        <div class="theme-preview tp-vamp"></div><div class="theme-label">Vampire</div>
+                    </div>
+                    <div class="theme-card" onclick="setTheme('print', this)">
+                        <div class="theme-preview tp-print"></div><div class="theme-label">Blueprint</div>
+                    </div>
+                    <div class="theme-card" onclick="setTheme('cmd', this)">
+                        <div class="theme-preview tp-cmd"></div><div class="theme-label">Terminal</div>
+                    </div>
+                     <div class="theme-card" onclick="setTheme('sketch', this)">
+                        <div class="theme-preview tp-sketch"></div><div class="theme-label">Sketch</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </aside>
+
+</div>
+
+<script>
+    // --- GAME ENGINE 2.0 (Auto-Play Logic) ---
+    // SPEED: REDUCED EDITION
+    let gameInterval;
+    let animFrame;
+    const canvas = document.getElementById('game-canvas');
+    const ctx = canvas.getContext('2d');
+    let currentGame = null;
+
+    // --- UTILS ---
+    function resizeCanvas() {
+        if(canvas.parentElement) {
+            canvas.width = canvas.parentElement.clientWidth;
+            canvas.height = canvas.parentElement.clientHeight;
+        }
+    }
+
+    function stopGame() {
+        if (gameInterval) clearInterval(gameInterval);
+        if (animFrame) cancelAnimationFrame(animFrame);
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        canvas.style.opacity = '0';
+        currentGame = null;
+    }
+
+    // --- GAME 1: PONG (Unbeatable "Human" AI) ---
+    function startPong() {
+        stopGame();
+        resizeCanvas();
+        canvas.style.opacity = '0.3';
+        currentGame = 'pong';
+
+        // Physics Config - REDUCED SPEED (dx/dy from 4 to 2)
+        let ball = { x: canvas.width/2, y: canvas.height/2, dx: 2, dy: 2, r: 6 };
+        // Paddles
+        let p1 = { x: 10, y: 100, w: 8, h: 70 }; 
+        let p2 = { x: canvas.width - 18, y: 100, w: 8, h: 70 };
+
+        function loop() {
+            if(currentGame !== 'pong') return;
+            
+            // Clear
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw Net
+            ctx.strokeStyle = 'rgba(255,255,255,0.2)';
+            ctx.setLineDash([10, 10]);
+            ctx.beginPath();
+            ctx.moveTo(canvas.width/2, 0);
+            ctx.lineTo(canvas.width/2, canvas.height);
+            ctx.stroke();
+
+            // 1. BALL PHYSICS
+            ball.x += ball.dx;
+            ball.y += ball.dy;
+
+            // Ceiling/Floor Bounce
+            if (ball.y + ball.r > canvas.height || ball.y - ball.r < 0) {
+                ball.dy = -ball.dy;
+            }
+
+            // 2. AI LOGIC
+            function movePaddle(paddle, isLeft) {
+                let pCenter = paddle.y + paddle.h / 2;
+                let targetY = canvas.height / 2; // Default rest
+                
+                if (isLeft && ball.dx < 0) targetY = ball.y; 
+                if (!isLeft && ball.dx > 0) targetY = ball.y; 
+
+                // Slower breathing animation
+                let offset = Math.sin(Date.now() / 1000) * 20; 
+
+                let dist = (targetY + offset) - pCenter;
+                let distX = Math.abs(ball.x - paddle.x);
+                
+                // Adjusted Urgency for slower ball
+                let urgency = (distX < 100) ? 0.15 : 0.05; 
+
+                paddle.y += dist * urgency;
+
+                // Clamp to walls
+                if(paddle.y < 0) paddle.y = 0;
+                if(paddle.y + paddle.h > canvas.height) paddle.y = canvas.height - paddle.h;
+            }
+
+            movePaddle(p1, true);
+            movePaddle(p2, false);
+
+            // 3. COLLISION
+            // Left Paddle
+            if (ball.x - ball.r < p1.x + p1.w) {
+                if (ball.y > p1.y && ball.y < p1.y + p1.h) {
+                    ball.dx = Math.abs(ball.dx); 
+                    // Cap max speed lower (was 8, now 5)
+                    if(Math.abs(ball.dx) < 5) ball.dx *= 1.05;
+                } else if (ball.x < 0) {
+                    resetBall(); 
+                }
+            }
+            // Right Paddle
+            if (ball.x + ball.r > p2.x) {
+                if (ball.y > p2.y && ball.y < p2.y + p2.h) {
+                    ball.dx = -Math.abs(ball.dx); 
+                     if(Math.abs(ball.dx) < 5) ball.dx *= 1.05;
+                } else if (ball.x > canvas.width) {
+                    resetBall();
+                }
+            }
+
+            // Draw
+            ctx.fillStyle = '#fff';
+            ctx.beginPath(); ctx.arc(ball.x, ball.y, ball.r, 0, Math.PI*2); ctx.fill();
+            ctx.fillRect(p1.x, p1.y, p1.w, p1.h);
+            ctx.fillRect(p2.x, p2.y, p2.w, p2.h);
+
+            animFrame = requestAnimationFrame(loop);
+        }
+
+        function resetBall() {
+            ball.x = canvas.width/2;
+            ball.y = canvas.height/2;
+            // Reset to slow speed
+            ball.dx = (Math.random() > 0.5 ? 2 : -2);
+            ball.dy = (Math.random() > 0.5 ? 2 : -2);
+        }
+
+        loop();
+    }
+
+    // --- GAME 2: SNAKE (Smart Pathfinding AI) ---
+    function startSnake() {
+        stopGame();
+        resizeCanvas();
+        canvas.style.opacity = '0.2'; 
+        currentGame = 'snake';
+        
+        const grid = 20;
+        let snake = { x: 160, y: 160, cells: [], maxCells: 4 };
+        let apple = { x: 320, y: 320 };
+        
+        function randomApple() {
+            apple.x = Math.floor(Math.random() * (canvas.width/grid)) * grid;
+            apple.y = Math.floor(Math.random() * (canvas.height/grid)) * grid;
+        }
+        randomApple();
+
+        let frameCount = 0;
+
+        function loop() {
+            if(currentGame !== 'snake') return;
+            animFrame = requestAnimationFrame(loop);
+
+            // SPEED CONTROL: Increased skip from 4 to 10
+            if (++frameCount < 10) return; 
+            frameCount = 0;
+
+            ctx.clearRect(0,0, canvas.width, canvas.height);
+
+            const moves = [
+                {x: 0, y: -grid}, 
+                {x: 0, y: grid},  
+                {x: -grid, y: 0}, 
+                {x: grid, y: 0}   
+            ];
+
+            const safeMoves = moves.filter(move => {
+                const nextX = snake.x + move.x;
+                const nextY = snake.y + move.y;
+                if(nextX < 0 || nextX >= canvas.width || nextY < 0 || nextY >= canvas.height) return false;
+                for(let cell of snake.cells) {
+                    if(cell.x === nextX && cell.y === nextY) return false;
+                }
+                return true;
+            });
+
+            let bestMove = null;
+
+            if (safeMoves.length > 0) {
+                safeMoves.sort((a, b) => {
+                    const distA = Math.hypot((snake.x + a.x) - apple.x, (snake.y + a.y) - apple.y);
+                    const distB = Math.hypot((snake.x + b.x) - apple.x, (snake.y + b.y) - apple.y);
+                    return distA - distB;
+                });
+                bestMove = safeMoves[0]; 
+            } else {
+                snake.x = 160; snake.y = 160;
+                snake.cells = [];
+                snake.maxCells = 4;
+                randomApple();
+                return;
+            }
+
+            snake.x += bestMove.x;
+            snake.y += bestMove.y;
+
+            snake.cells.unshift({x: snake.x, y: snake.y});
+            if (snake.cells.length > snake.maxCells) snake.cells.pop();
+
+            let dist = Math.hypot(snake.x - apple.x, snake.y - apple.y);
+            if (dist < grid) {
+                snake.maxCells++;
+                randomApple();
+            }
+
+            ctx.fillStyle = '#ff4757'; 
+            ctx.fillRect(apple.x, apple.y, grid-2, grid-2);
+
+            ctx.fillStyle = '#2ed573'; 
+            snake.cells.forEach((cell, i) => {
+                ctx.globalAlpha = 1 - (i / snake.cells.length);
+                ctx.fillRect(cell.x, cell.y, grid-2, grid-2);
+            });
+            ctx.globalAlpha = 1;
+        }
+        loop();
+    }
+
+    // --- GAME 3: MATRIX (Optimized Rain) ---
+    function startMatrix() {
+        stopGame();
+        resizeCanvas();
+        canvas.style.opacity = '0.4';
+        currentGame = 'matrix';
+
+        const fontSize = 14;
+        const columns = Math.ceil(canvas.width / fontSize);
+        const drops = Array(columns).fill(0).map(() => Math.random() * -100); 
+
+        function loop() {
+            if(currentGame !== 'matrix') return;
+            
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.fillStyle = '#0F0';
+            ctx.font = '14px monospace';
+
+            for (let i = 0; i < drops.length; i++) {
+                const text = String.fromCharCode(0x30A0 + Math.random() * 96);
+                const x = i * fontSize;
+                const y = drops[i] * fontSize;
+
+                ctx.fillText(text, x, y);
+
+                if (y > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                drops[i]++;
+            }
+            // SPEED CONTROL: Timeout increased from 50 to 100
+            animFrame = requestAnimationFrame(() => {
+                setTimeout(loop, 100);
+            });
+        }
+        loop();
+    }
+
+    // --- GAME 4: SPACE (Smooth Warp) ---
+    function startSpace() {
+        stopGame();
+        resizeCanvas();
+        canvas.style.opacity = '1';
+        currentGame = 'space';
+        
+        let stars = [];
+        const numStars = 200;
+        
+        for(let i=0; i<numStars; i++) {
+            stars.push({
+                x: Math.random() * canvas.width - canvas.width/2,
+                y: Math.random() * canvas.height - canvas.height/2,
+                z: Math.random() * canvas.width 
+            });
+        }
+
+        function loop() {
+            if(currentGame !== 'space') return;
+            
+            ctx.fillStyle = '#000'; 
+            ctx.fillRect(0,0, canvas.width, canvas.height);
+            ctx.fillStyle = '#fff';
+            
+            for(let i=0; i<stars.length; i++) {
+                let s = stars[i];
+                // SPEED CONTROL: Decrement reduced from 2 to 0.5
+                s.z -= 0.5; 
+                
+                if(s.z <= 0) { 
+                    s.z = canvas.width; 
+                    s.x = Math.random() * canvas.width - canvas.width/2;
+                    s.y = Math.random() * canvas.height - canvas.height/2;
+                }
+                
+                let k = 128.0 / s.z;
+                let px = s.x * k + canvas.width/2;
+                let py = s.y * k + canvas.height/2;
+                
+                let size = (1 - s.z / canvas.width) * 3;
+                
+                if (px >= 0 && px <= canvas.width && py >= 0 && py <= canvas.height) {
+                    ctx.beginPath();
+                    ctx.globalAlpha = size / 3; 
+                    ctx.arc(px, py, size, 0, Math.PI*2);
+                    ctx.fill();
+                }
+            }
+            ctx.globalAlpha = 1;
+            animFrame = requestAnimationFrame(loop);
+        }
+        loop();
+    }
+
+    // --- GAME 5: RACER (Vaporwave Grid) ---
+    function startRacer() {
+        stopGame();
+        resizeCanvas();
+        canvas.style.opacity = '0.6';
+        currentGame = 'racer';
+        
+        let offset = 0;
+        // SPEED CONTROL: Reduced from 2 to 0.5
+        let speed = 0.5; 
+
+        function loop() {
+            if(currentGame !== 'racer') return;
+            ctx.clearRect(0,0, canvas.width, canvas.height);
+            
+            let grad = ctx.createLinearGradient(0,0,0, canvas.height);
+            grad.addColorStop(0, '#0f0c29');
+            grad.addColorStop(0.5, '#302b63');
+            grad.addColorStop(1, '#24243e');
+            ctx.fillStyle = grad;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.strokeStyle = 'rgba(236, 72, 153, 0.5)'; 
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            
+            let centerX = canvas.width/2;
+            let horizonY = canvas.height/2;
+            
+            for(let i=-20; i<=20; i+=2) {
+                ctx.moveTo(centerX, horizonY);
+                ctx.lineTo(centerX + (i * 100), canvas.height);
+            }
+            
+            offset = (offset + speed) % 50; 
+            
+            for(let i=0; i<30; i++) {
+                let depth = i * 20 + offset;
+                let y = horizonY + (depth * depth) / 1000;
+
+                if(y > horizonY && y < canvas.height) {
+                    ctx.moveTo(0, y);
+                    ctx.lineTo(canvas.width, y);
+                }
+            }
+            ctx.stroke();
+            
+            animFrame = requestAnimationFrame(loop);
+        }
+        loop();
+    }
+
+    // --- MAIN THEME SWITCHER ---
+    function setTheme(themeName, element) {
+        const bioContent = document.getElementById('bio-content');
+        const linkItems = document.querySelectorAll('.link-item');
+        
+        document.querySelectorAll('.theme-card').forEach(el => el.classList.remove('active'));
+        if(element) element.classList.add('active');
+
+        bioContent.style.opacity = '0';
+        bioContent.style.transform = 'scale(0.98)';
+        
+        setTimeout(() => {
+            bioContent.setAttribute('data-theme', themeName);
+            bioContent.style.opacity = '1';
+            bioContent.style.transform = 'scale(1)';
+            
+            stopGame(); 
+            
+            switch(themeName) {
+                case 'retro':   startPong(); break;
+                case 'nook':    startSnake(); break;
+                case 'matrix':  startMatrix(); break;
+                case 'space':   startSpace(); break;
+                case 'battle':  startRacer(); break;
+                default:        stopGame(); break; 
+            }
+
+            linkItems.forEach((item, index) => {
+                item.style.animation = 'none';
+                item.offsetHeight; 
+                item.style.animation = `slideUpFade 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards ${index * 0.1}s`;
+            });
+        }, 150);
+    }
+    
+    window.addEventListener('resize', resizeCanvas);
+</script>
+
+</body>
+</html>
