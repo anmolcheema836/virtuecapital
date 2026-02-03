@@ -99,6 +99,7 @@
             position: relative;
             overflow: hidden;
             z-index: 1;
+            cursor: pointer;
         }
 
         .btn::after {
@@ -251,41 +252,55 @@
         .stat-item h4 { font-size: 3rem; color: var(--accent); margin-bottom: 10px; }
         .stat-item span { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); }
 
-        /* --- 8. LOCATIONS LIST --- */
-        .locations-section {
-            padding: 100px 0;
-            background: var(--text-main);
-            color: var(--bg-color);
+        /* --- 8. FILTERABLE PROPERTIES --- */
+        .properties-section { padding: 100px 0; background: #fff; }
+
+        .filter-container {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 50px;
+            justify-content: center;
         }
 
-        .location-list {
-            display: flex;
-            flex-direction: column;
-            border-top: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .location-item {
-            padding: 40px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        .filter-btn {
+            padding: 12px 30px;
+            border: 1px solid #ddd;
+            background: transparent;
+            border-radius: 50px;
+            font-family: var(--font-body);
+            font-size: 0.9rem;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: 0.3s;
         }
 
-        .location-item:hover { padding-left: 20px; background: rgba(255,255,255,0.02); }
-        .location-item h3 { font-size: 3rem; color: rgba(255,255,255,0.5); transition: 0.3s; }
-        .location-item:hover h3 { color: white; }
-        
-        .location-icon { 
-            opacity: 0; 
-            transform: translateX(-20px); 
-            transition: 0.3s;
-            font-size: 2rem;
-            color: var(--accent);
+        .filter-btn.active, .filter-btn:hover {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
         }
-        .location-item:hover .location-icon { opacity: 1; transform: translateX(0); }
+
+        .property-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 40px;
+        }
+
+        .property-card {
+            cursor: pointer;
+            transition: 0.4s var(--ease);
+        }
+        .property-card:hover { transform: translateY(-10px); }
+        
+        .property-img { height: 280px; overflow: hidden; position: relative; margin-bottom: 20px; }
+        .property-img img { width: 100%; height: 100%; object-fit: cover; transition: 0.6s var(--ease); }
+        .property-card:hover .property-img img { transform: scale(1.1); }
+        
+        .property-badge { 
+            position: absolute; top: 15px; left: 15px; 
+            background: white; padding: 5px 12px; 
+            font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent);
+        }
 
         /* --- 9. REVIEWS --- */
         .reviews-section { padding: 150px 0; }
@@ -394,7 +409,6 @@
             .nav-right { display: none; } /* Simplified for demo */
             .display-text { font-size: 3rem; }
             .intro-grid { grid-template-columns: 1fr; }
-            .location-item h3 { font-size: 2rem; }
             .review-text { font-size: 1.4rem; }
             .marquee-item { width: 300px; height: 200px; }
         }
@@ -404,12 +418,12 @@
 
     <nav>
         <div class="logo">
-            <!-- LOGO RESTORED HERE -->
+            <!-- Provided Logo Link -->
             <img src="https://www.freelancer.com/fs/download-api.php?type=contest&id=2695398&filename=logo%20blessed%20journeys%20for%20square.jpg" alt="Blessed Journeys Texas Logo">
         </div>
         <div class="nav-right">
             <a href="#mission" class="nav-link">Mission</a>
-            <a href="#locations" class="nav-link">Homes</a>
+            <a href="#properties" class="nav-link">Homes</a>
             <a href="#reviews" class="nav-link">Reviews</a>
             <a href="tel:6783138321" class="btn btn-primary" style="padding: 10px 25px; font-size: 0.75rem;">678-313-8321</a>
         </div>
@@ -423,7 +437,7 @@
         
         <div class="hero-btns">
             <a href="#contact" class="btn btn-primary">Book Direct & Save</a>
-            <a href="#locations" class="btn">View Properties</a>
+            <a href="#properties" class="btn">View Properties</a>
         </div>
     </header>
 
@@ -477,39 +491,26 @@
         </div>
     </section>
 
-    <!-- LOCATIONS / PROPERTIES LIST -->
-    <section id="locations" class="locations-section">
+    <!-- PROPERTIES SECTION -->
+    <section id="properties" class="properties-section">
         <div class="container">
-            <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 60px;">
-                <h2 class="section-title" style="color: white; margin-bottom: 0;">Our Locations</h2>
-                <p style="color: #999; margin-bottom: 0;">Serving the DFW Metroplex</p>
+            <div style="text-align: center; margin-bottom: 60px;">
+                <span class="subtitle">Inventory</span>
+                <h2 class="section-title">Available Homes</h2>
             </div>
 
-            <div class="location-list">
-                <a href="#contact" class="location-item reveal-on-scroll">
-                    <h3>Frisco</h3>
-                    <i class="fa-solid fa-arrow-right location-icon"></i>
-                </a>
-                <a href="#contact" class="location-item reveal-on-scroll">
-                    <h3>McKinney</h3>
-                    <i class="fa-solid fa-arrow-right location-icon"></i>
-                </a>
-                <a href="#contact" class="location-item reveal-on-scroll">
-                    <h3>Plano</h3>
-                    <i class="fa-solid fa-arrow-right location-icon"></i>
-                </a>
-                <a href="#contact" class="location-item reveal-on-scroll">
-                    <h3>The Colony</h3>
-                    <i class="fa-solid fa-arrow-right location-icon"></i>
-                </a>
-                <a href="#contact" class="location-item reveal-on-scroll">
-                    <h3>Little Elm</h3>
-                    <i class="fa-solid fa-arrow-right location-icon"></i>
-                </a>
-                <a href="#contact" class="location-item reveal-on-scroll">
-                    <h3>Prosper</h3>
-                    <i class="fa-solid fa-arrow-right location-icon"></i>
-                </a>
+            <div class="filter-container reveal-on-scroll">
+                <button class="filter-btn active" onclick="filterHomes('all', this)">All Locations</button>
+                <button class="filter-btn" onclick="filterHomes('Frisco', this)">Frisco</button>
+                <button class="filter-btn" onclick="filterHomes('McKinney', this)">McKinney</button>
+                <button class="filter-btn" onclick="filterHomes('Plano', this)">Plano</button>
+                <button class="filter-btn" onclick="filterHomes('The Colony', this)">The Colony</button>
+                <button class="filter-btn" onclick="filterHomes('Little Elm', this)">Little Elm</button>
+                <button class="filter-btn" onclick="filterHomes('Prosper', this)">Prosper</button>
+            </div>
+
+            <div id="propertyGrid" class="property-grid reveal-on-scroll">
+                <!-- Javascript will populate this -->
             </div>
         </div>
     </section>
@@ -594,7 +595,50 @@
     <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script> 
     
     <script>
-        // 1. Initialize Smooth Scroll
+        // --- 1. DATA (Images from your list) ---
+        const homes = [
+            { id: 1, city: 'Frisco', title: 'The Frisco Haven', img: 'https://img1.wsimg.com/isteam/ip/52e7b5d4-cd49-4fda-a894-e6e645830931/lw2307181-2005.jpg/:/rs=w:600,h:400,cg:true,m', bed: 4, bath: 2 },
+            { id: 2, city: 'McKinney', title: 'McKinney Retreat', img: 'https://img1.wsimg.com/isteam/ip/52e7b5d4-cd49-4fda-a894-e6e645830931/hs2208312-2015.jpg/:/rs=w:600,h:400,cg:true,m', bed: 3, bath: 2 },
+            { id: 3, city: 'Plano', title: 'Plano Modern', img: 'https://img1.wsimg.com/isteam/ip/52e7b5d4-cd49-4fda-a894-e6e645830931/au2408091-1035.jpg/:/rs=w:600,h:400,cg:true,m', bed: 4, bath: 2.5 },
+            { id: 4, city: 'The Colony', title: 'Lakeside Comfort', img: 'https://img1.wsimg.com/isteam/ip/52e7b5d4-cd49-4fda-a894-e6e645830931/zl2404153-1000.jpg/:/rs=w:600,h:400,cg:true,m', bed: 3, bath: 2 },
+            { id: 5, city: 'Little Elm', title: 'Little Elm Sanctuary', img: 'https://img1.wsimg.com/isteam/ip/52e7b5d4-cd49-4fda-a894-e6e645830931/au2408091-1025.jpg/:/rs=w:600,h:400,cg:true,m', bed: 3, bath: 2 },
+            { id: 6, city: 'Prosper', title: 'Prosper Family Home', img: 'https://img1.wsimg.com/isteam/ip/52e7b5d4-cd49-4fda-a894-e6e645830931/lw2202111-2033.jpg/:/rs=w:600,h:400,cg:true,m', bed: 4, bath: 3 }
+        ];
+
+        // --- 2. RENDER LOGIC ---
+        const grid = document.getElementById('propertyGrid');
+
+        function renderHomes(filter) {
+            grid.innerHTML = '';
+            const filtered = filter === 'all' ? homes : homes.filter(h => h.city === filter);
+
+            if(filtered.length === 0) {
+                grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center;">No homes currently listed in this area. Call us for upcoming inventory.</p>';
+                return;
+            }
+
+            filtered.forEach(h => {
+                const div = document.createElement('div');
+                div.className = 'property-card';
+                div.innerHTML = `
+                    <div class="property-img">
+                        <span class="property-badge">${h.city}</span>
+                        <img src="${h.img}" alt="${h.title}">
+                    </div>
+                    <h3 style="font-family: var(--font-head); font-size: 1.4rem;">${h.title}</h3>
+                    <p style="font-size: 0.9rem; color: #666;">${h.bed} Bed • ${h.bath} Bath • Fully Furnished</p>
+                `;
+                grid.appendChild(div);
+            });
+        }
+
+        function filterHomes(city, btn) {
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            renderHomes(city);
+        }
+
+        // --- 3. INIT & ANIMATION ---
         const lenis = new Lenis({
             duration: 1.2,
             easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
@@ -610,27 +654,21 @@
             lenis.raf(time)
             requestAnimationFrame(raf)
         }
-
         requestAnimationFrame(raf)
 
-        // 2. Scroll Reveal Animations
-        const observerOptions = {
-            threshold: 0.1
-        };
-
+        // Scroll Reveal
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('active');
-                }
+                if (entry.isIntersecting) entry.target.classList.add('active');
             });
-        }, observerOptions);
+        }, { threshold: 0.1 });
 
-        document.querySelectorAll('.reveal-on-scroll').forEach(el => {
-            observer.observe(el);
-        });
+        document.querySelectorAll('.reveal-on-scroll').forEach(el => observer.observe(el));
 
-        // 3. Anchor Link Smoothing for Lenis
+        // Initial Render
+        document.addEventListener('DOMContentLoaded', () => renderHomes('all'));
+        
+        // Anchor Smoothing
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();

@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Safewall | Premium Arena Padding</title>
+    <meta name="description" content="UK-made sports arena wall padding. Maximum safety, durability guaranteed.">
+
+    <!-- Fonts: Manrope (Modern/Technical) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- 1. CORE VARIABLES --- */
+        :root {
+            --bg-color: #012127;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --accent-color: #A5EB28;
+            --text-main: #ffffff;
+            --text-muted: #9CA3AF;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --font-main: 'Manrope', sans-serif;
+            --transition: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* --- 2. RESET & BASE STYLES --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        html { scroll-behavior: smooth; }
+        
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: var(--font-main);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Noise Texture */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        img, video {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        a { text-decoration: none; color: inherit; }
+
+        /* --- 3. TYPOGRAPHY --- */
+        h1 {
+            font-size: clamp(3rem, 8vw, 6.5rem);
+            line-height: 0.95;
+            letter-spacing: -0.03em;
+            font-weight: 800;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+        }
+
+        h2 {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+            margin-bottom: 2rem;
+        }
+
+        p {
+            font-size: clamp(1rem, 1.5vw, 1.125rem);
+            line-height: 1.6;
+            color: var(--text-muted);
+        }
+
+        .text-accent { color: var(--accent-color); }
+        .text-center { text-align: center; }
+
+        /* --- 4. LAYOUT UTILITIES --- */
+        .wrapper {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        @media(min-width: 768px) {
+            .wrapper { padding: 0 40px; }
+        }
+
+        section { padding: 4rem 0; }
+        @media(min-width: 768px) { section { padding: 8rem 0; } }
+
+        /* --- 5. BUTTONS --- */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.25rem 2.5rem;
+            background: var(--accent-color);
+            color: var(--bg-color);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-radius: 4px;
+            transition: transform 0.3s var(--transition), box-shadow 0.3s var(--transition);
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(165, 235, 40, 0.2);
+        }
+
+        /* --- 6. HEADER --- */
+        .header {
+            position: absolute;
+            top: 0; left: 0; width: 100%;
+            z-index: 100;
+            padding: 20px 0;
+        }
+        
+        .header-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            width: 140px; 
+            height: auto;
+        }
+
+        @media(min-width: 768px) {
+            .logo { width: 180px; }
+        }
+
+        /* --- 7. HERO SECTION --- */
+        .hero {
+            position: relative;
+            height: 100vh;
+            min-height: 600px;
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+            justify-content: center; /* Centering Alignment */
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+        }
+
+        .hero-bg video {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            opacity: 0.5;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to bottom, rgba(1,33,39,0.3) 0%, rgba(1,33,39,1) 95%);
+            z-index: 0;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 1000px;
+            margin-top: 60px;
+            text-align: center; /* Center Text */
+            margin-left: auto;  /* Center Container */
+            margin-right: auto; /* Center Container */
+        }
+
+        .hero-content p {
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* --- 8. BENTO GRID GALLERY --- */
+        .grid-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        .card { min-height: 300px; }
+
+        @media(min-width: 768px) {
+            .grid-container {
+                grid-template-columns: repeat(12, 1fr);
+                grid-auto-rows: minmax(300px, auto);
+            }
+
+            .grid-item-main { grid-column: span 8; grid-row: span 2; }
+            .grid-item-side-top { grid-column: span 4; grid-row: span 1; }
+            .grid-item-side-bot { grid-column: span 4; grid-row: span 1; }
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+        }
+
+        .card-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s var(--transition);
+            position: absolute;
+            top: 0; left: 0;
+        }
+        
+        .card:hover .card-img { transform: scale(1.05); }
+
+        .card-content {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            padding: 2rem;
+            background: linear-gradient(to top, rgba(1,33,39,0.95), transparent);
+        }
+
+        .card h3 { font-size: 1.5rem; margin-bottom: 0.5rem; color: #fff; }
+
+        /* --- 9. WATCH ACTION SECTION (New) --- */
+        .video-container {
+            position: relative;
+            width: 100%;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            background: #000;
+        }
+        
+        .video-container video {
+            width: 100%;
+            aspect-ratio: 16/9;
+            object-fit: cover;
+        }
+
+        /* --- 10. FEATURES / SPECS --- */
+        .specs-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1px;
+            background: var(--border-color);
+            border: 1px solid var(--border-color);
+            margin: 4rem 0;
+        }
+
+        @media(min-width: 768px) {
+            .specs-grid { grid-template-columns: repeat(4, 1fr); }
+        }
+
+        .spec-box {
+            background: var(--bg-color);
+            padding: 2rem 1rem;
+            text-align: center;
+        }
+
+        .spec-number {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--accent-color);
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        /* --- 11. CONTACT FORM --- */
+        .contact-section {
+            background: radial-gradient(circle at top right, rgba(165, 235, 40, 0.05), transparent 40%);
+        }
+
+        .contact-layout {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 3rem;
+        }
+
+        @media(min-width: 900px) {
+            .contact-layout {
+                grid-template-columns: 1fr 1fr;
+                gap: 5rem;
+                align-items: start;
+            }
+        }
+
+        .form-container {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            backdrop-filter: blur(10px);
+        }
+
+        .input-group { margin-bottom: 1.5rem; }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .input-field {
+            width: 100%;
+            background: rgba(0,0,0,0.2);
+            border: 1px solid var(--border-color);
+            padding: 1rem;
+            border-radius: 6px;
+            color: #fff;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: 0.3s;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            background: rgba(0,0,0,0.4);
+        }
+
+        textarea.input-field {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        /* --- 12. FOOTER --- */
+        .footer {
+            border-top: 1px solid var(--border-color);
+            padding: 3rem 0;
+            margin-top: 4rem;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            text-align: center;
+        }
+
+        /* --- 13. ANIMATIONS --- */
+        .fade-up {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        
+        .fade-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="wrapper header-inner">
+            <a href="#" aria-label="Safewall Home">
+                <img src="safewallogo.png" alt="Safewall Logo" class="logo">
+            </a>
+            <a href="#contact" class="btn" style="padding: 0.75rem 1.5rem; font-size: 0.9rem;">Enquire Now</a>
+        </div>
+    </header>
+
+    <!-- Hero Section (CENTERED) -->
+    <section class="hero">
+        <div class="hero-bg">
+            <video autoplay muted loop playsinline poster="">
+                <source src="hero.mp4" type="video/mp4">
+            </video>
+        </div>
+        <div class="hero-overlay"></div>
+        
+        <div class="wrapper hero-content">
+            <div class="fade-up">
+                <p class="text-accent" style="font-weight: 600; letter-spacing: 2px; margin-bottom: 1rem;">MADE IN THE UK</p>
+                <h1>Elite Protection <br>For <span class="text-accent">Elite Arenas.</span></h1>
+                <p style="max-width: 600px; margin-bottom: 2.5rem; color: #e5e5e5;">
+                    Custom-manufactured wall padding systems designed for impact absorption, fire safety, and arena aesthetics.
+                </p>
+                <a href="#contact" class="btn">Get Your Quote</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Product Showcase (Responsive Grid) -->
+    <section id="showcase">
+        <div class="wrapper">
+            <div class="fade-up" style="margin-bottom: 3rem;">
+                <h2>Engineered <br><span class="text-accent">For Impact.</span></h2>
+            </div>
+
+            <div class="grid-container">
+                <!-- Main Feature -->
+                <div class="card grid-item-main fade-up">
+                    <img src="safewall-2.png" alt="Arena Installation View" class="card-img">
+                    <div class="card-content">
+                        <h3>Seamless Integration</h3>
+                        <p style="color: #ddd;">Fits perfectly around columns, corners, and cutouts.</p>
+                    </div>
+                </div>
+
+                <!-- Side Top -->
+                <div class="card grid-item-side-top fade-up">
+                    <img src="safewall-1.png" alt="Fabric Detail" class="card-img">
+                    <div class="card-content">
+                        <h3>Premium Finish</h3>
+                        <p style="color: #ddd;">Durable, wipe-clean vinyl surfaces.</p>
+                    </div>
+                </div>
+
+                <!-- Side Bot -->
+                <div class="card grid-item-side-bot fade-up">
+                    <img src="safewall-3.png" alt="Colour Options" class="card-img">
+                    <div class="card-content">
+                        <h3>Brand Match</h3>
+                        <p style="color: #ddd;">Available in your team or arena colours.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- NEW SECTION: Watch Safewall In Action -->
+            <div style="margin-top: 5rem;">
+                <div class="fade-up text-center" style="margin-bottom: 2.5rem;">
+                    <h2>Watch Safewall <br><span class="text-accent">In Action.</span></h2>
+                </div>
+                <div class="video-container fade-up">
+                    <video controls playsinline>
+                        <source src="hero.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+            </div>
+
+            <!-- Technical Specs Bar -->
+            <div class="specs-grid fade-up">
+                <div class="spec-box">
+                    <span class="spec-number">UK</span>
+                    <p>Manufactured in Wiltshire</p>
+                </div>
+                <div class="spec-box">
+                    <span class="spec-number">Crib 5</span>
+                    <p>Fire Safety Compliant</p>
+                </div>
+                <div class="spec-box">
+                    <span class="spec-number">50mm</span>
+                    <p>High Density Foam Core</p>
+                </div>
+                <div class="spec-box">
+                    <span class="spec-number">100%</span>
+                    <p>Bespoke Fit Guarantee</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact-section">
+        <div class="wrapper">
+            <div class="contact-layout">
+                <div class="fade-up">
+                    <h2>Start Your <br>Project.</h2>
+                    <p style="margin-bottom: 2rem;">
+                        Fill in the form to get a rapid quote from our specialist team. We ship and install nationwide.
+                    </p>
+                    
+                    <div style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border-color);">
+                        <p style="color: var(--text-main); font-weight: 700;">Prefer to talk?</p>
+                        <p class="text-accent" style="font-size: 1.5rem; margin-top: 0.5rem;">+44 03300 564554</p>
+                        <p style="margin-top: 0.5rem;">sales@balco-global.com</p>
+                    </div>
+                </div>
+
+                <div class="form-container fade-up">
+                    <form id="enquiryForm" onsubmit="submitForm(event)">
+                        <div class="input-group">
+                            <label for="name">Full Name</label>
+                            <input type="text" id="name" class="input-field" required placeholder="John Doe">
+                        </div>
+
+                        <div class="input-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" class="input-field" required placeholder="john@arena.com">
+                        </div>
+
+                        <div class="input-group">
+                            <label for="org">Organisation / Club</label>
+                            <input type="text" id="org" class="input-field" placeholder="London Sports Centre">
+                        </div>
+
+                        <div class="input-group">
+                            <label for="message">Project Details</label>
+                            <textarea id="message" class="input-field" required placeholder="Approximate dimensions, colour requirements, etc..."></textarea>
+                        </div>
+
+                        <button type="submit" id="submitBtn" class="btn" style="width: 100%;">Send Enquiry</button>
+                        <p id="successMsg" style="display:none; text-align: center; margin-top: 1rem; color: var(--accent-color);">Message Sent Successfully!</p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="wrapper">
+            <p>&copy; <script>document.write(new Date().getFullYear())</script> Balco Global Ltd. All rights reserved.</p>
+            <p style="margin-top: 0.5rem; opacity: 0.6;">Unit 8 Westpoint, Bumpers Farm Ind Est, Chippenham, SN14 6RB</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // 1. Scroll Animations (Intersection Observer)
+        const observerOptions = {
+            threshold: 0.15,
+            rootMargin: "0px"
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-up').forEach(el => {
+            observer.observe(el);
+        });
+
+        // 2. Form Handling
+        function submitForm(e) {
+            e.preventDefault();
+            const btn = document.getElementById('submitBtn');
+            const msg = document.getElementById('successMsg');
+            
+            // UI Feedback
+            btn.innerText = "Sending...";
+            btn.style.opacity = "0.7";
+            
+            // Simulate API call delay
+            setTimeout(() => {
+                btn.style.display = 'none';
+                msg.style.display = 'block';
+                
+                // Construct Mailto Link (Fallback logic)
+                const name = document.getElementById('name').value;
+                const email = document.getElementById('email').value;
+                const org = document.getElementById('org').value;
+                const message = document.getElementById('message').value;
+                
+                // Optional: Uncomment next line to open email client on submit
+                // window.location.href = `mailto:sales@balco-global.com?subject=Safewall Enquiry - ${org}&body=Name: ${name}%0D%0AEmail: ${email}%0D%0AOrg: ${org}%0D%0AMessage: ${message}`;
+                
+            }, 1500);
+        }
+    </script>
+</body>
+</html>

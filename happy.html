@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Birthday Greeting</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Web font example (replace or self-host if needed) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #ffffff;
+      --text: #111111;
+      --accent: #c89b3c;
+      --max-width: 900px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      line-height: 1.6;
+    }
+
+    .page {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: clamp(1rem, 4vw, 3rem);
+    }
+
+    .hero {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+
+    .hero img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin: 0 auto 1.5rem;
+    }
+
+    h1 {
+      font-family: "Playfair Display", serif;
+      font-size: clamp(2rem, 5vw, 3rem);
+      margin: 0 0 1rem;
+      font-weight: 600;
+    }
+
+    .content {
+      font-size: clamp(1rem, 2.5vw, 1.125rem);
+      margin-bottom: 3rem;
+    }
+
+    /* Audio controls */
+    .audio-controls {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .audio-btn {
+      appearance: none;
+      border: 2px solid var(--accent);
+      background: transparent;
+      color: var(--text);
+      font-size: 1rem;
+      padding: 0.75rem 1.5rem;
+      cursor: pointer;
+      border-radius: 999px;
+      transition: background 0.2s ease, color 0.2s ease;
+      min-width: 240px;
+    }
+
+    .audio-btn.active {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .audio-btn:hover {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    footer {
+      text-align: center;
+      font-size: 0.85rem;
+      opacity: 0.6;
+      margin-top: 4rem;
+    }
+
+    @media (min-width: 768px) {
+      .audio-controls {
+        flex-direction: row;
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="page">
+    <!-- HERO / LAYOUT FROM QUARK -->
+    <section class="hero">
+      <!-- Replace with your exported image -->
+      <img src="images/hero.jpg" alt="Birthday Greeting" />
+      <h1>Happy Birthday</h1>
+    </section>
+
+    <!-- TEXT CONTENT -->
+    <section class="content">
+      <p>
+        Wishing you a day filled with warmth, music, and moments worth remembering.
+        May this year bring joy, creativity, and beautiful surprises.
+      </p>
+    </section>
+
+    <!-- AUDIO -->
+    <section class="audio-controls">
+      <button class="audio-btn" id="instrumentalBtn">
+        ▶ Play Instrumental
+      </button>
+
+      <button class="audio-btn" id="vocalBtn">
+        ▶ Play Vocal Version
+      </button>
+    </section>
+
+    <footer>
+      © 2026
+    </footer>
+  </main>
+
+  <!-- AUDIO ELEMENTS (no autoplay, cross-browser safe) -->
+  <audio id="instrumentalAudio" preload="none">
+    <source src="audio/instrumental.mp3" type="audio/mpeg">
+    <source src="audio/instrumental.aac" type="audio/aac">
+    Your browser does not support HTML5 audio.
+  </audio>
+
+  <audio id="vocalAudio" preload="none">
+    <source src="audio/vocal.mp3" type="audio/mpeg">
+    <source src="audio/vocal.aac" type="audio/aac">
+    Your browser does not support HTML5 audio.
+  </audio>
+
+  <script>
+    const instrumentalBtn = document.getElementById("instrumentalBtn");
+    const vocalBtn = document.getElementById("vocalBtn");
+
+    const instrumentalAudio = document.getElementById("instrumentalAudio");
+    const vocalAudio = document.getElementById("vocalAudio");
+
+    function stopAll() {
+      [instrumentalAudio, vocalAudio].forEach(audio => {
+        audio.pause();
+        audio.currentTime = 0;
+      });
+      [instrumentalBtn, vocalBtn].forEach(btn => {
+        btn.classList.remove("active");
+        btn.textContent = btn.dataset.label;
+      });
+    }
+
+    function setupButton(btn, audio, label) {
+      btn.dataset.label = label;
+      btn.textContent = `▶ ${label}`;
+
+      btn.addEventListener("click", () => {
+        if (!audio.paused) {
+          stopAll();
+          return;
+        }
+        stopAll();
+        audio.play();
+        btn.classList.add("active");
+        btn.textContent = `⏹ Stop ${label}`;
+      });
+
+      audio.addEventListener("ended", stopAll);
+    }
+
+    setupButton(instrumentalBtn, instrumentalAudio, "Play Instrumental");
+    setupButton(vocalBtn, vocalAudio, "Play Vocal Version");
+  </script>
+</body>
+</html>
