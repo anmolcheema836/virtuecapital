@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GreatVacs | The Smart Way to Buy Kirby & Rainbow</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        gv: {
+                            blue: '#196FB2', /* Your Brand Blue */
+                            dark: '#0e3f66',
+                            light: '#f0f9ff',
+                            text: '#1e293b',
+                            accent: '#f59e0b', /* Gold for Trust/Stars */
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    },
+                    backgroundImage: {
+                        'hero-pattern': "url('https://images.unsplash.com/photo-1581517654769-9523d2432292?q=80&w=2670&auto=format&fit=crop')",
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body { font-feature-settings: "ss01", "ss02"; }
+        .clip-text-image { -webkit-background-clip: text; color: transparent; }
+        .glass-nav { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(0,0,0,0.05); }
+        .hero-overlay { background: linear-gradient(90deg, rgba(14,63,102,0.95) 0%, rgba(25,111,178,0.85) 60%, rgba(25,111,178,0.4) 100%); }
+        
+        /* Smooth Reveal Animation Class */
+        .reveal-up { opacity: 0; transform: translateY(40px); }
+    </style>
+</head>
+<body class="bg-white text-gv-text antialiased selection:bg-gv-blue selection:text-white">
+
+    <div class="bg-gv-blue text-white text-center py-2 text-xs font-bold tracking-widest uppercase">
+        Flash Sale: Save 10% Off Any Vacuum | Code: FLASH10
+    </div>
+
+    <nav class="sticky top-0 z-50 glass-nav transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <a href="#" class="flex items-center gap-4 group">
+                <img src="greatvacslogo.png" alt="GreatVacs Logo" class="h-10 md:h-12 object-contain">
+                <div class="hidden lg:flex flex-col border-l border-gray-300 pl-4 h-10 justify-center">
+
+                </div>
+            </a>
+
+            <div class="hidden md:flex items-center gap-8 font-medium text-sm text-gray-600">
+                <a href="#kirby" class="hover:text-gv-blue transition-colors">Rebuilt Kirby</a>
+                <a href="#rainbow" class="hover:text-gv-blue transition-colors">Rebuilt Rainbow</a>
+                <a href="#comparison" class="hover:text-gv-blue transition-colors">Why Rebuilt?</a>
+                <a href="#product-preview" class="px-6 py-3 bg-gv-blue text-white rounded-full hover:bg-gv-dark transition-all shadow-lg hover:shadow-gv-blue/30 transform hover:-translate-y-0.5">
+                    See Inventory
+                </a>
+            </div>
+
+            <div class="md:hidden text-gv-blue text-2xl">
+                &#9776;
+            </div>
+        </div>
+    </nav>
+
+    <header class="relative h-[90vh] min-h-[600px] flex items-center overflow-hidden">
+        <div class="absolute inset-0 bg-hero-pattern bg-cover bg-center bg-fixed"></div>
+        <div class="absolute inset-0 hero-overlay"></div>
+        
+        <div class="max-w-7xl mx-auto px-6 relative z-10 w-full grid lg:grid-cols-12 gap-12 items-center">
+            
+            <div class="lg:col-span-7 text-white">
+                <div class="reveal-up">
+                    <span class="inline-block py-1 px-3 rounded-full bg-white/10 border border-white/20 text-white text-xs font-bold tracking-wider mb-6 backdrop-blur-md">
+                        ESTABLISHED 1998 • 100,000+ REBUILT
+                    </span>
+                    <h1 class="font-serif text-5xl lg:text-7xl font-medium leading-[1.1] mb-6">
+                        Don't pay $3,000 for <br>clean floors.
+                    </h1>
+                    <p class="text-xl text-blue-100 mb-10 max-w-lg font-light leading-relaxed">
+                        Get the performance of a brand new Kirby or Rainbow for 60% less. Professionally rebuilt in the USA, backed by a 5-year warranty.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <a href="#kirby" class="px-8 py-4 bg-white text-gv-blue font-bold rounded-lg text-center hover:bg-gray-100 transition-all shadow-xl">
+                            Shop Rebuilt Kirby
+                        </a>
+                        <a href="#rainbow" class="px-8 py-4 bg-transparent border border-white/30 text-white font-bold rounded-lg text-center hover:bg-white/10 transition-all backdrop-blur-sm">
+                            Shop Rebuilt Rainbow
+                        </a>
+                    </div>
+                    
+                    <div class="mt-12 flex items-center gap-3 text-sm text-blue-200">
+                        <div class="flex -space-x-2">
+                            <img class="w-8 h-8 rounded-full border-2 border-gv-dark" src="https://randomuser.me/api/portraits/men/32.jpg" alt="Tech">
+                            <img class="w-8 h-8 rounded-full border-2 border-gv-dark" src="https://randomuser.me/api/portraits/women/44.jpg" alt="Tech">
+                            <img class="w-8 h-8 rounded-full border-2 border-gv-dark" src="https://randomuser.me/api/portraits/men/86.jpg" alt="Tech">
+                        </div>
+                        <p>Real USA support. Real technicians.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hidden lg:block lg:col-span-5 relative">
+                <div class="reveal-up flex justify-center items-center">
+                    <img src="herovacs.png" 
+                         alt="GreatVacs Premium Rebuilt Vacuums" 
+                         class="w-full h-auto max-w-md object-contain drop-shadow-2xl transform hover:scale-105 transition-transform duration-700 ease-out">
+                </div>
+            </div>
+
+        </div>
+    </header>
+
+    <section id="comparison" class="py-24 bg-white relative">
+        <div class="max-w-5xl mx-auto px-6">
+            <div class="text-center mb-16 reveal-up">
+                <h2 class="font-serif text-4xl text-gv-text mb-4">Buying a High-End Vacuum? <span class="italic text-gv-blue">You have options.</span></h2>
+                <p class="text-gray-500 text-lg">Kill the price shock. Keep the quality.</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-8 items-center">
+                <div class="reveal-up p-8 border border-gray-100 rounded-2xl bg-gray-50 opacity-50 grayscale hover:grayscale-0 hover:opacity-100 transition-all duration-500">
+                    <h3 class="font-bold text-gray-400 mb-2 uppercase tracking-wide text-xs">New from Manufacturer</h3>
+                    <div class="text-3xl font-serif text-gray-400 line-through mb-6">$2,500 – $3,000</div>
+                    <ul class="space-y-4 text-sm text-gray-500">
+                        <li class="flex items-center gap-3"><span class="text-red-300">✕</span> High-Pressure In-Home Sales</li>
+                        <li class="flex items-center gap-3"><span class="text-red-300">✕</span> 3-Year Warranty (Standard)</li>
+                        <li class="flex items-center gap-3"><span class="text-red-300">✕</span> 3-Day Return Policy</li>
+                    </ul>
+                </div>
+
+                <div class="reveal-up p-10 border-2 border-gv-blue rounded-2xl bg-white shadow-2xl scale-105 transform relative z-10">
+                    <div class="absolute top-0 right-0 bg-gv-accent text-white text-xs font-bold px-4 py-2 rounded-bl-xl rounded-tr-xl shadow-md">SMART BUYER CHOICE</div>
+                    <h3 class="font-bold text-gv-blue mb-2 uppercase tracking-wide text-xs">Rebuilt from GreatVacs</h3>
+                    <div class="text-5xl font-serif text-gv-text mb-2">$499 – $999</div>
+                    <p class="text-green-600 font-bold text-sm mb-8 bg-green-50 inline-block px-2 py-1 rounded">Save approx $2,000</p>
+                    
+                    <ul class="space-y-4 text-sm text-gray-700 font-medium">
+                        <li class="flex items-center gap-3">
+                            <svg class="w-5 h-5 text-gv-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            No Salespeople. No Pressure.
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <svg class="w-5 h-5 text-gv-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            5-Year Bumper-to-Bumper Warranty
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <svg class="w-5 h-5 text-gv-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            60-Day Money-Back Promise
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="text-center mt-16 bg-gv-light p-8 rounded-xl border border-blue-100 reveal-up">
+                <p class="font-serif text-xl text-gv-dark italic">
+                    “Most smart buyers choose rebuilt… and put the $2,000 they just saved in their kids' College Fund.”
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-24 bg-gray-50" id="categories">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid md:grid-cols-2 gap-10">
+                
+                <div id="kirby" class="group reveal-up bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 border border-gray-100">
+                    <div class="h-80 overflow-hidden relative">
+                        <div class="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-all z-10"></div>
+                        <img src="https://kirby.com/cdn/shop/files/e47b8398-Platinum_upright_hallway_Wide.jpg?v=1757014624&width=1500" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" alt="Rebuilt Kirby Vacuum">
+                    </div>
+                    <div class="p-10">
+                        <div class="flex justify-between items-start mb-6">
+                            <h3 class="font-serif text-3xl text-gv-text">Rebuilt Kirby</h3>
+                            <span class="bg-blue-100 text-blue-800 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">Made in USA</span>
+                        </div>
+                        <p class="text-gray-600 mb-8 leading-relaxed">
+                            Rated #1 most dependable vacuum. Built with metal components to last decades. Incredible suction power perfect for deep cleaning carpets and removing pet hair.
+                        </p>
+                        <a href="#" class="block w-full py-4 bg-gv-text text-white text-center font-bold rounded-lg hover:bg-gv-blue transition-colors">
+                            Shop Rebuilt Kirby
+                        </a>
+                    </div>
+                </div>
+
+                <div id="rainbow" class="group reveal-up bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 border border-gray-100">
+                    <div class="h-80 overflow-hidden relative">
+                        <div class="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-all z-10"></div>
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQK6K_abfOGqJLSPmb2MxAQlX2ZhUyh2NpNEw&s" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" alt="Rebuilt Rainbow Vacuum">
+                    </div>
+                    <div class="p-10">
+                        <div class="flex justify-between items-start mb-6">
+                            <h3 class="font-serif text-3xl text-gv-text">Rebuilt Rainbow</h3>
+                            <span class="bg-blue-100 text-blue-800 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">Made in USA</span>
+                        </div>
+                        <p class="text-gray-600 mb-8 leading-relaxed">
+                            Water-based filtration means dust never flies back into the air. Rated #1 most dependable canister vacuum. The ultimate choice for allergies and air quality.
+                        </p>
+                        <a href="#" class="block w-full py-4 bg-gv-text text-white text-center font-bold rounded-lg hover:bg-gv-blue transition-colors">
+                            Shop Rebuilt Rainbow
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section class="py-24 bg-white relative overflow-hidden" id="about">
+        <div class="absolute -right-20 top-20 w-96 h-96 bg-blue-50 rounded-full blur-3xl opacity-60 pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto px-6 grid lg:grid-cols-12 gap-16 items-center">
+            <div class="lg:col-span-5 reveal-up">
+                <h2 class="font-serif text-4xl text-gv-text mb-6">Why Buy from GreatVacs?</h2>
+                <p class="text-lg text-gray-600 mb-10 leading-relaxed">
+                    We don't sell everything. We focus on doing a few things extremely well. As the largest rebuilder in the US, we have first pick of inventory.
+                </p>
+                
+                <div class="space-y-8">
+                    <div class="flex gap-5">
+                        <div class="w-12 h-12 rounded-xl bg-gv-light flex items-center justify-center text-gv-blue shrink-0">
+                            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-gv-text text-lg">We pick the best, scrap the rest.</h4>
+                            <p class="text-sm text-gray-500 mt-1">We only rebuild vacuums in excellent condition. We leave the junk for eBay sellers.</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-5">
+                        <div class="w-12 h-12 rounded-xl bg-gv-light flex items-center justify-center text-gv-blue shrink-0">
+                            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.384-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" /></svg>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-gv-text text-lg">Expert USA Technicians</h4>
+                            <p class="text-sm text-gray-500 mt-1">Every machine is reconditioned, inspected, and tested by technicians who know their craft.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="lg:col-span-7 bg-gv-text text-white p-12 rounded-3xl relative reveal-up">
+                <div class="grid grid-cols-2 gap-10 mb-10">
+                    <div>
+                        <div class="text-5xl font-serif text-gv-blue font-bold mb-2">25+</div>
+                        <div class="text-xs uppercase tracking-widest text-gray-400">Years in Business</div>
+                    </div>
+                    <div>
+                        <div class="text-5xl font-serif text-gv-blue font-bold mb-2">100k+</div>
+                        <div class="text-xs uppercase tracking-widest text-gray-400">Vacuums Serviced</div>
+                    </div>
+                    <div>
+                        <div class="text-5xl font-serif text-gv-blue font-bold mb-2">5yr</div>
+                        <div class="text-xs uppercase tracking-widest text-gray-400">Motor Warranty</div>
+                    </div>
+                    <div>
+                        <div class="text-5xl font-serif text-gv-blue font-bold mb-2">60</div>
+                        <div class="text-xs uppercase tracking-widest text-gray-400">Days Return Promise</div>
+                    </div>
+                </div>
+                <div class="border-t border-white/10 pt-8">
+                    <p class="italic text-gray-300 font-light text-lg">"We know what fails. We know what lasts. This is a one-time decision, not a cycle of replacements."</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-24 bg-gv-light" id="product-preview">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="mb-12 text-center reveal-up">
+                <span class="text-gv-blue font-bold tracking-widest text-xs uppercase mb-3 block">For The Confident Buyer</span>
+                <h2 class="font-serif text-4xl text-gv-text">Example: Rebuilt Rainbow SRX</h2>
+                <p class="text-gray-500 mt-2">Here is what to expect when you shop.</p>
+            </div>
+
+            <div class="bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100 grid lg:grid-cols-2 reveal-up">
+                
+                <div class="p-8 lg:p-16 bg-gray-50 flex flex-col justify-center items-center border-r border-gray-100">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWoRgiM8sRRW5U5xTNA0whv4820KqLKkW1UA&s" alt="Rainbow SRX Rebuilt" class="w-full max-w-md object-contain mb-8 mix-blend-multiply hover:scale-105 transition-transform duration-500">
+                    <div class="flex gap-4">
+                        <div class="w-20 h-20 border-2 border-gv-blue rounded-lg bg-white p-2 cursor-pointer shadow-md">
+                            <div class="w-full h-full bg-gray-200 rounded"></div>
+                        </div>
+                        <div class="w-20 h-20 border border-gray-200 rounded-lg bg-white p-2 cursor-pointer hover:border-gv-blue transition-colors">
+                            <div class="w-full h-full bg-gray-100 rounded"></div>
+                        </div>
+                        <div class="w-20 h-20 border border-gray-200 rounded-lg bg-white p-2 cursor-pointer hover:border-gv-blue transition-colors">
+                            <div class="w-full h-full bg-gray-100 rounded"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="p-8 lg:p-12 flex flex-col justify-center">
+                    
+                    <div class="mb-4">
+                        <span class="bg-green-100 text-green-800 text-[10px] font-bold px-2 py-1 rounded inline-block mb-3 uppercase tracking-wider">Professionally Rebuilt</span>
+                        <h1 class="font-serif text-4xl font-medium text-gv-text leading-tight mb-2">Rainbow SRX Cleaning System</h1>
+                        <div class="flex text-gv-accent text-sm mb-4">★★★★★ <span class="text-gray-400 ml-2">(128 Reviews)</span></div>
+                    </div>
+                    
+                    <div class="flex items-end gap-4 mb-3">
+                        <span class="text-4xl font-bold text-gv-blue">$1,199</span>
+                        <span class="text-xl text-gray-400 line-through mb-1 font-serif">$2,900</span>
+                        <span class="text-sm text-green-600 font-bold mb-1 ml-auto bg-green-50 px-2 py-1 rounded">You save $1,700</span>
+                    </div>
+                    
+                    <div class="bg-blue-50 p-4 rounded-lg border border-blue-100 mb-8">
+                        <p class="text-sm text-gv-dark">
+                            <strong>Condition:</strong> This unit has been professionally rebuilt and tested to qualify for our 5-year warranty. It functions like new.
+                        </p>
+                    </div>
+
+                    <button class="w-full py-5 bg-gv-blue text-white font-bold text-lg rounded-xl shadow-lg hover:bg-gv-dark transition-all transform hover:-translate-y-1 mb-6 flex justify-center items-center gap-2">
+                        <span>Add to Cart</span>
+                        <span class="font-normal opacity-80 text-sm">| Risk Free</span>
+                    </button>
+
+                    <div class="grid grid-cols-2 gap-y-3 mb-8 text-sm text-gray-600 font-medium">
+                        <div class="flex items-center gap-2">
+                            <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            5-Year Motor Warranty
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            60-Day Money-Back
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            Ships from USA (Idaho)
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            Real Human Support
+                        </div>
+                    </div>
+                    
+                    <div class="border-t border-gray-100 pt-6">
+                        <h4 class="font-bold text-sm text-gv-text uppercase tracking-wide mb-3">What You'll Receive:</h4>
+                        <ul class="text-sm text-gray-600 space-y-2 list-disc pl-4 marker:text-gv-blue">
+                            <li>Rebuilt Rainbow SRX Vacuum</li>
+                            <li>Standard Attachments (Wand, Floor Tool, Brush)</li>
+                            <li>Freshly serviced and tested</li>
+                            <li>Ready to use out of the box</li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-gv-text text-white pt-24 pb-12">
+        <div class="max-w-4xl mx-auto px-6 text-center mb-16 reveal-up">
+            <h2 class="font-serif text-4xl mb-8">Try It in Your Home — Risk Free</h2>
+            
+            <div class="flex flex-wrap justify-center gap-12 mb-16">
+                <div class="flex flex-col items-center group">
+                    <div class="w-16 h-16 border border-white/20 rounded-full flex items-center justify-center mb-4 bg-white/5 group-hover:bg-white/10 transition-colors">
+                        <span class="text-2xl font-bold text-gv-blue">60</span>
+                    </div>
+                    <span class="text-sm font-bold tracking-wider uppercase">Day Guarantee</span>
+                </div>
+                <div class="flex flex-col items-center group">
+                    <div class="w-16 h-16 border border-white/20 rounded-full flex items-center justify-center mb-4 bg-white/5 group-hover:bg-white/10 transition-colors">
+                        <span class="text-2xl font-bold text-gv-blue">5</span>
+                    </div>
+                    <span class="text-sm font-bold tracking-wider uppercase">Year Warranty</span>
+                </div>
+                <div class="flex flex-col items-center group">
+                    <div class="w-16 h-16 border border-white/20 rounded-full flex items-center justify-center mb-4 bg-white/5 group-hover:bg-white/10 transition-colors">
+                        <svg class="w-8 h-8 text-gv-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" /></svg>
+                    </div>
+                    <span class="text-sm font-bold tracking-wider uppercase">USA Support</span>
+                </div>
+            </div>
+
+            <div class="bg-gv-blue p-10 rounded-2xl shadow-2xl relative overflow-hidden">
+                <div class="absolute inset-0 bg-gradient-to-r from-gv-blue to-blue-500"></div>
+                <div class="relative z-10">
+                    <h3 class="font-serif text-2xl mb-6">Ready to Choose the Right Vacuum?</h3>
+                    <div class="flex flex-col sm:flex-row justify-center gap-4">
+                        <a href="#kirby" class="px-8 py-4 bg-white text-gv-blue font-bold rounded-lg hover:bg-gray-100 transition-colors shadow-lg">Shop Kirby</a>
+                        <a href="#rainbow" class="px-8 py-4 bg-gv-dark text-white border border-white/20 font-bold rounded-lg hover:bg-black/20 transition-colors">Shop Rainbow</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-6 border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center text-xs text-gray-400">
+            <div class="flex items-center gap-3 mb-4 md:mb-0">
+                <div class="w-8 h-8 bg-white rounded flex items-center justify-center p-1">
+                     <img src="greatvacslogo.png" alt="Logo" class="w-full">
+                </div>
+                <span>© 1998-2026 GreatVacs. 928 Washington St, Montpelier, ID 83254.</span>
+            </div>
+            <div class="flex gap-6">
+                <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
+                <a href="#" class="hover:text-white transition-colors">Terms of Service</a>
+                <a href="#" class="hover:text-white transition-colors">Return Policy</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Batch Reveal Animations
+        const revealElements = document.querySelectorAll(".reveal-up");
+        
+        revealElements.forEach((element) => {
+            gsap.to(element, {
+                opacity: 1,
+                y: 0,
+                duration: 1,
+                ease: "power3.out",
+                scrollTrigger: {
+                    trigger: element,
+                    start: "top 85%", // Animation starts when top of element hits 85% of viewport height
+                    toggleActions: "play none none reverse"
+                }
+            });
+        });
+
+        // Navbar Scroll Effect
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                nav.classList.add('shadow-md');
+            } else {
+                nav.classList.remove('shadow-md');
+            }
+        });
+    </script>
+</body>
+</html>
