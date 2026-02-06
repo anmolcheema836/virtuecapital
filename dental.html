@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clínica Dental Puertollano | Expertos en Salud Bucodental</title>
+    <meta name="description" content="Clínica dental especializada en implantes, ortodoncia y estética dental. Tecnología de vanguardia y trato cercano para toda la familia.">
+    <meta name="keywords" content="dentista, clínica dental, implantes, ortodoncia, estética dental">
+
+    <!-- Google Fonts (Montserrat for headings, Open Sans for body) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Tailwind CSS (via CDN for single file usage) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Custom Theme Configuration -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        // Colors inspired by the reference site
+                        navy: '#293854',
+                        gold: '#E6D2B8', 
+                        darkgold: '#c4b29b',
+                        lightbg: '#f9f9f9',
+                    },
+                    fontFamily: {
+                        sans: ['Open Sans', 'sans-serif'],
+                        heading: ['Montserrat', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Styles */
+        body { font-family: 'Open Sans', sans-serif; }
+        h1, h2, h3, h4, h5, h6 { font-family: 'Montserrat', sans-serif; }
+        
+        .hero-bg {
+            background-image: linear-gradient(rgba(41, 56, 84, 0.7), rgba(41, 56, 84, 0.6)), url('https://images.unsplash.com/photo-1629909613654-28e377c37b09?q=80&w=2068&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .whatsapp-float {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            background-color: #25d366;
+            color: white;
+            border-radius: 50px;
+            text-align: center;
+            font-size: 30px;
+            box-shadow: 2px 2px 3px #999;
+            z-index: 100;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s;
+        }
+
+        .whatsapp-float:hover {
+            transform: scale(1.1);
+            background-color: #20ba5a;
+        }
+    </style>
+</head>
+<body class="text-gray-700 bg-white">
+
+    <!-- Top Bar -->
+    <div class="bg-navy text-white text-sm py-2 hidden md:block">
+        <div class="container mx-auto px-6 flex justify-between items-center">
+            <div class="flex space-x-6">
+                <span><i class="fas fa-phone-alt text-gold mr-2"></i>944 72 09 32</span>
+                <span><i class="fas fa-envelope text-gold mr-2"></i>info@clinicadental.com</span>
+                <span><i class="fas fa-clock text-gold mr-2"></i>Lun - Vie: 09:30 - 20:00</span>
+            </div>
+            <div class="flex space-x-4">
+                <a href="#" class="hover:text-gold transition"><i class="fab fa-instagram"></i></a>
+                <a href="#" class="hover:text-gold transition"><i class="fab fa-facebook-f"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="bg-white shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex justify-between items-center">
+                <!-- Logo -->
+                <a href="#" class="text-2xl font-bold font-heading text-navy flex items-center">
+                    <i class="fas fa-tooth text-gold text-3xl mr-2"></i>
+                    <div class="flex flex-col leading-tight">
+                        <span>CLÍNICA DENTAL</span>
+                        <span class="text-sm font-normal text-gray-500 tracking-widest">PUERTOLLANO</span>
+                    </div>
+                </a>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#inicio" class="text-navy font-semibold hover:text-gold transition">Inicio</a>
+                    <a href="#clinica" class="text-navy font-semibold hover:text-gold transition">La Clínica</a>
+                    <a href="#tratamientos" class="text-navy font-semibold hover:text-gold transition">Tratamientos</a>
+                    <a href="#equipo" class="text-navy font-semibold hover:text-gold transition">Equipo</a>
+                    <a href="#contacto" class="bg-navy text-white px-6 py-2 rounded-full hover:bg-gold hover:text-navy transition font-semibold">
+                        Pedir Cita
+                    </a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-btn" class="md:hidden text-navy text-2xl focus:outline-none">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+
+            <!-- Mobile Menu Dropdown -->
+            <div id="mobile-menu" class="hidden md:hidden mt-4 pb-4 border-t pt-4">
+                <a href="#inicio" class="block py-2 text-navy hover:text-gold">Inicio</a>
+                <a href="#clinica" class="block py-2 text-navy hover:text-gold">La Clínica</a>
+                <a href="#tratamientos" class="block py-2 text-navy hover:text-gold">Tratamientos</a>
+                <a href="#equipo" class="block py-2 text-navy hover:text-gold">Equipo</a>
+                <a href="#contacto" class="block py-2 text-gold font-bold">Pedir Cita</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header id="inicio" class="hero-bg h-[80vh] flex items-center justify-center text-center px-4">
+        <div class="max-w-4xl text-white animate-fade-in-up">
+            <h2 class="text-gold uppercase tracking-widest font-semibold mb-4">Salud y Estética Dental</h2>
+            <h1 class="text-4xl md:text-6xl font-bold font-heading mb-6 leading-tight">
+                Recupera la confianza <br> en tu sonrisa
+            </h1>
+            <p class="text-lg md:text-xl mb-8 text-gray-200 max-w-2xl mx-auto">
+                Tecnología de vanguardia y un equipo humano comprometido con tu bienestar en Portugalete.
+            </p>
+            <div class="flex flex-col md:flex-row justify-center gap-4">
+                <a href="#contacto" class="bg-gold text-navy font-bold py-3 px-8 rounded-full hover:bg-white transition shadow-lg">
+                    Solicitar Cita
+                </a>
+                <a href="#tratamientos" class="border-2 border-white text-white font-bold py-3 px-8 rounded-full hover:bg-white hover:text-navy transition shadow-lg">
+                    Ver Tratamientos
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Intro Features (USP) -->
+    <section class="py-12 bg-white -mt-10 relative z-10 container mx-auto px-6">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Feature 1 -->
+            <div class="bg-navy text-white p-8 rounded-lg shadow-xl text-center hover:-translate-y-2 transition duration-300">
+                <i class="fas fa-user-md text-4xl text-gold mb-4"></i>
+                <h3 class="text-xl font-bold mb-2">Expertos Profesionales</h3>
+                <p class="text-gray-300 text-sm">Equipo médico altamente cualificado y en constante formación.</p>
+            </div>
+            <!-- Feature 2 -->
+            <div class="bg-gold text-navy p-8 rounded-lg shadow-xl text-center hover:-translate-y-2 transition duration-300">
+                <i class="fas fa-microscope text-4xl mb-4"></i>
+                <h3 class="text-xl font-bold mb-2">Tecnología Avanzada</h3>
+                <p class="text-navy/80 text-sm">Equipamiento de última generación para diagnósticos precisos.</p>
+            </div>
+            <!-- Feature 3 -->
+            <div class="bg-navy text-white p-8 rounded-lg shadow-xl text-center hover:-translate-y-2 transition duration-300">
+                <i class="fas fa-heart text-4xl text-gold mb-4"></i>
+                <h3 class="text-xl font-bold mb-2">Financiación a Medida</h3>
+                <p class="text-gray-300 text-sm">Facilidades de pago adaptadas a tus necesidades personales.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Us -->
+    <section id="clinica" class="py-20 bg-lightbg">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col md:flex-row items-center gap-12">
+                <div class="w-full md:w-1/2">
+                    <div class="relative">
+                        <img src="https://images.unsplash.com/photo-1606811971618-4486d14f3f99?q=80&w=2074&auto=format&fit=crop" alt="Clínica Dental Interior" class="rounded-lg shadow-2xl w-full">
+                        <div class="absolute -bottom-6 -right-6 bg-gold text-navy p-6 rounded-lg shadow-lg hidden md:block">
+                            <p class="text-4xl font-bold">15+</p>
+                            <p class="font-semibold text-sm uppercase">Años de<br>Experiencia</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="w-full md:w-1/2">
+                    <h4 class="text-navy font-bold uppercase tracking-wide mb-2 text-sm">Nuestra Clínica</h4>
+                    <h2 class="text-3xl md:text-4xl font-heading font-bold text-gray-800 mb-6">Tu dentista de confianza en Portugalete</h2>
+                    <p class="text-gray-600 mb-4 leading-relaxed">
+                        En Clínica Dental Puertollano entendemos que cada paciente es único. Nuestro objetivo es ofrecerte una odontología honesta, de calidad y cercana.
+                    </p>
+                    <p class="text-gray-600 mb-6 leading-relaxed">
+                        Nos esforzamos por crear un ambiente relajado y seguro donde te sientas cómodo. Desde la primera visita, te asesoraremos con transparencia sobre las mejores opciones para tu salud bucal.
+                    </p>
+                    <ul class="space-y-3 mb-8">
+                        <li class="flex items-center"><i class="fas fa-check-circle text-navy mr-3"></i> Primera visita y diagnóstico gratuito.</li>
+                        <li class="flex items-center"><i class="fas fa-check-circle text-navy mr-3"></i> Materiales de primera calidad.</li>
+                        <li class="flex items-center"><i class="fas fa-check-circle text-navy mr-3"></i> Tratamientos mínimamente invasivos.</li>
+                    </ul>
+                    <a href="#equipo" class="text-navy font-bold border-b-2 border-gold hover:text-gold hover:border-navy transition pb-1">Conoce al equipo <i class="fas fa-arrow-right ml-2"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services -->
+    <section id="tratamientos" class="py-20 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-3xl md:text-4xl font-heading font-bold text-navy mb-4">Nuestros Tratamientos</h2>
+                <div class="w-20 h-1 bg-gold mx-auto mb-6"></div>
+                <p class="text-gray-600">Ofrecemos soluciones integrales para cubrir todas las necesidades de tu boca, desde la prevención hasta la rehabilitación completa.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Service 1 -->
+                <div class="p-8 border border-gray-100 rounded-xl hover:shadow-2xl transition duration-300 group hover:-translate-y-1 bg-white">
+                    <div class="w-16 h-16 bg-lightbg rounded-full flex items-center justify-center mb-6 group-hover:bg-navy transition">
+                        <i class="fas fa-teeth text-3xl text-navy group-hover:text-gold transition"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-navy">Implantes Dentales</h3>
+                    <p class="text-gray-600 text-sm leading-relaxed">Recupera la funcionalidad y estética de tu boca con implantes de titanio de alta gama. Solución fija y duradera.</p>
+                </div>
+                <!-- Service 2 -->
+                <div class="p-8 border border-gray-100 rounded-xl hover:shadow-2xl transition duration-300 group hover:-translate-y-1 bg-white">
+                    <div class="w-16 h-16 bg-lightbg rounded-full flex items-center justify-center mb-6 group-hover:bg-navy transition">
+                        <i class="fas fa-smile text-3xl text-navy group-hover:text-gold transition"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-navy">Ortodoncia</h3>
+                    <p class="text-gray-600 text-sm leading-relaxed">Alinea tu sonrisa. Somos especialistas en ortodoncia invisible (Invisalign) y brackets tradicionales.</p>
+                </div>
+                <!-- Service 3 -->
+                <div class="p-8 border border-gray-100 rounded-xl hover:shadow-2xl transition duration-300 group hover:-translate-y-1 bg-white">
+                    <div class="w-16 h-16 bg-lightbg rounded-full flex items-center justify-center mb-6 group-hover:bg-navy transition">
+                        <i class="fas fa-gem text-3xl text-navy group-hover:text-gold transition"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-navy">Estética Dental</h3>
+                    <p class="text-gray-600 text-sm leading-relaxed">Carillas, blanqueamientos y diseño de sonrisa digital para que luzcas tu mejor versión.</p>
+                </div>
+                <!-- Service 4 -->
+                <div class="p-8 border border-gray-100 rounded-xl hover:shadow-2xl transition duration-300 group hover:-translate-y-1 bg-white">
+                    <div class="w-16 h-16 bg-lightbg rounded-full flex items-center justify-center mb-6 group-hover:bg-navy transition">
+                        <i class="fas fa-tooth text-3xl text-navy group-hover:text-gold transition"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-navy">Periodoncia</h3>
+                    <p class="text-gray-600 text-sm leading-relaxed">Cuidado de las encías. Tratamiento y prevención de gingivitis y periodontitis.</p>
+                </div>
+                <!-- Service 5 -->
+                <div class="p-8 border border-gray-100 rounded-xl hover:shadow-2xl transition duration-300 group hover:-translate-y-1 bg-white">
+                    <div class="w-16 h-16 bg-lightbg rounded-full flex items-center justify-center mb-6 group-hover:bg-navy transition">
+                        <i class="fas fa-child text-3xl text-navy group-hover:text-gold transition"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-navy">Odontopediatría</h3>
+                    <p class="text-gray-600 text-sm leading-relaxed">Atención especial para niños. Prevención de caries y ortodoncia infantil (PADI).</p>
+                </div>
+                <!-- Service 6 -->
+                <div class="p-8 border border-gray-100 rounded-xl hover:shadow-2xl transition duration-300 group hover:-translate-y-1 bg-white">
+                    <div class="w-16 h-16 bg-lightbg rounded-full flex items-center justify-center mb-6 group-hover:bg-navy transition">
+                        <i class="fas fa-magic text-3xl text-navy group-hover:text-gold transition"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-navy">Endodoncia</h3>
+                    <p class="text-gray-600 text-sm leading-relaxed">Salvamos tus dientes dañados eliminando el dolor y la infección con tecnología rotatoria.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section id="equipo" class="py-20 bg-lightbg">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-12">
+                <h4 class="text-gold font-bold uppercase tracking-wide text-sm">Profesionales</h4>
+                <h2 class="text-3xl font-heading font-bold text-navy">Nuestro Equipo Médico</h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Doctor 1 -->
+                <div class="bg-white rounded-lg overflow-hidden shadow-lg group">
+                    <div class="h-64 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1622253692010-333f2da6031d?q=80&w=1964&auto=format&fit=crop" alt="Dr. Perez" class="w-full h-full object-cover transition transform group-hover:scale-105 duration-500">
+                    </div>
+                    <div class="p-6 text-center">
+                        <h3 class="font-bold text-lg text-navy">Dr. Óscar García</h3>
+                        <p class="text-gold text-sm font-semibold">Cirugía e Implantes</p>
+                    </div>
+                </div>
+                <!-- Doctor 2 -->
+                <div class="bg-white rounded-lg overflow-hidden shadow-lg group">
+                    <div class="h-64 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?q=80&w=2070&auto=format&fit=crop" alt="Dra. Lopez" class="w-full h-full object-cover transition transform group-hover:scale-105 duration-500">
+                    </div>
+                    <div class="p-6 text-center">
+                        <h3 class="font-bold text-lg text-navy">Dra. María López</h3>
+                        <p class="text-gold text-sm font-semibold">Ortodoncia</p>
+                    </div>
+                </div>
+                <!-- Doctor 3 -->
+                <div class="bg-white rounded-lg overflow-hidden shadow-lg group">
+                    <div class="h-64 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?q=80&w=2070&auto=format&fit=crop" alt="Dr. Ruiz" class="w-full h-full object-cover transition transform group-hover:scale-105 duration-500">
+                    </div>
+                    <div class="p-6 text-center">
+                        <h3 class="font-bold text-lg text-navy">Dr. Javier Ruiz</h3>
+                        <p class="text-gold text-sm font-semibold">Odontología General</p>
+                    </div>
+                </div>
+                <!-- Doctor 4 -->
+                <div class="bg-white rounded-lg overflow-hidden shadow-lg group">
+                    <div class="h-64 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1594824476967-48c8b964273f?q=80&w=1887&auto=format&fit=crop" alt="Dra. Sanz" class="w-full h-full object-cover transition transform group-hover:scale-105 duration-500">
+                    </div>
+                    <div class="p-6 text-center">
+                        <h3 class="font-bold text-lg text-navy">Dra. Elena Sanz</h3>
+                        <p class="text-gold text-sm font-semibold">Odontopediatría</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="py-16 bg-navy text-white">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-heading font-bold">Lo que dicen nuestros pacientes</h2>
+                <p class="text-gray-300 mt-2">Su confianza es nuestra mejor garantía.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Review 1 -->
+                <div class="bg-white/10 p-6 rounded-lg backdrop-blur-sm">
+                    <div class="text-gold mb-3 text-sm">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                    <p class="text-gray-200 italic mb-4">"Trato exquisito por parte de todo el equipo. Llevo varios años viniendo a revisión anual y siempre me han atendido con mucho cariño."</p>
+                    <p class="font-bold text-gold">- Edurne Alonso</p>
+                </div>
+                <!-- Review 2 -->
+                <div class="bg-white/10 p-6 rounded-lg backdrop-blur-sm">
+                    <div class="text-gold mb-3 text-sm">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                    <p class="text-gray-200 italic mb-4">"Fenomenal, llevo 18 años con Óscar y no puedo decir más que maravillas de él y todo el equipo. Muy profesionales."</p>
+                    <p class="font-bold text-gold">- Iosune De La Peña</p>
+                </div>
+                <!-- Review 3 -->
+                <div class="bg-white/10 p-6 rounded-lg backdrop-blur-sm">
+                    <div class="text-gold mb-3 text-sm">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                    <p class="text-gray-200 italic mb-4">"Me daba miedo el dentista, pero aquí me hicieron sentir muy tranquila. El tratamiento de implantes fue indoloro. Recomendables 100%."</p>
+                    <p class="font-bold text-gold">- Ira Layra</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Facilities Gallery -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-heading font-bold text-navy text-center mb-8">Nuestras Instalaciones</h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="overflow-hidden rounded-lg h-48 md:h-64">
+                    <img src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=2053&auto=format&fit=crop" alt="Recepción" class="w-full h-full object-cover hover:scale-110 transition duration-500">
+                </div>
+                <div class="overflow-hidden rounded-lg h-48 md:h-64">
+                    <img src="https://images.unsplash.com/photo-1516549655169-df83a0774514?q=80&w=2070&auto=format&fit=crop" alt="Gabinete" class="w-full h-full object-cover hover:scale-110 transition duration-500">
+                </div>
+                <div class="overflow-hidden rounded-lg h-48 md:h-64">
+                    <img src="https://plus.unsplash.com/premium_photo-1661281397737-9b5d75b52beb?q=80&w=2069&auto=format&fit=crop" alt="Tecnología" class="w-full h-full object-cover hover:scale-110 transition duration-500">
+                </div>
+                <div class="overflow-hidden rounded-lg h-48 md:h-64">
+                    <img src="https://images.unsplash.com/photo-1517166365436-19a8d3132274?q=80&w=2069&auto=format&fit=crop" alt="Sala de Espera" class="w-full h-full object-cover hover:scale-110 transition duration-500">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contacto" class="py-16 bg-lightbg relative">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col lg:flex-row shadow-2xl rounded-2xl overflow-hidden bg-white">
+                
+                <!-- Contact Form -->
+                <div class="w-full lg:w-1/2 p-8 md:p-12">
+                    <h4 class="text-gold font-bold uppercase tracking-wide mb-2 text-sm">Contacto</h4>
+                    <h2 class="text-3xl font-heading font-bold text-navy mb-6">Solicita tu Cita</h2>
+                    <p class="text-gray-600 mb-8">Déjanos tus datos y nos pondremos en contacto contigo lo antes posible para confirmar tu visita.</p>
+                    
+                    <form onsubmit="event.preventDefault(); alert('Gracias por tu mensaje. Te contactaremos pronto.');" class="space-y-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-gray-700 text-sm font-bold mb-2">Nombre</label>
+                                <input type="text" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-navy bg-gray-50" placeholder="Tu nombre" required>
+                            </div>
+                            <div>
+                                <label class="block text-gray-700 text-sm font-bold mb-2">Teléfono</label>
+                                <input type="tel" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-navy bg-gray-50" placeholder="600 000 000" required>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 text-sm font-bold mb-2">Email</label>
+                            <input type="email" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-navy bg-gray-50" placeholder="email@ejemplo.com">
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 text-sm font-bold mb-2">Tratamiento de interés</label>
+                            <select class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-navy bg-gray-50">
+                                <option>Revisión General</option>
+                                <option>Implantes</option>
+                                <option>Ortodoncia</option>
+                                <option>Estética Dental</option>
+                                <option>Odontopediatría</option>
+                                <option>Otro</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 text-sm font-bold mb-2">Mensaje</label>
+                            <textarea class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-navy bg-gray-50" rows="4" placeholder="¿Cómo podemos ayudarte?"></textarea>
+                        </div>
+                        <button type="submit" class="w-full bg-navy text-white font-bold py-3 rounded-lg hover:bg-blue-900 transition">
+                            Enviar Solicitud
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Contact Info & Map -->
+                <div class="w-full lg:w-1/2 bg-navy text-white p-8 md:p-12 flex flex-col justify-between">
+                    <div>
+                        <h3 class="text-2xl font-heading font-bold mb-6 text-gold">Información de Contacto</h3>
+                        <div class="space-y-6">
+                            <div class="flex items-start">
+                                <i class="fas fa-map-marker-alt text-gold text-xl mt-1 mr-4"></i>
+                                <div>
+                                    <h5 class="font-bold">Dirección</h5>
+                                    <p class="text-gray-300">San Nicolás, 7<br>48920 - Portugalete, Bizkaia</p>
+                                    <p class="text-xs text-gold mt-1">*Parking público cercano</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <i class="fas fa-phone-alt text-gold text-xl mt-1 mr-4"></i>
+                                <div>
+                                    <h5 class="font-bold">Teléfono</h5>
+                                    <a href="tel:944720932" class="text-gray-300 hover:text-white transition">944 72 09 32</a>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <i class="fas fa-envelope text-gold text-xl mt-1 mr-4"></i>
+                                <div>
+                                    <h5 class="font-bold">Email</h5>
+                                    <a href="mailto:dentalpuertollano@gmail.com" class="text-gray-300 hover:text-white transition">dentalpuertollano@gmail.com</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Map Embed -->
+                    <div class="mt-8 rounded-lg overflow-hidden h-64 border-2 border-gold/50">
+                        <iframe 
+                            src="https://maps.google.com/maps?q=San%20Nicol%C3%A1s%2C%207%2048920%20-%20Portugalete%2C%20Bizkaia&t=m&z=15&output=embed&iwloc=near" 
+                            width="100%" 
+                            height="100%" 
+                            style="border:0;" 
+                            allowfullscreen="" 
+                            loading="lazy" 
+                            referrerpolicy="no-referrer-when-downgrade">
+                        </iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-navy text-white pt-16 pb-8 border-t border-gray-700">
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
+                <!-- Brand -->
+                <div>
+                    <a href="#" class="text-2xl font-bold font-heading text-white flex items-center mb-4">
+                        <i class="fas fa-tooth text-gold mr-2"></i> CLÍNICA DENTAL
+                    </a>
+                    <p class="text-gray-400 text-sm leading-relaxed mb-6">
+                        Comprometidos con tu salud bucodental en Portugalete. Experiencia, tecnología y trato humano.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-gold hover:text-navy transition"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-gold hover:text-navy transition"><i class="fab fa-facebook-f"></i></a>
+                    </div>
+                </div>
+
+                <!-- Quick Links -->
+                <div>
+                    <h4 class="text-lg font-bold mb-6 border-b border-gold/30 pb-2 inline-block">Nuestra Clínica</h4>
+                    <ul class="space-y-3 text-sm text-gray-300">
+                        <li><a href="#inicio" class="hover:text-gold transition">Inicio</a></li>
+                        <li><a href="#clinica" class="hover:text-gold transition">Sobre Nosotros</a></li>
+                        <li><a href="#equipo" class="hover:text-gold transition">Nuestro Equipo</a></li>
+                        <li><a href="#contacto" class="hover:text-gold transition">Contacto</a></li>
+                    </ul>
+                </div>
+
+                <!-- Treatments -->
+                <div>
+                    <h4 class="text-lg font-bold mb-6 border-b border-gold/30 pb-2 inline-block">Tratamientos</h4>
+                    <ul class="space-y-3 text-sm text-gray-300">
+                        <li><a href="#" class="hover:text-gold transition">Odontología General</a></li>
+                        <li><a href="#" class="hover:text-gold transition">Implantes</a></li>
+                        <li><a href="#" class="hover:text-gold transition">Ortodoncia</a></li>
+                        <li><a href="#" class="hover:text-gold transition">Estética Dental</a></li>
+                        <li><a href="#" class="hover:text-gold transition">Periodoncia</a></li>
+                    </ul>
+                </div>
+
+                <!-- Legal -->
+                <div>
+                    <h4 class="text-lg font-bold mb-6 border-b border-gold/30 pb-2 inline-block">Legal</h4>
+                    <ul class="space-y-3 text-sm text-gray-300">
+                        <li><a href="#" class="hover:text-gold transition">Aviso Legal</a></li>
+                        <li><a href="#" class="hover:text-gold transition">Política de Privacidad</a></li>
+                        <li><a href="#" class="hover:text-gold transition">Política de Cookies</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="border-t border-gray-700 pt-8 text-center text-gray-500 text-sm">
+                <p>&copy; 2025 Clínica Dental Puertollano. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- WhatsApp Floating Button -->
+    <a href="https://wa.me/34688811649" target="_blank" class="whatsapp-float" title="Contactar por WhatsApp">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <!-- Simple JS for Mobile Menu -->
+    <script>
+        const btn = document.getElementById('mobile-menu-btn');
+        const menu = document.getElementById('mobile-menu');
+
+        btn.addEventListener('click', () => {
+            menu.classList.toggle('hidden');
+        });
+
+        // Close menu when clicking link
+        menu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                menu.classList.add('hidden');
+            });
+        });
+    </script>
+</body>
+</html>
