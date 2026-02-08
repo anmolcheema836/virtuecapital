@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Media File Browser</title>
+    <style>
+        :root {
+            --bg-blur: 40px;
+            --card-bg: rgba(30, 30, 32, 0.65);
+            --card-border: rgba(255, 255, 255, 0.12);
+            --card-hover: rgba(50, 50, 55, 0.8);
+            
+            --text-primary: #ffffff;
+            --text-secondary: #98989d;
+            --text-tertiary: #6e6e73;
+            
+            --accent-blue: #0a84ff;
+            --accent-gold: #ffd60a;
+            --accent-purple: #bf5af2;
+            --accent-green: #30d158;
+            
+            --font-stack: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            --font-mono: "SF Mono", "Menlo", "Monaco", "Courier New", monospace;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            font-family: var(--font-stack);
+            background: radial-gradient(circle at 50% 30%, #4a3b2a 0%, #1c1c1e 100%);
+            /* If using the provided image, uncomment below: */
+            /* background: url('your-blurred-image.jpg') no-repeat center center fixed; background-size: cover; */
+            background-color: #000;
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+            padding-top: 40px;
+        }
+
+        /* --- Header Section --- */
+        header {
+            margin-bottom: 30px;
+            padding-left: 10px;
+        }
+
+        h1 {
+            font-weight: 700;
+            font-size: 32px;
+            letter-spacing: -0.5px;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 15px;
+        }
+
+        /* --- File List Block --- */
+        .file-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        /* --- Individual Card Design --- */
+        .file-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(var(--bg-blur));
+            -webkit-backdrop-filter: blur(var(--bg-blur));
+            border: 1px solid var(--card-border);
+            border-radius: 18px;
+            padding: 20px;
+            transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+            display: grid;
+            grid-template-columns: 80px 1fr auto;
+            grid-template-areas: 
+                "visual meta size"
+                "visual tracks tracks";
+            gap: 16px 20px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.2);
+            cursor: pointer;
+        }
+
+        .file-card:hover {
+            background: var(--card-hover);
+            transform: scale(1.01);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+            border-color: rgba(255,255,255,0.25);
+        }
+
+        /* --- Left: Visual Quality Indicator (The "Badge") --- */
+        .visual-indicator {
+            grid-area: visual;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0,0,0,0.3);
+            border-radius: 12px;
+            height: 80px;
+            width: 80px;
+            text-align: center;
+        }
+
+        .res-text {
+            font-weight: 800;
+            font-size: 24px;
+            line-height: 1;
+        }
+        
+        .res-sub {
+            font-size: 10px;
+            font-weight: 600;
+            margin-top: 4px;
+            opacity: 0.8;
+            text-transform: uppercase;
+        }
+
+        /* Quality Variations */
+        .q-4k { color: var(--accent-gold); border: 1px solid rgba(255, 214, 10, 0.3); }
+        .q-2k { color: var(--text-primary); border: 1px solid rgba(255, 255, 255, 0.2); }
+        .q-fhd { color: var(--text-secondary); border: 1px solid rgba(255, 255, 255, 0.1); }
+
+        /* --- Center: Metadata --- */
+        .meta-info {
+            grid-area: meta;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        /* Top Row Badges (HDR, Codec, Bitrate) */
+        .tech-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 8px;
+            align-items: center;
+        }
+
+        .badge {
+            font-size: 11px;
+            font-weight: 600;
+            padding: 4px 8px;
+            border-radius: 6px;
+            background: rgba(255,255,255,0.1);
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .badge.highlight {
+            background: rgba(255,255,255,0.15);
+            color: var(--text-primary);
+        }
+
+        .badge.dolby {
+            background: linear-gradient(135deg, rgba(60, 20, 90, 0.6), rgba(0,0,0,0));
+            border: 1px solid rgba(191, 90, 242, 0.3);
+            color: var(--text-primary);
+        }
+        
+        .badge.hdr10 {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: var(--text-primary);
+        }
+
+        .filename {
+            font-family: var(--font-mono);
+            font-size: 13px;
+            color: var(--text-tertiary);
+            word-break: break-all;
+            line-height: 1.4;
+        }
+
+        /* --- Right: File Size --- */
+        .file-size {
+            grid-area: size;
+            text-align: right;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-end;
+        }
+
+        .size-val {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+        
+        .size-unit {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        /* --- Bottom: Audio Tracks (Horizontal Scroll) --- */
+        .audio-section {
+            grid-area: tracks;
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .audio-scroller {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            padding-bottom: 4px; /* Space for scrollbar if visible */
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none;  /* IE 10+ */
+            mask-image: linear-gradient(to right, black 95%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to right, black 95%, transparent 100%);
+        }
+
+        .audio-scroller::-webkit-scrollbar { 
+            display: none; /* Chrome/Safari */
+        }
+
+        .audio-track {
+            flex: 0 0 auto;
+            background: rgba(0,0,0,0.2);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 8px;
+            padding: 8px 12px;
+            min-width: 140px;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .audio-track.primary {
+            background: rgba(255,255,255,0.08);
+            border-color: rgba(255,255,255,0.15);
+        }
+
+        .at-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 4px;
+        }
+
+        .lang-flag {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-primary);
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .audio-format-icon {
+            height: 12px;
+            width: auto;
+            opacity: 0.8;
+            fill: currentColor;
+        }
+
+        .at-detail {
+            font-size: 11px;
+            color: var(--text-secondary);
+        }
+        
+        .at-studio {
+            font-size: 10px;
+            color: var(--text-tertiary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 130px;
+        }
+
+        /* Icons */
+        .icon-sm { width: 14px; height: 14px; fill: currentColor; }
+        
+        /* --- Responsiveness --- */
+        @media (max-width: 600px) {
+            .file-card {
+                grid-template-columns: 60px 1fr;
+                grid-template-areas: 
+                    "visual size"
+                    "meta meta"
+                    "tracks tracks";
+                gap: 12px;
+                padding: 16px;
+            }
+
+            .visual-indicator {
+                height: 60px;
+                width: 60px;
+            }
+
+            .res-text { font-size: 20px; }
+            .res-sub { font-size: 9px; }
+
+            .file-size {
+                align-items: flex-start;
+                justify-content: center;
+            }
+
+            .size-val { font-size: 16px; }
+
+            /* On mobile, tech badges wrap more tightly */
+            .tech-badges {
+                margin-top: 4px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>Select Source</h1>
+            <div class="subtitle">Interstellar (2014) • Available Files</div>
+        </header>
+
+        <div class="file-list">
+
+            <!-- CARD 1: Premium Quality (4K HDR Dolby) -->
+            <article class="file-card">
+                <!-- Visual Indicator -->
+                <div class="visual-indicator q-4k">
+                    <span class="res-text">4K</span>
+                    <span class="res-sub">HEVC</span>
+                </div>
+
+                <!-- Metadata -->
+                <div class="meta-info">
+                    <div class="tech-badges">
+                        <span class="badge dolby">
+                            <!-- SVG Dolby Vision Icon -->
+                            <svg class="icon-sm" viewBox="0 0 24 24"><path d="M4 4h16v16H4V4zm2 2v12h12V6H6zm2 2h8v8H8V8z"/></svg>
+                            Dolby Vision
+                        </span>
+                        <span class="badge highlight">HDR10+</span>
+                        <span class="badge">
+                            <svg class="icon-sm" viewBox="0 0 24 24"><path d="M3 3h18v18H3V3zm2 2v14h14V5H5zm4 4h6v6H9V9z"/></svg>
+                            85.2 Mbps
+                        </span>
+                        <span class="badge">MKV</span>
+                    </div>
+                    <div class="filename">Interstellar.2014.2160p.UHD.BluRay.REMUX.DV.HDR.HEVC.Atmos-TrueHD.7.1-FraMeSToR.mkv</div>
+                </div>
+
+                <!-- Size -->
+                <div class="file-size">
+                    <span class="size-val">84.6 GB</span>
+                    <span class="size-unit">Remux</span>
+                </div>
+
+                <!-- Audio Tracks (Horizontal Scroll) -->
+                <div class="audio-section">
+                    <div class="audio-scroller">
+                        <!-- Track 1 -->
+                        <div class="audio-track primary">
+                            <div class="at-header">
+                                <span class="lang-flag">🇬🇧 ENG</span>
+                                <span class="badge highlight" style="font-size:9px; padding:2px 4px;">Atmos</span>
+                            </div>
+                            <div class="at-detail">TrueHD 7.1 • Original</div>
+                            <div class="at-studio">Warner Bros. Sound</div>
+                        </div>
+                        <!-- Track 2 -->
+                        <div class="audio-track">
+                            <div class="at-header">
+                                <span class="lang-flag">🇷🇺 RUS</span>
+                                <span class="badge" style="font-size:9px; padding:2px 4px;">DTS-HD</span>
+                            </div>
+                            <div class="at-detail">MA 5.1 • Dubbing</div>
+                            <div class="at-studio">Mosfilm Master</div>
+                        </div>
+                        <!-- Track 3 -->
+                        <div class="audio-track">
+                            <div class="at-header">
+                                <span class="lang-flag">🇪🇸 ESP</span>
+                                <span class="badge" style="font-size:9px; padding:2px 4px;">AC3</span>
+                            </div>
+                            <div class="at-detail">5.1 • Dubbing</div>
+                            <div class="at-studio">Iberia Voice</div>
+                        </div>
+                        <!-- Track 4 -->
+                        <div class="audio-track">
+                            <div class="at-header">
+                                <span class="lang-flag">🇯🇵 JPN</span>
+                                <span class="badge" style="font-size:9px; padding:2px 4px;">AC3</span>
+                            </div>
+                            <div class="at-detail">5.1 • Dubbing</div>
+                            <div class="at-studio">Tokyo Studios</div>
+                        </div>
+                         <!-- Track 5 -->
+                         <div class="audio-track">
+                            <div class="at-header">
+                                <span class="lang-flag">🇺🇦 UKR</span>
+                                <span class="badge" style="font-size:9px; padding:2px 4px;">AAC</span>
+                            </div>
+                            <div class="at-detail">2.0 • MVO</div>
+                            <div class="at-studio">NovaDub</div>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- CARD 2: Standard High Quality (1080p) -->
+            <article class="file-card">
+                <div class="visual-indicator q-fhd">
+                    <span class="res-text">FHD</span>
+                    <span class="res-sub">1080p</span>
+                </div>
+
+                <div class="meta-info">
+                    <div class="tech-badges">
+                        <span class="badge">SDR</span>
+                        <span class="badge highlight">18.5 Mbps</span>
+                        <span class="badge">H.264</span>
+                    </div>
+                    <div class="filename">Interstellar.2014.1080p.BluRay.x264.DTS-WiKi.mkv</div>
+                </div>
+
+                <div class="file-size">
+                    <span class="size-val">14.2 GB</span>
+                    <span class="size-unit">BDRip</span>
+                </div>
+
+                <div class="audio-section">
+                    <div class="audio-scroller">
+                        <div class="audio-track primary">
+                            <div class="at-header">
+                                <span class="lang-flag">🇬🇧 ENG</span>
+                                <span class="badge" style="font-size:9px; padding:2px 4px;">DTS</span>
+                            </div>
+                            <div class="at-detail">5.1 • Original</div>
+                            <div class="at-studio">BlueRay Audio</div>
+                        </div>
+                        <div class="audio-track">
+                            <div class="at-header">
+                                <span class="lang-flag">🇫🇷 FRA</span>
+                                <span class="badge" style="font-size:9px; padding:2px 4px;">AC3</span>
+                            </div>
+                            <div class="at-detail">5.1 • Dubbing</div>
+                            <div class="at-studio">VFF Official</div>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- CARD 3: Compact/Low Bitrate -->
+            <article class="file-card">
+                <div class="visual-indicator q-2k">
+                    <span class="res-text">HD</span>
+                    <span class="res-sub">720p</span>
+                </div>
+
+                <div class="meta-info">
+                    <div class="tech-badges">
+                        <span class="badge">6.2 Mbps</span>
+                        <span class="badge">x265</span>
+                    </div>
+                    <div class="filename">Interstellar.2014.720p.WEB-DL.H265.AAC-RARBG.mp4</div>
+                </div>
+
+                <div class="file-size">
+                    <span class="size-val">3.4 GB</span>
+                    <span class="size-unit">Web-DL</span>
+                </div>
+
+                <div class="audio-section">
+                    <div class="audio-scroller">
+                        <div class="audio-track">
+                            <div class="at-header">
+                                <span class="lang-flag">🇬🇧 ENG</span>
+                                <span class="badge" style="font-size:9px; padding:2px 4px;">AAC</span>
+                            </div>
+                            <div class="at-detail">2.0 • Original</div>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+        </div>
+    </div>
+</body>
+</html>
