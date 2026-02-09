@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The English Rose | Café London</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+    
+    <!-- Animation CSS -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* --- RESET & VARIABLES --- */
+        :root {
+            --color-text: #2b2b2b;
+            --color-text-light: #6e6e6e;
+            --color-accent: #d4a373; /* Biscuit Gold */
+            --color-white: #ffffff;
+            --color-off-white: #fafafa;
+            --font-serif: 'Playfair Display', serif;
+            --font-sans: 'Lato', sans-serif;
+            --transition: all 0.3s ease-out;
+            --shadow-soft: 0 10px 30px rgba(0,0,0,0.04);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; font-size: 16px; }
+        
+        body {
+            font-family: var(--font-sans);
+            color: var(--color-text);
+            background-color: var(--color-white);
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a { text-decoration: none; color: inherit; transition: var(--transition); }
+        img { max-width: 100%; display: block; }
+        ul { list-style: none; }
+
+        /* --- TYPOGRAPHY --- */
+        h1, h2, h3, h4, h5 { font-family: var(--font-serif); font-weight: 400; color: var(--color-text); }
+        
+        h2 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-align: center;
+            letter-spacing: -0.5px;
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: var(--color-accent);
+            margin-bottom: 0.5rem;
+            display: block;
+            font-weight: 700;
+        }
+
+        p { color: var(--color-text-light); font-weight: 300; font-size: 1rem; margin-bottom: 1.5rem; }
+
+        /* --- BUTTONS --- */
+        .btn {
+            display: inline-block;
+            padding: 15px 40px;
+            border: 1px solid var(--color-white);
+            color: var(--color-white);
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+            font-weight: 700;
+            background: transparent;
+            transition: var(--transition);
+        }
+
+        .btn:hover {
+            background: var(--color-white);
+            color: var(--color-text);
+        }
+
+        /* --- NAVIGATION --- */
+        nav {
+            position: fixed;
+            top: 0; width: 100%;
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            transition: background 0.3s ease, padding 0.3s ease;
+        }
+
+        nav.scrolled {
+            background: rgba(255, 255, 255, 0.98);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            padding: 10px 5%;
+        }
+
+        .logo-container img {
+            height: 60px;
+            width: auto;
+            transition: height 0.3s ease;
+        }
+
+        nav.scrolled .logo-container img { height: 50px; }
+
+        .nav-links { display: flex; gap: 40px; }
+        
+        .nav-links a {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--color-white);
+            font-weight: 600;
+            position: relative;
+        }
+
+        nav.scrolled .nav-links a { color: var(--color-text); }
+
+        .nav-links a::after {
+            content: ''; position: absolute; width: 0; height: 1px; bottom: -5px; left: 0;
+            background-color: var(--color-accent); transition: width 0.3s ease;
+        }
+        .nav-links a:hover::after { width: 100%; }
+
+        /* Mobile Menu */
+        .hamburger { display: none; cursor: pointer; z-index: 1001; }
+        .bar { width: 25px; height: 2px; background-color: #fff; margin: 5px 0; transition: 0.3s; }
+        nav.scrolled .bar { background-color: var(--color-text); }
+
+        /* --- HERO --- */
+        header {
+            height: 100vh;
+            background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.4)), url('https://images.squarespace-cdn.com/content/v1/5422c0eae4b070b1a839dc93/1532261951421-IYIEGCHABVPTUNZU7WOX/Front+of+Shop.jpg');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: var(--color-white);
+            transform: translateZ(0); 
+        }
+
+        header h1 {
+            font-size: 5rem;
+            margin-bottom: 20px;
+            line-height: 1.1;
+            color: var(--color-white);
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        header p {
+            color: rgba(255,255,255,0.95);
+            font-family: var(--font-serif);
+            font-style: italic;
+            font-size: 1.3rem;
+            margin-bottom: 40px;
+        }
+
+        /* --- SECTIONS --- */
+        section { padding: 100px 8%; position: relative; }
+        
+        /* --- ABOUT --- */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .about-img-wrapper img { width: 100%; border-radius: 2px; }
+
+        .about-text h3 { font-size: 1.6rem; margin-bottom: 1.5rem; font-style: italic; line-height: 1.4; }
+
+        /* NEW AWARDS SECTION STYLE */
+        .awards-container {
+            margin-top: 40px;
+            padding: 25px;
+            background: var(--color-off-white);
+            border-left: 4px solid #00AA6C; /* TripAdvisor Green */
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .awards-container img {
+            width: 50px; /* Constrain the logo size */
+            height: auto;
+        }
+
+        .award-details h5 {
+            font-family: var(--font-sans);
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+            letter-spacing: 1px;
+        }
+
+        .award-details p {
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+            color: var(--color-text);
+        }
+
+        .award-years {
+            font-size: 0.8rem;
+            color: var(--color-text-light);
+            font-weight: 600;
+        }
+
+        /* --- MENU (TABBED) --- */
+        #menu { background-color: var(--color-off-white); }
+        
+        .menu-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 50px;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            font-family: var(--font-sans);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            padding-bottom: 10px;
+            color: var(--color-text-light);
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn.active, .tab-btn:hover {
+            color: var(--color-text);
+            border-color: var(--color-accent);
+        }
+
+        .menu-content {
+            display: none;
+            max-width: 900px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 50px;
+            box-shadow: var(--shadow-soft);
+            animation: fadeIn 0.5s ease;
+        }
+
+        .menu-content.active { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .menu-category-header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        .menu-category-header h3 { font-size: 2rem; margin-bottom: 10px; }
+        .menu-category-header p { font-size: 0.9rem; font-style: italic; margin: 0; }
+
+        .menu-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 15px;
+        }
+
+        .menu-item-group { margin-bottom: 30px; }
+
+        .item-name { font-family: var(--font-serif); font-size: 1.15rem; font-weight: 600; color: #222; }
+        .item-dots { flex-grow: 1; border-bottom: 1px dotted #ccc; margin: 0 15px; position: relative; top: -5px; }
+        .item-price { font-weight: 700; color: var(--color-accent); font-size: 1.1rem; white-space: nowrap; }
+        .item-desc { font-size: 0.9rem; color: #888; margin-top: -5px; line-height: 1.5; max-width: 80%; }
+        
+        .sub-header {
+            font-family: var(--font-sans);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 1rem;
+            color: var(--color-text);
+            margin: 30px 0 20px 0;
+            border-left: 3px solid var(--color-accent);
+            padding-left: 10px;
+        }
+
+        /* --- GALLERY --- */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .gallery-item {
+            aspect-ratio: 1/1;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+            will-change: transform;
+        }
+
+        .gallery-item:hover img { transform: scale(1.05); }
+
+        /* --- CONTACT --- */
+        #contact { background: #1a1a1a; color: var(--color-white); }
+        #contact h2 { color: var(--color-white); }
+        #contact p, #contact a { color: #bbb; }
+        #contact .subtitle { opacity: 0.8; }
+        #contact a:hover { color: var(--color-accent); }
+
+        .contact-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 40px;
+            margin-top: 50px;
+            text-align: center;
+        }
+
+        .social-links { margin-top: 20px; }
+        .social-links a {
+            display: inline-block;
+            margin: 0 8px;
+            font-size: 1.1rem;
+            width: 35px; height: 35px;
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 50%;
+            line-height: 33px;
+            transition: all 0.3s ease;
+        }
+        .social-links a:hover { border-color: var(--color-accent); color: var(--color-accent); }
+
+        footer {
+            background: #111;
+            padding: 20px;
+            text-align: center;
+            color: #555;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 768px) {
+            h2 { font-size: 2.5rem; }
+            section { padding: 60px 5%; }
+            
+            /* Navbar Mobile */
+            .hamburger { display: block; }
+            .nav-links {
+                position: fixed;
+                right: -100%;
+                top: 0;
+                height: 100vh;
+                background: #fff;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                width: 100%;
+                transition: right 0.3s ease-in-out;
+                box-shadow: -10px 0 30px rgba(0,0,0,0.1);
+            }
+            .nav-links.active { right: 0; }
+            .nav-links a { color: var(--color-text); font-size: 1.2rem; margin: 10px 0; }
+            
+            .bar.active:nth-child(2) { opacity: 0; }
+            .bar.active:nth-child(1) { transform: translateY(8px) rotate(45deg); background-color: #222; }
+            .bar.active:nth-child(3) { transform: translateY(-6px) rotate(-45deg); background-color: #222; }
+
+            header h1 { font-size: 3rem; }
+            
+            .about-grid, .contact-container { grid-template-columns: 1fr; }
+            .about-img-wrapper { order: -1; }
+            
+            .awards-container { flex-direction: column; text-align: center; }
+            
+            .gallery-grid { grid-template-columns: 1fr; }
+            
+            .menu-tabs { gap: 15px; overflow-x: auto; justify-content: flex-start; padding-bottom: 10px; white-space: nowrap; -webkit-overflow-scrolling: touch; }
+            .menu-content { padding: 30px 20px; }
+            .item-dots { display: none; }
+            .menu-item { flex-direction: column; }
+            .item-price { margin-top: 5px; }
+            .item-desc { max-width: 100%; margin-bottom: 15px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVIGATION -->
+    <nav id="navbar">
+        <a href="#" class="logo-container">
+            <img src="englishroselogo.png" alt="The English Rose Logo">
+        </a>
+        
+        <div class="nav-links">
+            <a href="#about" onclick="toggleMenu()">About</a>
+            <a href="#menu" onclick="toggleMenu()">Menu</a>
+            <a href="#gallery" onclick="toggleMenu()">Gallery</a>
+            <a href="#contact" onclick="toggleMenu()">Contact</a>
+        </div>
+
+        <div class="hamburger" onclick="toggleMenu()">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <header>
+        <div data-aos="fade-up" data-aos-duration="800">
+            <h1>The English Rose</h1>
+            <p>Heritage & Home-made in the heart of London</p>
+            <a href="#menu" class="btn">View Menu</a>
+        </div>
+    </header>
+
+    <!-- ABOUT -->
+    <section id="about">
+        <div class="about-grid">
+            <div class="about-text" data-aos="fade-right">
+                <span class="subtitle">Our Story</span>
+                <h2>Welcome</h2>
+                <h3>"Like an escape to a cosy 'grandma's style' living room."</h3>
+                <p>Café Bella Maria is an independent, Italian and English family run café located on Lower Grosvenor Place, just a stone’s throw from Buckingham Palace.</p>
+                <p>We pride ourselves on our 'everything from scratch' attitude. All our food is completely home-made, from our delicious cakes right down to our pesto. Enjoy your tea in gilt-rimmed mismatch china cups amongst picture filled walls and an old playable piano.</p>
+                
+                <!-- RESTORED HALL OF FAME TEXT & NEW ICON -->
+                <div class="awards-container" data-aos="fade-up" data-aos-delay="100">
+                    <img src="https://digishiftindia.in/wp-content/uploads/2024/05/BUY-TRIPADVISOR-REVIEWS.png" alt="TripAdvisor Logo">
+                    <div class="award-details">
+                        <h5>TripAdvisor Hall of Fame</h5>
+                        <p>Traveller’s Choice Awards & Certificate of Excellence</p>
+                        <span class="award-years">2015 • 2016 • 2017 • 2018 • 2019 • 2020 • 2022</span>
+                    </div>
+                </div>
+
+            </div>
+            
+            <div class="about-img-wrapper" data-aos="fade-left">
+                <img src="https://images.squarespace-cdn.com/content/v1/5422c0eae4b070b1a839dc93/1532266780520-OT83BIF4P2NG6HF8QHUB/Bench+Seats.jpg" alt="Interior">
+            </div>
+        </div>
+    </section>
+
+    <!-- MENU -->
+    <section id="menu">
+        <span class="subtitle">Freshly Prepared</span>
+        <h2 data-aos="fade-up">Our Menu</h2>
+        
+        <div class="menu-tabs" data-aos="fade-up">
+            <button class="tab-btn active" data-target="breakfast">Breakfast</button>
+            <button class="tab-btn" data-target="afternoon-tea">Afternoon Tea & Lunch</button>
+            <button class="tab-btn" data-target="desserts">Desserts</button>
+            <button class="tab-btn" data-target="drinks">Drinks</button>
+        </div>
+
+        <!-- BREAKFAST TAB -->
+        <div id="breakfast" class="menu-content active">
+            <div class="menu-category-header">
+                <h3>Breakfast</h3>
+                <p>Made with free range eggs. Last orders at 11.30 daily.</p>
+            </div>
+
+            <div class="menu-item-group">
+                <div class="menu-item">
+                    <span class="item-name">Traditional Full English Breakfast</span>
+                    <div class="item-dots"></div>
+                    <span class="item-price">£14.75</span>
+                </div>
+
+                <div class="menu-item">
+                    <span class="item-name">Vegetarian / Vegan Full English (V/VE)</span>
+                    <div class="item-dots"></div>
+                    <span class="item-price">£14.25</span>
+                </div>
+
+                <div class="menu-item">
+                    <span class="item-name">Eggs on Sourdough</span>
+                    <div class="item-dots"></div>
+                    <span class="item-price">£11.25</span>
+                </div>
+                <div class="item-desc">Served with Mushrooms and Avocado (V) or Streaky Bacon</div>
+
+                <div class="menu-item">
+                    <span class="item-name">Avocado on Sourdough Toast (VE)</span>
+                    <div class="item-dots"></div>
+                    <span class="item-price">£9.25</span>
+                </div>
+
+                <div class="menu-item">
+                    <span class="item-name">Breakfast Muffin</span>
+                    <div class="item-dots"></div>
+                    <span class="item-price">£8.75</span>
+                </div>
+
+                <div class="menu-item">
+                    <span class="item-name">Homemade Granola</span>
+                    <div class="item-dots"></div>
+                    <span class="item-price">£7.75</span>
+                </div>
+                <div class="item-desc">Dark Chocolate Granola, served with Greek yoghurt and Cherry compote.</div>
+
+                <div class="menu-item">
+                    <span class="item-name">Ham & Cheese Croissant</span>
+                    <div class="item-dots"></div>
+                    <span class="item-price">£5.75</span>
+                </div>
+
+                <div class="menu-item">
+                    <span class="item-name">All Butter Croissant / Pain Au Chocolat</span>
+                    <div class="item-dots"></div>
+                    <span class="item-price">£3.25</span>
+                </div>
+
+                <div class="menu-item">
+                    <span class="item-name">Toast with Jam & Butter</span>
+                    <div class="item-dots"></div>
+                    <span class="item-price">£2.75</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- AFTERNOON TEA TAB -->
+        <div id="afternoon-tea" class="menu-content">
+            <div class="menu-category-header">
+                <h3>Afternoon Tea & Lunch</h3>
+                <p>Served from 12pm with last orders 1 hour before closing.</p>
+            </div>
+
+            <div class="menu-item">
+                <span class="item-name">Traditional Afternoon Tea</span>
+                <div class="item-dots"></div>
+                <span class="item-price">£38.00 pp</span>
+            </div>
+            <div class="item-desc" style="margin-bottom: 20px;">
+                A mixed selection of finger sandwiches, bite-sized cakes and a homemade vanilla scone with clotted cream and jam, and a hot drink (Choice of tea or Americano), served on a vintage tiered cake stand. Option of either regular or vegetarian available.<br>
+                <em>(We do not cater for Gluten free/Celiac or Vegan - sorry!)</em>
+            </div>
+
+            <div class="menu-item">
+                <span class="item-name">... with Prosecco</span>
+                <div class="item-dots"></div>
+                <span class="item-price">+£7.70 pp</span>
+            </div>
+
+            <div class="sub-header">Lunch</div>
+
+            <div class="menu-item">
+                <span class="item-name">Ham & Cheese Toastie</span>
+                <div class="item-dots"></div>
+                <span class="item-price">£8.65</span>
+            </div>
+            <div class="item-desc">Served with crisps.</div>
+
+            <div class="menu-item">
+                <span class="item-name">Cheese & Tomato Toastie</span>
+                <div class="item-dots"></div>
+                <span class="item-price">£8.65</span>
+            </div>
+            <div class="item-desc">Served with crisps.</div>
+
+            <div class="menu-item">
+                <span class="item-name">Soup of the Week</span>
+                <div class="item-dots"></div>
+                <span class="item-price">£5.65</span>
+            </div>
+            <div class="item-desc">Served with bread and butter.</div>
+
+            <div class="menu-item">
+                <span class="item-name">Soup & Toastie</span>
+                <div class="item-dots"></div>
+                <span class="item-price">£13.65</span>
+            </div>
+            <div class="item-desc">Small bowl of soup and a choice of Ham & Cheese or Cheese & Tomato toastie.</div>
+        </div>
+
+        <!-- DESSERTS TAB -->
+        <div id="desserts" class="menu-content">
+            <div class="menu-category-header">
+                <h3>Desserts</h3>
+                <p>Homemade daily in our kitchen.</p>
+            </div>
+
+            <div class="menu-item">
+                <span class="item-name">Homemade Vanilla Scone</span>
+                <div class="item-dots"></div>
+                <span class="item-price">£5.00</span>
+            </div>
+            <div class="item-desc">Served with clotted cream and jam.</div>
+
+            <div class="menu-item">
+                <span class="item-name">Homemade Raisin Scone</span>
+                <div class="item-dots"></div>
+                <span class="item-price">£4.60</span>
+            </div>
+            <div class="item-desc">Served with butter.</div>
+
+            <div class="menu-item">
+                <span class="item-name">Scone of the Week</span>
+                <div class="item-dots"></div>
+                <span class="item-price">£5.20</span>
+            </div>
+
+            <div class="menu-item">
+                <span class="item-name">Homemade Cake</span>
+                <div class="item-dots"></div>
+                <span class="item-price">£4.95 / slice</span>
+            </div>
+            <div class="item-desc">Subject to availability.</div>
+        </div>
+
+        <!-- DRINKS TAB -->
+        <div id="drinks" class="menu-content">
+            <div class="menu-category-header">
+                <h3>Drinks</h3>
+            </div>
+
+            <div class="sub-header">Hot Drinks (Whole or Oat Milk)</div>
+
+            <div class="menu-item">
+                <span class="item-name">Double Espresso</span>
+                <div class="item-dots"></div>
+                <span class="item-price">£2.90</span>
+            </div>
+            <div class="menu-item">
+                <span class="item-name">Macchiato</span>
+                <div class="item-dots"></div>
+                <span class="item-price">£3.00</span>
+            </div>
+            <div class="menu-item">
+                <span class="item-name">Americano (Black/White)</span>
+                <div class="item-dots"></div>
+                <span class="item-price">£3.40</span>
+            </div>
+            <div class="menu-item">
+                <span class="item-name">Flat White</span>
+                <div class="item-dots"></div>
+                <span class="item-price">£3.70</span>
+            </div>
+            <div class="menu-item">
+                <span class="item-name">Cappuccino</span>
+                <div class="item-dots"></div>
+                <span class="item-price">£3.80</span>
+            </div>
+            <div class="menu-item">
+                <span class="item-name">Latte</span>
+                <div class="item-dots"></div>
+                <span class="item-price">£4.10</span>
+            </div>
+            <div class="menu-item">
+                <span class="item-name">Mocha</span>
+                <div class="item-dots"></div>
+                <span class="item-price">£4.50</span>
+            </div>
+            <div class="menu-item">
+                <span class="item-name">Hot Chocolate</span>
+                <div class="item-dots"></div>
+                <span class="item-price">£4.30</span>
+            </div>
+            <div class="item-desc">With cream and marshmallow.</div>
+
+            <div class="menu-item">
+                <span class="item-name">English Breakfast / Earl Grey Pot</span>
+                <div class="item-dots"></div>
+                <span class="item-price">£3.80 / £6.30</span>
+            </div>
+            <div class="menu-item">
+                <span class="item-name">Herbal Tea</span>
+                <div class="item-dots"></div>
+                <span class="item-price">£3.80 / £6.30</span>
+            </div>
+            <div class="item-desc">The English Teashop - Choose from 9 different flavours.</div>
+
+            <div class="sub-header">Cold Drinks</div>
+            
+            <div class="menu-item">
+                <span class="item-name">Apple Juice / Orange Juice</span>
+                <div class="item-dots"></div>
+                <span class="item-price">£3.90</span>
+            </div>
+            <div class="menu-item">
+                <span class="item-name">Pink Rose Lemonade</span>
+                <div class="item-dots"></div>
+                <span class="item-price">£4.20</span>
+            </div>
+            <div class="menu-item">
+                <span class="item-name">Sparkling Elderflower</span>
+                <div class="item-dots"></div>
+                <span class="item-price">£4.20</span>
+            </div>
+            <div class="menu-item">
+                <span class="item-name">Coca-Cola / Diet Coke</span>
+                <div class="item-dots"></div>
+                <span class="item-price">£4.10</span>
+            </div>
+            <div class="menu-item">
+                <span class="item-name">Water (Still/Sparkling)</span>
+                <div class="item-dots"></div>
+                <span class="item-price">£3.00 / £7.80</span>
+            </div>
+            <div class="menu-item">
+                <span class="item-name">Iced Americano</span>
+                <div class="item-dots"></div>
+                <span class="item-price">£3.50</span>
+            </div>
+            <div class="menu-item">
+                <span class="item-name">Iced Latte</span>
+                <div class="item-dots"></div>
+                <span class="item-price">£4.20</span>
+            </div>
+
+            <div class="sub-header">Alcoholic</div>
+            <div class="menu-item">
+                <span class="item-name">Prosecco (200ml)</span>
+                <div class="item-dots"></div>
+                <span class="item-price">£7.70</span>
+            </div>
+            <div class="menu-item">
+                <span class="item-name">Prosecco (750ml)</span>
+                <div class="item-dots"></div>
+                <span class="item-price">£23.00</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- GALLERY -->
+    <section id="gallery">
+        <span class="subtitle">Atmosphere</span>
+        <h2 data-aos="fade-up">Gallery</h2>
+        
+        <div class="gallery-grid">
+            <div class="gallery-item" data-aos="fade-up">
+                <img src="https://images.squarespace-cdn.com/content/v1/5422c0eae4b070b1a839dc93/1532266768451-KOKG9XTY2AQ1Z8LJRKIY/Gift+Shop.jpg" alt="Gift Shop">
+            </div>
+            <div class="gallery-item" data-aos="fade-up" data-aos-delay="100">
+                <img src="https://images.squarespace-cdn.com/content/v1/5422c0eae4b070b1a839dc93/1532266824855-6649L43C1EI00QMSYXFD/2018-06-17-PHOTO-00000023.jpg" alt="Food">
+            </div>
+            <div class="gallery-item" data-aos="fade-up" data-aos-delay="200">
+                <img src="https://images.squarespace-cdn.com/content/v1/5422c0eae4b070b1a839dc93/1532266849307-MMJCO86UTRYQN9MKY1AM/Back+Room.jpg" alt="Room">
+            </div>
+            <div class="gallery-item" data-aos="fade-up">
+                <img src="https://images.squarespace-cdn.com/content/v1/5422c0eae4b070b1a839dc93/1531733408329-49RE9JJVCW6K8H9E2691/2018-07-05-PHOTO-00000032.jpg" alt="Cakes">
+            </div>
+            <div class="gallery-item" data-aos="fade-up" data-aos-delay="100">
+                <img src="https://images.squarespace-cdn.com/content/v1/5422c0eae4b070b1a839dc93/1532266835748-TE4WVI8AYEZ5G080BH4Y/2018-07-05-PHOTO-00000029.jpg" alt="Coffee">
+            </div>
+            <div class="gallery-item" data-aos="fade-up" data-aos-delay="200">
+                <img src="https://images.squarespace-cdn.com/content/v1/5422c0eae4b070b1a839dc93/1532266830027-SLTK1AEEI8KCAWMI7TGR/2018-07-05-PHOTO-00000027.jpg" alt="Pastries">
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact">
+        <span class="subtitle">Location</span>
+        <h2 data-aos="fade-up">Visit Us</h2>
+        <p style="text-align:center;">Card Payment Only • Walk-ins Welcome</p>
+
+        <div class="contact-container">
+            <div class="contact-box" data-aos="fade-up">
+                <i class="fa fa-map-marker-alt" style="font-size: 1.5rem; color: #d4a373; margin-bottom: 20px;"></i>
+                <h4 style="color:#d4a373; text-transform:uppercase; font-size:0.9rem; margin-bottom:10px;">Address</h4>
+                <p>4 Lower Grosvenor Place<br>London, SW1W 0EJ<br>(Next to Buckingham Palace)</p>
+            </div>
+
+            <div class="contact-box" data-aos="fade-up" data-aos-delay="100">
+                <i class="fa fa-clock" style="font-size: 1.5rem; color: #d4a373; margin-bottom: 20px;"></i>
+                <h4 style="color:#d4a373; text-transform:uppercase; font-size:0.9rem; margin-bottom:10px;">Opening Hours</h4>
+                <p>Mon - Fri: 8:00am - 5:00pm<br>Sat - Sun: 8:00am - 5:00pm</p>
+            </div>
+
+            <div class="contact-box" data-aos="fade-up" data-aos-delay="200">
+                <i class="fa fa-envelope" style="font-size: 1.5rem; color: #d4a373; margin-bottom: 20px;"></i>
+                <h4 style="color:#d4a373; text-transform:uppercase; font-size:0.9rem; margin-bottom:10px;">Contact</h4>
+                <p><a href="mailto:info@theenglishrosecafe.co.uk">info@theenglishrosecafe.co.uk</a></p>
+                <div class="social-links">
+                    <a href="https://www.instagram.com/theenglishrosecafe/" target="_blank"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.facebook.com/theenglishrosecafe/" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://twitter.com/CafeEnglishRose" target="_blank"><i class="fab fa-twitter"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>&copy; 2024 The English Rose Café. All rights reserved.</p>
+    </footer>
+
+    <!-- SCRIPTS -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        // Init Animation - Reduced duration and delay to fix lag
+        AOS.init({
+            once: true,
+            offset: 50,
+            duration: 800, 
+            easing: 'ease-out-cubic'
+        });
+
+        // Navbar Scroll Logic
+        const navbar = document.getElementById('navbar');
+        window.onscroll = () => {
+            if (window.scrollY > 30) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        };
+
+        // Mobile Menu Logic
+        function toggleMenu() {
+            const navLinks = document.querySelector('.nav-links');
+            const bars = document.querySelectorAll('.bar');
+            navLinks.classList.toggle('active');
+            bars.forEach(bar => bar.classList.toggle('active'));
+        }
+
+        // Tab Switching Logic
+        const tabs = document.querySelectorAll('.tab-btn');
+        const contents = document.querySelectorAll('.menu-content');
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Remove active class from all
+                tabs.forEach(t => t.classList.remove('active'));
+                contents.forEach(c => c.classList.remove('active'));
+
+                // Add active to current
+                tab.classList.add('active');
+                const target = document.getElementById(tab.dataset.target);
+                target.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium TV UI</title>
+    <style>
+        :root {
+            --bg-dark: #000000;
+            --glass-inactive: rgba(255, 255, 255, 0.08);
+            --border-inactive: rgba(255, 255, 255, 0.1);
+            
+            /* The "Apple TV" Focus State */
+            --card-focus-bg: #ffffff;
+            --text-focus: #000000;
+            --text-focus-sec: #555555;
+            
+            --text-white: #ffffff;
+            --text-grey: #a1a1aa;
+            
+            --accent-gold: #FFD700;
+            
+            --ease-apple: cubic-bezier(0.25, 0.1, 0.25, 1);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", sans-serif;
+            background-color: var(--bg-dark);
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-white);
+        }
+
+        /* Ambient Blurred Background */
+        .background-layer {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            /* Placeholder gradient acting as a blurred movie backdrop */
+            background: radial-gradient(circle at 20% 50%, #2c241b 0%, #0d0d0d 100%);
+            z-index: -1;
+        }
+
+        .app-layout {
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            width: 90vw;
+            height: 80vh;
+            gap: 80px;
+        }
+
+        /* --- Left Column: Movie Context --- */
+        .poster-column {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .poster-card {
+            width: 100%;
+            aspect-ratio: 2/3;
+            background: linear-gradient(45deg, #333, #444);
+            border-radius: 12px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+            margin-bottom: 24px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* Simulating an image */
+        .poster-img-sim {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            opacity: 0.8;
+            background: url('https://image.tmdb.org/t/p/w500/gEU2QniL6C8zYEFeuDOwJfVRECr.jpg') center/cover;
+        }
+
+        .movie-info h1 {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+
+        .movie-meta {
+            font-size: 16px;
+            color: var(--text-grey);
+            font-weight: 500;
+        }
+
+        /* --- Right Column: File List --- */
+        .list-column {
+            position: relative;
+            /* Mask top and bottom to create fade effect */
+            mask-image: linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%);
+            padding: 40px 0;
+        }
+
+        .list-scroll-track {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            transition: transform 0.4s var(--ease-apple);
+            padding: 0 10px; /* Space for shadow */
+        }
+
+        /* --- The Card --- */
+        .file-row {
+            display: grid;
+            grid-template-columns: 80px 1fr 100px;
+            grid-template-areas: 
+                "quality meta size"
+                "quality audio audio";
+            gap: 8px 32px;
+            padding: 24px 32px;
+            border-radius: 16px;
+            background: var(--glass-inactive);
+            border: 1px solid transparent; /* Reserve space */
+            transition: all 0.3s var(--ease-apple);
+            cursor: pointer;
+            opacity: 0.7;
+            transform: scale(0.98);
+        }
+
+        /* --- FOCUSED STATE (The Magic) --- */
+        .file-row.focused {
+            background: var(--card-focus-bg);
+            opacity: 1;
+            transform: scale(1.02);
+            box-shadow: 0 15px 50px rgba(0,0,0,0.5);
+            border-color: transparent;
+            z-index: 10;
+        }
+
+        /* Text color flipping on focus */
+        .file-row.focused .meta-top, 
+        .file-row.focused .file-size-val,
+        .file-row.focused .quality-box {
+            color: var(--text-focus);
+        }
+        
+        .file-row.focused .meta-sub,
+        .file-row.focused .file-size-unit,
+        .file-row.focused .quality-sub {
+            color: var(--text-focus-sec);
+        }
+        
+        .file-row.focused .tech-badge {
+            border-color: #ccc;
+            color: #333;
+        }
+
+        /* --- Card Content --- */
+
+        /* 1. Quality Box (Left) */
+        .quality-box {
+            grid-area: quality;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-white);
+            border-right: 1px solid rgba(255,255,255,0.1);
+            padding-right: 20px;
+        }
+        .file-row.focused .quality-box { border-right-color: rgba(0,0,0,0.1); }
+
+        .q-main { font-size: 26px; font-weight: 800; letter-spacing: -1px; }
+        .q-sub { font-size: 11px; font-weight: 600; text-transform: uppercase; color: var(--text-grey); margin-top: 4px; }
+        
+        /* 4K Accent */
+        .is-4k .q-main { color: var(--accent-gold); }
+        /* When focused, keep gold or switch? Keep gold for premium feel. */
+
+        /* 2. Metadata (Center) */
+        .file-meta {
+            grid-area: meta;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .meta-top {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .tech-badge {
+            font-size: 11px;
+            padding: 3px 6px;
+            border-radius: 4px;
+            border: 1px solid rgba(255,255,255,0.3);
+            color: var(--text-grey);
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .badge-fill {
+            background: var(--text-white);
+            color: #000 !important;
+            border: none;
+            font-weight: 700;
+        }
+        
+        /* In focus state, the white badge needs to invert to black */
+        .file-row.focused .badge-fill {
+            background: #000;
+            color: #fff !important;
+        }
+
+        .meta-sub {
+            font-family: "SF Mono", monospace;
+            font-size: 12px;
+            color: var(--text-grey);
+            opacity: 0.8;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 400px;
+        }
+
+        /* 3. Size (Right) */
+        .file-size {
+            grid-area: size;
+            text-align: right;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .file-size-val { font-size: 18px; font-weight: 700; color: var(--text-white); }
+        .file-size-unit { font-size: 12px; color: var(--text-grey); margin-top: 2px;}
+
+        /* 4. Audio (Bottom Center) */
+        .audio-row {
+            grid-area: audio;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            overflow: hidden;
+        }
+
+        .audio-tag {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-grey);
+            background: rgba(255,255,255,0.05);
+            padding: 4px 8px;
+            border-radius: 6px;
+        }
+
+        .file-row.focused .audio-tag {
+            background: rgba(0,0,0,0.06);
+            color: #333;
+        }
+
+        .icon-audio { width: 10px; height: 10px; fill: currentColor; }
+
+        /* Helpers */
+        .dot { width: 3px; height: 3px; background: currentColor; border-radius: 50%; opacity: 0.5; }
+
+    </style>
+</head>
+<body>
+
+    <div class="background-layer"></div>
+
+    <div class="app-layout">
+        
+        <!-- Context -->
+        <aside class="poster-column">
+            <div class="poster-card">
+                <div class="poster-img-sim"></div>
+            </div>
+            <div class="movie-info">
+                <h1>Interstellar</h1>
+                <div class="movie-meta">2014 • Sci-Fi • 8.7 ★</div>
+            </div>
+        </aside>
+
+        <!-- List -->
+        <main class="list-column">
+            <div class="list-scroll-track" id="scrollTrack">
+
+                <!-- ITEM 1: 4K REMUX -->
+                <div class="file-row focused" id="row-0">
+                    <div class="quality-box is-4k">
+                        <span class="q-main">4K</span>
+                        <span class="q-sub">REMUX</span>
+                    </div>
+                    <div class="file-meta">
+                        <div class="meta-top">
+                            <span class="badge-fill">DOLBY VISION</span>
+                            <span class="tech-badge">HDR10+</span>
+                            <span class="tech-badge">HEVC</span>
+                            <span class="tech-badge">85 Mbps</span>
+                        </div>
+                        <div class="meta-sub">Interstellar.2014.2160p.BluRay.REMUX.DV.HDR.Atmos.mkv</div>
+                    </div>
+                    <div class="file-size">
+                        <span class="file-size-val">84.2 GB</span>
+                        <span class="file-size-unit">Master</span>
+                    </div>
+                    <div class="audio-row">
+                        <div class="audio-tag">
+                            <svg class="icon-audio" viewBox="0 0 24 24"><path d="M12 3v9.28c-.47-.17-.97-.28-1.5-.28C8.01 12 6 14.01 6 16.5S8.01 21 10.5 21c2.31 0 4.2-1.75 4.45-4H15V6h4V3h-7z"/></svg>
+                            ENG TrueHD 7.1
+                        </div>
+                        <div class="audio-tag">RUS DTS-HD 7.1</div>
+                        <div class="audio-tag">JPN AC3 5.1</div>
+                        <span style="font-size:10px; color:inherit; opacity:0.6">+ 4 More</span>
+                    </div>
+                </div>
+
+                <!-- ITEM 2: 4K WEB -->
+                <div class="file-row" id="row-1">
+                    <div class="quality-box is-4k">
+                        <span class="q-main">4K</span>
+                        <span class="q-sub">WEB-DL</span>
+                    </div>
+                    <div class="file-meta">
+                        <div class="meta-top">
+                            <span class="tech-badge">HDR10</span>
+                            <span class="tech-badge">24 Mbps</span>
+                            <span class="tech-badge">MKV</span>
+                        </div>
+                        <div class="meta-sub">Interstellar.2014.2160p.WEB-DL.x265.10bit.HDR.DTS.mkv</div>
+                    </div>
+                    <div class="file-size">
+                        <span class="file-size-val">32.6 GB</span>
+                        <span class="file-size-unit">High</span>
+                    </div>
+                    <div class="audio-row">
+                        <div class="audio-tag">ENG DTS 5.1</div>
+                        <div class="audio-tag">RUS AC3 5.1</div>
+                        <div class="audio-tag">ESP AAC 2.0</div>
+                    </div>
+                </div>
+
+                <!-- ITEM 3: 1080p BDRip -->
+                <div class="file-row" id="row-2">
+                    <div class="quality-box">
+                        <span class="q-main">FHD</span>
+                        <span class="q-sub">1080p</span>
+                    </div>
+                    <div class="file-meta">
+                        <div class="meta-top">
+                            <span class="tech-badge">SDR</span>
+                            <span class="tech-badge">18 Mbps</span>
+                            <span class="tech-badge">x264</span>
+                        </div>
+                        <div class="meta-sub">Interstellar.2014.1080p.BluRay.x264.DTS-WiKi.mkv</div>
+                    </div>
+                    <div class="file-size">
+                        <span class="file-size-val">14.8 GB</span>
+                        <span class="file-size-unit">Standard</span>
+                    </div>
+                    <div class="audio-row">
+                        <div class="audio-tag">ENG DTS 5.1</div>
+                        <div class="audio-tag">RUS AC3 5.1</div>
+                    </div>
+                </div>
+
+                <!-- ITEM 4: 720p -->
+                <div class="file-row" id="row-3">
+                    <div class="quality-box">
+                        <span class="q-main">HD</span>
+                        <span class="q-sub">720p</span>
+                    </div>
+                    <div class="file-meta">
+                        <div class="meta-top">
+                            <span class="tech-badge">5 Mbps</span>
+                            <span class="tech-badge">MP4</span>
+                        </div>
+                        <div class="meta-sub">Interstellar.2014.720p.WEB.H264.AAC.mp4</div>
+                    </div>
+                    <div class="file-size">
+                        <span class="file-size-val">3.2 GB</span>
+                        <span class="file-size-unit">Low</span>
+                    </div>
+                    <div class="audio-row">
+                        <div class="audio-tag">ENG AAC 2.0</div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <script>
+        let index = 0;
+        const total = 4;
+        const track = document.getElementById('scrollTrack');
+        const itemHeight = 140; // Approx height + gap for scrolling calc
+
+        function setFocus() {
+            // Clear all
+            document.querySelectorAll('.file-row').forEach(el => el.classList.remove('focused'));
+            // Set active
+            document.getElementById(`row-${index}`).classList.add('focused');
+            
+            // Scroll logic (Simple centering)
+            const offset = index * -156; // Height + Gap offset
+            track.style.transform = `translateY(${offset}px)`;
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowDown' && index < total - 1) {
+                index++;
+                setFocus();
+            } else if (e.key === 'ArrowUp' && index > 0) {
+                index--;
+                setFocus();
+            }
+        });
+    </script>
+</body>
+</html>
