@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mahana Corporation | Japan Market Entry</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- Using Manrope (Modern Sans) and DM Serif Display (Authority) -->
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Manrope:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+<style>
+    :root {
+        --c-black: #0F0F0F;
+        --c-white: #FFFFFF;
+        --c-orange: #FF5500; /* High-Energy Orange */
+        --c-grey-light: #F2F2F2;
+        --c-grey-dark: #333333;
+        --c-border: #E0E0E0;
+        
+        --f-head: 'DM Serif Display', serif;
+        --f-body: 'Manrope', sans-serif;
+        
+        --pad-section: 120px;
+        --ease: cubic-bezier(0.25, 1, 0.5, 1);
+    }
+
+    /* -----------------------------------------------------------
+       RESET & UTILITIES
+    ----------------------------------------------------------- */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+    
+    body {
+        background: var(--c-white);
+        color: var(--c-black);
+        font-family: var(--f-body);
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+        overflow-x: hidden;
+    }
+
+    a { text-decoration: none; color: inherit; transition: all 0.3s var(--ease); }
+    ul { list-style: none; }
+    
+    .container {
+        width: 90%;
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+
+    .section-padding { padding: var(--pad-section) 0; }
+    
+    /* Typography System */
+    h1, h2, h3 { font-family: var(--f-head); font-weight: 400; line-height: 1.1; }
+    
+    .text-hero { font-size: clamp(3rem, 6vw, 5.5rem); letter-spacing: -0.03em; }
+    .text-xl { font-size: clamp(2rem, 4vw, 3.5rem); letter-spacing: -0.02em; }
+    .text-lg { font-size: 1.5rem; }
+    .text-orange { color: var(--c-orange); }
+    .text-muted { color: #666; }
+    
+    /* Buttons */
+    .btn {
+        display: inline-flex; align-items: center; justify-content: center;
+        padding: 16px 32px;
+        font-size: 0.9rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
+        border-radius: 4px; cursor: pointer; border: 1px solid transparent;
+        transition: all 0.4s var(--ease);
+    }
+    .btn-primary { background: var(--c-black); color: var(--c-white); }
+    .btn-primary:hover { background: var(--c-orange); border-color: var(--c-orange); transform: translateY(-2px); }
+    
+    .btn-outline { border-color: var(--c-black); color: var(--c-black); background: transparent; }
+    .btn-outline:hover { background: var(--c-black); color: var(--c-white); }
+
+    /* -----------------------------------------------------------
+       HEADER
+    ----------------------------------------------------------- */
+    header {
+        position: fixed; top: 0; width: 100%; z-index: 1000;
+        background: rgba(255,255,255,0.9);
+        backdrop-filter: blur(12px);
+        border-bottom: 1px solid rgba(0,0,0,0.05);
+        padding: 24px 0;
+    }
+    .nav-wrapper { display: flex; justify-content: space-between; align-items: center; }
+    .logo img { height: 40px; display: block; }
+    
+    /* -----------------------------------------------------------
+       HERO SECTION: The Promise
+    ----------------------------------------------------------- */
+    .hero {
+        padding-top: 200px;
+        padding-bottom: 100px;
+        border-bottom: 1px solid var(--c-border);
+    }
+    .hero-grid {
+        display: grid; grid-template-columns: 1.3fr 0.7fr; gap: 80px; align-items: end;
+    }
+    .hero-tags {
+        display: flex; gap: 12px; margin-bottom: 24px;
+        font-size: 0.75rem; text-transform: uppercase; font-weight: 700; color: var(--c-orange); letter-spacing: 1px;
+    }
+    .hero-desc {
+        font-size: 1.25rem; color: var(--c-grey-dark); margin: 32px 0 40px; max-width: 90%;
+    }
+    
+    .trust-badge {
+        display: flex; align-items: center; gap: 20px;
+        padding: 30px; background: var(--c-grey-light);
+        border-radius: 8px;
+    }
+    .badge-number { font-family: var(--f-head); font-size: 3rem; line-height: 1; }
+    .badge-text { font-size: 0.9rem; font-weight: 600; line-height: 1.3; color: #555; }
+
+    /* -----------------------------------------------------------
+       DATA STRIP: The Evidence (Deep Research Content)
+    ----------------------------------------------------------- */
+    .data-strip {
+        display: grid; grid-template-columns: repeat(4, 1fr);
+        border-bottom: 1px solid var(--c-border);
+    }
+    .data-item {
+        padding: 60px 40px;
+        border-right: 1px solid var(--c-border);
+        transition: background 0.3s;
+    }
+    .data-item:last-child { border-right: none; }
+    .data-item:hover { background: #FAFAFA; }
+    
+    .data-val { font-family: var(--f-head); font-size: 3.5rem; color: var(--c-orange); line-height: 1; margin-bottom: 10px; }
+    .data-label { font-weight: 700; font-size: 1.1rem; margin-bottom: 8px; display: block; }
+    .data-context { font-size: 0.85rem; color: #666; line-height: 1.5; }
+
+    /* -----------------------------------------------------------
+       PROBLEM / SOLUTION: The Context
+    ----------------------------------------------------------- */
+    .context-section { background: var(--c-black); color: var(--c-white); }
+    .context-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; }
+    .context-left { position: sticky; top: 120px; height: fit-content; }
+    .context-right p { font-size: 1.4rem; opacity: 0.8; margin-bottom: 30px; font-weight: 300; }
+    .context-right strong { color: var(--c-white); font-weight: 600; opacity: 1; border-bottom: 2px solid var(--c-orange); }
+
+    /* -----------------------------------------------------------
+       SERVICES: The Method (Accordion Style)
+    ----------------------------------------------------------- */
+    .services-title { margin-bottom: 60px; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 2px; color: #999; }
+    
+    .service-card {
+        display: grid; grid-template-columns: 0.5fr 2fr 1fr;
+        padding: 40px 0;
+        border-top: 1px solid var(--c-border);
+        align-items: start;
+        transition: all 0.3s;
+    }
+    .service-card:hover { padding-left: 20px; background: #fffdfa; }
+    .service-num { font-family: var(--f-head); font-size: 1.5rem; color: var(--c-border); }
+    .service-info h3 { font-size: 2rem; margin-bottom: 16px; }
+    .service-info ul { margin-top: 16px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .service-info li { font-size: 0.9rem; color: #666; display: flex; align-items: center; }
+    .service-info li::before { content: '•'; color: var(--c-orange); margin-right: 8px; }
+    .service-link { text-align: right; align-self: center; font-weight: 700; font-size: 0.9rem; color: var(--c-orange); opacity: 0; }
+    .service-card:hover .service-link { opacity: 1; transform: translateX(-10px); }
+
+    /* -----------------------------------------------------------
+       FORM: The Decision (High Contrast)
+    ----------------------------------------------------------- */
+    .form-section {
+        background: #F4F4F4;
+        position: relative;
+    }
+    .form-wrapper {
+        background: var(--c-white);
+        padding: 80px;
+        box-shadow: 0 40px 80px rgba(0,0,0,0.05);
+        display: grid; grid-template-columns: 1fr 1.2fr; gap: 80px;
+    }
+    
+    .form-info h2 { font-size: 2.5rem; margin-bottom: 24px; }
+    .form-meta { margin-top: 40px; padding-top: 40px; border-top: 1px solid var(--c-border); }
+    .form-meta p { font-size: 0.9rem; color: #666; margin-bottom: 5px; }
+
+    .input-row { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px; }
+    
+    /* Minimalist Inputs */
+    .field-group { position: relative; margin-bottom: 24px; }
+    input, select, textarea {
+        width: 100%; padding: 16px 0;
+        border: none; border-bottom: 1px solid #CCC;
+        background: transparent;
+        font-family: var(--f-body); font-size: 1rem;
+        transition: 0.3s; border-radius: 0;
+    }
+    input:focus, select:focus, textarea:focus { outline: none; border-bottom-color: var(--c-black); }
+    textarea { height: 100px; resize: none; }
+    
+    /* Custom Select Styling */
+    select { -webkit-appearance: none; cursor: pointer; color: #333; }
+    
+    .submit-btn {
+        width: 100%; background: var(--c-black); color: white;
+        padding: 20px; border: none; font-weight: 700;
+        cursor: pointer; transition: 0.3s; letter-spacing: 1px; text-transform: uppercase;
+    }
+    .submit-btn:hover { background: var(--c-orange); }
+
+    /* Privacy Checkbox */
+    .check-group { display: flex; align-items: center; gap: 10px; font-size: 0.8rem; margin-bottom: 30px; color: #666; }
+    .check-group input { width: auto; margin: 0; }
+    .check-group a { text-decoration: underline; color: var(--c-black); }
+
+    /* -----------------------------------------------------------
+       RESPONSIVE
+    ----------------------------------------------------------- */
+    @media (max-width: 1000px) {
+        .hero-grid, .context-grid, .form-wrapper { grid-template-columns: 1fr; }
+        .data-strip { grid-template-columns: 1fr 1fr; }
+        .data-item { border-bottom: 1px solid var(--c-border); }
+        .data-item:nth-child(2) { border-right: none; }
+        .service-card { grid-template-columns: 1fr; gap: 20px; }
+        .service-num { display: none; }
+        .service-link { display: none; }
+        .form-wrapper { padding: 40px 24px; }
+    }
+    @media (max-width: 600px) {
+        .data-strip { grid-template-columns: 1fr; }
+        .data-item { border-right: none; }
+    }
+
+</style>
+</head>
+<body>
+
+    <header>
+        <div class="container nav-wrapper">
+            <div class="logo">
+                <a href="#"><img src="https://mahana.jp/img/logo.jpg" alt="Mahana Corporation"></a>
+            </div>
+            <a href="#contact" class="btn btn-primary" style="padding: 10px 24px; font-size: 0.8rem;">Start Project</a>
+        </div>
+    </header>
+
+    <!-- HERO: THE PROMISE -->
+    <section class="hero container">
+        <div class="hero-grid">
+            <div class="hero-content">
+                <div class="hero-tags">
+                    <span>Tokyo Based</span>
+                    <span>•</span>
+                    <span>Native Execution</span>
+                </div>
+                <h1 class="text-hero">Break Into Japan <br>With <span class="text-orange">Confidence.</span></h1>
+                <p class="hero-desc">
+                    Don't let language barriers stifle your growth. We are your local digital partner—combining native Japanese execution with English-speaking project management.
+                </p>
+                <div style="display: flex; gap: 16px;">
+                    <a href="#contact" class="btn btn-primary">Get a Proposal</a>
+                    <a href="#proof" class="btn btn-outline">See The Numbers</a>
+                </div>
+            </div>
+            
+            <div class="hero-trust">
+                <div class="trust-badge">
+                    <span class="badge-number">20+</span>
+                    <span class="badge-text">Years Supporting<br>Global Brands in Tokyo</span>
+                </div>
+                <div class="trust-badge" style="margin-top: 20px; background: white; border: 1px solid #eee;">
+                    <span class="badge-number text-orange">1-2</span>
+                    <span class="badge-text">Business Days<br>Response Time</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PROOF STRIP: THE EVIDENCE (Specific Data Points) -->
+    <section id="proof">
+        <div class="container" style="border-top: 1px solid #E0E0E0;">
+            <div class="data-strip">
+                <div class="data-item">
+                    <div class="data-val">+50%</div>
+                    <span class="data-label">Organic Traffic</span>
+                    <p class="data-context">For Tourism Client via technical SEO & backlink audits.</p>
+                </div>
+                <div class="data-item">
+                    <div class="data-val">3x</div>
+                    <span class="data-label">Conversions</span>
+                    <p class="data-context">Year-over-Year (2025 vs 2024) for Global IT Provider.</p>
+                </div>
+                <div class="data-item">
+                    <div class="data-val">15%</div>
+                    <span class="data-label">Maintained CTR</span>
+                    <p class="data-context">Consistent PPC performance above industry average.</p>
+                </div>
+                <div class="data-item">
+                    <div class="data-val">+47%</div>
+                    <span class="data-label">Booking Revenue</span>
+                    <p class="data-context">Direct bottom-line impact for travel sector client.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NARRATIVE: THE GAP -->
+    <section class="section-padding context-section">
+        <div class="container context-grid">
+            <div class="context-left">
+                <h2 class="text-xl">Translation is not<br><span class="text-orange">Localization.</span></h2>
+            </div>
+            <div class="context-right">
+                <p>Machine translation and generic agencies kill ROI. To succeed in Japan, you need cultural nuance, technical SEO that works for Japanese characters, and local trust signals.</p>
+                <p>We rewrite and localize digital assets into <strong>culturally accurate, industry-aligned Japanese.</strong></p>
+                <p>Our services cover B2B and B2C marketing, with expertise in security, e-commerce, EdTech, SaaS, and tourism sectors.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- SERVICES: THE METHOD -->
+    <section class="section-padding container">
+        <div class="services-title">/ Our Core Capabilities</div>
+        
+        <!-- Service 1 -->
+        <div class="service-card">
+            <span class="service-num">01</span>
+            <div class="service-info">
+                <h3>PPC / Paid Ads</h3>
+                <p class="text-muted">Target Japanese users on platforms they actually use. Market-specific keyword research & ad refresh cycles.</p>
+                <ul>
+                    <li>Google Ads Japan</li>
+                    <li>Yahoo! Japan (Essential)</li>
+                    <li>LINE Advertisement</li>
+                    <li>Social Media Ads</li>
+                </ul>
+            </div>
+            <div class="service-link">Inquire about PPC →</div>
+        </div>
+
+        <!-- Service 2 -->
+        <div class="service-card">
+            <span class="service-num">02</span>
+            <div class="service-info">
+                <h3>SEO & Content</h3>
+                <p class="text-muted">Secure top rankings by transforming translated pages into high-impact native content.</p>
+                <ul>
+                    <li>Technical SEO (AI/ChatGPT optimized)</li>
+                    <li>Backlink Building</li>
+                    <li>Blog Marketing</li>
+                    <li>Domain Authority Growth</li>
+                </ul>
+            </div>
+            <div class="service-link">Inquire about SEO →</div>
+        </div>
+
+        <!-- Service 3 -->
+        <div class="service-card">
+            <span class="service-num">03</span>
+            <div class="service-info">
+                <h3>Localization & Web</h3>
+                <p class="text-muted">From whitepapers to full website redesigns. We bridge the linguistic and cultural gap.</p>
+                <ul>
+                    <li>Japanese Web Design</li>
+                    <li>Whitepaper Localization</li>
+                    <li>Press Releases</li>
+                    <li>Translation</li>
+                </ul>
+            </div>
+            <div class="service-link">Inquire about Web →</div>
+        </div>
+
+        <!-- Service 4 -->
+        <div class="service-card">
+            <span class="service-num">04</span>
+            <div class="service-info">
+                <h3>On-Ground Execution</h3>
+                <p class="text-muted">Physical presence in Tokyo & Osaka to support your digital strategy.</p>
+                <ul>
+                    <li>Trade Show Support</li>
+                    <li>Booth Operations</li>
+                    <li>Staffing & Training</li>
+                    <li>Local Project Management</li>
+                </ul>
+            </div>
+            <div class="service-link">Inquire about Support →</div>
+        </div>
+    </section>
+
+    <!-- CONTACT: THE DECISION -->
+    <section class="section-padding form-section" id="contact">
+        <div class="container form-wrapper">
+            <div class="form-info">
+                <h2>Launch your brand in Japan.</h2>
+                <p class="text-muted text-lg">
+                    Fill out the form and one of Mahana's local marketing experts will reach out to you within 1 to 2 business days.
+                </p>
+                <div class="form-meta">
+                    <p><strong>Mahana Corporation</strong></p>
+                    <p>Tokyo, Japan</p>
+                    <p>Digital Marketing & Web Design</p>
+                    <p style="margin-top: 20px; font-size: 0.8rem; opacity: 0.5;">&copy; 2025 All Rights Reserved.</p>
+                </div>
+            </div>
+
+            <div class="form-actual">
+                <form action="mail_en.php" method="post">
+                    <div class="input-row">
+                        <div class="field-group">
+                            <input type="text" name="name" placeholder="Name" required>
+                        </div>
+                        <div class="field-group">
+                            <input type="text" name="company" placeholder="Company/Organization" required>
+                        </div>
+                    </div>
+                    
+                    <div class="field-group">
+                        <input type="email" name="email" placeholder="E-mail Address" required>
+                    </div>
+
+                    <div class="field-group">
+                        <select name="interest" required>
+                            <option value="" disabled selected>What services are you interested in?</option>
+                            <option value="ppc">PPC / Paid Search</option>
+                            <option value="seo">SEO / Content Strategy</option>
+                            <option value="social_media">Social Media Marketing</option>
+                            <option value="blog_marketing">Blog Marketing</option>
+                            <option value="all">Full Market Entry Bundle</option>
+                        </select>
+                    </div>
+
+                    <div class="field-group">
+                        <textarea name="inquiry" placeholder="Tell us about your project or challenges..." required></textarea>
+                    </div>
+
+                    <div class="check-group">
+                        <input type="checkbox" name="privacy_agree" required>
+                        <label>I agree to the <a href="privacy.html" target="_blank">Privacy Policy</a></label>
+                    </div>
+
+                    <button type="submit" class="submit-btn">Send Inquiry</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+</body>
+</html>
