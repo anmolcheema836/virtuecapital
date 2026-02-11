@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Painted Rooster | Edinburgh</title>
+    <meta name="description" content="Traditional Scottish breakfasts and a small taste of Poland in Edinburgh's West End.">
+
+    <!-- Google Fonts: Editorial Serif + Modern Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400;1,600&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* -----------------------------------------------------------
+           1. RESET & VARIABLES
+           ----------------------------------------------------------- */
+        :root {
+            --bg-color: #fdfbf7;
+            --bg-white: #ffffff;
+            --text-dark: #1a1a1a;
+            --text-light: #5e5e5e;
+            --accent: #c84b31; /* Rooster Red */
+            --accent-soft: #e6dace;
+            --border: #e0e0e0;
+            
+            --font-head: 'Cormorant Garamond', serif;
+            --font-body: 'Manrope', sans-serif;
+            
+            --container: 1300px;
+            --padding-section: 120px;
+            
+            --ease: cubic-bezier(0.19, 1, 0.22, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        html { scroll-behavior: smooth; font-size: 16px; }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            font-family: var(--font-body);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* -----------------------------------------------------------
+           2. TYPOGRAPHY & UTILITIES
+           ----------------------------------------------------------- */
+        h1, h2, h3, h4 { font-family: var(--font-head); font-weight: 400; line-height: 1.1; }
+        
+        .container { width: 90%; max-width: var(--container); margin: 0 auto; }
+        
+        .section-title {
+            font-size: clamp(3rem, 6vw, 4.5rem);
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .subtitle {
+            display: block;
+            text-align: center;
+            font-family: var(--font-body);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-size: 0.8rem;
+            color: var(--accent);
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 15px 40px;
+            border: 1px solid var(--text-dark);
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.8rem;
+            color: var(--text-dark);
+            transition: all 0.4s var(--ease);
+            background: transparent;
+            cursor: pointer;
+        }
+        .btn:hover { background: var(--text-dark); color: #fff; }
+
+        /* Animation Classes */
+        .reveal { opacity: 0; transform: translateY(30px); transition: all 1s var(--ease); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        /* -----------------------------------------------------------
+           3. HEADER
+           ----------------------------------------------------------- */
+        header {
+            position: fixed;
+            top: 0; left: 0; width: 100%;
+            z-index: 1000;
+            padding: 20px 0;
+            transition: 0.4s;
+            background: rgba(253, 251, 247, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .nav-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 60px;
+            width: auto;
+            display: block;
+        }
+
+        .nav-links { display: flex; gap: 40px; }
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-dark);
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            font-weight: 600;
+            position: relative;
+        }
+        .nav-links a::after {
+            content: ''; position: absolute; bottom: -5px; left: 0; width: 0; height: 1px;
+            background: var(--accent); transition: 0.3s;
+        }
+        .nav-links a:hover::after { width: 100%; }
+
+        .mobile-toggle { display: none; font-size: 1.5rem; cursor: pointer; }
+
+        /* -----------------------------------------------------------
+           4. HERO SECTION
+           ----------------------------------------------------------- */
+       .hero {
+    min-height: 90vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding-top: 100px;
+    position: relative;
+    background: 
+        linear-gradient(rgba(255, 255, 255, 0.75), rgba(255, 255, 255, 0.75)),
+        url("https://lh3.googleusercontent.com/p/AF1QipPyzdhUNjv4cPdf44iT51tXTGVc_0yb9F_kXRor=s1360-w1360-h1020-rw");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+
+        .hero-content { max-width: 900px; z-index: 2; }
+        
+        .hero h1 { font-size: clamp(3.5rem, 8vw, 7rem); margin-bottom: 30px; }
+        .hero h1 i { font-weight: 300; color: var(--text-light); }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--text-light);
+            margin-bottom: 40px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* -----------------------------------------------------------
+           5. ABOUT / INFO
+           ----------------------------------------------------------- */
+        .about { padding: var(--padding-section) 0; background: #fff; }
+        
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+        }
+
+        .about-text p { margin-bottom: 20px; font-size: 1.1rem; color: var(--text-light); }
+        
+        .important-box {
+            border: 1px solid var(--accent);
+            padding: 25px;
+            margin-top: 30px;
+        }
+        .important-box h4 { color: var(--accent); margin-bottom: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; font-family: var(--font-body); font-size: 0.9rem; }
+        
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+        .gallery-grid img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 4px;
+            transition: transform 0.5s;
+        }
+        .gallery-grid img:hover { transform: scale(1.02); }
+
+        /* -----------------------------------------------------------
+           6. MENU SYSTEM (COMPLEX)
+           ----------------------------------------------------------- */
+        .menu-section { padding: var(--padding-section) 0; }
+
+        /* Tabs */
+        .menu-tabs {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 60px;
+            position: sticky;
+            top: 100px;
+            z-index: 90;
+            background: var(--bg-color);
+            padding: 10px 0;
+        }
+
+        .tab-btn {
+            background: transparent;
+            border: 1px solid transparent;
+            padding: 10px 25px;
+            font-family: var(--font-body);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: 0.3s;
+            border-radius: 30px;
+            color: var(--text-light);
+        }
+        
+        .tab-btn.active, .tab-btn:hover {
+            border-color: var(--text-dark);
+            color: var(--text-dark);
+        }
+
+        /* Menu Grid */
+        .menu-category {
+            display: none;
+            animation: fadeIn 0.8s var(--ease);
+        }
+        .menu-category.active { display: block; }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            gap: 50px 80px;
+        }
+
+        .menu-group-title {
+            width: 100%;
+            grid-column: 1 / -1;
+            font-size: 2rem;
+            margin: 40px 0 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-dark);
+        }
+
+        .menu-item { margin-bottom: 30px; }
+        
+        .item-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 8px;
+            border-bottom: 1px dotted #ccc;
+            padding-bottom: 5px;
+        }
+        
+        .item-name { font-family: var(--font-head); font-size: 1.4rem; color: var(--text-dark); }
+        .item-price { font-weight: 600; color: var(--accent); white-space: nowrap; margin-left: 15px; }
+        
+        .item-desc {
+            font-size: 0.95rem;
+            color: var(--text-light);
+            line-height: 1.5;
+        }
+        
+        .item-options {
+            margin-top: 8px;
+            font-size: 0.85rem;
+            background: #fff;
+            padding: 8px;
+            border-left: 2px solid var(--border);
+            color: var(--text-dark);
+        }
+
+        /* -----------------------------------------------------------
+           7. PIEROGI HIGHLIGHT
+           ----------------------------------------------------------- */
+        .pierogi-banner {
+            background-color: var(--text-dark);
+            color: #fff;
+            padding: 100px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pierogi-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .pierogi-price {
+            display: inline-flex;
+            gap: 40px;
+            margin: 30px 0;
+            border: 1px solid rgba(255,255,255,0.2);
+            padding: 20px 40px;
+        }
+        .price-item span { display: block; }
+        .price-item .lbl { font-size: 0.8rem; text-transform: uppercase; color: #aaa; margin-bottom: 5px; }
+        .price-item .val { font-size: 2.5rem; font-family: var(--font-head); color: var(--accent); line-height: 1; }
+
+        .fillings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            text-align: left;
+            margin-top: 40px;
+        }
+        .fill-card { background: rgba(255,255,255,0.05); padding: 20px; transition: 0.3s; }
+        .fill-card:hover { background: rgba(255,255,255,0.1); }
+        .fill-card h5 { font-size: 1.1rem; margin-bottom: 5px; color: #fff; }
+        .fill-card p { font-size: 0.85rem; color: #aaa; margin: 0; }
+
+        /* -----------------------------------------------------------
+           8. FOOTER
+           ----------------------------------------------------------- */
+        footer {
+            background: #fff;
+            padding: 80px 0 40px;
+            border-top: 1px solid var(--border);
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 60px;
+        }
+
+        .footer-col h4 {
+            text-transform: uppercase;
+            font-size: 1rem;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+            color: var(--text-dark);
+        }
+
+        .footer-col p { margin-bottom: 10px; color: var(--text-light); }
+        .social-icons a { font-size: 1.2rem; margin-right: 15px; color: var(--text-dark); transition: 0.3s; }
+        .social-icons a:hover { color: var(--accent); }
+
+        .full-gallery-strip {
+            display: flex;
+            overflow-x: auto;
+            scrollbar-width: none; /* Firefox */
+        }
+        .full-gallery-strip::-webkit-scrollbar { display: none; }
+        
+        .full-gallery-strip img {
+            height: 250px;
+            min-width: 300px;
+            object-fit: cover;
+            transition: 0.5s;
+        }
+        .full-gallery-strip img:hover { filter: brightness(1.1); }
+
+        /* -----------------------------------------------------------
+           9. RESPONSIVE
+           ----------------------------------------------------------- */
+        @media (max-width: 900px) {
+            .about-grid { grid-template-columns: 1fr; }
+            .menu-grid { grid-template-columns: 1fr; }
+            .hero h1 { font-size: 3rem; }
+            .nav-links { display: none; }
+            .mobile-toggle { display: block; }
+            
+            /* Mobile Nav Overlay styling would go here, using simple alert for now for brevity in single file */
+        }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header>
+        <div class="container nav-inner">
+            <a href="#" class="logo">
+                <img src="http://www.thepaintedrooster.co.uk/images/the-painted-rooster-logo-1000px.png" alt="The Painted Rooster">
+            </a>
+            
+            <nav class="nav-links">
+                <a href="#about">Story</a>
+                <a href="#menu">Breakfast</a>
+                <a href="#lunch">Lunch</a>
+                <a href="#pierogi">Pierogi</a>
+                <a href="#contact">Visit</a>
+            </nav>
+            
+            <div class="mobile-toggle" onclick="alert('Please scroll down to view our menu.')">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="hero-content">
+            <span class="subtitle">Established 2018</span>
+            <h1>Traditional Scottish.<br><i>Small Taste of Poland.</i></h1>
+            <p>Welcome to The Painted Rooster Edinburgh! We aim to create a warm and cosy environment in the city centre, serving up fresh, customisable dishes prepared with love.</p>
+            <a href="#menu" class="btn">View Full Menu</a>
+        </div>
+    </section>
+
+    <!-- ABOUT SECTION -->
+    <section id="about" class="about">
+        <div class="container about-grid">
+            <div class="about-text">
+                <span class="subtitle" style="text-align: left;">Who We Are</span>
+                <h2 class="section-title" style="text-align: left; margin-bottom: 30px;">Warm & Cosy.</h2>
+                <p><strong>Everything on your plate is made especially for you, from scratch, with our love.</strong></p>
+                <p>We do not use pre-prepared products at all. Whilst we do try to work as quickly as possible, sometimes our dishes take a little longer than usual at busier times. The quality of the food we serve is most important to us, so we thank you for your understanding.</p>
+                <p>We are a small team with limited resources. We aim to reduce waste with most of the items on our menu being completely customisable.</p>
+                
+                <div class="important-box">
+                    <h4>Dietary Requirements & Allergens</h4>
+                    <p>Please inform a member of staff before ordering and we will try our best to accommodate.</p>
+                </div>
+            </div>
+            
+            <div class="gallery-grid">
+                <!-- Using provided image paths -->
+                <img src="http://www.thepaintedrooster.co.uk/images/food-001.jpg" alt="Fresh Food">
+                <img src="http://www.thepaintedrooster.co.uk/images/food-004.jpg" alt="Breakfast">
+                <img src="http://www.thepaintedrooster.co.uk/images/food-011.jpg" alt="Coffee">
+                <img src="http://www.thepaintedrooster.co.uk/images/food-009.jpg" alt="Cake">
+            </div>
+        </div>
+    </section>
+
+    <!-- MENU SECTION -->
+    <section id="menu" class="menu-section">
+        <div class="container">
+            <h2 class="section-title">The Menu</h2>
+            <p style="text-align: center; margin-bottom: 40px; color: var(--text-light);">Served All Day</p>
+
+            <div class="menu-tabs">
+                <button class="tab-btn active" onclick="switchMenu('breakfast', this)">Breakfast</button>
+                <button class="tab-btn" onclick="switchMenu('lunch', this)">Lunch & Burgers</button>
+                <button class="tab-btn" onclick="switchMenu('sandwiches', this)">Bagels & Toasties</button>
+                <button class="tab-btn" onclick="switchMenu('drinks', this)">Soups & Salads</button>
+            </div>
+
+            <!-- BREAKFAST -->
+            <div id="breakfast" class="menu-category active">
+                <div class="menu-grid">
+                    <div class="menu-item">
+                        <div class="item-head">
+                            <span class="item-name">The Painted Rooster Breakfast</span>
+                            <span class="item-price">£15.40</span>
+                        </div>
+                        <p class="item-desc">Free-range eggs (fried/scrambled/poached), Bacon (streaky/vegan), Fried chestnut mushrooms, Salad (spinach, tomato, pickled cucumber, onion, avocado, olive oil).</p>
+                    </div>
+
+                    <div class="menu-item">
+                        <div class="item-head">
+                            <span class="item-name">Special Big Avocado</span>
+                            <span class="item-price">£15.40</span>
+                        </div>
+                        <p class="item-desc">Avocado on toast (2pcs), two poached free-range eggs, smoked salmon, fried chestnut mushrooms.</p>
+                    </div>
+
+                    <div class="menu-item">
+                        <div class="item-head">
+                            <span class="item-name">Eggs Benedict</span>
+                            <span class="item-price">£10.80</span>
+                        </div>
+                        <p class="item-desc">Two poached eggs with hollandaise sauce served on brown bread with avocado.</p>
+                        <div class="item-options">With Extras (Bacon or Salmon): <strong>£14.20</strong></div>
+                    </div>
+
+                    <div class="menu-item">
+                        <div class="item-head">
+                            <span class="item-name">Haggis & Poached Eggs</span>
+                            <span class="item-price">£10.50</span>
+                        </div>
+                        <p class="item-desc">With hollandaise sauce served on brown toast.</p>
+                    </div>
+
+                    <div class="menu-item">
+                        <div class="item-head">
+                            <span class="item-name">Mashed Avocado & Eggs</span>
+                            <span class="item-price">£9.90</span>
+                        </div>
+                        <p class="item-desc">Two poached eggs served on brown toast, garnished with grated chilli mix.</p>
+                    </div>
+
+                    <div class="menu-item">
+                        <div class="item-head">
+                            <span class="item-name">Croque Madame</span>
+                            <span class="item-price">£9.90</span>
+                        </div>
+                        <p class="item-desc">Two toasts, ham, creamy bechamel sauce, grated Swiss cheese, Dijon mustard, fresh thyme and fried free-range egg on top.</p>
+                    </div>
+
+                    <!-- Build Your Own / Smaller Items -->
+                    <div class="menu-item">
+                        <div class="item-head">
+                            <span class="item-name">Traditional Scottish Breakfast</span>
+                            <span class="item-price">£10.50</span>
+                        </div>
+                        <p class="item-desc">Any 3 items included, served with toasted bread.</p>
+                        <div class="item-options">
+                            <strong>Choose from:</strong> Scrambled/Poached/Fried Eggs, Bacon, Beans (V), Haggis, Black Pudding, Link Sausage, Lorne Sausage, Potato Scone (V), Hash Browns (V), Vegan Sausage, Vegan Bacon, Vegan Haggis, Mushrooms, Tomato, Spinach, Avocado.
+                        </div>
+                    </div>
+
+                    <div class="menu-item">
+                        <div class="item-head">
+                            <span class="item-name">Breakfast Rolls</span>
+                            <span class="item-price">from £3.20</span>
+                        </div>
+                        <div class="item-options">
+                            Single (1 Item) £3.20 | Double (2 Items) £4.20 | Rooster (3 Items) £5.20<br>
+                            <em>(Any Vegan roll +£1.50. BLT counts as double.)</em>
+                        </div>
+                    </div>
+
+                    <div class="menu-item">
+                        <div class="item-head">
+                            <span class="item-name">Toast & Eggs</span>
+                            <span class="item-price">Varies</span>
+                        </div>
+                        <div class="item-options">
+                            Toasts with Butter/Jam/Nutella: £2.50<br>
+                            Scrambled Eggs on Toast: £6.00<br>
+                            Scrambled Eggs with Bacon on Toast: £8.50<br>
+                            Scrambled Eggs with Mushrooms on Toast: £8.50<br>
+                            Two Fried Eggs on Toast: £5.40
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- LUNCH -->
+            <div id="lunch" class="menu-category">
+                <div class="menu-grid">
+                    <h3 class="menu-group-title">Burgers</h3>
+                    
+                    <div class="menu-item">
+                        <div class="item-head">
+                            <span class="item-name">The Painted Rooster Burger</span>
+                            <span class="item-price">£12.95</span>
+                        </div>
+                        <p class="item-desc">Beef (6oz), cheddar cheese, bacon, fried egg, Russian sauce.</p>
+                    </div>
+
+                    <div class="menu-item">
+                        <div class="item-head">
+                            <span class="item-name">Raclette Burger</span>
+                            <span class="item-price">£13.50</span>
+                        </div>
+                        <p class="item-desc">Beef (6oz), lettuce, tomato, pickled cucumber, red onions, rocket, raclette cheese, Russian sauce.</p>
+                    </div>
+
+                    <div class="menu-item">
+                        <div class="item-head">
+                            <span class="item-name">Classic Burger</span>
+                            <span class="item-price">£10.50</span>
+                        </div>
+                        <p class="item-desc">Beef (6oz), lettuce, tomato, pickled cucumber, red onions, rocket, Russian sauce.</p>
+                    </div>
+
+                    <div class="menu-item">
+                        <div class="item-head">
+                            <span class="item-name">Chicken Burger</span>
+                            <span class="item-price">£11.50</span>
+                        </div>
+                        <p class="item-desc">Chicken breast, lettuce, tomato, pickled cucumber, red onions, rocket, Russian sauce.</p>
+                    </div>
+
+                    <h3 class="menu-group-title">Raclette</h3>
+                    
+                    <div class="menu-item">
+                        <div class="item-head">
+                            <span class="item-name">Raclette Melt w/ Sausage</span>
+                            <span class="item-price">£17.80</span>
+                        </div>
+                        <p class="item-desc">Polish sausage served with salad, pickled gherkins & onion, sausages served on bread. (Add Sauerkraut +£2.00)</p>
+                    </div>
+
+                    <div class="menu-item">
+                        <div class="item-head">
+                            <span class="item-name">Raclette Potato</span>
+                            <span class="item-price">£14.50</span>
+                        </div>
+                        <p class="item-desc">Served with salad, pickles & onion. (Add Pancetta +£3.00, Bacon +£3.00)</p>
+                    </div>
+                     <div class="menu-item">
+                        <div class="item-head">
+                            <span class="item-name">Forest Floor Raclette</span>
+                            <span class="item-price">£16.50</span>
+                        </div>
+                        <p class="item-desc">Grilled mushrooms & fried onion served with salad, pickles, served on bread.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SANDWICHES / BAGELS -->
+            <div id="sandwiches" class="menu-category">
+                <div class="menu-grid">
+                    <h3 class="menu-group-title">Bagels</h3>
+
+                    <div class="menu-item">
+                        <div class="item-head">
+                            <span class="item-name">Morning Salmon Bagel</span>
+                            <span class="item-price">£8.90</span>
+                        </div>
+                        <p class="item-desc">Scrambled eggs, salmon, bacon & spinach.</p>
+                    </div>
+                     <div class="menu-item">
+                        <div class="item-head">
+                            <span class="item-name">Reuben Bagel</span>
+                            <span class="item-price">£9.90</span>
+                        </div>
+                        <p class="item-desc">Pastrami, sauerkraut, swiss cheese, Russian sauce.</p>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-head">
+                            <span class="item-name">Salmon & Philly Bagel</span>
+                            <span class="item-price">£7.90</span>
+                        </div>
+                        <p class="item-desc">Philadelphia cheese, rocket, salmon & dill.</p>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-head">
+                            <span class="item-name">Avocado & Philly Bagel</span>
+                            <span class="item-price">£7.90</span>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-head">
+                            <span class="item-name">B.L.A.T Bagel</span>
+                            <span class="item-price">£8.80</span>
+                        </div>
+                        <p class="item-desc">Bacon, lettuce, tomato, avocado.</p>
+                    </div>
+
+                    <h3 class="menu-group-title">Sandwiches & Toasties</h3>
+                    
+                    <div class="menu-item">
+                        <div class="item-head">
+                            <span class="item-name">Painted Rooster Sandwich</span>
+                            <span class="item-price">£9.80</span>
+                        </div>
+                        <p class="item-desc">Lettuce, red peppers, cucumber, ham, jalapenos, Russian sauce. Served with crisps/nachos.</p>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-head">
+                            <span class="item-name">Reuben Sandwich</span>
+                            <span class="item-price">£10.90</span>
+                        </div>
+                        <p class="item-desc">Rye bread, pastrami, sauerkraut, swiss cheese, Russian sauce. Served with crisps/nachos.</p>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-head">
+                            <span class="item-name">Club Sandwich (w/ Fried Egg)</span>
+                            <span class="item-price">£11.50</span>
+                        </div>
+                        <p class="item-desc">Chicken mayo, bacon, tomato, rocket, cheese, spring onion, fried egg.</p>
+                    </div>
+                     <div class="menu-item">
+                        <div class="item-head">
+                            <span class="item-name">Painted Rooster Heaven</span>
+                            <span class="item-price">£9.50</span>
+                        </div>
+                        <p class="item-desc">Grilled grated Gruyere & Mozzarella cheese with red peppers, onions, mushrooms on sourdough bread.</p>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-head">
+                            <span class="item-name">Grilled Cheese on Toast</span>
+                            <span class="item-price">£7.50</span>
+                        </div>
+                        <div class="item-options">Add Ham: £6.90? (Price logic from text seems inverted, keeping text value £6.90 for ham option per text, though likely typo in source)</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SOUPS / SALADS -->
+            <div id="drinks" class="menu-category">
+                <div class="menu-grid">
+                    <h3 class="menu-group-title">Soups</h3>
+                     <div class="menu-item">
+                        <div class="item-head">
+                            <span class="item-name">Żurek Soup</span>
+                            <span class="item-price">£8.80</span>
+                        </div>
+                        <p class="item-desc">Served in Bread Bowl. Traditional Polish sour soup, with sausage, potato, and boiled egg.</p>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-head">
+                            <span class="item-name">Lentil Soup (Vegan)</span>
+                            <span class="item-price">£5.80</span>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-head">
+                            <span class="item-name">Chicken Noodle Soup</span>
+                            <span class="item-price">£5.80</span>
+                        </div>
+                        <div class="item-options">Add toasted bread +£1.00</div>
+                    </div>
+                     <div class="menu-item">
+                        <div class="item-head">
+                            <span class="item-name">Soup Deal</span>
+                            <span class="item-price">£8.90</span>
+                        </div>
+                        <p class="item-desc">Lentil or Chicken Noodle soup with Grilled cheese toast (or Grilled cheese with ham). <em>Mon-Fri Only.</em></p>
+                    </div>
+
+                    <h3 class="menu-group-title">Salads</h3>
+                    <div class="menu-item">
+                        <div class="item-head">
+                            <span class="item-name">Chicken Salad</span>
+                            <span class="item-price">£9.95</span>
+                        </div>
+                        <p class="item-desc">Roasted chicken, lettuce, tomato, avocado, rocket, beetroot, olive, balsamic, croutons.</p>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-head">
+                            <span class="item-name">Avocado Salad (Vegan)</span>
+                            <span class="item-price">£9.95</span>
+                        </div>
+                        <p class="item-desc">Avocado, tomato, onion, cucumber, coriander, olive oil, sweet corn.</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- PIEROGI SECTION -->
+    <section id="pierogi" class="pierogi-banner">
+        <div class="container pierogi-content">
+            <span class="subtitle" style="color:#fff;">Served from 12:00</span>
+            <h2 style="color: #fff; font-size: 3.5rem; margin-bottom: 20px;">Original Pierogi</h2>
+            <p>Handmade original dumplings made with love in our kitchen. Our speciality!</p>
+            
+            <div class="pierogi-price">
+                <div class="price-item">
+                    <span class="lbl">Sit In</span>
+                    <span class="val">£14.80</span>
+                </div>
+                <div class="price-item" style="border-left: 1px solid rgba(255,255,255,0.2); padding-left: 40px;">
+                    <span class="lbl">Take Away</span>
+                    <span class="val">£11.00</span>
+                </div>
+            </div>
+
+            <p style="font-size: 0.9rem; color: #ccc;">Includes 2 sides: Fried Onions, Fried Smoked Bacon, or Sour Cream. (3rd side +30p)</p>
+
+            <div class="fillings-grid">
+                <div class="fill-card">
+                    <h5>Meat</h5>
+                    <p>Traditional Pork Stuffing</p>
+                </div>
+                <div class="fill-card">
+                    <h5>Haggis</h5>
+                    <p>With Whisky Sauce</p>
+                </div>
+                <div class="fill-card">
+                    <h5>Ruskie</h5>
+                    <p>Potato & Cottage Cheese (V)</p>
+                </div>
+                <div class="fill-card">
+                    <h5>Sauerkraut & Mushroom</h5>
+                    <p>Traditional Vegetarian</p>
+                </div>
+                 <div class="fill-card">
+                    <h5>Spinach & Feta</h5>
+                    <p>With Garlic (V)</p>
+                </div>
+                 <div class="fill-card">
+                    <h5>Mushrooms & Onion</h5>
+                    <p>Vegan</p>
+                </div>
+            </div>
+             <p style="margin-top: 30px; font-style: italic; color: var(--accent);">Add a mug of Borscht (Vegan) £2.20</p>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer id="contact">
+        <div class="full-gallery-strip">
+            <img src="http://www.thepaintedrooster.co.uk/images/food-002.jpg" alt="Gallery">
+            <img src="http://www.thepaintedrooster.co.uk/images/food-005.jpg" alt="Gallery">
+            <img src="http://www.thepaintedrooster.co.uk/images/food-006.jpg" alt="Gallery">
+            <img src="http://www.thepaintedrooster.co.uk/images/food-007.jpg" alt="Gallery">
+            <img src="http://www.thepaintedrooster.co.uk/images/food-008.jpg" alt="Gallery">
+            <img src="http://www.thepaintedrooster.co.uk/images/food-010.jpg" alt="Gallery">
+            <img src="http://www.thepaintedrooster.co.uk/images/food-013.jpg" alt="Gallery">
+            <img src="http://www.thepaintedrooster.co.uk/images/food-014.jpg" alt="Gallery">
+        </div>
+
+        <div class="container" style="padding-top: 60px;">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h4>Visit Us</h4>
+                    <p>10 Melville Place<br>Edinburgh, Scotland</p>
+                    <p><a href="tel:+441314671742" style="color:var(--text-dark); text-decoration:none;">+44 131 467 1742</a></p>
+                    <p><a href="mailto:contact@thepaintedrooster.co.uk" style="color:var(--text-dark); text-decoration:none;">contact@thepaintedrooster.co.uk</a></p>
+                </div>
+                <div class="footer-col">
+                    <h4>Opening Times</h4>
+                    <p>We are a young team serving great food for everyone.</p>
+                    <p>Kitchen closes before closing time.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Connect</h4>
+                    <p>Please rate us!</p>
+                    <div class="social-icons">
+                        <a href="https://www.facebook.com/roosteredi/" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://www.tripadvisor.co.uk/Restaurant_Review-g186525-d14190687-Reviews-The_Painted_Rooster_Edinburgh-Edinburgh_Scotland.html" target="_blank"><i class="fas fa-plane"></i></a>
+                        <a href="https://goo.gl/maps/roQ1f1jtd1L2" target="_blank"><i class="fab fa-google"></i></a>
+                        <a href="https://www.yelp.co.uk/biz/the-painted-rooster-edinburgh-2" target="_blank"><i class="fab fa-yelp"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div style="text-align: center; border-top: 1px solid #eee; padding-top: 30px; font-size: 0.8rem; color: #999;">
+                &copy; 2024 The Painted Rooster Edinburgh.
+            </div>
+        </div>
+    </footer>
+
+    <!-- LOGIC -->
+    <script>
+        // 1. Menu Switching
+        function switchMenu(catId, btn) {
+            // Hide all categories
+            document.querySelectorAll('.menu-category').forEach(el => {
+                el.classList.remove('active');
+            });
+            // Reset buttons
+            document.querySelectorAll('.tab-btn').forEach(el => {
+                el.classList.remove('active');
+            });
+
+            // Show target
+            document.getElementById(catId).classList.add('active');
+            btn.classList.add('active');
+        }
+
+        // 2. Scroll Animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        // Add reveal class to items you want animated
+        document.querySelectorAll('.menu-item, .section-title, .about-text').forEach(el => {
+            el.classList.add('reveal');
+            observer.observe(el);
+        });
+
+    </script>
+</body>
+</html>

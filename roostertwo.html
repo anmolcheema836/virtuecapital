@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Painted Rooster | Edinburgh</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        /* -----------------------------------------------------------
+           VARIABLES & RESET
+        ----------------------------------------------------------- */
+        :root {
+            --color-bg: #ffffff;
+            --color-text-main: #2c2c2c;
+            --color-text-light: #666666;
+            --color-accent: #c43d38; /* Rooster Red */
+            --color-accent-soft: #fbf5f5;
+            --color-gold: #d4af37;
+            --color-border: #e0e0e0;
+            
+            --font-heading: 'Playfair Display', serif;
+            --font-body: 'Lato', sans-serif;
+
+            --spacing-container: 8vw;
+            --transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+
+        body {
+            background-color: var(--color-bg);
+            color: var(--color-text-main);
+            font-family: var(--font-body);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* -----------------------------------------------------------
+           TYPOGRAPHY
+        ----------------------------------------------------------- */
+        h1, h2, h3, h4 {
+            font-family: var(--font-heading);
+            font-weight: 700;
+            color: var(--color-text-main);
+        }
+
+        h2 {
+            font-size: clamp(2rem, 4vw, 3.5rem);
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        p {
+            color: var(--color-text-light);
+            margin-bottom: 1.5rem;
+            font-size: 1.05rem;
+        }
+
+        .highlight {
+            color: var(--color-accent);
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 4rem;
+            position: relative;
+            padding-bottom: 1rem;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background-color: var(--color-accent);
+        }
+
+        /* -----------------------------------------------------------
+           COMPONENTS
+        ----------------------------------------------------------- */
+        .btn {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            background-color: var(--color-text-main);
+            color: #fff;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.8rem;
+            transition: var(--transition);
+            border: 1px solid var(--color-text-main);
+        }
+
+        .btn:hover {
+            background-color: transparent;
+            color: var(--color-text-main);
+        }
+
+        .btn-accent {
+            background-color: var(--color-accent);
+            border-color: var(--color-accent);
+        }
+
+        .btn-accent:hover {
+            color: var(--color-accent);
+        }
+
+        /* -----------------------------------------------------------
+           HEADER & NAV
+        ----------------------------------------------------------- */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 1.5rem var(--spacing-container);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            transition: padding 0.3s ease;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.05);
+        }
+
+        .logo img {
+            height: 50px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--color-text-main);
+            font-weight: 700;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: var(--color-accent);
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        .mobile-toggle {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* -----------------------------------------------------------
+           HERO SECTION
+        ----------------------------------------------------------- */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 var(--spacing-container);
+            background: radial-gradient(circle at center, #ffffff 0%, #f4f4f4 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-logo {
+            width: 300px;
+            max-width: 80%;
+            margin-bottom: 2rem;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 5vw, 5rem);
+            margin-bottom: 1rem;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.8s forwards 0.5s;
+        }
+
+        .hero-sub {
+            font-family: var(--font-body);
+            font-size: 1.2rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--color-accent);
+            margin-bottom: 2rem;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.8s forwards 0.8s;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+        }
+
+        /* -----------------------------------------------------------
+           ABOUT SECTION
+        ----------------------------------------------------------- */
+        .about {
+            padding: 6rem var(--spacing-container);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .about-text h3 {
+            font-size: 1.5rem;
+            color: var(--color-accent);
+            margin-bottom: 0.5rem;
+            font-style: italic;
+        }
+
+        .about-images {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        .about-img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 4px;
+            transition: transform 0.3s ease;
+        }
+
+        .about-img:nth-child(2) {
+            margin-top: 2rem;
+        }
+        
+        .about-img:hover {
+            transform: scale(1.03);
+        }
+
+        /* -----------------------------------------------------------
+           MENU SECTION
+        ----------------------------------------------------------- */
+        .menu-section {
+            padding: 6rem var(--spacing-container);
+            background-color: var(--color-accent-soft);
+        }
+
+        .allergy-notice {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 3rem auto;
+            padding: 1rem;
+            border: 1px dashed var(--color-accent);
+            color: var(--color-accent);
+            font-weight: 700;
+        }
+
+        .menu-category-nav {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 3rem;
+            position: sticky;
+            top: 90px;
+            z-index: 10;
+            background: rgba(251, 245, 245, 0.9);
+            padding: 1rem 0;
+            backdrop-filter: blur(5px);
+        }
+
+        .cat-btn {
+            background: transparent;
+            border: none;
+            font-family: var(--font-heading);
+            font-size: 1.2rem;
+            cursor: pointer;
+            color: var(--color-text-light);
+            transition: 0.3s;
+            padding: 0.5rem 1rem;
+        }
+
+        .cat-btn.active, .cat-btn:hover {
+            color: var(--color-accent);
+            border-bottom: 2px solid var(--color-accent);
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .menu-category-block {
+            grid-column: 1 / -1;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .category-title {
+            font-size: 2.2rem;
+            margin-bottom: 1.5rem;
+            color: var(--color-text-main);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .category-title::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--color-border);
+        }
+
+        .menu-item {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.03);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .menu-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+        }
+
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 0.5rem;
+            border-bottom: 1px dotted #ccc;
+            padding-bottom: 0.5rem;
+        }
+
+        .item-name {
+            font-family: var(--font-heading);
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+
+        .item-price {
+            font-weight: 700;
+            color: var(--color-accent);
+            white-space: nowrap;
+            margin-left: 1rem;
+        }
+
+        .item-desc {
+            font-size: 0.95rem;
+            color: #777;
+            font-style: italic;
+        }
+
+        /* -----------------------------------------------------------
+           GALLERY
+        ----------------------------------------------------------- */
+        .gallery-strip {
+            display: flex;
+            overflow-x: auto;
+            padding: 0;
+            background: #000;
+            scrollbar-width: none; /* Firefox */
+        }
+        
+        .gallery-strip::-webkit-scrollbar {
+            display: none;
+        }
+
+        .gallery-strip img {
+            height: 350px;
+            width: auto;
+            object-fit: cover;
+            opacity: 0.8;
+            transition: 0.3s;
+        }
+
+        .gallery-strip img:hover {
+            opacity: 1;
+        }
+
+        /* -----------------------------------------------------------
+           FOOTER
+        ----------------------------------------------------------- */
+        footer {
+            background-color: #1a1a1a;
+            color: #fff;
+            padding: 4rem var(--spacing-container);
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+        }
+
+        .footer-col h4 {
+            color: #fff;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+
+        .footer-col p, .footer-col a {
+            color: #aaa;
+            margin-bottom: 0.8rem;
+            display: block;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        .footer-col a:hover {
+            color: var(--color-accent);
+        }
+
+        .social-icons a {
+            display: inline-block;
+            margin-right: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .map-container {
+            width: 100%;
+            height: 250px;
+            filter: grayscale(100%);
+            border-radius: 4px;
+        }
+        
+        .credit {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid #333;
+            color: #555;
+            font-size: 0.8rem;
+        }
+
+        /* -----------------------------------------------------------
+           ROOSTER DECORATION (CSS ART)
+        ----------------------------------------------------------- */
+        .feather-bg {
+            position: absolute;
+            width: 100px;
+            height: 200px;
+            background: linear-gradient(to bottom right, rgba(255, 255, 255, 0), rgba(196, 61, 56, 0.05));
+            border-radius: 50% 50% 50% 0;
+            z-index: -1;
+            transform: rotate(45deg);
+        }
+
+        /* -----------------------------------------------------------
+           MEDIA QUERIES
+        ----------------------------------------------------------- */
+        @media (max-width: 768px) {
+            :root {
+                --spacing-container: 5vw;
+            }
+
+            .mobile-toggle {
+                display: block;
+            }
+
+            nav ul {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 80px;
+                left: 0;
+                width: 100%;
+                background: white;
+                padding: 2rem;
+                box-shadow: 0 10px 10px rgba(0,0,0,0.05);
+            }
+
+            nav ul.active {
+                display: flex;
+            }
+
+            .about {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-logo {
+                width: 200px;
+            }
+        }
+
+        /* -----------------------------------------------------------
+           ANIMATIONS
+        ----------------------------------------------------------- */
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateX(-50%) translateY(0);}
+            40% {transform: translateX(-50%) translateY(-10px);}
+            60% {transform: translateX(-50%) translateY(-5px);}
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="logo">
+            <a href="#">
+                <img src="http://www.thepaintedrooster.co.uk/images/the-painted-rooster-logo-1000px.png" alt="The Painted Rooster Edinburgh">
+            </a>
+        </div>
+        <div class="mobile-toggle" onclick="toggleMenu()">
+            <i class="fas fa-bars"></i>
+        </div>
+        <nav>
+            <ul id="nav-list">
+                <li><a href="#about">About</a></li>
+                <li><a href="#menu">Menu</a></li>
+                <li><a href="#gallery">Gallery</a></li>
+                <li><a href="#contact" class="btn btn-accent">Visit Us</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="feather-bg" style="top: 20%; left: 10%;"></div>
+        <div class="feather-bg" style="bottom: 20%; right: 10%; transform: rotate(-135deg);"></div>
+        
+        <img src="http://www.thepaintedrooster.co.uk/images/the-painted-rooster-logo-1000px.png" alt="Logo" class="hero-logo">
+        <p class="hero-sub">Est. 2018 Edinburgh</p>
+        <h1>Scottish Soul.<br>Polish Heart.</h1>
+        
+        <div class="scroll-indicator">
+            <a href="#about" style="color: var(--color-text-main); font-size: 2rem;"><i class="fas fa-chevron-down"></i></a>
+        </div>
+    </section>
+
+    <!-- About -->
+    <section id="about" class="about">
+        <div class="about-text">
+            <h3>Welcome</h3>
+            <h2>A Cozy Corner in the West End</h2>
+            <p>Our aim was to create a warm and cosy environment in the city centre, serving up traditional Scottish breakfasts, healthy bowls, and bringing a small taste of Poland to Scotland!</p>
+            <p>All our dishes are prepared fresh and only with the best quality local ingredients. We do not use pre-prepared products at all so everything you receive on your plate is made especially for you, with our love.</p>
+            <p>Trust us... it will be worth the wait.</p>
+        </div>
+        <div class="about-images">
+            <!-- Using images from the old code source -->
+            <img src="http://www.thepaintedrooster.co.uk/images/food-001.jpg" alt="Breakfast Dish" class="about-img">
+            <img src="http://www.thepaintedrooster.co.uk/images/food-004.jpg" alt="Sweet Treat" class="about-img">
+        </div>
+    </section>
+
+    <!-- Menu -->
+    <section id="menu" class="menu-section">
+        <div class="section-title">
+            <h2>Our Menu</h2>
+            <p>Breakfast · Lunch · Coffee · Cake</p>
+        </div>
+
+        <div class="allergy-notice">
+            <i class="fas fa-exclamation-circle"></i> For those customers with dietary requirements and allergens please inform a member of staff before ordering.
+        </div>
+
+        <div class="menu-category-nav">
+            <button class="cat-btn active" onclick="filterMenu('all')">All</button>
+            <button class="cat-btn" onclick="filterMenu('breakfast')">Breakfast</button>
+            <button class="cat-btn" onclick="filterMenu('pierogi')">Pierogi</button>
+            <button class="cat-btn" onclick="filterMenu('lunch')">Lunch</button>
+            <button class="cat-btn" onclick="filterMenu('bagels')">Bagels</button>
+        </div>
+
+        <div class="menu-grid" id="menu-grid">
+            
+            <!-- BREAKFAST -->
+            <div class="menu-category-block" data-cat="breakfast">
+                <h3 class="category-title">Served All Day Breakfast</h3>
+            </div>
+
+            <div class="menu-item" data-cat="breakfast">
+                <div class="item-header">
+                    <span class="item-name">Special Big Avocado Breakfast</span>
+                    <span class="item-price">£15.40</span>
+                </div>
+                <p class="item-desc">Avocado on toast (2pcs), two poached free-range eggs, smoked salmon, fried chestnut mushrooms.</p>
+            </div>
+
+            <div class="menu-item" data-cat="breakfast">
+                <div class="item-header">
+                    <span class="item-name">The Painted Rooster Breakfast</span>
+                    <span class="item-price">£15.40</span>
+                </div>
+                <p class="item-desc">Free-range eggs (fried/scrambled/poached), bacon (streaky/vegan), fried chestnut mushrooms, salad (spinach, tomato, pickled cucumber, onion, avocado).</p>
+            </div>
+
+            <div class="menu-item" data-cat="breakfast">
+                <div class="item-header">
+                    <span class="item-name">Eggs Benedict</span>
+                    <span class="item-price">£10.80</span>
+                </div>
+                <p class="item-desc">Two poached eggs with hollandaise sauce served on brown bread with avocado.</p>
+            </div>
+
+            <div class="menu-item" data-cat="breakfast">
+                <div class="item-header">
+                    <span class="item-name">Haggis with Poached Eggs</span>
+                    <span class="item-price">£10.50</span>
+                </div>
+                <p class="item-desc">Two poached eggs, Hollandaise sauce served on brown toast with Haggis.</p>
+            </div>
+
+            <div class="menu-item" data-cat="breakfast">
+                <div class="item-header">
+                    <span class="item-name">Croque Madame</span>
+                    <span class="item-price">£9.90</span>
+                </div>
+                <p class="item-desc">Two toasts, ham, creamy bechamel sauce, grated Swiss cheese, Dijon mustard, fresh thyme and fried free-range egg on top.</p>
+            </div>
+
+            <div class="menu-item" data-cat="breakfast">
+                <div class="item-header">
+                    <span class="item-name">Traditional Scottish Breakfast</span>
+                    <span class="item-price">£10.50</span>
+                </div>
+                <p class="item-desc">Any 3 items included, served with toasted bread. Options: Eggs, Bacon, Haggis, Black Pudding, Link Sausage, Potato Scone.</p>
+            </div>
+
+            <!-- PIEROGI -->
+            <div class="menu-category-block" data-cat="pierogi">
+                <h3 class="category-title">Original Handmade Pierogi <i class="fas fa-star" style="font-size: 1rem; color: var(--color-gold); margin-left:10px;"></i></h3>
+            </div>
+
+            <div class="menu-item" style="border: 2px solid var(--color-accent);" data-cat="pierogi">
+                <div class="item-header">
+                    <span class="item-name">Handmade Dumplings</span>
+                    <span class="item-price">Takeaway £11.00 / Sit-in £14.80</span>
+                </div>
+                <p class="item-desc"><strong>Choose Stuffing:</strong> Meat, Haggis (w/ whisky sauce), Sauerkraut & Mushroom (Veg), Potato & Cottage Cheese 'Ruskie', Spinach & Garlic (Vegan).</p>
+                <p class="item-desc" style="margin-top:0.5rem; font-size: 0.8rem;">Includes 2 sides: Fried onions, Smoked Bacon, or Sour Cream.</p>
+            </div>
+
+            <div class="menu-item" data-cat="pierogi">
+                <div class="item-header">
+                    <span class="item-name">Żurek (Sour Rye Soup)</span>
+                    <span class="item-price">£6.50 / £8.80</span>
+                </div>
+                <p class="item-desc">Traditional Polish sour soup served in a bread bowl, with sausage, potato, and boiled egg.</p>
+            </div>
+
+             <!-- LUNCH -->
+             <div class="menu-category-block" data-cat="lunch">
+                <h3 class="category-title">Lunch (Served from 12:00)</h3>
+            </div>
+
+            <div class="menu-item" data-cat="lunch">
+                <div class="item-header">
+                    <span class="item-name">The Painted Rooster Burger</span>
+                    <span class="item-price">£12.95</span>
+                </div>
+                <p class="item-desc">Beef (6oz), cheddar cheese, bacon, fried egg, Russian sauce. (Takeaway £8.45)</p>
+            </div>
+
+            <div class="menu-item" data-cat="lunch">
+                <div class="item-header">
+                    <span class="item-name">Raclette Burger</span>
+                    <span class="item-price">£13.50</span>
+                </div>
+                <p class="item-desc">Beef (6oz), lettuce, tomato, pickles, red onions, rocket, raclette cheese, Russian sauce.</p>
+            </div>
+
+            <div class="menu-item" data-cat="lunch">
+                <div class="item-header">
+                    <span class="item-name">Reuben Sandwich</span>
+                    <span class="item-price">£10.90</span>
+                </div>
+                <p class="item-desc">Rye bread, pastrami, sauerkraut, Swiss cheese, Russian sauce. Served with crisps/nachos.</p>
+            </div>
+
+            <div class="menu-item" data-cat="lunch">
+                <div class="item-header">
+                    <span class="item-name">Raclette Melt</span>
+                    <span class="item-price">£17.80</span>
+                </div>
+                <p class="item-desc">With Polish sausage, salad, pickled gherkins & onion.</p>
+            </div>
+
+             <!-- BAGELS -->
+             <div class="menu-category-block" data-cat="bagels">
+                <h3 class="category-title">Bagels</h3>
+            </div>
+
+            <div class="menu-item" data-cat="bagels">
+                <div class="item-header">
+                    <span class="item-name">Morning Salmon Bagel</span>
+                    <span class="item-price">£8.90</span>
+                </div>
+                <p class="item-desc">Scrambled eggs, salmon, bacon & spinach.</p>
+            </div>
+
+            <div class="menu-item" data-cat="bagels">
+                <div class="item-header">
+                    <span class="item-name">Reuben Bagel</span>
+                    <span class="item-price">£9.90</span>
+                </div>
+                <p class="item-desc">Pastrami, sauerkraut, Swiss cheese, Russian sauce.</p>
+            </div>
+
+            <div class="menu-item" data-cat="bagels">
+                <div class="item-header">
+                    <span class="item-name">Hummus & Avocado</span>
+                    <span class="item-price">£7.90</span>
+                </div>
+                <p class="item-desc">Hummus, avocado, lettuce, tomato, cucumber & onion. (Vegan)</p>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Gallery Strip -->
+    <section id="gallery">
+        <div class="gallery-strip">
+            <img src="http://www.thepaintedrooster.co.uk/images/food-013.jpg" alt="Food Gallery">
+            <img src="http://www.thepaintedrooster.co.uk/images/food-004.jpg" alt="Food Gallery">
+            <img src="http://www.thepaintedrooster.co.uk/images/food-009.jpg" alt="Food Gallery">
+            <img src="http://www.thepaintedrooster.co.uk/images/food-011.jpg" alt="Food Gallery">
+            <img src="http://www.thepaintedrooster.co.uk/images/food-008.jpg" alt="Food Gallery">
+            <img src="http://www.thepaintedrooster.co.uk/images/food-014.jpg" alt="Food Gallery">
+            <img src="http://www.thepaintedrooster.co.uk/images/food-001.jpg" alt="Food Gallery">
+            <img src="http://www.thepaintedrooster.co.uk/images/food-002.jpg" alt="Food Gallery">
+            <img src="http://www.thepaintedrooster.co.uk/images/food-010.jpg" alt="Food Gallery">
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact">
+        <div class="footer-content">
+            <div class="footer-col">
+                <h4>Visit Us</h4>
+                <p><i class="fas fa-map-marker-alt"></i> 10 Melville Place, Edinburgh</p>
+                <p><i class="fas fa-phone"></i> +44 131 467 1742</p>
+                <p><i class="fas fa-envelope"></i> contact@thepaintedrooster.co.uk</p>
+                <div class="social-icons" style="margin-top: 1rem;">
+                    <a href="https://www.facebook.com/roosteredi/"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.tripadvisor.co.uk/Restaurant_Review-g186525-d14190687-Reviews-The_Painted_Rooster_Edinburgh-Edinburgh_Scotland.html"><i class="fab fa-tripadvisor"></i></a>
+                </div>
+            </div>
+
+            <div class="footer-col">
+                <h4>Opening Hours</h4>
+                <p>Monday - Friday: 8:30 - 16:00</p>
+                <p>Saturday - Sunday: 9:00 - 17:00</p>
+                <p style="margin-top: 1rem; font-size: 0.9rem; color: #777;">Kitchen closes 30mins before closing.</p>
+            </div>
+
+            <div class="footer-col">
+                <iframe class="map-container" src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d4467.868880929622!2d-3.2121819!3d55.9505082!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4887c7de142f9b67%3A0xbba2bdffe730b31c!2sThe+Painted+Rooster!5e0!3m2!1sen!2snl!4v1531171710352" frameborder="0" style="border:0" allowfullscreen></iframe>
+            </div>
+        </div>
+        <div class="credit">
+            &copy; 2023 The Painted Rooster Edinburgh.
+        </div>
+    </footer>
+
+    <script>
+        // Mobile Menu Toggle
+        function toggleMenu() {
+            const nav = document.getElementById('nav-list');
+            nav.classList.toggle('active');
+        }
+
+        // Close mobile menu when clicking a link
+        document.querySelectorAll('nav a').forEach(link => {
+            link.addEventListener('click', () => {
+                document.getElementById('nav-list').classList.remove('active');
+            });
+        });
+
+        // Simple Menu Filtering
+        function filterMenu(category) {
+            // Update active button
+            document.querySelectorAll('.cat-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            const items = document.querySelectorAll('.menu-item');
+            const headers = document.querySelectorAll('.menu-category-block');
+
+            // Handle Items
+            items.forEach(item => {
+                if (category === 'all' || item.getAttribute('data-cat') === category) {
+                    item.style.display = 'flex';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+
+            // Handle Headers
+            headers.forEach(header => {
+                if (category === 'all' || header.getAttribute('data-cat') === category) {
+                    header.style.display = 'block';
+                } else {
+                    header.style.display = 'none';
+                }
+            });
+        }
+
+        // Intersection Observer for Fade In Animation
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.1 });
+
+        // Apply observer to menu items
+        document.querySelectorAll('.menu-item, .about-text').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'all 0.6s ease-out';
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
