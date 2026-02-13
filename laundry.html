@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dallas Airbnb Laundry Service | LaundryNow</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* CORE RESET & VARIABLES */
+        :root {
+            --primary: #00457A; /* Navy */
+            --accent: #EDF000;  /* Yellow */
+            --accent-hover: #dce000;
+            --text-dark: #1e293b;
+            --text-light: #64748b;
+            --white: #ffffff;
+            --bg-light: #f8fafc;
+            --shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Inter', sans-serif; color: var(--text-dark); line-height: 1.6; background: var(--bg-light); -webkit-font-smoothing: antialiased; }
+        img { max-width: 100%; height: auto; }
+        
+        /* UTILITIES */
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; position: relative; }
+        .hidden { display: none !important; }
+        .text-center { text-align: center; }
+        .text-primary { color: var(--primary); }
+        .flex { display: flex; }
+        .grid { display: grid; }
+        .items-center { align-items: center; }
+        .justify-between { justify-content: space-between; }
+        
+        /* TYPOGRAPHY */
+        h1, h2, h3 { line-height: 1.2; font-weight: 800; color: var(--primary); }
+        h1 { font-size: 2.5rem; margin-bottom: 1rem; }
+        h2 { font-size: 2rem; margin-bottom: 2rem; }
+        p { margin-bottom: 1rem; color: var(--text-light); }
+        .highlight { background: var(--accent); color: var(--primary); padding: 0 5px; }
+
+        /* BUTTONS */
+        .btn {
+            display: inline-block;
+            background: var(--accent);
+            color: var(--primary);
+            font-weight: 700;
+            padding: 16px 32px;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 1.1rem;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 10px 15px rgba(0,0,0,0.1); background: var(--accent-hover); }
+
+        /* HEADER */
+        header { background: var(--white); padding: 15px 0; box-shadow: 0 2px 10px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 1000; }
+        .header-content { display: flex; justify-content: space-between; align-items: center; }
+        .logo img { height: 45px; width: auto; }
+        .phone-cta { font-weight: 700; color: var(--primary); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        .phone-cta i { color: var(--accent); background: var(--primary); padding: 8px; border-radius: 50%; font-size: 0.9rem; }
+
+        /* HERO SECTION */
+        .hero { padding: 60px 0; background: linear-gradient(180deg, #fff 0%, #f1f5f9 100%); position: relative; overflow: hidden; }
+        .hero-grid { grid-template-columns: 1.2fr 1fr; gap: 60px; align-items: center; }
+        
+        .hero-text .badge { 
+            background: rgba(0, 69, 122, 0.1); color: var(--primary); 
+            padding: 6px 12px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; display: inline-block; margin-bottom: 15px;
+        }
+        .hero-list { list-style: none; margin: 20px 0 30px 0; }
+        .hero-list li { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; font-weight: 500; color: var(--text-dark); }
+        .hero-list li i { color: #10b981; font-size: 1.2rem; }
+        
+        .trust-logos { margin-top: 30px; opacity: 0.7; }
+        .trust-logos p { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
+        .logos-grid { display: flex; gap: 20px; align-items: center; filter: grayscale(100%); }
+        .logos-grid i { font-size: 2rem; color: var(--text-light); }
+
+        /* CONVERSION FORM CARD */
+        .form-card {
+            background: var(--white);
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            border: 1px solid #e2e8f0;
+            position: relative;
+        }
+        .form-header h3 { font-size: 1.5rem; margin-bottom: 5px; text-align: center; }
+        .form-header p { text-align: center; font-size: 0.9rem; margin-bottom: 20px; }
+        
+        .form-step { display: none; animation: fadeIn 0.4s ease; }
+        .form-step.active { display: block; }
+        
+        .input-group { margin-bottom: 15px; }
+        .input-group label { display: block; font-weight: 600; font-size: 0.9rem; margin-bottom: 6px; color: var(--primary); }
+        .input-group select, .input-group input {
+            width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 1rem; outline: none; transition: border 0.3s;
+        }
+        .input-group select:focus, .input-group input:focus { border-color: var(--primary); ring: 2px solid rgba(0,69,122,0.1); }
+        
+        .progress-bar { height: 4px; background: #e2e8f0; margin-bottom: 20px; border-radius: 2px; }
+        .progress-fill { height: 100%; background: #10b981; width: 50%; transition: width 0.3s ease; border-radius: 2px; }
+        
+        .secure-note { font-size: 0.75rem; text-align: center; margin-top: 15px; color: #94a3b8; display: flex; align-items: center; justify-content: center; gap: 6px; }
+
+        /* VALUE PROPS */
+        .features { padding: 80px 0; background: var(--white); }
+        .features-grid { grid-template-columns: repeat(3, 1fr); gap: 30px; }
+        .feature-card { padding: 30px; background: var(--bg-light); border-radius: 12px; text-align: center; transition: transform 0.3s; }
+        .feature-card:hover { transform: translateY(-5px); }
+        .feature-icon { 
+            width: 60px; height: 60px; background: var(--white); border-radius: 50%; 
+            display: flex; align-items: center; justify-content: center; margin: 0 auto 20px auto;
+            color: var(--primary); font-size: 1.5rem; box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        /* COMPARISON */
+        .comparison { padding: 80px 0; background: var(--primary); color: var(--white); }
+        .comparison h2 { color: var(--white); text-align: center; }
+        .comparison-table { 
+            background: var(--white); border-radius: 12px; overflow: hidden; max-width: 900px; margin: 40px auto 0 auto;
+            display: grid; grid-template-columns: 1fr 1fr; color: var(--text-dark);
+        }
+        .col-bad { padding: 30px; border-right: 1px solid #eee; background: #fff1f2; }
+        .col-good { padding: 30px; background: #f0fdf4; position: relative; }
+        .col-good::before { 
+            content: "Recommended"; position: absolute; top: 0; right: 0; background: #10b981; color: white; 
+            font-size: 0.7rem; font-weight: 700; padding: 4px 12px; border-bottom-left-radius: 8px; 
+        }
+        .comp-header { font-weight: 800; font-size: 1.2rem; margin-bottom: 20px; text-align: center; display: block; }
+        .comp-list li { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 15px; font-size: 0.95rem; }
+        .col-bad li i { color: #ef4444; margin-top: 4px; }
+        .col-good li i { color: #10b981; margin-top: 4px; }
+
+        /* TESTIMONIALS */
+        .testimonials { padding: 80px 0; background: var(--bg-light); }
+        .testimonial-grid { grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 40px; }
+        .test-card { background: var(--white); padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .stars { color: #f59e0b; margin-bottom: 15px; }
+        .test-author { font-weight: 700; color: var(--primary); margin-top: 15px; display: block; }
+
+        /* FOOTER */
+        footer { background: #0f172a; color: #94a3b8; padding: 40px 0; font-size: 0.9rem; text-align: center; }
+        
+        /* STICKY MOBILE CTA */
+        .mobile-sticky {
+            position: fixed; bottom: 0; left: 0; width: 100%; background: var(--white); padding: 15px 20px;
+            box-shadow: 0 -4px 10px rgba(0,0,0,0.1); z-index: 999; display: none;
+        }
+
+        /* ANIMATIONS */
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* RESPONSIVE */
+        @media (max-width: 900px) {
+            h1 { font-size: 2rem; }
+            .hero-grid { grid-template-columns: 1fr; gap: 40px; }
+            .hero-text { order: 2; text-align: center; }
+            .hero-list { display: inline-block; text-align: left; }
+            .logos-grid { justify-content: center; }
+            .form-card { order: 1; }
+            .features-grid { grid-template-columns: 1fr; }
+            .comparison-table { grid-template-columns: 1fr; }
+            .col-bad { border-bottom: 1px solid #eee; border-right: none; }
+            .testimonial-grid { grid-template-columns: 1fr; }
+            .mobile-sticky { display: block; }
+            .hide-mobile { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- STICKY HEADER -->
+    <header>
+        <div class="container header-content">
+            <a href="#" class="logo">
+                <img src="https://www.laundrynow.io/wp-content/uploads/2023/09/Laundry-Now44_3-2.png" alt="LaundryNow Dallas">
+            </a>
+            <a href="tel:2146132550" class="phone-cta">
+                <i class="fa fa-phone"></i>
+                <span class="hide-mobile">214-613-2550</span>
+            </a>
+        </div>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section class="hero">
+        <div class="container grid hero-grid">
+            
+            <!-- Left Content -->
+            <div class="hero-text">
+                <span class="badge">For Dallas Airbnb Hosts</span>
+                <h1>Stop Doing Laundry. <br>Start Scaling Your <span class="highlight">Airbnb Business.</span></h1>
+                <p>Hotel-quality linens, precise inventory tracking, and reliable pickup & delivery—designed specifically for short-term rentals.</p>
+                
+                <ul class="hero-list">
+                    <li><i class="fa-solid fa-check-circle"></i> 24-Hour Standard Turnaround</li>
+                    <li><i class="fa-solid fa-check-circle"></i> Ozone Sanitization (Hospital Grade)</li>
+                    <li><i class="fa-solid fa-check-circle"></i> No Contracts or Hidden Fees</li>
+                </ul>
+
+                <div class="trust-logos hide-mobile">
+                    <p>Trusted by Hosts On</p>
+                    <div class="logos-grid">
+                        <i class="fa-brands fa-airbnb"></i>
+                        <i class="fa-brands fa-houzz"></i>
+                        <span>VRBO</span> <!-- Text fallback as FA doesn't have VRBO -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Form (Conversion Engine) -->
+            <div class="form-card" id="quote-form">
+                <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+                
+                <form id="leadForm" action="/dallas-airbnb-laundry-service/#wpcf7-f2584-p2446-o1" method="post">
+                    <!-- Note: Implementation requires mapping these IDs to your actual CF7 field names -->
+                    
+                    <!-- STEP 1 -->
+                    <div class="form-step active" id="step1">
+                        <div class="form-header">
+                            <h3>Check Pricing & Availability</h3>
+                            <p>Get a custom quote in under 60 seconds.</p>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label>How many units do you manage?</label>
+                            <select id="units" name="units_managed">
+                                <option value="1-5">1–5 units</option>
+                                <option value="6-15">6–15 units</option>
+                                <option value="16-30">16–30 units</option>
+                                <option value="31+">31+ units</option>
+                            </select>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label>Weekly Laundry Volume?</label>
+                            <select id="volume" name="weekly_volume">
+                                <option value="Under 100">Under 100 lbs</option>
+                                <option value="100-300">100–300 lbs</option>
+                                <option value="300-600">300–600 lbs</option>
+                                <option value="600+">600+ lbs</option>
+                            </select>
+                        </div>
+
+                        <button type="button" class="btn" onclick="nextStep()">Continue <i class="fa fa-arrow-right"></i></button>
+                    </div>
+
+                    <!-- STEP 2 -->
+                    <div class="form-step" id="step2">
+                        <div class="form-header">
+                            <h3>Where should we send the quote?</h3>
+                            <p>Almost done! Enter your details below.</p>
+                        </div>
+
+                        <div class="input-group">
+                            <label>Full Name</label>
+                            <input type="text" placeholder="Jane Doe" required>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label>Email Address</label>
+                            <input type="email" placeholder="jane@rental.com" required>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label>Phone Number</label>
+                            <input type="tel" placeholder="(214) 555-0123" required>
+                        </div>
+
+                        <button type="submit" class="btn">Get My Custom Quote</button>
+                        <div class="secure-note"><i class="fa fa-lock"></i> Your information is 100% secure.</div>
+                        <div style="text-align:center; margin-top:10px;">
+                            <a href="#" onclick="prevStep(); return false;" style="font-size:0.8rem; color:#64748b;">Back to previous step</a>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- VALUE PROPS -->
+    <section class="features">
+        <div class="container">
+            <div class="text-center" style="max-width: 700px; margin: 0 auto 50px auto;">
+                <h2>Why Dallas Superhosts Choose LaundryNow</h2>
+                <p>We don't just wash clothes. We provide the logistics infrastructure that allows you to expand your rental portfolio.</p>
+            </div>
+            
+            <div class="grid features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fa-solid fa-stopwatch"></i></div>
+                    <h3>Fast Turnarounds</h3>
+                    <p>Standard 24-hour turnaround guarantees your linens are ready before your next guest checks in.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fa-solid fa-shirt"></i></div>
+                    <h3>Commercial Fold</h3>
+                    <p>Towels and sheets are folded to hotel standards, making it easy for your cleaners to set up quickly.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fa-solid fa-calendar-check"></i></div>
+                    <h3>Flexible Scheduling</h3>
+                    <p>Schedule pickups online or via text. We work around your booking calendar, not the other way around.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- COMPARISON -->
+    <section class="comparison">
+        <div class="container">
+            <h2>The Cost of In-Unit Laundry vs. LaundryNow</h2>
+            
+            <div class="comparison-table">
+                <div class="col-bad">
+                    <span class="comp-header text-primary">In-Unit / Cleaners</span>
+                    <ul class="comp-list">
+                        <li><i class="fa-solid fa-xmark"></i> <strong>Bottleneck:</strong> Cleaners wait 90+ mins for dryers.</li>
+                        <li><i class="fa-solid fa-xmark"></i> <strong>Utilities:</strong> You pay high water & electric bills.</li>
+                        <li><i class="fa-solid fa-xmark"></i> <strong>Wear & Tear:</strong> Frequent machine breakdowns.</li>
+                        <li><i class="fa-solid fa-xmark"></i> <strong>Inconsistent:</strong> Stains often missed.</li>
+                        <li style="margin-top:20px; font-weight:700; color:#ef4444;">Est Cost: $45-$65 / turn</li>
+                    </ul>
+                </div>
+                <div class="col-good">
+                    <span class="comp-header text-primary">LaundryNow Service</span>
+                    <ul class="comp-list">
+                        <li><i class="fa-solid fa-check"></i> <strong>Zero Wait:</strong> Cleaners focus solely on cleaning.</li>
+                        <li><i class="fa-solid fa-check"></i> <strong>All Inclusive:</strong> Detergent, utilities, and labor included.</li>
+                        <li><i class="fa-solid fa-check"></i> <strong>Reliable:</strong> Industrial machines & professional folders.</li>
+                        <li><i class="fa-solid fa-check"></i> <strong>Hotel Quality:</strong> Crisp, sanitized linens every time.</li>
+                        <li style="margin-top:20px; font-weight:700; color:#10b981;">Est Cost: $19-$24 / turn</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TESTIMONIALS -->
+    <section class="testimonials">
+        <div class="container">
+            <h2 class="text-center">What Hosts Are Saying</h2>
+            <div class="grid testimonial-grid">
+                <div class="test-card">
+                    <div class="stars"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></div>
+                    <p>"Laundry Now removed a major operational bottleneck for us. Their reliability allowed us to scale rapidly without worrying about linens."</p>
+                    <span class="test-author">- Sarah T., Manage 15 Units</span>
+                </div>
+                <div class="test-card">
+                    <div class="stars"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></div>
+                    <p>"The half-fold is exactly what we need, and the attention to detail—like separating the whitest towels—makes a real difference for our guests."</p>
+                    <span class="test-author">- James R., Superhost</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 LaundryNow. All Rights Reserved. <br> 4444 W Illinois Ave, Suite 308, Dallas, TX 75211</p>
+        </div>
+    </footer>
+
+    <!-- STICKY MOBILE BUTTON -->
+    <div class="mobile-sticky">
+        <a href="#quote-form" class="btn">Get My Price Quote</a>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        function nextStep() {
+            document.getElementById('step1').classList.remove('active');
+            document.getElementById('step2').classList.add('active');
+            document.getElementById('progressFill').style.width = '100%';
+        }
+
+        function prevStep() {
+            document.getElementById('step2').classList.remove('active');
+            document.getElementById('step1').classList.add('active');
+            document.getElementById('progressFill').style.width = '50%';
+        }
+        
+        // Scroll Smooth
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
