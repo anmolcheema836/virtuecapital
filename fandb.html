@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global F&B Distribution | Trade Partners</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Configuration -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'brand-black': '#111111',
+                        'brand-gray': '#f5f5f5',
+                        'brand-border': '#e5e5e5',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Utilities */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Force grayscale for wireframe/neutral feel */
+        .img-neutral {
+            filter: grayscale(100%) contrast(1.1);
+            transition: filter 0.5s ease;
+        }
+        .img-neutral:hover {
+            filter: grayscale(0%) contrast(1);
+        }
+
+        /* Smooth text highlight on hover */
+        .hover-underline-animation {
+            display: inline-block;
+            position: relative;
+        }
+        .hover-underline-animation::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            transform: scaleX(0);
+            height: 1px;
+            bottom: 0;
+            left: 0;
+            background-color: #000;
+            transform-origin: bottom right;
+            transition: transform 0.25s ease-out;
+        }
+        .hover-underline-animation:hover::after {
+            transform: scaleX(1);
+            transform-origin: bottom left;
+        }
+    </style>
+</head>
+<body class="bg-white text-brand-black antialiased selection:bg-black selection:text-white">
+
+    <!-- NAVIGATION -->
+    <nav class="fixed w-full z-50 top-0 left-0 bg-white/95 backdrop-blur-sm border-b border-gray-100 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-6 h-24 flex items-center justify-between">
+            <!-- Logo from source -->
+            <div class="flex items-center gap-3">
+               <img src="http://wp1.themexlab.com/financepress/wp-content/themes/finance_press/images/logo.png" class="h-10 img-neutral" alt="Logo">
+            </div>
+            
+            <!-- Desktop Menu -->
+            <div class="hidden md:flex space-x-10 text-xs font-semibold uppercase tracking-[0.15em] text-gray-500">
+                <a href="#home" class="hover:text-black transition-colors">Overview</a>
+                <a href="#about" class="hover:text-black transition-colors">About</a>
+                <a href="#services" class="hover:text-black transition-colors">Services</a>
+                <a href="#markets" class="hover:text-black transition-colors">Markets</a>
+                <a href="#contact" class="px-6 py-3 bg-black text-white rounded-sm hover:bg-gray-800 transition-colors">Contact Us</a>
+            </div>
+
+            <!-- Mobile Hamburger -->
+            <div class="md:hidden space-y-1.5 cursor-pointer">
+                <span class="block w-8 h-0.5 bg-black"></span>
+                <span class="block w-8 h-0.5 bg-black"></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <header id="home" class="relative w-full h-screen flex items-center justify-center overflow-hidden">
+        <!-- Background Image from Source -->
+        <div class="absolute inset-0 z-0">
+            <img src="https://wp1.themexlab.com/financepress/wp-content/uploads/2016/05/banner.jpg" 
+                 class="w-full h-full object-cover img-neutral opacity-60" 
+                 alt="Distribution Warehouse">
+            <div class="absolute inset-0 bg-gradient-to-t from-white via-white/20 to-transparent"></div>
+        </div>
+
+        <div class="relative z-10 max-w-7xl mx-auto px-6 pt-20 text-center reveal active">
+            <span class="inline-block py-1 px-3 border border-gray-400 text-[10px] uppercase tracking-[0.3em] mb-6 bg-white/50 backdrop-blur">Global Distribution</span>
+            <h1 class="text-5xl md:text-7xl lg:text-8xl font-serif leading-[1.1] mb-8 text-black">
+                Bridging cultures <br>
+                <i class="font-serif text-gray-500">through taste.</i>
+            </h1>
+            <p class="text-lg md:text-xl text-gray-700 max-w-2xl mx-auto leading-relaxed font-light mb-10">
+                A strategic partner for premium food & beverage brands. We handle compliance, logistics, and market entry so you can focus on the product.
+            </p>
+            <div class="flex flex-col md:flex-row gap-4 justify-center">
+                <a href="#services" class="bg-black text-white px-8 py-4 text-xs font-bold uppercase tracking-widest hover:bg-gray-800 transition-all">
+                    Our Capabilities
+                </a>
+                <a href="#about" class="bg-transparent border border-black px-8 py-4 text-xs font-bold uppercase tracking-widest hover:bg-black hover:text-white transition-all">
+                    Company Vision
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- ABOUT SECTION -->
+    <section id="about" class="py-32 px-6 bg-white">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid md:grid-cols-2 gap-20 items-center reveal">
+                <!-- Text Content -->
+                <div class="order-2 md:order-1">
+                    <span class="block w-12 h-0.5 bg-gray-300 mb-8"></span>
+                    <h2 class="text-4xl md:text-5xl font-serif mb-8">More than just logistics. We represent your brand.</h2>
+                    
+                    <div class="space-y-10">
+                        <div>
+                            <h3 class="text-sm font-bold uppercase tracking-widest mb-3 text-gray-400">Our Mission</h3>
+                            <p class="text-xl leading-relaxed text-gray-800">
+                                To simplify the complexity of international trade. We strive to create a borderless marketplace where exceptional F&B products find their audience through transparent, efficient distribution.
+                            </p>
+                        </div>
+                        <div>
+                            <h3 class="text-sm font-bold uppercase tracking-widest mb-3 text-gray-400">Our Values</h3>
+                            <ul class="space-y-4 border-l-2 border-gray-100 pl-6">
+                                <li class="text-gray-600"><strong class="text-black">Integrity:</strong> Absolute transparency in compliance.</li>
+                                <li class="text-gray-600"><strong class="text-black">Partnership:</strong> Your growth is our growth.</li>
+                                <li class="text-gray-600"><strong class="text-black">Excellence:</strong> Precision in cold-chain & delivery.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Image from source -->
+                <div class="order-1 md:order-2 relative">
+                    <img src="https://wp1.themexlab.com/financepress/wp-content/uploads/2016/05/11.jpg" 
+                         class="w-full h-auto shadow-2xl img-neutral" 
+                         alt="Meeting">
+                    <div class="absolute -bottom-10 -left-10 bg-white p-8 shadow-xl max-w-xs hidden lg:block">
+                        <p class="font-serif text-2xl italic">"1,000+ Brands Distributed Globally"</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SERVICES SECTION -->
+    <section id="services" class="py-32 px-6 bg-brand-gray">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-20 reveal">
+                <div>
+                    <h2 class="text-4xl md:text-5xl font-serif mb-4">Core Services</h2>
+                    <p class="text-gray-500 max-w-md">End-to-end support from factory floor to retail shelf.</p>
+                </div>
+                <div class="hidden md:block">
+                    <a href="#contact" class="text-xs font-bold uppercase tracking-widest border-b border-black pb-1">Get a Quote</a>
+                </div>
+            </div>
+
+            <!-- Grid -->
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-1 bg-gray-200 border border-gray-200">
+                
+                <!-- Service 1 -->
+                <div class="bg-white p-12 hover:bg-gray-50 transition-colors group reveal">
+                    <div class="mb-6 text-gray-300 text-4xl group-hover:text-black transition-colors">01</div>
+                    <h3 class="text-xl font-semibold mb-4">Market Entry & Distribution</h3>
+                    <p class="text-gray-600 text-sm leading-relaxed mb-8">Strategic channel selection and placement in retail, HORECA, and wholesale networks.</p>
+                    <span class="text-xs font-bold uppercase tracking-widest flex items-center gap-2">Explore <span class="text-lg leading-none">&rarr;</span></span>
+                </div>
+
+                <!-- Service 2 -->
+                <div class="bg-white p-12 hover:bg-gray-50 transition-colors group reveal">
+                    <div class="mb-6 text-gray-300 text-4xl group-hover:text-black transition-colors">02</div>
+                    <h3 class="text-xl font-semibold mb-4">Regulatory & Compliance</h3>
+                    <p class="text-gray-600 text-sm leading-relaxed mb-8">Labeling adaptation, FDA/EFSA compliance, and customs documentation handling.</p>
+                    <span class="text-xs font-bold uppercase tracking-widest flex items-center gap-2">Explore <span class="text-lg leading-none">&rarr;</span></span>
+                </div>
+
+                <!-- Service 3 -->
+                <div class="bg-white p-12 hover:bg-gray-50 transition-colors group reveal">
+                    <div class="mb-6 text-gray-300 text-4xl group-hover:text-black transition-colors">03</div>
+                    <h3 class="text-xl font-semibold mb-4">Brand Growth Strategy</h3>
+                    <p class="text-gray-600 text-sm leading-relaxed mb-8">Commercial planning, pricing strategy, and marketing localization for new territories.</p>
+                    <span class="text-xs font-bold uppercase tracking-widest flex items-center gap-2">Explore <span class="text-lg leading-none">&rarr;</span></span>
+                </div>
+
+                <!-- Service 4 -->
+                <div class="bg-white p-12 hover:bg-gray-50 transition-colors group reveal">
+                    <div class="mb-6 text-gray-300 text-4xl group-hover:text-black transition-colors">04</div>
+                    <h3 class="text-xl font-semibold mb-4">Supply Chain & Logistics</h3>
+                    <p class="text-gray-600 text-sm leading-relaxed mb-8">Integrated warehousing, freight forwarding, and inventory management solutions.</p>
+                    <span class="text-xs font-bold uppercase tracking-widest flex items-center gap-2">Explore <span class="text-lg leading-none">&rarr;</span></span>
+                </div>
+
+                <!-- Service 5 -->
+                <div class="bg-white p-12 hover:bg-gray-50 transition-colors group reveal">
+                    <div class="mb-6 text-gray-300 text-4xl group-hover:text-black transition-colors">05</div>
+                    <h3 class="text-xl font-semibold mb-4">Market Intelligence</h3>
+                    <p class="text-gray-600 text-sm leading-relaxed mb-8">Data-driven insights on consumer trends, competitor analysis, and demand forecasting.</p>
+                    <span class="text-xs font-bold uppercase tracking-widest flex items-center gap-2">Explore <span class="text-lg leading-none">&rarr;</span></span>
+                </div>
+
+                <!-- Service 6 -->
+                <div class="bg-white p-12 hover:bg-gray-50 transition-colors group reveal">
+                    <div class="mb-6 text-gray-300 text-4xl group-hover:text-black transition-colors">06</div>
+                    <h3 class="text-xl font-semibold mb-4">Operational Support</h3>
+                    <p class="text-gray-600 text-sm leading-relaxed mb-8">Back-office administration, order processing, and dedicated account management.</p>
+                    <span class="text-xs font-bold uppercase tracking-widest flex items-center gap-2">Explore <span class="text-lg leading-none">&rarr;</span></span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MARKETS SECTION (Parallax) -->
+    <section id="markets" class="relative py-40 flex items-center justify-center">
+        <!-- Parallax BG from Source -->
+        <div class="absolute inset-0 z-0">
+            <img src="https://wp1.themexlab.com/financepress/wp-content/uploads/2016/05/parallax-bg.jpg" class="w-full h-full object-cover img-neutral brightness-50" alt="World Map">
+        </div>
+        
+        <div class="relative z-10 max-w-5xl mx-auto px-6 text-center text-white reveal">
+            <h2 class="text-4xl md:text-6xl font-serif mb-8">Connecting Global Markets</h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-left mt-16 border-t border-white/20 pt-12">
+                <div>
+                    <h4 class="text-lg font-bold mb-2">North America</h4>
+                    <p class="text-gray-300 text-sm">USA, Canada, Mexico</p>
+                </div>
+                <div>
+                    <h4 class="text-lg font-bold mb-2">Europe</h4>
+                    <p class="text-gray-300 text-sm">UK, Germany, France, Italy</p>
+                </div>
+                <div>
+                    <h4 class="text-lg font-bold mb-2">Asia Pacific</h4>
+                    <p class="text-gray-300 text-sm">Japan, Singapore, Australia</p>
+                </div>
+                <div>
+                    <h4 class="text-lg font-bold mb-2">Middle East</h4>
+                    <p class="text-gray-300 text-sm">UAE, Saudi Arabia</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TEAM / CREDIBILITY -->
+    <section class="py-32 px-6 bg-white">
+        <div class="max-w-7xl mx-auto">
+            <div class="mb-16 reveal">
+                <h2 class="text-3xl font-serif">Leadership & Compliance Team</h2>
+            </div>
+            <div class="grid md:grid-cols-4 gap-8">
+                <!-- Team Member 1 -->
+                <div class="group cursor-pointer reveal">
+                    <div class="overflow-hidden mb-4">
+                        <img src="https://wp1.themexlab.com/financepress/wp-content/uploads/2016/05/9.jpg" class="w-full grayscale group-hover:grayscale-0 transition-all duration-500 transform group-hover:scale-105" alt="Team">
+                    </div>
+                    <h4 class="font-bold">Darren Leemen</h4>
+                    <p class="text-xs uppercase tracking-widest text-gray-500">Head of Logistics</p>
+                </div>
+                <!-- Team Member 2 -->
+                <div class="group cursor-pointer reveal">
+                    <div class="overflow-hidden mb-4">
+                        <img src="https://wp1.themexlab.com/financepress/wp-content/uploads/2016/05/8.jpg" class="w-full grayscale group-hover:grayscale-0 transition-all duration-500 transform group-hover:scale-105" alt="Team">
+                    </div>
+                    <h4 class="font-bold">David Fernando</h4>
+                    <p class="text-xs uppercase tracking-widest text-gray-500">Compliance Director</p>
+                </div>
+                <!-- Team Member 3 -->
+                <div class="group cursor-pointer reveal">
+                    <div class="overflow-hidden mb-4">
+                        <img src="https://wp1.themexlab.com/financepress/wp-content/uploads/2016/05/7.jpg" class="w-full grayscale group-hover:grayscale-0 transition-all duration-500 transform group-hover:scale-105" alt="Team">
+                    </div>
+                    <h4 class="font-bold">Ricky Mosses</h4>
+                    <p class="text-xs uppercase tracking-widest text-gray-500">Head of Sales</p>
+                </div>
+                <!-- Team Member 4 -->
+                <div class="group cursor-pointer reveal">
+                    <div class="overflow-hidden mb-4">
+                        <img src="https://wp1.themexlab.com/financepress/wp-content/uploads/2016/05/6.jpg" class="w-full grayscale group-hover:grayscale-0 transition-all duration-500 transform group-hover:scale-105" alt="Team">
+                    </div>
+                    <h4 class="font-bold">Charles Nicholes</h4>
+                    <p class="text-xs uppercase tracking-widest text-gray-500">CEO</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTACT SECTION -->
+    <section id="contact" class="bg-brand-gray py-24">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="bg-white shadow-2xl overflow-hidden grid md:grid-cols-2 reveal">
+                
+                <!-- Contact Image (From Source 'Stay' section) -->
+                <div class="relative h-96 md:h-auto">
+                    <img src="https://wp1.themexlab.com/financepress/wp-content/uploads/2016/05/stay-bg.jpg" class="absolute inset-0 w-full h-full object-cover img-neutral" alt="Office">
+                    <div class="absolute inset-0 bg-black/30 flex items-center justify-center p-12">
+                        <div class="text-white">
+                            <h3 class="text-3xl font-serif mb-4">Partner with us.</h3>
+                            <p class="text-white/80">Join our network of 1000+ financial and distribution planners.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Form -->
+                <div class="p-12 md:p-16">
+                    <h2 class="text-2xl font-bold mb-8 uppercase tracking-widest">Get in Touch</h2>
+                    <form class="space-y-6" onsubmit="event.preventDefault()">
+                        <div class="grid grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-[10px] uppercase font-bold text-gray-400 mb-1">First Name</label>
+                                <input type="text" class="w-full border-b border-gray-300 py-2 focus:border-black outline-none transition-colors">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] uppercase font-bold text-gray-400 mb-1">Last Name</label>
+                                <input type="text" class="w-full border-b border-gray-300 py-2 focus:border-black outline-none transition-colors">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-[10px] uppercase font-bold text-gray-400 mb-1">Email Address</label>
+                            <input type="email" class="w-full border-b border-gray-300 py-2 focus:border-black outline-none transition-colors">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] uppercase font-bold text-gray-400 mb-1">Inquiry Type</label>
+                            <select class="w-full border-b border-gray-300 py-2 focus:border-black outline-none bg-transparent">
+                                <option>Market Entry</option>
+                                <option>Logistics</option>
+                                <option>General Inquiry</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-[10px] uppercase font-bold text-gray-400 mb-1">Message</label>
+                            <textarea rows="3" class="w-full border-b border-gray-300 py-2 focus:border-black outline-none transition-colors"></textarea>
+                        </div>
+                        <button class="bg-black text-white px-10 py-4 text-xs font-bold uppercase tracking-widest hover:bg-gray-800 transition-all mt-4">
+                            Submit Request
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-black text-white py-20 px-6 border-t border-gray-900">
+        <div class="max-w-7xl mx-auto grid md:grid-cols-4 gap-12 text-sm text-gray-400">
+            <div>
+                <img src="http://wp1.themexlab.com/financepress/wp-content/themes/finance_press/images/home/logo-white.png" class="h-8 mb-6 opacity-50 img-neutral" alt="Logo">
+                <p class="leading-relaxed mb-6">Simplifying global trade for the world's best food and beverage brands.</p>
+            </div>
+            <div>
+                <h4 class="text-white font-bold uppercase tracking-widest mb-6">Company</h4>
+                <ul class="space-y-3">
+                    <li><a href="#" class="hover:text-white">About Us</a></li>
+                    <li><a href="#" class="hover:text-white">Our Team</a></li>
+                    <li><a href="#" class="hover:text-white">Careers</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-white font-bold uppercase tracking-widest mb-6">Services</h4>
+                <ul class="space-y-3">
+                    <li><a href="#" class="hover:text-white">Distribution</a></li>
+                    <li><a href="#" class="hover:text-white">Compliance</a></li>
+                    <li><a href="#" class="hover:text-white">Logistics</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-white font-bold uppercase tracking-widest mb-6">Contact</h4>
+                <p>322 Jaintfam St,<br>Brookfields, NY 245</p>
+                <p class="mt-4">FinanPress@example.com</p>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto mt-20 pt-8 border-t border-gray-900 flex justify-between text-xs text-gray-600">
+            <p>&copy; 2026 Global Trade Partners. All Rights Reserved.</p>
+            <div class="flex gap-4">
+                <a href="#">Privacy</a>
+                <a href="#">Terms</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- INTERACTIVITY SCRIPT -->
+    <script>
+        // Scroll Reveal Animation Logic
+        function reveal() {
+            var reveals = document.querySelectorAll(".reveal");
+            var windowHeight = window.innerHeight;
+            var elementVisible = 100;
+
+            for (var i = 0; i < reveals.length; i++) {
+                var elementTop = reveals[i].getBoundingClientRect().top;
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add("active");
+                }
+            }
+        }
+        window.addEventListener("scroll", reveal);
+        // Trigger on load
+        reveal();
+    </script>
+</body>
+</html>
