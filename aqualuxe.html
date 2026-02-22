@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AquaLuxe Perth | The Big Lux Floating Lounger</title>
+    
+    <!-- Fonts: 'Outfit' (Modern Sans) & 'Cormorant Garamond' (Luxury Serif) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* --- LUXURY VARIABLES --- */
+        :root {
+            --color-dark: #1A1A1A;
+            --color-light: #Fcfcfc;
+            --color-sand: #F3F0EB; /* Moo Living style neutral */
+            --color-accent: #2C3E50; /* Deep Ocean */
+            --color-gold: #C5A059; /* Subtle luxury accent */
+            
+            --font-display: 'Cormorant Garamond', serif;
+            --font-body: 'Outfit', sans-serif;
+            
+            --container: 1200px;
+            --transition: 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        /* --- RESET --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            background-color: var(--color-light);
+            color: var(--color-dark);
+            font-family: var(--font-body);
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        h1, h2, h3 { font-family: var(--font-display); font-weight: 400; line-height: 1.1; }
+        img { display: block; width: 100%; height: 100%; object-fit: cover; }
+        
+        .container { max-width: var(--container); margin: 0 auto; padding: 0 1.5rem; }
+
+        /* --- BUTTONS --- */
+        .btn {
+            display: inline-block;
+            padding: 1.2rem 3rem;
+            background: var(--color-dark);
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: var(--transition);
+            border: 1px solid var(--color-dark);
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background: transparent;
+            color: var(--color-dark);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid white;
+            color: white;
+        }
+        .btn-outline:hover {
+            background: white;
+            color: var(--color-dark);
+        }
+
+        /* --- TOP BANNER (Urgency) --- */
+        .top-banner {
+            background: var(--color-dark);
+            color: white;
+            text-align: center;
+            font-size: 0.75rem;
+            padding: 0.5rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* --- HEADER --- */
+        nav {
+            position: absolute;
+            top: 40px;
+            left: 0;
+            width: 100%;
+            z-index: 10;
+            padding: 1.5rem 0;
+        }
+        .nav-inner { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: var(--font-body); font-weight: 600; letter-spacing: 3px; font-size: 1.5rem; text-transform: uppercase; color: white; }
+        .location-tag { color: white; font-size: 0.8rem; letter-spacing: 1px; border: 1px solid rgba(255,255,255,0.3); padding: 5px 15px; border-radius: 50px; backdrop-filter: blur(5px); }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            height: 100vh;
+            min-height: 600px;
+            background: url('https://images.unsplash.com/photo-1576013551627-0cc20b96c2a7?q=80&w=2070&auto=format&fit=crop') no-repeat center center/cover;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.1));
+        }
+
+        .hero-content { position: relative; z-index: 2; max-width: 800px; padding: 0 1rem; }
+        
+        .hero h1 { font-size: clamp(3rem, 6vw, 5.5rem); margin-bottom: 1rem; letter-spacing: -1px; }
+        .hero p { font-size: 1.2rem; font-weight: 300; margin-bottom: 2.5rem; letter-spacing: 1px; opacity: 0.9; }
+
+        /* --- INTRO / WHY AQUALUXE --- */
+        .intro-section { padding: 5rem 0; background: var(--color-light); text-align: center; }
+        .intro-text { max-width: 600px; margin: 0 auto 4rem; }
+        .intro-text h2 { font-size: 2.5rem; margin-bottom: 1rem; color: var(--color-dark); }
+        .intro-text p { color: #666; font-size: 1.1rem; }
+
+        .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+        .feature-item { padding: 2rem; border: 1px solid #eee; transition: var(--transition); }
+        .feature-item:hover { border-color: var(--color-dark); }
+        .feature-item i { font-size: 1.5rem; margin-bottom: 1rem; color: var(--color-accent); }
+        .feature-item h4 { font-family: var(--font-body); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem; }
+        .feature-item p { font-size: 0.9rem; color: #777; }
+
+        /* --- PRODUCT SHOWCASE --- */
+        .product-section { background: var(--color-sand); padding: 6rem 0; }
+        
+        .product-layout {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        /* Image Area with Simulated "Stripes" via Gradients for Demo */
+        .product-image-area {
+            position: relative;
+            height: 600px;
+            background: white;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+        }
+        
+        .product-img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            transition: opacity 0.5s ease;
+            position: absolute;
+            top: 0; left: 0;
+        }
+
+        /* Simulating the products since I don't have the specific assets */
+        #img-charcoal { background: linear-gradient(45deg, #e0e0e0 25%, #333 25%, #333 50%, #e0e0e0 50%, #e0e0e0 75%, #333 75%, #333 100%); background-size: 40px 40px; }
+        #img-mango { background: linear-gradient(45deg, #fff 25%, #FFB347 25%, #FFB347 50%, #fff 50%, #fff 75%, #FFB347 75%, #FFB347 100%); background-size: 40px 40px; opacity: 0; }
+        #img-watermelon { background: linear-gradient(45deg, #fff 25%, #ff6b6b 25%, #ff6b6b 50%, #fff 50%, #fff 75%, #ff6b6b 75%, #ff6b6b 100%); background-size: 40px 40px; opacity: 0; }
+
+        /* Placeholder overlay to make gradients look like pools */
+        .mockup-overlay {
+            position: absolute; top:0; left:0; width:100%; height:100%;
+            background: url('https://plus.unsplash.com/premium_photo-1661962692059-55d5a4319814?q=80&w=2070&auto=format&fit=crop');
+            opacity: 0.7; mix-blend-mode: multiply;
+        }
+
+        .product-details h3 { font-size: 3rem; margin-bottom: 0.5rem; }
+        .price { font-size: 1.5rem; color: #555; margin-bottom: 2rem; display: block; }
+        .desc { margin-bottom: 2rem; color: #666; }
+
+        .color-selector { margin-bottom: 3rem; }
+        .color-label { display: block; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1rem; color: #999; }
+        .swatches { display: flex; gap: 15px; }
+        
+        .swatch {
+            width: 40px; height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: 0.2s;
+            position: relative;
+        }
+        
+        .swatch.active { border-color: var(--color-dark); transform: scale(1.1); }
+        .swatch-charcoal { background: #333; }
+        .swatch-mango { background: #FFB347; }
+        .swatch-watermelon { background: #ff6b6b; }
+
+        /* --- LIFESTYLE / TRUST --- */
+        .lifestyle-section { padding: 6rem 0; text-align: center; }
+        .lifestyle-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 3rem; }
+        .lifestyle-img { height: 400px; background: #ddd; }
+        
+        .trust-badge {
+            background: var(--color-dark);
+            color: white;
+            display: inline-block;
+            padding: 1rem 2rem;
+            margin-top: -3rem; /* Overlap effect */
+            position: relative;
+            z-index: 2;
+        }
+
+        /* --- FOOTER / FINAL CTA --- */
+        .footer-cta {
+            background: #111;
+            color: white;
+            padding: 6rem 0;
+            text-align: center;
+        }
+        
+        .form-box {
+            max-width: 500px;
+            margin: 2rem auto 0;
+            text-align: left;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 1rem;
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.3);
+            color: white;
+            margin-bottom: 1rem;
+            font-family: var(--font-body);
+        }
+        
+        input::placeholder { color: rgba(255,255,255,0.5); }
+        
+        .checkbox-group { display: flex; align-items: center; gap: 10px; margin-bottom: 2rem; font-size: 0.9rem; color: #ccc; }
+
+        /* --- MOBILE STICKY BAR --- */
+        .mobile-sticky-bar {
+            position: fixed;
+            bottom: 0; left: 0; width: 100%;
+            background: white;
+            padding: 1rem;
+            box-shadow: 0 -5px 20px rgba(0,0,0,0.1);
+            z-index: 100;
+            display: none; /* Hidden on desktop */
+            justify-content: space-between;
+            align-items: center;
+        }
+        .ms-price { font-weight: 700; font-size: 1.1rem; }
+        .ms-btn { background: var(--color-dark); color: white; padding: 0.8rem 1.5rem; text-decoration: none; font-size: 0.8rem; text-transform: uppercase; font-weight: 600; }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 900px) {
+            .hero h1 { font-size: 3.5rem; }
+            .features-grid { grid-template-columns: 1fr; gap: 1rem; }
+            .product-layout { grid-template-columns: 1fr; gap: 2rem; }
+            .product-image-area { height: 400px; }
+            .lifestyle-grid { grid-template-columns: 1fr; }
+            .mobile-sticky-bar { display: flex; }
+            .footer-cta { padding-bottom: 6rem; } /* Space for sticky bar */
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Urgency Banner -->
+    <div class="top-banner">
+        Limited Stock Available for Perth Summer | Filled & Delivered Locally
+    </div>
+
+    <!-- Navigation (Minimal) -->
+    <nav>
+        <div class="container nav-inner">
+            <div class="logo">AquaLuxe</div>
+            <div class="location-tag"><i class="fas fa-map-marker-alt"></i> Perth Exclusive</div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero">
+        <div class="hero-content">
+            <h1>The Art of Floating.</h1>
+            <p>Elevate your pool experience with the Big Lux Lounger. Filled in Perth, delivered to your door.</p>
+            <a href="#product" class="btn btn-outline">View Collection</a>
+        </div>
+    </header>
+
+    <!-- Why AquaLuxe -->
+    <section class="intro-section container">
+        <div class="intro-text">
+            <h2>Effortless Luxury</h2>
+            <p>Forget inflation and cheap plastics. AquaLuxe brings the resort experience to your Western Australian backyard.</p>
+        </div>
+
+        <div class="features-grid">
+            <div class="feature-item">
+                <i class="fas fa-truck"></i>
+                <h4>Ready to Float</h4>
+                <p>We fill it, we deliver it. No pumps, no hassle. Straight into the pool.</p>
+            </div>
+            <div class="feature-item">
+                <i class="fas fa-store"></i>
+                <h4>Local Pickup</h4>
+                <p>In a rush? Click & Collect available from our Claremont location.</p>
+            </div>
+            <div class="feature-item">
+                <i class="fas fa-sun"></i>
+                <h4>Aus Designed</h4>
+                <p>Made for the harsh WA sun with premium marine-grade fabrics.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Product Selection -->
+    <section id="product" class="product-section">
+        <div class="container product-layout">
+            <!-- Dynamic Image Area -->
+            <div class="product-image-area">
+                <div class="mockup-overlay"></div> <!-- Adds realistic texture -->
+                <div class="product-img" id="img-charcoal"></div>
+                <div class="product-img" id="img-mango"></div>
+                <div class="product-img" id="img-watermelon"></div>
+            </div>
+
+            <!-- Product Details -->
+            <div class="product-details">
+                <span class="color-label">The Big Lux Lounger</span>
+                <h3 id="product-title">Charcoal Stripe</h3>
+                <span class="price">$699 AUD</span>
+                <p class="desc">
+                    The ultimate statement piece for the modern pool. Designed with a wide profile for stability and filled with premium beans for cloud-like comfort on the water.
+                </p>
+
+                <div class="color-selector">
+                    <span class="color-label">Select Colour:</span>
+                    <div class="swatches">
+                        <div class="swatch swatch-charcoal active" onclick="changeColor('charcoal')"></div>
+                        <div class="swatch swatch-mango" onclick="changeColor('mango')"></div>
+                        <div class="swatch swatch-watermelon" onclick="changeColor('watermelon')"></div>
+                    </div>
+                </div>
+
+                <!-- Desktop CTA -->
+                <a href="#reserve" class="btn">Reserve This Colour</a>
+                
+                <div style="margin-top: 2rem; font-size: 0.85rem; color: #666;">
+                    <i class="fas fa-check"></i> In Stock (Perth Warehouse)
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Lifestyle / Social Proof -->
+    <section class="lifestyle-section container">
+        <h2>The Claremont Lifestyle</h2>
+        <p style="color: #666; margin-top: 1rem;">Join hundreds of WA homeowners upgrading their pool days.</p>
+        
+        <div class="lifestyle-grid">
+            <div class="lifestyle-img">
+                <img src="IMG_0134.jpeg" alt="Woman relaxing in pool">
+            </div>
+            <div class="lifestyle-img">
+                <img src="IMG_8892.jpeg" alt="Poolside luxury">
+            </div>
+        </div>
+        
+        <div class="trust-badge">
+            "The best addition to our pool area yet." &mdash; Sarah, Cottesloe
+        </div>
+    </section>
+
+    <!-- Final Conversion Section -->
+    <footer id="reserve" class="footer-cta">
+        <div class="container">
+            <h2>Secure Your Summer</h2>
+            <p style="opacity: 0.7;">Due to high demand in the Western Suburbs, stock is limited. Reserve yours now.</p>
+            
+            <div class="form-box">
+                <form>
+                    <input type="text" placeholder="Full Name" required>
+                    <input type="email" placeholder="Email Address" required>
+                    <select>
+                        <option>Charcoal Stripe</option>
+                        <option>Mango Stripe</option>
+                        <option>Watermelon Stripe</option>
+                    </select>
+                    <select>
+                        <option>Delivery (Perth Metro)</option>
+                        <option>Click & Collect (Claremont)</option>
+                    </select>
+                    
+                    <button type="submit" class="btn" style="width: 100%; background: white; color: black; border: none;">Go to Checkout</button>
+                </form>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Mobile Sticky CTA -->
+    <div class="mobile-sticky-bar">
+        <div class="ms-price">AquaLuxe</div>
+        <a href="#reserve" class="ms-btn">Reserve Now</a>
+    </div>
+
+    <script>
+        // Simple Color Switcher Logic
+        function changeColor(color) {
+            // Update Text
+            const title = document.getElementById('product-title');
+            title.innerText = color.charAt(0).toUpperCase() + color.slice(1) + " Stripe";
+
+            // Update Images (Opacity toggle for fade effect)
+            document.querySelectorAll('.product-img').forEach(img => img.style.opacity = '0');
+            document.getElementById('img-' + color).style.opacity = '1';
+
+            // Update Swatches
+            document.querySelectorAll('.swatch').forEach(swatch => swatch.classList.remove('active'));
+            document.querySelector('.swatch-' + color).classList.add('active');
+        }
+    </script>
+</body>
+</html>
