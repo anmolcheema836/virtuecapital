@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Speech & Language Therapy | Helping Your Child Thrive</title>
+    
+    <!-- Fonts: Quicksand (Friendly) & Open Sans (Readable) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* --- VARIABLES & RESET --- */
+        :root {
+            --primary: #6B9080; /* Sage Green - Professional & Calm */
+            --secondary: #EAF4F4; /* Light Mint - Backgrounds */
+            --accent: #E07A5F; /* Terracotta - Warmth/CTA */
+            --text-dark: #2D3142;
+            --text-light: #F6FFF8;
+            --white: #FFFFFF;
+            --radius: 20px;
+            --shadow: 0 10px 30px rgba(107, 144, 128, 0.15);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        html { scroll-behavior: smooth; }
+        
+        body {
+            font-family: 'Open Sans', sans-serif;
+            color: var(--text-dark);
+            background-color: #FDFBF7; /* Warm off-white */
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Quicksand', sans-serif;
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        a { text-decoration: none; transition: 0.3s; }
+        img { width: 100%; height: auto; display: block; object-fit: cover; }
+
+        /* --- UTILITIES --- */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .section-padding { padding: 80px 0; }
+
+        .btn {
+            display: inline-block;
+            padding: 15px 35px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-family: 'Quicksand', sans-serif;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .btn-primary {
+            background-color: var(--accent);
+            color: var(--white);
+        }
+        .btn-primary:hover {
+            background-color: #c9654a;
+            transform: translateY(-2px);
+        }
+
+        .text-center { text-align: center; }
+
+        /* --- NAVIGATION --- */
+        nav {
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.05);
+        }
+
+        .nav-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 80px;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            font-family: 'Quicksand', sans-serif;
+        }
+
+        .nav-links { display: flex; gap: 30px; }
+        .nav-links a { color: var(--text-dark); font-weight: 600; font-size: 0.95rem; }
+        .nav-links a:hover { color: var(--accent); }
+        .nav-cta {
+            background: var(--primary);
+            color: white !important;
+            padding: 10px 25px;
+            border-radius: 30px;
+        }
+
+        .mobile-toggle { display: none; font-size: 1.5rem; color: var(--primary); }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            padding-top: 140px;
+            padding-bottom: 100px;
+            background: linear-gradient(135deg, #FDFBF7 50%, #EAF4F4 50%);
+            min-height: 90vh;
+            display: flex;
+            align-items: center;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+
+        .hero-text h1 {
+            font-size: 3.5rem;
+            line-height: 1.2;
+            margin-bottom: 20px;
+            color: var(--text-dark);
+        }
+
+        .hero-text span { color: var(--primary); }
+        
+        .hero-text p {
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 30px;
+            max-width: 500px;
+        }
+
+        .hero-image-wrapper {
+            position: relative;
+        }
+
+        .hero-img {
+            border-radius: 30px 30px 5px 30px;
+            box-shadow: var(--shadow);
+            height: 500px;
+            width: 100%;
+            /* Placeholder Background if image missing */
+            background-color: #ddd; 
+        }
+
+        /* --- ABOUT SECTION --- */
+        .about { background-color: var(--white); }
+        
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .about-img {
+            height: 450px;
+            border-radius: 5px 30px 30px 30px;
+            object-fit: cover;
+        }
+
+        .about-content h2 { font-size: 2.5rem; margin-bottom: 20px; }
+        .about-content p { margin-bottom: 15px; color: #555; }
+        
+        .credentials {
+            display: flex;
+            gap: 20px;
+            margin-top: 30px;
+        }
+        .cred-item {
+            background: var(--secondary);
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-weight: 600;
+            color: var(--primary);
+            font-size: 0.9rem;
+        }
+
+        /* --- SERVICES --- */
+        .services { background-color: var(--secondary); }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .section-header h2 { font-size: 2.5rem; margin-bottom: 15px; }
+
+        .service-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+
+        .service-card {
+            background: var(--white);
+            padding: 40px 30px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            transition: 0.3s;
+            text-align: center;
+        }
+
+        .service-card:hover { transform: translateY(-10px); }
+
+        .icon-box {
+            width: 70px;
+            height: 70px;
+            background: #FDFBF7;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            color: var(--primary);
+            font-size: 1.8rem;
+        }
+
+        .service-card h3 { font-size: 1.3rem; margin-bottom: 15px; color: var(--text-dark); }
+        .service-card p { font-size: 0.95rem; color: #666; }
+
+        /* --- CONTACT SECTION --- */
+        .contact { background-color: var(--white); }
+
+        .contact-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+            background: var(--primary);
+            border-radius: 30px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        .contact-info {
+            padding: 60px;
+            color: var(--white);
+        }
+
+        .contact-info h2 { color: var(--white); margin-bottom: 20px; }
+        .contact-info p { margin-bottom: 30px; opacity: 0.9; }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+        .info-item i { color: #A8D5BA; }
+
+        .contact-form-wrapper {
+            background: var(--white);
+            padding: 60px;
+        }
+
+        .form-group { margin-bottom: 20px; }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--text-dark);
+        }
+
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-family: 'Open Sans', sans-serif;
+            transition: 0.3s;
+        }
+
+        .form-group input:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            background-color: #2D3142;
+            color: #aaa;
+            padding: 40px 0;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 968px) {
+            .hero-grid, .about-grid, .contact-container, .service-grid {
+                grid-template-columns: 1fr;
+            }
+            .hero { padding-top: 120px; background: #FDFBF7; }
+            .hero-img { height: 350px; margin-top: 30px; }
+            .hero-text h1 { font-size: 2.5rem; }
+            .contact-info, .contact-form-wrapper { padding: 40px 20px; }
+            
+            /* Mobile Nav */
+            .mobile-toggle { display: block; cursor: pointer; }
+            .nav-links {
+                position: absolute;
+                top: 80px;
+                left: 0;
+                width: 100%;
+                background: white;
+                flex-direction: column;
+                align-items: center;
+                padding: 30px 0;
+                gap: 20px;
+                box-shadow: 0 10px 10px rgba(0,0,0,0.05);
+                display: none;
+            }
+            .nav-links.active { display: flex; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="container nav-inner">
+            <div class="logo">TherapyName.</div>
+            
+            <div class="mobile-toggle" onclick="toggleMenu()">
+                <i class="fas fa-bars"></i>
+            </div>
+
+            <div class="nav-links" id="navLinks">
+                <a href="#about" onclick="toggleMenu()">About</a>
+                <a href="#services" onclick="toggleMenu()">Services</a>
+                <a href="#approach" onclick="toggleMenu()">Approach</a>
+                <a href="#contact" class="nav-cta" onclick="toggleMenu()">Contact Us</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero">
+        <div class="container">
+            <div class="hero-grid">
+                <div class="hero-text">
+                    <h1>Helping your child find their <span>voice</span> & confidence.</h1>
+                    <p>Professional, warm, and family-centered Speech & Language Therapy tailored to your child's unique needs.</p>
+                    <a href="#contact" class="btn btn-primary">Book a Consultation</a>
+                </div>
+                <div class="hero-image-wrapper">
+                    <!-- PLACEHOLDER FOR: WhatsApp Image 2026-02-17 at 17.21.42.jpeg (A clear, happy shot of a child or you with a child) -->
+                    <img src="https://images.unsplash.com/photo-1544717305-2782549b5136?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Child learning" class="hero-img">
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- About Section -->
+    <section id="about" class="section-padding about">
+        <div class="container">
+            <div class="about-grid">
+                <div class="about-image-wrapper">
+                    <!-- PLACEHOLDER FOR: WhatsApp Image 2026-02-17 at 17.21.42-2.jpeg (Your Professional Portrait) -->
+                    <img src="https://images.unsplash.com/photo-1551836022-d5d88e9218df?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Speech Therapist" class="about-img">
+                </div>
+                <div class="about-content">
+                    <h4>Hello, I'm [Your Name]</h4>
+                    <h2>Empowering Communication, Connecting Families</h2>
+                    <p>I believe that every child deserves to be heard. My practice is built on the foundation that therapy should be engaging, effective, and embedded in the child's daily life.</p>
+                    <p>With [Number] years of experience, I work closely with parents to create a supportive environment where communication skills can flourish naturally.</p>
+                    
+                    <div class="credentials">
+                        <div class="cred-item">HCPC Registered</div>
+                        <div class="cred-item">RCSLT Member</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="section-padding services">
+        <div class="container">
+            <div class="section-header">
+                <h2>How I Can Help</h2>
+                <p>Bespoke therapy plans designed around your child's strengths and interests.</p>
+            </div>
+
+            <div class="service-grid">
+                <!-- Service 1 -->
+                <div class="service-card">
+                    <div class="icon-box"><i class="fas fa-comments"></i></div>
+                    <h3>Early Language</h3>
+                    <p>Supporting late talkers and building early interaction skills through play-based therapy.</p>
+                </div>
+
+                <!-- Service 2 -->
+                <div class="service-card">
+                    <div class="icon-box"><i class="fas fa-shapes"></i></div>
+                    <h3>Speech Sounds</h3>
+                    <p>Helping children who struggle to pronounce words clearly to become confident speakers.</p>
+                </div>
+
+                <!-- Service 3 -->
+                <div class="service-card">
+                    <div class="icon-box"><i class="fas fa-users"></i></div>
+                    <h3>Social Communication</h3>
+                    <p>Developing the skills needed to interact, make friends, and understand the social world.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Visual Breaker / Approach -->
+    <section id="approach" class="section-padding">
+        <div class="container">
+            <div class="hero-grid">
+                <div class="about-content">
+                    <h2>A Family-Centred Approach</h2>
+                    <p>Therapy doesn't just happen in the clinic. I empower you with the strategies and confidence to support your child's communication at home, at school, and at play.</p>
+                    <ul style="list-style: none; margin-top: 20px;">
+                        <li style="margin-bottom: 10px;"><i class="fas fa-check-circle" style="color: var(--primary); margin-right: 10px;"></i> Evidence-based techniques</li>
+                        <li style="margin-bottom: 10px;"><i class="fas fa-check-circle" style="color: var(--primary); margin-right: 10px;"></i> Fun, game-based learning</li>
+                        <li style="margin-bottom: 10px;"><i class="fas fa-check-circle" style="color: var(--primary); margin-right: 10px;"></i> Collaboration with schools</li>
+                    </ul>
+                </div>
+                <div>
+                     <!-- PLACEHOLDER FOR: WhatsApp Image 2026-02-17 at 17.21.42-4.jpeg (Action shot of therapy or materials) -->
+                    <img src="https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Therapy toys and learning" style="border-radius: 20px; height: 400px; object-fit: cover;">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="section-padding contact">
+        <div class="container">
+            <div class="contact-container">
+                <div class="contact-info">
+                    <h2>Let's Connect</h2>
+                    <p>I offer a free initial 15-minute phone consultation to discuss your concerns and see if I am the right fit for your family.</p>
+                    
+                    <div class="info-item">
+                        <i class="fas fa-phone-alt"></i>
+                        <span>07123 456 789</span>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-envelope"></i>
+                        <span>hello@therapyname.co.uk</span>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Based in [Your City/Area]</span>
+                    </div>
+                </div>
+
+                <div class="contact-form-wrapper">
+                    <form>
+                        <div class="form-group">
+                            <label>Your Name</label>
+                            <input type="text" placeholder="Parent/Guardian Name">
+                        </div>
+                        <div class="form-group">
+                            <label>Email Address</label>
+                            <input type="email" placeholder="name@example.com">
+                        </div>
+                        <div class="form-group">
+                            <label>Phone Number</label>
+                            <input type="tel" placeholder="07...">
+                        </div>
+                        <div class="form-group">
+                            <label>How can I help?</label>
+                            <textarea rows="4" placeholder="Briefly describe your concerns..."></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 [Your Business Name] Speech Therapy. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        function toggleMenu() {
+            const navLinks = document.getElementById('navLinks');
+            navLinks.classList.toggle('active');
+        }
+    </script>
+</body>
+</html>
