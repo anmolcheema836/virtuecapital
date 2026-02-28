@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hair by Megan Essig | Orlando Salon</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <style>
+        /* CSS Variables */
+        :root {
+            --bg-color: #f9f8f6;
+            --text-color: #1a1a1a;
+            --text-light: #555555;
+            --accent-color: #c4a47c;
+            --font-primary: 'Cormorant Garamond', serif;
+            --font-secondary: 'Inter', sans-serif;
+            --transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* Reset & Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-secondary);
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: var(--font-primary);
+            font-weight: 400;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: var(--transition);
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* Reusable Components */
+        .container {
+            width: 90%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-padding {
+            padding: 120px 0;
+        }
+
+        .section-title {
+            font-size: 3.5rem;
+            margin-bottom: 2rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-align: center;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            background-color: var(--text-color);
+            color: var(--bg-color);
+            font-family: var(--font-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.85rem;
+            border: 1px solid var(--text-color);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn:hover {
+            background-color: transparent;
+            color: var(--text-color);
+        }
+
+        /* Scroll Animation Classes */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: 1s all cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1.5rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            background: rgba(249, 248, 246, 0.95);
+            backdrop-filter: blur(10px);
+            transition: var(--transition);
+        }
+
+        .logo {
+            font-family: var(--font-primary);
+            font-size: 1.8rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 500;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-color);
+        }
+
+        .hamburger {
+            display: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            padding-top: 80px;
+        }
+
+        .hero-content h1 {
+            font-size: 6vw;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            letter-spacing: 2px;
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            color: var(--text-light);
+            margin-bottom: 2.5rem;
+            font-family: var(--font-primary);
+            font-style: italic;
+        }
+
+        /* About Section */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .about-image {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .about-image img {
+            width: 100%;
+            height: 800px;
+            object-fit: cover;
+            transition: transform 1.5s ease;
+        }
+
+        .about-image:hover img {
+            transform: scale(1.05);
+        }
+
+        .about-text h2 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .about-text .quote {
+            font-family: var(--font-primary);
+            font-size: 1.8rem;
+            font-style: italic;
+            margin-bottom: 2rem;
+            color: var(--accent-color);
+            line-height: 1.4;
+            border-left: 2px solid var(--accent-color);
+            padding-left: 1.5rem;
+        }
+
+        .about-text p {
+            margin-bottom: 1.5rem;
+            color: var(--text-light);
+            font-size: 1.05rem;
+        }
+
+        /* Pricing & Services Section */
+        .services-pricing {
+            background-color: #1a1a1a;
+            color: var(--bg-color);
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+        }
+
+        .price-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+            padding-bottom: 0.5rem;
+        }
+
+        .price-item h4 {
+            font-family: var(--font-secondary);
+            font-size: 1.1rem;
+            font-weight: 300;
+            text-transform: uppercase;
+        }
+
+        .price-item span {
+            font-family: var(--font-primary);
+            font-size: 1.2rem;
+            color: var(--accent-color);
+        }
+
+        .services-list ul {
+            list-style: none;
+            margin-top: 2rem;
+        }
+
+        .services-list li {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            font-family: var(--font-primary);
+            letter-spacing: 1px;
+            padding-left: 1rem;
+            position: relative;
+        }
+        
+        .services-list li::before {
+            content: '—';
+            position: absolute;
+            left: -10px;
+            color: var(--accent-color);
+        }
+
+        .deposit-box {
+            background: rgba(255,255,255,0.05);
+            padding: 2rem;
+            margin-top: 3rem;
+            border-left: 3px solid var(--accent-color);
+        }
+
+        .deposit-box p {
+            font-size: 0.95rem;
+            color: #ddd;
+            margin-bottom: 1rem;
+        }
+
+        /* Gallery Section */
+        .gallery-masonry {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            grid-auto-rows: 10px; /* For Masonry JS calculation */
+            gap: 20px;
+        }
+
+        .gallery-item {
+            overflow: hidden;
+            position: relative;
+            grid-row-end: span 30; /* Default fallback */
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.8s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.08);
+        }
+        
+        /* Hardcoded grid spans for CSS masonry feel without heavy JS */
+        .gallery-item:nth-child(1) { grid-row-end: span 40; }
+        .gallery-item:nth-child(2) { grid-row-end: span 55; }
+        .gallery-item:nth-child(3) { grid-row-end: span 45; }
+        .gallery-item:nth-child(4) { grid-row-end: span 35; }
+        .gallery-item:nth-child(5) { grid-row-end: span 60; }
+        .gallery-item:nth-child(6) { grid-row-end: span 40; }
+        .gallery-item:nth-child(7) { grid-row-end: span 50; }
+
+
+        /* Booking & Contact Section */
+        .booking-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+        }
+
+        .booking-widget iframe {
+            width: 100%;
+            height: 600px;
+            border: none;
+            background: #fff;
+            border-radius: 4px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+
+        .contact-info h3 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .contact-info p {
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+        
+        .contact-info a {
+            color: var(--accent-color);
+        }
+
+        .social-links {
+            margin-top: 2rem;
+        }
+
+        .social-links a {
+            display: inline-block;
+            margin-right: 1.5rem;
+            font-size: 1.2rem;
+            font-family: var(--font-primary);
+            text-transform: uppercase;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 3rem 0;
+            background: #1a1a1a;
+            color: #fff;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .about-grid, .services-grid, .booking-section {
+                grid-template-columns: 1fr;
+            }
+            .about-image img {
+                height: 500px;
+            }
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: var(--bg-color);
+                padding: 2rem 0;
+                text-align: center;
+                box-shadow: 0 10px 10px rgba(0,0,0,0.05);
+            }
+            .nav-links.active {
+                display: flex;
+            }
+            .hamburger {
+                display: block;
+            }
+            .hero-content h1 {
+                font-size: 12vw;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="logo">Hair By Megan Essig</div>
+        <ul class="nav-links">
+            <li><a href="#about">About</a></li>
+            <li><a href="#services">Services & Pricing</a></li>
+            <li><a href="#gallery">Editorial & Work</a></li>
+            <li><a href="#booking">Book Appointment</a></li>
+        </ul>
+        <div class="hamburger">☰</div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container hero-content reveal">
+            <h1>Hair by<br>Megan Essig</h1>
+            <p>Behind the Chair • Beauty • Editorial • Extensions</p>
+            <a href="#booking" class="btn">Book Now</a>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="section-padding">
+        <div class="container about-grid">
+            <div class="about-image reveal">
+                <!-- Using the provided Megan profile pic URL -->
+                <img src="https://format.creatorcdn.com/08d38967-838e-426a-83b0-f31b16b453ac/0/0/0/0,0,954,954,760,760,1/0-0-0/aa6c1b78-121a-4ca5-aae2-81b284eb544a/1/2/303274163_10220893767269615_8303051537370803720_n.jpg?fjkss=exp=2087753817~hmac=65585af73b10f06763d483f51a769890482c034e468f8185212c204ba1cbb0b0" alt="Megan Essig">
+            </div>
+            <div class="about-text reveal">
+                <div class="quote">
+                    "Beauty; is not only seen by the naked eye it is also felt within us, when we feel beautiful we see the world in a different way."
+                </div>
+                <p><strong>- Megan Essig</strong></p>
+                <br>
+                <p>In Megan's 16 years of enhancing beauty in others she has had the pleasure of working with various models and actors on set and clients behind the chair in Hollywood, CA, Auckland, New Zealand, Salt Lake City, UT & now Orlando, FL.</p>
+                <p>Allow her experience and talent to transform your life. Makeover, haircuts, hair color, photo shoots or any special event—look no further for your hair needs!</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services & Pricing Section -->
+    <section id="services" class="section-padding services-pricing">
+        <div class="container">
+            <h2 class="section-title reveal" style="color: var(--bg-color);">Services & Pricing</h2>
+            
+            <div class="services-grid">
+                <div class="pricing-list reveal">
+                    <h3>Haircuts & Styling</h3>
+                    <br>
+                    <div class="price-item">
+                        <h4>Women's Haircut</h4>
+                        <span>$95</span>
+                    </div>
+                    <div class="price-item">
+                        <h4>Long Cut</h4>
+                        <span>$135</span>
+                    </div>
+                    <div class="price-item">
+                        <h4>Men's Haircut</h4>
+                        <span>$50</span>
+                    </div>
+                    <div class="price-item">
+                        <h4>Boys Cut</h4>
+                        <span>$35</span>
+                    </div>
+                    <div class="price-item">
+                        <h4>Girls Cut</h4>
+                        <span>$35</span>
+                    </div>
+                    <div class="price-item">
+                        <h4>Blowdry</h4>
+                        <span>$75</span>
+                    </div>
+                    <div class="price-item">
+                        <h4>Brazilian Blowout</h4>
+                        <span>$295+ <span style="font-size:0.7rem; color:#aaa; font-family:var(--font-secondary); text-transform:lowercase;">(varies based on length/density)</span></span>
+                    </div>
+                </div>
+
+                <div class="services-list reveal">
+                    <h3>Specialties</h3>
+                    <ul>
+                        <li>Balayage</li>
+                        <li>Hair Color</li>
+                        <li>Hairstyles / Haircuts</li>
+                        <li>Extensions</li>
+                        <li>Commercial & Editorial Styling</li>
+                    </ul>
+
+                    <div class="deposit-box">
+                        <h4 style="color: var(--accent-color); font-family: var(--font-primary); font-size: 1.5rem; margin-bottom: 10px;">Consultation & Deposits</h4>
+                        <p>For all new clients inquiring about pricing for color & extensions:</p>
+                        <p>Since each and every client has specific needs and hair types, I require a <strong>$50 non-refundable deposit</strong> for an in-person or virtual consultation in order to book an appointment.</p>
+                        <p><em>All deposits made VIA Zelle or Venmo. Please note in your booking if you'd like a virtual consultation.</em></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="gallery" class="section-padding">
+        <div class="container">
+            <h2 class="section-title reveal">Past Work & Editorial</h2>
+            <div class="gallery-masonry reveal">
+                <!-- Using all provided gallery images -->
+                <div class="gallery-item"><img src="https://format.creatorcdn.com/08d38967-838e-426a-83b0-f31b16b453ac/0/0/0/0,0,1080,1349,550,1349/0-0-0/22c10813-7d5e-41b4-b71e-51fb2defdb85/1/1/smile.jpg?fjkss=exp=2087752390~hmac=c990436d73bfdcffdffadb256353378a0bf951b54ebdfa524b4bcf7a6f5a207c&550" alt="Client Smile"></div>
+                
+                <div class="gallery-item"><img src="https://format.creatorcdn.com/08d38967-838e-426a-83b0-f31b16b453ac/0/0/0/0,0,2576,3435,550,3435/0-0-0/1f09e9c3-866c-4fd1-9b38-b3e719a61a70/1/1/kristi.jpg?fjkss=exp=2087752390~hmac=3d01779b966b5d745d7f71bc91eb9f5601b3cfd588b9803d5ce0e30f89dd527f&550" alt="Client Kristi"></div>
+                
+                <div class="gallery-item"><img src="https://format.creatorcdn.com/08d38967-838e-426a-83b0-f31b16b453ac/0/0/0/0,0,2576,3435,550,3435/0-0-0/ca505163-afb3-4809-9488-bbf18bb0cd39/1/1/IMG_3851.jpg?fjkss=exp=2087752390~hmac=3d01779b966b5d745d7f71bc91eb9f5601b3cfd588b9803d5ce0e30f89dd527f&550" alt="Client Work"></div>
+                
+                <div class="gallery-item"><img src="https://format.creatorcdn.com/08d38967-838e-426a-83b0-f31b16b453ac/0/0/0/0,0,720,960,550,960/0-0-0/6b2bbe43-3cf4-46c9-b014-f06d2a97a71e/1/1/o-3.jpg?fjkss=exp=2087752390~hmac=c21615413d7eb0b866f7f98a422d4943bf4b3217b4954d29e7f841d57bc91230&550" alt="Hair Style"></div>
+                
+                <div class="gallery-item"><img src="https://format.creatorcdn.com/08d38967-838e-426a-83b0-f31b16b453ac/0/0/0/0,0,1440,1440,550,1440/0-0-0/20e24f4b-8c17-4ec8-bc6b-2bcebe86403e/1/1/73475256_1544563609019989_7202031513913786368_o.jpg?fjkss=exp=2087752390~hmac=c1d2be3ba57fc8fb79a4759f12dbeb651082495558083a98e3d2be7003567601&550" alt="Editorial Style"></div>
+                
+                <div class="gallery-item"><img src="https://format.creatorcdn.com/08d38967-838e-426a-83b0-f31b16b453ac/0/0/0/0,0,720,960,550,960/0-0-0/84079e1e-dc00-4c66-a5cf-a620c4329e1b/1/1/22.jpg?fjkss=exp=2087752390~hmac=c21615413d7eb0b866f7f98a422d4943bf4b3217b4954d29e7f841d57bc91230&550" alt="Hair Model"></div>
+                
+                <div class="gallery-item"><img src="https://format.creatorcdn.com/08d38967-838e-426a-83b0-f31b16b453ac/0/0/0/0,0,937,1171,550,1171/0-0-0/7f3fd310-6abb-42a5-9a30-a73dd1651283/1/1/22218287_10210302691819348_8634847944704312406_o.jpg?fjkss=exp=2087752390~hmac=daadde7f15860a1d92a1a991a673383184061b1410ec5c01714392251421878e&550" alt="Color Work"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Booking & Contact Section -->
+    <section id="booking" class="section-padding" style="background-color: #fff;">
+        <div class="container booking-section">
+            <div class="contact-info reveal">
+                <h3>Let's Connect</h3>
+                <p>Megan is available for your hair needs. Use the scheduler to reserve your spot, inquire about rates, or just say hi.</p>
+                <br>
+                <p><strong>Address:</strong><br>1235 N. Orange Ave. St 201<br>Orlando, FL 32804</p>
+                <p><strong>Phone:</strong><br><a href="tel:4079271927">407-927-1927</a></p>
+                <p><strong>Email:</strong><br><a href="mailto:meganessig1@gmail.com">meganessig1@gmail.com</a></p>
+                
+                <div class="social-links">
+                    <a href="https://instagram.com/meganessighair" target="_blank">Instagram: @meganessighair</a>
+                </div>
+                
+                <br><br>
+                <!-- Fallback button in case iframe gets blocked by mobile browsers -->
+                <a href="https://squareup.com/appointments/book/d0hzz9z30pa4vx/NHDCG02P47FKX/start" target="_blank" class="btn">Open Scheduler in New Tab</a>
+            </div>
+
+            <!-- Embedded Square Booking Scheduler -->
+            <div class="booking-widget reveal">
+                <iframe src="https://squareup.com/appointments/book/d0hzz9z30pa4vx/NHDCG02P47FKX/start" title="Book Appointment with Megan Essig"></iframe>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Hair by Megan Essig. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript for Interactions -->
+    <script>
+        // Mobile Menu Toggle
+        const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+
+        hamburger.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+
+        // Close menu when a link is clicked
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+            });
+        });
+
+        // Scroll Reveal Animation Observer (The "Awwwards" smooth fade-up feel)
+        const revealElements = document.querySelectorAll('.reveal');
+
+        const revealOptions = {
+            threshold: 0.15,
+            rootMargin: "0px 0px -50px 0px"
+        };
+
+        const revealOnScroll = new IntersectionObserver(function(entries, observer) {
+            entries.forEach(entry => {
+                if (!entry.isIntersecting) {
+                    return;
+                } else {
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target); // Stop observing once it's revealed
+                }
+            });
+        }, revealOptions);
+
+        revealElements.forEach(el => {
+            revealOnScroll.observe(el);
+        });
+    </script>
+</body>
+</html>
