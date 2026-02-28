@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reliance Care Solutions | Premier In-Home & Community Care in Northwest Ohio</title>
+    <meta name="description" content="Reliance Care Solutions provides empowering youth programs, adult day services, emergency respite, and comprehensive community-based care in Northwest Ohio.">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Syne:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        /* ==========================================================================
+           CSS VARIABLES (Update these hex codes to match your exact brand guidelines)
+           ========================================================================== */
+        :root {
+            --primary: #1A365D;    /* Deep Brand Blue */
+            --secondary: #007A8A;  /* Brand Teal */
+            --accent: #F4A261;     /* Warm Accent / Orange */
+            --bg-light: #F8FAFC;
+            --bg-white: #FFFFFF;
+            --text-dark: #0F172A;
+            --text-muted: #64748B;
+            --border-color: #E2E8F0;
+            
+            --font-heading: 'Syne', sans-serif;
+            --font-body: 'Plus Jakarta Sans', sans-serif;
+            
+            --transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        /* ==========================================================================
+           RESET & BASE
+           ========================================================================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+
+        body {
+            font-family: var(--font-body);
+            color: var(--text-dark);
+            background-color: var(--bg-light);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: var(--font-heading);
+            font-weight: 700;
+            line-height: 1.1;
+            color: var(--primary);
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        img {
+            max-width: 100%;
+            display: block;
+        }
+
+        /* ==========================================================================
+           TYPOGRAPHY & UTILITIES
+           ========================================================================== */
+        .container {
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .section-padding {
+            padding: 8rem 0;
+        }
+
+        .text-center { text-align: center; }
+        
+        .badge {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: rgba(0, 122, 138, 0.1);
+            color: var(--secondary);
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: var(--transition);
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--secondary);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 122, 138, 0.2);
+        }
+
+        .btn-secondary {
+            background-color: white;
+            color: var(--primary);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--accent);
+            color: white;
+            transform: translateY(-3px);
+        }
+
+        /* Scroll Animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .delay-1 { transition-delay: 0.1s; }
+        .delay-2 { transition-delay: 0.2s; }
+        .delay-3 { transition-delay: 0.3s; }
+
+        /* ==========================================================================
+           NAVIGATION
+           ========================================================================== */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 1rem 0;
+            z-index: 1000;
+            transition: var(--transition);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        nav.scrolled {
+            padding: 0.5rem 0;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+        }
+
+        .nav-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 60px;
+            width: auto;
+            transition: var(--transition);
+        }
+
+        nav.scrolled .logo img {
+            height: 50px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            font-weight: 500;
+            position: relative;
+            color: var(--primary);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: var(--secondary);
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--primary);
+        }
+
+        /* ==========================================================================
+           HERO SECTION
+           ========================================================================== */
+        .hero {
+            position: relative;
+            height: 100vh;
+            min-height: 800px;
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+            background-color: var(--primary);
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://images.squarespace-cdn.com/content/v1/66c7cd4d5f5e5f64e0cb3a59/185e7929-15ea-4382-b6be-5e474247b54e/Reliance+Care+Solutions.jpg?format=2500w');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.4;
+            transform: scale(1.05);
+            animation: kenburns 20s infinite alternate;
+        }
+
+        @keyframes kenburns {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.1); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            max-width: 800px;
+            color: white;
+        }
+
+        .hero h1 {
+            color: white;
+            font-size: clamp(3rem, 5vw, 5rem);
+            margin-bottom: 1.5rem;
+            line-height: 1.05;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            margin-bottom: 2.5rem;
+            opacity: 0.9;
+            max-width: 600px;
+        }
+
+        .hero-btns {
+            display: flex;
+            gap: 1rem;
+        }
+
+        /* ==========================================================================
+           ABOUT / INTRO
+           ========================================================================== */
+        .intro-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .intro-img {
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        .intro-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.8s ease;
+        }
+
+        .intro-img:hover img {
+            transform: scale(1.05);
+        }
+
+        .intro-text h2 {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .intro-text p {
+            font-size: 1.125rem;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+        }
+
+        /* ==========================================================================
+           YOUTH & CHILDREN SERVICES (Huck House vibe - Distinct & Vibrant)
+           ========================================================================== */
+        .youth-section {
+            background-color: var(--secondary);
+            color: white;
+            border-radius: 40px;
+            margin: 0 2rem;
+            padding: 6rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .youth-section h2 {
+            color: white;
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .youth-section .badge {
+            background: rgba(255,255,255,0.2);
+            color: white;
+        }
+
+        .youth-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+
+        .youth-card {
+            background: white;
+            color: var(--text-dark);
+            padding: 3rem 2rem;
+            border-radius: 24px;
+            transition: var(--transition);
+        }
+
+        .youth-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+
+        .youth-card h3 {
+            color: var(--primary);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .youth-card p {
+            color: var(--text-muted);
+            font-size: 1rem;
+        }
+
+        /* ==========================================================================
+           BENTO GRID SERVICES (Adults & Community)
+           ========================================================================== */
+        .services-header {
+            margin-bottom: 4rem;
+        }
+
+        .services-header h2 {
+            font-size: 3rem;
+        }
+
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-auto-rows: minmax(300px, auto);
+            gap: 1.5rem;
+        }
+
+        .bento-item {
+            background: var(--bg-white);
+            border-radius: 24px;
+            padding: 2.5rem;
+            border: 1px solid var(--border-color);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .bento-item:hover {
+            box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+            border-color: var(--secondary);
+            transform: translateY(-5px);
+        }
+
+        .bento-item h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            z-index: 2;
+        }
+
+        .bento-item p {
+            color: var(--text-muted);
+            z-index: 2;
+        }
+
+        /* Spans for Bento Layout */
+        .bento-large {
+            grid-column: span 2;
+            grid-row: span 2;
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .bento-large h3 {
+            color: white;
+            font-size: 2.5rem;
+        }
+        
+        .bento-large p { color: rgba(255,255,255,0.8); font-size: 1.125rem;}
+
+        .bento-wide { grid-column: span 2; }
+        
+        /* Image Backgrounds for Specific Bento Items */
+        .bento-img-1, .bento-img-2 {
+            padding: 0;
+        }
+        
+        .bento-img-1 img, .bento-img-2 img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.8s;
+        }
+
+        .bento-item:hover img {
+            transform: scale(1.05);
+        }
+
+        /* ==========================================================================
+           SPECIALTY PROGRAMS
+           ========================================================================== */
+        .specialty-section {
+            background-color: var(--primary);
+            color: white;
+            padding: 8rem 0;
+        }
+        
+        .specialty-section h2 { color: white; font-size: 3rem; margin-bottom: 3rem;}
+
+        .specialty-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .special-card {
+            border-left: 2px solid var(--secondary);
+            padding-left: 1.5rem;
+        }
+
+        .special-card h4 {
+            color: white;
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+        }
+
+        .special-card p {
+            color: rgba(255,255,255,0.7);
+        }
+
+        /* ==========================================================================
+           FOOTER
+           ========================================================================== */
+        footer {
+            background-color: #0F172A;
+            color: white;
+            padding: 6rem 0 2rem;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 4rem;
+            margin-bottom: 4rem;
+        }
+
+        .footer-logo {
+            max-width: 250px;
+            margin-bottom: 1.5rem;
+            background: white;
+            padding: 1rem;
+            border-radius: 12px;
+        }
+
+        .footer-col h5 {
+            color: white;
+            font-size: 1.25rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-links a {
+            color: var(--text-muted);
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+            color: var(--secondary);
+            padding-left: 5px;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 2rem;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.875rem;
+        }
+
+        /* ==========================================================================
+           RESPONSIVE DESIGN
+           ========================================================================== */
+        @media (max-width: 1024px) {
+            .bento-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .intro-grid {
+                grid-template-columns: 1fr;
+            }
+            .youth-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: white;
+                flex-direction: column;
+                padding: 2rem;
+                box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .hero h1 { font-size: 2.5rem; }
+            .hero-btns { flex-direction: column; }
+            
+            .youth-section {
+                margin: 0;
+                border-radius: 0;
+                padding: 4rem 1.5rem;
+            }
+
+            .youth-grid, .specialty-grid, .footer-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .bento-grid {
+                grid-template-columns: 1fr;
+            }
+            .bento-large, .bento-wide {
+                grid-column: span 1;
+                grid-row: span 1;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVIGATION -->
+    <nav id="navbar">
+        <div class="container nav-wrapper">
+            <a href="#" class="logo">
+                <!-- Using fixed URL provided for the logo -->
+                <img src="https://images.squarespace-cdn.com/content/v1/66c7cd4d5f5e5f64e0cb3a59/409f08f9-744b-40e4-bff0-e00f0e11735e/Reliance+Care+Solutions+Logo.png?format=1500w" alt="Reliance Care Solutions Logo">
+            </a>
+            <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+            <div class="nav-links" id="navLinks">
+                <a href="#home">Home</a>
+                <a href="#about">About Us</a>
+                <a href="#youth">Youth Programs</a>
+                <a href="#adult-services">Adult Services</a>
+                <a href="#specialty">Specialty Care</a>
+                <a href="#contact" class="btn btn-primary" style="color: white; margin-left: 1rem;">Get Support</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <header id="home" class="hero">
+        <div class="hero-bg"></div>
+        <div class="container">
+            <div class="hero-content reveal">
+                <span class="badge" style="background: rgba(255,255,255,0.2); color: white;">Northwest Ohio's Premier Care</span>
+                <h1>Compassionate Care for Every Stage of Life.</h1>
+                <p>Empowering youth and adults with comprehensive, personalized in-home support, developmental programs, and community-based services.</p>
+                <div class="hero-btns">
+                    <a href="#adult-services" class="btn btn-primary">Explore Services</a>
+                    <a href="#youth" class="btn btn-secondary">Emergency Placement</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ABOUT SECTION -->
+    <section id="about" class="section-padding">
+        <div class="container intro-grid">
+            <div class="intro-text reveal">
+                <span class="badge">Who We Are</span>
+                <h2>Dedicated to Enhancing Independence & Well-being.</h2>
+                <p>At Reliance Care Solutions, we believe that everyone deserves the highest quality of care in a safe, nurturing environment. Whether you are seeking temporary relief through our respite programs or comprehensive developmental support, our highly trained direct care workers are here.</p>
+                <p>We've expanded our capabilities to provide specialized youth interventions, adult vocational rehabilitation, and immediate on-call medical assistance to families throughout Northwest Ohio.</p>
+                <br>
+                <a href="#contact" class="btn btn-primary">Speak with a Care Specialist</a>
+            </div>
+            <div class="intro-img reveal delay-1">
+                <img src="https://images.squarespace-cdn.com/content/v1/66c7cd4d5f5e5f64e0cb3a59/b167d677-8cb4-4800-ab62-db25e4f045dc/the+best+in+home+care+services+in+northwest+ohio+with+reliance+care+solutions?format=2500w" alt="Professional in-home care services in Northwest Ohio">
+            </div>
+        </div>
+    </section>
+
+    <!-- YOUTH & CHILDREN SECTION (NEW FOCUS) -->
+    <section id="youth" class="youth-section">
+        <div class="container">
+            <div class="text-center reveal">
+                <span class="badge">New Programs</span>
+                <h2>Youth & Children Services</h2>
+                <p style="font-size: 1.25rem; max-width: 700px; margin: 0 auto; opacity: 0.9;">
+                    Targeted interventions, structured environments, and certified assessments ensuring every child's unique needs are met with empathy and expertise.
+                </p>
+            </div>
+            
+            <div class="youth-grid">
+                <div class="youth-card reveal delay-1">
+                    <h3>Certified CANS Assessments</h3>
+                    <p>We conduct certified assessments for children using the Child and Adolescent Needs and Strengths (CANS) tool. This clinical process ensures that each child's unique emotional and behavioral needs are accurately identified and addressed promptly.</p>
+                </div>
+                <div class="youth-card reveal delay-2">
+                    <h3>Group Home Services</h3>
+                    <p>Offering a safe, supportive living environment for youth. Our group homes focus heavily on individual needs, personal growth, life skills development, and overall well-being within a highly structured and caring setting.</p>
+                </div>
+                <div class="youth-card reveal delay-3">
+                    <h3>Emergency Respite Placement</h3>
+                    <p>Providing critical, immediate respite placement for children facing crises. Our rapid-response program guarantees a secure, nurturing environment to stabilize situations and offer immediate support when families need it most.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ADULT & COMMUNITY SERVICES (BENTO GRID) -->
+    <section id="adult-services" class="section-padding">
+        <div class="container">
+            <div class="services-header reveal">
+                <span class="badge">Comprehensive Care</span>
+                <h2>Adult & Community Services</h2>
+            </div>
+
+            <div class="bento-grid">
+                
+                <!-- Large Feature Item -->
+                <div class="bento-item bento-large reveal">
+                    <div>
+                        <h3>Adult Day Services <br>(A.M. & P.M.)</h3>
+                        <p>We provide highly structured, engaging adult day services available in both morning and afternoon sessions. Our comprehensive program is intentionally designed to offer social engagement, therapeutic cognitive activities, and a secure environment for adults to thrive.</p>
+                    </div>
+                    <div style="margin-top: 2rem;">
+                        <a href="#contact" class="btn btn-secondary">Enroll Today</a>
+                    </div>
+                </div>
+
+                <!-- Image Item -->
+                <div class="bento-item bento-img-1 bento-wide reveal delay-1">
+                    <img src="https://images.squarespace-cdn.com/content/v1/66c7cd4d5f5e5f64e0cb3a59/8027cebd-881f-41bc-8a21-b17b61342302/in-home+care+for+adults+-+in+home+care+professional+-+direct+care+workers+toledo?format=2500w" alt="In-home care for adults in Toledo">
+                </div>
+
+                <!-- Standard Items -->
+                <div class="bento-item reveal delay-2">
+                    <h3>Respite Services</h3>
+                    <p>Temporary, high-quality relief for primary caregivers. Take a much-needed break knowing your loved ones are receiving exceptional, attentive care.</p>
+                </div>
+
+                <div class="bento-item reveal">
+                    <h3>Vocational Rehabilitation</h3>
+                    <p>Empowering individuals to gain vital skills needed to find and maintain employment. We focus entirely on leveraging personal strengths to achieve career goals.</p>
+                </div>
+
+                <!-- Image Item 2 -->
+                <div class="bento-item bento-img-2 reveal delay-1">
+                    <img src="https://images.squarespace-cdn.com/content/v1/66c7cd4d5f5e5f64e0cb3a59/b1ea37ec-5ba5-45c2-b991-4211c83a3bde/Group+activities+for+those+with+disabilities+in+toledo?format=2500w" alt="Group activities for those with disabilities">
+                </div>
+
+                <div class="bento-item bento-wide reveal delay-2">
+                    <h3>Community Group Activities</h3>
+                    <p>Join us for a diverse range of community activities that actively promote inclusion, socialization, and confidence. Designed to enhance community ties and encourage active, joyful participation among peers.</p>
+                </div>
+
+                <div class="bento-item reveal">
+                    <h3>Non-Medical Transport</h3>
+                    <p>Safe, reliable transportation for appointments, events, and activities. Our trained drivers ensure a comfortable journey and prioritize passenger well-being.</p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- SPECIALTY PROGRAMS -->
+    <section id="specialty" class="specialty-section">
+        <div class="container">
+            <div class="reveal">
+                <span class="badge" style="background: rgba(255,255,255,0.2); color: white;">Advanced Support</span>
+                <h2>Specialized Care & Training</h2>
+            </div>
+            
+            <div class="specialty-grid mt-4">
+                <div class="special-card reveal delay-1">
+                    <h4>Horse & Animal Interactions</h4>
+                    <p>Experience the profound therapeutic benefits of animal interaction. These specialized activities actively promote emotional healing, reduce anxiety, and enhance personal development in a highly safe, supervised, and nurturing environment.</p>
+                </div>
+                
+                <div class="special-card reveal delay-2">
+                    <h4>On-Call Nurse Services</h4>
+                    <p>Immediate, professional medical support whenever required. Our fully trained clinical staff is continuously available to address any medical concerns or emergencies promptly, efficiently, and with the utmost care.</p>
+                </div>
+
+                <div class="special-card reveal delay-3">
+                    <h4>Expert Staff Training (CPI & PFS)</h4>
+                    <p>Safety is paramount. All staff members are rigorously trained in Crisis Prevention Institute (CPI) techniques to safely de-escalate and manage challenging situations. Our team also holds Prevention First (PFS) certifications to deliver immediate, critical care.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-grid">
+                
+                <div class="footer-col">
+                    <img src="https://images.squarespace-cdn.com/content/v1/66c7cd4d5f5e5f64e0cb3a59/409f08f9-744b-40e4-bff0-e00f0e11735e/Reliance+Care+Solutions+Logo.png?format=1500w" alt="Reliance Care Solutions" class="footer-logo">
+                    <p style="color: var(--text-muted); font-size: 0.95rem; margin-top: 1rem;">
+                        Delivering compassionate, professional in-home care, youth interventions, and adult day services across Northwest Ohio.
+                    </p>
+                </div>
+
+                <div class="footer-col">
+                    <h5>Quick Links</h5>
+                    <ul class="footer-links">
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#about">About Us</a></li>
+                        <li><a href="#youth">Youth Programs</a></li>
+                        <li><a href="#adult-services">Adult Services</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h5>Our Services</h5>
+                    <ul class="footer-links">
+                        <li><a href="#adult-services">Adult Day Care</a></li>
+                        <li><a href="#adult-services">Respite Care</a></li>
+                        <li><a href="#youth">CANS Assessments</a></li>
+                        <li><a href="#specialty">On-call Nursing</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h5>Contact Us</h5>
+                    <ul class="footer-links">
+                        <li><a href="#">Northwest Ohio Area</a></li>
+                        <li><a href="mailto:info@reliancecaresolutions.com">info@reliancecaresolutions.com</a></li>
+                        <!-- Add actual phone number here -->
+                        <li><a href="#">1-800-XXX-XXXX</a></li> 
+                    </ul>
+                    <a href="#contact" class="btn btn-primary" style="margin-top: 1rem; width: 100%; text-align: center;">Reach Out</a>
+                </div>
+
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 Reliance Care Solutions. All Rights Reserved. Designed for Excellence.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- INTERACTIVITY & ANIMATION SCRIPTS -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // 1. Sticky Navbar Effect
+            const navbar = document.getElementById('navbar');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+            });
+
+            // 2. Mobile Menu Toggle
+            const mobileBtn = document.getElementById('mobileMenuBtn');
+            const navLinks = document.getElementById('navLinks');
+            
+            mobileBtn.addEventListener('click', () => {
+                navLinks.classList.toggle('active');
+            });
+
+            // Close mobile menu on link click
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                link.addEventListener('click', () => {
+                    navLinks.classList.remove('active');
+                });
+            });
+
+            // 3. Scroll Reveal Animation (Intersection Observer)
+            const revealElements = document.querySelectorAll('.reveal');
+            
+            const revealOptions = {
+                threshold: 0.15,
+                rootMargin: "0px 0px -50px 0px"
+            };
+
+            const revealOnScroll = new IntersectionObserver(function(entries, observer) {
+                entries.forEach(entry => {
+                    if (!entry.isIntersecting) {
+                        return;
+                    } else {
+                        entry.target.classList.add('active');
+                        observer.unobserve(entry.target); // Run once
+                    }
+                });
+            }, revealOptions);
+
+            revealElements.forEach(el => {
+                revealOnScroll.observe(el);
+            });
+        });
+    </script>
+</body>
+</html>
