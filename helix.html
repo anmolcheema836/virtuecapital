@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Helix Labs | Research Grade Peptides</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
+
+    <style>
+        /* ==========================================================================
+           CSS VARIABLES & RESET (LIGHT THEME)
+           ========================================================================== */
+        :root {
+            --bg-base: #f5f5f7;       /* Soft off-white */
+            --bg-surface: #ffffff;    /* Pure white */
+            --bg-glass: rgba(255, 255, 255, 0.7);
+            --border-light: rgba(0, 0, 0, 0.08);
+            
+            --text-main: #0d0d12;     /* Near black */
+            --text-muted: #666670;    /* Medium gray */
+            --accent: #0047FF;        /* Clinical Electric Blue */
+            --accent-glow: rgba(0, 71, 255, 0.08);
+            
+            --font-display: 'Space Grotesk', sans-serif;
+            --font-body: 'Inter', sans-serif;
+            
+            --container-w: 1280px;
+            --cursor-size: 14px;
+            --transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: auto; /* Handled smoothly by Lenis */
+        }
+
+        body {
+            background-color: var(--bg-base);
+            color: var(--text-main);
+            font-family: var(--font-body);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            cursor: none; /* Custom Cursor */
+        }
+
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+        button { border: none; background: none; cursor: none; font-family: inherit; }
+
+        /* ==========================================================================
+           UTILITIES & EFFECTS
+           ========================================================================== */
+        .container {
+            max-width: var(--container-w);
+            margin: 0 auto;
+            padding: 0 2rem;
+            width: 100%;
+        }
+
+        /* Subtle Technical Grid Background */
+        .grid-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            pointer-events: none; z-index: -1;
+            background-image: 
+                linear-gradient(var(--border-light) 1px, transparent 1px),
+                linear-gradient(90deg, var(--border-light) 1px, transparent 1px);
+            background-size: 60px 60px;
+            opacity: 0.5;
+        }
+
+        /* Custom Cursor */
+        .cursor {
+            position: fixed;
+            top: 0; left: 0;
+            width: var(--cursor-size); height: var(--cursor-size);
+            background-color: var(--accent);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 10000;
+            transform: translate(-50%, -50%);
+            transition: width 0.3s, height 0.3s, background-color 0.3s, border 0.3s;
+        }
+        .cursor.hover {
+            width: 50px; height: 50px;
+            background-color: transparent;
+            border: 2px solid var(--accent);
+            mix-blend-mode: multiply;
+        }
+
+        /* Typography */
+        h1, h2, h3, h4, .font-display { font-family: var(--font-display); }
+        .text-accent { color: var(--accent); }
+        .text-outline {
+            color: transparent;
+            -webkit-text-stroke: 1.5px var(--text-main);
+        }
+        
+        /* Glassmorphism for Light Theme */
+        .glass {
+            background: var(--bg-glass);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border-light);
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex; align-items: center; justify-content: center;
+            padding: 1.1rem 2.5rem;
+            border-radius: 100px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: var(--transition);
+        }
+        .btn-primary {
+            background: var(--text-main);
+            color: var(--bg-surface);
+        }
+        .btn-primary:hover {
+            background: var(--accent);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px var(--accent-glow);
+        }
+
+        /* ==========================================================================
+           LAYOUT COMPONENTS
+           ========================================================================== */
+        
+        /* Navigation */
+        header {
+            position: fixed; top: 0; width: 100%; z-index: 50;
+            padding: 1.5rem 0;
+            transition: var(--transition);
+            border-bottom: 1px solid transparent;
+        }
+        header.scrolled {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid var(--border-light);
+            padding: 1rem 0;
+        }
+        .nav-inner {
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .logo {
+            font-family: var(--font-display);
+            font-size: 1.5rem; font-weight: 700; letter-spacing: -1px;
+            color: var(--text-main);
+        }
+        .nav-links {
+            display: flex; gap: 3rem;
+        }
+        .nav-links a {
+            font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;
+            color: var(--text-muted); transition: color 0.3s;
+        }
+        .nav-links a:hover { color: var(--accent); }
+        .cart-btn {
+            position: relative; font-weight: 600;
+            display: flex; align-items: center; gap: 0.5rem;
+        }
+        .cart-badge {
+            background: var(--accent); color: #fff;
+            font-size: 0.65rem; padding: 2px 8px; border-radius: 10px; font-weight: 700;
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex; align-items: center;
+            padding-top: 5rem;
+            overflow: hidden;
+        }
+        .hero-blob {
+            position: absolute; top: 50%; right: 10%; transform: translateY(-50%);
+            width: 600px; height: 600px;
+            background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+            z-index: 0; pointer-events: none; border-radius: 50%;
+        }
+        .hero-grid {
+            display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 4rem;
+            align-items: center; position: relative; z-index: 1;
+        }
+        .hero-tag {
+            color: var(--accent); font-family: var(--font-display);
+            font-size: 0.85rem; font-weight: 700; letter-spacing: 3px; text-transform: uppercase;
+            margin-bottom: 1.5rem; display: block;
+        }
+        .hero-title {
+            font-size: clamp(3.5rem, 6vw, 6.5rem);
+            line-height: 1.05; font-weight: 700; letter-spacing: -0.04em;
+            margin-bottom: 1.5rem;
+        }
+        .hero-desc {
+            font-size: 1.15rem; color: var(--text-muted); line-height: 1.6;
+            margin-bottom: 2.5rem; max-width: 85%;
+        }
+        .hero-img-container {
+            display: flex; justify-content: center; align-items: center; position: relative;
+        }
+        .hero-img {
+            max-width: 100%; width: 450px;
+            mix-blend-mode: multiply; /* Removes white backgrounds perfectly */
+            filter: drop-shadow(0 30px 40px rgba(0,0,0,0.1));
+            animation: float 6s ease-in-out infinite;
+        }
+
+        /* Marquee */
+        .marquee {
+            padding: 1.5rem 0; 
+            border-top: 1px solid var(--border-light); 
+            border-bottom: 1px solid var(--border-light);
+            background: var(--bg-surface); overflow: hidden; white-space: nowrap;
+            display: flex;
+        }
+        .marquee-track {
+            display: inline-block;
+            animation: marquee 25s linear infinite;
+        }
+        .marquee-text {
+            font-family: var(--font-display); font-size: 2rem; font-weight: 600;
+            color: transparent; -webkit-text-stroke: 1px var(--text-muted);
+            text-transform: uppercase; letter-spacing: 2px;
+            margin-right: 3rem;
+            opacity: 0.5;
+        }
+
+        /* Shop Carousel */
+        .shop {
+            padding: 10rem 0; position: relative;
+        }
+        .shop-header {
+            display: flex; justify-content: space-between; align-items: flex-end;
+            margin-bottom: 4rem;
+        }
+        .shop-title { font-size: clamp(2.5rem, 4vw, 4rem); line-height: 1.1; letter-spacing: -0.02em; }
+        .swiper-nav { display: flex; gap: 1rem; }
+        .nav-circle {
+            width: 54px; height: 54px; border-radius: 50%;
+            border: 1px solid var(--border-light); background: var(--bg-surface);
+            display: flex; justify-content: center; align-items: center;
+            transition: var(--transition); color: var(--text-main);
+        }
+        .nav-circle:hover { background: var(--text-main); color: var(--bg-surface); }
+
+        .swiper { width: 100%; padding-bottom: 4rem; padding-left: max(2rem, calc((100% - var(--container-w)) / 2)); }
+        .swiper-slide { width: 340px; }
+
+        .product-card {
+            background: var(--bg-surface);
+            border-radius: 24px; padding: 2rem;
+            height: 500px; display: flex; flex-direction: column; justify-content: space-between;
+            position: relative; overflow: hidden;
+            border: 1px solid var(--border-light);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.02);
+            transition: var(--transition);
+        }
+        .product-card:hover { 
+            border-color: rgba(0, 71, 255, 0.3); 
+            box-shadow: 0 20px 50px rgba(0,0,0,0.06);
+            transform: translateY(-5px);
+        }
+        .product-tag {
+            position: absolute; top: 1.5rem; left: 1.5rem;
+            background: var(--bg-base); 
+            padding: 0.4rem 1rem; border-radius: 100px;
+            font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;
+            border: 1px solid var(--border-light); z-index: 2;
+        }
+        .product-img-wrap {
+            height: 240px; display: flex; justify-content: center; align-items: center; position: relative; margin-top: 2.5rem;
+        }
+        .product-img {
+            max-height: 100%; max-width: 100%; object-fit: contain; 
+            mix-blend-mode: multiply; /* Crucial for JPGs with white backgrounds */
+            position: relative; z-index: 1; transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .product-card:hover .product-img { transform: scale(1.1) translateY(-10px); }
+        
+        .product-info {
+            padding-top: 1.5rem; border-top: 1px solid var(--border-light);
+            position: relative; z-index: 2;
+        }
+        .product-name { font-family: var(--font-display); font-size: 1.4rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--text-main); }
+        .product-bottom { display: flex; justify-content: space-between; align-items: center; margin-top: 1rem; }
+        .product-price { color: var(--text-muted); font-weight: 600; font-size: 1.1rem; }
+        .add-btn { 
+            width: 45px; height: 45px; border-radius: 50%; 
+            background: var(--bg-base); color: var(--text-main); 
+            display: flex; justify-content: center; align-items: center; 
+            transition: var(--transition); font-size: 1.2rem;
+            border: 1px solid var(--border-light);
+        }
+        .product-card:hover .add-btn { background: var(--text-main); color: var(--bg-surface); }
+
+        /* Science / Features */
+        .features { padding: 10rem 0; background: var(--bg-surface); border-top: 1px solid var(--border-light); }
+        .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4rem; }
+        .feature-card { padding: 2rem; border-radius: 24px; background: var(--bg-base); transition: var(--transition); border: 1px solid transparent; }
+        .feature-card:hover { border-color: var(--border-light); background: var(--bg-surface); box-shadow: 0 20px 40px rgba(0,0,0,0.03); transform: translateY(-5px); }
+        .feature-icon {
+            width: 60px; height: 60px; border-radius: 16px;
+            background: var(--text-main); color: var(--bg-surface);
+            display: flex; justify-content: center; align-items: center;
+            margin-bottom: 2rem;
+        }
+        .feature-icon svg { width: 28px; height: 28px; stroke: currentColor; fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+        .feature-title { font-family: var(--font-display); font-size: 1.4rem; font-weight: 700; margin-bottom: 1rem; }
+        .feature-desc { color: var(--text-muted); line-height: 1.7; font-size: 0.95rem; }
+
+        /* Newsletter */
+        .newsletter { padding: 10rem 0; text-align: center; position: relative; background: var(--bg-base); }
+        .newsletter-title { font-size: clamp(2.5rem, 5vw, 4.5rem); font-family: var(--font-display); margin-bottom: 1.5rem; letter-spacing: -0.03em; }
+        .newsletter-desc { color: var(--text-muted); font-size: 1.15rem; max-width: 600px; margin: 0 auto 3rem; line-height: 1.6; }
+        .form-group { display: flex; justify-content: center; gap: 1rem; max-width: 600px; margin: 0 auto; }
+        .form-input {
+            flex: 1; padding: 1.2rem 2rem; border-radius: 100px;
+            background: var(--bg-surface); border: 1px solid var(--border-light);
+            color: var(--text-main); font-family: var(--font-body); font-size: 1rem;
+            transition: var(--transition); box-shadow: 0 5px 15px rgba(0,0,0,0.02);
+        }
+        .form-input:focus { outline: none; border-color: var(--accent); box-shadow: 0 5px 20px rgba(0,71,255,0.1); }
+        .form-btn {
+            padding: 1.2rem 3rem; border-radius: 100px;
+            background: var(--accent); color: var(--bg-surface);
+            font-weight: 600; font-size: 1rem; transition: var(--transition);
+        }
+        .form-btn:hover { background: var(--text-main); transform: translateY(-2px); }
+
+        /* Footer */
+        footer { border-top: 1px solid var(--border-light); padding: 5rem 0 2rem; background: var(--bg-surface); }
+        .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 4rem; margin-bottom: 4rem; }
+        .footer-logo { font-family: var(--font-display); font-size: 1.8rem; font-weight: 700; margin-bottom: 1.5rem; display: block; letter-spacing: -1px; }
+        .footer-desc { color: var(--text-muted); line-height: 1.7; max-width: 350px; }
+        .footer-col h4 { font-family: var(--font-display); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 1.5rem; color: var(--text-main); font-weight: 700; }
+        .footer-col ul li { margin-bottom: 1rem; }
+        .footer-col ul a { color: var(--text-muted); transition: color 0.3s; font-size: 0.95rem; }
+        .footer-col ul a:hover { color: var(--accent); }
+        .footer-bottom {
+            display: flex; justify-content: space-between; border-top: 1px solid var(--border-light);
+            padding-top: 2rem; color: var(--text-muted); font-size: 0.85rem;
+        }
+
+        /* Animations */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .hero-grid { grid-template-columns: 1fr; text-align: center; gap: 3rem; }
+            .hero-blob { right: 50%; transform: translate(50%, -50%); }
+            .hero-desc { margin: 0 auto 2.5rem; }
+            .hero-img { width: 350px; }
+            .features-grid { grid-template-columns: 1fr; text-align: center; }
+            .feature-icon { margin: 0 auto 1.5rem; }
+            .footer-grid { grid-template-columns: 1fr; gap: 2.5rem; text-align: center; }
+            .footer-desc { margin: 0 auto; }
+            .form-group { flex-direction: column; }
+            .nav-links { display: none; }
+        }
+        @media (max-width: 768px) {
+            body { cursor: auto; }
+            .cursor { display: none; }
+            .grid-bg { display: none; }
+            .swiper { padding-left: 2rem; }
+            button { cursor: pointer; }
+        }
+        
+        /* Utility for GSAP reveals */
+        .reveal { opacity: 0; transform: translateY(40px); }
+    </style>
+</head>
+<body>
+
+    <!-- Background Grid & Custom Cursor -->
+    <div class="grid-bg"></div>
+    <div class="cursor" id="cursor"></div>
+
+    <!-- Navigation -->
+    <header id="header">
+        <div class="container nav-inner">
+            <a href="#" class="logo hover-trigger">HELIX LABS<span class="text-accent">.</span></a>
+            <nav class="nav-links">
+                <a href="#shop" class="hover-trigger">Catalog</a>
+                <a href="#science" class="hover-trigger">Methodology</a>
+                <a href="#about" class="hover-trigger">About Us</a>
+            </nav>
+            <a href="#" class="cart-btn hover-trigger">
+                Cart
+                <span class="cart-badge">0</span>
+            </a>
+        </div>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-blob"></div>
+        <div class="container hero-grid">
+            <div class="hero-content">
+                <span class="hero-tag reveal">Purity Perfected</span>
+                <h1 class="hero-title reveal" style="transition-delay: 0.1s;">
+                    RESEARCH <br><span class="text-outline">ELEVATED</span>
+                </h1>
+                <p class="hero-desc reveal" style="transition-delay: 0.2s;">
+                    Empowering the global scientific community with independently HPLC-tested, structurally verified synthetic peptides. Clinical precision for your lab.
+                </p>
+                <div class="reveal" style="transition-delay: 0.3s;">
+                    <a href="#shop" class="btn btn-primary hover-trigger">Explore Collection</a>
+                </div>
+            </div>
+            <div class="hero-img-container reveal" style="transition-delay: 0.4s;">
+                <!-- Used mix-blend-mode: multiply in CSS to hide white backgrounds on these images -->
+                <img src="https://www.freelancer.com/fs/download-api.php?type=contest&id=2708557&filename=semax.png" alt="Semax Vial" class="hero-img">
+            </div>
+        </div>
+    </section>
+
+    <!-- Marquee -->
+    <div class="marquee">
+        <div class="marquee-track">
+            <span class="marquee-text">Independent HPLC Testing • ≥99% Purity Guaranteed • Global Cold Chain Logistics • Structural Integrity • </span>
+            <span class="marquee-text">Independent HPLC Testing • ≥99% Purity Guaranteed • Global Cold Chain Logistics • Structural Integrity • </span>
+        </div>
+    </div>
+
+    <!-- Shop / Carousel -->
+    <section id="shop" class="shop">
+        <div class="container shop-header reveal">
+            <div>
+                <h2 class="shop-title">THE <span class="text-outline">CATALOGUE</span></h2>
+                <p style="color: var(--text-muted); margin-top: 1rem; font-size: 1.1rem;">Swipe to explore our premium formulations.</p>
+            </div>
+            <div class="swiper-nav">
+                <button class="nav-circle swiper-prev hover-trigger">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+                </button>
+                <button class="nav-circle swiper-next hover-trigger">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+                </button>
+            </div>
+        </div>
+
+        <div class="swiper productSwiper reveal" style="transition-delay: 0.2s;">
+            <div class="swiper-wrapper" id="product-container">
+                <!-- Product HTML injected via JS to keep the main code clean -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Science / Features -->
+    <section id="science" class="features">
+        <div class="container features-grid">
+            <div class="feature-card reveal">
+                <div class="feature-icon">
+                    <svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+                </div>
+                <h3 class="feature-title">Molecular Integrity</h3>
+                <p class="feature-desc">Every batch is lyophilized under strict conditions to preserve absolute structural integrity. Shipped with meticulous care to prevent degradation.</p>
+            </div>
+            <div class="feature-card reveal" style="transition-delay: 0.1s;">
+                <div class="feature-icon">
+                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                </div>
+                <h3 class="feature-title">HPLC Verified</h3>
+                <p class="feature-desc">Rigorous High-Performance Liquid Chromatography combined with Mass Spectrometry ensures ≥99% purity across our entire catalog.</p>
+            </div>
+            <div class="feature-card reveal" style="transition-delay: 0.2s;">
+                <div class="feature-icon">
+                    <svg viewBox="0 0 24 24"><path d="M5 22h14"></path><path d="M5 2h14"></path><path d="M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22"></path><path d="M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2"></path></svg>
+                </div>
+                <h3 class="feature-title">Rapid Logistics</h3>
+                <p class="feature-desc">Discreet, reliable, and expedited shipping worldwide. Track your research materials seamlessly from our laboratory door to yours.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="newsletter">
+        <div class="container reveal">
+            <h2 class="newsletter-title">Stay Ahead of the Curve.</h2>
+            <p class="newsletter-desc">Join our inner circle. Gain early access to new syntheses, exclusive bulk pricing, and curated research literature directly to your inbox.</p>
+            <form class="form-group">
+                <input type="email" placeholder="Enter your email address" class="form-input hover-trigger" required>
+                <button type="submit" class="form-btn hover-trigger">Subscribe</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <a href="#" class="footer-logo hover-trigger">HELIX LABS<span class="text-accent">.</span></a>
+                    <p class="footer-desc">Providing the global scientific community with unparalleled peptide syntheses. Strictly for in-vitro research purposes.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Catalogue</h4>
+                    <ul>
+                        <li><a href="#" class="hover-trigger">All Peptides</a></li>
+                        <li><a href="#" class="hover-trigger">Best Sellers</a></li>
+                        <li><a href="#" class="hover-trigger">Bulk Orders</a></li>
+                        <li><a href="#" class="hover-trigger">Lab Supplies</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="#" class="hover-trigger">Track Order</a></li>
+                        <li><a href="#" class="hover-trigger">COA Verification</a></li>
+                        <li><a href="#" class="hover-trigger">FAQ & Logistics</a></li>
+                        <li><a href="#" class="hover-trigger">Contact Us</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Helix Labs. All rights reserved.</p>
+                <p>Disclaimer: Products are not for human consumption.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.19/bundled/lenis.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+
+    <script>
+        /* Product Data Injection */
+        const products = [
+            { name: 'Semax', price: '$65.00', img: 'https://www.freelancer.com/fs/download-api.php?type=contest&id=2708557&filename=semax.png', tag: 'Cognitive' },
+            { name: 'SS-31', price: '$80.00', img: 'https://www.freelancer.com/fs/download-api.php?type=contest&id=2708557&filename=ss-31.png', tag: 'Mitochondrial' },
+            { name: 'TB-500', price: '$70.00', img: 'https://www.freelancer.com/fs/download-api.php?type=contest&id=2708557&filename=TB-500.jpg', tag: 'Recovery' },
+            { name: 'Tirzepatide', price: '$120.00', img: 'https://www.freelancer.com/fs/download-api.php?type=contest&id=2708557&filename=tirzepatide.jpg', tag: 'Metabolic' },
+            { name: '5-Amino-1MQ', price: '$55.00', img: 'https://www.freelancer.com/fs/download-api.php?type=contest&id=2708557&filename=5-amino-1%20Medium.png', tag: 'Cellular' },
+            { name: 'MOTS-c', price: '$90.00', img: 'https://www.freelancer.com/fs/download-api.php?type=contest&id=2708557&filename=mots-c.png', tag: 'Energy' },
+            { name: 'Melanotan 2', price: '$45.00', img: 'https://www.freelancer.com/fs/download-api.php?type=contest&id=2708557&filename=melatotan%202%20.png', tag: 'Tanning' },
+            { name: 'HCG 5000iu', price: '$60.00', img: 'https://www.freelancer.com/fs/download-api.php?type=contest&id=2708557&filename=HCG%205000iu%20Medium.png', tag: 'Hormonal' },
+            { name: 'BPC-157', price: '$50.00', img: 'https://www.freelancer.com/fs/download-api.php?type=contest&id=2708557&filename=bpc-157.jpg', tag: 'Healing' },
+            { name: 'Oxytocin 2mg', price: '$40.00', img: 'https://www.freelancer.com/fs/download-api.php?type=contest&id=2708557&filename=Oxytocin%202mg%20Medium.png', tag: 'Wellness' }
+        ];
+
+        const productContainer = document.getElementById('product-container');
+        let htmlContent = '';
+        products.forEach(p => {
+            htmlContent += `
+                <div class="swiper-slide">
+                    <div class="product-card hover-trigger">
+                        <span class="product-tag">${p.tag}</span>
+                        <div class="product-img-wrap">
+                            <img src="${p.img}" alt="${p.name}" class="product-img">
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-name">${p.name}</h3>
+                            <div class="product-bottom">
+                                <span class="product-price">${p.price}</span>
+                                <button class="add-btn hover-trigger">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+        productContainer.innerHTML = htmlContent;
+
+        /* Smooth Scroll (Lenis) */
+        const lenis = new Lenis({
+            duration: 1.2,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            direction: 'vertical',
+            smooth: true
+        });
+        function raf(time) {
+            lenis.raf(time);
+            requestAnimationFrame(raf);
+        }
+        requestAnimationFrame(raf);
+
+        /* Custom Cursor */
+        const cursor = document.getElementById('cursor');
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+
+        // Delegate hover events dynamically
+        document.addEventListener('mouseover', (e) => {
+            if (e.target.closest('.hover-trigger')) {
+                cursor.classList.add('hover');
+            }
+        });
+        document.addEventListener('mouseout', (e) => {
+            if (e.target.closest('.hover-trigger')) {
+                cursor.classList.remove('hover');
+            }
+        });
+
+        /* Header Scroll Effect */
+        const header = document.getElementById('header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        /* Swiper Initialization */
+        new Swiper(".productSwiper", {
+            slidesPerView: "auto",
+            spaceBetween: 40,
+            freeMode: true,
+            grabCursor: true,
+            navigation: {
+                nextEl: ".swiper-next",
+                prevEl: ".swiper-prev",
+            }
+        });
+
+        /* GSAP Scroll Animations */
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Run animations after slight delay to ensure DOM parsing
+        setTimeout(() => {
+            const revealElements = document.querySelectorAll('.reveal');
+            revealElements.forEach((el) => {
+                gsap.to(el, {
+                    scrollTrigger: {
+                        trigger: el,
+                        start: "top 85%",
+                        toggleActions: "play none none reverse"
+                    },
+                    y: 0,
+                    opacity: 1,
+                    duration: 0.9,
+                    ease: "power3.out"
+                });
+            });
+        }, 100);
+
+    </script>
+</body>
+</html>
