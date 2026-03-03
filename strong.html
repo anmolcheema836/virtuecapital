@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Strong Enough to Break | Tony Ray Smith</title>
+    
+    <!-- Google Fonts matching the original site -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600&family=Plus+Jakarta+Sans:wght@500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome for list icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* CSS Variables based on original site */
+        :root {
+            --ast-global-color-0: #5f4ecb;
+            --ast-global-color-1: #4d3bc6;
+            --ast-global-color-2: #25272d;
+            --ast-global-color-3: #565a61;
+            --ast-global-color-4: #f2f5f7;
+            --ast-global-color-5: #ffffff;
+            --ast-global-color-8: #000000;
+            --hero-gradient: linear-gradient(120deg, #000000 20%, #2DAAFB 60%, #FFD700 100%);
+        }
+
+        /* Reset & Base Styles */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Manrope', sans-serif;
+            font-size: 16px;
+            line-height: 1.65;
+            color: var(--ast-global-color-3);
+            background-color: var(--ast-global-color-5);
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-weight: 600;
+            color: var(--ast-global-color-2);
+            line-height: 1.3;
+            margin-bottom: 20px;
+        }
+        p { margin-bottom: 20px; }
+        a { text-decoration: none; color: inherit; transition: color 0.3s; }
+        img { max-width: 100%; height: auto; display: block; }
+        ul { list-style: none; }
+
+        /* Layout Classes */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+        .section-padding { padding: 80px 0; }
+        .text-center { text-align: center; }
+
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            padding: 15px 30px;
+            border-radius: 4px;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        .btn-primary {
+            background-color: var(--ast-global-color-5);
+            color: var(--ast-global-color-8);
+            border: 2px solid var(--ast-global-color-5);
+        }
+        .btn-primary:hover {
+            background-color: transparent;
+            color: var(--ast-global-color-5);
+        }
+        .btn-dark {
+            background-color: var(--ast-global-color-8);
+            color: var(--ast-global-color-5);
+            border: 2px solid var(--ast-global-color-8);
+        }
+        .btn-dark:hover {
+            background-color: transparent;
+            color: var(--ast-global-color-8);
+        }
+
+        /* Header / Navbar */
+        header {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 100;
+            padding: 20px 0;
+        }
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo img { max-width: 150px; }
+        .nav-links { display: flex; gap: 30px; }
+        .nav-links a {
+            color: var(--ast-global-color-5);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 14px;
+        }
+        .nav-links a:hover { color: #FFD700; }
+        
+        /* Mobile Menu Toggle */
+        .mobile-toggle {
+            display: none;
+            color: var(--ast-global-color-5);
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            background-image: var(--hero-gradient);
+            padding: 160px 0 100px;
+            color: var(--ast-global-color-5);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+        }
+        .hero-section h1 {
+            color: var(--ast-global-color-5);
+            font-size: 56px;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 20px;
+        }
+        .hero-section h4 {
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 500;
+            font-size: 22px;
+            margin-bottom: 30px;
+            font-family: 'Manrope', sans-serif;
+        }
+        .hero-image-wrap img {
+            max-width: 80%;
+            margin: 0 auto;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            border-radius: 8px;
+        }
+
+        /* About Section */
+        .about-section { background-color: var(--ast-global-color-5); }
+        .about-content { max-width: 800px; margin: 0 auto; }
+        .about-content h2 { font-size: 40px; margin-bottom: 30px; }
+        .about-content p { font-size: 18px; }
+
+        /* Features / Lists Section */
+        .features-section { background-color: var(--ast-global-color-4); }
+        .feature-box {
+            background: var(--ast-global-color-5);
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            height: 100%;
+        }
+        .feature-box h3 { font-size: 24px; margin-bottom: 20px; color: var(--ast-global-color-0); }
+        .feature-list li {
+            position: relative;
+            padding-left: 30px;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+        .feature-list li i {
+            position: absolute;
+            left: 0;
+            top: 5px;
+            color: var(--ast-global-color-0);
+        }
+
+        /* Author Section */
+        .author-section { background-color: var(--ast-global-color-5); }
+        .author-image img {
+            border-radius: 8px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            max-width: 90%;
+        }
+        .author-content h6 {
+            color: var(--ast-global-color-0);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+        .author-content h2 { font-size: 40px; }
+
+        /* CTA Section */
+        .cta-section {
+            background-image: var(--hero-gradient);
+            color: var(--ast-global-color-5);
+            text-align: center;
+        }
+        .cta-section h2 { color: var(--ast-global-color-5); font-size: 40px; }
+        .cta-section p { font-size: 20px; max-width: 600px; margin: 0 auto 30px; }
+
+        /* Footer */
+        footer {
+            background-color: var(--ast-global-color-8);
+            color: var(--ast-global-color-5);
+            padding: 60px 0 30px;
+            text-align: center;
+        }
+        footer img { max-width: 120px; margin: 0 auto 20px; filter: brightness(0) invert(1); }
+        .footer-nav { margin-bottom: 30px; }
+        .footer-nav a { margin: 0 15px; text-transform: uppercase; font-size: 14px; font-weight: 600; }
+        .footer-nav a:hover { color: #FFD700; }
+        .copyright { font-size: 14px; color: rgba(255,255,255,0.6); margin-top: 30px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px; }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .hero-section h1 { font-size: 42px; }
+            .grid-2 { gap: 40px; }
+        }
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: var(--ast-global-color-8);
+                padding: 20px;
+                text-align: center;
+            }
+            .nav-links.active { display: flex; }
+            .mobile-toggle { display: block; }
+            .grid-2 { grid-template-columns: 1fr; }
+            .hero-section { padding-top: 120px; text-align: center; }
+            .hero-image-wrap img { margin-top: 40px; }
+            .author-image img { margin: 0 auto 30px; }
+            .feature-box { padding: 30px; }
+            .footer-nav a { display: block; margin: 10px 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="container nav-container">
+            <div class="logo">
+                <a href="#"><img src="https://goalforitnow.com/wp-content/uploads/2025/07/white-e1751776388999-150x96.png" alt="Tony Ray Smith"></a>
+            </div>
+            <i class="fa-solid fa-bars mobile-toggle" id="mobile-menu-btn"></i>
+            <nav class="nav-links" id="nav-links">
+                <a href="#hero">Home</a>
+                <a href="#about">About</a>
+                <a href="#features">What's Inside</a>
+                <a href="#author">Author</a>
+                <a href="#purchase">Purchase</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-section" id="hero">
+        <div class="container grid-2">
+            <div class="hero-content">
+                <h1>STRONG ENOUGH TO BREAK</h1>
+                <h4>A 31-Day Devotional Guide to Understanding and Processing Grief</h4>
+                <p style="margin-bottom: 30px; font-size: 18px; opacity: 0.9;">By Tony Ray Smith</p>
+                <a href="#purchase" class="btn btn-primary">Get Strong Enough to Break Now</a>
+            </div>
+            <div class="hero-image-wrap">
+                <!-- Replaced original book image with the requested image name -->
+                <img src="strong.png" alt="Strong Enough to Break Book Cover">
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="section-padding about-section" id="about">
+        <div class="container text-center about-content">
+            <h2>GRIEF CHANGES EVERYTHING!</h2>
+            <p>It changes how you think, how you feel, how you pray, and how you move through ordinary days. You may look strong on the outside while feeling overwhelmed inside. You may be carrying losses you never fully processed. You may be tired of pretending you’re okay.</p>
+            <p><strong>Strong Enough to Break</strong> is a 31-day devotional designed to help you slow down, face your grief honestly, and begin healing with practical guidance rooted in faith, compassion, and real-life experience.</p>
+            <p>This is not about “getting over” grief. It’s about learning how to move through it — one day at a time.</p>
+        </div>
+    </section>
+
+    <!-- Imagine / Features Section -->
+    <section class="section-padding features-section" id="features">
+        <div class="container">
+            <div class="text-center" style="margin-bottom: 50px;">
+                <h2>Imagine what could change in 31 days</h2>
+                <p style="max-width: 700px; margin: 0 auto; font-size: 18px;">What would happen if you gave yourself permission to feel, reflect, and heal — just a little each day? What if breaking was not failure, but the beginning of restoration?</p>
+            </div>
+
+            <div class="grid-2">
+                <div class="feature-box">
+                    <h3>What you’ll discover inside</h3>
+                    <ul class="feature-list">
+                        <li><i class="fa-solid fa-check"></i> How unprocessed grief shows up in everyday life</li>
+                        <li><i class="fa-solid fa-check"></i> Why strength and vulnerability can exist together</li>
+                        <li><i class="fa-solid fa-check"></i> How to recognize emotional triggers and dry wells</li>
+                        <li><i class="fa-solid fa-check"></i> The role forgiveness plays in healing</li>
+                        <li><i class="fa-solid fa-check"></i> How faith supports the grief journey without denying the pain</li>
+                        <li><i class="fa-solid fa-check"></i> Steps to move from survival toward restoration</li>
+                    </ul>
+                </div>
+
+                <div class="feature-box">
+                    <h3>This devotional is for you if:</h3>
+                    <ul class="feature-list">
+                        <li><i class="fa-solid fa-heart"></i> You’ve experienced loss and feel stuck</li>
+                        <li><i class="fa-solid fa-heart"></i> You look strong but feel exhausted inside</li>
+                        <li><i class="fa-solid fa-heart"></i> You want faith-based guidance that feels practical and honest</li>
+                        <li><i class="fa-solid fa-heart"></i> You’re ready to process grief instead of avoiding it</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Author Section -->
+    <section class="section-padding author-section" id="author">
+        <div class="container grid-2">
+            <div class="author-image">
+                <img src="https://goalforitnow.com/wp-content/uploads/2025/07/Untitled-design-scaled.png" alt="Tony Ray Smith">
+            </div>
+            <div class="author-content">
+                <h6>About the Author</h6>
+                <h2>Tony Ray Smith</h2>
+                <p>Tony Ray Smith is an author, speaker, pastor, and Certified Grief Recovery Method Specialist who has guided many individuals through the grief recovery process since 2014.</p>
+                <p>Through years of ministry, counseling, and practical grief work, he has helped people find language for their pain and tools for genuine healing. His approach combines compassionate faith-based insight with proven recovery principles that create space for honest emotional growth.</p>
+                <a href="#purchase" class="btn btn-dark" style="margin-top: 15px;">Order The Book</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA / Purchase Section -->
+    <section class="section-padding cta-section" id="purchase">
+        <div class="container">
+            <h2>Get Your Copy Today</h2>
+            <p>Start your 31-day journey toward understanding your grief and moving forward with clarity and hope.</p>
+            <br>
+            <a href="#" class="btn btn-primary">Get Strong Enough to Break Now</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <img src="https://goalforitnow.com/wp-content/uploads/2025/07/white-e1751776388999-150x96.png" alt="Logo">
+            <div class="footer-nav">
+                <a href="#hero">Home</a>
+                <a href="#about">About</a>
+                <a href="#author">Author</a>
+                <a href="#purchase">Purchase</a>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2026 Tony Ray Smith Enterprises, LLC. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript for Mobile Menu -->
+    <script>
+        document.getElementById('mobile-menu-btn').addEventListener('click', function() {
+            var nav = document.getElementById('nav-links');
+            if (nav.classList.contains('active')) {
+                nav.classList.remove('active');
+            } else {
+                nav.classList.add('active');
+            }
+        });
+
+        // Close mobile menu when a link is clicked
+        var navLinks = document.querySelectorAll('.nav-links a');
+        navLinks.forEach(function(link) {
+            link.addEventListener('click', function() {
+                document.getElementById('nav-links').classList.remove('active');
+            });
+        });
+    </script>
+</body>
+</html>

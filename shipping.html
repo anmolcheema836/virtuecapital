@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShippingBaseball.com | World Peace Through Baseball</title>
+    <meta name="description" content="The premier semi-pro league where global shipping fleets square off in port. Join the Franchise Auction.">
+    
+    <!-- Google Fonts: Oswald for Athletic Headers, Inter for clean UI -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Oswald:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --bg-color: #050A15;
+            --surface-color: #0A1325;
+            --accent-orange: #FF5A00;
+            --text-main: #FFFFFF;
+            --text-muted: #8B9BB4;
+            --border-color: #1A2639;
+            --font-head: 'Oswald', sans-serif;
+            --font-body: 'Inter', sans-serif;
+        }
+
+        /* RESET & SETUP */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: var(--font-body);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* CUSTOM SCROLLBAR */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-color); }
+        ::-webkit-scrollbar-thumb { background: var(--accent-orange); border-radius: 4px; }
+
+        /* LIVE TICKER */
+        .live-ticker {
+            background: var(--accent-orange);
+            color: #fff;
+            padding: 8px 0;
+            font-family: var(--font-head);
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            white-space: nowrap;
+            overflow: hidden;
+            position: relative;
+            z-index: 100;
+        }
+        .ticker-wrapper {
+            display: inline-block;
+            animation: marquee 25s linear infinite;
+        }
+        .ticker-wrapper span { margin-right: 50px; }
+        @keyframes marquee {
+            0% { transform: translateX(100vw); }
+            100% { transform: translateX(-100%); }
+        }
+
+        /* NAVIGATION */
+        nav {
+            position: sticky;
+            top: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 5%;
+            background: rgba(5, 10, 21, 0.85);
+            backdrop-filter: blur(12px);
+            z-index: 99;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .logo {
+            font-family: var(--font-head);
+            font-size: 1.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-decoration: none;
+            color: var(--text-main);
+        }
+        .logo span { color: var(--accent-orange); }
+        .nav-links { display: flex; gap: 2rem; list-style: none; }
+        .nav-links a {
+            color: var(--text-main);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            transition: color 0.3s;
+        }
+        .nav-links a:hover { color: var(--accent-orange); }
+        .btn-auction {
+            background: transparent;
+            border: 1px solid var(--accent-orange);
+            color: var(--accent-orange);
+            padding: 0.6rem 1.5rem;
+            border-radius: 4px;
+            text-transform: uppercase;
+            font-family: var(--font-head);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+        .btn-auction:hover {
+            background: var(--accent-orange);
+            color: #fff;
+            box-shadow: 0 0 15px rgba(255, 90, 0, 0.4);
+        }
+
+        /* HERO SECTION */
+        .hero {
+            height: 85vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            padding: 0 5%;
+            overflow: hidden;
+        }
+        .hero-bg {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            /* UPDATED: Reliable Pexels image for background */
+            background: linear-gradient(to bottom, rgba(5,10,21,0.5), var(--bg-color)),
+                        url('https://images.pexels.com/photos/1095814/pexels-photo-1095814.jpeg?auto=compress&cs=tinysrgb&w=1920') center/cover;
+            z-index: -1;
+            transform: scale(1.05);
+            animation: slowZoom 20s infinite alternate;
+        }
+        @keyframes slowZoom {
+            0% { transform: scale(1.05); }
+            100% { transform: scale(1.15); }
+        }
+        .hero-content h1 {
+            font-family: var(--font-head);
+            font-size: clamp(3rem, 8vw, 6rem);
+            text-transform: uppercase;
+            line-height: 1.1;
+            margin-bottom: 1rem;
+            text-shadow: 0 10px 30px rgba(0,0,0,0.8);
+        }
+        .hero-content p {
+            font-size: clamp(1.1rem, 2vw, 1.5rem);
+            color: #D1D9E6;
+            margin-bottom: 2rem;
+            max-width: 800px;
+            margin-inline: auto;
+            text-shadow: 0 4px 10px rgba(0,0,0,0.8);
+        }
+
+        /* SECTIONS BASE */
+        section {
+            padding: 6rem 5%;
+            position: relative;
+        }
+        .section-header {
+            font-family: var(--font-head);
+            font-size: 3rem;
+            text-transform: uppercase;
+            margin-bottom: 3rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .section-header::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border-color);
+        }
+
+        /* AUCTION LANDING (Pre-launch focus) */
+        .auction-section {
+            background: var(--surface-color);
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+            text-align: center;
+        }
+        .auction-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        .auction-card {
+            background: var(--bg-color);
+            padding: 3rem 2rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            transition: transform 0.3s, border-color 0.3s;
+        }
+        .auction-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--accent-orange);
+        }
+        .auction-card i {
+            font-size: 2.5rem;
+            color: var(--accent-orange);
+            margin-bottom: 1.5rem;
+        }
+        .auction-card h3 {
+            font-family: var(--font-head);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        .countdown {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin: 3rem 0;
+            font-family: var(--font-head);
+        }
+        .time-box {
+            background: var(--bg-color);
+            border: 1px solid var(--accent-orange);
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            min-width: 100px;
+        }
+        .time-box span { display: block; font-size: 2.5rem; font-weight: 700; color: var(--accent-orange); }
+        .time-box label { font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted); }
+        .btn-large {
+            display: inline-block;
+            background: var(--accent-orange);
+            color: #fff;
+            padding: 1.2rem 3rem;
+            font-family: var(--font-head);
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: 700;
+            box-shadow: 0 10px 20px rgba(255, 90, 0, 0.2);
+            transition: all 0.3s;
+        }
+        .btn-large:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 30px rgba(255, 90, 0, 0.4);
+        }
+
+        /* SCHEDULE & SCORES */
+        .schedule-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 1.5rem;
+        }
+        .match-card {
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .match-card::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 0; width: 4px; height: 100%;
+            background: var(--accent-orange);
+            transform: scaleY(0);
+            transition: transform 0.3s;
+            transform-origin: bottom;
+        }
+        .match-card:hover::before { transform: scaleY(1); }
+        .match-date {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+        }
+        .match-teams {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: var(--font-head);
+            font-size: 1.3rem;
+        }
+        .vs { color: var(--accent-orange); font-size: 0.9rem; }
+
+        /* GALLERIES */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+        .gallery-item {
+            position: relative;
+            aspect-ratio: 1;
+            overflow: hidden;
+            border-radius: 8px;
+            cursor: pointer;
+            background: #000;
+        }
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+            opacity: 0.8;
+        }
+        .gallery-item:hover img { transform: scale(1.1); opacity: 1; }
+        .gallery-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(10, 25, 47, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .gallery-item:hover .gallery-overlay { opacity: 1; }
+        .gallery-overlay i { font-size: 2rem; color: var(--accent-orange); text-shadow: 0 2px 10px rgba(0,0,0,0.5); }
+
+        /* FORUM MODULE TEASER */
+        .forum-teaser {
+            background: var(--surface-color);
+            padding: 3rem;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid var(--border-color);
+        }
+        .forum-meta h3 { font-family: var(--font-head); font-size: 2rem; margin-bottom: 0.5rem; }
+        .forum-meta p { color: var(--text-muted); }
+
+        /* FOOTER */
+        footer {
+            background: #02050A;
+            padding: 4rem 5%;
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+        }
+        .footer-logo { font-family: var(--font-head); font-size: 2rem; color: #fff; margin-bottom: 1rem; }
+        .footer-logo span { color: var(--accent-orange); }
+        
+        /* SCROLL REVEAL ANIMATIONS */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .nav-links { display: none; } /* Add hamburger logic in production */
+            .countdown { flex-wrap: wrap; }
+            .forum-teaser { flex-direction: column; text-align: center; gap: 2rem; }
+            .section-header { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- CMS INTEGRATION NOTE: 
+         This ticker content should map to a live-data API or a custom post type in WP/Drupal 
+         so your team can update the score simply by changing custom fields. -->
+    <div class="live-ticker">
+        <div class="ticker-wrapper" id="ticker-feed">
+            <!-- Feed will be populated by JS -->
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav>
+        <a href="#" class="logo">Shipping<span>Baseball</span></a>
+        <ul class="nav-links">
+            <li><a href="#news">News</a></li>
+            <li><a href="#schedule">Schedule</a></li>
+            <li><a href="#teams">Teams</a></li>
+            <li><a href="#gallery">Gallery</a></li>
+            <li><a href="#forum">Forum</a></li>
+        </ul>
+        <a href="#auction" class="btn-auction">Franchise Auction</a>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-content reveal">
+            <h1>Where the Ocean<br>Meets the Diamond</h1>
+            <p>World Peace Through Baseball. The premier semi-pro league where global shipping companies square off whenever their vessels are in port.</p>
+            <a href="#auction" class="btn-large" style="margin-top: 1rem;">Join the League</a>
+        </div>
+    </header>
+
+    <!-- CMS INTEGRATION NOTE: 
+         This section acts as the Landing Page funnel. The countdown timer and text should be editable 
+         in the CMS backend. The button links out to your external bidding tool. -->
+    <section id="auction" class="auction-section reveal">
+        <h2 class="section-header" style="justify-content: center;">Own a Piece of the Ocean</h2>
+        <p style="color: var(--text-muted); max-width: 700px; margin: 0 auto 3rem auto; font-size: 1.1rem;">
+            Before opening day, we are auctioning the first 15 inaugural franchise slots to global shipping lines. Field your crew, represent your fleet, and compete in the Shipping World Series.
+        </p>
+        
+        <div class="auction-grid">
+            <div class="auction-card">
+                <i class="fa-solid fa-globe"></i>
+                <h3>15 Global Slots</h3>
+                <p style="color:var(--text-muted); font-size:0.95rem;">Exclusive inaugural rights for major shipping companies to create their official company teams.</p>
+            </div>
+            <div class="auction-card">
+                <i class="fa-solid fa-gavel"></i>
+                <h3>Blind Bidding</h3>
+                <p style="color:var(--text-muted); font-size:0.95rem;">Submit your sealed bid via our secure platform. The top 15 bids secure franchise rights forever.</p>
+            </div>
+            <div class="auction-card">
+                <i class="fa-solid fa-trophy"></i>
+                <h3>World Series Access</h3>
+                <p style="color:var(--text-muted); font-size:0.95rem;">Automatic entry into the port-to-port circuit leading to the annual Shipping World Series.</p>
+            </div>
+        </div>
+
+        <h3 style="font-family: var(--font-head); font-size: 1.5rem; margin-top: 2rem;">Auction Closes In:</h3>
+        <div class="countdown" id="countdown">
+            <div class="time-box"><span id="days">00</span><label>Days</label></div>
+            <div class="time-box"><span id="hours">00</span><label>Hours</label></div>
+            <div class="time-box"><span id="minutes">00</span><label>Minutes</label></div>
+            <div class="time-box"><span id="seconds">00</span><label>Seconds</label></div>
+        </div>
+
+        <!-- Wire this to the external tool -->
+        <a href="https://your-external-auction-tool.com" target="_blank" class="btn-large">Enter Auction Platform</a>
+    </section>
+
+    <!-- CMS INTEGRATION NOTE: 
+         Schedule/Scores module. Populate via custom posts. Categories: Upcoming / Final. -->
+    <section id="schedule" class="reveal">
+        <h2 class="section-header">Latest Port Matchups</h2>
+        <div class="schedule-grid">
+            <!-- Match 1 -->
+            <div class="match-card">
+                <div class="match-date">
+                    <span>Oct 12, 2024</span>
+                    <span><i class="fa-solid fa-anchor"></i> Port of Los Angeles</span>
+                </div>
+                <div class="match-teams">
+                    <div>Maersk Mariners</div>
+                    <div class="vs">VS</div>
+                    <div>Evergreen Emeralds</div>
+                </div>
+                <div style="margin-top: 1rem; font-size: 0.85rem; color: var(--accent-orange); font-weight: 600;">
+                    LIVE - Top 7th Inning
+                </div>
+            </div>
+            <!-- Match 2 -->
+            <div class="match-card">
+                <div class="match-date">
+                    <span>Oct 10, 2024</span>
+                    <span><i class="fa-solid fa-anchor"></i> Port of Rotterdam</span>
+                </div>
+                <div class="match-teams">
+                    <div>MSC Tritons <span style="color:var(--text-muted)">(8)</span></div>
+                    <div class="vs">FINAL</div>
+                    <div>Hapag Hawks <span style="color:var(--text-muted)">(5)</span></div>
+                </div>
+            </div>
+            <!-- Match 3 -->
+            <div class="match-card">
+                <div class="match-date">
+                    <span>Oct 18, 2024</span>
+                    <span><i class="fa-solid fa-anchor"></i> Port of Singapore</span>
+                </div>
+                <div class="match-teams">
+                    <div>CMA CGM Corsairs</div>
+                    <div class="vs">UPCOMING</div>
+                    <div>COSCO Clippers</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CMS INTEGRATION NOTE: 
+         Media Galleries. Map this to a photo/video gallery plugin or ACF repeater fields. 
+         UPDATED: High-quality, reliable Pexels CDN image links replacing Unsplash -->
+    <section id="gallery" class="reveal">
+        <h2 class="section-header">On the Dock & Diamond</h2>
+        <div class="gallery-grid">
+            <div class="gallery-item">
+                <img src="https://images.pexels.com/photos/2542012/pexels-photo-2542012.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Baseball Field">
+                <div class="gallery-overlay"><i class="fa-solid fa-play"></i></div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://images.pexels.com/photos/2226458/pexels-photo-2226458.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Shipping Containers">
+                <div class="gallery-overlay"><i class="fa-solid fa-image"></i></div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://images.pexels.com/photos/163209/baseball-base-sports-163209.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Baseball Glove">
+                <div class="gallery-overlay"><i class="fa-solid fa-image"></i></div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://images.pexels.com/photos/3067807/pexels-photo-3067807.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Cargo Ship">
+                <div class="gallery-overlay"><i class="fa-solid fa-play"></i></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CMS INTEGRATION NOTE: 
+         Forum Module. Use bbPress (WordPress) or Drupal Core Forum. 
+         This section acts as a teaser pulling the latest 3 active topics. -->
+    <section id="forum" class="reveal">
+        <h2 class="section-header">Crew Quarters (Fan Forum)</h2>
+        <div class="forum-teaser">
+            <div class="forum-meta">
+                <h3>Join the Global Conversation</h3>
+                <p>Talk stats, port conditions, and rally behind the mission of World Peace Through Baseball.</p>
+                <div style="margin-top: 1rem; color: var(--accent-orange); font-size: 0.9rem;">
+                    <i class="fa-solid fa-users"></i> 1,240 Active Crews Online
+                </div>
+            </div>
+            <div>
+                <a href="#forum-link" class="btn-large" style="padding: 1rem 2rem; font-size: 1rem;">Enter Forums</a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-logo">Shipping<span>Baseball</span>.com</div>
+        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 2rem;">World Peace Through Baseball.</p>
+        <p style="color: var(--border-color); font-size: 0.8rem;">
+            &copy; 2024 Shipping Baseball League. All Rights Reserved. <br>
+            <!-- Note to in-house crew: All text, images, schedules, and auction links are manageable via the CMS dashboard. -->
+        </p>
+    </footer>
+
+    <!-- INTERACTIVITY LOGIC -->
+    <script>
+        // 1. Scroll Reveal Animation Logic (Awwwards Style)
+        function reveal() {
+            var reveals = document.querySelectorAll(".reveal");
+            for (var i = 0; i < reveals.length; i++) {
+                var windowHeight = window.innerHeight;
+                var elementTop = reveals[i].getBoundingClientRect().top;
+                var elementVisible = 100;
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add("active");
+                }
+            }
+        }
+        window.addEventListener("scroll", reveal);
+        reveal(); // Trigger on load
+
+        // 2. Countdown Timer Logic for Auction Launch
+        // Set the date we're counting down to (e.g., 30 days from now)
+        var countDownDate = new Date().getTime() + (30 * 24 * 60 * 60 * 1000);
+
+        var x = setInterval(function() {
+            var now = new Date().getTime();
+            var distance = countDownDate - now;
+
+            var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            // Add leading zeros
+            document.getElementById("days").innerHTML = days < 10 ? "0" + days : days;
+            document.getElementById("hours").innerHTML = hours < 10 ? "0" + hours : hours;
+            document.getElementById("minutes").innerHTML = minutes < 10 ? "0" + minutes : minutes;
+            document.getElementById("seconds").innerHTML = seconds < 10 ? "0" + seconds : seconds;
+
+            if (distance < 0) {
+                clearInterval(x);
+                document.getElementById("countdown").innerHTML = "<div style='color:var(--accent-orange); font-size:2rem;'>AUCTION IS LIVE</div>";
+            }
+        }, 1000);
+
+        // 3. Simulated Live Game Updates (For prototype demonstration)
+        // In production, this would fetch from your CMS/API
+        const tickerData = [
+            "LIVE: Port of LA — Maersk Mariners 4, Evergreen Emeralds 2 (Top 7th)",
+            "UPDATE: Port of NY/NJ — Rain Delay for ZIM Zephyrs vs OOCL Orcas",
+            "FINAL: Port of Rotterdam — MSC Tritons 8, Hapag-Lloyd Hawks 5",
+            "UP NEXT: CMA CGM Corsairs vs. COSCO Clippers @ Port of Singapore"
+        ];
+        
+        let tickerEl = document.getElementById("ticker-feed");
+        // Duplicate the string multiple times for seamless marquee looping
+        tickerEl.innerHTML = tickerData.map(msg => `<span><i class="fa-solid fa-circle-dot" style="color:#fff; font-size:0.6rem; margin-right:5px;"></i> ${msg}</span>`).join('') + 
+                             tickerData.map(msg => `<span><i class="fa-solid fa-circle-dot" style="color:#fff; font-size:0.6rem; margin-right:5px;"></i> ${msg}</span>`).join('');
+    </script>
+</body>
+</html>
