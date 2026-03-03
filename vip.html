@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VIP SWISS | Exclusive Membercard</title>
+    
+    <!-- Premium Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    
+    <!-- GSAP & Lenis Smooth Scroll -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.19/bundled/lenis.min.js"></script>
+
+    <style>
+        :root {
+            --bg-color: #050505;
+            --surface-color: #111111;
+            --gold: #D4AF37;
+            --gold-light: #F3E5AB;
+            --text-main: #FFFFFF;
+            --text-muted: #888888;
+            --font-heading: 'Playfair Display', serif;
+            --font-body: 'DM Sans', sans-serif;
+        }
+
+        /* Reset & Base */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html.lenis { height: auto; }
+        .lenis.lenis-smooth { scroll-behavior: auto; }
+        
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: var(--font-body);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Typography */
+        h1, h2, h3 { font-family: var(--font-heading); font-weight: 400; }
+        .text-gold { color: var(--gold); }
+        .text-center { text-align: center; }
+        
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0; width: 100%;
+            padding: 2rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            mix-blend-mode: difference;
+        }
+        .logo { font-family: var(--font-heading); font-size: 1.5rem; letter-spacing: 2px; text-decoration: none; color: #fff; }
+        .nav-links { display: flex; gap: 2rem; list-style: none; }
+        .nav-links a { color: #fff; text-decoration: none; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; transition: color 0.3s; }
+        .nav-links a:hover { color: var(--gold); }
+        
+        .btn {
+            padding: 0.8rem 1.5rem;
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            background: transparent;
+            font-family: var(--font-body);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.4s ease;
+        }
+        .btn:hover { background: var(--gold); color: #000; }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding: 0 5%;
+            overflow: hidden;
+        }
+        .hero-content {
+            text-align: center;
+            z-index: 2;
+            max-width: 800px;
+        }
+        .hero h1 {
+            font-size: clamp(3rem, 6vw, 6rem);
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+        }
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            margin-bottom: 3rem;
+        }
+        .floating-card {
+            position: absolute;
+            z-index: 1;
+            opacity: 0.3;
+            width: 500px;
+            filter: blur(4px);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(2deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
+        }
+
+        /* Features Section */
+        .features {
+            padding: 10rem 5%;
+            background: var(--surface-color);
+        }
+        .section-header {
+            text-align: center;
+            margin-bottom: 6rem;
+        }
+        .section-header h2 { font-size: 3rem; margin-bottom: 1rem; }
+        .section-header p { color: var(--gold); letter-spacing: 2px; text-transform: uppercase; }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+        }
+        .feature-card {
+            text-align: center;
+            padding: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            transition: transform 0.4s;
+        }
+        .feature-card:hover { transform: translateY(-10px); border-top-color: var(--gold); }
+        .feature-card img { width: 80px; margin-bottom: 2rem; }
+        .feature-card h3 { font-size: 1.5rem; margin-bottom: 1rem; }
+        .feature-card p { color: var(--text-muted); line-height: 1.6; }
+
+        /* Categories (Bento Grid) */
+        .categories { padding: 10rem 5%; }
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-auto-rows: 300px;
+            gap: 1.5rem;
+        }
+        .bento-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        .bento-item img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            transition: transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        .bento-item:hover img { transform: scale(1.05); }
+        .bento-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+        }
+        .bento-item.large { grid-column: span 2; grid-row: span 2; }
+        .bento-item.wide { grid-column: span 2; }
+
+        /* Booking Section */
+        .booking {
+            padding: 10rem 5%;
+            background: var(--surface-color);
+            display: flex;
+            gap: 4rem;
+            align-items: center;
+        }
+        .booking-text { flex: 1; }
+        .booking-text h2 { font-size: 3.5rem; margin-bottom: 2rem; }
+        .booking-form { flex: 1; background: var(--bg-color); padding: 4rem; border-radius: 8px; }
+        
+        .input-group { margin-bottom: 2rem; }
+        .input-group input {
+            width: 100%;
+            padding: 1rem 0;
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+            color: #fff;
+            font-family: var(--font-body);
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        .input-group input:focus { border-bottom-color: var(--gold); }
+        
+        /* Marquee Cities */
+        .marquee-section { padding: 5rem 0; overflow: hidden; white-space: nowrap; border-top: 1px solid rgba(255,255,255,0.1); border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .marquee-inner { display: inline-block; animation: marquee 20s linear infinite; }
+        .marquee-inner span { font-size: 4rem; font-family: var(--font-heading); color: rgba(255,255,255,0.1); margin-right: 3rem; text-transform: uppercase; -webkit-text-stroke: 1px rgba(255,255,255,0.3); }
+        .marquee-inner span:hover { color: var(--gold); -webkit-text-stroke: 0px; cursor: default; transition: 0.3s; }
+        @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+        /* Footer */
+        footer { padding: 5rem 5% 2rem; text-align: center; }
+        .footer-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-bottom: 4rem; text-align: left;}
+        .footer-col h4 { color: var(--gold); margin-bottom: 1.5rem; }
+        .footer-col a, .footer-col p { color: var(--text-muted); text-decoration: none; display: block; margin-bottom: 0.5rem; }
+        .footer-col a:hover { color: #fff; }
+        .copyright { color: var(--text-muted); font-size: 0.9rem; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 2rem; }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .bento-grid { grid-template-columns: repeat(2, 1fr); }
+            .booking { flex-direction: column; }
+        }
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .bento-grid { grid-template-columns: 1fr; }
+            .bento-item.large, .bento-item.wide { grid-column: span 1; grid-row: span 1; }
+            .footer-grid { grid-template-columns: 1fr; text-align: center; }
+        }
+        
+        /* GSAP Utility */
+        .reveal-text { clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%); }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav>
+        <a href="index.html" class="logo">VIP SWISS</a>
+        <ul class="nav-links">
+            <li><a href="index.html">Homepage</a></li>
+            <li><a href="kalender-.html">Events</a></li>
+            <li><a href="faq.html">FAQ</a></li>
+            <li><a href="preise.html">Preise</a></li>
+            <li><a href="kontakt.html">Kontakt</a></li>
+        </ul>
+        <div>
+            <button class="btn" onclick="location.href='einloggen.html'">Einloggen</button>
+            <button class="btn" style="background: var(--gold); color:#000;" onclick="location.href='vip-swiss-karte.html'">Registrieren</button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <img src="https://www.vipkmu.ch/images/VIP-Swiss-Member-Transparent-BG.png" alt="VIP Card" class="floating-card" style="right: -100px; top: 10%;">
+        <img src="https://www.vipkmu.ch/images/VIP-Swiss-Member-Transparent-BG.png" alt="VIP Card" class="floating-card" style="left: -150px; bottom: 0; transform: scale(0.6);">
+        
+        <div class="hero-content gs-reveal">
+            <h1 class="reveal-text">Die Kunst des <br><span class="text-gold">Privilegs.</span></h1>
+            <p>Erleben Sie die Schweiz von ihrer luxuriösesten Seite.<br>Exklusive Vorteile bei über 500 Premium-Partnern mit einer einzigen digitalen Karte.</p>
+            <button class="btn" style="background: var(--text-main); color: #000; border:none; padding: 1.2rem 2.5rem; font-weight: bold;">Member Werden</button>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="section-header gs-reveal">
+            <p>Ihre Vorteile</p>
+            <h2>Warum VIP SWISS?</h2>
+        </div>
+        
+        <div class="features-grid">
+            <div class="feature-card gs-reveal">
+                <img src="https://www.vipkmu.ch/images/VIP-Swiss-Member-Transparent-BG.png" alt="Rabatte">
+                <h3>Bis zu 60% Sparen</h3>
+                <p>Sichern Sie sich exklusive Rabatte und Konditionen bei unseren handverlesenen Partnerunternehmen aus der Luxusbranche.</p>
+            </div>
+            <div class="feature-card gs-reveal" style="transition-delay: 0.1s;">
+                <img src="https://www.vipkmu.ch/images/VIP-Swiss-Member-Transparent-BG.png" alt="Punkte">
+                <h3>Punkte Sammeln</h3>
+                <p>Erhalten Sie Bonuspunkte bei jedem Einkauf. Gold-Mitglieder profitieren von der doppelten Punktzahl.</p>
+            </div>
+            <div class="feature-card gs-reveal" style="transition-delay: 0.2s;">
+                <img src="https://www.vipkmu.ch/images/VIP-Swiss-Member-Transparent-BG.png" alt="Priority">
+                <h3>Priority Booking</h3>
+                <p>Umgehen Sie Warteschlangen. Sofortige Online-Reservierungen mit absoluter Priorität bei Premium-Partnern.</p>
+            </div>
+            <div class="feature-card gs-reveal" style="transition-delay: 0.3s;">
+                <img src="https://www.vipkmu.ch/images/VIP-Swiss-Member-Transparent-BG.png" alt="Digital">
+                <h3>100% Digital</h3>
+                <p>Ihre exklusive VIP-Karte mit sicherem QR-Code – jederzeit auf Ihrem Smartphone griffbereit.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Categories / Partners (Bento Grid) -->
+    <section class="categories">
+        <div class="section-header gs-reveal">
+            <p>Das Netzwerk</p>
+            <h2>Entdecken Sie unsere Partner</h2>
+        </div>
+        
+        <div class="bento-grid">
+            <div class="bento-item large gs-reveal">
+                <img src="https://www.vipkmu.ch/images/wellnes.jpg" alt="Wellness">
+                <div class="bento-overlay">
+                    <h3>Wellness & Spa</h3>
+                    <p class="text-gold">Luxus für Körper, Geist und Seele.</p>
+                </div>
+            </div>
+            <div class="bento-item wide gs-reveal">
+                <img src="https://www.vipkmu.ch/images/Limoservice_5vkj1326.jpg" alt="Limousine">
+                <div class="bento-overlay">
+                    <h3>Limousinenservice</h3>
+                    <p class="text-gold">Fahrt für Komfort und Stil.</p>
+                </div>
+            </div>
+            <div class="bento-item gs-reveal">
+                <img src="https://www.vipkmu.ch/images/Uhren_xbdylngx.jpg" alt="Luxusuhren">
+                <div class="bento-overlay">
+                    <h3>Luxusuhren</h3>
+                    <p class="text-gold">Zeit für Präzision.</p>
+                </div>
+            </div>
+            <div class="bento-item gs-reveal">
+                <img src="https://www.vipkmu.ch/images/Schmuck.jpg" alt="Schmuck">
+                <div class="bento-overlay">
+                    <h3>Schmuck</h3>
+                    <p class="text-gold">Glanz & Stärke.</p>
+                </div>
+            </div>
+            <div class="bento-item wide gs-reveal">
+                <img src="https://www.vipkmu.ch/images/automobil1_3mrx19k1.gif" alt="Automobil">
+                <div class="bento-overlay">
+                    <h3>Automobil</h3>
+                    <p class="text-gold">Fahrspaß & Freiheit.</p>
+                </div>
+            </div>
+            <div class="bento-item gs-reveal">
+                <img src="https://www.vipkmu.ch/images/gastro7_x8y03reu.jpg" alt="Gastronomie">
+                <div class="bento-overlay">
+                    <h3>Gastronomie</h3>
+                    <p class="text-gold">Genuss für den Gaumen.</p>
+                </div>
+            </div>
+            <div class="bento-item gs-reveal">
+                <img src="https://www.vipkmu.ch/images/Golf1_s3az7h2q.jpg" alt="Golf">
+                <div class="bento-overlay">
+                    <h3>Premium Golf</h3>
+                    <p class="text-gold">Spiel für Präzision.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Marquee Cities (Replaces ugly table) -->
+    <section class="marquee-section">
+        <div class="marquee-inner">
+            <span>Zürich</span>
+            <span>•</span>
+            <span>Wien</span>
+            <span>•</span>
+            <span>Berlin</span>
+            <span>•</span>
+            <span>Paris</span>
+            <span>•</span>
+            <span>Rom</span>
+            <span>•</span>
+            <span>Madrid</span>
+            <span>•</span>
+            <span>Genf</span>
+            <span>•</span>
+            <span>Mailand</span>
+            <span>•</span>
+            <span>Dubai</span>
+            <span>•</span>
+            <span>Zürich</span>
+            <span>•</span>
+            <span>Wien</span>
+            <span>•</span>
+            <span>Berlin</span>
+            <span>•</span>
+            <span>Paris</span>
+            <span>•</span>
+            <span>Rom</span>
+            <span>•</span>
+        </div>
+    </section>
+
+    <!-- Booking Form -->
+    <section class="booking">
+        <div class="booking-text gs-reveal">
+            <p class="text-gold">Concierge Service</p>
+            <h2>Buchen Sie Ihr Erlebnis</h2>
+            <p style="color: var(--text-muted); line-height: 1.6; max-width: 400px;">Als VIP SWISS Mitglied genießen Sie bevorzugte Behandlung. Senden Sie uns Ihre Anfrage und unser Concierge-Team kümmert sich um den Rest.</p>
+        </div>
+        <div class="booking-form gs-reveal">
+            <form action="termin_senden.php" method="POST">
+                <div class="input-group">
+                    <input type="text" name="name" placeholder="Ihr Name" required>
+                </div>
+                <div class="input-group">
+                    <input type="email" name="email" placeholder="Ihre E-Mail" required>
+                </div>
+                <div style="display: flex; gap: 1rem;">
+                    <div class="input-group" style="flex: 1;">
+                        <input type="text" onfocus="(this.type='date')" name="von_datum" placeholder="Von Datum" required>
+                    </div>
+                    <div class="input-group" style="flex: 1;">
+                        <input type="text" onfocus="(this.type='time')" name="von_zeit" placeholder="Uhrzeit" required>
+                    </div>
+                </div>
+                <button type="submit" class="btn" style="width: 100%; margin-top: 1rem;">Termin Anfragen</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-col">
+                <h4 style="font-family: var(--font-heading); font-size: 2rem;">VIP SWISS</h4>
+                <p>Schaffhauserstrasse<br>CH-8442 Hettlingen</p>
+            </div>
+            <div class="footer-col">
+                <h4>Kontakt</h4>
+                <a href="mailto:kontakt@vipswiss.ch">kontakt@vipswiss.ch</a>
+                <a href="mailto:support@vipswiss.ch">support@vipswiss.ch</a>
+                <a href="https://www.vipswiss.ch">www.vipswiss.ch</a>
+            </div>
+            <div class="footer-col">
+                <h4>Rechtliches</h4>
+                <a href="agb.html">AGB</a>
+                <a href="datenschutz.html">Datenschutz</a>
+                <a href="nutzungsrechte.html">Nutzungsrechte</a>
+            </div>
+        </div>
+        <div class="copyright">
+            &copy; 2025 VIP SWISS. Alle Rechte vorbehalten. 
+        </div>
+    </footer>
+
+    <!-- Smartsupp Live Chat -->
+    <script type="text/javascript">
+        var _smartsupp = _smartsupp || {};
+        _smartsupp.key = '615081b8ca3124ca9415f41cabf085479130b253';
+        window.smartsupp||(function(d) {
+          var s,c,o=smartsupp=function(){ o._.push(arguments)};o._=[];
+          s=d.getElementsByTagName('script')[0];c=d.createElement('script');
+          c.type='text/javascript';c.charset='utf-8';c.async=true;
+          c.src='https://www.smartsuppchat.com/loader.js?';s.parentNode.insertBefore(c,s);
+        })(document);
+    </script>
+
+    <!-- GSAP & Lenis Initialization -->
+    <script>
+        // Smooth Scroll (Lenis)
+        const lenis = new Lenis({
+            duration: 1.2,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            direction: 'vertical',
+            gestureDirection: 'vertical',
+            smooth: true,
+            mouseMultiplier: 1,
+        });
+
+        function raf(time) {
+            lenis.raf(time);
+            requestAnimationFrame(raf);
+        }
+        requestAnimationFrame(raf);
+
+        // GSAP Animations
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Hero Text Reveal
+        gsap.fromTo(".hero-content h1", 
+            { y: 100, opacity: 0 }, 
+            { y: 0, opacity: 1, duration: 1.5, ease: "power4.out", delay: 0.2 }
+        );
+        gsap.fromTo(".hero-content p", 
+            { y: 30, opacity: 0 }, 
+            { y: 0, opacity: 1, duration: 1, ease: "power2.out", delay: 0.8 }
+        );
+        gsap.fromTo(".hero-content .btn", 
+            { scale: 0.8, opacity: 0 }, 
+            { scale: 1, opacity: 1, duration: 0.8, ease: "back.out(1.7)", delay: 1 }
+        );
+
+        // Scroll Reveal Elements
+        const revealElements = document.querySelectorAll('.gs-reveal');
+        revealElements.forEach((elem) => {
+            gsap.fromTo(elem, 
+                { y: 50, opacity: 0 }, 
+                {
+                    scrollTrigger: {
+                        trigger: elem,
+                        start: "top 85%", // reveals when element is 85% from top
+                    },
+                    y: 0, 
+                    opacity: 1, 
+                    duration: 1, 
+                    ease: "power3.out"
+                }
+            );
+        });
+    </script>
+</body>
+</html>
