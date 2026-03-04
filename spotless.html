@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Spotless Trades | Premium Bathroom Renovations Melbourne</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Syne:wght@400;600;800&display=swap" rel="stylesheet">
+
+    <style>
+        /* CSS VARIABLES & RESET */
+        :root {
+            --bg-dark: #0a0a0a;
+            --bg-light: #f4f3ef;
+            --accent: #c4a47c; /* Elegant Brass/Gold */
+            --text-light: #ffffff;
+            --text-dark: #1a1a1a;
+            --text-muted: #888888;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            cursor: none; /* Custom cursor base */
+        }
+
+        /* Disable custom cursor and restore standard interactions on mobile/touch devices */
+        @media (hover: none) and (pointer: coarse) {
+            * { cursor: auto !important; }
+            .cursor { display: none !important; }
+        }
+
+        body, html {
+            width: 100%;
+            overflow-x: hidden;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        h1, h2, h3, h4, .font-display {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        img {
+            width: 100%;
+            display: block;
+            object-fit: cover;
+        }
+
+        /* CUSTOM CURSOR */
+        .cursor {
+            position: fixed;
+            top: 0; left: 0;
+            width: 20px; height: 20px;
+            background: var(--accent);
+            border-radius: 50%;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+            mix-blend-mode: difference;
+            transition: width 0.3s, height 0.3s;
+        }
+        .cursor.hovered {
+            width: 60px; height: 60px;
+            background: transparent;
+            border: 2px solid var(--accent);
+        }
+
+        /* NOISE TEXTURE */
+        .noise {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            pointer-events: none;
+            z-index: 9998;
+            opacity: 0.04;
+            background: url('https://www.transparenttextures.com/patterns/stardust.png');
+        }
+
+        /* NAVIGATION */
+        nav {
+            position: absolute;
+            top: 0; width: 100%;
+            padding: 2rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            mix-blend-mode: difference;
+            color: var(--text-light);
+        }
+
+        .logo {
+            font-size: clamp(1.2rem, 3vw, 1.5rem);
+            font-family: 'Syne', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 800;
+        }
+
+        .nav-btn {
+            background: transparent;
+            color: var(--text-light);
+            border: 1px solid var(--text-light);
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+        }
+        .nav-btn:hover {
+            background: var(--text-light);
+            color: var(--bg-dark);
+        }
+
+        /* BUTTONS */
+        .btn-primary {
+            display: inline-block;
+            background: var(--accent);
+            color: var(--bg-dark);
+            padding: 1.2rem 2.5rem;
+            border-radius: 50px;
+            font-family: 'Syne', sans-serif;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: none;
+            position: relative;
+            transition: transform 0.3s ease;
+            text-align: center;
+        }
+        .btn-primary:hover {
+            transform: translateY(-5px);
+        }
+
+        /* HERO SECTION */
+        .hero {
+            min-height: 100vh;
+            width: 100%;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 8rem 5% 4rem 5%;
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            overflow: hidden;
+        }
+
+        .hero-img {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 0;
+            opacity: 0.4;
+            transform: scale(1.1);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 900px;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.8rem, 8vw, 7rem);
+            line-height: 1.05;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+        }
+
+        .hero p {
+            font-size: clamp(1rem, 2.5vw, 1.25rem);
+            max-width: 500px;
+            margin-bottom: 2.5rem;
+            color: #e0e0e0;
+            line-height: 1.6;
+        }
+
+        /* TRUST BAR */
+        .trust-bar {
+            background: var(--bg-dark);
+            color: var(--text-light);
+            padding: 4rem 5%;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        .trust-item {
+            text-align: center;
+        }
+        .trust-item h3 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+        .trust-item p {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+        }
+
+        /* SECTION PADDING */
+        .section {
+            padding: 8rem 5%;
+        }
+
+        .section-title {
+            font-size: clamp(2.2rem, 5vw, 4.5rem);
+            margin-bottom: 2rem;
+            text-transform: uppercase;
+            line-height: 1.1;
+        }
+
+        /* ABOUT / WHY US */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .about-text p {
+            font-size: clamp(1rem, 2vw, 1.1rem);
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+            color: #444;
+        }
+
+        .about-img-wrapper {
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            height: 600px;
+            width: 100%;
+        }
+
+        .about-img-wrapper img {
+            height: 120%;
+            width: 100%;
+        }
+
+        /* SERVICES / PROCESS */
+        .process-section {
+            background: var(--bg-dark);
+            color: var(--text-light);
+        }
+
+        .process-list {
+            margin-top: 4rem;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .process-item {
+            display: flex;
+            gap: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            align-items: flex-start;
+        }
+
+        .process-num {
+            font-family: 'Syne', sans-serif;
+            font-size: clamp(1.5rem, 4vw, 2rem);
+            color: var(--accent);
+            font-weight: 800;
+            min-width: 40px;
+        }
+
+        .process-content h3 {
+            font-size: clamp(1.4rem, 3vw, 1.8rem);
+            margin-bottom: 1rem;
+        }
+        .process-content p {
+            color: var(--text-muted);
+            line-height: 1.6;
+            font-size: clamp(0.95rem, 2vw, 1rem);
+        }
+
+        /* GALLERY */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+        .gallery-item {
+            height: 400px;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+        .gallery-item img {
+            height: 100%;
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .gallery-item:hover img {
+            transform: scale(1.05);
+        }
+
+        /* LEAD FORM / FOOTER */
+        .cta-section {
+            background: var(--accent);
+            padding: 8rem 5%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            border-radius: 40px 40px 0 0;
+        }
+
+        .cta-text h2 {
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            color: var(--bg-dark);
+            margin-bottom: 1.5rem;
+            line-height: 1.1;
+        }
+
+        .cta-text p {
+            font-size: clamp(1rem, 2.5vw, 1.2rem);
+            color: #333;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .form-container {
+            background: var(--bg-light);
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        .form-group {
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .form-group input, .form-group textarea {
+            width: 100%;
+            background: transparent;
+            border: none;
+            border-bottom: 2px solid #ccc;
+            padding: 1rem 0;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 1rem;
+            color: var(--text-dark);
+            outline: none;
+            transition: border-color 0.3s;
+            border-radius: 0; /* iOS fix */
+        }
+
+        .form-group input:focus, .form-group textarea:focus {
+            border-bottom-color: var(--bg-dark);
+        }
+
+        .form-group label {
+            position: absolute;
+            top: 1rem;
+            left: 0;
+            color: #888;
+            transition: all 0.3s ease;
+            pointer-events: none;
+        }
+
+        .form-group input:focus ~ label,
+        .form-group input:valid ~ label,
+        .form-group textarea:focus ~ label,
+        .form-group textarea:valid ~ label {
+            top: -10px;
+            font-size: 0.8rem;
+            color: var(--bg-dark);
+            font-weight: 600;
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: var(--bg-dark);
+            color: var(--text-light);
+            padding: 1.2rem;
+            border: none;
+            border-radius: 5px;
+            font-family: 'Syne', sans-serif;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+
+        .submit-btn:hover {
+            background: #222;
+        }
+
+        /* MOBILE STICKY CTA (For Google Ads Conversions) */
+        .mobile-sticky-cta {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: var(--bg-dark);
+            padding: 1rem 5%;
+            z-index: 999;
+            box-shadow: 0 -10px 20px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        .mobile-sticky-cta a {
+            display: block;
+            background: var(--accent);
+            color: var(--bg-dark);
+            padding: 1rem;
+            border-radius: 50px;
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 1rem;
+        }
+
+        /* --- MOBILE RESPONSIVE MEDIA QUERIES --- */
+        @media (max-width: 992px) {
+            .about-grid, .cta-section {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+            .about-img-wrapper {
+                order: -1; /* Image appears above text on mobile */
+                height: 400px;
+            }
+            .trust-bar {
+                grid-template-columns: repeat(2, 1fr);
+                padding: 3rem 5%;
+            }
+            .gallery-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .form-container {
+                padding: 2.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .section {
+                padding: 5rem 5%;
+            }
+            nav {
+                padding: 1.5rem 5%;
+            }
+            .nav-btn {
+                display: none; /* Hide top nav button to focus on hero/sticky CTA */
+            }
+            .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+            .gallery-item {
+                height: 300px;
+            }
+            .process-item {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            .cta-section {
+                padding: 5rem 5% 8rem 5%; /* Extra bottom padding for sticky CTA */
+                border-radius: 20px 20px 0 0;
+            }
+            .form-container {
+                padding: 2rem 1.5rem;
+            }
+            /* Show Sticky CTA on Mobile */
+            .mobile-sticky-cta {
+                display: block;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .trust-bar {
+                grid-template-columns: 1fr;
+                gap: 2.5rem;
+            }
+            .about-img-wrapper {
+                height: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Custom Cursor & Noise -->
+    <div class="cursor"></div>
+    <div class="noise"></div>
+
+    <!-- Nav -->
+    <nav>
+        <div class="logo">Spotless Trades</div>
+        <a href="#quote" class="nav-btn hover-target">Request a Quote</a>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero">
+        <img src="https://images.unsplash.com/photo-1600566752355-35792bedcfea?q=80&w=2000&auto=format&fit=crop" alt="Luxury Bathroom" class="hero-img parallax-img">
+        <div class="hero-content">
+            <h1 class="reveal-text">Melbourne's Premier<br>Bathroom Renovations</h1>
+            <p class="reveal-fade">We transform outdated spaces into modern, spotless sanctuaries. High-quality craftsmanship, tailored to your lifestyle.</p>
+            <a href="#quote" class="btn-primary hover-target reveal-fade">Get Your Free Quote</a>
+        </div>
+    </header>
+
+    <!-- Trust Bar -->
+    <section class="trust-bar">
+        <div class="trust-item">
+            <h3 class="counter" data-target="15">0</h3>
+            <p>Years Experience</p>
+        </div>
+        <div class="trust-item">
+            <h3 class="counter" data-target="500">0</h3>
+            <p>Projects Done</p>
+        </div>
+        <div class="trust-item">
+            <h3>5-Star</h3>
+            <p>Customer Rating</p>
+        </div>
+        <div class="trust-item">
+            <h3>100%</h3>
+            <p>Licensed & Insured</p>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="section about-section">
+        <div class="about-grid">
+            <div class="about-text">
+                <h2 class="section-title reveal-text">Why Choose<br>Spotless Trades?</h2>
+                <p class="reveal-fade">A bathroom is more than just a utility room; it's your personal retreat. At Spotless Trades, we specialize in high-end, custom bathroom renovations across Melbourne.</p>
+                <p class="reveal-fade">From the initial demolition to the final polish of the tapware, our in-house team of licensed tradesmen ensures a flawless, spotless finish on every single project. We don't cut corners, we perfect them.</p>
+                <br>
+                <a href="#quote" style="text-decoration: underline; font-weight: 600; font-family: 'Syne';" class="hover-target reveal-fade">Speak to an Expert →</a>
+            </div>
+            <div class="about-img-wrapper">
+                <img src="https://images.unsplash.com/photo-1620626011761-996317b8d101?q=80&w=1000&auto=format&fit=crop" alt="Bathroom Detail" class="parallax-img">
+            </div>
+        </div>
+    </section>
+
+    <!-- Process Section -->
+    <section class="section process-section">
+        <h2 class="section-title reveal-text" style="text-align: center;">Our Spotless Process</h2>
+        <div class="process-list">
+            <div class="process-item reveal-fade">
+                <div class="process-num">01</div>
+                <div class="process-content">
+                    <h3>Free Consultation & Quote</h3>
+                    <p>We visit your Melbourne home, discuss your vision, take exact measurements, and provide a transparent, no-obligation quote.</p>
+                </div>
+            </div>
+            <div class="process-item reveal-fade">
+                <div class="process-num">02</div>
+                <div class="process-content">
+                    <h3>Custom Design & Selection</h3>
+                    <p>Work with our designers to select premium tiles, fixtures, and layouts that maximize space and reflect your personal style.</p>
+                </div>
+            </div>
+            <div class="process-item reveal-fade">
+                <div class="process-num">03</div>
+                <div class="process-content">
+                    <h3>The Build & Handover</h3>
+                    <p>Our licensed tradesmen execute the renovation efficiently with minimal disruption. We hand over your new bathroom thoroughly cleaned and ready to use.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section class="section">
+        <h2 class="section-title reveal-text">Recent Projects</h2>
+        <div class="gallery-grid">
+            <div class="gallery-item reveal-fade"><img src="https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?q=80&w=800&auto=format&fit=crop" alt="Project 1"></div>
+            <div class="gallery-item reveal-fade"><img src="https://images.unsplash.com/photo-1604709177225-055f99402ea3?q=80&w=800&auto=format&fit=crop" alt="Project 2"></div>
+            <div class="gallery-item reveal-fade"><img src="https://images.unsplash.com/photo-1620626011761-996317b8d101?q=80&w=800&auto=format&fit=crop" alt="Project 3"></div>
+        </div>
+    </section>
+
+    <!-- CTA / Lead Form Section -->
+    <section id="quote" class="cta-section">
+        <div class="cta-text">
+            <h2 class="reveal-text">Ready for a spotless bathroom?</h2>
+            <p class="reveal-fade">Fill out the form to request your free, no-obligation measure and quote. Our Melbourne team will get back to you within 24 hours.</p>
+        </div>
+        <div class="form-container reveal-fade">
+            <!-- Form action can be replaced with Unbounce Webhook -->
+            <form action="#" method="POST">
+                <div class="form-group">
+                    <input type="text" id="name" required>
+                    <label for="name">Full Name</label>
+                </div>
+                <div class="form-group">
+                    <input type="tel" id="phone" required>
+                    <label for="phone">Phone Number</label>
+                </div>
+                <div class="form-group">
+                    <input type="email" id="email" required>
+                    <label for="email">Email Address</label>
+                </div>
+                <div class="form-group">
+                    <textarea id="details" rows="3" required></textarea>
+                    <label for="details">Project Details (Suburb, budget, etc.)</label>
+                </div>
+                <button type="submit" class="submit-btn hover-target">Request My Quote</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Sticky Mobile CTA -->
+    <div class="mobile-sticky-cta">
+        <a href="#quote">Get Your Free Quote</a>
+    </div>
+
+    <!-- GSAP, ScrollTrigger, and Lenis -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.19/bundled/lenis.min.js"></script>
+
+    <script>
+        // 1. Initialize Lenis Smooth Scroll
+        // Configured to let mobile touch-scrolling behave naturally
+        const lenis = new Lenis({
+            duration: 1.2,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), 
+            direction: 'vertical',
+            gestureDirection: 'vertical',
+            smooth: true,
+            smoothTouch: false, // Ensures native feel on phones
+        });
+
+        function raf(time) {
+            lenis.raf(time);
+            requestAnimationFrame(raf);
+        }
+        requestAnimationFrame(raf);
+
+        // Integrate Lenis with GSAP ScrollTrigger
+        gsap.registerPlugin(ScrollTrigger);
+        lenis.on('scroll', ScrollTrigger.update);
+        gsap.ticker.add((time)=>{
+            lenis.raf(time * 1000);
+        });
+        gsap.ticker.lagSmoothing(0);
+
+        // 2. Custom Cursor Logic
+        const cursor = document.querySelector('.cursor');
+        const hoverTargets = document.querySelectorAll('.hover-target, a, button, input, textarea');
+
+        // Only run custom cursor logic if device has a fine pointer (mouse)
+        if (window.matchMedia("(pointer: fine)").matches) {
+            document.addEventListener('mousemove', (e) => {
+                gsap.to(cursor, {
+                    x: e.clientX,
+                    y: e.clientY,
+                    duration: 0.1,
+                    ease: "power2.out"
+                });
+            });
+
+            hoverTargets.forEach(target => {
+                target.addEventListener('mouseenter', () => cursor.classList.add('hovered'));
+                target.addEventListener('mouseleave', () => cursor.classList.remove('hovered'));
+            });
+        }
+
+        // 3. Hero Animations
+        const tl = gsap.timeline();
+        tl.fromTo('.hero-img', {scale: 1.2}, {scale: 1, duration: 2, ease: "power3.out"})
+          .fromTo('.hero h1', {y: 50, opacity: 0}, {y: 0, opacity: 1, duration: 1, ease: "power3.out"}, "-=1.5")
+          .fromTo('.hero p', {y: 30, opacity: 0}, {y: 0, opacity: 1, duration: 1, ease: "power3.out"}, "-=1.2")
+          .fromTo('.hero .btn-primary', {y: 30, opacity: 0}, {y: 0, opacity: 1, duration: 1, ease: "power3.out"}, "-=1");
+
+        // 4. Parallax Images (Safely hidden overflow on mobile via CSS)
+        gsap.utils.toArray('.parallax-img').forEach(img => {
+            gsap.to(img, {
+                yPercent: 15,
+                ease: "none",
+                scrollTrigger: {
+                    trigger: img.parentElement,
+                    start: "top bottom",
+                    end: "bottom top",
+                    scrub: true
+                }
+            });
+        });
+
+        // 5. Scroll Reveal Text (Headings)
+        gsap.utils.toArray('.reveal-text').forEach(text => {
+            gsap.fromTo(text, 
+                { opacity: 0, y: 40 },
+                { 
+                    opacity: 1, y: 0, 
+                    duration: 1, 
+                    ease: "power3.out",
+                    scrollTrigger: {
+                        trigger: text,
+                        start: "top 85%",
+                    }
+                }
+            );
+        });
+
+        // 6. Scroll Reveal Fade (Paragraphs & Items)
+        gsap.utils.toArray('.reveal-fade').forEach(el => {
+            gsap.fromTo(el, 
+                { opacity: 0, y: 20 },
+                { 
+                    opacity: 1, y: 0, 
+                    duration: 0.8, 
+                    ease: "power2.out",
+                    scrollTrigger: {
+                        trigger: el,
+                        start: "top 90%",
+                    }
+                }
+            );
+        });
+
+        // 7. Trust Bar Counter Animation
+        const counters = document.querySelectorAll('.counter');
+        counters.forEach(counter => {
+            const target = +counter.getAttribute('data-target');
+            ScrollTrigger.create({
+                trigger: counter,
+                start: "top 90%",
+                once: true,
+                onEnter: () => {
+                    let count = 0;
+                    const updateCount = setInterval(() => {
+                        const increment = target / 50;
+                        if(count < target) {
+                            count += Math.ceil(increment);
+                            counter.innerText = count + (target === 500 ? '+' : '');
+                        } else {
+                            counter.innerText = target + (target === 500 ? '+' : '');
+                            clearInterval(updateCount);
+                        }
+                    }, 30);
+                }
+            });
+        });
+
+        // 8. Smooth anchor link scrolling via Lenis
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                lenis.scrollTo(this.getAttribute('href'), { offset: -50 });
+            });
+        });
+    </script>
+</body>
+</html>
