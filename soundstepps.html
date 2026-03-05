@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SoundSteps | Early Speech Support at Home</title>
+    <meta name="description" content="A calm, supportive tool designed to help families practice speech sounds at home, bridging the gap during long waiting times for speech support.">
+    
+    <!-- Google Fonts: 'Outfit' for friendly modern geometry, 'Lora' for trustworthy, credible editorial feel -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;1,400&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* CSS Variables & Theme Setup */
+        :root {
+            --bg-base: #F7F5F0; /* Warm Oatmeal */
+            --bg-surface: #FFFFFF;
+            --bg-dark: #232D28; /* Deep Forest/Charcoal */
+            
+            --brand: #D48C70; /* Soft Terracotta */
+            --brand-hover: #b8755b;
+            --brand-light: #F2D8C9;
+            
+            --accent: #A7C4B5; /* Muted Sage */
+            --accent-light: #DDEAE2;
+            
+            --text-main: #1A1F16;
+            --text-muted: #5C665E;
+            
+            --font-display: 'Outfit', sans-serif;
+            --font-serif: 'Lora', serif;
+            
+            --spacing-section: clamp(6rem, 10vw, 12rem);
+            --transition-smooth: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        /* Base & Reset */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: var(--font-display);
+            background-color: var(--bg-base);
+            color: var(--text-main);
+            line-height: 1.5;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            /* Subtle texture overlay */
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.02'/%3E%3C/svg%3E");
+        }
+
+        h1, h2, h3, h4 { font-weight: 500; line-height: 1.1; letter-spacing: -0.02em; }
+        p { margin-bottom: 1.5rem; font-size: clamp(1.125rem, 1.5vw, 1.25rem); font-weight: 300; }
+        a { text-decoration: none; color: inherit; }
+
+        /* Typography Utilities */
+        .text-serif { font-family: var(--font-serif); }
+        .text-brand { color: var(--brand); }
+        
+        /* Layout */
+        .container {
+            width: 100%;
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 0 clamp(1.5rem, 5vw, 4rem);
+        }
+
+        /* Floating Pill Navigation */
+        nav {
+            position: fixed;
+            top: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;
+            width: 90%;
+            max-width: 800px;
+        }
+
+        .nav-inner {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(20px);
+            padding: 0.75rem 0.75rem 0.75rem 2rem;
+            border-radius: 999px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.03);
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .logo {
+            font-size: 1.25rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-main);
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.25rem 2.5rem;
+            border-radius: 999px;
+            font-weight: 500;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            border: none;
+        }
+
+        .btn-primary {
+            background-color: var(--text-main);
+            color: var(--bg-base);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--brand);
+            transform: scale(1.02);
+        }
+
+        .btn-nav {
+            padding: 0.8rem 1.5rem;
+            font-size: 1rem;
+        }
+
+        /* Hero Section (Editorial Split) */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding-top: 8rem;
+            padding-bottom: 4rem;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .hero h1 {
+            font-size: clamp(3rem, 6vw, 5.5rem);
+            margin-bottom: 2rem;
+        }
+
+        .hero-visual {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 4/5;
+            background: var(--accent-light);
+            border-radius: 500px 500px 20px 20px; /* Arch shape */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .hero-visual svg { width: 60%; color: var(--accent); }
+
+        /* Trust Badge under hero */
+        .trust-banner {
+            margin-top: 3rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 0.95rem;
+            color: var(--text-muted);
+        }
+
+        /* The Challenge (Staggered Editorial Layout) */
+        .challenge {
+            padding: var(--spacing-section) 0;
+            background: var(--bg-surface);
+            border-radius: 40px;
+        }
+
+        .challenge-intro {
+            max-width: 800px;
+            margin-bottom: 5rem;
+        }
+
+        .challenge-intro h2 { font-size: clamp(2.5rem, 4vw, 4rem); margin-bottom: 1.5rem; }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 2rem;
+        }
+
+        .stat-block {
+            background: var(--bg-base);
+            padding: 3rem;
+            border-radius: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .stat-block:nth-child(1) { grid-column: 1 / 7; background: var(--brand-light); }
+        .stat-block:nth-child(2) { grid-column: 7 / -1; background: var(--accent-light); }
+        .stat-block:nth-child(3) { grid-column: 2 / 8; }
+        .stat-block:nth-child(4) { grid-column: 8 / -2; }
+
+        .stat-quote {
+            font-family: var(--font-serif);
+            font-size: clamp(1.5rem, 2vw, 2rem);
+            color: var(--text-main);
+            margin-bottom: 2rem;
+            line-height: 1.3;
+        }
+
+        .stat-source {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 600;
+            color: var(--text-muted);
+            border-top: 1px solid rgba(0,0,0,0.1);
+            padding-top: 1rem;
+        }
+
+        /* Our Solution */
+        .solution {
+            padding: var(--spacing-section) 0;
+        }
+
+        .solution-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6rem;
+            align-items: center;
+        }
+
+        .solution h2 { font-size: clamp(2.5rem, 4vw, 3.5rem); margin-bottom: 2rem; }
+        
+        .solution-shape {
+            width: 100%;
+            aspect-ratio: 1;
+            background: var(--brand);
+            border-radius: 50%; /* Circle shape for visual variety */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .solution-shape svg { width: 50%; color: var(--bg-base); }
+
+        /* How it Works (Winding Path) */
+        .works {
+            padding: var(--spacing-section) 0;
+            background: var(--bg-surface);
+        }
+
+        .works-header { text-align: center; max-width: 700px; margin: 0 auto 5rem; }
+        .works-header h2 { font-size: clamp(2.5rem, 4vw, 3.5rem); }
+
+        .steps-wrapper {
+            max-width: 900px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .step-row {
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+            background: var(--bg-base);
+            padding: 2rem 3rem;
+            border-radius: 999px; /* Pill shape for steps */
+        }
+
+        .step-row:nth-child(even) { flex-direction: row-reverse; text-align: right; }
+
+        .step-number {
+            width: 60px;
+            height: 60px;
+            background: var(--accent);
+            color: var(--bg-surface);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-family: var(--font-serif);
+            font-style: italic;
+            flex-shrink: 0;
+        }
+
+        .step-text h4 { font-size: 1.5rem; margin-bottom: 0.25rem; }
+        .step-text p { margin: 0; font-size: 1.1rem; color: var(--text-muted); }
+
+        /* Founder Story (Immersive Dark Section) */
+        .founder {
+            background: var(--bg-dark);
+            color: var(--bg-base);
+            padding: var(--spacing-section) 0;
+            margin: 0 2rem;
+            border-radius: 40px;
+        }
+
+        .founder-grid {
+            display: grid;
+            grid-template-columns: 0.8fr 1.2fr;
+            gap: 6rem;
+            align-items: flex-start;
+        }
+
+        .founder-title h2 { font-size: clamp(2.5rem, 4vw, 4rem); margin-bottom: 2rem; }
+        .founder-title .subtitle { font-family: var(--font-serif); font-size: 1.5rem; font-style: italic; color: var(--accent); }
+
+        .founder-content p { color: #E8EBE9; }
+        
+        .founder-visual {
+            background: rgba(255,255,255,0.05);
+            border-radius: 24px;
+            aspect-ratio: 3/4;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .founder-visual svg { width: 40%; color: var(--accent); opacity: 0.5; }
+
+        /* Signup Form (Split Card Design) */
+        .signup { padding: var(--spacing-section) 0; }
+        
+        .signup-container {
+            background: var(--bg-surface);
+            border-radius: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.02);
+            overflow: hidden;
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+        }
+
+        .signup-sidebar {
+            background: var(--accent-light);
+            padding: 4rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .signup-sidebar h3 { font-size: 2rem; margin-bottom: 2rem; }
+
+        .benefit-list { list-style: none; display: flex; flex-direction: column; gap: 1.5rem; margin-bottom: 3rem; }
+        .benefit-list li { display: flex; align-items: flex-start; gap: 1rem; font-size: 1.1rem; font-weight: 500; }
+        .benefit-list svg { flex-shrink: 0; margin-top: 0.2rem; color: var(--bg-dark); }
+
+        .trust-signal {
+            display: inline-flex;
+            background: var(--bg-surface);
+            padding: 0.75rem 1.5rem;
+            border-radius: 999px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .signup-form-area { padding: 4rem; }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .form-group { display: flex; flex-direction: column; gap: 0.5rem; }
+        .form-group.full { grid-column: 1 / -1; }
+
+        label { font-size: 0.9rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 1rem 0;
+            background: transparent;
+            border: none;
+            border-bottom: 2px solid #E5E8E6;
+            font-family: var(--font-display);
+            font-size: 1.1rem;
+            color: var(--text-main);
+            transition: var(--transition-smooth);
+            border-radius: 0;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-bottom-color: var(--brand);
+        }
+
+        /* Footer */
+        footer {
+            padding: 4rem 0;
+            text-align: center;
+            border-top: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .footer-links { margin: 2rem 0; display: flex; justify-content: center; gap: 2rem; }
+        .footer-links a { color: var(--text-muted); font-weight: 500; transition: color 0.3s; }
+        .footer-links a:hover { color: var(--brand); }
+        .footer-copy { color: var(--text-muted); font-size: 0.9rem; }
+
+        /* Animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 1s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .hero-grid, .solution-grid, .founder-grid, .signup-container { grid-template-columns: 1fr; gap: 4rem; }
+            .stat-block:nth-child(n) { grid-column: 1 / -1; }
+            .hero-visual { max-height: 500px; aspect-ratio: auto; }
+            .founder { margin: 0; border-radius: 0; }
+        }
+
+        @media (max-width: 768px) {
+            .form-grid { grid-template-columns: 1fr; }
+            .step-row, .step-row:nth-child(even) { flex-direction: column; text-align: center; padding: 2rem; border-radius: 24px; }
+            .signup-sidebar, .signup-form-area { padding: 2.5rem 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Pill Navigation -->
+    <nav>
+        <div class="nav-inner">
+            <div class="logo">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 2v20M17 5v14M22 10v4M7 5v14M2 10v4"/>
+                </svg>
+                SoundSteps
+            </div>
+            <a href="#early-access" class="btn btn-primary btn-nav">Join Early Access</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container hero-grid">
+            <div class="hero-content reveal">
+                <h1 class="text-serif">Supporting your child’s speech journey, <span class="text-brand">together.</span></h1>
+                <p>A calm, supportive tool designed to help families practice speech sounds at home, bridging the gap while waiting for or alongside professional support.</p>
+                
+                <div class="trust-banner">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--brand)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                    <span>Parents helping build the future of SoundSteps</span>
+                </div>
+            </div>
+            
+            <div class="hero-visual reveal">
+                <!-- Abstract Arch Graphic -->
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"></path>
+                    <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                    <line x1="12" y1="19" x2="12" y2="22"></line>
+                </svg>
+            </div>
+        </div>
+    </section>
+
+    <!-- The Challenge Parents Face -->
+    <section class="challenge">
+        <div class="container">
+            <div class="challenge-intro reveal">
+                <h2>The challenge families face</h2>
+                <p>Millions of children experience early speech and language challenges, yet accessing support has become increasingly difficult. Long waiting lists leave families unsure how best to help their child at home.</p>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-block reveal">
+                    <div class="stat-quote">"Around 1 in 10 children experience long-term speech, language and communication needs."</div>
+                    <div class="stat-source">Speech and Language UK</div>
+                </div>
+                
+                <div class="stat-block reveal">
+                    <div class="stat-quote">"Over 68,000 children and young people are currently waiting for speech and language therapy support."</div>
+                    <div class="stat-source">NHS / BMJ Reports</div>
+                </div>
+
+                <div class="stat-block reveal">
+                    <div class="stat-quote">"Children with speech difficulties at age five are around six times more likely to struggle with reading at age eleven."</div>
+                    <div class="stat-source">Department for Education</div>
+                </div>
+
+                <div class="stat-block reveal">
+                    <div class="stat-quote">"Early language development is one of the strongest predictors of later academic success."</div>
+                    <div class="stat-source">Education Endowment Foundation</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Our Solution -->
+    <section class="solution container">
+        <div class="solution-grid">
+            <div class="solution-shape reveal">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                    <path d="M12 8v4"></path>
+                    <path d="M12 16h.01"></path>
+                </svg>
+            </div>
+            <div class="solution-content reveal">
+                <h2 class="text-serif">A supportive tool,<br>not a replacement.</h2>
+                <p>Tools designed to support speech practice at home should not replace professional therapy. SoundSteps is built to empower parents to create supportive learning environments.</p>
+                <p>By encouraging regular practice without the overwhelm of clinical jargon or gamification, we help families build communication confidence over time.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- How it Works -->
+    <section class="works">
+        <div class="container">
+            <div class="works-header reveal">
+                <h2>How SoundSteps Works</h2>
+                <p>A simple step flow designed to fit naturally into your family's daily routine.</p>
+            </div>
+            
+            <div class="steps-wrapper">
+                <div class="step-row reveal">
+                    <div class="step-number">1</div>
+                    <div class="step-text">
+                        <h4>Listen to a sound</h4>
+                        <p>Hear clear, guided pronunciations together.</p>
+                    </div>
+                </div>
+                
+                <div class="step-row reveal">
+                    <div class="step-number">2</div>
+                    <div class="step-text">
+                        <h4>Child repeats the sound</h4>
+                        <p>A calm moment for practice without pressure.</p>
+                    </div>
+                </div>
+
+                <div class="step-row reveal">
+                    <div class="step-number">3</div>
+                    <div class="step-text">
+                        <h4>Parent encourages</h4>
+                        <p>Lead the learning with positive reinforcement.</p>
+                    </div>
+                </div>
+
+                <div class="step-row reveal">
+                    <div class="step-number">4</div>
+                    <div class="step-text">
+                        <h4>Recordings are saved</h4>
+                        <p>Track progress securely to celebrate small wins.</p>
+                    </div>
+                </div>
+
+                <div class="step-row reveal">
+                    <div class="step-number">5</div>
+                    <div class="step-text">
+                        <h4>Gentle suggestions</h4>
+                        <p>Receive easy recommendations for next steps.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Founder Story -->
+    <section class="founder">
+        <div class="container founder-grid">
+            <div class="founder-title reveal">
+                <div class="subtitle">Our Mission</div>
+                <h2 class="text-serif">Why we're building SoundSteps</h2>
+                <div class="founder-visual">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="9" cy="7" r="4"></circle>
+                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                    </svg>
+                </div>
+            </div>
+            
+            <div class="founder-content reveal">
+                <p>SoundSteps began from our own family’s experience.</p>
+                <p>Our eldest child struggled with speech development. When he started nursery many people struggled to understand him. Over time his closest friends learned to understand what he was saying, sometimes even helping teachers interpret his speech at school.</p>
+                <p>Although he received some early support, speech development has remained something we continue to work on even now.</p>
+                <p>Our younger child is now facing similar challenges, but accessing support has become even more difficult. Waiting lists are longer, appointments are often cancelled or rearranged, and families can spend long periods unsure how best to help their child practise at home.</p>
+                <p>This experience led us to start building SoundSteps — a simple tool designed to help families practise speech sounds regularly at home while waiting for or alongside professional support.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Early Access Form -->
+    <section id="early-access" class="signup container">
+        <div class="signup-container">
+            
+            <!-- Reassurance / Conversion Tip sidebar -->
+            <div class="signup-sidebar reveal">
+                <h3 class="text-serif">Join the Early Access Programme</h3>
+                
+                <ul class="benefit-list">
+                    <li>
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                        Help shape the future of SoundSteps
+                    </li>
+                    <li>
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                        Support your child's speech practice at home
+                    </li>
+                    <li>
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                        Join other parents looking for practical ways to help
+                    </li>
+                </ul>
+
+                <div>
+                    <span class="trust-signal">Early access group forming now</span>
+                </div>
+            </div>
+
+            <!-- Form Area -->
+            <div class="signup-form-area reveal">
+                <form id="signup-form" onsubmit="handleFormSubmit(event)">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="name">Parent / Carer Name *</label>
+                            <input type="text" id="name" required placeholder="Jane Doe">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email Address *</label>
+                            <input type="email" id="email" required placeholder="jane@example.com">
+                        </div>
+                        <div class="form-group full">
+                            <label for="location">Location *</label>
+                            <input type="text" id="location" required placeholder="City, Region">
+                        </div>
+                        <div class="form-group">
+                            <label for="source">How did you hear about us? *</label>
+                            <select id="source" required>
+                                <option value="" disabled selected>Select an option</option>
+                                <option value="search">Search Engine</option>
+                                <option value="social">Social Media</option>
+                                <option value="friend">Friend / Family</option>
+                                <option value="professional">Healthcare Professional</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="age">Child's Age Range *</label>
+                            <select id="age" required>
+                                <option value="" disabled selected>Select age range</option>
+                                <option value="0-2">0 - 2 years</option>
+                                <option value="3-4">3 - 4 years</option>
+                                <option value="5-6">5 - 6 years</option>
+                                <option value="7+">7+ years</option>
+                            </select>
+                        </div>
+                        <div class="form-group full">
+                            <label for="support_status">Current Support Status *</label>
+                            <select id="support_status" required>
+                                <option value="" disabled selected>Select status</option>
+                                <option value="waiting_nhs">Waiting for NHS support</option>
+                                <option value="receiving_nhs">Receiving NHS support</option>
+                                <option value="receiving_private">Receiving private support</option>
+                                <option value="no_support">Not currently receiving support</option>
+                            </select>
+                        </div>
+                        <div class="form-group full">
+                            <label for="who_for">Who is the app for? *</label>
+                            <input type="text" id="who_for" required placeholder="E.g., My 4-year-old starting school">
+                        </div>
+                        <div class="form-group full">
+                            <label for="concerns">What concerns you most about your child's speech development?</label>
+                            <textarea id="concerns" rows="2" placeholder="Share any specific challenges..."></textarea>
+                        </div>
+                        <div class="form-group full">
+                            <label for="feedback">Would you be open to giving feedback?</label>
+                            <select id="feedback">
+                                <option value="yes">Yes, I'd love to help shape the app</option>
+                                <option value="no">No, just keep me updated</option>
+                            </select>
+                        </div>
+                        <div class="form-group full" style="margin-top: 1rem;">
+                            <button type="submit" class="btn btn-primary">Submit Application</button>
+                        </div>
+                    </div>
+                </form>
+
+                <!-- Success Message -->
+                <div id="success-message" style="display: none; height: 100%; display: none; flex-direction: column; justify-content: center; align-items: center; text-align: center;">
+                    <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="var(--brand)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom: 1.5rem;"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                    <h3 class="text-serif" style="font-size: 2rem; margin-bottom: 1rem;">Thank you!</h3>
+                    <p>Your details have been registered. We'll be in touch soon.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="logo" style="justify-content: center;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 2v20M17 5v14M22 10v4M7 5v14M2 10v4"/>
+                </svg>
+                SoundSteps
+            </div>
+            <div class="footer-links">
+                <a href="#">Contact</a>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms</a>
+            </div>
+            <p class="footer-copy">© 2024 SoundSteps. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript for Scroll Animations & Form -->
+    <script>
+        // Intersection Observer for scroll reveal animations
+        document.addEventListener("DOMContentLoaded", () => {
+            const reveals = document.querySelectorAll(".reveal");
+
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: "0px 0px -50px 0px"
+            };
+
+            const revealOnScroll = new IntersectionObserver((entries, observer) => {
+                entries.forEach((entry, index) => {
+                    if (entry.isIntersecting) {
+                        // Add a slight delay for staggered effect inside grids
+                        setTimeout(() => {
+                            entry.target.classList.add("active");
+                        }, index * 100);
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            reveals.forEach(reveal => revealOnScroll.observe(reveal));
+        });
+
+        // Form submission handling (Mock for MVP)
+        function handleFormSubmit(event) {
+            event.preventDefault();
+            
+            const form = document.getElementById("signup-form");
+            const successMsg = document.getElementById("success-message");
+            
+            form.style.display = "none";
+            successMsg.style.display = "flex";
+            
+            // SEO / Analytics basic integration trigger
+            if(typeof gtag === 'function') {
+                gtag('event', 'sign_up', {
+                    'event_category': 'engagement',
+                    'event_label': 'early_access_form'
+                });
+            }
+        }
+    </script>
+</body>
+</html>

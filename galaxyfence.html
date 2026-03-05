@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galaxy Fence Services | Metro Detroit's Trusted Fence Company</title>
+    <meta name="description" content="Metro Detroit’s Trusted Fence Company Since 1986. Free Estimates, Professional Installation, Lifetime Warranty Options.">
+    
+    <!-- Google Fonts: Montserrat for bold, clean headings; Open Sans for readable body text -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800;900&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* =========================================
+           CSS VARIABLES & RESET
+           ========================================= */
+        :root {
+            --primary: #1E3A8A; /* Trustworthy Deep Blue */
+            --primary-light: #EFF6FF; /* Very light blue background */
+            --accent: #FF6600; /* High-conversion Orange */
+            --accent-hover: #E55B00;
+            --text-dark: #0F172A; /* Slate 900 */
+            --text-gray: #475569; /* Slate 600 */
+            --bg-white: #FFFFFF;
+            --bg-gray: #F8FAFC; /* Slate 50 */
+            --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            --shadow-lg: 0 20px 40px -5px rgba(15, 23, 42, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            color: var(--text-gray);
+            background-color: var(--bg-white);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4, h5 {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--text-dark);
+            line-height: 1.1;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+        }
+
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+        img { max-width: 100%; display: block; }
+
+        /* =========================================
+           TYPOGRAPHY & BUTTONS
+           ========================================= */
+        .text-accent { color: var(--accent); }
+        .text-primary { color: var(--primary); }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.125rem 2.5rem;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+            border-radius: 2px;
+            cursor: pointer;
+            transition: var(--transition);
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .btn-accent {
+            background-color: var(--accent);
+            color: white;
+            box-shadow: 0 10px 20px rgba(255, 102, 0, 0.2);
+        }
+
+        .btn-accent:hover {
+            background-color: var(--accent-hover);
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(255, 102, 0, 0.3);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        /* =========================================
+           URGENCY PROMO BAR
+           ========================================= */
+        .promo-bar {
+            background: var(--accent);
+            color: white;
+            text-align: center;
+            padding: 10px 20px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            position: relative;
+            z-index: 100;
+        }
+        .promo-bar span { font-weight: 400; margin-left: 10px; }
+
+        /* =========================================
+           HEADER & NAVIGATION
+           ========================================= */
+        header {
+            position: fixed;
+            top: 41px; /* Below promo bar */
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 99;
+            transition: var(--transition);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
+        header.scrolled {
+            top: 0;
+            padding: 10px 5%;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .logo img {
+            max-height: 65px; /* Adjust based on user's logo aspect ratio */
+            width: auto;
+            transition: var(--transition);
+        }
+
+        header.scrolled .logo img {
+            max-height: 50px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+        }
+
+        .nav-links a {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            color: var(--text-dark);
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            left: 0; bottom: -5px;
+            width: 0; height: 2px;
+            background: var(--accent);
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover::after { width: 100%; }
+        .nav-links a:hover { color: var(--accent); }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .header-phone {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 800;
+            font-size: 1.1rem;
+            color: var(--primary);
+        }
+        .header-phone i { color: var(--accent); margin-right: 5px; }
+
+        /* =========================================
+           HERO SECTION (Split Layout)
+           ========================================= */
+        .hero {
+            padding: 180px 5% 100px;
+            min-height: 100vh;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5%;
+            align-items: center;
+            background: linear-gradient(135deg, var(--bg-gray) 0%, white 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Decorative background shape */
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -10%; right: -5%;
+            width: 50vw; height: 50vw;
+            background: var(--primary-light);
+            border-radius: 50%;
+            z-index: 0;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-size: clamp(3rem, 5vw, 4.5rem);
+            margin-bottom: 1.5rem;
+            line-height: 1.05;
+        }
+
+        .hero p {
+            font-size: clamp(1.1rem, 1.5vw, 1.3rem);
+            margin-bottom: 2.5rem;
+            max-width: 500px;
+            color: var(--text-gray);
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 3rem;
+        }
+
+        .trust-badges {
+            display: flex;
+            gap: 2rem;
+            border-top: 1px solid #E2E8F0;
+            padding-top: 2rem;
+        }
+
+        .badge {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+            color: var(--text-dark);
+            font-size: 0.9rem;
+        }
+        .badge i { color: var(--accent); font-size: 1.5rem; }
+
+        .hero-image {
+            position: relative;
+            z-index: 2;
+            border-radius: 4px;
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+            height: 70vh;
+        }
+        
+        .hero-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Floating review on hero image */
+        .floating-review {
+            position: absolute;
+            bottom: -30px;
+            left: -30px;
+            background: white;
+            padding: 1.5rem;
+            border-radius: 4px;
+            box-shadow: var(--shadow-lg);
+            max-width: 300px;
+            z-index: 3;
+            border-left: 4px solid var(--accent);
+        }
+        .stars { color: #FFB800; margin-bottom: 5px; font-size: 1.2rem; }
+
+        /* =========================================
+           SECTIONS & GRIDS
+           ========================================= */
+        section { padding: 100px 5%; position: relative; }
+        .section-header { text-align: center; margin-bottom: 4rem; max-width: 700px; margin-left: auto; margin-right: auto; }
+        .section-header h2 { font-size: clamp(2.5rem, 4vw, 3.5rem); margin-bottom: 1rem; }
+        .section-header p { font-size: 1.1rem; }
+
+        .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2.5rem; }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+
+        /* =========================================
+           SERVICES CARDS
+           ========================================= */
+        .service-card {
+            background: white;
+            padding: 3rem 2rem;
+            border: 1px solid #F1F5F9;
+            border-radius: 4px;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 4px;
+            background: var(--primary);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: var(--transition);
+        }
+
+        .service-card:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-10px);
+            border-color: transparent;
+        }
+
+        .service-card:hover::before { transform: scaleX(1); }
+
+        .icon-wrapper {
+            width: 70px; height: 70px;
+            background: var(--primary-light);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            transition: var(--transition);
+        }
+
+        .service-card:hover .icon-wrapper { background: var(--primary); color: white; }
+        .service-card h3 { font-size: 1.5rem; margin-bottom: 1rem; }
+        
+        /* =========================================
+           DISCOUNTS SECTION (Overlapping UI)
+           ========================================= */
+        .discounts-section { background: var(--primary); color: white; padding: 120px 5%; margin-top: 50px;}
+        .discounts-section h2 { color: white; }
+        
+        .discount-card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 2rem;
+            border-radius: 4px;
+            backdrop-filter: blur(10px);
+            transition: var(--transition);
+        }
+        .discount-card:hover { background: rgba(255,255,255,0.1); transform: translateY(-5px); }
+        .discount-card i { font-size: 2.5rem; color: var(--accent); margin-bottom: 1rem; display: block; }
+        .discount-card h3 { color: white; font-size: 1.3rem; margin-bottom: 0.5rem; }
+
+        /* =========================================
+           ABOUT & IMAGE MASKING
+           ========================================= */
+        .img-mask {
+            position: relative;
+            padding-bottom: 110%; /* Aspect ratio */
+        }
+        .img-mask img {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+        .img-mask::after {
+            content: '';
+            position: absolute;
+            bottom: -20px; right: -20px;
+            width: 60%; height: 60%;
+            background: var(--accent);
+            z-index: -1;
+            border-radius: 4px;
+        }
+
+        .check-list li {
+            display: flex; align-items: flex-start; gap: 15px;
+            margin-bottom: 1.5rem; font-size: 1.1rem;
+        }
+        .check-list i {
+            color: var(--accent);
+            background: #FFF1E6;
+            width: 30px; height: 30px;
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 50%; font-size: 0.9rem; margin-top: 3px;
+        }
+
+        /* =========================================
+           AWARDS MARQUEE
+           ========================================= */
+        .marquee-container {
+            background: var(--bg-gray);
+            padding: 3rem 0;
+            overflow: hidden;
+            border-top: 1px solid #E2E8F0;
+            border-bottom: 1px solid #E2E8F0;
+        }
+        .marquee {
+            display: flex;
+            width: max-content;
+            animation: scroll 35s linear infinite;
+        }
+        .marquee-item {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--text-dark);
+            margin: 0 3rem;
+            display: flex; align-items: center; gap: 15px;
+        }
+        .marquee-item img { height: 40px; } /* For partner logos if needed */
+        .marquee-item i { color: var(--accent); }
+
+        @keyframes scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* =========================================
+           FOOTER
+           ========================================= */
+        footer {
+            background: var(--text-dark);
+            color: #94A3B8;
+            padding: 80px 5% 30px;
+        }
+        .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1.5fr; gap: 4rem; margin-bottom: 4rem; }
+        .footer-logo img { max-height: 70px; filter: brightness(0) invert(1); margin-bottom: 1.5rem; }
+        .footer h4 { color: white; font-size: 1.2rem; margin-bottom: 1.5rem; }
+        .footer ul li { margin-bottom: 0.8rem; }
+        .footer ul li a { transition: var(--transition); }
+        .footer ul li a:hover { color: var(--accent); padding-left: 5px; }
+        .footer-contact li { display: flex; align-items: flex-start; gap: 15px; margin-bottom: 1rem; }
+        .footer-contact i { color: var(--accent); margin-top: 5px; }
+        .copyright { text-align: center; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 2rem; font-size: 0.9rem; }
+
+        /* =========================================
+           FLOATING CTA & MODAL (HIGH CONVERSION)
+           ========================================= */
+        .floating-cta {
+            position: fixed; bottom: 30px; right: 30px;
+            background: var(--accent); color: white;
+            width: 70px; height: 70px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.8rem; box-shadow: 0 10px 30px rgba(255, 102, 0, 0.4);
+            cursor: pointer; z-index: 100; transition: var(--transition);
+            animation: pulse 2s infinite;
+        }
+        .floating-cta:hover { transform: scale(1.1) rotate(10deg); }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(255, 102, 0, 0.6); }
+            70% { box-shadow: 0 0 0 20px rgba(255, 102, 0, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 102, 0, 0); }
+        }
+
+        /* Glassmorphism Modal */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(8px);
+            z-index: 999; display: flex; align-items: center; justify-content: center;
+            opacity: 0; pointer-events: none; transition: var(--transition);
+        }
+        .modal-overlay.active { opacity: 1; pointer-events: all; }
+        
+        .modal-content {
+            background: white; padding: 3rem; border-radius: 4px;
+            width: 90%; max-width: 550px; position: relative;
+            transform: translateY(50px); transition: var(--transition);
+            box-shadow: var(--shadow-lg);
+        }
+        .modal-overlay.active .modal-content { transform: translateY(0); }
+        
+        .close-modal {
+            position: absolute; top: 20px; right: 25px;
+            font-size: 1.5rem; cursor: pointer; color: var(--text-gray);
+            transition: var(--transition);
+        }
+        .close-modal:hover { color: var(--accent); transform: rotate(90deg); }
+        
+        .form-group { margin-bottom: 1.5rem; }
+        .form-group label { display: block; margin-bottom: 0.5rem; font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--text-dark);}
+        .form-control {
+            width: 100%; padding: 1rem; border: 1px solid #CBD5E1;
+            border-radius: 2px; font-family: inherit; transition: var(--transition);
+            background: var(--bg-gray);
+        }
+        .form-control:focus { outline: none; border-color: var(--primary); background: white; box-shadow: 0 0 0 3px var(--primary-light); }
+
+        /* =========================================
+           SCROLL ANIMATIONS
+           ========================================= */
+        .reveal { opacity: 0; transform: translateY(30px); transition: 0.8s all cubic-bezier(0.16, 1, 0.3, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        /* =========================================
+           RESPONSIVE DESIGN
+           ========================================= */
+        .mobile-toggle { display: none; font-size: 1.8rem; color: var(--text-dark); cursor: pointer; }
+        
+        @media (max-width: 1024px) {
+            .hero { grid-template-columns: 1fr; padding-top: 150px; text-align: center; }
+            .hero p { margin: 0 auto 2.5rem; }
+            .hero-buttons { justify-content: center; }
+            .trust-badges { justify-content: center; flex-wrap: wrap; }
+            .hero-image { display: none; /* Hide complex image on mobile for immediate CTA focus */ }
+            .grid-2 { grid-template-columns: 1fr; }
+            .footer-grid { grid-template-columns: 1fr 1fr; }
+            .floating-review { display: none; }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links, .header-actions .btn { display: none; }
+            .mobile-toggle { display: block; }
+            .promo-bar { font-size: 0.8rem; }
+            section { padding: 60px 5%; }
+            .footer-grid { grid-template-columns: 1fr; }
+            .img-mask::after { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Urgency Promo Bar -->
+    <div class="promo-bar">
+        SPRING INTO SAVINGS: Enjoy 10% OFF & Priority Installation <span>Book NOW before spring!</span>
+    </div>
+
+    <!-- Header -->
+    <header id="header">
+        <a href="#" class="logo">
+            <!-- Using the user's provided logo with srcset for performance -->
+            <img src="https://speedy.uenicdn.com/930f539d-1550-470a-a556-141e7abb9ce1/n600_280a/image/upload/v1738845082/business/926ee9d8fec844fd8845ad80ed35abda.png" 
+                 srcset="https://speedy.uenicdn.com/930f539d-1550-470a-a556-141e7abb9ce1/n300_140a/image/upload/v1738845082/business/926ee9d8fec844fd8845ad80ed35abda.png 300w,
+                         https://speedy.uenicdn.com/930f539d-1550-470a-a556-141e7abb9ce1/n600_280a/image/upload/v1738845082/business/926ee9d8fec844fd8845ad80ed35abda.png 600w,
+                         https://speedy.uenicdn.com/930f539d-1550-470a-a556-141e7abb9ce1/n900_420a/image/upload/v1738845082/business/926ee9d8fec844fd8845ad80ed35abda.png 900w"
+                 sizes="(max-width: 600px) 300px, (max-width: 900px) 600px, 900px"
+                 alt="Galaxy Fence Services Logo">
+        </a>
+        
+        <ul class="nav-links">
+            <li><a href="#services">Services</a></li>
+            <li><a href="#portfolio">Portfolio</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#discounts">Discounts</a></li>
+            <li><a href="#financing">Financing</a></li>
+        </ul>
+
+        <div class="header-actions">
+            <a href="tel:8006941342" class="header-phone"><i class="fa-solid fa-phone"></i> (800) 694-1342</a>
+            <button class="btn btn-accent" onclick="toggleModal()">Get Free Quote</button>
+            <i class="fa-solid fa-bars mobile-toggle"></i>
+        </div>
+    </header>
+
+    <!-- Split Hero Section -->
+    <section class="hero">
+        <div class="hero-content reveal">
+            <h1>Metro Detroit’s <span class="text-primary">Trusted Fence Company</span> Since 1986.</h1>
+            <p>We don't just build fences—we build security, privacy, and curb appeal. Get professional installation backed by lifetime warranty options.</p>
+            
+            <div class="hero-buttons">
+                <button class="btn btn-accent" onclick="toggleModal()">Get Your Free Estimate</button>
+                <a href="#services" class="btn btn-outline">Explore Our Work</a>
+            </div>
+
+            <div class="trust-badges">
+                <div class="badge"><i class="fa-solid fa-shield-halved"></i> 38+ Years Experience</div>
+                <div class="badge"><i class="fa-solid fa-award"></i> AFA Members</div>
+                <div class="badge"><i class="fa-solid fa-star"></i> 5-Star Rated</div>
+            </div>
+        </div>
+
+        <div class="hero-image reveal" style="transition-delay: 0.2s;">
+            <!-- Placeholder for a high-quality finished fence picture -->
+            <img src="https://images.unsplash.com/photo-1596406540307-e836df483984?q=80&w=2070&auto=format&fit=crop" alt="Beautiful Vinyl Fence Installation">
+            
+            <div class="floating-review">
+                <div class="stars">★★★★★</div>
+                <p style="font-size: 0.9rem; color: var(--text-dark); margin:0;"><em>"Galaxy Fence installed our vinyl fence in 2 days. Excellent work."</em></p>
+                <strong style="font-family: 'Montserrat'; font-size: 0.8rem; display: block; margin-top: 5px;">- John, Livonia</strong>
+            </div>
+        </div>
+    </section>
+
+    <!-- Awards Marquee -->
+    <div class="marquee-container reveal">
+        <div class="marquee">
+            <div class="marquee-item"><i class="fa-solid fa-trophy"></i> Best of Northville 2020</div>
+            <div class="marquee-item"><i class="fa-solid fa-check-circle"></i> Best of Livonia</div>
+            <div class="marquee-item"><i class="fa-solid fa-house"></i> Home Advisor Approved</div>
+            <div class="marquee-item"><i class="fa-solid fa-star"></i> Angie's List</div>
+            <div class="marquee-item"><i class="fa-solid fa-certificate"></i> BBB Accredited</div>
+            <!-- Duplicated for infinite loop -->
+            <div class="marquee-item"><i class="fa-solid fa-trophy"></i> Best of Northville 2020</div>
+            <div class="marquee-item"><i class="fa-solid fa-check-circle"></i> Best of Livonia</div>
+            <div class="marquee-item"><i class="fa-solid fa-house"></i> Home Advisor Approved</div>
+            <div class="marquee-item"><i class="fa-solid fa-star"></i> Angie's List</div>
+            <div class="marquee-item"><i class="fa-solid fa-certificate"></i> BBB Accredited</div>
+        </div>
+    </div>
+
+    <!-- Services Section -->
+    <section id="services" style="background: var(--bg-gray);">
+        <div class="section-header reveal">
+            <h2>Premium Fencing Solutions</h2>
+            <p>From residential backyards to large-scale commercial perimeters, we install top-tier materials engineered to last the harsh Michigan seasons.</p>
+        </div>
+
+        <div class="grid-3 reveal">
+            <div class="service-card">
+                <div class="icon-wrapper"><i class="fa-solid fa-border-all"></i></div>
+                <h3>Vinyl Fencing</h3>
+                <p>Maintenance-free, durable, and beautiful. Perfect for privacy and modern curb appeal. Comes with extensive warranty options.</p>
+            </div>
+            <div class="service-card">
+                <div class="icon-wrapper"><i class="fa-solid fa-tree"></i></div>
+                <h3>Wood Fencing</h3>
+                <p>Classic aesthetic with custom designs. We use premium grade lumber for lasting strength and traditional charm.</p>
+            </div>
+            <div class="service-card">
+                <div class="icon-wrapper"><i class="fa-solid fa-link"></i></div>
+                <h3>Chain Link & Commercial</h3>
+                <p>High-security, cost-effective solutions for properties, athletic fields, and commercial facilities.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- About / Why Choose Us -->
+    <section id="about">
+        <div class="grid-2">
+            <div class="img-mask reveal">
+                <!-- Placeholder for crew/truck picture -->
+                <img src="https://images.unsplash.com/photo-1611089679621-3e4b7ba1b8eb?q=80&w=2070&auto=format&fit=crop" alt="Galaxy Fence Team working">
+            </div>
+            <div class="reveal">
+                <h2 style="font-size: clamp(2rem, 3vw, 3rem); margin-bottom: 1.5rem;">There Is A Difference With <span class="text-primary">Galaxy Fence.</span></h2>
+                <p style="margin-bottom: 2rem; font-size: 1.1rem;">With over 38 years of installation experience since 1986, we have a proven track record of delivering high-quality fencing. As an active member of the American Fence Association, we stay updated with industry standards and best practices.</p>
+                
+                <ul class="check-list">
+                    <li><i class="fa-solid fa-check"></i> <div><strong>Commitment to Quality:</strong> Installations meet or exceed AFA quality standards, ensuring long-lasting solutions.</div></li>
+                    <li><i class="fa-solid fa-check"></i> <div><strong>Comprehensive Support:</strong> Free estimates, custom design assistance, and 24-hour emergency service.</div></li>
+                    <li><i class="fa-solid fa-check"></i> <div><strong>Unmatched Warranties:</strong> Backed by a 2-year written installation warranty, plus material warranties up to a lifetime guarantee.</div></li>
+                </ul>
+
+                <button class="btn btn-accent" style="margin-top: 1rem;" onclick="toggleModal()">Request a Free Estimate</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Discounts Section -->
+    <section id="discounts" class="discounts-section">
+        <div class="grid-2">
+            <div class="reveal">
+                <h2>Community Discounts</h2>
+                <p style="font-size: 1.1rem; margin-top: 1rem; color: #CBD5E1; max-width: 500px;">
+                    We deeply appreciate the brave service of our military personnel and first responders, as well as the wisdom of our senior citizens. To show our gratitude, we proudly offer exclusive discounts.
+                </p>
+            </div>
+            <div class="grid-3 reveal" style="gap: 1.5rem; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+                <div class="discount-card">
+                    <i class="fa-solid fa-medal"></i>
+                    <h3>Military</h3>
+                    <p style="font-size: 0.9rem; color: #94A3B8;">Active duty, veterans, and reservists</p>
+                </div>
+                <div class="discount-card">
+                    <i class="fa-solid fa-truck-medical"></i>
+                    <h3>First Responders</h3>
+                    <p style="font-size: 0.9rem; color: #94A3B8;">Police, firefighters, EMTs, & paramedics</p>
+                </div>
+                <div class="discount-card">
+                    <i class="fa-solid fa-hands-holding-circle"></i>
+                    <h3>Seniors</h3>
+                    <p style="font-size: 0.9rem; color: #94A3B8;">Individuals aged 65 and older</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-grid">
+            <div>
+                <a href="#" class="footer-logo">
+                    <!-- Footer Logo (Inverted to White via CSS) -->
+                    <img src="https://speedy.uenicdn.com/930f539d-1550-470a-a556-141e7abb9ce1/n600_280a/image/upload/v1738845082/business/926ee9d8fec844fd8845ad80ed35abda.png" alt="Galaxy Fence Logo">
+                </a>
+                <p style="margin-bottom: 1.5rem;">Metro Detroit’s trusted fence installation experts since 1986. Quality, integrity, and durability in every project.</p>
+                <div style="display: flex; gap: 1rem; font-size: 1.5rem; color: white;">
+                    <a href="#" style="transition: var(--transition);"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="#" style="transition: var(--transition);"><i class="fa-brands fa-yelp"></i></a>
+                    <a href="#" style="transition: var(--transition);"><i class="fa-brands fa-google"></i></a>
+                </div>
+            </div>
+            
+            <div>
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="#about">About Us</a></li>
+                    <li><a href="#portfolio">Our Portfolio</a></li>
+                    <li><a href="#team">The Team</a></li>
+                    <li><a href="#faq">FAQ</a></li>
+                    <li><a href="#articles">Articles</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h4>Customer Service</h4>
+                <ul>
+                    <li><a href="#services">Offerings</a></li>
+                    <li><a href="#discounts">Discounts</a></li>
+                    <li><a href="#financing">Financing</a></li>
+                    <li><a href="#brochures">Brochures</a></li>
+                    <li><a href="#" onclick="toggleModal()">Get Free Quote</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h4>Contact Us</h4>
+                <ul class="footer-contact">
+                    <li><i class="fa-solid fa-location-dot"></i> Plymouth, MI</li>
+                    <li><i class="fa-solid fa-phone"></i> <div><a href="tel:8006941342">(800) 694-1342</a><br><a href="tel:8102412900">(810) 241-2900</a></div></li>
+                    <li><i class="fa-solid fa-envelope"></i> <a href="mailto:bfenceman@aol.com">bfenceman@aol.com</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2024 Galaxy Fence Services. All Rights Reserved. | <a href="#">Merchant Policies</a> | <a href="#">Legal Notice</a></p>
+        </div>
+    </footer>
+
+    <!-- High-Converting Floating CTA -->
+    <div class="floating-cta" onclick="toggleModal()" title="Get Free Quote">
+        <i class="fa-solid fa-clipboard-list"></i>
+    </div>
+
+    <!-- Lead Capture Modal Popup -->
+    <div class="modal-overlay" id="quoteModal">
+        <div class="modal-content">
+            <i class="fa-solid fa-xmark close-modal" onclick="toggleModal()"></i>
+            <h3 style="font-size: 2rem; margin-bottom: 0.5rem; color: var(--primary);">Get Your Free Quote</h3>
+            <p style="margin-bottom: 2rem; color: var(--text-gray);">Fill out the form below and our team will contact you shortly with an estimate.</p>
+            
+            <form action="#" method="POST" onsubmit="event.preventDefault(); alert('Form submitted! Connecting this to backend shortly.'); toggleModal();">
+                <div class="form-group">
+                    <label>Full Name *</label>
+                    <input type="text" class="form-control" required placeholder="John Doe">
+                </div>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="form-group">
+                        <label>Phone Number *</label>
+                        <input type="tel" class="form-control" required placeholder="(555) 555-5555">
+                    </div>
+                    <div class="form-group">
+                        <label>City *</label>
+                        <input type="text" class="form-control" required placeholder="e.g. Plymouth">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Fence Type</label>
+                    <select class="form-control">
+                        <option>Vinyl Fencing</option>
+                        <option>Wood Fencing</option>
+                        <option>Chain Link</option>
+                        <option>Commercial Fencing</option>
+                        <option>Not Sure Yet</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Upload Photo of Yard (Optional but helpful)</label>
+                    <input type="file" class="form-control" accept="image/*" style="background: white;">
+                </div>
+                
+                <button type="submit" class="btn btn-accent" style="width: 100%; margin-top: 1rem;">Submit Request</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Interactions Scripts -->
+    <script>
+        // Sticky Header Effect
+        const header = document.getElementById('header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 40) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Scroll Reveal Animation (Intersection Observer)
+        const revealElements = document.querySelectorAll('.reveal');
+        const revealObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if(entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target); 
+                }
+            });
+        }, {
+            root: null,
+            threshold: 0.1, 
+            rootMargin: "0px 0px -50px 0px"
+        });
+
+        revealElements.forEach(el => revealObserver.observe(el));
+
+        // Modal Toggle Logic (Lead Capture)
+        const modal = document.getElementById('quoteModal');
+        
+        function toggleModal() {
+            modal.classList.toggle('active');
+            if(modal.classList.contains('active')) {
+                document.body.style.overflow = 'hidden'; // Stop background scrolling
+            } else {
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        // Close modal if user clicks the blurred background overlay
+        modal.addEventListener('click', (e) => {
+            if(e.target === modal) {
+                toggleModal();
+            }
+        });
+    </script>
+</body>
+</html>
