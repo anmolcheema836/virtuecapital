@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Koeltoonbanken | Horecagemak Redesign</title>
+    
+    <!-- Modern Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+
+    <style>
+        /* --- CSS VARIABLES --- */
+        :root {
+            --primary: #0F4C81; /* Deep professional corporate blue */
+            --primary-hover: #0a355c;
+            --accent: #E85D04; /* Energizing accent for CTAs/Badges */
+            --accent-hover: #cc5203;
+            
+            --bg-body: #F8FAFC; 
+            --bg-card: #FFFFFF;
+            --bg-element: #F1F5F9;
+            --bg-footer: #0B1120;
+            
+            --text-main: #0F172A;
+            --text-muted: #64748B;
+            --text-light: #94A3B8;
+            
+            --border-light: #E2E8F0;
+            --border-focus: #CBD5E1;
+            
+            --radius-sm: 6px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            
+            --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(15, 23, 42, 0.05), 0 2px 4px -2px rgba(15, 23, 42, 0.05);
+            --shadow-hover: 0 20px 25px -5px rgba(15, 23, 42, 0.05), 0 8px 10px -6px rgba(15, 23, 42, 0.05);
+            
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            
+            --font-main: 'Inter', sans-serif;
+            --font-heading: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        /* --- RESET & BASICS --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: var(--font-main); background-color: var(--bg-body); color: var(--text-main); line-height: 1.5; -webkit-font-smoothing: antialiased; }
+        a { text-decoration: none; color: inherit; transition: var(--transition); }
+        ul { list-style: none; }
+        button, input, select { font-family: inherit; outline: none; border: none; background: none; }
+        button { cursor: pointer; }
+
+        .container { max-width: 1440px; margin: 0 auto; padding: 0 24px; }
+
+        /* --- TOP BAR & HEADER --- */
+        .top-bar { background: var(--primary); color: white; font-size: 13px; padding: 8px 0; font-weight: 500; }
+        .top-bar .container { display: flex; justify-content: space-between; align-items: center; }
+        .top-bar-items { display: flex; gap: 24px; }
+        .top-bar-items span { display: flex; align-items: center; gap: 6px; }
+        
+        .main-header { background: #fff; border-bottom: 1px solid var(--border-light); position: sticky; top: 0; z-index: 100; box-shadow: var(--shadow-sm); }
+        .main-header .container { display: flex; justify-content: space-between; align-items: center; height: 80px; }
+        .logo img { height: 80px; width: auto; }
+        
+        .search-bar { flex-grow: 1; max-width: 600px; margin: 0 48px; position: relative; }
+        .search-bar input { width: 100%; padding: 12px 20px 12px 48px; background: var(--bg-element); border: 1px solid transparent; border-radius: 40px; font-size: 15px; transition: var(--transition); }
+        .search-bar input:focus { border-color: var(--primary); background: #fff; box-shadow: 0 0 0 4px rgba(15, 76, 129, 0.1); }
+        .search-bar i { position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 20px; }
+        
+        .header-actions { display: flex; gap: 24px; align-items: center; }
+        .action-icon { display: flex; flex-direction: column; align-items: center; gap: 4px; color: var(--text-main); font-size: 12px; font-weight: 600; position: relative;}
+        .action-icon i { font-size: 24px; color: var(--text-main); }
+        .cart-badge { position: absolute; top: -4px; right: -8px; background: var(--accent); color: white; font-size: 11px; font-weight: 700; height: 18px; min-width: 18px; border-radius: 9px; display: flex; align-items: center; justify-content: center; padding: 0 4px; }
+
+        /* --- BREADCRUMBS --- */
+        .breadcrumbs { padding: 24px 0 16px; font-size: 13px; color: var(--text-muted); display: flex; align-items: center; gap: 8px; }
+        .breadcrumbs a:hover { color: var(--primary); }
+        .breadcrumbs i { font-size: 14px; color: var(--text-light); }
+        .breadcrumbs span { color: var(--text-main); font-weight: 500; }
+
+        /* --- PAGE HEADER --- */
+        .page-header { padding: 16px 0 32px; display: flex; justify-content: space-between; align-items: flex-end; }
+        .page-header h1 { font-family: var(--font-heading); font-size: 32px; font-weight: 800; letter-spacing: -0.5px; color: var(--text-main); }
+        .product-count { color: var(--text-muted); font-size: 15px; margin-top: 8px; display: block; font-weight: 500; }
+        
+        .sort-control { display: flex; align-items: center; gap: 12px; }
+        .sort-control label { font-size: 14px; color: var(--text-muted); font-weight: 500; }
+        .custom-select { position: relative; background: #fff; border: 1px solid var(--border-light); border-radius: var(--radius-sm); padding: 10px 40px 10px 16px; font-size: 14px; font-weight: 500; cursor: pointer; box-shadow: var(--shadow-sm); appearance: none; }
+        .sort-wrapper { position: relative; }
+        .sort-wrapper i { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); pointer-events: none; color: var(--text-muted); }
+
+        /* --- LAYOUT --- */
+        .shop-layout { display: flex; gap: 40px; padding-bottom: 80px; align-items: flex-start;}
+
+        /* --- SIDEBAR FILTERS --- */
+        .sidebar { width: 280px; flex-shrink: 0; position: sticky; top: 100px; background: #fff; border-radius: var(--radius-md); padding: 24px; border: 1px solid var(--border-light); box-shadow: var(--shadow-sm);}
+        .filter-group { border-bottom: 1px solid var(--border-light); padding: 20px 0; }
+        .filter-group:first-child { padding-top: 0; }
+        .filter-group:last-child { border-bottom: none; padding-bottom: 0; }
+        .filter-title { display: flex; justify-content: space-between; align-items: center; cursor: pointer; font-family: var(--font-heading); font-weight: 600; font-size: 16px; color: var(--text-main); user-select: none; }
+        .filter-title i { font-size: 20px; transition: transform 0.3s; color: var(--text-muted);}
+        .filter-content { margin-top: 16px; display: flex; flex-direction: column; gap: 12px; }
+        
+        .checkbox-label { display: flex; align-items: center; gap: 12px; cursor: pointer; font-size: 14px; color: var(--text-main); transition: var(--transition); }
+        .checkbox-label:hover { color: var(--primary); }
+        .checkbox-label input { display: none; }
+        .checkbox-box { width: 20px; height: 20px; border: 1px solid var(--border-focus); border-radius: 4px; display: flex; align-items: center; justify-content: center; background: #fff; transition: var(--transition); flex-shrink: 0; }
+        .checkbox-label input:checked + .checkbox-box { background: var(--primary); border-color: var(--primary); }
+        .checkbox-label input:checked + .checkbox-box::after { content: '\EB7B'; font-family: 'remixicon'; color: white; font-size: 14px; }
+        .filter-count { margin-left: auto; color: var(--text-light); font-size: 13px; }
+
+        /* --- PRODUCT GRID --- */
+        .product-grid { flex-grow: 1; display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+
+        /* --- PRODUCT CARD --- */
+        .product-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-light);
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: var(--transition);
+            position: relative;
+            text-decoration: none;
+        }
+        
+        .product-card:hover {
+            box-shadow: var(--shadow-hover);
+            border-color: var(--border-focus);
+            transform: translateY(-4px);
+        }
+
+        .product-image-container {
+            position: relative;
+            aspect-ratio: 4/3;
+            background: #fff;
+            padding: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-bottom: 1px solid var(--bg-body);
+        }
+        
+        .product-image-container img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            mix-blend-mode: darken; 
+            transition: transform 0.5s ease;
+        }
+        
+        .product-card:hover .product-image-container img {
+            transform: scale(1.05);
+        }
+
+        .badges { position: absolute; top: 12px; left: 12px; display: flex; flex-direction: column; gap: 8px; z-index: 2; }
+        .badge { padding: 4px 10px; border-radius: 4px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+        .badge-sale { background: var(--accent); color: white; }
+
+        .product-info {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .product-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .product-brand {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            font-weight: 700;
+        }
+
+        .product-type {
+            font-size: 12px;
+            color: var(--primary);
+            background: rgba(15, 76, 129, 0.1);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .product-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-main);
+            line-height: 1.4;
+            margin-bottom: 16px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            height: 42px; 
+        }
+
+        .product-delivery {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #16A34A; 
+            margin-bottom: 16px;
+        }
+        .product-delivery i { font-size: 16px; }
+        .product-delivery.delayed { color: var(--accent); }
+        .product-delivery.slow { color: var(--text-muted); }
+
+        .product-bottom {
+            margin-top: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            padding-top: 16px;
+            border-top: 1px solid var(--bg-element);
+        }
+
+        .price-block { display: flex; flex-direction: column; }
+        
+        .price-old {
+            font-size: 13px;
+            color: var(--text-light);
+            text-decoration: line-through;
+            font-weight: 500;
+            line-height: 1;
+            margin-bottom: 4px;
+        }
+        
+        .price-new {
+            font-family: var(--font-heading);
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--text-main);
+            line-height: 1;
+        }
+        
+        .price-tax {
+            font-size: 11px;
+            color: var(--text-muted);
+            font-weight: 500;
+            margin-top: 4px;
+        }
+
+        .btn-add {
+            width: 44px;
+            height: 44px;
+            border-radius: var(--radius-sm);
+            background: var(--bg-body);
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            transition: var(--transition);
+            border: 1px solid var(--border-focus);
+        }
+        
+        .product-card:hover .btn-add {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        /* Empty State */
+        .no-results { grid-column: 1 / -1; padding: 60px; text-align: center; background: #fff; border-radius: var(--radius-md); color: var(--text-muted); }
+        .no-results i { font-size: 48px; color: var(--border-focus); margin-bottom: 16px; display: block; }
+
+        /* --- MODERN FOOTER --- */
+        .main-footer { background-color: var(--bg-footer); color: #F8FAFC; padding-top: 60px; margin-top: 40px; font-family: var(--font-main); }
+        
+        /* Newsletter Strip */
+        .footer-newsletter { border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 40px; margin-bottom: 40px; display: flex; justify-content: space-between; align-items: center; }
+        .newsletter-text h3 { font-family: var(--font-heading); font-size: 24px; font-weight: 700; margin-bottom: 8px; color: white;}
+        .newsletter-text p { color: #94A3B8; font-size: 14px; }
+        .newsletter-form { display: flex; gap: 12px; width: 100%; max-width: 450px; }
+        .newsletter-form input { flex-grow: 1; padding: 14px 20px; border-radius: var(--radius-sm); background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; font-size: 14px; }
+        .newsletter-form input:focus { border-color: var(--primary); background: rgba(255,255,255,0.1); }
+        .newsletter-form button { background: var(--primary); color: white; padding: 0 24px; border-radius: var(--radius-sm); font-weight: 600; transition: var(--transition); }
+        .newsletter-form button:hover { background: var(--primary-hover); }
+
+        /* Links Grid */
+        .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; padding-bottom: 60px; }
+        .footer-col h4 { font-family: var(--font-heading); font-size: 16px; font-weight: 700; color: white; margin-bottom: 24px; }
+        .footer-col ul { display: flex; flex-direction: column; gap: 12px; }
+        .footer-col a { color: #94A3B8; font-size: 14px; transition: color 0.2s; }
+        .footer-col a:hover { color: white; }
+        
+        .footer-contact-info { display: flex; flex-direction: column; gap: 16px; }
+        .footer-contact-item { display: flex; align-items: flex-start; gap: 12px; color: #94A3B8; font-size: 14px; }
+        .footer-contact-item i { font-size: 18px; color: var(--primary); }
+        
+        /* Bottom Bar */
+        .footer-bottom { background-color: #050810; padding: 24px 0; border-top: 1px solid rgba(255,255,255,0.05); }
+        .footer-bottom .container { display: flex; justify-content: space-between; align-items: center; }
+        .copyright { color: #64748B; font-size: 13px; }
+        .payment-methods { display: flex; gap: 12px; align-items: center; }
+        .payment-methods img { height: 24px; opacity: 0.6; filter: grayscale(100%); transition: var(--transition); }
+        .payment-methods img:hover { opacity: 1; filter: grayscale(0%); }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 1200px) {
+            .product-grid { grid-template-columns: repeat(2, 1fr); }
+            .footer-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 992px) {
+            .shop-layout { flex-direction: column; }
+            .sidebar { width: 100%; position: static; }
+            .page-header { flex-direction: column; align-items: flex-start; gap: 16px; }
+            .footer-newsletter { flex-direction: column; align-items: flex-start; gap: 24px; }
+        }
+        @media (max-width: 640px) {
+            .product-grid { grid-template-columns: 1fr; }
+            .top-bar-items span.hide-mob { display: none; }
+            .footer-grid { grid-template-columns: 1fr; }
+            .footer-bottom .container { flex-direction: column; gap: 16px; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Top bar -->
+    <div class="top-bar">
+        <div class="container">
+            <div class="top-bar-items">
+                <span><i class="ri-check-double-line"></i> Gratis verzending v.a €75</span>
+                <span class="hide-mob"><i class="ri-wallet-3-line"></i> Ook achteraf betalen</span>
+                <span class="hide-mob"><i class="ri-thumb-up-line"></i> Altijd de laagste prijs</span>
+            </div>
+            <div class="top-bar-items">
+                <span><i class="ri-customer-service-2-line"></i> 085 - 0606072</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Header -->
+    <header class="main-header">
+        <div class="container">
+            <a href="#" class="logo">
+                <img src="https://cdn.webshopapp.com/shops/291748/themes/169296/assets/logo-new.png" alt="Horecagemak Logo">
+            </a>
+            
+            <div class="search-bar">
+                <i class="ri-search-line"></i>
+                <input type="text" placeholder="Zoek naar producten, merken of artikelnummers...">
+            </div>
+            
+            <div class="header-actions">
+                <a href="#" class="action-icon">
+                    <i class="ri-user-line"></i>
+                    <span>Inloggen</span>
+                </a>
+                <a href="#" class="action-icon">
+                    <div style="position:relative;">
+                        <i class="ri-shopping-cart-line"></i>
+                        <span class="cart-badge">0</span>
+                    </div>
+                    <span>Winkelwagen</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Breadcrumbs -->
+        <div class="breadcrumbs">
+            <a href="#">Home</a> <i class="ri-arrow-right-s-line"></i>
+            <a href="#">Koelen & Vriezen</a> <i class="ri-arrow-right-s-line"></i>
+            <a href="#">Koeltoonbanken</a> <i class="ri-arrow-right-s-line"></i>
+            <span>Koeltoonbanken | Koeltogen</span>
+        </div>
+
+        <!-- Page Header -->
+        <div class="page-header">
+            <div>
+                <h1>Koeltoonbanken | Koeltogen</h1>
+                <span class="product-count" id="product-count">24 producten gevonden</span>
+            </div>
+            
+            <div class="sort-control">
+                <label>Sorteer op:</label>
+                <div class="sort-wrapper">
+                    <select class="custom-select">
+                        <option value="lowest">Laagste prijs</option>
+                        <option value="highest">Hoogste prijs</option>
+                        <option value="popular">Meest bekeken</option>
+                        <option value="newest">Nieuwste producten</option>
+                    </select>
+                    <i class="ri-arrow-down-s-line"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Shop Layout -->
+        <div class="shop-layout">
+            
+            <!-- Filters Sidebar -->
+            <aside class="sidebar">
+                
+                <!-- Brand Filter -->
+                <div class="filter-group">
+                    <div class="filter-title" onclick="toggleFilter(this)">
+                        Merken <i class="ri-subtract-line"></i>
+                    </div>
+                    <div class="filter-content" id="filter-brands">
+                        <label class="checkbox-label">
+                            <input type="checkbox" value="Diamond" onchange="applyFilters()">
+                            <div class="checkbox-box"></div>
+                            <span>Diamond</span>
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" value="CombiSteel" onchange="applyFilters()">
+                            <div class="checkbox-box"></div>
+                            <span>CombiSteel</span>
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" value="Mastro" onchange="applyFilters()">
+                            <div class="checkbox-box"></div>
+                            <span>Mastro</span>
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" value="Polar" onchange="applyFilters()">
+                            <div class="checkbox-box"></div>
+                            <span>Polar</span>
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" value="UNNICOOL" onchange="applyFilters()">
+                            <div class="checkbox-box"></div>
+                            <span>UNNICOOL</span>
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" value="SAYL" onchange="applyFilters()">
+                            <div class="checkbox-box"></div>
+                            <span>SAYL</span>
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" value="Coreco" onchange="applyFilters()">
+                            <div class="checkbox-box"></div>
+                            <span>Coreco</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Type Cooling Filter -->
+                <div class="filter-group">
+                    <div class="filter-title" onclick="toggleFilter(this)">
+                        Type Koeling <i class="ri-subtract-line"></i>
+                    </div>
+                    <div class="filter-content" id="filter-cooling">
+                        <label class="checkbox-label">
+                            <input type="checkbox" value="Statisch" onchange="applyFilters()">
+                            <div class="checkbox-box"></div>
+                            <span>Statisch</span>
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" value="Geforceerd" onchange="applyFilters()">
+                            <div class="checkbox-box"></div>
+                            <span>Geforceerd</span>
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" value="Geventileerd" onchange="applyFilters()">
+                            <div class="checkbox-box"></div>
+                            <span>Geventileerd</span>
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" value="Plaatkoeling" onchange="applyFilters()">
+                            <div class="checkbox-box"></div>
+                            <span>Plaatkoeling</span>
+                        </label>
+                    </div>
+                </div>
+
+            </aside>
+
+            <!-- Product Grid -->
+            <div class="product-grid" id="product-grid">
+                
+                <!-- Product Data injected here via JS to simulate backend render -->
+
+            </div>
+        </div>
+    </main>
+
+    <!-- Full Modern Footer -->
+    <footer class="main-footer">
+        <div class="container">
+            <!-- Newsletter -->
+            <div class="footer-newsletter">
+                <div class="newsletter-text">
+                    <h3>Ontvang nieuwe aanbiedingen per e-mail!</h3>
+                    <p>Schrijf je in en ontvang direct een tegoedbon van €20 (bij besteding > €300).</p>
+                </div>
+                <div class="newsletter-form">
+                    <input type="email" placeholder="Jouw e-mailadres">
+                    <button>Inschrijven</button>
+                </div>
+            </div>
+
+            <!-- Links Grid -->
+            <div class="footer-grid">
+                
+                <!-- Contact Info -->
+                <div class="footer-col">
+                    <h4>Contact</h4>
+                    <div class="footer-contact-info">
+                        <div class="footer-contact-item">
+                            <i class="ri-map-pin-line"></i>
+                            <span>HorecaGemak B.V.<br>Schieweg 77<br>2627 AT Delft</span>
+                        </div>
+                        <div class="footer-contact-item">
+                            <i class="ri-phone-line"></i>
+                            <span>+31 (0)85 - 0606072<br><small>Ma t/m vr 8.30 - 17.30</small></span>
+                        </div>
+                        <div class="footer-contact-item">
+                            <i class="ri-mail-send-line"></i>
+                            <span>info@horecagemak.nl</span>
+                        </div>
+                        <div class="footer-contact-item">
+                            <i class="ri-whatsapp-line"></i>
+                            <span>WhatsApp Service<br><a href="#" style="color: #25D366;">+31 6 12676861</a></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Service Links -->
+                <div class="footer-col">
+                    <h4>Klantenservice</h4>
+                    <ul>
+                        <li><a href="#">Over ons</a></li>
+                        <li><a href="#">Veelgestelde Vragen (FAQ)</a></li>
+                        <li><a href="#">Verzenden & retourneren</a></li>
+                        <li><a href="#">Betaalmethoden</a></li>
+                        <li><a href="#">Horeca apparatuur leasen</a></li>
+                        <li><a href="#">Storing melden</a></li>
+                        <li><a href="#">Offerte aanvragen</a></li>
+                    </ul>
+                </div>
+
+                <!-- Brands -->
+                <div class="footer-col">
+                    <h4>Top Merken</h4>
+                    <ul>
+                        <li><a href="#">Diamond</a></li>
+                        <li><a href="#">CombiSteel</a></li>
+                        <li><a href="#">Mastro</a></li>
+                        <li><a href="#">Polar</a></li>
+                        <li><a href="#">Bartscher</a></li>
+                        <li><a href="#">Hendi</a></li>
+                        <li><a href="#">Alle merken bekijken</a></li>
+                    </ul>
+                </div>
+
+                <!-- Legal / Account -->
+                <div class="footer-col">
+                    <h4>Informatie</h4>
+                    <ul>
+                        <li><a href="#">Mijn Account</a></li>
+                        <li><a href="#">Mijn Bestellingen</a></li>
+                        <li><a href="#">Algemene Voorwaarden</a></li>
+                        <li><a href="#">Privacy & Veiligheid</a></li>
+                        <li><a href="#">Disclaimer</a></li>
+                        <li><a href="#">Sitemap</a></li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Bottom Bar -->
+        <div class="footer-bottom">
+            <div class="container">
+                <div class="copyright">
+                    &copy; 2024 Horecagemak B.V. Alle rechten voorbehouden. KVK: 75633906
+                </div>
+                <div class="payment-methods">
+                    <img src="https://cdn.webshopapp.com/shops/291748/themes/169296/assets/z-ideal.svg" alt="iDeal">
+                    <img src="https://cdn.webshopapp.com/shops/291748/themes/169296/assets/z-bancontact.svg" alt="Bancontact">
+                    <img src="https://cdn.webshopapp.com/shops/291748/themes/169296/assets/z-in3.svg" alt="IN3">
+                    <img src="https://cdn.webshopapp.com/shops/291748/themes/169296/assets/z-billink.svg" alt="Billink">
+                    <img src="https://cdn.webshopapp.com/shops/291748/themes/169296/assets/z-sofort.svg" alt="Sofort">
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Data derived from original HTML JSON
+        const rawProducts = [
+            { id: 1, brand: "Diamond", cooling: "Statisch", oldPrice: 1716, newPrice: 1287, img: "473205457/diamond-koeltoonbank-super-plus-4c-6c-statisch-zel", title: "Super Plus | Zelfbediening | 100cm", time: "1-2 dagen", status: "fast" },
+            { id: 2, brand: "CombiSteel", cooling: "Plaatkoeling", oldPrice: 1948, newPrice: 1403, img: "478723771/combisteel-viskoeltoonbank-5c-plaatkoeling-wielen", title: "Viskoeltoonbank | Wielen | 100cm", time: "1 werkdag", status: "fast" },
+            { id: 3, brand: "Diamond", cooling: "Statisch", oldPrice: 2001, newPrice: 1501, img: "473205623/diamond-koeltoonbank-super-plus-4c-6c-statisch-zel", title: "Super Plus | Zelfbediening | 150cm", time: "1-2 dagen", status: "fast" },
+            { id: 4, brand: "Diamond", cooling: "Statisch", oldPrice: 2031, newPrice: 1524, img: "473206320/diamond-koeltoonbank-super-plus-4c-6c-statisch-opt", title: "Super Plus | Optioneel Onderstel | 100cm", time: "1-2 dagen", status: "fast" },
+            { id: 5, brand: "Diamond", cooling: "Statisch", oldPrice: 2104, newPrice: 1578, img: "473206988/diamond-koeltoonbank-super-plus-4c-6c-statisch-opt", title: "Super Plus | Gebogen Glas | 100cm", time: "1-2 dagen", status: "fast" },
+            { id: 6, brand: "Polar", cooling: "Statisch", oldPrice: 0, newPrice: 1639.99, img: "449287238/polar-viskoeltoonbank-g-serie-2c-12c-statisch-915x", title: "G-SERIE | Viskoeltoonbank | 91.5cm", time: "1-3 dagen", status: "fast" },
+            { id: 7, brand: "CombiSteel", cooling: "Geforceerd", oldPrice: 2290, newPrice: 1649, img: "487343462/combisteel-koeltoonbank-wesley-0c-7c-geforceerd-ge", title: "Wesley | Gekoelde Reserve | 134cm", time: "1 werkdag", status: "fast" },
+            { id: 8, brand: "UNNICOOL", cooling: "Geforceerd", oldPrice: 2980, newPrice: 1659, img: "477879594/unnicool-koeltoonbank-lila-2c-8c-geforceerd-gekoel", title: "Lila | Gekoelde Reserve | 128cm", time: "1-2 dagen", status: "fast" },
+            { id: 9, brand: "Mastro", cooling: "Geventileerd", oldPrice: 2547, newPrice: 1678, img: "414375303/mastro-koeltoonbank-salina80-3c-5c-geventileerd-06", title: "Salina80 | Gekoelde Reserve | 104cm", time: "2-4 dagen", status: "med" },
+            { id: 10, brand: "Polar", cooling: "Statisch", oldPrice: 0, newPrice: 1739.99, img: "449287924/polar-viskoeltoonbank-g-serie-2c-12c-statisch-1245", title: "G-SERIE | Viskoeltoonbank | 124.5cm", time: "1-3 dagen", status: "fast" },
+            { id: 11, brand: "Diamond", cooling: "Statisch", oldPrice: 2330, newPrice: 1748, img: "473206444/diamond-koeltoonbank-super-plus-4c-6c-statisch-opt", title: "Super Plus | Optioneel Onderstel | 150cm", time: "1-2 dagen", status: "fast" },
+            { id: 12, brand: "Diamond", cooling: "Statisch", oldPrice: 2338, newPrice: 1754, img: "473207150/diamond-koeltoonbank-super-plus-4c-6c-statisch-opt", title: "Super Plus | Gebogen Glas | 150cm", time: "1-2 dagen", status: "fast" },
+            { id: 13, brand: "Mastro", cooling: "Plaatkoeling", oldPrice: 2690, newPrice: 1767, img: "455844946/mastro-viskoeltoonbank-5c-plaatkoeling-wielen-1000", title: "Viskoeltoonbank | Wielen | 100cm", time: "2-4 dagen", status: "med" },
+            { id: 14, brand: "UNNICOOL", cooling: "Geforceerd", oldPrice: 3195, newPrice: 1769, img: "477880259/unnicool-koeltoonbank-lila-2c-8c-geforceerd-gekoel", title: "Lila | Gekoelde Reserve | 158cm", time: "1-2 dagen", status: "fast" },
+            { id: 15, brand: "CombiSteel", cooling: "Geforceerd", oldPrice: 2495, newPrice: 1796, img: "487344495/combisteel-koeltoonbank-wesley-0c-7c-geforceerd-ge", title: "Wesley | Gekoelde Reserve | 159cm", time: "1 werkdag", status: "fast" },
+            { id: 16, brand: "Coreco", cooling: "Statisch", oldPrice: 2113, newPrice: 1889, img: "486683278/coreco-koeltoonbank-cve-serie-1c-5c-statisch-gekoe", title: "CVE-SERIE | Kantelruit | 102.5cm", time: "3-4 weken", status: "slow" },
+            { id: 17, brand: "Diamond", cooling: "Statisch", oldPrice: 2529, newPrice: 1897, img: "460554268/diamond-koeltoonbank-rome-4c-6c-statisch-03kw-geko", title: "Rome | Gekoelde Reserve | 100cm", time: "6-7 weken", status: "slow" },
+            { id: 18, brand: "Diamond", cooling: "Statisch", oldPrice: 2529, newPrice: 1897, img: "460553811/diamond-koeltoonbank-rome-4c-6c-statisch-03kw-geko", title: "Rome | Gebogen Glas | 100cm", time: "1-2 dagen", status: "fast" },
+            { id: 19, brand: "Mastro", cooling: "Geventileerd", oldPrice: 2936, newPrice: 1918, img: "414376026/mastro-koeltoonbank-salina80-3c-5c-geventileerd-07", title: "Salina80 | Gekoelde Reserve | 152cm", time: "2-4 dagen", status: "med" },
+            { id: 20, brand: "CombiSteel", cooling: "Statisch", oldPrice: 2670, newPrice: 1922, img: "413471160/combisteel-koeltoonbank-vinnie-1c-10c-statisch-063", title: "Vinnie | Kantelruit | 150cm", time: "1 werkdag", status: "fast" },
+            { id: 21, brand: "SAYL", cooling: "Plaatkoeling", oldPrice: 2500, newPrice: 2000, img: "476247550/sayl-viskoeltoonbank-xl-0c-4c-plaatkoeling-zelfbed", title: "XL | Zelfbediening Schuifraam | 68cm", time: "2-3 weken", status: "slow" },
+            { id: 22, brand: "SAYL", cooling: "Plaatkoeling", oldPrice: 2500, newPrice: 2000, img: "476245055/sayl-viskoeltoonbank-xl-0c-4c-plaatkoeling-zelfbed", title: "XL | Zelfbediening | AISI 316 | 68cm", time: "2-3 weken", status: "slow" },
+            { id: 23, brand: "Coreco", cooling: "Statisch", oldPrice: 2260, newPrice: 2004, img: "486730696/coreco-koeltoonbank-cve-serie-1c-5c-statisch-gekoe", title: "CVE-SERIE | Gekoelde Reserve | 102cm", time: "3-4 weken", status: "slow" },
+            { id: 24, brand: "CombiSteel", cooling: "Plaatkoeling", oldPrice: 2786, newPrice: 2006, img: "478724859/combisteel-viskoeltoonbank-5c-plaatkoeling-wielen", title: "Viskoeltoonbank | Wielen | 144cm", time: "1 werkdag", status: "fast" }
+        ];
+
+        // Format Currency
+        const formatPrice = (num) => {
+            return '€ ' + num.toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        };
+
+        // Render Products
+        const renderProducts = () => {
+            const grid = document.getElementById('product-grid');
+            let html = '';
+
+            // Get selected filters
+            const selectedBrands = Array.from(document.querySelectorAll('#filter-brands input:checked')).map(cb => cb.value);
+            const selectedCooling = Array.from(document.querySelectorAll('#filter-cooling input:checked')).map(cb => cb.value);
+
+            let visibleCount = 0;
+
+            rawProducts.forEach(p => {
+                // Check logic
+                const brandMatch = selectedBrands.length === 0 || selectedBrands.includes(p.brand);
+                const coolingMatch = selectedCooling.length === 0 || selectedCooling.includes(p.cooling);
+
+                if (brandMatch && coolingMatch) {
+                    visibleCount++;
+                    
+                    // Badges logic
+                    let badgesHtml = '';
+                    if (p.oldPrice > 0 && p.oldPrice > p.newPrice) {
+                        badgesHtml += `<span class="badge badge-sale">Sale</span>`;
+                    }
+
+                    // Old price html
+                    let oldPriceHtml = p.oldPrice > 0 ? `<span class="price-old">${formatPrice(p.oldPrice)}</span>` : '';
+
+                    // Delivery Icon logic
+                    let devIcon = 'ri-truck-line';
+                    let devClass = '';
+                    if(p.status === 'slow') { devIcon = 'ri-time-line'; devClass = 'delayed'; }
+                    if(p.status === 'med') { devClass = 'slow'; }
+
+                    html += `
+                    <a href="#" class="product-card">
+                        <div class="product-image-container">
+                            <div class="badges">${badgesHtml}</div>
+                            <img src="https://cdn.webshopapp.com/shops/291748/files/${p.img}.webp" alt="${p.brand} ${p.title}">
+                        </div>
+                        <div class="product-info">
+                            <div class="product-meta">
+                                <span class="product-brand">${p.brand}</span>
+                                <span class="product-type">${p.cooling}</span>
+                            </div>
+                            <h3 class="product-title">${p.title}</h3>
+                            
+                            <div class="product-delivery ${devClass}">
+                                <i class="${devIcon}"></i> ${p.time}
+                            </div>
+
+                            <div class="product-bottom">
+                                <div class="price-block">
+                                    ${oldPriceHtml}
+                                    <span class="price-new">${formatPrice(p.newPrice)}</span>
+                                    <span class="price-tax">Excl. BTW</span>
+                                </div>
+                                <button class="btn-add" title="In winkelwagen">
+                                    <i class="ri-shopping-cart-2-line"></i>
+                                    <span>Voeg toe</span>
+                                </button>
+                            </div>
+                        </div>
+                    </a>
+                    `;
+                }
+            });
+
+            if (visibleCount === 0) {
+                html = `
+                    <div class="no-results">
+                        <i class="ri-search-line"></i>
+                        <h2>Geen producten gevonden</h2>
+                        <p>Probeer uw filters aan te passen om meer resultaten te zien.</p>
+                    </div>
+                `;
+            }
+
+            grid.innerHTML = html;
+            document.getElementById('product-count').innerHTML = `<b>${visibleCount}</b> producten gevonden`;
+        };
+
+        // UI Interactions
+        function toggleFilter(element) {
+            const content = element.nextElementSibling;
+            const icon = element.querySelector('i');
+            
+            if (content.style.display === "none") {
+                content.style.display = "flex";
+                icon.classList.remove('ri-add-line');
+                icon.classList.add('ri-subtract-line');
+            } else {
+                content.style.display = "none";
+                icon.classList.remove('ri-subtract-line');
+                icon.classList.add('ri-add-line');
+            }
+        }
+
+        // Expose to window for inline HTML calls
+        window.applyFilters = renderProducts;
+
+        // Init
+        document.addEventListener('DOMContentLoaded', renderProducts);
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Advanced API Finder</title>
+
+<style>
+
+body{
+font-family:Arial;
+background:#f4f4f4;
+padding:40px;
+}
+
+button{
+padding:12px 20px;
+font-size:16px;
+margin-bottom:20px;
+}
+
+.result{
+background:white;
+border:1px solid #ddd;
+padding:15px;
+margin-bottom:10px;
+}
+
+.success{border-left:6px solid #27ae60;}
+.fail{border-left:6px solid #e74c3c;}
+
+pre{
+background:#111;
+color:#0f0;
+padding:10px;
+overflow:auto;
+}
+
+</style>
+</head>
+
+<body>
+
+<h2>API Endpoint Discovery Tool</h2>
+
+<button onclick="runTests()">Run API Tests</button>
+
+<div id="results"></div>
+
+<script>
+
+const cid = "32036";
+const key = "9B8-D1V1-V2C8-H4O5-O7Q";
+
+const endpoints = [
+
+"https://sandbox.api.com",
+"https://sandbox.api.com/v1",
+"https://sandbox.api.com/api",
+
+"https://api.sandbox.com",
+"https://api.sandbox.com/v1",
+"https://api.sandbox.com/api",
+
+"https://sandbox.transcodeapi.com",
+"https://sandbox.transcodeapi.com/v1",
+"https://sandbox.transcodeapi.com/api",
+
+"https://transcodeapi.com/api",
+"https://transcodeapi.com/v1",
+
+"https://sandbox.transcoder.com/api",
+"https://sandbox.transcoder.com/v1",
+
+"https://api.transcoder.com/sandbox",
+
+"https://sandbox.gatewayapi.com",
+"https://sandbox.gatewayapi.com/api",
+
+"https://api.gatewayapi.com/sandbox",
+
+"https://sandbox.cloudapi.com/api",
+"https://sandbox.cloudapi.com/v1",
+
+"https://sandbox.dataprovider.com/api",
+
+"https://sandbox.integrationapi.com",
+
+];
+
+const paths = [
+
+"",
+"/transcode",
+"/lookup",
+"/data",
+"/decode",
+"/query",
+"/check",
+"/v1/transcode",
+"/v1/data",
+"/v1/lookup",
+"/api/transcode",
+"/api/data",
+"/api/lookup"
+
+];
+
+async function runTests(){
+
+const container = document.getElementById("results");
+container.innerHTML="";
+
+for(let base of endpoints){
+
+for(let path of paths){
+
+const url = base + path;
+
+await testEndpoint(url,container);
+
+}
+
+}
+
+}
+
+async function testEndpoint(url,container){
+
+const fullUrl = `${url}?cid=${cid}&apikey=${key}`;
+
+let box = document.createElement("div");
+box.className="result";
+box.innerHTML="<b>Testing:</b> "+fullUrl;
+container.appendChild(box);
+
+try{
+
+const response = await fetch(fullUrl);
+
+const text = await response.text();
+
+box.classList.add("success");
+
+box.innerHTML += "<br>Status: "+response.status;
+
+box.innerHTML += "<pre>"+text.substring(0,1000)+"</pre>";
+
+}catch(e){
+
+box.classList.add("fail");
+
+box.innerHTML += "<br>Error: "+e;
+
+}
+
+}
+
+</script>
+
+</body>
+</html>
