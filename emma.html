@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emma Louise Kenyon | A Modern Mystery School</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@200;300;400&display=swap" rel="stylesheet">
+
+    <style>
+        /* ==========================================
+           CSS VARIABLES & RESET
+           ========================================== */
+        :root {
+            --bg-dark: #050505;
+            --bg-light: #0a0a0a;
+            --text-main: #EAE6DF;
+            --text-muted: #88857F;
+            --accent: #B69D74; /* Muted Gold */
+            --font-serif: 'Cormorant Garamond', serif;
+            --font-sans: 'Inter', sans-serif;
+            --transition: cubic-bezier(0.77, 0, 0.175, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            cursor: none; /* Custom Cursor */
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            font-family: var(--font-sans);
+            font-weight: 300;
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a { color: inherit; text-decoration: none; }
+        img { max-width: 100%; display: block; }
+
+        /* ==========================================
+           CUSTOM CURSOR
+           ========================================== */
+        .cursor-dot, .cursor-outline {
+            position: fixed; top: 0; left: 0;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            z-index: 9999;
+            pointer-events: none;
+        }
+        .cursor-dot {
+            width: 6px; height: 6px;
+            background-color: var(--accent);
+        }
+        .cursor-outline {
+            width: 40px; height: 40px;
+            border: 1px solid rgba(182, 157, 116, 0.5);
+            transition: width 0.2s, height 0.2s, background-color 0.2s;
+        }
+
+        /* ==========================================
+           PRELOADER
+           ========================================== */
+        .preloader {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+            background: var(--bg-dark); z-index: 9998;
+            display: flex; justify-content: center; align-items: center;
+            transition: opacity 1s var(--transition), visibility 1s;
+        }
+        .preloader svg circle {
+            stroke-dasharray: 400; stroke-dashoffset: 400;
+            animation: drawCircle 2s var(--transition) forwards;
+        }
+        @keyframes drawCircle { to { stroke-dashoffset: 0; } }
+        .preloader-hide { opacity: 0; visibility: hidden; }
+
+        /* ==========================================
+           NAVIGATION & LOGO 2: MONOGRAM SEAL
+           ========================================== */
+        nav {
+            position: fixed; top: 0; width: 100%;
+            padding: 2rem 4rem; display: flex;
+            justify-content: space-between; align-items: center;
+            z-index: 100;
+        }
+        .monogram-seal {
+            width: 50px; height: 50px;
+            border: 1px solid var(--text-main); border-radius: 50%;
+            display: flex; justify-content: center; align-items: center;
+            font-family: var(--font-serif); font-size: 1.2rem;
+            letter-spacing: 2px; padding-left: 2px;
+            transition: transform 0.4s var(--transition), border-color 0.4s, color 0.4s;
+            background: rgba(5,5,5,0.5);
+            backdrop-filter: blur(4px);
+        }
+        .monogram-seal:hover {
+            transform: scale(0.9) rotate(90deg);
+            border-color: var(--accent); color: var(--accent);
+        }
+        .nav-links {
+            display: flex; gap: 3rem;
+            font-family: var(--font-sans); font-size: 0.85rem;
+            letter-spacing: 2px; text-transform: uppercase;
+        }
+        .nav-link { position: relative; overflow: hidden; padding-bottom: 5px; }
+        .nav-link::after {
+            content: ''; position: absolute; bottom: 0; left: 0;
+            width: 100%; height: 1px; background: var(--accent);
+            transform: translateX(-101%); transition: transform 0.4s var(--transition);
+        }
+        .nav-link:hover::after { transform: translateX(0); }
+
+        /* ==========================================
+           HERO & LOGO 1: PRIMARY WORDMARK
+           ========================================== */
+        .hero {
+            height: 100vh;
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            text-align: center; position: relative; overflow: hidden;
+            /* Using original home_banner.jpg with a dark mystical overlay */
+            background: linear-gradient(rgba(5, 5, 5, 0.85), rgba(5, 5, 5, 0.95)), 
+                        url('https://www.emmalouisekenyon.com/wp-content/uploads/2013/05/home_banner.jpg') center/cover no-repeat;
+        }
+        .bg-portal {
+            position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80vh; height: 80vh; opacity: 0.05;
+            z-index: 0; pointer-events: none;
+        }
+        .primary-logo { z-index: 2; }
+        .primary-logo h1 {
+            font-family: var(--font-serif); font-size: clamp(3rem, 8vw, 7rem);
+            font-weight: 300; line-height: 1.1; letter-spacing: -1px; margin-bottom: 1rem;
+        }
+        .primary-logo span {
+            font-family: var(--font-sans); font-size: 0.85rem;
+            letter-spacing: 8px; text-transform: uppercase; color: var(--accent); display: block;
+        }
+
+        /* ==========================================
+           SECTION: INTRODUCTION
+           ========================================== */
+        .section { padding: 10rem 4rem; max-width: 1400px; margin: 0 auto; }
+        .intro { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+        .intro-quote { font-family: var(--font-serif); font-size: clamp(2rem, 4vw, 3.5rem); line-height: 1.2; }
+        .intro-text p { font-size: 1.1rem; color: var(--text-muted); margin-bottom: 2rem; max-width: 500px; }
+        .btn {
+            display: inline-block; font-family: var(--font-sans);
+            font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px;
+            padding: 1rem 3rem; border: 1px solid var(--text-muted);
+            transition: all 0.4s var(--transition); background: transparent; color: var(--text-main);
+        }
+        .btn:hover { background: var(--text-main); color: var(--bg-dark); border-color: var(--text-main); }
+
+        /* ==========================================
+           SECTION: TEACHINGS (Grid with Original Icons)
+           ========================================== */
+        .teachings-header { text-align: center; margin-bottom: 5rem; }
+        .teachings-header h2 { font-family: var(--font-serif); font-size: 3rem; font-weight: 300; }
+        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem; }
+        .grid-item {
+            border: 1px solid rgba(255, 255, 255, 0.05); padding: 4rem 3rem;
+            position: relative; overflow: hidden; transition: border-color 0.4s;
+            background: var(--bg-light);
+        }
+        .grid-item:hover { border-color: var(--accent); }
+        .teaching-icon {
+            width: 50px; height: 50px; margin-bottom: 2rem;
+            /* Filter original blue icons to match the new minimal gold/sand aesthetic */
+            filter: invert(85%) sepia(20%) saturate(300%) hue-rotate(5deg) brightness(85%);
+            transition: transform 0.6s var(--transition);
+        }
+        .grid-item:hover .teaching-icon { transform: translateY(-5px); }
+        .grid-item h3 {
+            font-family: var(--font-serif); font-size: 2rem; font-weight: 400;
+            margin-bottom: 1rem; color: var(--accent);
+        }
+        .grid-item p { color: var(--text-muted); font-size: 0.95rem; }
+
+        /* ==========================================
+           SECTION: SACRED PORTAL (Opt-in with Parallax BG)
+           ========================================== */
+        .sacred-portal {
+            text-align: center; padding: 10rem 0; position: relative; overflow: hidden;
+            /* Using original banner.jpg as parallax background */
+            background: linear-gradient(rgba(5, 5, 5, 0.92), rgba(5, 5, 5, 0.95)), 
+                        url('https://www.emmalouisekenyon.com/wp-content/uploads/2013/05/banner.jpg') center/cover fixed;
+        }
+        .portal-svg-container {
+            margin: 0 auto 3rem auto; width: 150px; height: 150px; color: var(--accent);
+        }
+        .sacred-portal h2 { font-family: var(--font-serif); font-size: 2.5rem; font-weight: 300; margin-bottom: 1.5rem; }
+        .sacred-portal p { color: var(--text-muted); max-width: 600px; margin: 0 auto 3rem auto; font-size: 1.1rem; }
+        .form-group { display: flex; justify-content: center; gap: 1rem; max-width: 500px; margin: 0 auto; }
+        .form-group input {
+            background: transparent; border: none; border-bottom: 1px solid var(--text-muted);
+            color: var(--text-main); font-family: var(--font-sans); padding: 1rem;
+            width: 100%; outline: none; transition: border-color 0.3s;
+        }
+        .form-group input:focus { border-color: var(--accent); }
+
+        /* ==========================================
+           SECTION: JOURNAL (Original Blog Images)
+           ========================================== */
+        .journal-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+        .journal-item h3 { font-family: var(--font-serif); font-size: 1.5rem; font-weight: 400; margin-bottom: 1rem; margin-top: 1.5rem; }
+        .journal-img-wrapper {
+            width: 100%; height: 350px; overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .journal-img-wrapper img {
+            width: 100%; height: 100%; object-fit: cover;
+            transition: transform 1.2s var(--transition);
+            filter: grayscale(80%) contrast(1.1); /* Muted editorial look */
+        }
+        .journal-item:hover .journal-img-wrapper img {
+            transform: scale(1.05); filter: grayscale(0%) contrast(1.1);
+        }
+        .journal-item p { color: var(--text-muted); font-size: 0.9rem; }
+
+        /* ==========================================
+           FOOTER
+           ========================================== */
+        footer {
+            padding: 4rem; border-top: 1px solid rgba(255,255,255,0.05);
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .footer-links { display: flex; gap: 2rem; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); }
+
+        /* ==========================================
+           ANIMATIONS
+           ========================================== */
+        .reveal { opacity: 0; transform: translateY(60px); transition: all 1.2s cubic-bezier(0.165, 0.84, 0.44, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+        .delay-1 { transition-delay: 0.1s; }
+        .delay-2 { transition-delay: 0.2s; }
+        .delay-3 { transition-delay: 0.3s; }
+
+        @media (max-width: 1024px) {
+            .intro, .grid { grid-template-columns: 1fr; }
+            .journal-grid { grid-template-columns: 1fr; gap: 4rem; }
+            nav { padding: 1.5rem 2rem; }
+            .section { padding: 6rem 2rem; }
+        }
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .form-group { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- CUSTOM CURSOR -->
+    <div class="cursor-dot" data-cursor></div>
+    <div class="cursor-outline" data-cursor></div>
+
+    <!-- PRELOADER -->
+    <div class="preloader" id="preloader">
+        <svg width="100" height="100" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="75" cy="100" r="40" fill="none" stroke="#B69D74" stroke-width="1"/>
+            <circle cx="125" cy="100" r="40" fill="none" stroke="#B69D74" stroke-width="1"/>
+        </svg>
+    </div>
+
+    <!-- NAVIGATION -->
+    <nav>
+        <!-- LOGO 2: Monogram Seal -->
+        <a href="#" class="monogram-seal hover-target">ELK</a>
+        <div class="nav-links">
+            <a href="#about" class="nav-link hover-target">Teachings</a>
+            <a href="#teachings" class="nav-link hover-target">Akashic</a>
+            <a href="#journal" class="nav-link hover-target">Journal</a>
+            <a href="#portal" class="nav-link hover-target">Portal</a>
+        </div>
+    </nav>
+
+    <!-- HERO (Using original 'home_banner.jpg') -->
+    <header class="hero">
+        <!-- LOGO 3: Background Sacred Portal Symbol (Vesica Piscis) -->
+        <svg class="bg-portal" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="75" cy="100" r="50" fill="none" stroke="#B69D74" stroke-width="0.5"/>
+            <circle cx="125" cy="100" r="50" fill="none" stroke="#B69D74" stroke-width="0.5"/>
+        </svg>
+
+        <!-- LOGO 1: Primary Wordmark -->
+        <div class="primary-logo reveal">
+            <h1>Emma Louise Kenyon</h1>
+            <span>A Modern Mystery School</span>
+        </div>
+    </header>
+
+    <!-- INTRODUCTION -->
+    <section class="section" id="about">
+        <div class="intro">
+            <div class="intro-quote reveal">
+                I Will Help You Communicate Your Heart Message So You Can Live A Stand Out Life.
+            </div>
+            <div class="intro-text reveal delay-1">
+                <p>So… I’m part brand strategist, part stylist and 100% truth seeker. I want my clients to have the holy trinity – Business, Brains and Beauty.</p>
+                <p>Enter the portal of higher consciousness, unlock your Akashic Records, and embody your truest value.</p>
+                <a href="#portal" class="btn hover-target">Discover the Portal</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- THE TEACHINGS (Grid using original icon images) -->
+    <section class="section" id="teachings">
+        <div class="teachings-header reveal">
+            <h2>The Curriculum</h2>
+        </div>
+        <div class="grid">
+            <div class="grid-item reveal">
+                <img src="https://www.emmalouisekenyon.com/wp-content/uploads/2013/05/icon-1.png" alt="Discover" class="teaching-icon">
+                <h3>Discover Your Heart Message</h3>
+                <p>Dive deep into the journey of finally discovering the core message behind your brand and your highest calling.</p>
+            </div>
+            <div class="grid-item reveal delay-1">
+                <img src="https://www.emmalouisekenyon.com/wp-content/uploads/2013/05/icon-3.png" alt="Transform" class="teaching-icon">
+                <h3>Transform Your Image</h3>
+                <p>It takes 3 seconds for someone to make a judgment about you. Ascend your presence and use your energy intentionally.</p>
+            </div>
+            <div class="grid-item reveal">
+                <img src="https://www.emmalouisekenyon.com/wp-content/uploads/2013/05/icon-2.png" alt="Artistry" class="teaching-icon">
+                <h3>Brand Artistry</h3>
+                <p>Every great brand has great content. Follow our sacred creation system to bring your unique frequency to the world.</p>
+            </div>
+            <div class="grid-item reveal delay-1">
+                <img src="https://www.emmalouisekenyon.com/wp-content/uploads/2013/05/icon-4.png" alt="Embody" class="teaching-icon">
+                <h3>Embody Your Value</h3>
+                <p>Become a manifestation master. Downloadable meditations to align you to the path of blissful success and higher dimensions.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- SACRED PORTAL / OPT-IN (Using original 'banner.jpg' as BG) -->
+    <section class="sacred-portal" id="portal">
+        <!-- LOGO 3: Sacred Portal Symbol (Vesica Piscis) -->
+        <div class="portal-svg-container reveal">
+            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" style="width:100%; height:100%;">
+                <circle cx="75" cy="100" r="50" fill="none" stroke="currentColor" stroke-width="1"/>
+                <circle cx="125" cy="100" r="50" fill="none" stroke="currentColor" stroke-width="1"/>
+            </svg>
+        </div>
+        <h2 class="reveal delay-1">Enter The Mystery School</h2>
+        <p class="reveal delay-2">STOP guessing and procrastinating. Decode your heart message, unpack your brand artistry and get the business and life you desire.</p>
+        
+        <form class="form-group reveal delay-3">
+            <input type="email" placeholder="Enter your energetic signature (Email)" class="hover-target" required>
+            <button type="submit" class="btn hover-target">Initiate</button>
+        </form>
+    </section>
+
+    <!-- JOURNAL (Using original blog thumbnail images) -->
+    <section class="section" id="journal">
+        <div class="teachings-header reveal">
+            <h2>The Akashic Journal</h2>
+        </div>
+        <div class="journal-grid">
+            <article class="journal-item reveal">
+                <div class="journal-img-wrapper hover-target">
+                    <img src="https://www.emmalouisekenyon.com/wp-content/uploads/2020/04/IMG_6356-600x400.jpg" alt="OH NO I REALLY F*****D THIS TIME" loading="lazy">
+                </div>
+                <h3>Oh No I Really F*****d This Time</h3>
+                <p>My 18-month-old daughter has recently started to say the word FUCK! Oops :0 She doesn’t just say it quietly...</p>
+            </article>
+            
+            <article class="journal-item reveal delay-1">
+                <div class="journal-img-wrapper hover-target">
+                    <img src="https://www.emmalouisekenyon.com/wp-content/uploads/2020/04/92353602_1537894679721886_8417291990625943552_n-600x400.jpg" alt="Creating a new time line" loading="lazy">
+                </div>
+                <h3>Creating a New Time Line</h3>
+                <p>On Saturday night I had a profound experience. It was one of those experiences where I was so tuned in...</p>
+            </article>
+
+            <article class="journal-item reveal delay-2">
+                <div class="journal-img-wrapper hover-target">
+                    <img src="https://www.emmalouisekenyon.com/wp-content/uploads/2019/01/Method-mother-600x400.png" alt="All birth stories are sacred" loading="lazy">
+                </div>
+                <h3>All Birth Stories Are Sacred</h3>
+                <p>Driving home from the hospital I thought to myself, the world will never be the same again. Everything’s changed...</p>
+            </article>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <a href="#" class="monogram-seal hover-target">ELK</a>
+        <div class="footer-links">
+            <a href="https://www.facebook.com/EmmaLKenyon/" target="_blank" class="hover-target">Facebook</a>
+            <a href="https://twitter.com/EmmaLKenyon" target="_blank" class="hover-target">Twitter</a>
+            <a href="https://www.linkedin.com/in/emmalouiskenyon" target="_blank" class="hover-target">LinkedIn</a>
+        </div>
+        <div style="font-size: 0.8rem; color: var(--text-muted);">
+            &copy; 2026 Emma Louise Kenyon. All Rights Reserved.
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT FOR ANIMATIONS & CURSOR -->
+    <script>
+        // Preloader Logic
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('preloader').classList.add('preloader-hide');
+            }, 1000); 
+        });
+
+        // Custom Cursor Logic
+        const cursorDot = document.querySelector('.cursor-dot');
+        const cursorOutline = document.querySelector('.cursor-outline');
+        const hoverTargets = document.querySelectorAll('.hover-target, a, button, input');
+
+        window.addEventListener('mousemove', (e) => {
+            const posX = e.clientX;
+            const posY = e.clientY;
+
+            cursorDot.style.left = `${posX}px`;
+            cursorDot.style.top = `${posY}px`;
+
+            cursorOutline.animate({
+                left: `${posX}px`,
+                top: `${posY}px`
+            }, { duration: 500, fill: "forwards" });
+        });
+
+        hoverTargets.forEach(target => {
+            target.addEventListener('mouseenter', () => {
+                cursorOutline.style.transform = 'translate(-50%, -50%) scale(1.5)';
+                cursorOutline.style.backgroundColor = 'rgba(182, 157, 116, 0.1)';
+            });
+            target.addEventListener('mouseleave', () => {
+                cursorOutline.style.transform = 'translate(-50%, -50%) scale(1)';
+                cursorOutline.style.backgroundColor = 'transparent';
+            });
+        });
+
+        // Scroll Reveal Logic
+        function reveal() {
+            var reveals = document.querySelectorAll(".reveal");
+            for (var i = 0; i < reveals.length; i++) {
+                var windowHeight = window.innerHeight;
+                var elementTop = reveals[i].getBoundingClientRect().top;
+                var elementVisible = 100;
+                
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add("active");
+                }
+            }
+        }
+        window.addEventListener("scroll", reveal);
+        setTimeout(reveal, 1200); 
+
+        // Parallax Effect for Background Sacred Portal
+        window.addEventListener('scroll', () => {
+            const bg = document.querySelector('.bg-portal');
+            let scrollPosition = window.pageYOffset;
+            bg.style.transform = `translate(-50%, -50%) rotate(${scrollPosition * 0.05}deg) scale(${1 + scrollPosition * 0.0005})`;
+        });
+    </script>
+</body>
+</html>
