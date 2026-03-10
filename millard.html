@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Millard Law | Edinburgh Family, Child & Incapacity Lawyers</title>
+    
+    <!-- Google Fonts for a Professional Legal Aesthetic -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- CSS Variables --- */
+        :root {
+            --primary-color: #1a365d; /* Deep Navy Blue */
+            --secondary-color: #c5a880; /* Elegant Gold/Beige */
+            --bg-light: #ffffff;
+            --bg-alt: #f8f9fa; /* Very Light Grey */
+            --text-dark: #2d3748;
+            --text-muted: #718096;
+            --border-color: #e2e8f0;
+            
+            --font-heading: 'Playfair Display', serif;
+            --font-body: 'Lato', sans-serif;
+            
+            --section-padding: 5rem 10%;
+            --transition: all 0.3s ease;
+        }
+
+        /* --- Reset & Base Styles --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-body);
+            color: var(--text-dark);
+            line-height: 1.7;
+            background-color: var(--bg-light);
+        }
+
+        h1, h2, h3, h4 {
+            font-family: var(--font-heading);
+            color: var(--primary-color);
+            line-height: 1.2;
+        }
+
+        p {
+            margin-bottom: 1.5rem;
+        }
+
+        a {
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        a:hover {
+            color: var(--secondary-color);
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--secondary-color);
+            color: #fff;
+            padding: 0.8rem 2rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn:hover {
+            background-color: var(--primary-color);
+            color: #fff;
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--secondary-color);
+            color: var(--secondary-color);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--secondary-color);
+            color: #fff;
+        }
+
+        /* --- Header & Navigation --- */
+        .top-bar {
+            background-color: var(--primary-color);
+            color: #fff;
+            padding: 0.5rem 10%;
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            font-weight: 300;
+        }
+
+        .top-bar a {
+            color: #fff;
+            margin-left: 15px;
+        }
+
+        .top-bar a:hover {
+            color: var(--secondary-color);
+        }
+
+        header {
+            background-color: #fff;
+            padding: 1rem 10%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .logo img {
+            max-height: 60px;
+            width: auto;
+        }
+
+        nav {
+            display: flex;
+            gap: 2rem;
+        }
+
+        nav a {
+            font-size: 0.95rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-dark);
+            position: relative;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: var(--secondary-color);
+            transition: var(--transition);
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        /* --- Hero Section --- */
+        .hero {
+            background-color: var(--primary-color);
+            color: #fff;
+            padding: 8rem 10%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0; right: 0; bottom: 0; left: 0;
+            background: linear-gradient(135deg, rgba(26, 54, 93, 0.9) 0%, rgba(26, 54, 93, 0.95) 100%), url('data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%23c5a880" fill-opacity="0.05"%3E%3Cpath d="M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+        }
+
+        .hero h1 {
+            color: #fff;
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: #e2e8f0;
+            margin-bottom: 2rem;
+            max-width: 650px;
+        }
+
+        .hero .accent-line {
+            width: 60px;
+            height: 3px;
+            background-color: var(--secondary-color);
+            margin-bottom: 2rem;
+        }
+
+        /* --- About Section --- */
+        .about {
+            padding: var(--section-padding);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            background-color: var(--bg-light);
+        }
+
+        .about h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .about-text p {
+            font-size: 1.05rem;
+        }
+
+        .about-features {
+            background: var(--bg-alt);
+            padding: 3rem;
+            border-left: 4px solid var(--secondary-color);
+        }
+
+        /* --- Practice Areas Section --- */
+        .practice-areas {
+            padding: var(--section-padding);
+            background-color: var(--bg-alt);
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .section-header .accent-line {
+            width: 50px;
+            height: 3px;
+            background-color: var(--secondary-color);
+            margin: 0 auto;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .service-card {
+            background: #fff;
+            padding: 2.5rem;
+            border-top: 4px solid var(--primary-color);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            transition: var(--transition);
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+            border-top-color: var(--secondary-color);
+        }
+
+        .service-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .service-list {
+            list-style: none;
+            margin-bottom: 1.5rem;
+        }
+
+        .service-list li {
+            position: relative;
+            padding-left: 1.5rem;
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .service-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--secondary-color);
+            font-weight: bold;
+        }
+
+        .service-desc {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border-color);
+            padding-top: 1rem;
+        }
+
+        /* --- Team Section --- */
+        .team {
+            padding: var(--section-padding);
+            background-color: var(--bg-light);
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
+        }
+
+        .team-member {
+            background: var(--bg-alt);
+            padding: 2.5rem;
+            text-align: left;
+            border: 1px solid var(--border-color);
+        }
+
+        .team-member h3 {
+            font-size: 1.4rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .team-role {
+            display: block;
+            color: var(--secondary-color);
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            margin-bottom: 1.5rem;
+        }
+
+        .team-member p {
+            font-size: 0.95rem;
+            margin-bottom: 0;
+        }
+
+        /* --- Contact Section --- */
+        .contact {
+            padding: var(--section-padding);
+            background-color: var(--primary-color);
+            color: #fff;
+        }
+
+        .contact h2 {
+            color: #fff;
+        }
+
+        .contact-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+        }
+
+        .contact-info-block {
+            margin-bottom: 2rem;
+        }
+
+        .contact-info-block h4 {
+            color: var(--secondary-color);
+            font-family: var(--font-body);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .contact-info-block p, .contact-info-block a {
+            color: #fff;
+            font-size: 1.2rem;
+        }
+
+        .contact-form {
+            background: #fff;
+            padding: 3rem;
+            border-radius: 4px;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 1px solid var(--border-color);
+            font-family: var(--font-body);
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .form-group input:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: var(--secondary-color);
+        }
+
+        /* --- Privacy Policy Section --- */
+        .privacy-section {
+            padding: 3rem 10%;
+            background-color: var(--bg-alt);
+            border-top: 1px solid var(--border-color);
+        }
+
+        details.privacy-accordion summary {
+            font-family: var(--font-heading);
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            cursor: pointer;
+            list-style: none;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 0;
+            font-weight: 600;
+        }
+
+        details.privacy-accordion summary::-webkit-details-marker {
+            display: none;
+        }
+        
+        details.privacy-accordion summary::after {
+            content: '+';
+            font-size: 2rem;
+            color: var(--secondary-color);
+        }
+
+        details.privacy-accordion[open] summary::after {
+            content: '−';
+        }
+
+        .privacy-content {
+            padding: 2rem 0;
+            font-size: 0.9rem;
+            color: var(--text-dark);
+            border-top: 1px solid var(--border-color);
+        }
+
+        .privacy-content h4 {
+            font-family: var(--font-body);
+            margin-top: 1.5rem;
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+            color: var(--primary-color);
+        }
+
+        /* --- Footer --- */
+        footer {
+            background-color: #11223c;
+            color: #a0aec0;
+            padding: 2rem 10%;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        footer img {
+            filter: brightness(0) invert(1);
+            max-height: 40px;
+            margin-bottom: 1rem;
+        }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 992px) {
+            .about, .contact-container {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            .grid-3 {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .top-bar {
+                flex-direction: column;
+                text-align: center;
+                gap: 0.5rem;
+            }
+            header {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            nav {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            .grid-3 {
+                grid-template-columns: 1fr;
+            }
+            :root {
+                --section-padding: 4rem 5%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div>Call us today: <a href="tel:01313227222"><strong>0131 322 7222</strong></a></div>
+        <div>Email: <a href="mailto:enquiries@millardlaw.co.uk">enquiries@millardlaw.co.uk</a></div>
+    </div>
+
+    <!-- Header / Navigation -->
+    <header>
+        <a href="#home" class="logo">
+            <img src="lawlogo.png" alt="Millard Law Logo" onerror="this.outerHTML='<h2 style=\'color:var(--primary-color); margin:0;\'>Millard Law</h2>'">
+        </a>
+        <nav>
+            <a href="#home">Home</a>
+            <a href="#about">About Us</a>
+            <a href="#practice-areas">Child & Family</a>
+            <a href="#practice-areas">Incapacity</a>
+            <a href="#team">Team</a>
+            <a href="#contact">Online Enquiries</a>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <div class="accent-line"></div>
+            <h1>Do you need to speak to an experienced family lawyer in Edinburgh?</h1>
+            <p>At Millard Law our focus is on solving your legal problems. We provide straightforward and clear advice based on years of collective experience in the field of child, family and incapacity law.</p>
+            <a href="#contact" class="btn">Schedule an Appointment</a>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about">
+        <div class="about-text">
+            <h2>Focused on Solving Legal Problems</h2>
+            <p>We will not spend unnecessary time in protracted discussions or poring over details which will not advance your case. We provide you with straightforward and clear advice based on years of collective experience.</p>
+            <p>We are equally comfortable negotiating as litigating and we will assist you in accessing mediation services where appropriate for your situation. We are experienced in both negotiating and litigating.</p>
+        </div>
+        <div class="about-features">
+            <h3>Fees & Legal Aid</h3>
+            <p style="margin-top: 1rem;">We can apply for legal aid to assist you in meeting the costs of advice or representation. You can find out in advance if you are eligible for legal aid by checking the SLAB website <a href="http://www.slab.org.uk/" target="_blank">http://www.slab.org.uk/</a>.</p>
+            <p>If you are not eligible for legal aid, we offer a competitive rate. We pride ourselves in keeping the cost to you down through our efficient and solution-focused approach.</p>
+            <p>We also offer certain services on a fixed fee basis, please ask for individual quotes dependant on your needs.</p>
+        </div>
+    </section>
+
+    <!-- Practice Areas -->
+    <section id="practice-areas" class="practice-areas">
+        <div class="section-header">
+            <h2>Areas of Practice</h2>
+            <div class="accent-line"></div>
+        </div>
+        
+        <div class="grid-3">
+            <!-- Family Law -->
+            <div class="service-card">
+                <h3>Family Law</h3>
+                <ul class="service-list">
+                    <li>Civil Partnerships</li>
+                    <li>Divorce</li>
+                    <li>Prenuptial Agreements</li>
+                    <li>Protective Orders</li>
+                    <li>Separation Agreements</li>
+                    <li>Dissolution of Civil Partnerships</li>
+                </ul>
+                
+            </div>
+
+            <!-- Child Law -->
+            <div class="service-card">
+                <h3>Child Law</h3>
+                <ul class="service-list">
+                    <li>Adoption</li>
+                    <li>Child Abduction</li>
+                    <li>Children's Hearings</li>
+                    <li>Contact</li>
+                    <li>Kinship Carers</li>
+                    <li>Parental Responsibilities & Rights</li>
+                    <li>Permanence Orders</li>
+                    <li>Residence</li>
+                </ul>
+               
+            </div>
+
+            <!-- Incapacity Law -->
+            <div class="service-card">
+                <h3>Incapacity Law</h3>
+                <ul class="service-list">
+                    <li>Guardianship Orders</li>
+                    <li>Mental Health Tribunals</li>
+                    <li>Powers of Attorney</li>
+                </ul>
+               
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section id="team" class="team">
+        <div class="section-header">
+            <h2>Our Team</h2>
+            <div class="accent-line"></div>
+        </div>
+        
+        <div class="team-grid">
+            <div class="team-member">
+                <h3>Lucy Millard</h3>
+                <span class="team-role">Partner</span>
+                <p>Lucy has practiced primarily in the field of child and family law since qualifying as a solicitor in 2011. She regularly represents clients in court in complicated and anxious situations, whether that be in respect of contact or residence arrangements for children, financial disputes, or cases involving social work/children's panel intervention. She adopts a pragmatic approach to resolve difficult situations as efficiently and effectively as possible. Lucy is appointed regularly to act in an independent role to assist the Court in child cases, as Reporter and Curator ad litem in residence and contact disputes. Lucy is often instructed to represent other solicitors appointed as curators in contentious court proceedings. Lucy has significant experience in adoption and permanence order proceedings... Lucy is accredited by the Law Society of Scotland as a specialist in Child Law.</p>
+            </div>
+
+            <div class="team-member">
+                <h3>Richard G Mill</h3>
+                <span class="team-role">Partner</span>
+                <p>Richard (Rick) qualified in 1995 and has 30 years’ experience representing clients in all Courts and Tribunals across Scotland. His abilities have been recognised by his appointment to several part time judicial roles. He is also appointed to act in an independent role to assist the Court in child and adults with incapacity cases. He is also a peer reviewer for the Quality Assurance Scheme operated by the Law Society / Scottish Legal Aid Board.</p>
+            </div>
+
+            <div class="team-member">
+                <h3>Ellysa Ford</h3>
+                <span class="team-role">Solicitor</span>
+                <p>Ellysa undertook her undergraduate studies at Abertay University and went on to complete her diploma at the University of Edinburgh. She joined the firm in November 2023 as a trainee before qualifying in November 2025. Ellysa has been appearing both in court and children’s panels from an early stage in her traineeship. She appears in court regularly, advocating for clients in a constructive but direct manner. Ellysa provides clients with straightforward advice with understanding and empathy.</p>
+            </div>
+
+            <div class="team-member">
+                <h3>Neve Bell</h3>
+                <span class="team-role">Solicitor</span>
+                <p>Neve completed her Undergraduate Law Degree LLB (Hons) at Edinburgh Napier University and Diploma in Legal Practice at the University of Glasgow. She completed her traineeship in 2025 at a busy Edinburgh firm and joined us in November 2025 shortly after qualifying. Neve has a particular interest in Child Law, she has represented clients across a number of Sheriff Courts and regularly attends Children’s Hearings for clients who require assistance and representation within the Children’s Hearing System.</p>
+            </div>
+
+            <div class="team-member">
+                <h3>Andrew Mcquillian</h3>
+                <span class="team-role">Trainee Solicitor</span>
+                <p>Andrew (Andy) completed his Undergraduate Law Degree LLB (Hons) at Aberdeen University and his Diploma at Aberdeen University Diploma. Andy commenced his traineeship with the firm in January 2025. Andy has appeared regularly in court since obtaining his restricted practicing certificate at an early stage of his traineeship. As well as child and family work, he also undertakes adults with incapacity work. Andy approaches complex issues in a calm and thorough way.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="contact-container">
+            <div>
+                <h2 style="margin-bottom: 2rem;">Contact Us</h2>
+                <p style="margin-bottom: 3rem;">Please contact us by phone or e-mail to schedule an appointment. Online enquiries are actively monitored.</p>
+                
+                <div class="contact-info-block">
+                    <h4>Telephone</h4>
+                    <a href="tel:01313227222">0131 322 7222</a>
+                </div>
+                
+                <div class="contact-info-block">
+                    <h4>Email</h4>
+                    <a href="mailto:enquiries@millardlaw.co.uk">enquiries@millardlaw.co.uk</a>
+                </div>
+                
+                <div class="contact-info-block">
+                    <h4>Address</h4>
+                    <p>69-71 Dalry Road<br>Edinburgh EH11 2AA</p>
+                </div>
+            </div>
+            
+            <div class="contact-form">
+                <form action="#" method="POST" onsubmit="event.preventDefault(); alert('Message feature is for demonstration purposes.');">
+                    <div class="form-group">
+                        <input type="text" name="name" placeholder="Name *" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" name="email" placeholder="Email *" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" name="subject" placeholder="Subject">
+                    </div>
+                    <div class="form-group">
+                        <textarea name="message" rows="5" placeholder="Message *" required></textarea>
+                    </div>
+                    <button type="submit" class="btn">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Privacy Policy Section (Accordion) -->
+    <section id="privacy" class="privacy-section">
+        <details class="privacy-accordion">
+            <summary>View Our Privacy Policy</summary>
+            <div class="privacy-content">
+                <h4>BACKGROUND:</h4>
+                <p>Your privacy is important to you and that you care about how your personal data is used and shared online. We respect and value the privacy of everyone who visits this website, www.millardlaw.co.uk (“Our Site”) and (subject to the limited exceptions in section 6, below) We do not collect personal data about you unless you contact us (see section 5, below). Any personal data we do collect will only be used as permitted by law.</p>
+                <p>Please read this Privacy Policy carefully and ensure that you understand it. Your acceptance of Our Privacy Policy is deemed to occur upon your first use of Our Site. If you do not accept and agree with this Privacy Policy, you must stop using Our Site immediately.</p>
+                
+                <h4>Definitions and Interpretation</h4>
+                <p>In this Policy, the following terms shall have the following meanings:<br>
+                “personal data” means any and all data that relates to an identifiable person who can be directly or indirectly identified from that data. In this case, it means personal data that you give to Us via Our Site. This definition shall, where applicable, incorporate the definitions provided in the EU Regulation 2016/679 – the General Data Protection Regulation (“GDPR”); and<br>
+                “We/Us/Our” means Mill and Millard LLP, trading as Millard Law, having our registered offices at 69-71 Dalry Road, Edinburgh EH11 2AA.</p>
+                
+                <h4>Information About Us</h4>
+                <p>Our VAT number is 249269273<br>
+                We are regulated by The Law Society of Scotland.<br>
+                Our website is managed by: Vincent Quercio Sole Trader, Greenlees Green Lane, Lasswade EH18 1HE</p>
+                
+                <h4>What Does This Policy Cover</h4>
+                <p>This Privacy Policy applies only to your use of Our Site. Our Site may contain links to other websites. Please note that We have no control over how your data is collected, stored, or used by other websites and we advise you to check the privacy policies of any such websites before providing any data to them.</p>
+
+                <h4>Your Rights</h4>
+                <p>As a data subject, you have the following rights under the GDPR, which this Policy and Our use of personal data have been designed to uphold:<br>
+                - The right to be informed about Our collection and use of personal data;<br>
+                - The right of access to the personal data we hold about you (section 8);<br>
+                - The right to rectification if any personal data We hold about you is inaccurate or incomplete (please contact Us using the details in section 9);<br>
+                - The right to be forgotten – i.e. the right to ask Us to delete any personal data We hold about you (We only hold your personal data for a limited time, as explained in section 6, but if you would like Us to delete it sooner, please contact Us using the details in section 9;<br>
+                - The right to restrict (i.e. prevent) the processing of your personal information;<br>
+                - The right to data portability (obtaining a copy of your personal data to re-use with another service or organisation);<br>
+                - The right to object to Us using your personal data for particular purposes; and<br>
+                - Rights with respect to automated decision making and profiling.</p>
+                <p>If you have any cause for complaint about Our use of your personal data, please contact Us using the details provided in section 9 and We will do Our best to solve the problem for you. If We are unable to help, you also have the right to lodge a complaint with the UK’s supervisory authority, the Information Commissioner’s Office. For further information about your rights, please contact the Information Commissioner’s Office or your local Citizens Advice Bureau.</p>
+
+                <h4>What Data Do We Collect?</h4>
+                <p>Subject to section 5.2, We do not collect any personal data from you. We do not place cookies on your computer or device, nor do we use any other means of data collection. If you send Us an email, we may collect your name, your email address, and any other information which you choose to give Us.</p>
+
+                <h4>How Do We Use Your Data?</h4>
+                <p>If We do collect any personal data, it will be processed and stored securely, for no longer than is necessary in light of the reason(s) for which it was first collected. We will comply with Our obligations and safeguard your rights under the GDPR at all times. Fore more details on security see section 7, below.<br>
+                As noted above, We do not generally collect any personal data. If you contact Us and We obtain your personal detail from your email, We may use them as follows:<br>
+                - To reply to your email;<br>
+                - To deal with your business in furtherance of your instructions.</p>
+                <p>Any and all emails containing your personal data will be deleted in accordance with the regulations and guidelines made by The Law Society of Scotland. You have the right to withdraw your consent to Us using your personal data at any time, and to request that We delete it. We will not share any of your data with any third parties for any purposes except as is necessary to carry out the work we are instructed by you to do on your behalf.</p>
+
+                <h4>How and Where Do We Store Your Data?</h4>
+                <p>We only keep your personal data for as long as we need to in order to use it as described above in section 6, and/or for as long as We have your permission to keep it. Your data will only be stored in the UK/</p>
+
+                <h4>How Can You Access Your Data?</h4>
+                <p>You have the right to ask for a copy of any of your personal data held by Us (where such data is held). Under the GDPR, no fee is payable and We will provide any and all information in response to your request free of charge. Please contact Us for more details at enquiries@millardlaw.co.uk or using the contact detailed provided in section 9.</p>
+
+                <h4>Contacting Us</h4>
+                <p>If you have any questions about Our Site or this Privacy Policy, please contact Us by email at enquiries@millardlaw.co.uk, by telephone on 0131 322 7222 or by post at 69-71 Dalry Road, Edinburgh EH11 2AA. Please ensure that your query is clear, particularly if it is a request for information about the data We hold about you (as under section 8, above).</p>
+
+                <h4>Changes to Our Privacy Policy</h4>
+                <p>We may change this Privacy Policy from time to time (for example, if the law changes). Any changes will be posted on Our Site and you will be deemed to have accepted the terms of the Privacy Policy on your first use of Our Site following the alterations. We recommend that you check this page regularly to keep up-to-date.</p>
+            </div>
+        </details>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <img src="lawlogo.png" alt="Millard Law Logo" onerror="this.style.display='none'">
+        <p>&copy; <script>document.write(new Date().getFullYear())</script> Millard Law. All rights reserved.</p>
+        <p>Regulated by The Law Society of Scotland.</p>
+    </footer>
+
+</body>
+</html>
