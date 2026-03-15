@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anmol Singh - Resume</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+            line-height: 1.5;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+
+        .resume-container {
+            max-width: 850px;
+            margin: 20px auto;
+            background: #ffffff;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            display: flex;
+            min-height: 1122px; /* A4 Ratio */
+            overflow: hidden;
+        }
+
+        /* --- Left Sidebar --- */
+        .sidebar {
+            width: 34%;
+            background-color: #1e293b;
+            color: #f8fafc;
+            padding: 40px 25px;
+        }
+
+        .profile-name {
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+            color: #ffffff;
+        }
+
+        .profile-title {
+            font-size: 14px;
+            font-weight: 300;
+            color: #94a3b8;
+            margin-bottom: 30px;
+            letter-spacing: 0.5px;
+        }
+
+        .section-title-sidebar {
+            font-size: 15px;
+            font-weight: 600;
+            text-transform: uppercase;
+            border-bottom: 1px solid #475569;
+            padding-bottom: 5px;
+            margin: 25px 0 15px 0;
+            color: #38bdf8;
+            letter-spacing: 1px;
+        }
+
+        .contact-list, .education-list {
+            list-style: none;
+            font-size: 12px;
+        }
+
+        .contact-list li {
+            margin-bottom: 10px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .contact-list span.label {
+            font-weight: 600;
+            color: #94a3b8;
+            font-size: 11px;
+            text-transform: uppercase;
+        }
+
+        .contact-list a {
+            color: #f8fafc;
+            text-decoration: none;
+        }
+
+        .skill-category {
+            margin-bottom: 15px;
+        }
+
+        .skill-category-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: #cbd5e1;
+            margin-bottom: 8px;
+        }
+
+        .skills-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .skill-pill {
+            background-color: #334155;
+            color: #e2e8f0;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 400;
+        }
+
+        .edu-item {
+            margin-bottom: 15px;
+        }
+        
+        .edu-degree {
+            font-size: 13px;
+            font-weight: 600;
+            color: #f8fafc;
+        }
+
+        .edu-school {
+            font-size: 11px;
+            color: #94a3b8;
+        }
+
+        .edu-year {
+            font-size: 11px;
+            color: #38bdf8;
+            font-weight: 600;
+        }
+
+        /* --- Right Main Content --- */
+        .main-content {
+            width: 66%;
+            padding: 40px 35px;
+            background-color: #ffffff;
+        }
+
+        .section-title-main {
+            font-size: 18px;
+            font-weight: 700;
+            color: #0f172a;
+            text-transform: uppercase;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 5px;
+            margin-bottom: 15px;
+            margin-top: 25px;
+        }
+
+        .main-content .section-title-main:first-child {
+            margin-top: 0;
+        }
+
+        .summary-text {
+            font-size: 13px;
+            color: #475569;
+            text-align: justify;
+            margin-bottom: 20px;
+        }
+
+        .job-item, .project-item {
+            margin-bottom: 18px;
+        }
+
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 4px;
+        }
+
+        .item-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: #1e293b;
+        }
+
+        .item-subtitle {
+            font-size: 13px;
+            font-weight: 600;
+            color: #0ea5e9;
+        }
+
+        .item-date {
+            font-size: 12px;
+            color: #64748b;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .item-desc {
+            font-size: 12px;
+            color: #475569;
+            text-align: justify;
+        }
+
+        .item-desc ul {
+            padding-left: 15px;
+            margin-top: 6px;
+        }
+
+        .item-desc li {
+            margin-bottom: 4px;
+        }
+
+        /* --- Print Optimization --- */
+        @media print {
+            body {
+                background-color: #fff;
+            }
+            .resume-container {
+                margin: 0;
+                box-shadow: none;
+                width: 100%;
+                max-width: 100%;
+                min-height: 100vh;
+            }
+            @page {
+                size: A4;
+                margin: 0;
+            }
+            /* Adjust padding to fit perfectly on A4 */
+            .sidebar { padding: 30px 20px; }
+            .main-content { padding: 30px 25px; }
+            
+            .summary-text, .item-desc { font-size: 11.5px; }
+            .item-title { font-size: 14px; }
+            .item-subtitle { font-size: 12px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="resume-container">
+    <div class="sidebar">
+        <div class="profile-name">Anmol Singh</div>
+        <div class="profile-title">Full Stack Software Engineer</div>
+
+        <div class="section-title-sidebar">Contact</div>
+        <ul class="contact-list">
+            <li><span class="label">Phone</span> (+91) 8360552306</li>
+            <li><span class="label">Email</span> anmolcheema988@gmail.com</li>
+            <li><span class="label">Location</span> Mohali, Chandigarh, India</li>
+            <li>
+                <span class="label">LinkedIn</span> 
+                <a href="https://linkedin.com/in/anmolsinghcheema" target="_blank">linkedin.com/in/anmolsinghcheema</a>
+            </li>
+            <li>
+                <span class="label">GitHub</span> 
+                <a href="https://github.com/anmolcheema836" target="_blank">github.com/anmolcheema836</a>
+            </li>
+            <li>
+                <span class="label">Portfolio</span> 
+                <a href="https://creative-eta-olive.vercel.app/" target="_blank">creative-pink.vercel.app</a>
+            </li>
+        </ul>
+
+        <div class="section-title-sidebar">Core Skills</div>
+        
+        <div class="skill-category">
+            <div class="skill-category-title">Frontend & UI/UX</div>
+            <div class="skills-wrapper">
+                <span class="skill-pill">HTML5 & CSS3</span>
+                <span class="skill-pill">JavaScript (ES6+)</span>
+                <span class="skill-pill">UI/UX Design</span>
+                <span class="skill-pill">Figma</span>
+                <span class="skill-pill">Responsive Design</span>
+                <span class="skill-pill">JS Animations</span>
+            </div>
+        </div>
+
+        <div class="skill-category">
+            <div class="skill-category-title">Backend & CMS</div>
+            <div class="skills-wrapper">
+                <span class="skill-pill">PHP</span>
+                <span class="skill-pill">WordPress</span>
+                <span class="skill-pill">Plugin Development</span>
+                <span class="skill-pill">WooCommerce</span>
+            </div>
+        </div>
+
+        <div class="skill-category">
+            <div class="skill-category-title">Infrastructure & Data</div>
+            <div class="skills-wrapper">
+                <span class="skill-pill">REST APIs</span>
+                <span class="skill-pill">MySQL / phpMyAdmin</span>
+                <span class="skill-pill">.htaccess & Routing</span>
+                <span class="skill-pill">Web Hosting</span>
+            </div>
+        </div>
+
+        <div class="skill-category">
+            <div class="skill-category-title">Optimization & Tools</div>
+            <div class="skills-wrapper">
+                <span class="skill-pill">Technical SEO</span>
+                <span class="skill-pill">A/B Testing</span>
+                <span class="skill-pill">Git / GitHub</span>
+                <span class="skill-pill">AI Automation Tools</span>
+            </div>
+        </div>
+
+        <div class="section-title-sidebar">Education</div>
+        <div class="edu-item">
+            <div class="edu-degree">Bachelor of Computer Applications</div>
+            <div class="edu-school">Punjabi University, Patiala</div>
+            <div class="edu-year">2021 - 2024 | Grade: 75%</div>
+        </div>
+        <div class="edu-item">
+            <div class="edu-degree">12th Standard (CBSE)</div>
+            <div class="edu-year">2021 | Grade: 93.4%</div>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="section-title-main">Professional Summary</div>
+        <div class="summary-text">
+            Results-driven Full Stack Software Developer with a proven track record of architecting, building, and deploying scalable web applications, custom API integrations, and automation systems. Specializing in modern web technologies (PHP, Python, JavaScript) and CMS platforms like WordPress. Adept at handling the complete development lifecycle—from conceptualizing high-end UI/UX to server-level configurations, complex database management, and seamless third-party API syncing. Passionate about solving complex technical problems and leveraging AI tools to optimize workflows.
+        </div>
+
+        <div class="section-title-main">Experience</div>
+        
+        <div class="job-item">
+            <div class="item-header">
+                <div class="item-title">Freelance Software Engineer</div>
+                <div class="item-date">Jan 2025 - Present</div>
+            </div>
+            <div class="item-desc">
+                <ul>
+                    <li>Develop high-performance, responsive single-page applications and e-commerce platforms using PHP, Python, and modern JavaScript.</li>
+                    <li>Design and implement complex server-level redirects and URL rewrites via <strong>.htaccess</strong> configurations for seamless domain transitions and SEO preservation.</li>
+                    <li>Debug and resolve intricate backend/frontend logic issues, including custom PHP database retrievals and dynamic JavaScript modal rendering.</li>
+                    <li>Design landing pages with A/B/C variants to optimize conversion rates and user engagement.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="job-item">
+            <div class="item-header">
+                <div class="item-title">Software Engineer</div>
+                <div class="item-subtitle">Promark Techsolutions</div>
+            </div>
+            <div class="item-header" style="margin-top:-4px;">
+                <div class="item-desc">Full-Time Role</div>
+                <div class="item-date">Jun 2024 - Jan 2025</div>
+            </div>
+            <div class="item-desc">
+                <ul>
+                    <li>Collaborated in a fast-paced environment to build and maintain web applications, ensuring optimal front-end performance and reliable back-end architecture.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section-title-main">Key Projects</div>
+
+        <div class="project-item">
+            <div class="item-header">
+                <div class="item-title">Real Estate Property Sync API Plugin</div>
+                <div class="item-date">Jan 2026 - Feb 2026</div>
+            </div>
+            <div class="item-desc">
+                Developed a custom WordPress plugin to authenticate and interface with the Dezrez real estate REST API. Engineered automated data pipelines to fetch, parse (JSON), and dynamically render real-time property listings, images, and metadata on the client frontend.
+            </div>
+        </div>
+
+        <div class="project-item">
+            <div class="item-header">
+                <div class="item-title">Car Auction Fees Calculator Platform</div>
+                <div class="item-date">Jan 2026 - Feb 2026</div>
+            </div>
+            <div class="item-desc">
+                Architected a dynamic, logic-heavy web platform allowing users to estimate vehicle auction costs across various UK auction houses. Implemented complex JavaScript fee-calculation algorithms factoring in taxes, buyer tiers, and shifting auction rules. Optimized site architecture for search engines (clean URLs, structured data).
+            </div>
+        </div>
+
+        <div class="project-item">
+            <div class="item-header">
+                <div class="item-title">UK Business Web Platforms</div>
+                <div class="item-date">Dec 2025 - Feb 2026</div>
+            </div>
+            <div class="item-desc">
+                Designed, developed, and deployed full-scale digital presences for multiple UK businesses (<strong>Regency Cafe</strong>, <strong>Atalay Kebab</strong>, <strong>Eagle Tire Centre</strong>).
+                <ul>
+                    <li>Managed end-to-end deployment: UI design, responsive frontend coding, hosting setup, and SSL configuration.</li>
+                    <li>Focused heavily on mobile-first optimization, fast load speeds, and technical SEO structure to drive local organic traffic.</li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>

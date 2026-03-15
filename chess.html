@@ -1,0 +1,1198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grandmaster | Elite Chess Academy</title>
+    <meta name="description" content="The world's premier chess academy. Master the game with elite Grandmasters.">
+    
+    <!-- Premium Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400;1,600&family=Manrope:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        /* ==================== CORE VARIABLES & RESET ==================== */
+        :root {
+            --navy: #070B19;       /* Deepest Blue/Black */
+            --blue-dark: #0A1128;  /* Rich Navy */
+            --blue-royal: #1D4ED8; /* Royal Accent */
+            --blue-light: #E0E7FF; /* Ice Blue */
+            --white: #FAFAFA;      /* Off-White */
+            --pure-white: #FFFFFF;
+            
+            --font-serif: 'Cormorant Garamond', serif;
+            --font-sans: 'Manrope', sans-serif;
+            
+            --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+            --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+            
+            --container-padding: 6vw;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            cursor: none !important; /* Force custom cursor */
+        }
+
+        html {
+            scroll-behavior: auto; /* Handled smoothly by OS/Browser, CSS smooth causes lag with parallax */
+            font-size: 16px;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--white);
+            color: var(--navy);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        ::selection {
+            background-color: var(--blue-royal);
+            color: var(--pure-white);
+        }
+
+        /* ==================== FILM GRAIN TEXTURE ==================== */
+        .noise {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        /* ==================== CUSTOM CURSOR ==================== */
+        .cursor-dot {
+            position: fixed;
+            top: 0; left: 0;
+            width: 6px; height: 6px;
+            background: var(--blue-royal);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            z-index: 10000;
+            transition: width 0.3s, height 0.3s, background 0.3s;
+        }
+
+        .cursor-follower {
+            position: fixed;
+            top: 0; left: 0;
+            width: 40px; height: 40px;
+            border: 1px solid rgba(29, 78, 216, 0.4);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            z-index: 9999;
+            transition: width 0.3s, height 0.3s, background 0.3s, border-color 0.3s;
+            transition-timing-function: var(--ease-out-expo);
+        }
+
+        .cursor-hover .cursor-follower {
+            width: 80px; height: 80px;
+            background: rgba(29, 78, 216, 0.1);
+            border-color: transparent;
+            backdrop-filter: blur(2px);
+        }
+
+        /* ==================== PRELOADER ==================== */
+        .preloader {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: var(--navy);
+            z-index: 9998;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: var(--container-padding);
+            color: var(--white);
+        }
+
+        .preloader-counter {
+            font-family: var(--font-serif);
+            font-size: 15vw;
+            line-height: 1;
+            font-weight: 300;
+        }
+
+        .preloader-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        /* ==================== NAVIGATION ==================== */
+        nav {
+            position: fixed;
+            top: 0; width: 100%;
+            padding: 2.5vw var(--container-padding);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            mix-blend-mode: difference;
+            color: var(--white);
+        }
+
+        .logo {
+            font-family: var(--font-serif);
+            font-size: 2rem;
+            font-weight: 600;
+            text-decoration: none;
+            color: currentColor;
+            letter-spacing: 1px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 3vw;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: currentColor;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0;
+            width: 100%; height: 1px;
+            background: currentColor;
+            transform: translateX(-101%);
+            transition: transform 0.6s var(--ease-out-expo);
+        }
+
+        .nav-links a:hover::after {
+            transform: translateX(0);
+        }
+
+        /* ==================== BUTTONS ==================== */
+        .btn-magnetic-wrap {
+            display: inline-block;
+            padding: 20px; /* Magnetic capture area */
+        }
+
+        .btn-premium {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem 2.5rem;
+            border-radius: 100px;
+            background: var(--pure-white);
+            color: var(--navy);
+            font-family: var(--font-sans);
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-decoration: none;
+            transition: transform 0.3s var(--ease-out-expo), background 0.3s, color 0.3s;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .btn-premium.dark {
+            background: var(--navy);
+            color: var(--white);
+            border-color: var(--navy);
+        }
+
+        .btn-premium::before {
+            content: '';
+            position: absolute;
+            top: 100%; left: 0;
+            width: 100%; height: 100%;
+            background: var(--blue-royal);
+            transition: transform 0.5s var(--ease-out-expo);
+            z-index: 0;
+            border-radius: 100px;
+        }
+
+        .btn-premium:hover::before {
+            transform: translateY(-100%);
+        }
+
+        .btn-premium span {
+            position: relative;
+            z-index: 1;
+        }
+
+        .btn-premium:hover {
+            color: var(--white);
+            border-color: var(--blue-royal);
+        }
+
+        /* ==================== HERO SECTION ==================== */
+        .hero {
+            height: 100vh;
+            background: var(--navy);
+            color: var(--white);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 0 var(--container-padding);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-img-bg {
+            position: absolute;
+            top: 0; right: 0;
+            width: 55%; height: 100%;
+            object-fit: cover;
+            opacity: 0.6;
+            mask-image: linear-gradient(to left, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 100%);
+            -webkit-mask-image: linear-gradient(to left, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 100%);
+            transform: scale(1.1);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 60vw;
+        }
+
+        .subtitle {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            color: var(--blue-light);
+            display: block;
+            margin-bottom: 2vh;
+            overflow: hidden;
+        }
+        
+        .subtitle span { display: block; transform: translateY(100%); }
+
+        .hero-title {
+            font-family: var(--font-serif);
+            font-size: 8vw;
+            line-height: 0.9;
+            font-weight: 400;
+            text-transform: uppercase;
+        }
+
+        .hero-title .italic {
+            font-style: italic;
+            color: var(--pure-white);
+            font-weight: 300;
+            display: block;
+            margin-left: 10vw;
+        }
+
+        .line-mask {
+            overflow: hidden;
+            display: block;
+        }
+        
+        .line-mask span {
+            display: block;
+            transform: translateY(110%);
+        }
+
+        .hero-desc {
+            margin-top: 4vh;
+            font-size: 1.1rem;
+            max-width: 400px;
+            line-height: 1.6;
+            color: #9ca3af;
+            font-weight: 300;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 40px;
+            left: var(--container-padding);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--white);
+        }
+
+        .scroll-line {
+            width: 1px;
+            height: 60px;
+            background: rgba(255,255,255,0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .scroll-line::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 50%;
+            background: var(--white);
+            animation: scrollDown 2s cubic-bezier(0.77, 0, 0.175, 1) infinite;
+        }
+
+        @keyframes scrollDown {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(200%); }
+        }
+
+        /* ==================== INFINITE MARQUEE ==================== */
+        .marquee-section {
+            padding: 4vw 0;
+            background: var(--blue-royal);
+            color: var(--pure-white);
+            overflow: hidden;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .marquee-track {
+            display: flex;
+            white-space: nowrap;
+            width: max-content;
+            animation: marquee 25s linear infinite;
+        }
+
+        .marquee-track h2 {
+            font-family: var(--font-serif);
+            font-size: 4vw;
+            font-weight: 400;
+            text-transform: uppercase;
+            padding-right: 3vw;
+        }
+
+        .marquee-track span {
+            font-style: italic;
+            opacity: 0.7;
+            font-family: var(--font-sans);
+            font-weight: 300;
+        }
+
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* ==================== ABOUT & PHILOSOPHY (Sticky Split) ==================== */
+        .about-section {
+            padding: 10vw var(--container-padding);
+            display: grid;
+            grid-template-columns: 4fr 6fr;
+            gap: 5vw;
+            background: var(--white);
+            position: relative;
+        }
+
+        .about-left {
+            position: sticky;
+            top: 20vh;
+            height: max-content;
+        }
+
+        .section-heading {
+            font-family: var(--font-serif);
+            font-size: 4vw;
+            line-height: 1;
+            color: var(--navy);
+            margin-bottom: 2rem;
+        }
+
+        .about-right p {
+            font-size: 2rem;
+            line-height: 1.4;
+            font-family: var(--font-serif);
+            color: #6b7280;
+            margin-bottom: 3rem;
+            transition: color 0.5s;
+        }
+
+        .about-right p.highlight {
+            color: var(--navy);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 3rem;
+            margin-top: 5rem;
+            border-top: 1px solid rgba(0,0,0,0.1);
+            padding-top: 3rem;
+        }
+
+        .stat-item h4 {
+            font-family: var(--font-sans);
+            font-size: 4rem;
+            font-weight: 200;
+            color: var(--blue-royal);
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-item span {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #4b5563;
+        }
+
+        /* ==================== PARALLAX BREAK ==================== */
+        .parallax-break {
+            height: 80vh;
+            width: 100vw;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .parallax-img {
+            position: absolute;
+            top: -20%; left: 0;
+            width: 100%; height: 140%;
+            object-fit: cover;
+            z-index: 1;
+        }
+
+        .parallax-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(7, 11, 25, 0.4);
+            z-index: 2;
+        }
+
+        .parallax-text {
+            position: relative;
+            z-index: 3;
+            color: var(--white);
+            font-family: var(--font-serif);
+            font-size: 6vw;
+            text-align: center;
+            font-style: italic;
+        }
+
+        /* ==================== PROGRAMS (Premium Accordion) ==================== */
+        .programs-section {
+            padding: 10vw var(--container-padding);
+            background: var(--navy);
+            color: var(--pure-white);
+        }
+
+        .programs-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 6vw;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 2rem;
+        }
+
+        .accordion {
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .accordion-item {
+            border-top: 1px solid rgba(255,255,255,0.1);
+            overflow: hidden;
+            transition: background 0.4s;
+        }
+
+        .accordion-item:hover {
+            background: rgba(255,255,255,0.02);
+        }
+
+        .accordion-header {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 3vw 0;
+            cursor: none;
+        }
+
+        .acc-num {
+            font-family: var(--font-sans);
+            font-size: 1rem;
+            color: var(--blue-royal);
+            width: 50px;
+        }
+
+        .acc-title {
+            font-family: var(--font-serif);
+            font-size: 3.5vw;
+            flex-grow: 1;
+            text-align: left;
+            transition: transform 0.4s var(--ease-out-expo);
+        }
+
+        .accordion-item:hover .acc-title {
+            transform: translateX(20px);
+        }
+
+        .acc-icon {
+            font-size: 2rem;
+            font-weight: 200;
+            transition: transform 0.4s;
+        }
+
+        .accordion-content {
+            height: 0;
+            opacity: 0;
+            display: flex;
+            gap: 4vw;
+            transition: height 0.6s var(--ease-in-out), opacity 0.4s;
+        }
+
+        .accordion-item.active .accordion-content {
+            height: auto;
+            opacity: 1;
+            padding-bottom: 4vw;
+        }
+
+        .accordion-item.active .acc-icon {
+            transform: rotate(45deg);
+        }
+
+        .acc-desc {
+            flex: 1;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #9ca3af;
+            font-weight: 300;
+        }
+
+        .acc-img {
+            flex: 1;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 4px;
+            filter: grayscale(100%);
+        }
+
+        /* ==================== COACHES ==================== */
+        .coaches-section {
+            padding: 10vw var(--container-padding);
+            background: var(--white);
+        }
+
+        .coaches-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2vw;
+            margin-top: 5vw;
+        }
+
+        .coach-card {
+            position: relative;
+            overflow: hidden;
+            aspect-ratio: 3/4;
+            border-radius: 8px;
+        }
+
+        .coach-img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            filter: grayscale(100%);
+            transition: filter 0.8s, transform 0.8s var(--ease-out-expo);
+        }
+
+        .coach-card:hover .coach-img {
+            filter: grayscale(0%);
+            transform: scale(1.05);
+        }
+
+        .coach-info {
+            position: absolute;
+            bottom: 0; left: 0; width: 100%;
+            padding: 2rem;
+            background: linear-gradient(to top, rgba(7,11,25,0.9), transparent);
+            color: var(--pure-white);
+            transform: translateY(20px);
+            opacity: 0;
+            transition: transform 0.5s var(--ease-out-expo), opacity 0.5s;
+        }
+
+        .coach-card:hover .coach-info {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .coach-name {
+            font-family: var(--font-serif);
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .coach-title {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--blue-royal);
+        }
+
+        /* ==================== MASSIVE CTA ==================== */
+        .cta-section {
+            padding: 15vw var(--container-padding);
+            background: var(--blue-royal);
+            color: var(--pure-white);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .cta-massive {
+            font-family: var(--font-serif);
+            font-size: 9vw;
+            line-height: 0.9;
+            text-transform: uppercase;
+            margin-bottom: 4rem;
+        }
+
+        /* ==================== FOOTER ==================== */
+        footer {
+            background: var(--navy);
+            color: var(--white);
+            padding: 6vw var(--container-padding) 2vw;
+        }
+
+        .footer-top {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 4vw;
+            padding-bottom: 6vw;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .footer-logo {
+            font-family: var(--font-serif);
+            font-size: 3rem;
+            line-height: 1;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-desc {
+            color: #6b7280;
+            font-size: 1rem;
+            max-width: 300px;
+        }
+
+        .footer-col h5 {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 2rem;
+            color: var(--pure-white);
+        }
+
+        .footer-col ul { list-style: none; }
+        
+        .footer-col ul li { margin-bottom: 1rem; }
+        
+        .footer-col ul a {
+            color: #9ca3af;
+            text-decoration: none;
+            transition: color 0.3s;
+            font-size: 0.95rem;
+        }
+
+        .footer-col ul a:hover { color: var(--blue-royal); }
+
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 2vw;
+            font-size: 0.8rem;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* ==================== ANIMATION CLASSES ==================== */
+        .reveal-up {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 1s var(--ease-out-expo), transform 1s var(--ease-out-expo);
+        }
+        
+        .reveal-up.in-view {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ==================== RESPONSIVE ==================== */
+        @media (max-width: 1024px) {
+            .about-section { grid-template-columns: 1fr; gap: 3rem; }
+            .about-left { position: relative; top: 0; }
+            .coaches-grid { grid-template-columns: 1fr 1fr; }
+            .hero-img-bg { width: 100%; opacity: 0.3; mask-image: none; -webkit-mask-image: none; }
+            .hero-content { max-width: 100%; }
+        }
+
+        @media (max-width: 768px) {
+            html { font-size: 14px; }
+            .cursor-dot, .cursor-follower { display: none !important; }
+            * { cursor: auto !important; }
+            .nav-links { display: none; }
+            .coaches-grid { grid-template-columns: 1fr; }
+            .footer-top { grid-template-columns: 1fr; }
+            .acc-title { font-size: 1.5rem; }
+            .accordion-content { flex-direction: column; }
+            .btn-magnetic-wrap { padding: 0; margin-top: 2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- TEXTURE OVERLAY -->
+    <div class="noise"></div>
+
+    <!-- CUSTOM CURSOR -->
+    <div class="cursor-dot"></div>
+    <div class="cursor-follower"></div>
+
+    <!-- PRELOADER -->
+    <div class="preloader">
+        <div style="font-size: 1rem; letter-spacing: 3px;">SYSTEM BOOT</div>
+        <div class="preloader-counter" id="counter">00</div>
+        <div class="preloader-bottom">
+            <span>Loading Assets</span>
+            <span>Grandmaster.</span>
+        </div>
+    </div>
+
+    <!-- NAVIGATION -->
+    <nav>
+        <a href="#" class="logo">GM.</a>
+        <ul class="nav-links">
+            <li><a href="#philosophy" class="hover-target">Philosophy</a></li>
+            <li><a href="#programs" class="hover-target">Programs</a></li>
+            <li><a href="#coaches" class="hover-target">Grandmasters</a></li>
+        </ul>
+        <div class="btn-magnetic-wrap magnetic">
+            <a href="#enroll" class="btn-premium hover-target"><span>Apply Now</span></a>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <header class="hero">
+        <img src="https://images.unsplash.com/photo-1586165368502-1bad197a6461?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80" alt="Chess Master Setup" class="hero-img-bg" id="hero-img">
+        
+        <div class="hero-content">
+            <div class="subtitle line-mask"><span id="hero-sub">The Pinnacle of Intellectual Warfare</span></div>
+            <h1 class="hero-title">
+                <div class="line-mask"><span class="hero-title-line">Master</span></div>
+                <div class="line-mask"><span class="hero-title-line italic">The Board.</span></div>
+            </h1>
+            <p class="hero-desc reveal-up" style="transition-delay: 1.2s;">
+                Step into the world’s most exclusive chess academy. We forge complete beginners into relentless tacticians and titled grandmasters.
+            </p>
+            <div class="btn-magnetic-wrap magnetic reveal-up" style="transition-delay: 1.4s;">
+                <a href="#programs" class="btn-premium dark hover-target"><span>Discover Curriculum</span></a>
+            </div>
+        </div>
+
+        <div class="scroll-indicator">
+            <span>Scroll</span>
+            <div class="scroll-line"></div>
+        </div>
+    </header>
+
+    <!-- MARQUEE -->
+    <section class="marquee-section">
+        <div class="marquee-track">
+            <h2>Calculate <span>Deeper</span> • Attack <span>Fiercely</span> • Defend <span>Flawlessly</span> • Outsmart <span>Everyone</span> • Calculate <span>Deeper</span> • Attack <span>Fiercely</span> • Defend <span>Flawlessly</span> • Outsmart <span>Everyone</span> •</h2>
+        </div>
+    </section>
+
+    <!-- PHILOSOPHY / ABOUT -->
+    <section class="about-section" id="philosophy">
+        <div class="about-left reveal-up">
+            <h2 class="section-heading">Our<br>Philosophy.</h2>
+            <div class="btn-magnetic-wrap magnetic">
+                <a href="#about" class="btn-premium dark hover-target"><span>Read the Manifesto</span></a>
+            </div>
+        </div>
+        <div class="about-right">
+            <p class="reveal-up">We do not merely teach how the pieces move. We reconstruct how you think.</p>
+            <p class="reveal-up">At Grandmaster, chess is treated as an extreme cognitive discipline. By blending <span class="highlight">Soviet-era rigor</span> with modern neural-network engine analysis, we provide an unparalleled educational ecosystem.</p>
+            
+            <div class="stats-grid">
+                <div class="stat-item reveal-up">
+                    <h4 class="counter-num" data-target="12">0</h4>
+                    <span>Resident Grandmasters</span>
+                </div>
+                <div class="stat-item reveal-up" style="transition-delay: 0.1s;">
+                    <h4 class="counter-num" data-target="2500">0</h4>
+                    <span>Avg. Peak Elo Output</span>
+                </div>
+                <div class="stat-item reveal-up">
+                    <h4 class="counter-num" data-target="45">0</h4>
+                    <span>Global Championships</span>
+                </div>
+                <div class="stat-item reveal-up" style="transition-delay: 0.1s;">
+                    <h4 class="counter-num" data-target="1">0</h4>
+                    <span>Elite Standard</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PARALLAX IMAGE BREAK -->
+    <section class="parallax-break">
+        <img src="https://images.unsplash.com/photo-1529699211952-734e80c4d42b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80" alt="Chess Board Detail" class="parallax-img" id="para-img">
+        <div class="parallax-overlay"></div>
+        <h2 class="parallax-text reveal-up">Silence the mind.<br>See the board.</h2>
+    </section>
+
+    <!-- PROGRAMS (Custom Accordion) -->
+    <section class="programs-section" id="programs">
+        <div class="programs-header reveal-up">
+            <h2 class="section-heading" style="color:var(--pure-white); margin:0;">Curriculum.</h2>
+            <p style="color:#9ca3af; max-width: 300px; font-size: 0.9rem;">Structured pathways from the fundamental opening principles to elite endgame calculation.</p>
+        </div>
+
+        <div class="accordion">
+            <!-- Item 1 -->
+            <div class="accordion-item reveal-up hover-target">
+                <div class="accordion-header">
+                    <span class="acc-num">01</span>
+                    <span class="acc-title">The Foundation</span>
+                    <span class="acc-icon">+</span>
+                </div>
+                <div class="accordion-content">
+                    <p class="acc-desc">Designed for the uninitiated. Master board geometry, piece coordination, absolute and relative pins, and the mathematical value of position over material.</p>
+                    <img src="pawn.png" class="acc-img" alt="Pawn">
+                </div>
+            </div>
+
+            <!-- Item 2 -->
+            <div class="accordion-item reveal-up hover-target">
+                <div class="accordion-header">
+                    <span class="acc-num">02</span>
+                    <span class="acc-title">Tactical Warfare</span>
+                    <span class="acc-icon">+</span>
+                </div>
+                <div class="accordion-content">
+                    <p class="acc-desc">Intermediate module focusing strictly on pattern recognition. Sacrifices, discovered attacks, deflections, and building the calculating stamina required for long tournament play.</p>
+                    <img src="https://images.unsplash.com/photo-1560174038-da43ac74f01b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" class="acc-img" alt="Knight">
+                </div>
+            </div>
+
+            <!-- Item 3 -->
+            <div class="accordion-item reveal-up hover-target">
+                <div class="accordion-header">
+                    <span class="acc-num">03</span>
+                    <span class="acc-title">Positional Mastery</span>
+                    <span class="acc-icon">+</span>
+                </div>
+                <div class="accordion-content">
+                    <p class="acc-desc">Advanced concepts pioneered by Karpov and Petrosian. Prophylaxis, weak square exploitation, pawn structure integrity, and suffocating your opponent through microscopic advantages.</p>
+                    <img src="https://media.istockphoto.com/id/1300691530/photo/chess-white-bishop-on-chessboard.jpg?s=612x612&w=0&k=20&c=UOcfArUu8P-O8IMZ4GI2y8sIRBWyBDYf3KqBDMxuS18=" class="acc-img" alt="Bishop">
+                </div>
+            </div>
+
+            <!-- Item 4 -->
+            <div class="accordion-item reveal-up hover-target">
+                <div class="accordion-header">
+                    <span class="acc-num">04</span>
+                    <span class="acc-title">Grandmaster Preparation</span>
+                    <span class="acc-icon">+</span>
+                </div>
+                <div class="accordion-content">
+                    <p class="acc-desc">Elite tier. Deep engine analysis, bespoke opening repertoire creation, psychological resilience, and mastery of theoretical endgames. Taught exclusively by titled GMs.</p>
+                    <img src="https://images.stockcake.com/public/c/1/7/c1731485-d3f3-4be3-9c07-75b5643dcb95_large/king-chess-piece-stockcake.jpg" class="acc-img" alt="King">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- COACHES -->
+    <section class="coaches-section" id="coaches">
+        <h2 class="section-heading reveal-up">The Elite Minds.</h2>
+        <div class="coaches-grid">
+            <div class="coach-card reveal-up hover-target">
+                <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Coach 1" class="coach-img">
+                <div class="coach-info">
+                    <h3 class="coach-name">Alexander V.</h3>
+                    <span class="coach-title">Grandmaster (Peak 2710)</span>
+                </div>
+            </div>
+            <div class="coach-card reveal-up hover-target" style="transition-delay: 0.1s;">
+                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Coach 2" class="coach-img">
+                <div class="coach-info">
+                    <h3 class="coach-name">Elena R.</h3>
+                    <span class="coach-title">International Master</span>
+                </div>
+            </div>
+            <div class="coach-card reveal-up hover-target" style="transition-delay: 0.2s;">
+                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Coach 3" class="coach-img">
+                <div class="coach-info">
+                    <h3 class="coach-name">Marcus D.</h3>
+                    <span class="coach-title">FIDE Senior Trainer</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MASSIVE CTA -->
+    <section class="cta-section">
+        <h2 class="cta-massive reveal-up">Make Your<br>Move.</h2>
+        <div class="btn-magnetic-wrap magnetic reveal-up">
+            <a href="#" class="btn-premium hover-target" style="padding: 1.5rem 4rem; font-size: 1.1rem;"><span>Apply For Enrollment</span></a>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-top">
+            <div class="footer-col">
+                <h3 class="footer-logo">Grandmaster.</h3>
+                <p class="footer-desc">The Vanguard of Chess Excellence. Cultivating the world's most formidable strategic minds.</p>
+            </div>
+            <div class="footer-col">
+                <h5>Navigation</h5>
+                <ul>
+                    <li><a href="#" class="hover-target">Home</a></li>
+                    <li><a href="#philosophy" class="hover-target">Philosophy</a></li>
+                    <li><a href="#programs" class="hover-target">Curriculum</a></li>
+                    <li><a href="#coaches" class="hover-target">Coaches</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h5>Connect</h5>
+                <ul>
+                    <li><a href="#" class="hover-target">hello@grandmaster.edu</a></li>
+                    <li><a href="#" class="hover-target">+1 (800) 555-GMCA</a></li>
+                    <li><a href="#" class="hover-target">New York & London</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <span>&copy; 2026 Grandmaster Academy.</span>
+            <span>Awwwards Tier Design.</span>
+        </div>
+    </footer>
+
+    <!-- INTERACTION LOGIC -->
+    <script>
+        // ==================== PRELOADER LOGIC ====================
+        const counterElement = document.getElementById('counter');
+        const preloader = document.querySelector('.preloader');
+        
+        let count = 0;
+        const target = 100;
+        // Exponential easing for the counter
+        function easeOutExpo(x) { return x === 1 ? 1 : 1 - Math.pow(2, -10 * x); }
+        
+        let startTime = null;
+        const duration = 2500; // 2.5 seconds loading sequence
+
+        function updateCounter(timestamp) {
+            if(!startTime) startTime = timestamp;
+            const progress = (timestamp - startTime) / duration;
+            
+            if(progress < 1) {
+                const currentVal = Math.floor(easeOutExpo(progress) * target);
+                counterElement.textContent = currentVal < 10 ? '0' + currentVal : currentVal;
+                requestAnimationFrame(updateCounter);
+            } else {
+                counterElement.textContent = target;
+                finishPreloader();
+            }
+        }
+        requestAnimationFrame(updateCounter);
+
+        function finishPreloader() {
+            // Slide up animation for preloader
+            preloader.style.transition = 'transform 1.2s cubic-bezier(0.77, 0, 0.175, 1)';
+            preloader.style.transform = 'translateY(-100vh)';
+            
+            setTimeout(() => {
+                triggerHeroAnimations();
+            }, 400); // Slight delay for smoothness
+        }
+
+        // ==================== HERO ENTRY ANIMATION ====================
+        function triggerHeroAnimations() {
+            const lines = document.querySelectorAll('.hero-title-line');
+            const sub = document.getElementById('hero-sub');
+            
+            sub.style.transition = 'transform 1s cubic-bezier(0.16, 1, 0.3, 1)';
+            sub.style.transform = 'translateY(0)';
+
+            lines.forEach((line, index) => {
+                line.style.transition = `transform 1.2s cubic-bezier(0.16, 1, 0.3, 1) ${0.2 + (index*0.1)}s`;
+                line.style.transform = 'translateY(0)';
+            });
+        }
+
+        // ==================== CUSTOM CURSOR & MAGNETIC EFFECT ====================
+        const cursorDot = document.querySelector('.cursor-dot');
+        const cursorFollower = document.querySelector('.cursor-follower');
+        const hoverTargets = document.querySelectorAll('.hover-target');
+        const magnetics = document.querySelectorAll('.magnetic');
+
+        let mouseX = 0, mouseY = 0;
+        let followerX = 0, followerY = 0;
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            
+            // Immediate dot follow
+            cursorDot.style.left = `${mouseX}px`;
+            cursorDot.style.top = `${mouseY}px`;
+        });
+
+        // Smooth trailing effect for outline
+        function animateCursor() {
+            followerX += (mouseX - followerX) * 0.15;
+            followerY += (mouseY - followerY) * 0.15;
+            
+            cursorFollower.style.left = `${followerX}px`;
+            cursorFollower.style.top = `${followerY}px`;
+            
+            requestAnimationFrame(animateCursor);
+        }
+        animateCursor();
+
+        // Cursor scaling on hover
+        hoverTargets.forEach(target => {
+            target.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+            target.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+        });
+
+        // Magnetic Button Logic
+        magnetics.forEach(btn => {
+            const child = btn.querySelector('.btn-premium');
+            
+            btn.addEventListener('mousemove', (e) => {
+                const rect = btn.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                
+                // Move button wrap slightly
+                child.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px)`;
+                cursorDot.style.transform = `translate(-50%, -50%) scale(0)`;
+            });
+
+            btn.addEventListener('mouseleave', () => {
+                child.style.transform = `translate(0px, 0px)`;
+                cursorDot.style.transform = `translate(-50%, -50%) scale(1)`;
+            });
+        });
+
+        // ==================== SCROLL OBSERVER (REVEALS & STATS) ====================
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: "0px 0px -100px 0px"
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if(entry.isIntersecting) {
+                    entry.target.classList.add('in-view');
+                    
+                    // Trigger counter if it's a stat item
+                    const counter = entry.target.querySelector('.counter-num');
+                    if(counter && !counter.classList.contains('counted')) {
+                        runCounter(counter);
+                        counter.classList.add('counted');
+                    }
+                    
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal-up').forEach(el => observer.observe(el));
+
+        // Number Counter Logic
+        function runCounter(counter) {
+            const target = +counter.getAttribute('data-target');
+            const duration = 2000; 
+            const steps = 60;
+            const increment = target / steps;
+            let current = 0;
+            
+            const timer = setInterval(() => {
+                current += increment;
+                if(current >= target) {
+                    counter.innerText = target + (target > 1000 ? '+' : '');
+                    clearInterval(timer);
+                } else {
+                    counter.innerText = Math.ceil(current);
+                }
+            }, duration / steps);
+        }
+
+        // ==================== PARALLAX EFFECT ====================
+        const heroImg = document.getElementById('hero-img');
+        const paraImg = document.getElementById('para-img');
+        
+        window.addEventListener('scroll', () => {
+            const scrollY = window.scrollY;
+            
+            // Hero Parallax
+            if(scrollY < window.innerHeight) {
+                heroImg.style.transform = `scale(1.1) translateY(${scrollY * 0.3}px)`;
+            }
+
+            // Middle Break Parallax
+            const paraSection = document.querySelector('.parallax-break');
+            const rect = paraSection.getBoundingClientRect();
+            if(rect.top < window.innerHeight && rect.bottom > 0) {
+                // Calculate percentage of section scrolled
+                const scrollPerc = (window.innerHeight - rect.top) / (window.innerHeight + rect.height);
+                // Translate image opposite to scroll direction
+                paraImg.style.transform = `translateY(${scrollPerc * 20}%)`;
+            }
+        });
+
+        // ==================== ACCORDION LOGIC ====================
+        const accordions = document.querySelectorAll('.accordion-item');
+        
+        accordions.forEach(acc => {
+            acc.addEventListener('click', () => {
+                // Close others
+                accordions.forEach(other => {
+                    if(other !== acc) {
+                        other.classList.remove('active');
+                        other.querySelector('.accordion-content').style.height = '0';
+                    }
+                });
+
+                // Toggle current
+                acc.classList.toggle('active');
+                const content = acc.querySelector('.accordion-content');
+                if(acc.classList.contains('active')) {
+                    content.style.height = content.scrollHeight + "px";
+                } else {
+                    content.style.height = "0";
+                }
+            });
+        });
+
+        // Open first accordion by default
+        setTimeout(() => {
+            if(accordions[0]) accordions[0].click();
+        }, 3000); // Wait for boot animations
+    </script>
+</body>
+</html>

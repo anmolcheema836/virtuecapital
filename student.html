@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>10 Words or Less Scholarship</title>
+    
+    <!-- Premium Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+
+    <style>
+        /* CSS Reset & Variables */
+        :root {
+            --bg-color: #f7f7f5;
+            --text-main: #111111;
+            --text-muted: #555555;
+            --border-color: #d1d1cf;
+            --accent: #000000;
+            --font-sans: 'Inter', sans-serif;
+            --font-serif: 'Playfair Display', serif;
+            --easing: cubic-bezier(0.8, 0, 0.1, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: var(--font-sans);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Layout */
+        .page-wrapper {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        @media (min-width: 1024px) {
+            .page-wrapper {
+                flex-direction: row;
+            }
+        }
+
+        /* Sticky Sidebar Navigation */
+        .sidebar {
+            padding: 2rem;
+            border-right: 1px solid var(--border-color);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        @media (min-width: 1024px) {
+            .sidebar {
+                width: 280px;
+                flex-shrink: 0;
+                position: sticky;
+                top: 0;
+                height: 100vh;
+                padding: 4rem 2.5rem;
+                gap: 4rem;
+            }
+        }
+
+        /* Logo Area */
+        .brand-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+            color: var(--text-main);
+        }
+
+        .logo-mark {
+            width: 32px;
+            height: 32px;
+            background-color: var(--text-main);
+            color: var(--bg-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-serif);
+            font-size: 1.2rem;
+            font-style: italic;
+            border-radius: 2px;
+        }
+
+        .logo-text {
+            font-family: var(--font-sans);
+            font-weight: 600;
+            font-size: 0.9rem;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+        }
+
+        .logo-text span {
+            display: block;
+            font-weight: 400;
+            color: var(--text-muted);
+            font-size: 0.75rem;
+        }
+
+        /* Nav */
+        .nav-list {
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        @media (min-width: 1024px) {
+            .nav-list {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: var(--text-main);
+        }
+
+        /* Main Content */
+        .main-content {
+            flex-grow: 1;
+            padding: 3rem 1.5rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        @media (min-width: 1024px) {
+            .main-content {
+                padding: 6rem 4rem;
+            }
+        }
+
+        /* Hero Section */
+        .hero {
+            margin-bottom: 5rem;
+            animation: fadeUp 1s var(--easing) forwards;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .hero-title {
+            font-family: var(--font-serif);
+            font-size: clamp(2.5rem, 6vw, 5.5rem);
+            line-height: 1.05;
+            font-weight: 500;
+            letter-spacing: -0.02em;
+            margin-bottom: 2.5rem;
+        }
+
+        .meta-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2.5rem;
+            margin-bottom: 2.5rem;
+            padding-bottom: 2.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .meta-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .meta-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin-bottom: 0.25rem;
+        }
+
+        .meta-value {
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        .hero-intro {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            max-width: 800px;
+        }
+
+        /* Accordions */
+        .accordion-wrapper {
+            margin-bottom: 6rem;
+        }
+
+        .accordion-item {
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .accordion-header {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 2.5rem 0;
+            background: none;
+            border: none;
+            cursor: pointer;
+            text-align: left;
+            font-family: var(--font-serif);
+            font-size: clamp(1.5rem, 3vw, 2.5rem);
+            color: var(--text-main);
+            transition: opacity 0.3s ease;
+        }
+
+        .accordion-header:hover {
+            opacity: 0.7;
+        }
+
+        .accordion-icon {
+            position: relative;
+            width: 24px;
+            height: 24px;
+            flex-shrink: 0;
+        }
+
+        .accordion-icon::before,
+        .accordion-icon::after {
+            content: '';
+            position: absolute;
+            background-color: var(--text-main);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            transition: transform 0.4s var(--easing);
+        }
+
+        .accordion-icon::before { width: 100%; height: 2px; }
+        .accordion-icon::after { width: 2px; height: 100%; }
+
+        .accordion-item.is-open .accordion-icon::after {
+            transform: translate(-50%, -50%) rotate(90deg);
+        }
+
+        /* Smooth CSS Grid Accordion Transition */
+        .accordion-content {
+            display: grid;
+            grid-template-rows: 0fr;
+            transition: grid-template-rows 0.5s var(--easing);
+        }
+
+        .accordion-item.is-open .accordion-content {
+            grid-template-rows: 1fr;
+        }
+
+        .accordion-inner {
+            overflow: hidden;
+            font-size: 1.1rem;
+            color: var(--text-muted);
+        }
+
+        .accordion-inner-padding {
+            padding-bottom: 2.5rem;
+            max-width: 800px;
+        }
+
+        .accordion-inner-padding p { margin-bottom: 1rem; }
+        .accordion-inner-padding ul { margin-left: 1.5rem; margin-bottom: 1rem; }
+        .accordion-inner-padding li { margin-bottom: 0.5rem; }
+
+        /* Form Styles (Application) */
+        .application-form {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+            margin-top: 1rem;
+        }
+
+        @media (min-width: 768px) {
+            .application-form { grid-template-columns: 1fr 1fr; }
+            .full-width { grid-column: span 2; }
+        }
+
+        .input-group { position: relative; }
+
+        .input-field {
+            width: 100%;
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid var(--border-color);
+            padding: 0.5rem 0;
+            font-size: 1.1rem;
+            font-family: var(--font-sans);
+            color: var(--text-main);
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        .input-field:focus {
+            border-bottom-color: var(--text-main);
+        }
+
+        .input-field::placeholder {
+            color: #999;
+        }
+
+        .submit-btn {
+            background-color: var(--text-main);
+            color: #fff;
+            border: none;
+            padding: 1.2rem 3rem;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            cursor: pointer;
+            border-radius: 40px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            margin-top: 1rem;
+            display: inline-block;
+        }
+
+        .submit-btn:hover {
+            background-color: #333;
+            transform: translateY(-2px);
+        }
+
+        /* Previous Winners Section */
+        .winners-section {
+            margin-top: 6rem;
+            border-top: 1px solid var(--border-color);
+            padding-top: 4rem;
+        }
+
+        .section-heading {
+            font-family: var(--font-serif);
+            font-size: clamp(2rem, 4vw, 3rem);
+            margin-bottom: 3rem;
+        }
+
+        /* Editorial Image Grid */
+        .winners-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 3rem 2rem;
+            margin-bottom: 5rem;
+        }
+
+        .winner-card {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+            cursor: pointer;
+        }
+
+        .w-image-wrapper {
+            width: 100%;
+            position: relative;
+            padding-top: 125%; /* 4:5 Aspect Ratio */
+            overflow: hidden;
+            border-radius: 2px;
+            background-color: #e5e5e5;
+        }
+
+        .w-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(100%);
+            transition: transform 0.8s var(--easing), filter 0.8s var(--easing);
+        }
+
+        .winner-card:hover .w-image {
+            transform: scale(1.05);
+            filter: grayscale(0%);
+        }
+
+        .w-info {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .w-name { 
+            font-family: var(--font-serif); 
+            font-size: 1.5rem; 
+            margin-bottom: 0.25rem; 
+        }
+
+        .w-details { 
+            font-size: 0.9rem; 
+            color: var(--text-muted); 
+        }
+
+        .w-year { 
+            display: inline-block; 
+            margin-top: 0.75rem; 
+            font-size: 0.75rem; 
+            font-weight: 500;
+            background: #eaeaea; 
+            padding: 0.2rem 0.6rem; 
+            border-radius: 20px;
+        }
+
+        /* Testimonials */
+        .testimonials {
+            display: grid;
+            gap: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .testimonial-card {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .t-quote {
+            font-family: var(--font-serif);
+            font-size: 1.35rem;
+            font-style: italic;
+            color: var(--text-main);
+            line-height: 1.5;
+        }
+
+        .t-author-block {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .t-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+            filter: grayscale(100%);
+        }
+
+        .t-author {
+            font-weight: 500;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .t-school {
+            display: block;
+            color: var(--text-muted);
+            text-transform: none;
+            letter-spacing: 0;
+            font-weight: 400;
+            margin-top: 0.2rem;
+        }
+
+        /* Animations */
+        @keyframes fadeUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="page-wrapper">
+    <!-- Sidebar / Nav -->
+    <aside class="sidebar">
+        <!-- Logo Placement -->
+        <a href="#" class="brand-logo">
+            <div class="logo-mark">S</div>
+            <div class="logo-text">
+                StudentScholarships
+                <span>Organization</span>
+            </div>
+        </a>
+
+        <nav>
+            <ul class="nav-list">
+                <li><a href="#about" class="nav-link active">About</a></li>
+                <li><a href="#content" class="nav-link">Details & Application</a></li>
+                <li><a href="#winners" class="nav-link">Previous Winners</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+        
+        <!-- Hero / About -->
+        <section id="about" class="hero">
+            <h1 class="hero-title">10 Words or Less Scholarship</h1>
+            
+            <div class="meta-tags">
+                <div class="meta-item">
+                    <span class="meta-label">Value</span>
+                    <span class="meta-value">$1,000</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Awards</span>
+                    <span class="meta-value">2</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Deadline</span>
+                    <span class="meta-value">April 15, 2026</span>
+                </div>
+            </div>
+
+            <p class="hero-intro">
+                The 10 Words or Less Scholarship is provided by StudentScholarships.org. 
+                StudentScholarships.org has been providing scholarship information to students and 
+                scholarship management services to companies since 2003. It is considered the 
+                largest database for high school students and college students in the country.
+            </p>
+        </section>
+
+        <!-- Accordion Details Section -->
+        <section id="content" class="accordion-wrapper">
+            
+            <!-- 1. ELIGIBILITY (Open by default) -->
+            <div class="accordion-item is-open">
+                <button class="accordion-header" aria-expanded="true">
+                    Eligibility
+                    <span class="accordion-icon"></span>
+                </button>
+                <div class="accordion-content">
+                    <div class="accordion-inner">
+                        <div class="accordion-inner-padding">
+                            <p>To be eligible for the 10 Words or Less Scholarship a student must:</p>
+                            <ul>
+                                <li><strong>A)</strong> Be between the ages of 14-25 who will be attending school in the Fall of 2026.</li>
+                                <li><strong>B)</strong> Be attending a school in the US or Canada in the Fall of 2026.</li>
+                                <li><strong>C)</strong> Be a high school senior or graduate, or a current college undergraduate.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. AWARDS (Open by default) -->
+            <div class="accordion-item is-open">
+                <button class="accordion-header" aria-expanded="true">
+                    Awards
+                    <span class="accordion-icon"></span>
+                </button>
+                <div class="accordion-content">
+                    <div class="accordion-inner">
+                        <div class="accordion-inner-padding">
+                            <p>If selected as a recipient of the 10 Words or Less Scholarship, one student will receive a $1,000 award and one student will receive a $500 award.</p>
+                            <p>Awards are not renewable.</p>
+                            <p>Awards are for qualified education-related expenses only: tuition, fees, books, and required supplies (including laptops).</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. SELECTION (Closed by default) -->
+            <div class="accordion-item">
+                <button class="accordion-header" aria-expanded="false">
+                    Selection of Recipients
+                    <span class="accordion-icon"></span>
+                </button>
+                <div class="accordion-content">
+                    <div class="accordion-inner">
+                        <div class="accordion-inner-padding">
+                            <p>The 10 Words or Less Scholarship judges will evaluate applicants based on:</p>
+                            <ul>
+                                <li>Response to Question</li>
+                            </ul>
+                            <p>Note that you must plan on attending school in the next academic year. You can be enrolled in any level of post-secondary studies.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. NOTIFICATION (Closed by default) -->
+            <div class="accordion-item">
+                <button class="accordion-header" aria-expanded="false">
+                    Notification of Winner
+                    <span class="accordion-icon"></span>
+                </button>
+                <div class="accordion-content">
+                    <div class="accordion-inner">
+                        <div class="accordion-inner-padding">
+                            <p>Scholarship winners will be posted on this website by May 15, 2026. Winners will be contacted directly. If you are not selected, you may return to this page on or after May 15, 2026.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 5. FAQ (Closed by default) -->
+            <div class="accordion-item">
+                <button class="accordion-header" aria-expanded="false">
+                    Frequently Asked Questions
+                    <span class="accordion-icon"></span>
+                </button>
+                <div class="accordion-content">
+                    <div class="accordion-inner">
+                        <div class="accordion-inner-padding">
+                            <p><strong>What is the value of the Award?</strong></p>
+                            <p>For the April 15, 2026 deadline, the 10 Words or Less Scholarship will provide one student with a $1,000 award and one student with a $500 award.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 6. APPLICATION (Closed by default) -->
+            <div class="accordion-item">
+                <button class="accordion-header" aria-expanded="false">
+                    Application
+                    <span class="accordion-icon"></span>
+                </button>
+                <div class="accordion-content">
+                    <div class="accordion-inner">
+                        <div class="accordion-inner-padding">
+                            <form class="application-form" action="#" method="POST">
+                                <div class="input-group full-width">
+                                    <input type="text" class="input-field" placeholder="Street Address" required>
+                                </div>
+                                <div class="input-group">
+                                    <input type="text" class="input-field" placeholder="City" required>
+                                </div>
+                                <div class="input-group">
+                                    <input type="text" class="input-field" placeholder="State/Province" required>
+                                </div>
+                                <div class="input-group">
+                                    <input type="text" class="input-field" placeholder="Country" required>
+                                </div>
+                                <div class="input-group">
+                                    <input type="text" class="input-field" placeholder="Zip Code / Postal Code" required>
+                                </div>
+                                <div class="input-group full-width">
+                                    <input type="text" class="input-field" placeholder="School Name" required>
+                                </div>
+                                <div class="input-group">
+                                    <input type="text" class="input-field" placeholder="High School Counselor's Name">
+                                </div>
+                                <div class="input-group">
+                                    <input type="email" class="input-field" placeholder="High School Counselor's Email">
+                                </div>
+                                <div class="input-group full-width" style="margin-top: 1.5rem;">
+                                    <label style="display:block; margin-bottom: 0.5rem; color: var(--text-main); font-weight: 500;">Question: In 10 Words or Less, tell us why you deserve the scholarship?</label>
+                                    <input type="text" class="input-field" placeholder="Your answer..." required>
+                                </div>
+                                <div class="input-group full-width">
+                                    <button type="submit" class="submit-btn">Submit Application</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- Winners Section -->
+        <section id="winners" class="winners-section">
+            <h2 class="section-heading">Previous Winners</h2>
+            
+            <div class="winners-grid">
+                <!-- Winner 1 -->
+                <div class="winner-card">
+                    <div class="w-image-wrapper">
+                        <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=600&q=80" alt="David Lin" class="w-image">
+                    </div>
+                    <div class="w-info">
+                        <h3 class="w-name">David Lin</h3>
+                        <p class="w-details">New York</p>
+                        <span class="w-year">2023</span>
+                    </div>
+                </div>
+                
+                <!-- Winner 2 -->
+                <div class="winner-card">
+                    <div class="w-image-wrapper">
+                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&q=80" alt="Liza Wagner" class="w-image">
+                    </div>
+                    <div class="w-info">
+                        <h3 class="w-name">Liza Wagner</h3>
+                        <p class="w-details">Washington</p>
+                        <span class="w-year">2025</span>
+                    </div>
+                </div>
+
+                <!-- Winner 3 -->
+                <div class="winner-card">
+                    <div class="w-image-wrapper">
+                        <img src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&w=600&q=80" alt="Julia Dimson" class="w-image">
+                    </div>
+                    <div class="w-info">
+                        <h3 class="w-name">Julia Dimson</h3>
+                        <p class="w-details">California</p>
+                        <span class="w-year">2025</span>
+                    </div>
+                </div>
+
+                <!-- Winner 4 -->
+                <div class="winner-card">
+                    <div class="w-image-wrapper">
+                        <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=600&q=80" alt="Paige German" class="w-image">
+                    </div>
+                    <div class="w-info">
+                        <h3 class="w-name">Paige German</h3>
+                        <p class="w-details">Iowa</p>
+                        <span class="w-year">2023</span>
+                    </div>
+                </div>
+
+                <!-- Winner 5 -->
+                <div class="winner-card">
+                    <div class="w-image-wrapper">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&q=80" alt="Michael Longo" class="w-image">
+                    </div>
+                    <div class="w-info">
+                        <h3 class="w-name">Michael Longo</h3>
+                        <p class="w-details">Massachusetts</p>
+                        <span class="w-year">2024</span>
+                    </div>
+                </div>
+
+                <!-- Winner 6 -->
+                <div class="winner-card">
+                    <div class="w-image-wrapper">
+                        <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=600&q=80" alt="Azalia Torres" class="w-image">
+                    </div>
+                    <div class="w-info">
+                        <h3 class="w-name">Azalia Torres</h3>
+                        <p class="w-details">Texas</p>
+                        <span class="w-year">2024</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Featured Testimonials -->
+            <div class="testimonials">
+                <div class="testimonial-card">
+                    <p class="t-quote">"I am very grateful to be a recipient of this amazing scholarship. I'm looking forward to pursuing a degree in International Studies, where I will gain the skills and knowledge necessary to help people across Canada and the rest of the world. Receiving such a generous amount of financial support means so much to me and my family..."</p>
+                    <div class="t-author-block">
+                        <img src="https://images.unsplash.com/photo-1524250502761-1ac6f2e30d43?auto=format&fit=crop&w=100&q=80" alt="Sandy Valencia" class="t-avatar">
+                        <div class="t-author">
+                            Sandy Valencia
+                            <span class="t-school">Delta, BC. Delview Secondary School</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="testimonial-card">
+                    <p class="t-quote">"I've got my eyes set on San Francisco California University, where I'm thrilled to dive into the marketing world. The possibilities for creativity and the interesting challenges that come with shaping consumer perceptions have really captured my interest. Your scholarship is a real game-changer for me, and I can't express my gratitude enough."</p>
+                    <div class="t-author-block">
+                        <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=100&q=80" alt="Nathan Peralta" class="t-avatar">
+                        <div class="t-author">
+                            Nathan Peralta
+                            <span class="t-school">Palmdale, CA. Highland High School</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Accordion functionality
+        const accordions = document.querySelectorAll('.accordion-header');
+
+        accordions.forEach(accordion => {
+            accordion.addEventListener('click', function() {
+                const parent = this.parentElement;
+                const isOpen = parent.classList.contains('is-open');
+
+                // Toggle logic
+                if (isOpen) {
+                    parent.classList.remove('is-open');
+                    this.setAttribute('aria-expanded', 'false');
+                } else {
+                    parent.classList.add('is-open');
+                    this.setAttribute('aria-expanded', 'true');
+                }
+            });
+        });
+
+        // Intersection Observer for scroll animations (Sidebar active links)
+        const sections = document.querySelectorAll('section');
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.3
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    // Update active nav link
+                    const id = entry.target.getAttribute('id');
+                    if (id) {
+                        navLinks.forEach(link => {
+                            link.classList.remove('active');
+                            if (link.getAttribute('href') === `#${id}`) {
+                                link.classList.add('active');
+                            }
+                        });
+                    }
+                }
+            });
+        }, observerOptions);
+
+        sections.forEach(sec => observer.observe(sec));
+    });
+</script>
+
+</body>
+</html>
