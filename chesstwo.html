@@ -1,0 +1,1050 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grandmaster | Elite Chess Academy</title>
+    <meta name="description" content="The world's premier chess academy. Master the game with elite Grandmasters.">
+    
+    <!-- Premium Google Fonts: Playfair Display & Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+
+    <style>
+        /* ==================== CORE VARIABLES & RESET ==================== */
+        :root {
+            --bg-color: #F4F4F0;    /* Alabaster Off-White */
+            --text-color: #0A0A0A;  /* Rich Black */
+            --accent: #C6A87C;      /* Champagne Gold */
+            --accent-hover: #b39362;
+            --white: #FFFFFF;
+            --border: rgba(10, 10, 10, 0.15);
+            
+            --font-serif: 'Playfair Display', serif;
+            --font-sans: 'Outfit', sans-serif;
+            
+            --pad-x: 5vw;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            cursor: none !important; /* Force custom cursor */
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        ::selection {
+            background-color: var(--text-color);
+            color: var(--bg-color);
+        }
+
+        /* ==================== FILM GRAIN ==================== */
+        .noise {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.04;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        /* ==================== CUSTOM CURSOR ==================== */
+        .cursor-dot {
+            position: fixed;
+            top: 0; left: 0;
+            width: 8px; height: 8px;
+            background: var(--accent);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            z-index: 10000;
+        }
+
+        .cursor-ring {
+            position: fixed;
+            top: 0; left: 0;
+            width: 40px; height: 40px;
+            border: 1px solid var(--text-color);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            z-index: 9999;
+            transition: width 0.3s, height 0.3s, background 0.3s, border-color 0.3s;
+        }
+
+        .cursor-hover .cursor-ring {
+            width: 60px; height: 60px;
+            background: rgba(198, 168, 124, 0.2);
+            border-color: transparent;
+            backdrop-filter: blur(2px);
+        }
+
+        /* ==================== PRELOADER ==================== */
+        .preloader {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: var(--bg-color);
+            z-index: 9998;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: transform 1s cubic-bezier(0.77, 0, 0.175, 1);
+        }
+
+        .preloader-counter {
+            font-family: var(--font-serif);
+            font-size: 12vw;
+            color: var(--text-color);
+            font-style: italic;
+        }
+
+        /* ==================== NAVIGATION ==================== */
+        nav {
+            position: fixed;
+            top: 0; width: 100%;
+            padding: 2vw var(--pad-x);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            mix-blend-mode: difference;
+            color: var(--bg-color);
+        }
+
+        .logo {
+            font-family: var(--font-serif);
+            font-size: 2rem;
+            font-weight: 600;
+            text-decoration: none;
+            color: currentColor;
+            letter-spacing: -1px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5vw;
+            list-style: none;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 15px 30px;
+            border-radius: 50px;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: currentColor;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+
+        /* ==================== BUTTONS ==================== */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            padding: 1.2rem 3rem;
+            background: var(--text-color);
+            color: var(--bg-color);
+            font-family: var(--font-sans);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-decoration: none;
+            border-radius: 0;
+            transition: background 0.3s, color 0.3s, transform 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0;
+            width: 100%; height: 100%;
+            background: var(--accent);
+            transform: translateY(100%);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: 1;
+        }
+
+        .btn span {
+            position: relative;
+            z-index: 2;
+        }
+
+        .btn:hover::after {
+            transform: translateY(0);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--text-color);
+            border: 1px solid var(--text-color);
+        }
+        
+        .btn-outline::after {
+            background: var(--text-color);
+        }
+        
+        .btn-outline:hover span {
+            color: var(--bg-color);
+        }
+
+        /* ==================== SPLIT HERO ==================== */
+        .hero {
+            height: 100vh;
+            display: flex;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .hero-text-area {
+            flex: 1;
+            padding: 0 var(--pad-x);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background: var(--bg-color);
+        }
+
+        .subtitle {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            color: var(--accent);
+            margin-bottom: 2rem;
+            font-weight: 500;
+        }
+
+        .hero-title {
+            font-family: var(--font-serif);
+            font-size: 7vw;
+            line-height: 0.95;
+            color: var(--text-color);
+            margin-bottom: 2rem;
+        }
+
+        .hero-title i {
+            font-style: italic;
+            color: var(--text-color);
+            font-weight: 400;
+            padding-left: 10%;
+        }
+
+        .hero-desc {
+            font-size: 1.1rem;
+            max-width: 400px;
+            line-height: 1.6;
+            color: #555;
+            margin-bottom: 3rem;
+        }
+
+        .hero-image-area {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+            border-left: 1px solid var(--border);
+        }
+
+        .hero-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(20%) contrast(1.1);
+            transform: scale(1.05);
+            animation: slowZoom 20s ease-out infinite alternate;
+        }
+
+        @keyframes slowZoom {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.1); }
+        }
+
+        /* ==================== HUGE MARQUEE ==================== */
+        .marquee-container {
+            padding: 3vw 0;
+            background: var(--text-color);
+            color: var(--bg-color);
+            overflow: hidden;
+            display: flex;
+            white-space: nowrap;
+        }
+
+        .marquee-content {
+            display: flex;
+            animation: marquee 20s linear infinite;
+        }
+
+        .marquee-content h2 {
+            font-family: var(--font-serif);
+            font-size: 5vw;
+            font-weight: 400;
+            text-transform: uppercase;
+            padding-right: 3vw;
+        }
+
+        .marquee-content span {
+            -webkit-text-stroke: 1px var(--bg-color);
+            color: transparent;
+            font-style: italic;
+        }
+
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* ==================== EDITORIAL ABOUT ==================== */
+        .about-section {
+            padding: 8vw var(--pad-x);
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 6vw;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .section-heading {
+            font-family: var(--font-serif);
+            font-size: 4vw;
+            line-height: 1.1;
+            margin-bottom: 2rem;
+        }
+
+        .about-text p {
+            font-size: 1.8rem;
+            line-height: 1.5;
+            font-family: var(--font-serif);
+            color: #333;
+            margin-bottom: 2rem;
+        }
+
+        .about-text p:first-child::first-letter {
+            font-size: 5rem;
+            float: left;
+            line-height: 0.8;
+            padding-right: 15px;
+            color: var(--accent);
+            font-family: var(--font-serif);
+        }
+
+        .stats-wrap {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2vw;
+            margin-top: 4rem;
+            padding-top: 3rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .stat-box {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .stat-num {
+            font-family: var(--font-sans);
+            font-size: 3.5rem;
+            font-weight: 300;
+            color: var(--text-color);
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #666;
+            font-weight: 500;
+        }
+
+        /* ==================== PARALLAX BREAK ==================== */
+        .parallax-break {
+            height: 70vh;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .para-img {
+            position: absolute;
+            top: -20%; left: 0;
+            width: 100%; height: 140%;
+            object-fit: cover;
+            z-index: 1;
+            filter: grayscale(100%);
+        }
+
+        .para-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(10, 10, 10, 0.6);
+            z-index: 2;
+        }
+
+        .para-text {
+            position: relative;
+            z-index: 3;
+            color: var(--bg-color);
+            font-family: var(--font-serif);
+            font-size: 6vw;
+            text-align: center;
+            font-weight: 400;
+            letter-spacing: -2px;
+        }
+
+        .para-text i { color: var(--accent); }
+
+        /* ==================== CURRICULUM PATHWAY ==================== */
+        .curriculum-section {
+            padding: 8vw var(--pad-x);
+            background: var(--white);
+        }
+
+        .curriculum-intro {
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto 6vw auto;
+        }
+
+        .curriculum-intro p {
+            color: #666;
+            margin-top: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .timeline {
+            position: relative;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Center Line */
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 50%;
+            width: 1px; height: 100%;
+            background: var(--border);
+            transform: translateX(-50%);
+        }
+
+        .module {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8vw;
+            position: relative;
+        }
+
+        .module:last-child { margin-bottom: 0; }
+
+        .module-content, .module-image {
+            width: 45%;
+        }
+
+        .module-image img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            filter: grayscale(100%);
+            transition: filter 0.5s;
+        }
+
+        .module:hover .module-image img {
+            filter: grayscale(0%);
+        }
+
+        /* Reverse alternating layout */
+        .module:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+
+        .module-num {
+            font-family: var(--font-sans);
+            font-size: 1.2rem;
+            color: var(--accent);
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .module-title {
+            font-family: var(--font-serif);
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.1;
+        }
+
+        .module-desc {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #555;
+        }
+
+        /* Node in the center */
+        .timeline-node {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: 15px; height: 15px;
+            background: var(--bg-color);
+            border: 2px solid var(--text-color);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 2;
+            transition: background 0.3s;
+        }
+
+        .module:hover .timeline-node { background: var(--accent); border-color: var(--accent); }
+
+        /* ==================== COACHES (Cinematic Cards) ==================== */
+        .coaches-section {
+            padding: 8vw var(--pad-x);
+            background: var(--text-color);
+            color: var(--bg-color);
+        }
+
+        .coaches-section .section-heading { color: var(--bg-color); }
+
+        .coaches-list {
+            display: flex;
+            flex-direction: column;
+            gap: 2vw;
+            margin-top: 4vw;
+        }
+
+        .coach-row {
+            display: flex;
+            align-items: center;
+            padding: 2vw 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            transition: padding 0.4s;
+        }
+
+        .coach-row:hover {
+            padding-left: 2vw;
+            padding-right: 2vw;
+            background: rgba(255,255,255,0.03);
+        }
+
+        .coach-img-wrap {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-right: 4vw;
+            flex-shrink: 0;
+        }
+
+        .coach-img-wrap img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            filter: grayscale(100%);
+            transition: transform 0.5s, filter 0.5s;
+        }
+
+        .coach-row:hover .coach-img-wrap img {
+            transform: scale(1.1);
+            filter: grayscale(0%);
+        }
+
+        .coach-info { flex: 1; }
+
+        .coach-name {
+            font-family: var(--font-serif);
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .coach-title {
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--accent);
+        }
+
+        /* ==================== MASSIVE CTA ==================== */
+        .cta-section {
+            padding: 12vw var(--pad-x);
+            background: var(--accent);
+            color: var(--text-color);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .cta-title {
+            font-family: var(--font-serif);
+            font-size: 10vw;
+            line-height: 0.9;
+            text-transform: uppercase;
+            margin-bottom: 3rem;
+            letter-spacing: -3px;
+        }
+
+        /* ==================== FOOTER ==================== */
+        footer {
+            background: var(--text-color);
+            color: var(--bg-color);
+            padding: 6vw var(--pad-x) 2vw;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 4vw;
+            padding-bottom: 4vw;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .footer-logo {
+            font-family: var(--font-serif);
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .footer-desc {
+            color: #999;
+            font-size: 1rem;
+            max-width: 300px;
+            line-height: 1.5;
+        }
+
+        .footer-col h5 {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 1.5rem;
+            color: var(--accent);
+        }
+
+        .footer-col ul { list-style: none; }
+        .footer-col ul li { margin-bottom: 1rem; }
+        
+        .footer-col ul a {
+            color: #CCC;
+            text-decoration: none;
+            transition: color 0.3s;
+            font-size: 0.95rem;
+        }
+
+        .footer-col ul a:hover { color: var(--white); }
+
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 2vw;
+            font-size: 0.8rem;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* ==================== ANIMATIONS ==================== */
+        .fade-up {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        
+        .fade-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ==================== RESPONSIVE ==================== */
+        @media (max-width: 1024px) {
+            .hero { flex-direction: column; height: auto; padding-top: 15vh; }
+            .hero-text-area, .hero-image-area { flex: none; width: 100%; border: none; }
+            .hero-text-area { padding-bottom: 4rem; }
+            .hero-image-area { height: 50vh; }
+            
+            .about-section { grid-template-columns: 1fr; }
+            .stats-wrap { grid-template-columns: repeat(2, 1fr); gap: 4vw; }
+            
+            .timeline::before { left: 0; }
+            .timeline-node { left: 0; }
+            .module, .module:nth-child(even) { flex-direction: column; align-items: flex-start; padding-left: 8vw; }
+            .module-content, .module-image { width: 100%; }
+            .module-image { margin-top: 2rem; }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .cursor-dot, .cursor-ring { display: none !important; }
+            * { cursor: auto !important; }
+            
+            .footer-grid { grid-template-columns: 1fr; }
+            .coach-row { flex-direction: column; align-items: flex-start; text-align: left; }
+            .coach-img-wrap { margin-bottom: 1rem; margin-right: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- TEXTURE OVERLAY -->
+    <div class="noise"></div>
+
+    <!-- CUSTOM CURSOR -->
+    <div class="cursor-dot"></div>
+    <div class="cursor-ring"></div>
+
+    <!-- PRELOADER -->
+    <div class="preloader" id="preloader">
+        <div class="preloader-counter" id="counter">00</div>
+    </div>
+
+    <!-- NAVIGATION -->
+    <nav>
+        <a href="#" class="logo hover-target">Grandmaster.</a>
+        <ul class="nav-links">
+            <li><a href="#philosophy" class="hover-target">Philosophy</a></li>
+            <li><a href="#curriculum" class="hover-target">Curriculum</a></li>
+            <li><a href="#coaches" class="hover-target">Grandmasters</a></li>
+        </ul>
+        <a href="#enroll" class="btn btn-outline hover-target" style="padding: 0.8rem 2rem; border-color:currentColor; color:currentColor;"><span>Apply</span></a>
+    </nav>
+
+    <!-- SPLIT HERO -->
+    <header class="hero">
+        <div class="hero-text-area">
+            <span class="subtitle fade-up">The Pinnacle of Intellectual Warfare</span>
+            <h1 class="hero-title fade-up" style="transition-delay: 0.1s;">Master<br><i>The Board.</i></h1>
+            <p class="hero-desc fade-up" style="transition-delay: 0.2s;">
+                Step into the world’s most exclusive chess academy. We forge complete beginners into relentless tacticians and titled grandmasters.
+            </p>
+            <div class="fade-up" style="transition-delay: 0.3s;">
+                <a href="#curriculum" class="btn hover-target"><span>Discover Curriculum</span></a>
+            </div>
+        </div>
+        <div class="hero-image-area">
+            <img src="https://images.unsplash.com/photo-1586165368502-1bad197a6461?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80" alt="Chess Master Setup" class="hero-img">
+        </div>
+    </header>
+
+    <!-- MASSIVE MARQUEE -->
+    <section class="marquee-container">
+        <div class="marquee-content">
+            <h2>Calculate <span>Deeper</span> • Attack <span>Fiercely</span> • Defend <span>Flawlessly</span> • Outsmart <span>Everyone</span> • </h2>
+            <h2>Calculate <span>Deeper</span> • Attack <span>Fiercely</span> • Defend <span>Flawlessly</span> • Outsmart <span>Everyone</span> • </h2>
+        </div>
+    </section>
+
+    <!-- EDITORIAL ABOUT -->
+    <section class="about-section" id="philosophy">
+        <div class="about-title">
+            <h2 class="section-heading fade-up">Our<br>Philosophy.</h2>
+            <a href="#about" class="btn btn-outline hover-target fade-up"><span>The Manifesto</span></a>
+        </div>
+        <div class="about-content">
+            <div class="about-text">
+                <p class="fade-up">We do not merely teach how the pieces move. We reconstruct how you think.</p>
+                <p class="fade-up">At Grandmaster, chess is treated as an extreme cognitive discipline. By blending Soviet-era rigor with modern neural-network engine analysis, we provide an unparalleled educational ecosystem.</p>
+            </div>
+            
+            <div class="stats-wrap">
+                <div class="stat-box fade-up">
+                    <span class="stat-num counter-num" data-target="12">0</span>
+                    <span class="stat-label">Resident GMs</span>
+                </div>
+                <div class="stat-box fade-up" style="transition-delay: 0.1s;">
+                    <span class="stat-num counter-num" data-target="2500">0</span>
+                    <span class="stat-label">Avg. Peak Elo</span>
+                </div>
+                <div class="stat-box fade-up" style="transition-delay: 0.2s;">
+                    <span class="stat-num counter-num" data-target="45">0</span>
+                    <span class="stat-label">Global Titles</span>
+                </div>
+                <div class="stat-box fade-up" style="transition-delay: 0.3s;">
+                    <span class="stat-num counter-num" data-target="1">0</span>
+                    <span class="stat-label">Elite Standard</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PARALLAX BREAK -->
+    <section class="parallax-break">
+        <img src="https://images.unsplash.com/photo-1529699211952-734e80c4d42b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80" alt="Chess Board Detail" class="para-img" id="para-img">
+        <div class="para-overlay"></div>
+        <h2 class="para-text fade-up">Silence the mind.<br><i>See the board.</i></h2>
+    </section>
+
+    <!-- CURRICULUM TIMELINE -->
+    <section class="curriculum-section" id="curriculum">
+        <div class="curriculum-intro fade-up">
+            <h2 class="section-heading">Curriculum.</h2>
+            <p>Structured pathways from the fundamental opening principles to elite endgame calculation.</p>
+        </div>
+
+        <div class="timeline">
+            <!-- Module 01 -->
+            <div class="module fade-up">
+                <div class="timeline-node"></div>
+                <div class="module-content">
+                    <span class="module-num">01</span>
+                    <h3 class="module-title">The Foundation</h3>
+                    <p class="module-desc">Designed for the uninitiated. Master board geometry, piece coordination, absolute and relative pins, and the mathematical value of position over material.</p>
+                </div>
+                <div class="module-image hover-target">
+                    <img src="pawn.png" alt="Pawn" onerror="this.src='https://images.unsplash.com/photo-1588666572703-91cdb1bb3644?auto=format&fit=crop&w=800&q=80'">
+                </div>
+            </div>
+
+            <!-- Module 02 -->
+            <div class="module fade-up">
+                <div class="timeline-node"></div>
+                <div class="module-content">
+                    <span class="module-num">02</span>
+                    <h3 class="module-title">Tactical Warfare</h3>
+                    <p class="module-desc">Intermediate module focusing strictly on pattern recognition. Sacrifices, discovered attacks, deflections, and building the calculating stamina required for long tournament play.</p>
+                </div>
+                <div class="module-image hover-target">
+                    <img src="https://images.unsplash.com/photo-1560174038-da43ac74f01b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Knight">
+                </div>
+            </div>
+
+            <!-- Module 03 -->
+            <div class="module fade-up">
+                <div class="timeline-node"></div>
+                <div class="module-content">
+                    <span class="module-num">03</span>
+                    <h3 class="module-title">Positional Mastery</h3>
+                    <p class="module-desc">Advanced concepts pioneered by Karpov and Petrosian. Prophylaxis, weak square exploitation, pawn structure integrity, and suffocating your opponent through microscopic advantages.</p>
+                </div>
+                <div class="module-image hover-target">
+                    <img src="https://media.istockphoto.com/id/1300691530/photo/chess-white-bishop-on-chessboard.jpg?s=612x612&w=0&k=20&c=UOcfArUu8P-O8IMZ4GI2y8sIRBWyBDYf3KqBDMxuS18=" alt="Bishop">
+                </div>
+            </div>
+
+            <!-- Module 04 -->
+            <div class="module fade-up">
+                <div class="timeline-node"></div>
+                <div class="module-content">
+                    <span class="module-num">04</span>
+                    <h3 class="module-title">GM Preparation</h3>
+                    <p class="module-desc">Elite tier. Deep engine analysis, bespoke opening repertoire creation, psychological resilience, and mastery of theoretical endgames. Taught exclusively by titled GMs.</p>
+                </div>
+                <div class="module-image hover-target">
+                    <img src="https://images.stockcake.com/public/c/1/7/c1731485-d3f3-4be3-9c07-75b5643dcb95_large/king-chess-piece-stockcake.jpg" alt="King">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CINEMATIC COACHES -->
+    <section class="coaches-section" id="coaches">
+        <h2 class="section-heading fade-up">The Elite Minds.</h2>
+        
+        <div class="coaches-list">
+            <div class="coach-row fade-up hover-target">
+                <div class="coach-img-wrap">
+                    <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Alexander V">
+                </div>
+                <div class="coach-info">
+                    <h3 class="coach-name">Alexander V.</h3>
+                    <span class="coach-title">Grandmaster (Peak 2710)</span>
+                </div>
+            </div>
+
+            <div class="coach-row fade-up hover-target">
+                <div class="coach-img-wrap">
+                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Elena R">
+                </div>
+                <div class="coach-info">
+                    <h3 class="coach-name">Elena R.</h3>
+                    <span class="coach-title">International Master</span>
+                </div>
+            </div>
+
+            <div class="coach-row fade-up hover-target">
+                <div class="coach-img-wrap">
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Marcus D">
+                </div>
+                <div class="coach-info">
+                    <h3 class="coach-name">Marcus D.</h3>
+                    <span class="coach-title">FIDE Senior Trainer</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MASSIVE CTA -->
+    <section class="cta-section">
+        <h2 class="cta-title fade-up">Make Your<br>Move.</h2>
+        <a href="#" class="btn btn-outline hover-target fade-up" style="border-color:var(--text-color); color:var(--text-color);">
+            <span>Apply For Enrollment</span>
+        </a>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-col">
+                <h3 class="footer-logo">Grandmaster.</h3>
+                <p class="footer-desc">The Vanguard of Chess Excellence. Cultivating the world's most formidable strategic minds.</p>
+            </div>
+            <div class="footer-col">
+                <h5>Navigation</h5>
+                <ul>
+                    <li><a href="#" class="hover-target">Home</a></li>
+                    <li><a href="#philosophy" class="hover-target">Philosophy</a></li>
+                    <li><a href="#curriculum" class="hover-target">Curriculum</a></li>
+                    <li><a href="#coaches" class="hover-target">Coaches</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h5>Connect</h5>
+                <ul>
+                    <li><a href="#" class="hover-target">hello@grandmaster.edu</a></li>
+                    <li><a href="#" class="hover-target">+1 (800) 555-GMCA</a></li>
+                    <li><a href="#" class="hover-target">New York & London</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <span>&copy; 2026 Grandmaster Academy.</span>
+            <span>Awwwards Tier Design.</span>
+        </div>
+    </footer>
+
+    <!-- INTERACTION SCRIPTS -->
+    <script>
+        // ==================== PRELOADER ====================
+        const counterElement = document.getElementById('counter');
+        const preloader = document.getElementById('preloader');
+        
+        let startTime = null;
+        const duration = 2000; 
+
+        function updateCounter(timestamp) {
+            if(!startTime) startTime = timestamp;
+            const progress = (timestamp - startTime) / duration;
+            
+            if(progress < 1) {
+                // Ease out cubic
+                const easeOut = 1 - Math.pow(1 - progress, 3);
+                const currentVal = Math.floor(easeOut * 100);
+                counterElement.textContent = currentVal < 10 ? '0' + currentVal : currentVal;
+                requestAnimationFrame(updateCounter);
+            } else {
+                counterElement.textContent = '100';
+                setTimeout(() => {
+                    preloader.style.transform = 'translateY(-100vh)';
+                }, 300);
+            }
+        }
+        requestAnimationFrame(updateCounter);
+
+        // ==================== CUSTOM CURSOR ====================
+        const cursorDot = document.querySelector('.cursor-dot');
+        const cursorRing = document.querySelector('.cursor-ring');
+        const hoverTargets = document.querySelectorAll('.hover-target');
+
+        let mouseX = 0, mouseY = 0;
+        let ringX = 0, ringY = 0;
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            
+            cursorDot.style.left = `${mouseX}px`;
+            cursorDot.style.top = `${mouseY}px`;
+        });
+
+        function animateCursor() {
+            ringX += (mouseX - ringX) * 0.2;
+            ringY += (mouseY - ringY) * 0.2;
+            
+            cursorRing.style.left = `${ringX}px`;
+            cursorRing.style.top = `${ringY}px`;
+            
+            requestAnimationFrame(animateCursor);
+        }
+        animateCursor();
+
+        hoverTargets.forEach(target => {
+            target.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+            target.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+        });
+
+        // ==================== SCROLL REVEAL & STATS COUNTER ====================
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: "0px 0px -50px 0px"
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if(entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    
+                    const counter = entry.target.querySelector('.counter-num');
+                    if(counter && !counter.classList.contains('counted')) {
+                        runCounter(counter);
+                        counter.classList.add('counted');
+                    }
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+        function runCounter(counter) {
+            const target = +counter.getAttribute('data-target');
+            const duration = 2000; 
+            const steps = 60;
+            const increment = target / steps;
+            let current = 0;
+            
+            const timer = setInterval(() => {
+                current += increment;
+                if(current >= target) {
+                    counter.innerText = target + (target > 1000 ? '+' : '');
+                    clearInterval(timer);
+                } else {
+                    counter.innerText = Math.ceil(current);
+                }
+            }, duration / steps);
+        }
+
+        // ==================== IMAGE PARALLAX ====================
+        const paraImg = document.getElementById('para-img');
+        
+        window.addEventListener('scroll', () => {
+            const paraSection = document.querySelector('.parallax-break');
+            const rect = paraSection.getBoundingClientRect();
+            
+            if(rect.top < window.innerHeight && rect.bottom > 0) {
+                const scrollPerc = (window.innerHeight - rect.top) / (window.innerHeight + rect.height);
+                paraImg.style.transform = `translateY(${scrollPerc * 25}%)`;
+            }
+        });
+    </script>
+</body>
+</html>
