@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <title>Palm Beach Shutters and Shades | Redesign</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Cormorant Garamond for elegant serif headings, Inter for clean modern body text -->
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" />
+
+    <style>
+        /* === CSS VARIABLES & RESET === */
+        :root {
+            --bg-light: #F9F9F7;
+            --bg-dark: #1A1A1A;
+            --text-dark: #1A1A1A;
+            --text-light: #F9F9F7;
+            --accent: #B8905B; /* Elegant subtle gold */
+            --font-serif: 'Cormorant Garamond', serif;
+            --font-sans: 'Inter', sans-serif;
+            --transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            cursor: none; /* For Custom Cursor */
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        /* === CUSTOM CURSOR === */
+        .cursor-dot, .cursor-outline {
+            position: fixed;
+            top: 0;
+            left: 0;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            z-index: 9999;
+            pointer-events: none;
+        }
+        .cursor-dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--accent);
+        }
+        .cursor-outline {
+            width: 40px;
+            height: 40px;
+            border: 1px solid var(--accent);
+            transition: width 0.2s, height 0.2s, background-color 0.2s;
+        }
+        
+        /* === REVEAL ANIMATIONS === */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal.in-view {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* === BUTTONS === */
+        .btn {
+            display: inline-block;
+            font-family: var(--font-sans);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            padding: 1.2rem 2.5rem;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid var(--text-dark);
+            color: var(--text-dark);
+            background: transparent;
+            transition: var(--transition);
+        }
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--text-dark);
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: -1;
+        }
+        .btn:hover {
+            color: var(--bg-light);
+            border-color: var(--text-dark);
+        }
+        .btn:hover::before {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+        .btn.btn-light {
+            border-color: var(--bg-light);
+            color: var(--bg-light);
+        }
+        .btn.btn-light::before {
+            background: var(--bg-light);
+        }
+        .btn.btn-light:hover {
+            color: var(--text-dark);
+        }
+
+        /* === TYPOGRAPHY === */
+        h1, h2, h3, h4 {
+            font-family: var(--font-serif);
+            font-weight: 300;
+            line-height: 1.1;
+        }
+        .title-lg { font-size: clamp(3rem, 6vw, 6rem); }
+        .title-md { font-size: clamp(2.5rem, 4vw, 4rem); margin-bottom: 2rem;}
+        .subtitle {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: var(--accent);
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        /* === HEADER & NAVIGATION === */
+        header {
+            position: fixed;
+            top: 0; left: 0; width: 100%;
+            padding: 2rem 4vw;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            mix-blend-mode: difference;
+            color: #fff;
+            transition: var(--transition);
+        }
+        .logo img {
+            height: 70px;
+            filter: brightness(0) invert(1); /* Forces white logo */
+        }
+        .menu-toggle {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        .hamburger {
+            width: 30px;
+            height: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .hamburger span {
+            display: block;
+            width: 100%;
+            height: 2px;
+            background-color: #fff;
+            transition: var(--transition);
+        }
+
+        /* FULLSCREEN MENU OVERLAY */
+        .menu-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100vh;
+            background: var(--bg-dark);
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.6s ease;
+        }
+        .menu-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+        .menu-nav ul {
+            text-align: center;
+        }
+        .menu-nav li {
+            margin: 1.5rem 0;
+            overflow: hidden;
+        }
+        .menu-nav a {
+            font-family: var(--font-serif);
+            font-size: clamp(2rem, 4vw, 4rem);
+            color: var(--text-light);
+            display: inline-block;
+            transform: translateY(100%);
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .menu-overlay.active .menu-nav a {
+            transform: translateY(0);
+        }
+        .menu-nav a:hover {
+            color: var(--accent);
+            font-style: italic;
+        }
+        .menu-overlay-info {
+            position: absolute;
+            bottom: 3rem;
+            text-align: center;
+            color: #888;
+            font-size: 0.9rem;
+        }
+
+        /* === HERO SECTION === */
+        .hero {
+            position: relative;
+            height: 100vh;
+            width: 100%;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            padding: 0 4vw;
+        }
+        .hero-slider {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -2;
+        }
+        .hero-slide {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-size: cover;
+            background-position: center;
+            opacity: 0;
+            transform: scale(1.05);
+            transition: opacity 1.5s ease, transform 6s ease;
+        }
+        .hero-slide.active {
+            opacity: 1;
+            transform: scale(1);
+        }
+        .hero-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.6));
+            z-index: -1;
+        }
+        .hero-content {
+            color: var(--text-light);
+            max-width: 800px;
+            margin-top: 10vh;
+        }
+        .hero-content h1 {
+            margin-bottom: 2rem;
+        }
+
+        /* === ABOUT SECTION === */
+        .section-padding {
+            padding: 10rem 4vw;
+        }
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5rem;
+            align-items: center;
+        }
+        .about-text p {
+            font-size: 1.1rem;
+            color: #555;
+            margin-bottom: 2rem;
+        }
+        .about-image-wrapper {
+            position: relative;
+            height: 80vh;
+            overflow: hidden;
+        }
+        .about-image-wrapper img {
+            width: 100%;
+            height: 120%;
+            object-fit: cover;
+            object-position: center;
+            transform: translateY(-10%); /* For Parallax */
+        }
+
+        /* === PRODUCT GALLERY === */
+        .products {
+            background-color: #fff;
+        }
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+        .product-card {
+            position: relative;
+            overflow: hidden;
+            aspect-ratio: 4/5;
+            display: block;
+        }
+        .product-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .product-card::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.2);
+            transition: background 0.5s ease;
+        }
+        .product-card:hover img {
+            transform: scale(1.05);
+        }
+        .product-card:hover::after {
+            background: rgba(0,0,0,0.4);
+        }
+        .product-info {
+            position: absolute;
+            bottom: 2rem;
+            left: 2rem;
+            z-index: 2;
+            color: var(--text-light);
+        }
+        .product-info h3 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        .product-info span {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border-bottom: 1px solid var(--accent);
+            padding-bottom: 2px;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.4s ease;
+            display: inline-block;
+        }
+        .product-card:hover .product-info span {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* === SERVICE COMMITMENT === */
+        .stats-section {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            text-align: center;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            margin-top: 5rem;
+            max-width: 800px;
+            margin-inline: auto;
+        }
+        .stat-item h4 {
+            font-size: 4rem;
+            color: var(--accent);
+            margin-bottom: 1rem;
+            font-family: var(--font-sans);
+            font-weight: 300;
+        }
+        .stat-item p {
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.85rem;
+            color: #888;
+        }
+
+        /* === CONTACT SECTION === */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5rem;
+        }
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+        .input-group {
+            position: relative;
+        }
+        .input-group input, .input-group textarea {
+            width: 100%;
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid #ccc;
+            padding: 1rem 0;
+            font-family: var(--font-sans);
+            font-size: 1rem;
+            color: var(--text-dark);
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+        .input-group textarea {
+            resize: none;
+            height: 100px;
+        }
+        .input-group input:focus, .input-group textarea:focus {
+            border-bottom-color: var(--text-dark);
+        }
+        .input-group label {
+            position: absolute;
+            top: 1rem;
+            left: 0;
+            color: #888;
+            pointer-events: none;
+            transition: var(--transition);
+        }
+        .input-group input:focus ~ label,
+        .input-group input:valid ~ label,
+        .input-group textarea:focus ~ label,
+        .input-group textarea:valid ~ label {
+            top: -10px;
+            font-size: 0.75rem;
+            color: var(--text-dark);
+        }
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            justify-content: center;
+        }
+        .info-block h4 {
+            font-family: var(--font-sans);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #888;
+            margin-bottom: 0.5rem;
+        }
+        .info-block p, .info-block a {
+            font-size: 1.5rem;
+            font-family: var(--font-serif);
+            transition: color 0.3s ease;
+        }
+        .info-block a:hover {
+            color: var(--accent);
+        }
+
+        /* === FOOTER === */
+        footer {
+            background-color: var(--bg-dark);
+            color: #888;
+            padding: 5rem 4vw 2rem;
+        }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr 1fr;
+            gap: 4rem;
+            margin-bottom: 4rem;
+        }
+        .footer-logo img {
+            height: 40px;
+            margin-bottom: 1.5rem;
+        }
+        .footer-logo p {
+            max-width: 300px;
+            font-size: 0.9rem;
+        }
+        .footer-links h3, .footer-social h3 {
+            color: var(--text-light);
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+        }
+        .footer-links ul li {
+            margin-bottom: 0.8rem;
+        }
+        .footer-links a:hover, .footer-social a:hover {
+            color: var(--accent);
+        }
+        .footer-social ul {
+            display: flex;
+            gap: 1.5rem;
+            font-size: 1.2rem;
+        }
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 2rem;
+            font-size: 0.85rem;
+        }
+        .badges {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        .badges img {
+            height: 40px;
+            object-fit: contain;
+        }
+
+        /* === RESPONSIVE === */
+        @media (max-width: 992px) {
+            .about-grid, .contact-grid, .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+            .about-image-wrapper { height: 50vh; }
+            .product-grid { grid-template-columns: 1fr; }
+            .title-lg { font-size: 3rem; }
+            .title-md { font-size: 2.5rem; }
+            .header-phone { display: none; }
+            .footer-bottom { flex-direction: column; gap: 1rem; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Custom Cursor -->
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+
+    <!-- Header & Navigation -->
+    <header id="header">
+        <a href="#" class="logo">
+            <img src="https://palmbeachshuttersandshades.com/wp-content/uploads/2023/03/PWin-main-file-2.png" alt="Palm Beach Shutters and Shades Logo" />
+        </a>
+        <div class="menu-toggle hover-target">
+            <span class="header-phone">Call 561.285.4700</span>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+            </div>
+            Menu
+        </div>
+    </header>
+
+    <!-- Fullscreen Menu Overlay -->
+    <div class="menu-overlay">
+        <nav class="menu-nav">
+            <ul>
+                <li><a href="#home" class="hover-target menu-link">Home</a></li>
+                <li><a href="#gallery" class="hover-target menu-link">Product Gallery</a></li>
+                <li><a href="#about" class="hover-target menu-link">About Us</a></li>
+                <li><a href="#contact" class="hover-target menu-link">Contact Us</a></li>
+            </ul>
+        </nav>
+        <div class="menu-overlay-info">
+            <p>Serving all of South Florida and the Treasure Coast</p>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-slider">
+            <!-- Slide 1 -->
+            <div class="hero-slide active" style="background-image: url('https://palmbeachshuttersandshades.com/wp-content/uploads/2023/04/palm-beach-polysatin-bright-white-46648394-1.webp');"></div>
+            <!-- Slide 2 -->
+            <div class="hero-slide" style="background-image: url('https://palmbeachshuttersandshades.com/wp-content/uploads/2023/03/plam_beach-1.jpg');"></div>
+            <!-- Slide 3 -->
+            <div class="hero-slide" style="background-image: url('https://palmbeachshuttersandshades.com/wp-content/uploads/2023/04/Plantation-shutters.jpg');"></div>
+        </div>
+        <div class="hero-overlay"></div>
+        
+        <div class="hero-content reveal">
+            <span class="subtitle">Palm Beach Shutters & Shades</span>
+            <h1 class="title-lg">We bring the showroom to your home</h1>
+            <a href="#contact" class="btn btn-light hover-target">Request a consultation</a>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="section-padding" id="about">
+        <div class="about-grid">
+            <div class="about-text reveal">
+                <span class="subtitle">About Us</span>
+                <h2 class="title-md">Continuing a Legacy of Fine Craftsmanship</h2>
+                <p>The Dicembrino family has a heritage in design and upholstery. Originally from Palermo Sicily, our aunt was a clothing designer in NY and our uncle specializes in custom furniture and window treatments for Palm Beach Island.</p>
+                <p>We are proud to be continuing their legacy of fine craftsmanship. We bring the showroom to your home offering a wide variety of quality products from local, national and worldwide manufacturers with expert installation.</p>
+                <p>We provide everything from custom roller, solar, banded, roman shades, blinds, Plantation shutters to beautiful drapes and panels. We look forward to working with you to add the finishing touches your home or office deserves.</p>
+                <a href="#contact" class="btn hover-target" style="margin-top: 1rem;">Contact Us</a>
+            </div>
+            <div class="about-image reveal">
+                <div class="about-image-wrapper">
+                    <img src="https://palmbeachshuttersandshades.com/wp-content/uploads/2023/01/banner_03.jpg" class="parallax-img" alt="Beautiful living room with custom shades" />
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Product Gallery -->
+    <section class="section-padding products" id="gallery">
+        <div class="text-center reveal" style="text-align: center;">
+            <span class="subtitle">Our Offerings</span>
+            <h2 class="title-md">Product Gallery</h2>
+        </div>
+        
+        <div class="product-grid">
+            <a href="#" class="product-card hover-target reveal">
+                <img src="https://palmbeachshuttersandshades.com/wp-content/uploads/2023/01/product_shade.jpg" alt="Shades" />
+                <div class="product-info">
+                    <h3>Shades</h3>
+                    <span>View more</span>
+                </div>
+            </a>
+            <a href="#" class="product-card hover-target reveal" style="transition-delay: 0.2s;">
+                <img src="https://palmbeachshuttersandshades.com/wp-content/uploads/2023/01/product_drapes.jpg" alt="Drapes" />
+                <div class="product-info">
+                    <h3>Drapes</h3>
+                    <span>View more</span>
+                </div>
+            </a>
+            <a href="#" class="product-card hover-target reveal">
+                <img src="https://palmbeachshuttersandshades.com/wp-content/uploads/2023/01/blinds-1.jpg" alt="Blinds" />
+                <div class="product-info">
+                    <h3>Blinds</h3>
+                    <span>View more</span>
+                </div>
+            </a>
+            <a href="#" class="product-card hover-target reveal" style="transition-delay: 0.2s;">
+                <img src="https://palmbeachshuttersandshades.com/wp-content/uploads/2023/01/product_gallery_03.jpg" alt="Shutters" />
+                <div class="product-info">
+                    <h3>Shutters</h3>
+                    <span>View more</span>
+                </div>
+            </a>
+        </div>
+    </section>
+
+    <!-- Service Commitment -->
+    <section class="section-padding stats-section">
+        <div class="reveal">
+            <span class="subtitle">Our Promise</span>
+            <h2 class="title-md" style="margin-bottom: 1rem;">Our Projects / Service Commitment</h2>
+            <p style="font-family: var(--font-serif); font-size: 1.5rem; font-style: italic; color: #aaa;">"Our goal is your complete satisfaction and to be there for you when service is needed"</p>
+        </div>
+        
+        <div class="stats-grid reveal">
+            <div class="stat-item">
+                <img src="https://palmbeachshuttersandshades.com/wp-content/uploads/2023/01/icon_02.png" alt="Service Call" style="height: 60px; margin-bottom: 1.5rem; filter: brightness(0) invert(1) opacity(0.8);" />
+                <h4>24-48 hours</h4>
+                <p>Service Call Turn Around Time</p>
+            </div>
+            <div class="stat-item">
+                <img src="https://palmbeachshuttersandshades.com/wp-content/uploads/2023/01/icon_03.png" alt="Active Projects" style="height: 60px; margin-bottom: 1.5rem; filter: brightness(0) invert(1) opacity(0.8);" />
+                <h4 class="counter" data-target="51">0</h4>
+                <p>Active Projects</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="section-padding" id="contact">
+        <div class="contact-grid">
+            <div class="contact-info-container reveal">
+                <span class="subtitle">Get In Touch</span>
+                <h2 class="title-md">Contact Us</h2>
+                <div class="contact-info">
+                    <div class="info-block">
+                        <h4>Address</h4>
+                        <p>West Palm Beach FL</p>
+                    </div>
+                    <div class="info-block">
+                        <h4>Phone</h4>
+                        <a href="tel:561.285.4700" class="hover-target">561.285.4700</a>
+                    </div>
+                    <div class="info-block">
+                        <h4>Email</h4>
+                        <a href="mailto:info@palmbeachshuttersandshades.com" class="hover-target">info@palmbeachshuttersandshades.com</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="contact-form-container reveal" style="transition-delay: 0.2s;">
+                <form class="contact-form" onsubmit="event.preventDefault();">
+                    <div class="input-group">
+                        <input type="text" id="name" required class="hover-target">
+                        <label for="name">Your Name</label>
+                    </div>
+                    <div class="input-group">
+                        <input type="tel" id="phone" required class="hover-target">
+                        <label for="phone">Your Phone Number</label>
+                    </div>
+                    <div class="input-group">
+                        <input type="email" id="email" required class="hover-target">
+                        <label for="email">Your E-mail</label>
+                    </div>
+                    <div class="input-group">
+                        <input type="text" id="subject" required class="hover-target">
+                        <label for="subject">Subject</label>
+                    </div>
+                    <div class="input-group">
+                        <textarea id="message" required class="hover-target"></textarea>
+                        <label for="message">Your Message</label>
+                    </div>
+                    <button type="submit" class="btn hover-target" style="align-self: flex-start; margin-top: 1rem;">Send Now</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-logo">
+                <a href="#" class="hover-target">
+                    <img src="https://palmbeachshuttersandshades.com/wp-content/uploads/2023/03/main-logo-white-1.png" alt="Logo" />
+                </a>
+                <p>Bringing top quality products, service and installation to your home.</p>
+            </div>
+            
+            <div class="footer-links">
+                <h3>Sitemap</h3>
+                <ul>
+                    <li><a href="#home" class="hover-target">Home</a></li>
+                    <li><a href="#gallery" class="hover-target">Product Gallery</a></li>
+                    <li><a href="#about" class="hover-target">About Us</a></li>
+                    <li><a href="#contact" class="hover-target">Contact Us</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-social">
+                <h3>Social Media</h3>
+                <ul>
+                    <li><a href="#" class="hover-target"><i class="fa-brands fa-twitter"></i></a></li>
+                    <li><a href="#" class="hover-target"><i class="fa-brands fa-instagram"></i></a></li>
+                    <li><a href="#" class="hover-target"><i class="fa-brands fa-linkedin-in"></i></a></li>
+                    <li><a href="#" class="hover-target"><i class="fa-brands fa-facebook"></i></a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>© 2026 Palm Beach Shutters and Shades. All rights Reserved.</p>
+            <div class="badges">
+                <img src="https://palmbeachshuttersandshades.com/wp-content/uploads/2023/07/5StarGoogle.png" alt="5 Star Google Rating" />
+                <img src="https://palmbeachshuttersandshades.com/wp-content/uploads/2023/07/homeAdvisor.png" alt="Home Advisor Badge" />
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // Custom Cursor Logic
+        const cursorDot = document.querySelector('.cursor-dot');
+        const cursorOutline = document.querySelector('.cursor-outline');
+        
+        window.addEventListener('mousemove', (e) => {
+            const posX = e.clientX;
+            const posY = e.clientY;
+            
+            cursorDot.style.left = `${posX}px`;
+            cursorDot.style.top = `${posY}px`;
+            
+            // Adding a slight delay to the outline for an elegant trailing effect
+            cursorOutline.animate({
+                left: `${posX}px`,
+                top: `${posY}px`
+            }, { duration: 500, fill: "forwards" });
+        });
+
+        // Hover effects for cursor
+        const hoverTargets = document.querySelectorAll('.hover-target');
+        hoverTargets.forEach(target => {
+            target.addEventListener('mouseenter', () => {
+                cursorOutline.style.width = '60px';
+                cursorOutline.style.height = '60px';
+                cursorOutline.style.backgroundColor = 'rgba(184, 144, 91, 0.1)';
+            });
+            target.addEventListener('mouseleave', () => {
+                cursorOutline.style.width = '40px';
+                cursorOutline.style.height = '40px';
+                cursorOutline.style.backgroundColor = 'transparent';
+            });
+        });
+
+        // Hamburger Menu Toggle
+        const menuToggle = document.querySelector('.menu-toggle');
+        const overlay = document.querySelector('.menu-overlay');
+        const menuLinks = document.querySelectorAll('.menu-link');
+
+        function toggleMenu() {
+            overlay.classList.toggle('active');
+            const hamburgerLines = document.querySelectorAll('.hamburger span');
+            if(overlay.classList.contains('active')) {
+                hamburgerLines[0].style.transform = 'translateY(9px) rotate(45deg)';
+                hamburgerLines[1].style.transform = 'translateY(-9px) rotate(-45deg)';
+            } else {
+                hamburgerLines[0].style.transform = 'translateY(0) rotate(0)';
+                hamburgerLines[1].style.transform = 'translateY(0) rotate(0)';
+            }
+        }
+
+        menuToggle.addEventListener('click', toggleMenu);
+        menuLinks.forEach(link => link.addEventListener('click', toggleMenu));
+
+        // Hero Slider
+        const slides = document.querySelectorAll('.hero-slide');
+        let currentSlide = 0;
+        setInterval(() => {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (currentSlide + 1) % slides.length;
+            slides[currentSlide].classList.add('active');
+        }, 5000);
+
+        // Intersection Observer for Scroll Reveals
+        const observerOptions = {
+            threshold: 0.15,
+            rootMargin: "0px 0px -50px 0px"
+        };
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('in-view');
+                    // Check if target contains counter
+                    const counter = entry.target.querySelector('.counter');
+                    if(counter && !counter.classList.contains('counted')) {
+                        runCounter(counter);
+                        counter.classList.add('counted');
+                    }
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+        // Parallax Effect on Scroll
+        window.addEventListener('scroll', () => {
+            const scrolled = window.scrollY;
+            const parallaxImg = document.querySelector('.parallax-img');
+            if(parallaxImg) {
+                parallaxImg.style.transform = `translateY(${scrolled * -0.05}px)`;
+            }
+        });
+
+        // Simple Number Counter Animation
+        function runCounter(counterEl) {
+            const target = +counterEl.getAttribute('data-target');
+            const duration = 2000; // ms
+            const increment = target / (duration / 16); // 60fps
+            let current = 0;
+
+            const updateCounter = () => {
+                current += increment;
+                if (current < target) {
+                    counterEl.innerText = Math.ceil(current);
+                    requestAnimationFrame(updateCounter);
+                } else {
+                    counterEl.innerText = target;
+                }
+            };
+            updateCounter();
+        }
+    </script>
+</body>
+</html>
