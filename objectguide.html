@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Objects Guide | The Encyclopedia of Everyday Objects</title>
+    <meta name="description" content="An educational guide documenting objects, artifacts, tools, and materials across history, culture, and everyday use.">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Phosphor Icons for minimalist iconography -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"DM Sans"', 'sans-serif'],
+                        serif: ['"Playfair Display"', 'serif'],
+                    },
+                    colors: {
+                        offwhite: '#F7F7F5',
+                        dark: '#111111',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Styles for Flat Modern & Interactions */
+        body {
+            background-color: #F7F7F5;
+            color: #111111;
+        }
+        
+        /* Hide scrollbar for horizontal scrolling containers */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* Subtle load animation */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-up {
+            animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        .delay-100 { animation-delay: 100ms; }
+        .delay-200 { animation-delay: 200ms; }
+
+        /* Flat border treatment */
+        .flat-border {
+            border: 1px solid rgba(17, 17, 17, 0.15);
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-dark selection:text-white">
+
+    <!-- Navigation -->
+    <nav class="fixed w-full top-0 z-50 bg-offwhite/80 backdrop-blur-md border-b border-dark/10 transition-all">
+        <div class="max-w-[1440px] mx-auto px-6 md:px-12 h-20 flex items-center justify-between">
+            <a href="/" class="text-2xl font-serif font-semibold tracking-tight text-dark flex items-center gap-2">
+                <i class="ph ph-archive text-3xl"></i>
+                Objects Guide
+            </a>
+            
+            <div class="hidden md:flex items-center gap-8 text-sm font-medium">
+                <a href="#categories" class="hover:text-gray-500 transition-colors">Categories</a>
+                <a href="#explore" class="hover:text-gray-500 transition-colors">Explore</a>
+                <a href="#materials" class="hover:text-gray-500 transition-colors">Materials</a>
+            </div>
+
+            <div class="flex items-center gap-4">
+                <button aria-label="Search" class="p-2 rounded-full hover:bg-black/5 transition-colors">
+                    <i class="ph ph-magnifying-glass text-2xl"></i>
+                </button>
+                <button aria-label="Menu" class="md:hidden p-2 rounded-full hover:bg-black/5 transition-colors">
+                    <i class="ph ph-list text-2xl"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="pt-32 pb-24">
+        
+        <!-- Hero Section -->
+        <section class="max-w-[1440px] mx-auto px-6 md:px-12 py-16 md:py-24">
+            <div class="max-w-4xl opacity-0 animate-fade-up">
+                <p class="text-sm font-semibold uppercase tracking-[0.2em] mb-6 text-gray-500">The Online Encyclopedia</p>
+                <h1 class="text-5xl md:text-7xl lg:text-8xl font-serif leading-[1.1] tracking-tight mb-8">
+                    Documenting the <br/><span class="italic text-gray-600">Everyday.</span>
+                </h1>
+                <p class="text-lg md:text-2xl text-gray-600 max-w-2xl font-light leading-relaxed mb-12">
+                    An educational guide documenting objects, artifacts, tools, and materials across history, culture, and everyday use.
+                </p>
+                
+                <!-- Main Global Search -->
+                <div class="relative max-w-xl group">
+                    <i class="ph ph-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-2xl text-gray-400 group-focus-within:text-dark transition-colors"></i>
+                    <input type="text" placeholder="Search objects, materials, or functions..." 
+                        class="w-full bg-transparent flat-border rounded-full py-4 pl-12 pr-6 text-lg focus:outline-none focus:border-dark transition-colors placeholder:text-gray-400">
+                </div>
+            </div>
+        </section>
+
+        <!-- Categories Section (Prominent Entry Points) -->
+        <section id="categories" class="max-w-[1440px] mx-auto px-6 md:px-12 py-12 opacity-0 animate-fade-up delay-100">
+            <div class="flex items-baseline justify-between mb-8 border-b border-dark/10 pb-4">
+                <h2 class="text-2xl font-serif">Main Classifications</h2>
+                <a href="#" class="text-sm font-medium hover:underline flex items-center gap-1">View Index <i class="ph ph-arrow-right"></i></a>
+            </div>
+            
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+                <!-- Category Cards -->
+                <a href="#" class="group flex flex-col justify-between p-6 flat-border rounded-2xl bg-white hover:bg-dark hover:text-white transition-all duration-300 min-h-[160px]">
+                    <i class="ph ph-house text-3xl mb-4 text-gray-400 group-hover:text-white transition-colors"></i>
+                    <span class="font-medium text-lg leading-tight">Household<br>Objects</span>
+                </a>
+                <a href="#" class="group flex flex-col justify-between p-6 flat-border rounded-2xl bg-white hover:bg-dark hover:text-white transition-all duration-300 min-h-[160px]">
+                    <i class="ph ph-lightbulb text-3xl mb-4 text-gray-400 group-hover:text-white transition-colors"></i>
+                    <span class="font-medium text-lg leading-tight">Lighting<br>Fixtures</span>
+                </a>
+                <a href="#" class="group flex flex-col justify-between p-6 flat-border rounded-2xl bg-white hover:bg-dark hover:text-white transition-all duration-300 min-h-[160px]">
+                    <i class="ph ph-briefcase text-3xl mb-4 text-gray-400 group-hover:text-white transition-colors"></i>
+                    <span class="font-medium text-lg leading-tight">Office<br>Objects</span>
+                </a>
+                <a href="#" class="group flex flex-col justify-between p-6 flat-border rounded-2xl bg-white hover:bg-dark hover:text-white transition-all duration-300 min-h-[160px]">
+                    <i class="ph ph-tree text-3xl mb-4 text-gray-400 group-hover:text-white transition-colors"></i>
+                    <span class="font-medium text-lg leading-tight">Outdoor<br>Objects</span>
+                </a>
+                <a href="#" class="group flex flex-col justify-between p-6 flat-border rounded-2xl bg-white hover:bg-dark hover:text-white transition-all duration-300 min-h-[160px]">
+                    <i class="ph ph-watch text-3xl mb-4 text-gray-400 group-hover:text-white transition-colors"></i>
+                    <span class="font-medium text-lg leading-tight">Personal<br>Items</span>
+                </a>
+                <a href="#" class="group flex flex-col justify-between p-6 flat-border rounded-2xl bg-white hover:bg-dark hover:text-white transition-all duration-300 min-h-[160px]">
+                    <i class="ph ph-wrench text-3xl mb-4 text-gray-400 group-hover:text-white transition-colors"></i>
+                    <span class="font-medium text-lg leading-tight">Tools &<br>Hardware</span>
+                </a>
+            </div>
+        </section>
+
+        <!-- Dynamic Filtering / Taxonomy Carousel -->
+        <section id="materials" class="py-12 border-y border-dark/10 my-12 bg-white/50 opacity-0 animate-fade-up delay-200">
+            <div class="max-w-[1440px] mx-auto px-6 md:px-12 flex flex-col md:flex-row md:items-center gap-8">
+                <div class="shrink-0 w-32">
+                    <span class="text-xs font-semibold uppercase tracking-widest text-gray-400">Filter By</span>
+                </div>
+                
+                <div class="w-full overflow-hidden">
+                    <!-- Materials -->
+                    <div class="flex items-center gap-3 overflow-x-auto no-scrollbar pb-4">
+                        <span class="text-sm font-serif italic mr-2 shrink-0 text-gray-500">Material:</span>
+                        <a href="#" class="shrink-0 px-4 py-1.5 rounded-full flat-border text-sm hover:bg-dark hover:text-white transition-colors">Metal (224)</a>
+                        <a href="#" class="shrink-0 px-4 py-1.5 rounded-full flat-border text-sm hover:bg-dark hover:text-white transition-colors">Plastic (157)</a>
+                        <a href="#" class="shrink-0 px-4 py-1.5 rounded-full flat-border text-sm hover:bg-dark hover:text-white transition-colors">Wood (46)</a>
+                        <a href="#" class="shrink-0 px-4 py-1.5 rounded-full flat-border text-sm hover:bg-dark hover:text-white transition-colors">Fabric (35)</a>
+                        <a href="#" class="shrink-0 px-4 py-1.5 rounded-full flat-border text-sm hover:bg-dark hover:text-white transition-colors">Glass (20)</a>
+                        <a href="#" class="shrink-0 px-4 py-1.5 rounded-full flat-border text-sm hover:bg-dark hover:text-white transition-colors">Paper (12)</a>
+                        <a href="#" class="shrink-0 px-4 py-1.5 rounded-full flat-border text-sm hover:bg-dark hover:text-white transition-colors">Rubber (7)</a>
+                        <a href="#" class="shrink-0 px-4 py-1.5 rounded-full flat-border text-sm hover:bg-dark hover:text-white transition-colors">Ceramic (3)</a>
+                        <a href="#" class="shrink-0 px-4 py-1.5 rounded-full flat-border text-sm hover:bg-dark hover:text-white transition-colors">Stone (2)</a>
+                    </div>
+                    <!-- Functions -->
+                    <div class="flex items-center gap-3 overflow-x-auto no-scrollbar">
+                        <span class="text-sm font-serif italic mr-2 shrink-0 text-gray-500">Function:</span>
+                        <a href="#" class="shrink-0 px-4 py-1.5 rounded-full flat-border text-sm hover:bg-dark hover:text-white transition-colors">Storing (77)</a>
+                        <a href="#" class="shrink-0 px-4 py-1.5 rounded-full flat-border text-sm hover:bg-dark hover:text-white transition-colors">Cutting (44)</a>
+                        <a href="#" class="shrink-0 px-4 py-1.5 rounded-full flat-border text-sm hover:bg-dark hover:text-white transition-colors">Lighting (35)</a>
+                        <a href="#" class="shrink-0 px-4 py-1.5 rounded-full flat-border text-sm hover:bg-dark hover:text-white transition-colors">Fastening (29)</a>
+                        <a href="#" class="shrink-0 px-4 py-1.5 rounded-full flat-border text-sm hover:bg-dark hover:text-white transition-colors">Measuring (28)</a>
+                        <a href="#" class="shrink-0 px-4 py-1.5 rounded-full flat-border text-sm hover:bg-dark hover:text-white transition-colors">Cleaning (27)</a>
+                        <a href="#" class="shrink-0 px-4 py-1.5 rounded-full flat-border text-sm hover:bg-dark hover:text-white transition-colors">Supporting (27)</a>
+                        <a href="#" class="shrink-0 px-4 py-1.5 rounded-full flat-border text-sm hover:bg-dark hover:text-white transition-colors">Heating (21)</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Object Index List (Featured) -->
+        <section id="explore" class="max-w-[1440px] mx-auto px-6 md:px-12 py-12">
+            
+            <div class="flex items-baseline justify-between mb-10 border-b border-dark/10 pb-4">
+                <h2 class="text-2xl font-serif">Recently Catalogued</h2>
+                
+                <!-- Layout Toggles (Aesthetics) -->
+                <div class="flex gap-2">
+                    <button class="text-dark"><i class="ph ph-squares-four text-2xl"></i></button>
+                    <button class="text-gray-400 hover:text-dark transition-colors"><i class="ph ph-list-dashes text-2xl"></i></button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 md:gap-y-12">
+                
+                <!-- Object Card 1 -->
+                <a href="https://objectsguide.com/camping-mug/" class="group block cursor-pointer">
+                    <div class="relative overflow-hidden rounded-xl bg-[#ececec] aspect-[4/3] flat-border">
+                        <img src="https://objectsguide.com/wp-content/uploads/2026/03/camping-mug-objects-guide-featured-720x380.png" alt="Camping Mug" class="object-cover w-full h-full transition-transform duration-700 group-hover:scale-105 mix-blend-multiply">
+                        <div class="absolute top-4 left-4 flex gap-2">
+                            <span class="bg-white/90 backdrop-blur px-3 py-1 text-[10px] uppercase tracking-wider font-semibold rounded-full border border-dark/10">Outdoor</span>
+                        </div>
+                    </div>
+                    <div class="mt-5">
+                        <h3 class="text-2xl font-serif group-hover:underline decoration-1 underline-offset-4">Camping Mug</h3>
+                        <p class="mt-2 text-sm text-gray-500 line-clamp-2 leading-relaxed">Durable, portable drinking vessels designed for outdoor use, often made from stainless steel or plastic, with variations including insulated and collapsible models.</p>
+                    </div>
+                </a>
+
+                <!-- Object Card 2 -->
+                <a href="https://objectsguide.com/fairy-lights/" class="group block cursor-pointer">
+                    <div class="relative overflow-hidden rounded-xl bg-[#ececec] aspect-[4/3] flat-border">
+                        <img src="https://objectsguide.com/wp-content/uploads/2026/03/fairy-lights-objects-guide-featured-720x380.png" alt="Fairy Lights" class="object-cover w-full h-full transition-transform duration-700 group-hover:scale-105 mix-blend-multiply">
+                        <div class="absolute top-4 left-4 flex gap-2">
+                            <span class="bg-white/90 backdrop-blur px-3 py-1 text-[10px] uppercase tracking-wider font-semibold rounded-full border border-dark/10">Lighting</span>
+                        </div>
+                    </div>
+                    <div class="mt-5">
+                        <h3 class="text-2xl font-serif group-hover:underline decoration-1 underline-offset-4">Fairy Lights</h3>
+                        <p class="mt-2 text-sm text-gray-500 line-clamp-2 leading-relaxed">Decorative strings of small electric bulbs used for ambient illumination in various settings. Typically LED-based, they come in multiple designs...</p>
+                    </div>
+                </a>
+
+                <!-- Object Card 3 -->
+                <a href="https://objectsguide.com/string-lights/" class="group block cursor-pointer">
+                    <div class="relative overflow-hidden rounded-xl bg-[#ececec] aspect-[4/3] flat-border">
+                        <img src="https://objectsguide.com/wp-content/uploads/2026/03/string-lights-objects-guide-featured-720x380.png" alt="String Lights" class="object-cover w-full h-full transition-transform duration-700 group-hover:scale-105 mix-blend-multiply">
+                        <div class="absolute top-4 left-4 flex gap-2">
+                            <span class="bg-white/90 backdrop-blur px-3 py-1 text-[10px] uppercase tracking-wider font-semibold rounded-full border border-dark/10">Lighting</span>
+                        </div>
+                    </div>
+                    <div class="mt-5">
+                        <h3 class="text-2xl font-serif group-hover:underline decoration-1 underline-offset-4">String Lights</h3>
+                        <p class="mt-2 text-sm text-gray-500 line-clamp-2 leading-relaxed">Flexible electrical light strands used primarily for decorative illumination. They consist of small bulbs spaced along an insulated wire...</p>
+                    </div>
+                </a>
+
+                <!-- Object Card 4 -->
+                <a href="https://objectsguide.com/solar-path-light/" class="group block cursor-pointer">
+                    <div class="relative overflow-hidden rounded-xl bg-[#ececec] aspect-[4/3] flat-border">
+                        <img src="https://objectsguide.com/wp-content/uploads/2026/03/solar-path-light-objects-guide-featured-720x380.png" alt="Solar Path Light" class="object-cover w-full h-full transition-transform duration-700 group-hover:scale-105 mix-blend-multiply">
+                        <div class="absolute top-4 left-4 flex gap-2">
+                            <span class="bg-white/90 backdrop-blur px-3 py-1 text-[10px] uppercase tracking-wider font-semibold rounded-full border border-dark/10">Solar</span>
+                        </div>
+                    </div>
+                    <div class="mt-5">
+                        <h3 class="text-2xl font-serif group-hover:underline decoration-1 underline-offset-4">Solar Path Light</h3>
+                        <p class="mt-2 text-sm text-gray-500 line-clamp-2 leading-relaxed">Outdoor lighting devices that use solar panels to convert sunlight into electrical energy, providing illumination along pathways and gardens...</p>
+                    </div>
+                </a>
+
+                <!-- Object Card 5 -->
+                <a href="https://objectsguide.com/motion-sensor-light/" class="group block cursor-pointer">
+                    <div class="relative overflow-hidden rounded-xl bg-[#ececec] aspect-[4/3] flat-border">
+                        <img src="https://objectsguide.com/wp-content/uploads/2026/03/motion-sensor-light-objects-guide-featured-720x380.png" alt="Motion Sensor Light" class="object-cover w-full h-full transition-transform duration-700 group-hover:scale-105 mix-blend-multiply">
+                        <div class="absolute top-4 left-4 flex gap-2">
+                            <span class="bg-white/90 backdrop-blur px-3 py-1 text-[10px] uppercase tracking-wider font-semibold rounded-full border border-dark/10">Electric</span>
+                        </div>
+                    </div>
+                    <div class="mt-5">
+                        <h3 class="text-2xl font-serif group-hover:underline decoration-1 underline-offset-4">Motion Sensor Light</h3>
+                        <p class="mt-2 text-sm text-gray-500 line-clamp-2 leading-relaxed">Automatically illuminates upon detecting movement, using various sensor technologies to enhance security and energy efficiency in residential environments.</p>
+                    </div>
+                </a>
+
+                <!-- Object Card 6 -->
+                <a href="https://objectsguide.com/night-light/" class="group block cursor-pointer">
+                    <div class="relative overflow-hidden rounded-xl bg-[#ececec] aspect-[4/3] flat-border">
+                        <img src="https://objectsguide.com/wp-content/uploads/2026/03/night-light-objects-guide-featured-720x380.png" alt="Night Light" class="object-cover w-full h-full transition-transform duration-700 group-hover:scale-105 mix-blend-multiply">
+                        <div class="absolute top-4 left-4 flex gap-2">
+                            <span class="bg-white/90 backdrop-blur px-3 py-1 text-[10px] uppercase tracking-wider font-semibold rounded-full border border-dark/10">Household</span>
+                        </div>
+                    </div>
+                    <div class="mt-5">
+                        <h3 class="text-2xl font-serif group-hover:underline decoration-1 underline-offset-4">Night Light</h3>
+                        <p class="mt-2 text-sm text-gray-500 line-clamp-2 leading-relaxed">A low-intensity light source designed to provide gentle illumination in dark environments, improving visibility and safety at night.</p>
+                    </div>
+                </a>
+
+                <!-- Object Card 7 -->
+                <a href="https://objectsguide.com/bedside-lamp/" class="group block cursor-pointer">
+                    <div class="relative overflow-hidden rounded-xl bg-[#ececec] aspect-[4/3] flat-border">
+                        <img src="https://objectsguide.com/wp-content/uploads/2026/03/bedside-lamp-objects-guide-featured-720x380.png" alt="Bedside Lamp" class="object-cover w-full h-full transition-transform duration-700 group-hover:scale-105 mix-blend-multiply">
+                        <div class="absolute top-4 left-4 flex gap-2">
+                            <span class="bg-white/90 backdrop-blur px-3 py-1 text-[10px] uppercase tracking-wider font-semibold rounded-full border border-dark/10">Household</span>
+                        </div>
+                    </div>
+                    <div class="mt-5">
+                        <h3 class="text-2xl font-serif group-hover:underline decoration-1 underline-offset-4">Bedside Lamp</h3>
+                        <p class="mt-2 text-sm text-gray-500 line-clamp-2 leading-relaxed">A small lamp designed to provide localized lighting near a bed, useful for reading or creating a calming atmosphere.</p>
+                    </div>
+                </a>
+
+                <!-- Object Card 8 -->
+                <a href="https://objectsguide.com/picture-light/" class="group block cursor-pointer">
+                    <div class="relative overflow-hidden rounded-xl bg-[#ececec] aspect-[4/3] flat-border">
+                        <img src="https://objectsguide.com/wp-content/uploads/2026/03/picture-light-objects-guide-featured-720x380.png" alt="Picture Light" class="object-cover w-full h-full transition-transform duration-700 group-hover:scale-105 mix-blend-multiply">
+                        <div class="absolute top-4 left-4 flex gap-2">
+                            <span class="bg-white/90 backdrop-blur px-3 py-1 text-[10px] uppercase tracking-wider font-semibold rounded-full border border-dark/10">Metal</span>
+                        </div>
+                    </div>
+                    <div class="mt-5">
+                        <h3 class="text-2xl font-serif group-hover:underline decoration-1 underline-offset-4">Picture Light</h3>
+                        <p class="mt-2 text-sm text-gray-500 line-clamp-2 leading-relaxed">A specialized fixture designed to illuminate artwork or photographs, enhancing their visibility and aesthetic appeal.</p>
+                    </div>
+                </a>
+
+                <!-- Object Card 9 -->
+                <a href="https://objectsguide.com/track-light/" class="group block cursor-pointer">
+                    <div class="relative overflow-hidden rounded-xl bg-[#ececec] aspect-[4/3] flat-border">
+                        <img src="https://objectsguide.com/wp-content/uploads/2026/03/track-light-objects-guide-featured-720x380.png" alt="Track Light" class="object-cover w-full h-full transition-transform duration-700 group-hover:scale-105 mix-blend-multiply">
+                        <div class="absolute top-4 left-4 flex gap-2">
+                            <span class="bg-white/90 backdrop-blur px-3 py-1 text-[10px] uppercase tracking-wider font-semibold rounded-full border border-dark/10">Lighting</span>
+                        </div>
+                    </div>
+                    <div class="mt-5">
+                        <h3 class="text-2xl font-serif group-hover:underline decoration-1 underline-offset-4">Track Light</h3>
+                        <p class="mt-2 text-sm text-gray-500 line-clamp-2 leading-relaxed">Adjustable lighting fixtures mounted on a continuous track that supplies power and support, allowing versatile directional lighting.</p>
+                    </div>
+                </a>
+
+                <!-- Object Card 10 -->
+                <a href="https://objectsguide.com/ceiling-fan-light/" class="group block cursor-pointer">
+                    <div class="relative overflow-hidden rounded-xl bg-[#ececec] aspect-[4/3] flat-border">
+                        <img src="https://objectsguide.com/wp-content/uploads/2026/03/ceiling-fan-light-objects-guide-featured-720x380.png" alt="Ceiling Fan Light" class="object-cover w-full h-full transition-transform duration-700 group-hover:scale-105 mix-blend-multiply">
+                        <div class="absolute top-4 left-4 flex gap-2">
+                            <span class="bg-white/90 backdrop-blur px-3 py-1 text-[10px] uppercase tracking-wider font-semibold rounded-full border border-dark/10">Electric</span>
+                        </div>
+                    </div>
+                    <div class="mt-5">
+                        <h3 class="text-2xl font-serif group-hover:underline decoration-1 underline-offset-4">Ceiling Fan Light</h3>
+                        <p class="mt-2 text-sm text-gray-500 line-clamp-2 leading-relaxed">Combines a ceiling fan and light fixture, providing both air circulation and illumination for indoor spaces.</p>
+                    </div>
+                </a>
+            </div>
+            
+            <!-- Pagination -->
+            <div class="mt-16 flex justify-center">
+                <nav class="flex items-center gap-2">
+                    <span class="w-10 h-10 flex items-center justify-center rounded-full bg-dark text-white text-sm font-medium">1</span>
+                    <a href="#" class="w-10 h-10 flex items-center justify-center rounded-full flat-border text-sm font-medium hover:bg-black/5 transition-colors">2</a>
+                    <span class="text-gray-400 px-2">...</span>
+                    <a href="#" class="w-10 h-10 flex items-center justify-center rounded-full flat-border text-sm font-medium hover:bg-black/5 transition-colors">51</a>
+                    <a href="#" class="w-10 h-10 flex items-center justify-center rounded-full flat-border text-sm font-medium hover:bg-black/5 transition-colors"><i class="ph ph-caret-right"></i></a>
+                </nav>
+            </div>
+
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-dark/10 bg-white">
+        <div class="max-w-[1440px] mx-auto px-6 md:px-12 py-16">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-end">
+                <div>
+                    <a href="/" class="text-3xl font-serif font-semibold tracking-tight text-dark flex items-center gap-2 mb-4">
+                        <i class="ph ph-archive text-4xl"></i>
+                        Objects Guide
+                    </a>
+                    <p class="text-gray-500 max-w-sm text-sm leading-relaxed">
+                        An educational guide documenting objects, artifacts, tools, and materials across history, culture, and everyday use.
+                    </p>
+                </div>
+                <div class="flex flex-col md:items-end justify-end">
+                    <div class="flex gap-6 mb-6">
+                        <a href="#" class="text-gray-400 hover:text-dark transition-colors"><i class="ph ph-twitter-logo text-2xl"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-dark transition-colors"><i class="ph ph-instagram-logo text-2xl"></i></a>
+                    </div>
+                    <p class="text-xs text-gray-400 uppercase tracking-widest">&copy; 2026 Objects Guide. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
