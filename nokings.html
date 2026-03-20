@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NO KINGS | Video Contest</title>
+    
+    <!-- Premium Web Fonts -->
+    <link href="https://api.fontshare.com/v2/css?f[]=clash-display@600,700,500&f[]=satoshi@400,500,700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg: #050505;
+            --text: #ffffff;
+            --accent: #ff1e00;
+            --dark-gray: #1a1a1a;
+            
+            --font-head: 'Clash Display', sans-serif;
+            --font-body: 'Satoshi', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            cursor: none; /* Custom cursor */
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: var(--font-body);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* --- Custom Cursor --- */
+        .cursor-dot, .cursor-outline {
+            position: fixed;
+            top: 0;
+            left: 0;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            z-index: 9999;
+            pointer-events: none;
+        }
+        .cursor-dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--accent);
+        }
+        .cursor-outline {
+            width: 40px;
+            height: 40px;
+            border: 1px solid rgba(255, 30, 0, 0.5);
+            transition: width 0.2s, height 0.2s, background-color 0.2s;
+        }
+
+        /* --- Noise Overlay --- */
+        .noise {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 9000;
+            opacity: 0.04;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        /* --- Header / Navigation --- */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 2rem 5vw;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 9500;
+            pointer-events: none; /* Allows clicking through the empty space */
+        }
+
+        .logo-link, .nav-status {
+            pointer-events: auto; /* Re-enables clicking on the actual elements */
+        }
+
+        .logo {
+            height: clamp(30px, 4vw, 50px);
+            width: auto;
+            /* Mix-blend-mode integrates the B&W JPEG perfectly into the dark background */
+            mix-blend-mode: difference; 
+            /* Note: If the logo has a white background and you want it dark, uncomment the line below */
+            /* filter: invert(1); */
+            transition: transform 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        .nav-status {
+            font-family: var(--font-head);
+            font-size: clamp(0.8rem, 1.5vw, 1rem);
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            mix-blend-mode: difference;
+        }
+
+        .nav-status::before {
+            content: '';
+            display: block;
+            width: 8px;
+            height: 8px;
+            background-color: var(--accent);
+            border-radius: 50%;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(255, 30, 0, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(255, 30, 0, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 30, 0, 0); }
+        }
+
+        /* --- Art Element Placeholders --- */
+        .art-bg-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.4;
+            z-index: -1;
+            filter: grayscale(100%) contrast(120%);
+            mix-blend-mode: luminosity;
+        }
+
+        /* --- Hero Section --- */
+        .hero {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .hero-live {
+            font-family: var(--font-head);
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            font-size: clamp(1rem, 2vw, 1.5rem);
+            margin-bottom: 1rem;
+            overflow: hidden;
+        }
+
+        .hero-title {
+            font-family: var(--font-head);
+            font-size: clamp(4rem, 12vw, 12rem);
+            line-height: 0.9;
+            text-transform: uppercase;
+            font-weight: 700;
+            margin: 0;
+            mix-blend-mode: difference;
+        }
+
+        .hero-title span {
+            display: block;
+            overflow: hidden;
+        }
+
+        /* --- Marquee --- */
+        .marquee-container {
+            width: 100%;
+            background: var(--accent);
+            color: var(--bg);
+            padding: 1.5rem 0;
+            overflow: hidden;
+            white-space: nowrap;
+            display: flex;
+            font-family: var(--font-head);
+            font-size: 2rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            transform: rotate(-2deg) scale(1.05);
+            margin: 4rem 0;
+            z-index: 10;
+            position: relative;
+        }
+
+        .marquee-content {
+            display: flex;
+            animation: marquee 15s linear infinite;
+        }
+
+        .marquee-content span {
+            padding: 0 2rem;
+        }
+
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* --- Steps Section --- */
+        .steps-section {
+            padding: 10vw 5vw;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        .steps-header {
+            position: sticky;
+            top: 20vh;
+            height: fit-content;
+        }
+
+        .steps-header h2 {
+            font-family: var(--font-head);
+            font-size: clamp(3rem, 6vw, 6rem);
+            line-height: 1;
+            text-transform: uppercase;
+        }
+
+        .steps-header p {
+            font-size: 1.2rem;
+            color: #888;
+            margin-top: 1.5rem;
+            max-width: 400px;
+        }
+
+        .steps-list {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .step-card {
+            background: var(--dark-gray);
+            padding: 3rem;
+            border-radius: 1rem;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: transform 0.4s ease, border-color 0.4s ease;
+        }
+
+        .step-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-10px);
+        }
+
+        .step-number {
+            font-family: var(--font-head);
+            font-size: 6rem;
+            color: rgba(255, 255, 255, 0.05);
+            position: absolute;
+            top: -1rem;
+            right: -1rem;
+            line-height: 1;
+            font-weight: 700;
+            transition: color 0.4s ease;
+        }
+
+        .step-card:hover .step-number {
+            color: rgba(255, 30, 0, 0.2);
+        }
+
+        .step-content h3 {
+            font-family: var(--font-head);
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .step-content p {
+            font-size: 1.1rem;
+            color: #aaa;
+            line-height: 1.6;
+            position: relative;
+            z-index: 2;
+        }
+
+        .highlight {
+            color: var(--text);
+            font-weight: 700;
+        }
+
+        /* --- Prize Section --- */
+        .prize-section {
+            padding: 15vw 5vw;
+            text-align: center;
+            background: var(--accent);
+            color: var(--bg);
+            position: relative;
+        }
+
+        .prize-amount {
+            font-family: var(--font-head);
+            font-size: clamp(6rem, 20vw, 25rem);
+            font-weight: 700;
+            line-height: 0.8;
+            margin-bottom: 2rem;
+        }
+
+        .prize-details {
+            font-size: clamp(1.5rem, 3vw, 2.5rem);
+            font-family: var(--font-head);
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        /* --- Footer / CTA --- */
+        .cta-section {
+            padding: 10vw 5vw;
+            text-align: center;
+            position: relative;
+        }
+
+        .cta-title {
+            font-family: var(--font-head);
+            font-size: clamp(3rem, 8vw, 8rem);
+            text-transform: uppercase;
+            line-height: 1;
+            margin-bottom: 4rem;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 1.5rem 3rem;
+            font-family: var(--font-head);
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: 100px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: var(--text);
+            border: 2px solid var(--accent);
+        }
+
+        .btn-primary:hover {
+            background: transparent;
+            color: var(--accent);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text);
+            border: 2px solid var(--text);
+        }
+
+        .btn-secondary:hover {
+            background: var(--text);
+            color: var(--bg);
+        }
+
+        .rules-text {
+            margin-top: 3rem;
+            font-size: 0.9rem;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .rules-text a {
+            color: #fff;
+            text-decoration: underline;
+            text-decoration-color: var(--accent);
+        }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 900px) {
+            .steps-section {
+                grid-template-columns: 1fr;
+            }
+            .steps-header {
+                position: relative;
+                top: 0;
+            }
+            .navbar {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Custom Cursor elements -->
+    <div class="cursor-dot" data-cursor></div>
+    <div class="cursor-outline" data-cursor></div>
+
+    <!-- Noise Overlay -->
+    <div class="noise"></div>
+
+    <!-- TOP NAVIGATION & LOGO -->
+    <header class="navbar">
+        <a href="#" class="logo-link" data-hover>
+            <img src="https://www.freelancer.com/fs/download-api.php?type=contest&id=2715722&filename=NO%20KING%20LOGO%20BW.jpg" alt="NO KINGS Logo" class="logo">
+        </a>
+        <div class="nav-status">Contest Live</div>
+    </header>
+
+    <main>
+        <!-- HERO SECTION -->
+        <section class="hero">
+            
+            <!-- ⬇️ REPLACE 'src' WITH YOUR MAIN ART ELEMENT ⬇️ -->
+            <img src="https://www.freelancer.com/fs/download-api.php?type=contest&id=2715722&filename=Democracy%20flag.jpg" alt="Abstract Background" class="art-bg-layer">
+
+            <div class="hero-live">
+                <div class="text-reveal">The NO KINGS Video Contest is LIVE</div>
+            </div>
+            <h1 class="hero-title">
+                <span>MAKE SOME</span>
+                <span style="color: var(--accent);">NOISE.</span>
+                <span>MAKE HISTORY.</span>
+            </h1>
+        </section>
+
+        <!-- MARQUEE DIVIDER -->
+        <div class="marquee-container">
+            <div class="marquee-content">
+                <!-- Repeated text for infinite scroll -->
+                <span>BREAK THE ALGORITHM</span><span>NO KINGS</span><span>MAKE HISTORY</span><span>GO VIRAL</span>
+                <span>BREAK THE ALGORITHM</span><span>NO KINGS</span><span>MAKE HISTORY</span><span>GO VIRAL</span>
+                <span>BREAK THE ALGORITHM</span><span>NO KINGS</span><span>MAKE HISTORY</span><span>GO VIRAL</span>
+            </div>
+        </div>
+
+        <!-- STEPS SECTION -->
+        <section class="steps-section" id="steps">
+            <div class="steps-header">
+                <h2>How to<br><span style="color: var(--accent);">Enter.</span></h2>
+                <p>Follow these exact steps to secure your spot. The rules are simple. The execution is up to you.</p>
+                
+                <!-- ⬇️ OPTIONAL: ADD AN ART ELEMENT HERE ⬇️ -->
+                <!-- <img src="YOUR_ART_ELEMENT.jpg" alt="Art Graphic" style="width:100%; margin-top:3rem; border-radius:1rem;"> -->
+            </div>
+
+            <div class="steps-list">
+                <!-- Step 1 -->
+                <div class="step-card">
+                    <div class="step-number">01</div>
+                    <div class="step-content">
+                        <h3>Download the Track</h3>
+                        <p>Get your hands on our new single — <span class="highlight">NO KINGS</span>. This is your canvas.</p>
+                    </div>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="step-card">
+                    <div class="step-number">02</div>
+                    <div class="step-content">
+                        <h3>Create Your Video</h3>
+                        <p>Shoot, animate, or compile a video. Keep it to <span class="highlight">60 seconds or less</span> using the song.</p>
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="step-card">
+                    <div class="step-number">03</div>
+                    <div class="step-content">
+                        <h3>Upload & Drop</h3>
+                        <p>Submit your creation directly to our <span class="highlight">Homepage</span>. Make sure your file is ready to go.</p>
+                    </div>
+                </div>
+
+                <!-- Step 4 -->
+                <div class="step-card">
+                    <div class="step-number">04</div>
+                    <div class="step-content">
+                        <h3>Build the Hype</h3>
+                        <p>Share it everywhere. Get friends to <span class="highlight">Applaud</span>. Make noise and go viral.</p>
+                    </div>
+                </div>
+
+                <!-- Step 5 -->
+                <div class="step-card" style="border-color: var(--accent);">
+                    <div class="step-number" style="color: rgba(255,30,0,0.3);">05</div>
+                    <div class="step-content">
+                        <h3 style="color: var(--accent);">Take the Throne</h3>
+                        <p>The video with the <span class="highlight">Most Applauds</span> by 11:59 PM EST on July 4, 2026 takes the grand prize.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PRIZE SECTION -->
+        <section class="prize-section">
+            <div class="prize-details">Ultimate Prize</div>
+            <div class="prize-amount">$1,000</div>
+            <div class="prize-details">Winner crowned July 4, 2026</div>
+        </section>
+
+        <!-- CTA / FOOTER -->
+        <section class="cta-section">
+            <h2 class="cta-title">Break the<br>Algorithm.</h2>
+            <div class="btn-group">
+                <a href="#upload" class="btn btn-primary" data-hover>Upload to Homepage</a>
+                <a href="#rules" class="btn btn-secondary" data-hover>Download NO KINGS</a>
+            </div>
+            
+            <p class="rules-text">Before you drop your video, read the <a href="#rules" data-hover>Official Rules</a>.<br>© 2024 NO KINGS. All rights reserved.</p>
+        </section>
+    </main>
+
+    <!-- Scripts: GSAP (Animations) & Lenis (Smooth Scroll) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.19/bundled/lenis.min.js"></script>
+
+    <script>
+        // 1. Smooth Scrolling Setup (Lenis)
+        const lenis = new Lenis({
+            duration: 1.2,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            smooth: true,
+        });
+
+        function raf(time) {
+            lenis.raf(time);
+            requestAnimationFrame(raf);
+        }
+        requestAnimationFrame(raf);
+
+        // 2. Custom Cursor Logic
+        const cursorDot = document.querySelector('.cursor-dot');
+        const cursorOutline = document.querySelector('.cursor-outline');
+        
+        window.addEventListener('mousemove', (e) => {
+            const posX = e.clientX;
+            const posY = e.clientY;
+
+            cursorDot.style.left = `${posX}px`;
+            cursorDot.style.top = `${posY}px`;
+
+            cursorOutline.animate({
+                left: `${posX}px`,
+                top: `${posY}px`
+            }, { duration: 500, fill: "forwards" });
+        });
+
+        // Add hover effect to interactive elements
+        const hoverElements = document.querySelectorAll('a, .step-card, [data-hover]');
+        hoverElements.forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                cursorOutline.style.width = '60px';
+                cursorOutline.style.height = '60px';
+                cursorOutline.style.backgroundColor = 'rgba(255, 30, 0, 0.1)';
+            });
+            el.addEventListener('mouseleave', () => {
+                cursorOutline.style.width = '40px';
+                cursorOutline.style.height = '40px';
+                cursorOutline.style.backgroundColor = 'transparent';
+            });
+        });
+
+        // 3. GSAP Scroll Animations
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Navbar & Hero Reveal
+        const heroTimeline = gsap.timeline();
+        heroTimeline.fromTo('.navbar',
+            { y: -50, opacity: 0 },
+            { y: 0, opacity: 1, duration: 1, ease: 'power4.out', delay: 0.1 }
+        )
+        .fromTo('.hero-live .text-reveal', 
+            { y: 50, opacity: 0 }, 
+            { y: 0, opacity: 1, duration: 1, ease: 'power4.out' },
+            "-=0.6"
+        )
+        .fromTo('.hero-title span', 
+            { y: 200, opacity: 0 }, 
+            { y: 0, opacity: 1, duration: 1.2, stagger: 0.15, ease: 'power4.out' },
+            "-=0.6"
+        );
+
+        // Step Cards Staggered Fade-in
+        gsap.fromTo('.step-card', 
+            { y: 100, opacity: 0 },
+            { 
+                y: 0, 
+                opacity: 1, 
+                duration: 0.8, 
+                stagger: 0.2, 
+                ease: 'power3.out',
+                scrollTrigger: {
+                    trigger: '.steps-section',
+                    start: 'top 60%',
+                }
+            }
+        );
+
+        // Prize Section Pop
+        gsap.fromTo('.prize-amount', 
+            { scale: 0.5, opacity: 0 },
+            { 
+                scale: 1, 
+                opacity: 1, 
+                duration: 1.5, 
+                ease: 'elastic.out(1, 0.5)',
+                scrollTrigger: {
+                    trigger: '.prize-section',
+                    start: 'top 70%',
+                }
+            }
+        );
+
+        // CTA Section reveal
+        gsap.fromTo('.cta-title, .btn-group', 
+            { y: 50, opacity: 0 },
+            { 
+                y: 0, 
+                opacity: 1, 
+                duration: 1, 
+                stagger: 0.2,
+                ease: 'power4.out',
+                scrollTrigger: {
+                    trigger: '.cta-section',
+                    start: 'top 80%',
+                }
+            }
+        );
+    </script>
+</body>
+</html>
