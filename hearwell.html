@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ClearHear | Premium Hearing Screening</title>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        brand: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            900: '#0c4a6e',
+                        }
+                    },
+                    boxShadow: {
+                        'soft': '0 20px 40px -15px rgba(0,0,0,0.05)',
+                        'glow': '0 0 20px rgba(14, 165, 233, 0.4)'
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- React & ReactDOM -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <style>
+        body { 
+            background-color: #fcfcfd; 
+            color: #0f172a; 
+            -webkit-tap-highlight-color: transparent;
+            overscroll-behavior-y: none;
+        }
+        
+        /* Premium Animations */
+        .fade-in { animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        .slide-up { animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        .question-enter { animation: slideInRight 0.5s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+        .question-exit { animation: slideOutLeft 0.4s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+        
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideInRight { from { opacity: 0; transform: translateX(40px); } to { opacity: 1; transform: translateX(0); } }
+        @keyframes slideOutLeft { from { opacity: 1; transform: translateX(0); } to { opacity: 0; transform: translateX(-40px); } }
+
+        /* Audio Pulse Animation */
+        .pulse-ring {
+            animation: pulse 1.5s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+        }
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(14, 165, 233, 0.4); transform: scale(0.95); }
+            70% { box-shadow: 0 0 0 30px rgba(14, 165, 233, 0); transform: scale(1); }
+            100% { box-shadow: 0 0 0 0 rgba(14, 165, 233, 0); transform: scale(0.95); }
+        }
+
+        /* Glassmorphism utility */
+        .glass { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+        .no-select { user-select: none; -webkit-user-select: none; }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useRef } = React;
+
+        // --- DATA & CONTENT ---
+        const TEST_QUESTIONS = [
+            { id: 1, type: 'self', text: "Do you frequently ask people to repeat themselves in conversation?" },
+            { id: 2, type: 'audio', freq: 1000, text: "Let's check a standard tone. Tap play and listen closely. Can you hear this beep?" },
+            { id: 3, type: 'self', text: "Is it difficult to follow conversations in noisy places like restaurants?" },
+            { id: 4, type: 'audio', freq: 2000, text: "Now for a higher pitch. Tap play. Can you hear this beep?" },
+            { id: 5, type: 'self', text: "Do family members ever complain that the TV volume is too loud?" },
+            { id: 6, type: 'audio', freq: 4000, text: "One last tone, a high frequency. Tap play. Can you hear it?" }
+        ];
+
+        const EDU_CONTENT = [
+            { title: "The Science of Hearing", icon: "fa-ear-listen", content: "Sound waves enter the ear canal and vibrate the eardrum. Tiny hairs in the inner ear translate these into electrical signals for the brain. As we age, these delicate hairs naturally degrade, leading to subtle hearing loss." },
+            { title: "Early Signs", icon: "fa-volume-low", content: "Struggling in crowds, needing the TV loud, and thinking others are mumbling are the most common early signs. Addressing it early prevents auditory deprivation in the brain." },
+            { title: "Virtually Invisible Tech", icon: "fa-microchip", content: "Forget the bulky devices of the past. Today's hearing technology is smaller than a coffee bean. Some solutions even integrate seamlessly into stylish, prescription eyewear frames." }
+        ];
+
+        // --- AUDIO HELPER ---
+        const playTone = (frequency) => {
+            const AudioContext = window.AudioContext || window.webkitAudioContext;
+            const ctx = new AudioContext();
+            const osc = ctx.createOscillator();
+            const gainNode = ctx.createGain();
+            
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(frequency, ctx.currentTime);
+            
+            gainNode.gain.setValueAtTime(0, ctx.currentTime);
+            gainNode.gain.linearRampToValueAtTime(1, ctx.currentTime + 0.05);
+            gainNode.gain.linearRampToValueAtTime(0, ctx.currentTime + 1.5);
+            
+            osc.connect(gainNode);
+            gainNode.connect(ctx.destination);
+            
+            osc.start();
+            osc.stop(ctx.currentTime + 1.6);
+        };
+
+        // --- INDEPENDENT COMPONENTS ---
+        
+        const Header = ({ storeMode, setStoreMode, resetSession, goHome }) => {
+            const [showQR, setShowQR] = useState(false);
+            return (
+                <header className="glass sticky top-0 z-50 border-b border-gray-100">
+                    <div className="max-w-3xl mx-auto px-6 py-4 flex justify-between items-center">
+                        <div className="flex items-center space-x-3 text-brand-900 cursor-pointer group" onClick={goHome}>
+                            <div className="w-8 h-8 rounded-lg bg-brand-600 flex items-center justify-center text-white shadow-md group-hover:bg-brand-500 transition-colors">
+                                <i className="fa-solid fa-wave-square text-sm"></i>
+                            </div>
+                            <span className="text-xl font-bold tracking-tight">ClearHear</span>
+                        </div>
+                        <div className="flex items-center space-x-4">
+                            {storeMode && (
+                                <button onClick={resetSession} className="text-xs font-bold text-red-600 bg-red-50 hover:bg-red-100 px-3 py-2 rounded-lg transition-colors">
+                                    <i className="fa-solid fa-rotate-right mr-1"></i> Reset
+                                </button>
+                            )}
+                            <button onClick={() => setStoreMode(!storeMode)} className={`w-10 h-10 rounded-full flex items-center justify-center transition-all ${storeMode ? 'bg-brand-100 text-brand-600' : 'text-gray-400 hover:bg-gray-100'}`}>
+                                <i className="fa-solid fa-store"></i>
+                            </button>
+                        </div>
+                    </div>
+                </header>
+            );
+        };
+
+        const ViewHome = ({ setView }) => (
+            <div className="flex flex-col items-center justify-center text-center px-6 py-16 slide-up max-w-lg mx-auto">
+                <div className="bg-brand-50 p-6 rounded-3xl mb-8 text-brand-500 shadow-soft">
+                    <i className="fa-solid fa-stethoscope text-6xl"></i>
+                </div>
+                <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-5 leading-tight tracking-tight">
+                    Your hearing, <br/><span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-500 to-blue-700">crystal clear.</span>
+                </h1>
+                <p className="text-lg text-gray-500 mb-12 font-medium leading-relaxed">
+                    Take our medically-inspired screening in just 3 minutes. Free, fast, and completely private.
+                </p>
+                
+                <div className="w-full space-y-4">
+                    <button onClick={() => setView('profile')} className="w-full bg-brand-600 hover:bg-brand-500 text-white py-4 rounded-2xl text-lg font-bold shadow-lg shadow-blue-200 active:scale-[0.98] transition-all flex items-center justify-center space-x-2">
+                        <span>Start Free Screening</span>
+                        <i className="fa-solid fa-arrow-right"></i>
+                    </button>
+                    <button onClick={() => setView('edu')} className="w-full bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 py-4 rounded-2xl text-lg font-bold shadow-sm active:scale-[0.98] transition-all">
+                        Learn About Hearing Loss
+                    </button>
+                </div>
+            </div>
+        );
+
+        const ViewProfile = ({ profile, setProfile, onContinue }) => {
+            const isReady = profile.age && profile.testedBefore;
+            
+            const OptionButton = ({ active, onClick, text }) => (
+                <button 
+                    onClick={onClick}
+                    className={`py-4 rounded-2xl text-lg font-semibold transition-all border-2 active:scale-[0.98] ${active ? 'border-brand-500 bg-brand-50 text-brand-900 shadow-sm' : 'border-gray-100 bg-white text-gray-500 hover:border-gray-200'}`}
+                >
+                    {text}
+                </button>
+            );
+
+            return (
+                <div className="px-6 py-10 max-w-lg mx-auto slide-up">
+                    <div className="mb-10 text-center">
+                        <span className="text-sm font-bold tracking-widest text-brand-500 uppercase">Step 1 of 3</span>
+                        <h2 className="text-3xl font-extrabold mt-2 text-gray-900">Personalize your test</h2>
+                    </div>
+                    
+                    <div className="space-y-8">
+                        <div>
+                            <label className="block text-lg font-semibold text-gray-800 mb-4">What is your age?</label>
+                            <div className="grid grid-cols-2 gap-3">
+                                {['Under 50', '50 - 64', '65 - 74', '75+'].map(age => (
+                                    <OptionButton key={age} active={profile.age === age} onClick={() => setProfile({...profile, age})} text={age} />
+                                ))}
+                            </div>
+                        </div>
+
+                        <div>
+                            <label className="block text-lg font-semibold text-gray-800 mb-4">Have you ever had a professional hearing test?</label>
+                            <div className="grid grid-cols-2 gap-3">
+                                {['Yes', 'No'].map(opt => (
+                                    <OptionButton key={opt} active={profile.testedBefore === opt} onClick={() => setProfile({...profile, testedBefore: opt})} text={opt} />
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="mt-12">
+                        <button 
+                            disabled={!isReady}
+                            onClick={onContinue} 
+                            className={`w-full py-4 rounded-2xl text-lg font-bold transition-all flex items-center justify-center space-x-2 ${isReady ? 'bg-gray-900 text-white shadow-lg active:scale-[0.98]' : 'bg-gray-100 text-gray-400 cursor-not-allowed'}`}
+                        >
+                            <span>Continue</span>
+                            {isReady && <i className="fa-solid fa-arrow-right"></i>}
+                        </button>
+                    </div>
+                </div>
+            );
+        };
+
+        const ViewTest = ({ onComplete }) => {
+            const [step, setStep] = useState(0);
+            const [localAnswers, setLocalAnswers] = useState({});
+            const [isTransitioning, setIsTransitioning] = useState(false);
+            const [isPlaying, setIsPlaying] = useState(false);
+            
+            const q = TEST_QUESTIONS[step];
+            const progress = ((step) / TEST_QUESTIONS.length) * 100;
+
+            const handleAnswer = (val) => {
+                if(isTransitioning) return;
+                setIsTransitioning(true);
+                
+                const newAnswers = { ...localAnswers, [q.id]: val };
+                setLocalAnswers(newAnswers);
+                
+                // Allow animation to play out before changing step
+                setTimeout(() => {
+                    if (step + 1 < TEST_QUESTIONS.length) {
+                        setStep(step + 1);
+                        setIsTransitioning(false);
+                        setIsPlaying(false);
+                    } else {
+                        onComplete(newAnswers);
+                    }
+                }, 400); 
+            };
+
+            const triggerAudio = () => {
+                setIsPlaying(true);
+                playTone(q.freq);
+                setTimeout(() => setIsPlaying(false), 1600);
+            };
+
+            return (
+                <div className="px-6 py-8 max-w-lg mx-auto flex flex-col min-h-[75vh]">
+                    {/* Progress Header */}
+                    <div className="mb-10 fade-in">
+                        <div className="flex justify-between items-end mb-3">
+                            <span className="text-sm font-bold tracking-wider text-gray-400 uppercase">Question {step + 1} / {TEST_QUESTIONS.length}</span>
+                        </div>
+                        <div className="w-full bg-gray-100 rounded-full h-2 overflow-hidden">
+                            <div className="bg-brand-500 h-full rounded-full transition-all duration-500 ease-out" style={{width: `${progress}%`}}></div>
+                        </div>
+                    </div>
+
+                    {/* Question Container - Animates on transition */}
+                    <div className={`flex-1 flex flex-col justify-center ${isTransitioning ? 'question-exit' : 'question-enter'}`}>
+                        
+                        {q.type === 'audio' && (
+                            <div className="text-center mb-10 flex flex-col items-center">
+                                <button 
+                                    onClick={triggerAudio}
+                                    className={`w-28 h-28 rounded-full text-4xl flex items-center justify-center transition-all duration-300 ${isPlaying ? 'bg-brand-500 text-white pulse-ring' : 'bg-brand-50 text-brand-600 shadow-soft hover:bg-brand-100 active:scale-95'}`}
+                                >
+                                    <i className={`fa-solid ${isPlaying ? 'fa-volume-high' : 'fa-play ml-2'}`}></i>
+                                </button>
+                                <div className="mt-6 flex items-center space-x-2 text-sm font-semibold text-brand-600 bg-brand-50 px-4 py-2 rounded-full">
+                                    <i className="fa-solid fa-volume-up"></i>
+                                    <span>Ensure device volume is up</span>
+                                </div>
+                            </div>
+                        )}
+
+                        <h2 className={`text-3xl md:text-4xl font-extrabold text-gray-900 text-center mb-12 leading-tight ${q.type==='audio' ? 'mt-4' : 'mt-auto'}`}>
+                            {q.text}
+                        </h2>
+
+                        <div className="grid grid-cols-2 gap-4 mt-auto">
+                            <button onClick={() => handleAnswer('Yes')} className="py-5 bg-white border-2 border-gray-100 rounded-2xl text-xl font-bold text-gray-800 shadow-sm active:scale-95 transition-all hover:border-gray-300">
+                                Yes
+                            </button>
+                            <button onClick={() => handleAnswer('No')} className="py-5 bg-white border-2 border-gray-100 rounded-2xl text-xl font-bold text-gray-800 shadow-sm active:scale-95 transition-all hover:border-gray-300">
+                                No
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        const ViewEmail = ({ email, setEmail, onSubmit }) => {
+            const [loading, setLoading] = useState(false);
+
+            const handleFormSubmit = (e) => {
+                e.preventDefault();
+                if(!email) return;
+                setLoading(true);
+                setTimeout(() => {
+                    setLoading(false);
+                    onSubmit();
+                }, 1200);
+            };
+
+            return (
+                <div className="px-6 py-12 max-w-lg mx-auto slide-up text-center">
+                    <div className="w-24 h-24 bg-green-50 text-green-500 rounded-full flex items-center justify-center text-4xl mx-auto mb-8 shadow-soft">
+                        <i className="fa-solid fa-check"></i>
+                    </div>
+                    <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4 tracking-tight">Screening Complete</h2>
+                    <p className="text-lg text-gray-500 mb-10 leading-relaxed">Enter your email to instantly view your secure results and tailored recommendations.</p>
+                    
+                    <form onSubmit={handleFormSubmit} className="space-y-4 text-left">
+                        <div>
+                            <input 
+                                type="email" 
+                                required
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                placeholder="name@example.com" 
+                                className="w-full px-5 py-4 rounded-2xl border-2 border-gray-200 text-lg focus:outline-none focus:border-brand-500 focus:ring-4 focus:ring-brand-50 transition-all font-medium text-gray-900"
+                            />
+                        </div>
+                        <button 
+                            type="submit" 
+                            disabled={loading || !email}
+                            className="w-full bg-brand-600 text-white py-4 rounded-2xl text-lg font-bold shadow-lg shadow-blue-200 disabled:opacity-70 flex items-center justify-center transition-transform active:scale-[0.98]"
+                        >
+                            {loading ? <i className="fa-solid fa-circle-notch fa-spin text-2xl"></i> : "View My Results"}
+                        </button>
+                    </form>
+                    <p className="text-sm font-medium text-gray-400 mt-8 flex items-center justify-center">
+                        <i className="fa-solid fa-lock mr-2"></i> Your data is secure and private.
+                    </p>
+                </div>
+            );
+        };
+
+        const ViewResults = ({ answers, resetSession }) => {
+            let score = 0;
+            TEST_QUESTIONS.forEach(q => {
+                if (q.type === 'self' && answers[q.id] === 'Yes') score++;
+                if (q.type === 'audio' && answers[q.id] === 'No') score++;
+            });
+
+            let outcome = {};
+            if (score <= 1) {
+                outcome = { title: "Great Hearing", color: "text-green-500", grad: "from-green-400 to-green-500", percent: "w-[15%]", desc: "Your hearing appears to be in excellent shape. Protect your ears in loud environments to maintain it!" };
+            } else if (score <= 3) {
+                outcome = { title: "Mild Loss Detected", color: "text-yellow-500", grad: "from-yellow-400 to-yellow-500", percent: "w-[50%]", desc: "You may be missing subtle sounds. This is completely natural. A quick in-store evaluation is a smart next step." };
+            } else {
+                outcome = { title: "Action Recommended", color: "text-red-500", grad: "from-red-400 to-red-500", percent: "w-[85%]", desc: "Your results indicate noticeable hearing difficulty. We highly recommend booking a free professional evaluation." };
+            }
+
+            return (
+                <div className="px-6 py-10 max-w-lg mx-auto slide-up">
+                    <h2 className="text-3xl font-extrabold text-gray-900 mb-8 text-center tracking-tight">Your Results</h2>
+                    
+                    {/* Premium Data Card */}
+                    <div className="bg-white p-8 rounded-3xl shadow-soft border border-gray-100 mb-10 text-center relative overflow-hidden">
+                        <div className="absolute top-0 left-0 w-full h-2 bg-gray-50"></div>
+                        <h3 className={`text-3xl font-black mb-4 ${outcome.color}`}>{outcome.title}</h3>
+                        
+                        {/* Custom Graphic Bar */}
+                        <div className="relative w-full h-4 bg-gray-100 rounded-full my-8 overflow-hidden">
+                            <div className={`absolute top-0 left-0 h-full rounded-full bg-gradient-to-r ${outcome.grad} transition-all duration-1000 ease-out`} style={{width: outcome.percent.replace(/w-\[|\]/g, '')}}></div>
+                        </div>
+                        <div className="flex justify-between text-xs font-bold text-gray-400 uppercase tracking-widest mb-6 px-1">
+                            <span>Good</span>
+                            <span>Mild</span>
+                            <span>Action</span>
+                        </div>
+
+                        <p className="text-lg text-gray-600 font-medium leading-relaxed">{outcome.desc}</p>
+                    </div>
+
+                    {/* CTAs */}
+                    <div className="space-y-4">
+                        <button className="w-full bg-gray-900 hover:bg-black text-white py-4 rounded-2xl text-lg font-bold shadow-lg active:scale-[0.98] transition-all flex items-center justify-center space-x-3">
+                            <i className="fa-regular fa-calendar-check text-xl"></i>
+                            <span>Book Free Consultation</span>
+                        </button>
+                        <button className="w-full bg-white border-2 border-gray-200 text-gray-800 hover:bg-gray-50 py-4 rounded-2xl text-lg font-bold active:scale-[0.98] transition-all flex items-center justify-center space-x-3">
+                            <i className="fa-solid fa-location-dot text-xl"></i>
+                            <span>Find a Store Near You</span>
+                        </button>
+                    </div>
+                    
+                    <div className="mt-10 text-center">
+                        <button onClick={resetSession} className="text-gray-400 hover:text-gray-600 font-semibold text-sm transition-colors">
+                            Retake Screening
+                        </button>
+                    </div>
+                </div>
+            );
+        };
+
+        const ViewEducation = ({ goHome }) => {
+            const [expanded, setExpanded] = useState(0);
+
+            return (
+                <div className="px-6 py-8 max-w-lg mx-auto slide-up">
+                    <button onClick={goHome} className="mb-8 text-brand-600 font-bold flex items-center text-sm tracking-wide hover:text-brand-700 transition-colors">
+                        <i className="fa-solid fa-arrow-left mr-2"></i> BACK
+                    </button>
+                    
+                    <h2 className="text-3xl font-extrabold text-gray-900 mb-3 tracking-tight">Education Hub</h2>
+                    <p className="text-gray-500 mb-10 text-lg font-medium">Knowledge is the first step to better hearing.</p>
+
+                    <div className="space-y-4">
+                        {EDU_CONTENT.map((item, idx) => {
+                            const isOpen = expanded === idx;
+                            return (
+                                <div key={idx} className={`bg-white rounded-2xl transition-all duration-300 border ${isOpen ? 'border-brand-200 shadow-soft' : 'border-gray-100 shadow-sm'}`}>
+                                    <button 
+                                        onClick={() => setExpanded(isOpen ? -1 : idx)}
+                                        className="w-full px-6 py-6 flex items-center justify-between text-left focus:outline-none"
+                                    >
+                                        <div className="flex items-center space-x-4">
+                                            <div className={`w-12 h-12 rounded-full flex items-center justify-center text-xl transition-colors ${isOpen ? 'bg-brand-500 text-white' : 'bg-brand-50 text-brand-500'}`}>
+                                                <i className={`fa-solid ${item.icon}`}></i>
+                                            </div>
+                                            <span className="text-xl font-bold text-gray-800">{item.title}</span>
+                                        </div>
+                                        <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${isOpen ? 'bg-gray-100 text-gray-800 rotate-180' : 'text-gray-400'}`}>
+                                            <i className="fa-solid fa-chevron-down text-sm"></i>
+                                        </div>
+                                    </button>
+                                    <div className={`overflow-hidden transition-all duration-300 ease-in-out ${isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}>
+                                        <div className="px-6 pb-6 pt-2 text-lg text-gray-600 leading-relaxed font-medium">
+                                            {item.content}
+                                        </div>
+                                    </div>
+                                </div>
+                            )
+                        })}
+                    </div>
+                </div>
+            );
+        };
+
+        // --- MAIN APP (State Manager) ---
+        function App() {
+            const [view, setView] = useState('home'); 
+            const [storeMode, setStoreMode] = useState(false);
+            
+            // Session Data
+            const [profile, setProfile] = useState({ age: '', testedBefore: '' });
+            const [answers, setAnswers] = useState({});
+            const [email, setEmail] = useState('');
+
+            const resetSession = () => {
+                setProfile({ age: '', testedBefore: '' });
+                setAnswers({});
+                setEmail('');
+                setView('home');
+            };
+
+            // Render view dynamically
+            const renderView = () => {
+                switch(view) {
+                    case 'home': return <ViewHome setView={setView} />;
+                    case 'profile': return <ViewProfile profile={profile} setProfile={setProfile} onContinue={() => setView('test')} />;
+                    case 'test': return <ViewTest onComplete={(finalAnswers) => { setAnswers(finalAnswers); setView('email'); }} />;
+                    case 'email': return <ViewEmail email={email} setEmail={setEmail} onSubmit={() => setView('results')} />;
+                    case 'results': return <ViewResults answers={answers} resetSession={resetSession} />;
+                    case 'edu': return <ViewEducation goHome={() => setView('home')} />;
+                    default: return <ViewHome setView={setView} />;
+                }
+            };
+
+            return (
+                <div className="min-h-screen flex flex-col no-select relative bg-[#fcfcfd]">
+                    <Header 
+                        storeMode={storeMode} 
+                        setStoreMode={setStoreMode} 
+                        resetSession={resetSession}
+                        goHome={() => setView('home')}
+                    />
+                    
+                    <main className="flex-1 overflow-x-hidden overflow-y-auto">
+                        {renderView()}
+                    </main>
+
+                    {/* Subtle footer */}
+                    <div className="py-6 text-center text-xs font-semibold tracking-widest text-gray-300 uppercase">
+                        © ClearHear {new Date().getFullYear()}
+                    </div>
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
