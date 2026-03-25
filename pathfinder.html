@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pathfinder | Modern Immigration Law</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Syne (Display) & Manrope (Body) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Phosphor Icons (Minimalist alternative to FontAwesome) -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Manrope', 'sans-serif'],
+                        display: ['Syne', 'sans-serif'],
+                    },
+                    colors: {
+                        base: '#F4F4F2',    // Awwwards-style light cream/alabaster
+                        surface: '#FFFFFF',
+                        ink: '#111111',     // Stark black for typography
+                        inkLight: '#4A4A4A',
+                        border: '#E5E5E5',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Base Overrides */
+        body { background-color: #F4F4F2; color: #111111; overflow-x: hidden; }
+        ::selection { background-color: #111111; color: #F4F4F2; }
+        
+        /* Awwwards Smooth Reveal Animations */
+        .reveal { opacity: 0; transform: translateY(40px); transition: all 1s cubic-bezier(0.16, 1, 0.3, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+        .delay-100 { transition-delay: 100ms; }
+        .delay-200 { transition-delay: 200ms; }
+        .delay-300 { transition-delay: 300ms; }
+
+        /* Minimal Input Fields */
+        .minimal-input {
+            width: 100%; bg-transparent; border-bottom: 1px solid #c0c0c0; border-radius: 0;
+            padding: 12px 0; font-size: 1rem; transition: border-color 0.3s ease; outline: none;
+            background: transparent;
+        }
+        .minimal-input:focus { border-bottom-color: #111111; }
+        .minimal-input::placeholder { color: #9CA3AF; font-weight: 300; }
+
+        /* Custom Radio Cards */
+        .radio-card-input:checked + .radio-card-body {
+            border-color: #111111;
+            background-color: #111111;
+            color: #FFFFFF;
+        }
+        .radio-card-input:checked + .radio-card-body .text-inkLight { color: #A3A3A3; }
+        .radio-card-input:checked + .radio-card-body .radio-indicator {
+            background-color: #FFFFFF; border-color: #FFFFFF;
+        }
+
+        /* Number Input Arrows Hidden */
+        input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+        
+        /* Custom Checkbox */
+        .custom-checkbox:checked { background-color: #111111; border-color: #111111; }
+
+        /* Button Hover Effect */
+        .btn-hover { position: relative; overflow: hidden; }
+        .btn-hover::after {
+            content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 100%;
+            background-color: #000000; transform: translateY(100%); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: -1;
+        }
+        .btn-hover:hover::after { transform: translateY(0); }
+        .btn-hover > span { transition: color 0.4s ease; }
+    </style>
+</head>
+<body class="antialiased font-sans">
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 mix-blend-difference text-white py-6 px-6 md:px-12 pointer-events-none">
+        <div class="max-w-[1600px] mx-auto flex justify-between items-center">
+            <div class="font-display font-bold text-2xl tracking-tighter uppercase pointer-events-auto cursor-pointer">
+                Pathfinder.
+            </div>
+            <a href="#onboard" class="pointer-events-auto text-sm font-medium border border-white rounded-full px-6 py-2 hover:bg-white hover:text-black transition-colors duration-300">
+                Start Process
+            </a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="min-h-[90vh] flex flex-col justify-center px-6 md:px-12 pt-32 pb-20 relative">
+        <div class="max-w-[1600px] mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            <div class="lg:col-span-8 z-10">
+                <p class="reveal uppercase tracking-[0.2em] text-xs font-semibold text-inkLight mb-6">Demystified Immigration Law</p>
+                <h1 class="reveal delay-100 font-display text-6xl md:text-8xl lg:text-[7rem] leading-[0.9] tracking-tight font-bold text-ink mb-8">
+                    Build your <br>petition.
+                </h1>
+                <p class="reveal delay-200 text-xl md:text-2xl text-inkLight max-w-2xl font-light leading-relaxed mb-12">
+                    An à la carte, flat-fee experience for family immigration. Select your representation, generate your documents instantly, and guarantee your filing in two weeks.
+                </p>
+                <div class="reveal delay-300 flex items-center gap-6">
+                    <a href="#onboard" class="group inline-flex items-center gap-3 bg-ink text-surface px-8 py-4 rounded-full font-medium hover:scale-105 transition-transform duration-300">
+                        Calculate Pricing <i class="ph ph-arrow-down-right text-xl group-hover:rotate-45 transition-transform"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Abstract Hero Element -->
+            <div class="lg:col-span-4 hidden lg:flex justify-end reveal delay-200">
+                <div class="w-full aspect-[3/4] bg-[#EBEBE8] rounded-t-full border border-[#D1D1CD] relative overflow-hidden flex items-center justify-center">
+                    <i class="ph-light ph-scales text-[12rem] text-ink opacity-10"></i>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Marquee Divider -->
+    <div class="w-full border-y border-ink/10 py-4 overflow-hidden bg-base flex whitespace-nowrap reveal">
+        <div class="animate-[marquee_20s_linear_infinite] flex items-center gap-8 text-xs font-semibold tracking-widest uppercase text-inkLight">
+            <span>Flat Fee Pricing</span> <span class="w-1.5 h-1.5 rounded-full bg-ink"></span>
+            <span>2-Week Filing Guarantee</span> <span class="w-1.5 h-1.5 rounded-full bg-ink"></span>
+            <span>Attorney Reviewed</span> <span class="w-1.5 h-1.5 rounded-full bg-ink"></span>
+            <span>Secure Docketwise Portal</span> <span class="w-1.5 h-1.5 rounded-full bg-ink"></span>
+            <span>Flat Fee Pricing</span> <span class="w-1.5 h-1.5 rounded-full bg-ink"></span>
+            <span>2-Week Filing Guarantee</span> <span class="w-1.5 h-1.5 rounded-full bg-ink"></span>
+            <span>Attorney Reviewed</span> <span class="w-1.5 h-1.5 rounded-full bg-ink"></span>
+            <span>Secure Docketwise Portal</span> <span class="w-1.5 h-1.5 rounded-full bg-ink"></span>
+        </div>
+        <style>
+            @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+        </style>
+    </div>
+
+    <!-- The Framework (Process) -->
+    <section class="py-32 px-6 md:px-12 bg-surface">
+        <div class="max-w-[1600px] mx-auto">
+            <div class="grid grid-cols-1 lg:grid-cols-4 gap-16">
+                <div class="lg:col-span-1 reveal">
+                    <h2 class="font-display text-4xl md:text-5xl font-bold tracking-tight mb-4">The Protocol.</h2>
+                    <p class="text-inkLight font-light">A streamlined digital engagement framework, eliminating redundant consultations.</p>
+                </div>
+                
+                <div class="lg:col-span-3 grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-16">
+                    <!-- Step 01 -->
+                    <div class="reveal border-t border-ink/10 pt-6">
+                        <span class="font-display text-5xl text-ink/20 font-bold block mb-6">01</span>
+                        <h3 class="font-display text-xl font-bold mb-3">Architect the Package</h3>
+                        <p class="text-inkLight font-light text-sm leading-relaxed">Select precisely what you need below. Transparent pricing is calculated instantly. Securely input payment details (processed only after attorney approval).</p>
+                    </div>
+                    <!-- Step 02 -->
+                    <div class="reveal border-t border-ink/10 pt-6 delay-100">
+                        <span class="font-display text-5xl text-ink/20 font-bold block mb-6">02</span>
+                        <h3 class="font-display text-xl font-bold mb-3">Automated Intake</h3>
+                        <p class="text-inkLight font-light text-sm leading-relaxed">Via Docketwise integration, instantly receive your digital fee agreement and access a secure portal to complete your comprehensive questionnaire.</p>
+                    </div>
+                    <!-- Step 03 -->
+                    <div class="reveal border-t border-ink/10 pt-6">
+                        <span class="font-display text-5xl text-ink/20 font-bold block mb-6">03</span>
+                        <h3 class="font-display text-xl font-bold mb-3">15-Min Counsel Review</h3>
+                        <p class="text-inkLight font-light text-sm leading-relaxed">Meet via Zoom to verify document adequacy. <strong class="text-ink font-medium">Engagement is formal only upon completion of this step.</strong> Payment is then processed.</p>
+                    </div>
+                    <!-- Step 04 -->
+                    <div class="reveal border-t border-ink/10 pt-6 delay-100">
+                        <span class="font-display text-5xl text-ink/20 font-bold block mb-6">04</span>
+                        <h3 class="font-display text-xl font-bold mb-3">Guaranteed Execution</h3>
+                        <p class="text-inkLight font-light text-sm leading-relaxed">Upon receipt of all required client documentation, we guarantee your matter will be filed within 14 calendar days.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Application / Onboarding UI -->
+    <section id="onboard" class="py-32 px-6 md:px-12 bg-base">
+        <div class="max-w-[1400px] mx-auto">
+            
+            <div class="mb-20 reveal">
+                <h2 class="font-display text-5xl md:text-7xl font-bold tracking-tight mb-6">Initiate Retainer.</h2>
+                <div class="w-full h-px bg-ink/10"></div>
+            </div>
+
+            <div class="flex flex-col lg:flex-row gap-20">
+                
+                <!-- Left: Interactive Form -->
+                <div class="w-full lg:w-7/12">
+                    <form id="onboardingForm" class="space-y-20">
+                        
+                        <!-- Client Identification -->
+                        <div class="reveal">
+                            <div class="flex items-baseline justify-between mb-8">
+                                <h3 class="font-display text-2xl font-bold">1. Identification</h3>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8">
+                                <div>
+                                    <input type="text" placeholder="First Name" required class="minimal-input">
+                                </div>
+                                <div>
+                                    <input type="text" placeholder="Last Name" required class="minimal-input">
+                                </div>
+                                <div>
+                                    <input type="email" placeholder="Email Address" required class="minimal-input">
+                                </div>
+                                <div>
+                                    <input type="tel" placeholder="Phone Number" required class="minimal-input">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Core Representation -->
+                        <div class="reveal">
+                            <div class="flex items-baseline justify-between mb-8">
+                                <h3 class="font-display text-2xl font-bold">2. Core Representation</h3>
+                                <span class="text-xs tracking-widest uppercase text-inkLight">Select One</span>
+                            </div>
+                            
+                            <div class="space-y-4">
+                                <!-- Package A -->
+                                <label class="cursor-pointer relative block">
+                                    <input type="radio" name="basePackage" value="1250" class="sr-only radio-card-input" checked onchange="calculateTotal()">
+                                    <div class="radio-card-body border border-ink/20 rounded-2xl p-8 transition-all duration-300">
+                                        <div class="flex justify-between items-start gap-4">
+                                            <div>
+                                                <div class="flex items-center gap-3 mb-2">
+                                                    <div class="radio-indicator w-4 h-4 rounded-full border border-ink flex-shrink-0 transition-colors"></div>
+                                                    <h4 class="font-display font-bold text-xl">Attorney Prepared</h4>
+                                                </div>
+                                                <p class="text-inkLight font-light text-sm mt-2 max-w-md">We guide, prepare, and review all forms. You retain responsibility for physical submission to USCIS.</p>
+                                            </div>
+                                            <div class="text-right flex-shrink-0">
+                                                <span class="block text-2xl font-display font-bold">$1,250</span>
+                                                <span class="text-[10px] uppercase tracking-widest opacity-60">Flat Fee</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </label>
+
+                                <!-- Package B -->
+                                <label class="cursor-pointer relative block">
+                                    <input type="radio" name="basePackage" value="2250" class="sr-only radio-card-input" onchange="calculateTotal()">
+                                    <div class="radio-card-body border border-ink/20 rounded-2xl p-8 transition-all duration-300">
+                                        <div class="flex justify-between items-start gap-4">
+                                            <div>
+                                                <div class="flex items-center gap-3 mb-2">
+                                                    <div class="radio-indicator w-4 h-4 rounded-full border border-ink flex-shrink-0 transition-colors"></div>
+                                                    <h4 class="font-display font-bold text-xl">Attorney Filed (Full Service)</h4>
+                                                </div>
+                                                <p class="text-inkLight font-light text-sm mt-2 max-w-md">Comprehensive representation. We prepare, review, and our office executes the physical filing with USCIS.</p>
+                                            </div>
+                                            <div class="text-right flex-shrink-0">
+                                                <span class="block text-2xl font-display font-bold">$2,250</span>
+                                                <span class="text-[10px] uppercase tracking-widest opacity-60">Flat Fee</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Supplemental Services -->
+                        <div class="reveal">
+                            <div class="flex items-baseline justify-between mb-8">
+                                <h3 class="font-display text-2xl font-bold">3. Supplemental Services</h3>
+                                <span class="text-xs tracking-widest uppercase text-inkLight">Optional</span>
+                            </div>
+                            
+                            <div class="space-y-4">
+                                <!-- Extra I-130 -->
+                                <div class="border border-ink/20 rounded-2xl p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+                                    <div>
+                                        <h4 class="font-display font-bold text-lg">Additional I-130 Petitions</h4>
+                                        <p class="text-inkLight font-light text-sm mt-1">Required for multiple family members.</p>
+                                    </div>
+                                    <div class="flex items-center gap-4 bg-surface rounded-full px-2 py-1 border border-ink/10">
+                                        <button type="button" onclick="updateI130(-1)" class="w-8 h-8 rounded-full flex items-center justify-center hover:bg-base transition"><i class="ph ph-minus"></i></button>
+                                        <input type="number" id="extraI130" min="0" value="0" readonly class="w-8 text-center bg-transparent font-medium outline-none">
+                                        <button type="button" onclick="updateI130(1)" class="w-8 h-8 rounded-full flex items-center justify-center hover:bg-base transition"><i class="ph ph-plus"></i></button>
+                                    </div>
+                                </div>
+
+                                <!-- Expedite -->
+                                <label class="cursor-pointer border border-ink/20 rounded-2xl p-6 flex items-center justify-between hover:border-ink transition-colors group">
+                                    <div class="flex items-center gap-4">
+                                        <input type="checkbox" id="expedite" value="500" class="custom-checkbox w-5 h-5 rounded-sm border-ink/30 text-ink focus:ring-ink transition-colors" onchange="calculateTotal()">
+                                        <div>
+                                            <h4 class="font-display font-bold text-lg group-hover:text-ink transition-colors">Expedited Processing</h4>
+                                            <p class="text-inkLight font-light text-sm mt-1">Prioritized firm preparation queue.</p>
+                                        </div>
+                                    </div>
+                                    <span class="font-display font-bold">+$500</span>
+                                </label>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+
+                <!-- Right: Sticky Ledger & Payment -->
+                <div class="w-full lg:w-5/12 reveal delay-200">
+                    <div class="sticky top-32 bg-ink text-surface p-8 md:p-12 rounded-3xl shadow-2xl">
+                        
+                        <h4 class="font-display text-2xl font-bold mb-8 flex items-center gap-3">
+                            <i class="ph ph-receipt"></i> Ledger
+                        </h4>
+                        
+                        <div class="space-y-4 mb-8 font-light text-sm border-b border-surface/20 pb-8" id="summaryList">
+                            <div class="flex justify-between items-start gap-4">
+                                <span class="opacity-70" id="basePackageLabel">Attorney Prepared</span>
+                                <span class="font-medium" id="basePackagePrice">$1,250</span>
+                            </div>
+                            <div class="flex justify-between items-start gap-4 hidden" id="extraI130Line">
+                                <span class="opacity-70">Supplemental I-130 (<span id="i130Qty">0</span>)</span>
+                                <span class="font-medium" id="i130Total">$0</span>
+                            </div>
+                            <div class="flex justify-between items-start gap-4 hidden" id="expediteLine">
+                                <span class="opacity-70">Expedited Queue</span>
+                                <span class="font-medium">$500</span>
+                            </div>
+                        </div>
+
+                        <div class="mb-10">
+                            <div class="flex justify-between items-end mb-2">
+                                <span class="text-sm uppercase tracking-widest opacity-60">Total Legal Fee</span>
+                                <span class="text-4xl font-display font-bold" id="grandTotal">$1,250</span>
+                            </div>
+                            <p class="text-[10px] text-surface/40 text-right uppercase tracking-wider">*Excludes USCIS Filing Fees</p>
+                        </div>
+
+                        <!-- Manual Payment Capture -->
+                        <div class="bg-surface/5 border border-surface/10 rounded-2xl p-6 mb-8 backdrop-blur-sm">
+                            <div class="flex items-center gap-2 mb-4">
+                                <i class="ph ph-lock-key text-surface/60"></i>
+                                <span class="text-xs uppercase tracking-widest font-semibold">Secure Authorization</span>
+                            </div>
+                            <p class="text-xs text-surface/60 font-light leading-relaxed mb-6">
+                                Details are tokenized and securely stored. <strong class="text-surface font-medium">No charge is made today.</strong> Processing occurs manually post-attorney review.
+                            </p>
+                            
+                            <div class="space-y-4">
+                                <input type="text" placeholder="Card Number" class="w-full bg-transparent border-b border-surface/30 px-0 py-2 text-sm text-surface placeholder-surface/40 outline-none focus:border-surface transition-colors">
+                                <div class="flex gap-6">
+                                    <input type="text" placeholder="MM/YY" class="w-1/2 bg-transparent border-b border-surface/30 px-0 py-2 text-sm text-surface placeholder-surface/40 outline-none focus:border-surface transition-colors">
+                                    <input type="text" placeholder="CVC" class="w-1/2 bg-transparent border-b border-surface/30 px-0 py-2 text-sm text-surface placeholder-surface/40 outline-none focus:border-surface transition-colors">
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="button" onclick="submitOnboarding()" class="w-full bg-surface text-ink font-display font-bold py-5 px-6 rounded-full hover:scale-[1.02] transition-transform duration-300 flex justify-center items-center gap-3">
+                            <span id="btnText">Generate Agreement</span>
+                            <i class="ph ph-arrow-right text-xl"></i>
+                        </button>
+                        
+                        <div class="mt-6 flex items-center justify-center gap-2 text-[10px] uppercase tracking-widest opacity-40">
+                            <i class="ph-fill ph-lightning"></i>
+                            <span>Powered securely by Docketwise</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-surface border-t border-ink/10 py-12 px-6 md:px-12">
+        <div class="max-w-[1600px] mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="font-display font-bold text-xl tracking-tighter uppercase text-ink">
+                Pathfinder.
+            </div>
+            <div class="text-[10px] text-inkLight uppercase tracking-widest text-center md:text-right max-w-2xl leading-relaxed">
+                <p>Not legal advice. Attorney-client relationship established strictly post-review via Docketwise agreement.</p>
+                <p class="mt-2">&copy; <script>document.write(new Date().getFullYear())</script> Pathfinder Immigration Law.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Awwwards Style Success Overlay -->
+    <div id="successModal" class="fixed inset-0 z-[100] hidden bg-ink/95 backdrop-blur-md flex items-center justify-center px-6 transition-opacity duration-500 opacity-0">
+        <div class="max-w-xl w-full text-center text-surface transform translate-y-10 transition-transform duration-700 delay-100" id="modalContent">
+            <i class="ph-light ph-check-circle text-7xl mb-8 text-surface/80 inline-block"></i>
+            <h3 class="font-display text-4xl md:text-5xl font-bold mb-6">Retainer Initiated.</h3>
+            <p class="text-surface/70 font-light text-lg mb-12 leading-relaxed">
+                Your bespoke legal fee agreement has been generated. Access your secure <strong>Docketwise Client Portal</strong> via email to finalize your intake and schedule the adequacy review.
+            </p>
+            <button onclick="closeModal()" class="border border-surface/30 hover:bg-surface hover:text-ink text-surface px-8 py-4 rounded-full font-medium transition-colors duration-300">
+                Return to Directory
+            </button>
+        </div>
+    </div>
+
+    <!-- Logic & Animations -->
+    <script>
+        // Smooth Reveal Animations on Scroll
+        const observerOptions = { root: null, rootMargin: '0px', threshold: 0.1 };
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // Formatter for Currency
+        const formatter = new Intl.NumberFormat('en-US', {
+            style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0,
+        });
+
+        // UI Helpers for I-130
+        function updateI130(change) {
+            const input = document.getElementById('extraI130');
+            let val = parseInt(input.value) + change;
+            if(val < 0) val = 0;
+            input.value = val;
+            calculateTotal();
+        }
+
+        // Calculation Engine
+        function calculateTotal() {
+            // Base Package
+            const baseRadios = document.getElementsByName('basePackage');
+            let basePrice = 1250;
+            let baseLabel = "Attorney Prepared";
+            
+            for (let radio of baseRadios) {
+                if (radio.checked) {
+                    basePrice = parseInt(radio.value);
+                    baseLabel = radio.value === "1250" ? "Attorney Prepared" : "Attorney Filed (Full Service)";
+                    break;
+                }
+            }
+
+            // I-130
+            const i130Qty = parseInt(document.getElementById('extraI130').value) || 0;
+            let i130Total = i130Qty * 500;
+
+            // Expedite
+            const expediteCheck = document.getElementById('expedite');
+            let expediteTotal = expediteCheck.checked ? 500 : 0;
+
+            // Total
+            const grandTotal = basePrice + i130Total + expediteTotal;
+
+            // DOM Updates
+            document.getElementById('basePackageLabel').innerText = baseLabel;
+            document.getElementById('basePackagePrice').innerText = formatter.format(basePrice);
+
+            const i130Line = document.getElementById('extraI130Line');
+            if (i130Qty > 0) {
+                i130Line.classList.remove('hidden');
+                document.getElementById('i130Qty').innerText = i130Qty;
+                document.getElementById('i130Total').innerText = formatter.format(i130Total);
+            } else {
+                i130Line.classList.add('hidden');
+            }
+
+            const expediteLine = document.getElementById('expediteLine');
+            if (expediteCheck.checked) {
+                expediteLine.classList.remove('hidden');
+            } else {
+                expediteLine.classList.add('hidden');
+            }
+
+            document.getElementById('grandTotal').innerText = formatter.format(grandTotal);
+        }
+
+        // Submission Simulation
+        function submitOnboarding() {
+            const form = document.getElementById('onboardingForm');
+            const inputs = form.querySelectorAll('input[required]');
+            let isValid = true;
+            
+            inputs.forEach(input => {
+                if(!input.value) {
+                    isValid = false;
+                    input.style.borderBottomColor = '#ff4444';
+                } else {
+                    input.style.borderBottomColor = '';
+                }
+            });
+
+            if(!isValid) return;
+
+            // Simulated API Call
+            const btnText = document.getElementById('btnText');
+            const originalText = btnText.innerText;
+            btnText.innerText = 'Syncing Docketwise...';
+            
+            setTimeout(() => {
+                const modal = document.getElementById('successModal');
+                const modalContent = document.getElementById('modalContent');
+                
+                modal.classList.remove('hidden');
+                // Force reflow
+                void modal.offsetWidth;
+                
+                modal.classList.remove('opacity-0');
+                modalContent.classList.remove('translate-y-10');
+                modalContent.classList.add('translate-y-0');
+
+                btnText.innerText = originalText;
+                form.reset();
+                calculateTotal();
+            }, 1800);
+        }
+
+        // Modal Close Animation
+        function closeModal() {
+            const modal = document.getElementById('successModal');
+            const modalContent = document.getElementById('modalContent');
+            
+            modal.classList.add('opacity-0');
+            modalContent.classList.remove('translate-y-0');
+            modalContent.classList.add('translate-y-10');
+            
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }, 500);
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', calculateTotal);
+    </script>
+</body>
+</html>
