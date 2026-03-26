@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NexGen CRM | Sales, Stock & Invoicing</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: { brand: { 500: '#3b82f6', 600: '#2563eb', 900: '#1e3a8a' } }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom scrollbar for a cleaner look */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        .glass-panel { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans h-screen flex overflow-hidden">
+
+    <!-- Sidebar -->
+    <aside id="sidebar" class="w-64 bg-brand-900 text-white flex flex-col transition-all duration-300 z-20 hidden md:flex">
+        <div class="p-6 flex items-center gap-3 border-b border-brand-600/30">
+            <i class="fa-solid fa-layer-group text-2xl text-blue-400"></i>
+            <span class="text-xl font-bold tracking-wide">NexGen CRM</span>
+        </div>
+        <nav class="flex-1 p-4 space-y-2">
+            <button id="nav-sales" onclick="switchTab('sales')" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg bg-brand-600 text-white transition-colors">
+                <i class="fa-solid fa-chart-pie w-5"></i> Sales Tracking
+            </button>
+            <button id="nav-stock" onclick="switchTab('stock')" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white/10 text-gray-300 hover:text-white transition-colors">
+                <i class="fa-solid fa-boxes-stacked w-5"></i> Stock Control
+            </button>
+            <button id="nav-invoice" onclick="switchTab('invoice')" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white/10 text-gray-300 hover:text-white transition-colors">
+                <i class="fa-solid fa-file-invoice-dollar w-5"></i> Invoicing
+            </button>
+        </nav>
+        <div class="p-4 border-t border-brand-600/30 text-sm text-gray-400">
+            <p><i class="fa-solid fa-shield-halved mr-2"></i>Secure SSL / v1.0.0</p>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 flex flex-col h-screen overflow-hidden relative">
+        <!-- Top Header -->
+        <header class="h-16 glass-panel border-b border-gray-200 flex items-center justify-between px-6 z-10">
+            <div class="flex items-center gap-4">
+                <button onclick="toggleSidebar()" class="md:hidden text-gray-500 hover:text-gray-700">
+                    <i class="fa-solid fa-bars text-xl"></i>
+                </button>
+                <h2 id="page-title" class="text-xl font-semibold text-gray-800">Sales Dashboard</h2>
+            </div>
+            
+            <!-- Role Switcher (For Demo Purposes) -->
+            <div class="flex items-center gap-4">
+                <div class="flex items-center gap-2 bg-gray-100 rounded-full px-3 py-1.5 border border-gray-200">
+                    <i class="fa-solid fa-user-tag text-brand-600 text-sm"></i>
+                    <select id="role-selector" onchange="changeRole(this.value)" class="bg-transparent text-sm font-medium text-gray-700 outline-none cursor-pointer">
+                        <option value="admin">Administrator</option>
+                        <option value="sales">Sales Rep</option>
+                        <option value="warehouse">Warehouse Staff</option>
+                    </select>
+                </div>
+                <div class="w-8 h-8 rounded-full bg-brand-500 text-white flex items-center justify-center font-bold">
+                    JS
+                </div>
+            </div>
+        </header>
+
+        <!-- Content Area -->
+        <div class="flex-1 overflow-y-auto p-4 md:p-6 bg-gray-50 pb-24">
+            
+            <!-- 1. SALES TRACKING VIEW -->
+            <div id="view-sales" class="space-y-6 block">
+                <!-- Top Metrics -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 text-xl"><i class="fa-solid fa-dollar-sign"></i></div>
+                        <div><p class="text-sm text-gray-500 font-medium">Monthly Revenue</p><h3 class="text-2xl font-bold text-gray-800">$45,231</h3></div>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 text-xl"><i class="fa-solid fa-bullseye"></i></div>
+                        <div><p class="text-sm text-gray-500 font-medium">Active Leads</p><h3 class="text-2xl font-bold text-gray-800">84</h3></div>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center text-green-600 text-xl"><i class="fa-solid fa-check-double"></i></div>
+                        <div><p class="text-sm text-gray-500 font-medium">Win Rate</p><h3 class="text-2xl font-bold text-gray-800">68%</h3></div>
+                    </div>
+                </div>
+
+                <!-- Chart & Report Tools -->
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                    <div class="flex flex-wrap items-center justify-between mb-6 gap-4">
+                        <h3 class="text-lg font-bold text-gray-800">Revenue Pipeline</h3>
+                        <div class="flex gap-2">
+                            <select class="border border-gray-300 rounded-md text-sm px-3 py-1.5"><option>Last 30 Days</option><option>This Quarter</option></select>
+                            <button onclick="alert('Downloading CSV Report...')" class="bg-gray-800 text-white px-4 py-1.5 rounded-md text-sm font-medium hover:bg-gray-700 transition"><i class="fa-solid fa-download mr-2"></i>Report</button>
+                        </div>
+                    </div>
+                    <div class="relative h-72 w-full">
+                        <canvas id="salesChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. STOCK CONTROL VIEW -->
+            <div id="view-stock" class="space-y-6 hidden">
+                <div class="flex flex-wrap justify-between items-center gap-4 bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+                    <div class="relative max-w-md w-full">
+                        <i class="fa-solid fa-search absolute left-3 top-3 text-gray-400"></i>
+                        <input type="text" placeholder="Search product or SKU..." class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none">
+                    </div>
+                    <button onclick="alert('Opening camera for Barcode Scan...')" class="bg-brand-600 text-white px-5 py-2 rounded-lg font-medium hover:bg-brand-700 transition flex items-center gap-2">
+                        <i class="fa-solid fa-barcode"></i> Scan Barcode
+                    </button>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-gray-50 border-b border-gray-200 text-sm text-gray-500 uppercase tracking-wider">
+                                <th class="p-4 font-medium">Product / SKU</th>
+                                <th class="p-4 font-medium text-center">In Stock</th>
+                                <th class="p-4 font-medium">Status</th>
+                                <th class="p-4 font-medium text-right">Adjust Qty</th>
+                            </tr>
+                        </thead>
+                        <tbody id="inventory-list" class="divide-y divide-gray-100">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 3. CUSTOMER INVOICING VIEW -->
+            <div id="view-invoice" class="space-y-6 hidden">
+                <div class="flex justify-between items-center bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+                    <h3 class="text-lg font-bold text-gray-800">Recent Invoices</h3>
+                    <button onclick="openInvoiceModal()" class="bg-brand-600 text-white px-5 py-2 rounded-lg font-medium hover:bg-brand-700 transition flex items-center gap-2">
+                        <i class="fa-solid fa-plus"></i> Create Invoice
+                    </button>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-gray-50 border-b border-gray-200 text-sm text-gray-500 uppercase tracking-wider">
+                                <th class="p-4 font-medium">Invoice #</th>
+                                <th class="p-4 font-medium">Customer</th>
+                                <th class="p-4 font-medium">Date</th>
+                                <th class="p-4 font-medium">Amount</th>
+                                <th class="p-4 font-medium text-center">Status</th>
+                                <th class="p-4 font-medium text-right">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="invoice-list" class="divide-y divide-gray-100">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Modal: Create Invoice -->
+    <div id="invoice-modal" class="fixed inset-0 bg-gray-900 bg-opacity-50 backdrop-blur-sm hidden z-50 flex items-center justify-center px-4">
+        <div class="bg-white rounded-xl shadow-xl w-full max-w-2xl overflow-hidden flex flex-col max-h-[90vh]">
+            <div class="p-5 border-b border-gray-200 flex justify-between items-center bg-gray-50">
+                <h3 class="text-lg font-bold text-gray-800">New Branded Invoice</h3>
+                <button onclick="closeInvoiceModal()" class="text-gray-400 hover:text-gray-600"><i class="fa-solid fa-xmark text-xl"></i></button>
+            </div>
+            <div class="p-6 overflow-y-auto space-y-4">
+                <div class="flex justify-between items-center mb-4">
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-layer-group text-2xl text-brand-600"></i><span class="font-bold text-gray-800">NexGen Ltd.</span>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-sm text-gray-500 uppercase font-semibold">Invoice No.</p>
+                        <p id="new-inv-number" class="text-xl font-bold text-gray-800">INV-1004</p>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Customer Name</label>
+                        <input type="text" id="inv-customer" class="w-full p-2 border border-gray-300 rounded-md outline-none focus:ring-2 focus:ring-brand-500" placeholder="e.g. Acme Corp">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Product/Service</label>
+                        <input type="text" class="w-full p-2 border border-gray-300 rounded-md outline-none focus:ring-2 focus:ring-brand-500" placeholder="Web Services">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-3 gap-4 border-t border-gray-100 pt-4">
+                    <div class="col-span-1">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Subtotal ($)</label>
+                        <input type="number" id="inv-subtotal" oninput="calculateTax()" class="w-full p-2 border border-gray-300 rounded-md outline-none focus:ring-2 focus:ring-brand-500" placeholder="0.00">
+                    </div>
+                    <div class="col-span-1">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Tax (10%)</label>
+                        <input type="number" id="inv-tax" disabled class="w-full p-2 bg-gray-100 border border-gray-300 rounded-md text-gray-500" placeholder="0.00">
+                    </div>
+                    <div class="col-span-1">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Total ($)</label>
+                        <input type="number" id="inv-total" disabled class="w-full p-2 bg-green-50 border border-green-200 rounded-md font-bold text-green-700" placeholder="0.00">
+                    </div>
+                </div>
+            </div>
+            <div class="p-5 border-t border-gray-200 bg-gray-50 flex justify-end gap-3">
+                <button onclick="closeInvoiceModal()" class="px-4 py-2 text-gray-600 bg-white border border-gray-300 rounded-md hover:bg-gray-50">Cancel</button>
+                <button onclick="saveInvoice()" class="px-4 py-2 bg-brand-600 text-white rounded-md hover:bg-brand-700 font-medium flex items-center gap-2">
+                    <i class="fa-solid fa-file-pdf"></i> Generate & Save
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- DUMMY DATA ---
+        let inventory = [
+            { id: 1, name: "Premium Widget V2", sku: "PRM-W-02", qty: 145 },
+            { id: 2, name: "Wireless Connector", sku: "WL-CON-01", qty: 8 },
+            { id: 3, name: "Aluminum Stand", sku: "AL-STN-09", qty: 0 },
+            { id: 4, name: "Data Cable (2m)", sku: "DC-2M-04", qty: 312 },
+        ];
+
+        let invoices = [
+            { id: "INV-1001", customer: "Globex Corporation", date: "Oct 12, 2023", amount: "$1,450.00", status: "Paid" },
+            { id: "INV-1002", customer: "Initech LLC", date: "Oct 15, 2023", amount: "$890.00", status: "Pending" },
+            { id: "INV-1003", customer: "Soylent Corp", date: "Oct 18, 2023", amount: "$2,100.00", status: "Paid" },
+        ];
+
+        let currentTab = 'sales';
+        let currentRole = 'admin'; // admin, sales, warehouse
+
+        // --- INITIALIZATION ---
+        document.addEventListener('DOMContentLoaded', () => {
+            initChart();
+            renderInventory();
+            renderInvoices();
+            updateNavigationUI();
+        });
+
+        // --- NAVIGATION & ROLE MANAGEMENT ---
+        function switchTab(tabId) {
+            currentTab = tabId;
+            
+            // Hide all views
+            document.getElementById('view-sales').classList.add('hidden');
+            document.getElementById('view-stock').classList.add('hidden');
+            document.getElementById('view-invoice').classList.add('hidden');
+            
+            // Show selected view
+            document.getElementById(`view-${tabId}`).classList.remove('hidden');
+            
+            // Update Page Title
+            const titles = { sales: 'Sales Dashboard', stock: 'Stock Control', invoice: 'Customer Invoicing' };
+            document.getElementById('page-title').innerText = titles[tabId];
+
+            updateNavigationUI();
+        }
+
+        function updateNavigationUI() {
+            const tabs = ['sales', 'stock', 'invoice'];
+            tabs.forEach(t => {
+                const btn = document.getElementById(`nav-${t}`);
+                if (!btn) return;
+                
+                if (t === currentTab) {
+                    btn.className = "w-full flex items-center gap-3 px-4 py-3 rounded-lg bg-brand-600 text-white transition-colors shadow-md";
+                } else {
+                    btn.className = "w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white/10 text-gray-300 hover:text-white transition-colors";
+                }
+            });
+        }
+
+        function changeRole(role) {
+            currentRole = role;
+            const navSales = document.getElementById('nav-sales');
+            const navStock = document.getElementById('nav-stock');
+            const navInvoice = document.getElementById('nav-invoice');
+
+            // Apply Role Permissions
+            if (role === 'admin') {
+                navSales.style.display = 'flex';
+                navStock.style.display = 'flex';
+                navInvoice.style.display = 'flex';
+            } else if (role === 'sales') {
+                navSales.style.display = 'flex';
+                navStock.style.display = 'none';
+                navInvoice.style.display = 'flex';
+                if (currentTab === 'stock') switchTab('sales');
+            } else if (role === 'warehouse') {
+                navSales.style.display = 'none';
+                navStock.style.display = 'flex';
+                navInvoice.style.display = 'none';
+                if (currentTab !== 'stock') switchTab('stock');
+            }
+            alert(`Role switched to ${role.toUpperCase()}. View access has been restricted based on permissions.`);
+        }
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            if(sidebar.classList.contains('hidden')) {
+                sidebar.classList.remove('hidden');
+                sidebar.classList.add('absolute', 'h-full');
+            } else {
+                sidebar.classList.add('hidden');
+                sidebar.classList.remove('absolute', 'h-full');
+            }
+        }
+
+        // --- INVENTORY LOGIC ---
+        function renderInventory() {
+            const tbody = document.getElementById('inventory-list');
+            tbody.innerHTML = '';
+            
+            inventory.forEach(item => {
+                let statusHtml = '';
+                if (item.qty > 20) {
+                    statusHtml = `<span class="px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs font-semibold">In Stock</span>`;
+                } else if (item.qty > 0) {
+                    statusHtml = `<span class="px-2 py-1 bg-yellow-100 text-yellow-700 rounded-full text-xs font-semibold">Low Stock</span>`;
+                } else {
+                    statusHtml = `<span class="px-2 py-1 bg-red-100 text-red-700 rounded-full text-xs font-semibold">Out of Stock</span>`;
+                }
+
+                tbody.innerHTML += `
+                    <tr class="hover:bg-gray-50 transition-colors">
+                        <td class="p-4 border-b border-gray-100">
+                            <p class="font-semibold text-gray-800">${item.name}</p>
+                            <p class="text-xs text-gray-500">${item.sku}</p>
+                        </td>
+                        <td class="p-4 border-b border-gray-100 text-center font-bold text-gray-700 text-lg">${item.qty}</td>
+                        <td class="p-4 border-b border-gray-100">${statusHtml}</td>
+                        <td class="p-4 border-b border-gray-100 text-right">
+                            <div class="inline-flex items-center bg-gray-100 rounded-lg p-1">
+                                <button onclick="adjustQty(${item.id}, -1)" class="w-8 h-8 rounded bg-white text-gray-600 shadow-sm hover:bg-gray-50 hover:text-brand-600 transition"><i class="fa-solid fa-minus"></i></button>
+                                <button onclick="adjustQty(${item.id}, 1)" class="w-8 h-8 rounded bg-white text-gray-600 shadow-sm hover:bg-gray-50 hover:text-brand-600 transition ml-1"><i class="fa-solid fa-plus"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        function adjustQty(id, amount) {
+            const item = inventory.find(i => i.id === id);
+            if (item) {
+                if (item.qty + amount < 0) return; // Prevent negative
+                item.qty += amount;
+                renderInventory();
+            }
+        }
+
+        // --- INVOICE LOGIC ---
+        function renderInvoices() {
+            const tbody = document.getElementById('invoice-list');
+            tbody.innerHTML = '';
+
+            invoices.forEach(inv => {
+                const statusColor = inv.status === 'Paid' ? 'bg-green-100 text-green-700' : 'bg-orange-100 text-orange-700';
+                tbody.innerHTML += `
+                    <tr class="hover:bg-gray-50 transition-colors">
+                        <td class="p-4 border-b border-gray-100 font-semibold text-brand-600">${inv.id}</td>
+                        <td class="p-4 border-b border-gray-100 text-gray-800 font-medium">${inv.customer}</td>
+                        <td class="p-4 border-b border-gray-100 text-gray-500">${inv.date}</td>
+                        <td class="p-4 border-b border-gray-100 text-gray-800 font-bold">${inv.amount}</td>
+                        <td class="p-4 border-b border-gray-100 text-center">
+                            <span class="px-3 py-1 rounded-full text-xs font-semibold ${statusColor}">${inv.status}</span>
+                        </td>
+                        <td class="p-4 border-b border-gray-100 text-right">
+                            <button class="text-gray-400 hover:text-brand-600 transition" title="Download PDF"><i class="fa-solid fa-file-pdf text-lg"></i></button>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        function openInvoiceModal() {
+            // Auto number setup
+            const nextId = invoices.length + 1001;
+            document.getElementById('new-inv-number').innerText = `INV-${nextId}`;
+            
+            // Clear fields
+            document.getElementById('inv-customer').value = '';
+            document.getElementById('inv-subtotal').value = '';
+            document.getElementById('inv-tax').value = '';
+            document.getElementById('inv-total').value = '';
+            
+            document.getElementById('invoice-modal').classList.remove('hidden');
+        }
+
+        function closeInvoiceModal() {
+            document.getElementById('invoice-modal').classList.add('hidden');
+        }
+
+        function calculateTax() {
+            const subtotal = parseFloat(document.getElementById('inv-subtotal').value) || 0;
+            const tax = subtotal * 0.10; // 10% tax
+            const total = subtotal + tax;
+
+            document.getElementById('inv-tax').value = tax.toFixed(2);
+            document.getElementById('inv-total').value = total.toFixed(2);
+        }
+
+        function saveInvoice() {
+            const customer = document.getElementById('inv-customer').value;
+            const total = document.getElementById('inv-total').value;
+            const invId = document.getElementById('new-inv-number').innerText;
+
+            if(!customer || !total) return alert("Please fill out customer name and subtotal.");
+
+            const date = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+
+            invoices.push({
+                id: invId,
+                customer: customer,
+                date: date,
+                amount: `$${parseFloat(total).toLocaleString('en-US', {minimumFractionDigits: 2})}`,
+                status: "Pending"
+            });
+
+            renderInvoices();
+            closeInvoiceModal();
+            alert("Invoice generated and saved successfully!");
+        }
+
+        // --- CHART JS ---
+        function initChart() {
+            const ctx = document.getElementById('salesChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'],
+                    datasets: [{
+                        label: 'Gross Revenue ($)',
+                        data: [21000, 24500, 19800, 31000, 35000, 45231],
+                        backgroundColor: '#3b82f6',
+                        borderRadius: 4,
+                        hoverBackgroundColor: '#2563eb'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: { beginAtZero: true, grid: { borderDash: [4, 4], color: '#f1f5f9' } },
+                        x: { grid: { display: false } }
+                    },
+                    plugins: { legend: { display: false } }
+                }
+            });
+        }
+    </script>
+</body>
+</html>
