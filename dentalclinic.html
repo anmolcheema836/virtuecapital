@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Friendly Dental Clinic | Poland</title>
+    
+    <!-- MUST NOT BE INDEXED -->
+    <meta name="robots" content="noindex, nofollow">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Outfit for headings (modern), Nunito for body (friendly, round) -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Alpine.js for interactive elements (Menu, FAQ) -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    
+    <!-- AOS Scroll Animations -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Tailwind Configuration -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        navy: '#0A2342',
+                        orange: {
+                            DEFAULT: '#FF7A00',
+                            light: '#FFF2E5',
+                            hover: '#E66A00'
+                        },
+                        white: '#FFFFFF',
+                        offwhite: '#F8F9FA'
+                    },
+                    fontFamily: {
+                        sans: ['Nunito', 'sans-serif'],
+                        display: ['Outfit', 'sans-serif'],
+                    },
+                    borderRadius: {
+                        '4xl': '2rem',
+                        '5xl': '3rem',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Styles to complement Tailwind */
+        body { background-color: #F8F9FA; overflow-x: hidden; }
+        .text-outline {
+            color: transparent;
+            -webkit-text-stroke: 1px #0A2342;
+            opacity: 0.1;
+        }
+        .circle-pattern {
+            background-image: radial-gradient(#FF7A00 10%, transparent 10%);
+            background-position: 0 0;
+            background-size: 20px 20px;
+        }
+        /* Hide scrollbar for horizontal scroll areas */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="font-sans text-navy antialiased selection:bg-orange selection:text-white" x-data="{ mobileMenuOpen: false }">
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 transition-all duration-300 bg-white/90 backdrop-blur-md shadow-sm" x-data="{ scrolled: false }" @scroll.window="scrolled = (window.pageYOffset > 20)">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-24">
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center gap-2 cursor-pointer">
+                    <div class="w-10 h-10 bg-navy text-white rounded-full flex items-center justify-center text-xl">
+                        <i class="fa-solid fa-tooth"></i>
+                    </div>
+                    <span class="font-display font-bold text-2xl tracking-tight text-navy">Dental<span class="text-orange">Care</span></span>
+                </div>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex space-x-8 items-center">
+                    <a href="#" class="text-navy hover:text-orange font-semibold transition-colors">Home</a>
+                    <a href="#services" class="text-navy hover:text-orange font-semibold transition-colors">Services</a>
+                    <a href="#about" class="text-navy hover:text-orange font-semibold transition-colors">Team</a>
+                    <a href="#pricing" class="text-navy hover:text-orange font-semibold transition-colors">Pricing</a>
+                    <a href="#contact" class="bg-orange hover:bg-orange-hover text-white px-8 py-3 rounded-full font-semibold transition-transform hover:scale-105 shadow-lg shadow-orange/30 flex items-center gap-2">
+                        <i class="fa-regular fa-calendar-check"></i> Book Visit
+                    </a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden flex items-center">
+                    <button @click="mobileMenuOpen = !mobileMenuOpen" class="text-navy focus:outline-none">
+                        <i class="fa-solid fa-bars text-3xl" x-show="!mobileMenuOpen"></i>
+                        <i class="fa-solid fa-xmark text-3xl" x-show="mobileMenuOpen" x-cloak></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div x-show="mobileMenuOpen" x-transition class="md:hidden bg-white border-t border-gray-100 absolute w-full shadow-lg" x-cloak>
+            <div class="px-4 pt-2 pb-6 space-y-2 flex flex-col">
+                <a href="#" @click="mobileMenuOpen = false" class="block px-3 py-3 text-lg font-semibold text-navy hover:text-orange">Home</a>
+                <a href="#services" @click="mobileMenuOpen = false" class="block px-3 py-3 text-lg font-semibold text-navy hover:text-orange">Services</a>
+                <a href="#about" @click="mobileMenuOpen = false" class="block px-3 py-3 text-lg font-semibold text-navy hover:text-orange">Team</a>
+                <a href="#pricing" @click="mobileMenuOpen = false" class="block px-3 py-3 text-lg font-semibold text-navy hover:text-orange">Pricing</a>
+                <a href="#contact" @click="mobileMenuOpen = false" class="block px-3 py-3 mt-4 text-center text-lg font-bold text-white bg-orange rounded-full">Book Visit</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden bg-offwhite">
+        <!-- Decorative Background Circles -->
+        <div class="absolute top-[-10%] right-[-5%] w-[500px] h-[500px] bg-orange-light rounded-full mix-blend-multiply filter blur-3xl opacity-50"></div>
+        <div class="absolute bottom-[-10%] left-[-10%] w-[600px] h-[600px] bg-blue-100 rounded-full mix-blend-multiply filter blur-3xl opacity-50"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid lg:grid-cols-2 gap-12 lg:gap-8 items-center">
+                
+                <!-- Hero Content -->
+                <div data-aos="fade-right" data-aos-duration="1000">
+                    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white shadow-sm border border-gray-100 mb-6">
+                        <span class="flex h-3 w-3 rounded-full bg-orange"></span>
+                        <span class="text-sm font-semibold">Stress-free dentistry in Poland</span>
+                    </div>
+                    <h1 class="font-display text-5xl lg:text-7xl font-bold leading-tight mb-6 text-navy">
+                        Healthy smiles <br>
+                        <span class="text-orange relative">
+                            without fear.
+                            <!-- Decorative underline -->
+                            <svg class="absolute w-full h-4 -bottom-2 left-0 text-orange" viewBox="0 0 200 9" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.00017 6.94695C55.0345 -0.62725 142.179 -1.6186 197.925 5.92243" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></svg>
+                        </span>
+                    </h1>
+                    <p class="text-lg lg:text-xl text-gray-600 mb-8 max-w-lg leading-relaxed">
+                        We are a friendly, accessible dental clinic for the whole family. Whether it's a child's first visit or full implants, our warm approach makes everyone feel at home.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <a href="#contact" class="bg-orange hover:bg-orange-hover text-white text-center px-8 py-4 rounded-full font-bold text-lg transition-transform hover:scale-105 shadow-lg shadow-orange/30">
+                            Book on ZnanyLekarz.pl
+                        </a>
+                        <a href="#services" class="bg-white hover:bg-gray-50 text-navy text-center px-8 py-4 rounded-full font-bold text-lg transition-transform hover:scale-105 shadow-sm border border-gray-200">
+                            Our Treatments
+                        </a>
+                    </div>
+                    
+                    <!-- Trust Indicators -->
+                    <div class="mt-10 flex items-center gap-4">
+                        <div class="flex -space-x-3">
+                            <img class="w-12 h-12 rounded-full border-2 border-white object-cover" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80" alt="Patient">
+                            <img class="w-12 h-12 rounded-full border-2 border-white object-cover" src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=100&q=80" alt="Patient">
+                            <img class="w-12 h-12 rounded-full border-2 border-white object-cover" src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=100&q=80" alt="Patient">
+                            <div class="w-12 h-12 rounded-full border-2 border-white bg-navy text-white flex items-center justify-center text-xs font-bold">+2k</div>
+                        </div>
+                        <div class="text-sm">
+                            <div class="flex text-orange mb-1">
+                                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                            </div>
+                            <span class="font-bold">4.9/5</span> from happy patients
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hero Images (Circular Composition) -->
+                <div class="relative h-[500px] lg:h-[600px] w-full" data-aos="zoom-in" data-aos-duration="1200">
+                    <!-- Main large circle -->
+                    <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[350px] h-[350px] lg:w-[450px] lg:h-[450px] rounded-full overflow-hidden shadow-2xl border-8 border-white z-10">
+                        <img src="https://images.unsplash.com/photo-1606811841689-23dfddce3e95?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Friendly Dentist" class="w-full h-full object-cover">
+                    </div>
+                    <!-- Small circle 1 -->
+                    <div class="absolute top-[10%] left-[10%] w-[150px] h-[150px] lg:w-[200px] lg:h-[200px] rounded-full overflow-hidden shadow-xl border-4 border-white z-20" data-aos="fade-up" data-aos-delay="300">
+                        <img src="https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Happy Patient" class="w-full h-full object-cover">
+                    </div>
+                    <!-- Small circle 2 -->
+                    <div class="absolute bottom-[5%] right-[5%] w-[180px] h-[180px] lg:w-[220px] lg:h-[220px] rounded-full overflow-hidden shadow-xl border-4 border-white z-20" data-aos="fade-up" data-aos-delay="500">
+                        <img src="https://images.unsplash.com/photo-1609840114035-3c981b782dfe?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Child at Dentist" class="w-full h-full object-cover">
+                    </div>
+                    <!-- Decorative Element -->
+                    <div class="absolute top-[20%] right-[10%] w-24 h-24 circle-pattern opacity-50 -z-10"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Marquee / Values Section -->
+    <div class="bg-navy py-6 overflow-hidden flex whitespace-nowrap">
+        <div class="animate-marquee flex gap-12 text-white font-display text-2xl uppercase tracking-wider items-center">
+            <span><i class="fa-regular fa-face-smile text-orange"></i> Pain-Free Treatment</span>
+            <span><i class="fa-solid fa-child text-orange"></i> Child Friendly</span>
+            <span><i class="fa-solid fa-tooth text-orange"></i> Modern Implantology</span>
+            <span><i class="fa-solid fa-heart text-orange"></i> Friendly Atmosphere</span>
+            <!-- Duplicate for infinite scroll effect visually -->
+            <span><i class="fa-regular fa-face-smile text-orange"></i> Pain-Free Treatment</span>
+            <span><i class="fa-solid fa-child text-orange"></i> Child Friendly</span>
+            <span><i class="fa-solid fa-tooth text-orange"></i> Modern Implantology</span>
+        </div>
+    </div>
+
+    <!-- Services Section -->
+    <section id="services" class="py-24 bg-white relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16" data-aos="fade-up">
+                <h2 class="font-display text-4xl lg:text-5xl font-bold mb-6 text-navy">Comprehensive Care for <br>Your <span class="text-orange">Whole Family</span></h2>
+                <p class="text-lg text-gray-600">From the youngest patients to complete smile transformations, we provide accessible and professional treatments under one roof.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Service Card 1 -->
+                <div class="bg-offwhite rounded-[2.5rem] p-8 hover:-translate-y-2 transition-transform duration-300 group border border-gray-100 hover:shadow-xl hover:shadow-orange/5" data-aos="fade-up" data-aos-delay="100">
+                    <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center text-orange text-2xl mb-6 shadow-sm group-hover:bg-orange group-hover:text-white transition-colors">
+                        <i class="fa-solid fa-tooth"></i>
+                    </div>
+                    <h3 class="font-display text-2xl font-bold mb-4 text-navy">Implantology</h3>
+                    <p class="text-gray-600 mb-6">Restore missing teeth permanently with modern, durable, and natural-looking implants.</p>
+                    <a href="#" class="text-navy font-bold inline-flex items-center gap-2 group-hover:text-orange transition-colors">
+                        Learn more <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                </div>
+
+                <!-- Service Card 2 -->
+                <div class="bg-offwhite rounded-[2.5rem] p-8 hover:-translate-y-2 transition-transform duration-300 group border border-gray-100 hover:shadow-xl hover:shadow-orange/5" data-aos="fade-up" data-aos-delay="200">
+                    <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center text-orange text-2xl mb-6 shadow-sm group-hover:bg-orange group-hover:text-white transition-colors">
+                        <i class="fa-regular fa-face-laugh-beam"></i>
+                    </div>
+                    <h3 class="font-display text-2xl font-bold mb-4 text-navy">Aesthetic Dentistry</h3>
+                    <p class="text-gray-600 mb-6">Veneers, teeth whitening, and complete smile transformations for a confident laugh.</p>
+                    <a href="#" class="text-navy font-bold inline-flex items-center gap-2 group-hover:text-orange transition-colors">
+                        Learn more <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                </div>
+
+                <!-- Service Card 3 -->
+                <div class="bg-offwhite rounded-[2.5rem] p-8 hover:-translate-y-2 transition-transform duration-300 group border border-gray-100 hover:shadow-xl hover:shadow-orange/5" data-aos="fade-up" data-aos-delay="300">
+                    <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center text-orange text-2xl mb-6 shadow-sm group-hover:bg-orange group-hover:text-white transition-colors">
+                        <i class="fa-solid fa-teeth"></i>
+                    </div>
+                    <h3 class="font-display text-2xl font-bold mb-4 text-navy">Orthodontics</h3>
+                    <p class="text-gray-600 mb-6">Straighten your teeth with traditional braces or clear aligners (Invisalign) at any age.</p>
+                    <a href="#" class="text-navy font-bold inline-flex items-center gap-2 group-hover:text-orange transition-colors">
+                        Learn more <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                </div>
+
+                <!-- Service Card 4 -->
+                <div class="bg-offwhite rounded-[2.5rem] p-8 hover:-translate-y-2 transition-transform duration-300 group border border-gray-100 hover:shadow-xl hover:shadow-orange/5" data-aos="fade-up" data-aos-delay="400">
+                    <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center text-orange text-2xl mb-6 shadow-sm group-hover:bg-orange group-hover:text-white transition-colors">
+                        <i class="fa-solid fa-teeth-open"></i>
+                    </div>
+                    <h3 class="font-display text-2xl font-bold mb-4 text-navy">Prosthetics</h3>
+                    <p class="text-gray-600 mb-6">Crowns, bridges, and dentures customized to comfortably fit and function perfectly.</p>
+                    <a href="#" class="text-navy font-bold inline-flex items-center gap-2 group-hover:text-orange transition-colors">
+                        Learn more <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                </div>
+
+                <!-- Service Card 5 -->
+                <div class="bg-navy rounded-[2.5rem] p-8 hover:-translate-y-2 transition-transform duration-300 group shadow-xl" data-aos="fade-up" data-aos-delay="500">
+                    <div class="w-16 h-16 bg-orange rounded-full flex items-center justify-center text-white text-2xl mb-6 shadow-sm">
+                        <i class="fa-solid fa-child-reaching"></i>
+                    </div>
+                    <h3 class="font-display text-2xl font-bold mb-4 text-white">Pediatric Dentistry</h3>
+                    <p class="text-gray-300 mb-6">A fun, warm, and gentle approach to ensure your child's first visits are entirely fear-free.</p>
+                    <a href="#" class="text-orange font-bold inline-flex items-center gap-2 hover:text-white transition-colors">
+                        Learn more <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                </div>
+
+                <!-- Service Card 6 (View All) -->
+                <div class="bg-orange-light rounded-[2.5rem] p-8 flex flex-col justify-center items-center text-center hover:-translate-y-2 transition-transform duration-300 group border border-orange/20 cursor-pointer" data-aos="fade-up" data-aos-delay="600">
+                    <div class="w-20 h-20 bg-orange rounded-full flex items-center justify-center text-white text-3xl mb-4 group-hover:scale-110 transition-transform shadow-lg shadow-orange/40">
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </div>
+                    <h3 class="font-display text-2xl font-bold text-navy">View All 11 Specialties</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trust / Testimonials Section -->
+    <section class="py-24 bg-offwhite relative overflow-hidden">
+        <!-- Giant background text -->
+        <div class="absolute top-0 left-0 w-full overflow-hidden pointer-events-none flex justify-center z-0">
+            <h2 class="text-[15vw] font-display font-bold text-outline whitespace-nowrap">SMILE TRANSFORMATIONS</h2>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-6" data-aos="fade-up">
+                <div class="max-w-2xl">
+                    <h2 class="font-display text-4xl lg:text-5xl font-bold mb-4 text-navy">Overcome your fear. <br>Join our happy patients.</h2>
+                    <p class="text-lg text-gray-600">We pride ourselves on creating a friendly environment where anxiety disappears.</p>
+                </div>
+                <div class="flex-shrink-0">
+                    <a href="#" class="bg-white text-navy border-2 border-navy px-6 py-3 rounded-full font-bold hover:bg-navy hover:text-white transition-colors">
+                        Read more on ZnanyLekarz
+                    </a>
+                </div>
+            </div>
+
+            <!-- Horizontal scroll container for reviews -->
+            <div class="flex overflow-x-auto gap-6 pb-8 pt-4 no-scrollbar snap-x" data-aos="fade-up" data-aos-delay="200">
+                
+                <!-- Review Card -->
+                <div class="min-w-[320px] md:min-w-[400px] bg-white rounded-[2rem] p-8 shadow-sm border border-gray-100 snap-center">
+                    <div class="flex text-orange mb-4 text-sm">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="text-gray-700 mb-6 italic">"I have always been terrified of the dentist. The team here completely changed my mind. The doctor explained everything calmly, and it was entirely painless. Highly recommend!"</p>
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 bg-orange-light text-orange rounded-full flex items-center justify-center font-bold text-xl">M</div>
+                        <div>
+                            <h4 class="font-bold text-navy">Magdalena K.</h4>
+                            <p class="text-sm text-gray-500">Verified via ZnanyLekarz</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Review Card -->
+                <div class="min-w-[320px] md:min-w-[400px] bg-white rounded-[2rem] p-8 shadow-sm border border-gray-100 snap-center">
+                    <div class="flex text-orange mb-4 text-sm">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="text-gray-700 mb-6 italic">"Fantastic place for kids! My son usually cries at the clinic, but the pediatric dentist was so fun and engaging that he actually asked when we can go back."</p>
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center font-bold text-xl">T</div>
+                        <div>
+                            <h4 class="font-bold text-navy">Tomasz W.</h4>
+                            <p class="text-sm text-gray-500">Verified Patient</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Review Card -->
+                <div class="min-w-[320px] md:min-w-[400px] bg-navy rounded-[2rem] p-8 shadow-lg snap-center text-white">
+                    <div class="flex text-orange mb-4 text-sm">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="text-gray-200 mb-6 italic">"The implant process was explained so well. I felt taken care of during the whole procedure. Modern clinic, but with a very warm, human touch. No premium snobbery here."</p>
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 bg-white/20 text-white rounded-full flex items-center justify-center font-bold text-xl">A</div>
+                        <div>
+                            <h4 class="font-bold">Anna P.</h4>
+                            <p class="text-sm text-gray-400">Smile Transformation</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section (Alpine.js) -->
+    <section class="py-24 bg-white" id="faq">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16" data-aos="fade-up">
+                <h2 class="font-display text-4xl lg:text-5xl font-bold mb-4 text-navy">Frequent Questions</h2>
+                <p class="text-lg text-gray-600">Everything you need to know before your first visit.</p>
+            </div>
+
+            <div class="space-y-4" data-aos="fade-up" data-aos-delay="100">
+                <!-- FAQ Item 1 -->
+                <div x-data="{ expanded: false }" class="border border-gray-200 rounded-[2rem] overflow-hidden bg-offwhite">
+                    <button @click="expanded = !expanded" class="w-full px-8 py-6 flex justify-between items-center focus:outline-none">
+                        <span class="font-bold text-lg text-navy text-left">I'm terrified of the dentist. How can you help?</span>
+                        <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center flex-shrink-0 text-orange transition-transform duration-300" :class="expanded ? 'rotate-180' : ''">
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </div>
+                    </button>
+                    <div x-show="expanded" x-collapse x-cloak>
+                        <div class="px-8 pb-6 text-gray-600">
+                            We specialize in helping patients overcome their fear! Our doctors take time to explain every step, we use the best modern anesthetics for truly pain-free treatment, and our clinic environment is designed to be warm and non-clinical. You are always in control during the visit.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FAQ Item 2 -->
+                <div x-data="{ expanded: false }" class="border border-gray-200 rounded-[2rem] overflow-hidden bg-offwhite">
+                    <button @click="expanded = !expanded" class="w-full px-8 py-6 flex justify-between items-center focus:outline-none">
+                        <span class="font-bold text-lg text-navy text-left">Can I book an appointment through ZnanyLekarz?</span>
+                        <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center flex-shrink-0 text-orange transition-transform duration-300" :class="expanded ? 'rotate-180' : ''">
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </div>
+                    </button>
+                    <div x-show="expanded" x-collapse x-cloak>
+                        <div class="px-8 pb-6 text-gray-600">
+                            Yes, absolutely! We are fully integrated with ZnanyLekarz.pl. You can choose your preferred doctor, see their real-time calendar, and book a convenient slot directly online without needing to call us.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FAQ Item 3 -->
+                <div x-data="{ expanded: false }" class="border border-gray-200 rounded-[2rem] overflow-hidden bg-offwhite">
+                    <button @click="expanded = !expanded" class="w-full px-8 py-6 flex justify-between items-center focus:outline-none">
+                        <span class="font-bold text-lg text-navy text-left">Do you treat children?</span>
+                        <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center flex-shrink-0 text-orange transition-transform duration-300" :class="expanded ? 'rotate-180' : ''">
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </div>
+                    </button>
+                    <div x-show="expanded" x-collapse x-cloak>
+                        <div class="px-8 pb-6 text-gray-600">
+                            Yes! We love welcoming children. We offer special adaptation visits for the youngest patients, where they get to explore the clinic, ride the chair, and meet the doctor in a fun, stress-free way.
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- FAQ Item 4 -->
+                <div x-data="{ expanded: false }" class="border border-gray-200 rounded-[2rem] overflow-hidden bg-offwhite">
+                    <button @click="expanded = !expanded" class="w-full px-8 py-6 flex justify-between items-center focus:outline-none">
+                        <span class="font-bold text-lg text-navy text-left">Are your services very expensive?</span>
+                        <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center flex-shrink-0 text-orange transition-transform duration-300" :class="expanded ? 'rotate-180' : ''">
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </div>
+                    </button>
+                    <div x-show="expanded" x-collapse x-cloak>
+                        <div class="px-8 pb-6 text-gray-600">
+                            We aim to be an accessible clinic for everyone, not an exclusive premium brand. We offer transparent pricing, and we will always discuss treatment options and costs with you before starting any procedure.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact & Booking Section -->
+    <section id="contact" class="py-24 bg-navy relative overflow-hidden text-white">
+        <!-- Abstract shape -->
+        <div class="absolute top-[-20%] right-[-10%] w-[600px] h-[600px] bg-orange rounded-full mix-blend-screen filter blur-[100px] opacity-20 pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid lg:grid-cols-2 gap-16">
+                
+                <!-- Contact Info -->
+                <div data-aos="fade-right">
+                    <h2 class="font-display text-4xl lg:text-5xl font-bold mb-6">Let's schedule <br>your visit.</h2>
+                    <p class="text-gray-300 text-lg mb-10 max-w-md">Ready to take care of your smile in a friendly atmosphere? Contact us or book instantly via our partner portal.</p>
+                    
+                    <div class="space-y-6 mb-12">
+                        <div class="flex items-center gap-4">
+                            <div class="w-14 h-14 rounded-full bg-white/10 flex items-center justify-center text-orange text-xl">
+                                <i class="fa-solid fa-location-dot"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold">Clinic Address</h4>
+                                <p class="text-gray-300">ul. Przykładowa 12/3<br>00-001 Warsaw, Poland</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <div class="w-14 h-14 rounded-full bg-white/10 flex items-center justify-center text-orange text-xl">
+                                <i class="fa-solid fa-phone"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold">Phone</h4>
+                                <p class="text-gray-300">+48 123 456 789</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <div class="w-14 h-14 rounded-full bg-white/10 flex items-center justify-center text-orange text-xl">
+                                <i class="fa-regular fa-clock"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold">Opening Hours</h4>
+                                <p class="text-gray-300">Mon - Fri: 8:00 - 20:00<br>Sat: 9:00 - 14:00</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <a href="#" class="bg-[#00B39B] hover:bg-[#009b86] text-white px-8 py-4 rounded-full font-bold text-lg transition-transform hover:scale-105 inline-flex items-center gap-3 w-full sm:w-auto justify-center">
+                        <i class="fa-solid fa-calendar-check"></i> Book on ZnanyLekarz
+                    </a>
+                </div>
+
+                <!-- Contact Form -->
+                <div class="bg-white rounded-[2.5rem] p-8 lg:p-12 text-navy shadow-2xl" data-aos="fade-left">
+                    <h3 class="font-display text-2xl font-bold mb-6">Send us a message</h3>
+                    <form class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 mb-1" for="name">Name</label>
+                            <input type="text" id="name" class="w-full px-5 py-4 bg-offwhite border border-gray-200 rounded-2xl focus:outline-none focus:border-orange focus:ring-1 focus:ring-orange transition-colors" placeholder="Jan Kowalski">
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-bold text-gray-700 mb-1" for="phone">Phone</label>
+                                <input type="tel" id="phone" class="w-full px-5 py-4 bg-offwhite border border-gray-200 rounded-2xl focus:outline-none focus:border-orange focus:ring-1 focus:ring-orange transition-colors" placeholder="+48 ...">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-bold text-gray-700 mb-1" for="service">Service</label>
+                                <select id="service" class="w-full px-5 py-4 bg-offwhite border border-gray-200 rounded-2xl focus:outline-none focus:border-orange focus:ring-1 focus:ring-orange transition-colors appearance-none">
+                                    <option>General Checkup</option>
+                                    <option>Implantology</option>
+                                    <option>Orthodontics</option>
+                                    <option>Pediatric Visit</option>
+                                    <option>Other</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 mb-1" for="message">Message (Optional)</label>
+                            <textarea id="message" rows="3" class="w-full px-5 py-4 bg-offwhite border border-gray-200 rounded-2xl focus:outline-none focus:border-orange focus:ring-1 focus:ring-orange transition-colors" placeholder="How can we help you?"></textarea>
+                        </div>
+                        <button type="button" class="w-full bg-orange hover:bg-orange-hover text-white font-bold text-lg py-4 rounded-full mt-4 transition-transform hover:scale-[1.02] shadow-lg shadow-orange/30">
+                            Send Request
+                        </button>
+                        <p class="text-xs text-center text-gray-500 mt-4">We respect your privacy. By submitting this form, you agree to our <a href="#" class="underline">Privacy Policy</a>.</p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-navy border-t border-white/10 pt-16 pb-8 text-gray-400">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
+                <!-- Brand -->
+                <div>
+                    <div class="flex items-center gap-2 mb-6">
+                        <div class="w-8 h-8 bg-white text-navy rounded-full flex items-center justify-center">
+                            <i class="fa-solid fa-tooth"></i>
+                        </div>
+                        <span class="font-display font-bold text-xl text-white">Dental<span class="text-orange">Care</span></span>
+                    </div>
+                    <p class="mb-6">Building friendly, healthy smiles across Poland. Your accessible clinic for comprehensive dental treatments.</p>
+                    <div class="flex gap-4">
+                        <a href="#" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-orange hover:text-white transition-colors"><i class="fa-brands fa-facebook-f"></i></a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-orange hover:text-white transition-colors"><i class="fa-brands fa-instagram"></i></a>
+                    </div>
+                </div>
+
+                <!-- Quick Links -->
+                <div>
+                    <h4 class="text-white font-bold mb-6 font-display">Navigation</h4>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="hover:text-orange transition-colors">Home</a></li>
+                        <li><a href="#" class="hover:text-orange transition-colors">About Us</a></li>
+                        <li><a href="#" class="hover:text-orange transition-colors">Our Team</a></li>
+                        <li><a href="#" class="hover:text-orange transition-colors">Pricing</a></li>
+                        <li><a href="#contact" class="hover:text-orange transition-colors">Contact</a></li>
+                    </ul>
+                </div>
+
+                <!-- Services Links -->
+                <div>
+                    <h4 class="text-white font-bold mb-6 font-display">Services</h4>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="hover:text-orange transition-colors">Implantology</a></li>
+                        <li><a href="#" class="hover:text-orange transition-colors">Aesthetic Dentistry</a></li>
+                        <li><a href="#" class="hover:text-orange transition-colors">Orthodontics</a></li>
+                        <li><a href="#" class="hover:text-orange transition-colors">Prosthetics</a></li>
+                        <li><a href="#" class="hover:text-orange transition-colors">Pediatric Dentistry</a></li>
+                    </ul>
+                </div>
+
+                <!-- Footer CTA -->
+                <div>
+                    <h4 class="text-white font-bold mb-6 font-display">Ready for a visit?</h4>
+                    <p class="mb-6">Don't let fear hold back your smile. Book your appointment today.</p>
+                    <a href="#contact" class="inline-block bg-white text-navy px-6 py-3 rounded-full font-bold hover:bg-orange hover:text-white transition-colors">
+                        Book Appointment
+                    </a>
+                </div>
+            </div>
+
+            <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center text-sm">
+                <p>&copy; 2026 DentalCare Poland. All rights reserved.</p>
+                <div class="flex gap-4 mt-4 md:mt-0">
+                    <a href="#" class="hover:text-white">Privacy Policy</a>
+                    <a href="#" class="hover:text-white">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Initialize AOS Animation -->
+    <script>
+        AOS.init({
+            once: true,
+            offset: 50,
+            duration: 800,
+            easing: 'ease-out-cubic',
+        });
+    </script>
+</body>
+</html>
