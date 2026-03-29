@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neighborhood Marketing AI | Dominate Your Local Radius</title>
+    
+    <!-- Google Fonts for Awwwards Style Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- AOS Animation Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display:['Space Grotesk', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            dark: '#050505',
+                            card: '#111111',
+                            purple: '#8B5CF6',
+                            pink: '#EC4899',
+                            cyan: '#06B6D4'
+                        }
+                    },
+                    animation: {
+                        'blob': 'blob 7s infinite',
+                        'pulse-slow': 'pulse-slow 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        blob: {
+                            '0%': { transform: 'translate(0px, 0px) scale(1)' },
+                            '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+                            '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+                            '100%': { transform: 'translate(0px, 0px) scale(1)' },
+                        },
+                        'pulse-slow': {
+                            '0%, 100%': { opacity: 1 },
+                            '50%': { opacity: .5 },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #050505;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+        
+        /* Glassmorphism utilities */
+        .glass {
+            background: rgba(17, 17, 17, 0.4);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        
+        .glass-card {
+            background: linear-gradient(180deg, rgba(30, 30, 30, 0.6) 0%, rgba(15, 15, 15, 0.8) 100%);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: transform 0.4s ease, border-color 0.4s ease;
+        }
+
+        .glass-card:hover {
+            border-color: rgba(139, 92, 246, 0.4);
+            transform: translateY(-5px);
+        }
+
+        /* Custom text gradient */
+        .text-gradient {
+            background: linear-gradient(135deg, #06B6D4 0%, #8B5CF6 50%, #EC4899 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Radar Animation for 0.5 mile radius */
+        .radar-circle {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            border: 1px solid rgba(6, 182, 212, 0.5);
+            animation: radar 3s infinite ease-out;
+        }
+
+        .radar-circle:nth-child(2) { animation-delay: 1s; }
+        .radar-circle:nth-child(3) { animation-delay: 2s; }
+
+        @keyframes radar {
+            0% { width: 0; height: 0; opacity: 1; }
+            100% { width: 300px; height: 300px; opacity: 0; }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #050505; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #555; }
+    </style>
+</head>
+<body class="antialiased selection:bg-brand-purple selection:text-white">
+
+    <!-- Background Ambient Glow -->
+    <div class="fixed top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-brand-purple/20 rounded-full mix-blend-screen filter blur-[120px] animate-blob"></div>
+        <div class="absolute top-[20%] right-[-10%] w-[40%] h-[40%] bg-brand-cyan/20 rounded-full mix-blend-screen filter blur-[120px] animate-blob animation-delay-2000"></div>
+        <div class="absolute bottom-[-20%] left-[20%] w-[40%] h-[40%] bg-brand-pink/20 rounded-full mix-blend-screen filter blur-[120px] animate-blob animation-delay-4000"></div>
+    </div>
+
+    <!-- Header / Nav -->
+    <nav class="fixed w-full z-50 top-0 transition-all duration-300 glass" id="navbar">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            
+            <!-- Logo -->
+            <a href="#" class="flex items-center gap-3 group">
+                <div class="relative w-10 h-10 flex items-center justify-center bg-white/5 rounded-xl border border-white/10 group-hover:border-brand-purple/50 transition-colors">
+                    <!-- Custom SVG Logo: Represents a map pin + radar waves + AI node -->
+                    <svg viewBox="0 0 24 24" fill="none" class="w-6 h-6" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 13.5C13.6569 13.5 15 12.1569 15 10.5C15 8.84315 13.6569 7.5 12 7.5C10.3431 7.5 9 8.84315 9 10.5C9 12.1569 10.3431 13.5 12 13.5Z" stroke="url(#paint0_linear)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M12 22C12 22 19 16.5 19 10.5C19 6.63401 15.866 3.5 12 3.5C8.13401 3.5 5 6.63401 5 10.5C5 16.5 12 22 12 22Z" stroke="url(#paint1_linear)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M2 10.5C2 10.5 4 10.5 4.5 10.5" stroke="#06B6D4" stroke-width="2" stroke-linecap="round"/>
+                        <path d="M22 10.5C22 10.5 20 10.5 19.5 10.5" stroke="#EC4899" stroke-width="2" stroke-linecap="round"/>
+                        <defs>
+                            <linearGradient id="paint0_linear" x1="9" y1="7.5" x2="15" y2="13.5" gradientUnits="userSpaceOnUse">
+                                <stop stop-color="#06B6D4"/>
+                                <stop offset="1" stop-color="#8B5CF6"/>
+                            </linearGradient>
+                            <linearGradient id="paint1_linear" x1="5" y1="3.5" x2="19" y2="22" gradientUnits="userSpaceOnUse">
+                                <stop stop-color="#8B5CF6"/>
+                                <stop offset="1" stop-color="#EC4899"/>
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                </div>
+                <div class="flex flex-col">
+                    <span class="font-display font-bold text-lg leading-tight tracking-tight">Neighborhood</span>
+                    <span class="font-sans text-xs text-gray-400 font-medium tracking-widest uppercase">Marketing AI</span>
+                </div>
+            </a>
+
+            <!-- Desktop Links -->
+            <div class="hidden md:flex items-center gap-8 font-sans text-sm font-medium text-gray-300">
+                <a href="#platform" class="hover:text-white transition-colors">Platform</a>
+                <a href="#channels" class="hover:text-white transition-colors">Channels</a>
+                <a href="#radius" class="hover:text-white transition-colors">0.5-Mile Radius</a>
+            </div>
+
+            <!-- CTA -->
+            <a href="#contact" class="hidden md:inline-flex items-center justify-center px-6 py-2.5 text-sm font-semibold text-white bg-white/10 border border-white/20 rounded-full hover:bg-white hover:text-black transition-all duration-300">
+                Initialize Campaign
+            </a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative min-h-screen flex items-center justify-center pt-24 pb-12 px-6">
+        <div class="max-w-5xl mx-auto text-center z-10">
+            
+            <div data-aos="fade-down" data-aos-duration="1000" class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass border-brand-purple/30 mb-8 text-sm font-medium">
+                <span class="w-2 h-2 rounded-full bg-brand-cyan animate-pulse"></span>
+                Welcome to neighborhoodmarketing.ai
+            </div>
+
+            <h1 data-aos="fade-up" data-aos-duration="1000" data-aos-delay="100" class="font-display text-5xl md:text-7xl lg:text-8xl font-bold tracking-tighter leading-[1.1] mb-6">
+                Dominate your <br />
+                <span class="text-gradient">0.5-Mile Radius.</span>
+            </h1>
+
+            <p data-aos="fade-up" data-aos-duration="1000" data-aos-delay="200" class="max-w-2xl mx-auto text-lg md:text-xl text-gray-400 font-sans mb-10 leading-relaxed">
+                Hyper-targeted, AI-driven omnichannel marketing. Engage your precise neighborhood via automated Calls, SMS, Direct Mail Postcards, Email, and Social Media.
+            </p>
+
+            <div data-aos="fade-up" data-aos-duration="1000" data-aos-delay="300" class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <a href="#contact" class="w-full sm:w-auto px-8 py-4 rounded-full bg-white text-black font-semibold text-lg hover:scale-105 transition-transform duration-300">
+                    Target My Neighborhood
+                </a>
+                <a href="#platform" class="w-full sm:w-auto px-8 py-4 rounded-full glass text-white font-semibold text-lg hover:bg-white/10 transition-colors duration-300 flex items-center justify-center gap-2">
+                    See How It Works 
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- The 0.5 Mile Concept / Visual -->
+    <section id="radius" class="py-24 px-6 relative border-t border-white/5">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+                
+                <div data-aos="fade-right" data-aos-duration="1000">
+                    <h2 class="font-display text-4xl md:text-5xl font-bold mb-6">
+                        Hyper-Local Focus. <br>
+                        <span class="text-gradient">Maximum Impact.</span>
+                    </h2>
+                    <p class="text-gray-400 text-lg mb-8 font-sans leading-relaxed">
+                        Why cast a wide, inefficient net when your best customers are right next door? Our proprietary AI algorithms map a precise <strong>0.5-mile radius</strong> around your business or target zone, extracting highly qualified household data to fuel your campaigns.
+                    </p>
+                    <ul class="space-y-4">
+                        <li class="flex items-center gap-4 text-gray-300">
+                            <div class="w-8 h-8 rounded-full bg-brand-cyan/20 flex items-center justify-center text-brand-cyan">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            </div>
+                            Pinpoint Demographics & Behavioral Data
+                        </li>
+                        <li class="flex items-center gap-4 text-gray-300">
+                            <div class="w-8 h-8 rounded-full bg-brand-purple/20 flex items-center justify-center text-brand-purple">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            </div>
+                            Zero Wasted Ad Spend
+                        </li>
+                        <li class="flex items-center gap-4 text-gray-300">
+                            <div class="w-8 h-8 rounded-full bg-brand-pink/20 flex items-center justify-center text-brand-pink">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            </div>
+                            Complete Omnichannel Synchronization
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Radar Visual -->
+                <div data-aos="zoom-in" data-aos-duration="1200" class="relative w-full aspect-square max-w-md mx-auto">
+                    <div class="absolute inset-0 bg-white/5 rounded-3xl border border-white/10 overflow-hidden flex items-center justify-center glass">
+                        <!-- Simulated Map Grid -->
+                        <div class="absolute inset-0 opacity-20" style="background-image: linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px); background-size: 40px 40px;"></div>
+                        
+                        <!-- Radar animations -->
+                        <div class="radar-circle"></div>
+                        <div class="radar-circle"></div>
+                        <div class="radar-circle"></div>
+                        
+                        <!-- Center Pin -->
+                        <div class="relative z-10 w-12 h-12 bg-gradient-to-tr from-brand-cyan to-brand-purple rounded-full flex items-center justify-center shadow-[0_0_40px_rgba(139,92,246,0.6)] animate-float">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                        </div>
+
+                        <!-- Badge -->
+                        <div class="absolute bottom-6 right-6 glass px-4 py-2 rounded-lg border border-white/20 text-xs font-bold tracking-wider uppercase text-brand-cyan">
+                            Target Radius: 0.5 Mi
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Omnichannel Bento Grid -->
+    <section id="channels" class="py-24 px-6">
+        <div class="max-w-7xl mx-auto">
+            
+            <div class="text-center mb-16" data-aos="fade-up">
+                <h2 class="font-display text-4xl md:text-5xl font-bold mb-4">The Omnichannel Arsenal</h2>
+                <p class="text-gray-400 text-lg max-w-2xl mx-auto">One unified AI engine to launch synchronized campaigns across every critical touchpoint in your neighborhood.</p>
+            </div>
+
+            <!-- Bento Box Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 auto-rows-[250px] gap-6">
+                
+                <!-- Voice / Calls (Span 2) -->
+                <div data-aos="fade-up" data-aos-delay="100" class="glass-card rounded-3xl p-8 flex flex-col justify-between md:col-span-2 relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 w-64 h-64 bg-brand-purple/20 rounded-full mix-blend-screen filter blur-[80px] group-hover:bg-brand-purple/40 transition-all duration-500"></div>
+                    <div class="relative z-10">
+                        <div class="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center border border-white/10 mb-6">
+                            <svg class="w-6 h-6 text-brand-purple" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
+                        </div>
+                        <h3 class="font-display text-2xl font-bold mb-2">AI-Powered Calls</h3>
+                        <p class="text-gray-400 font-sans">Deploy lifelike AI voice agents or automated ringless voicemails to initiate direct, personal conversations with local prospects.</p>
+                    </div>
+                </div>
+
+                <!-- SMS -->
+                <div data-aos="fade-up" data-aos-delay="200" class="glass-card rounded-3xl p-8 flex flex-col justify-between relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-brand-cyan/20 rounded-full mix-blend-screen filter blur-[50px] group-hover:bg-brand-cyan/40 transition-all duration-500"></div>
+                    <div class="relative z-10">
+                        <div class="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center border border-white/10 mb-6">
+                            <svg class="w-6 h-6 text-brand-cyan" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path></svg>
+                        </div>
+                        <h3 class="font-display text-2xl font-bold mb-2">SMS Texting</h3>
+                        <p class="text-gray-400 font-sans text-sm">Instant open rates. Send hyper-targeted, localized offers directly to their pockets.</p>
+                    </div>
+                </div>
+
+                <!-- Postcards -->
+                <div data-aos="fade-up" data-aos-delay="300" class="glass-card rounded-3xl p-8 flex flex-col justify-between relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-brand-pink/20 rounded-full mix-blend-screen filter blur-[50px] group-hover:bg-brand-pink/40 transition-all duration-500"></div>
+                    <div class="relative z-10">
+                        <div class="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center border border-white/10 mb-6">
+                            <svg class="w-6 h-6 text-brand-pink" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 19v-8.93a2 2 0 01.89-1.664l7-4.666a2 2 0 012.22 0l7 4.666A2 2 0 0121 10.07V19M3 19a2 2 0 002 2h14a2 2 0 002-2M3 19l6.75-4.5M21 19l-6.75-4.5M3 10l6.75 4.5M21 10l-6.75 4.5m0 0l-1.14.76a2 2 0 01-2.22 0l-1.14-.76"></path></svg>
+                        </div>
+                        <h3 class="font-display text-2xl font-bold mb-2">Smart Postcards</h3>
+                        <p class="text-gray-400 font-sans text-sm">Automated direct mail triggered by AI. Tangible, beautiful postcards delivered to homes in your 0.5-mile zone.</p>
+                    </div>
+                </div>
+
+                <!-- Email & Social (Span 2) -->
+                <div data-aos="fade-up" data-aos-delay="400" class="glass-card rounded-3xl p-8 flex flex-col justify-between md:col-span-2 relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full mix-blend-screen filter blur-[80px] group-hover:bg-white/20 transition-all duration-500"></div>
+                    <div class="relative z-10">
+                        <div class="flex gap-4 mb-6">
+                            <div class="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center border border-white/10">
+                                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"></path></svg>
+                            </div>
+                            <div class="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center border border-white/10">
+                                <svg class="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5"></path></svg>
+                            </div>
+                        </div>
+                        <h3 class="font-display text-2xl font-bold mb-2">Email & Social Retargeting</h3>
+                        <p class="text-gray-400 font-sans">Blanket the neighborhood digitally. We match physical addresses to digital profiles to serve ads on Meta/Instagram and drop perfectly timed emails.</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section id="contact" class="py-24 px-6 relative">
+        <div class="max-w-5xl mx-auto">
+            <div data-aos="zoom-in" data-aos-duration="1000" class="glass rounded-[3rem] p-10 md:p-20 text-center relative overflow-hidden border border-white/20">
+                <!-- Background visual for CTA -->
+                <div class="absolute inset-0 bg-gradient-to-br from-brand-purple/20 via-transparent to-brand-cyan/20 opacity-50"></div>
+                
+                <div class="relative z-10">
+                    <h2 class="font-display text-4xl md:text-6xl font-bold mb-6">
+                        Ready to own <br /> your neighborhood?
+                    </h2>
+                    <p class="text-gray-300 text-lg mb-10 max-w-xl mx-auto">
+                        Stop guessing. Start dominating. Enter your business address and let our AI build your 0.5-mile omnichannel strategy today.
+                    </p>
+                    
+                    <form class="flex flex-col sm:flex-row gap-4 max-w-xl mx-auto">
+                        <input type="email" placeholder="Enter your business email" class="flex-1 bg-black/50 border border-white/20 rounded-full px-6 py-4 text-white placeholder-gray-500 focus:outline-none focus:border-brand-purple transition-colors">
+                        <button type="submit" class="px-8 py-4 rounded-full bg-gradient-to-r from-brand-purple to-brand-cyan text-white font-bold hover:scale-105 transition-transform duration-300 whitespace-nowrap">
+                            Get Demo
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t border-white/10 bg-black/50 py-12 px-6">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded bg-white/10 flex items-center justify-center border border-white/10">
+                    <svg viewBox="0 0 24 24" fill="none" class="w-5 h-5" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 13.5C13.6569 13.5 15 12.1569 15 10.5C15 8.84315 13.6569 7.5 12 7.5C10.3431 7.5 9 8.84315 9 10.5C9 12.1569 10.3431 13.5 12 13.5Z" stroke="#06B6D4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M12 22C12 22 19 16.5 19 10.5C19 6.63401 15.866 3.5 12 3.5C8.13401 3.5 5 6.63401 5 10.5C5 16.5 12 22 12 22Z" stroke="#8B5CF6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <span class="font-display font-bold text-lg">neighborhoodmarketing.ai</span>
+            </div>
+            
+            <div class="flex gap-6 text-sm text-gray-400">
+                <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
+                <a href="#" class="hover:text-white transition-colors">Terms of Service</a>
+                <a href="#" class="hover:text-white transition-colors">Contact</a>
+            </div>
+            
+            <div class="text-sm text-gray-500">
+                &copy; 2024 Neighborhood Marketing AI. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <!-- AOS Script Initialization -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            once: true,
+            offset: 50,
+            duration: 800,
+            easing: 'ease-out-cubic',
+        });
+
+        // Navbar blur effect on scroll
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            if (window.scrollY > 20) {
+                nav.classList.add('shadow-lg', 'border-b', 'border-white/5');
+            } else {
+                nav.classList.remove('shadow-lg', 'border-b', 'border-white/5');
+            }
+        });
+    </script>
+</body>
+</html>
