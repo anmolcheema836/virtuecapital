@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Observata | Operate critical services with confidence</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        /* ==========================================================================
+           1. DESIGN SYSTEM & VARIABLES
+           ========================================================================== */
+        :root {
+            /* Brand Colors */
+            --dark-blue: #113868;
+            --accent-blue: #0598ce;
+            --light-grey: #e7e9ea;
+            --white: #ffffff;
+            
+            /* New Accent: Electric Indigo - Premium, Technical, High-Contrast */
+            --accent-indigo: #4338CA;
+            
+            /* Semantic Colors */
+            --bg-page: #f9fbfe; /* Ultra-light cool grey/blue for depth */
+            --text-main: #0B2240; /* Deeper than dark-blue for ultra contrast */
+            --text-muted: #5A7594;
+            
+            /* Structural Effects */
+            --acrylic-bg: rgba(255, 255, 255, 0.65);
+            --acrylic-border: rgba(255, 255, 255, 0.8);
+            --shadow-sm: 0 4px 24px rgba(17, 56, 104, 0.04);
+            --shadow-lg: 0 32px 64px rgba(17, 56, 104, 0.08);
+            --shadow-float: 0 40px 80px rgba(17, 56, 104, 0.12);
+            
+            /* Layout Spacing */
+            --space-xl: 180px;
+            --space-lg: 120px;
+            --container-w: 1440px;
+            --radius-lg: 32px;
+            --radius-md: 16px;
+        }
+
+        /* ==========================================================================
+           2. GLOBAL RESET & TYPOGRAPHY
+           ========================================================================== */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            line-height: 1.5;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Editorial Typography Styling */
+        h1, h2, h3, .font-primary {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--text-main);
+            line-height: 1.05;
+            letter-spacing: -0.03em; /* Tight tracking for modern feel */
+            font-weight: 700;
+        }
+
+        p { font-size: 1.125rem; color: var(--text-muted); }
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+
+        .container {
+            max-width: var(--container-w);
+            margin: 0 auto;
+            padding: 0 4vw;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Reveal Animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 1.2s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .delay-1 { transition-delay: 0.1s; }
+        .delay-2 { transition-delay: 0.2s; }
+        .delay-3 { transition-delay: 0.3s; }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 18px 36px;
+            border-radius: 100px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            font-size: 1.05rem;
+            letter-spacing: -0.01em;
+            transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: var(--accent-indigo);
+            color: var(--white);
+            box-shadow: 0 10px 30px rgba(67, 56, 202, 0.25);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 15px 40px rgba(67, 56, 202, 0.4);
+            background: #3730a3;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-main);
+            border: 1px solid rgba(17, 56, 104, 0.15);
+        }
+
+        .btn-secondary:hover {
+            background: var(--white);
+            border-color: var(--white);
+            box-shadow: var(--shadow-sm);
+            transform: translateY(-4px);
+        }
+
+        /* Tag / Label */
+        .eyebrow {
+            display: inline-block;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--accent-indigo);
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .eyebrow::before {
+            content: '';
+            display: block;
+            width: 8px; height: 8px;
+            background: var(--accent-blue);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--accent-blue);
+        }
+
+        /* ==========================================================================
+           3. BACKGROUND METAPHOR: "DOTS. CONNECTED."
+           ========================================================================== */
+        /* Replaces chaotic canvas with an engineered, calm, structural grid */
+        .bg-system {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        /* Architectural Blueprint Grid */
+        .bg-grid {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: 
+                linear-gradient(to right, rgba(17, 56, 104, 0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(17, 56, 104, 0.03) 1px, transparent 1px);
+            background-size: 80px 80px;
+            mask-image: radial-gradient(circle at 50% 30%, black 20%, transparent 80%);
+            -webkit-mask-image: radial-gradient(circle at 50% 30%, black 20%, transparent 80%);
+        }
+
+        /* Soft glowing ambient orbs for depth */
+        .bg-glow-1, .bg-glow-2 {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.4;
+        }
+        .bg-glow-1 {
+            width: 600px; height: 600px;
+            background: var(--accent-blue);
+            top: -10%; left: -5%;
+        }
+        .bg-glow-2 {
+            width: 800px; height: 800px;
+            background: var(--accent-indigo);
+            bottom: -20%; right: -10%;
+            opacity: 0.15;
+        }
+
+        /* ==========================================================================
+           4. NAVIGATION
+           ========================================================================== */
+        header {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 100;
+            padding: 24px 4vw;
+            transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+
+        header.scrolled {
+            padding: 16px 4vw;
+            background: rgba(249, 251, 254, 0.85);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border-bottom: 1px solid rgba(17, 56, 104, 0.05);
+        }
+
+        .nav-inner {
+            max-width: var(--container-w);
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 800;
+            font-size: 1.5rem;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            letter-spacing: -0.02em;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 48px;
+            background: var(--acrylic-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            padding: 12px 32px;
+            border-radius: 100px;
+            border: 1px solid var(--acrylic-border);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .nav-links a {
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover { color: var(--accent-indigo); }
+
+        .nav-actions { display: flex; align-items: center; gap: 24px; }
+        .lang { font-size: 0.9rem; font-weight: 600; cursor: pointer; color: var(--text-main); }
+        
+        .mobile-menu { display: none; }
+
+        /* ==========================================================================
+           5. HERO SECTION
+           ========================================================================== */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            padding-top: 200px;
+            padding-bottom: 100px;
+            display: flex;
+            align-items: center;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .hero-text h1 {
+            font-size: clamp(3.5rem, 6vw, 5.5rem);
+            margin-bottom: 32px;
+            /* Text gradient for premium finish */
+            background: linear-gradient(to right, var(--text-main) 30%, var(--accent-indigo) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            padding-right: 10%;
+        }
+
+        .hero-text p {
+            font-size: clamp(1.1rem, 2vw, 1.35rem);
+            max-width: 540px;
+            margin-bottom: 48px;
+            color: var(--text-muted);
+        }
+
+        .hero-ctas { display: flex; gap: 16px; }
+
+        /* Hero Abstract Layered Visual */
+        .hero-visual {
+            position: relative;
+            height: 600px;
+            perspective: 1000px;
+        }
+
+        .acrylic-panel {
+            position: absolute;
+            border-radius: var(--radius-lg);
+            background: linear-gradient(135deg, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0.3) 100%);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid var(--acrylic-border);
+            box-shadow: var(--shadow-float);
+        }
+
+        /* Layer 1: Base Platform */
+        .panel-1 {
+            width: 80%; height: 70%;
+            bottom: 0; left: 10%;
+            transform: rotateX(15deg) rotateY(-15deg) translateZ(-50px);
+            animation: float 8s ease-in-out infinite alternate;
+        }
+
+        /* Layer 2: Signals & Visibility */
+        .panel-2 {
+            width: 70%; height: 60%;
+            top: 10%; right: 5%;
+            transform: rotateX(5deg) rotateY(-5deg) translateZ(50px);
+            background: linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.5) 100%);
+            animation: float 7s ease-in-out infinite alternate-reverse;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 40px;
+        }
+
+        /* Layer 3: Control Element */
+        .panel-3 {
+            width: 40%; height: 30%;
+            bottom: 20%; left: -5%;
+            transform: translateZ(120px);
+            background: rgba(255,255,255,0.95);
+            animation: float 6s ease-in-out infinite alternate;
+            padding: 24px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        /* Mock UI inside panels */
+        .mock-line { height: 6px; background: var(--light-grey); border-radius: 4px; margin-bottom: 16px; }
+        .mock-line.w-full { width: 100%; }
+        .mock-line.w-half { width: 50%; }
+        .mock-line.accent { background: var(--accent-blue); width: 75%; }
+        
+        .status-ring {
+            width: 60px; height: 60px;
+            border-radius: 50%;
+            border: 6px solid var(--light-grey);
+            border-top-color: var(--accent-indigo);
+            border-right-color: var(--accent-indigo);
+            transform: rotate(45deg);
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px) rotateX(10deg) rotateY(-10deg); }
+            100% { transform: translateY(-20px) rotateX(15deg) rotateY(-5deg); }
+        }
+
+        /* ==========================================================================
+           6. TRUSTED BY
+           ========================================================================== */
+        .trusted-section {
+            padding: var(--space-lg) 0;
+            border-top: 1px solid rgba(17, 56, 104, 0.05);
+            border-bottom: 1px solid rgba(17, 56, 104, 0.05);
+            background: rgba(255, 255, 255, 0.3);
+            text-align: center;
+        }
+
+        .trusted-label {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--text-muted);
+            margin-bottom: 48px;
+            font-weight: 600;
+        }
+
+        .logo-grid {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: clamp(40px, 6vw, 100px);
+            flex-wrap: wrap;
+        }
+
+        .logo-item {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--text-main);
+            opacity: 0.4;
+            filter: grayscale(100%);
+            transition: all 0.4s ease;
+        }
+
+        .logo-item:hover {
+            opacity: 1;
+            filter: grayscale(0%);
+            color: var(--accent-indigo);
+        }
+
+        /* ==========================================================================
+           7. PROBLEMS WE SOLVE (Sticky Stacking Cards)
+           ========================================================================== */
+        .problems-section {
+            padding: var(--space-xl) 0;
+            position: relative;
+        }
+
+        .problems-layout {
+            display: grid;
+            grid-template-columns: 4fr 6fr;
+            gap: 80px;
+        }
+
+        .problems-intro {
+            position: sticky;
+            top: 200px; /* Sticks during scroll */
+            height: max-content;
+        }
+
+        .problems-intro h2 {
+            font-size: clamp(2.5rem, 4vw, 4rem);
+            margin-bottom: 24px;
+        }
+
+        .problems-intro p { max-width: 400px; }
+
+        .cards-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+            padding-bottom: 100px;
+        }
+
+        .problem-card {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            padding: 60px;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid rgba(17, 56, 104, 0.05);
+            position: sticky; /* The magic for stacking */
+            transition: transform 0.4s ease;
+        }
+
+        /* Create the overlapping deck effect */
+        .problem-card:nth-child(1) { top: 150px; z-index: 1; }
+        .problem-card:nth-child(2) { top: 180px; z-index: 2; }
+        .problem-card:nth-child(3) { top: 210px; z-index: 3; }
+
+        .card-index {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 4rem;
+            font-weight: 800;
+            color: rgba(17, 56, 104, 0.05);
+            position: absolute;
+            top: 40px; right: 40px;
+            line-height: 1;
+        }
+
+        .problem-card h3 {
+            font-size: 2rem;
+            margin-bottom: 24px;
+            max-width: 80%;
+        }
+
+        .problem-card p {
+            font-size: 1.125rem;
+            max-width: 90%;
+            line-height: 1.6;
+        }
+
+        /* ==========================================================================
+           8. SERVICE DOMAINS (Expansive Hover Rows)
+           ========================================================================== */
+        .services-section {
+            padding: var(--space-xl) 0;
+            background: var(--text-main); /* Deep dark blue for high contrast */
+            color: var(--white);
+            position: relative;
+        }
+
+        .services-section .eyebrow { color: var(--accent-blue); }
+        .services-section h2 { color: var(--white); font-size: clamp(3rem, 5vw, 4.5rem); margin-bottom: 80px;}
+        
+        .service-row {
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding: 60px 0;
+            display: grid;
+            grid-template-columns: 1fr 3fr;
+            gap: 40px;
+            cursor: pointer;
+            transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-row:last-child { border-bottom: 1px solid rgba(255,255,255,0.1); }
+
+        /* Hover overlay fill */
+        .service-row::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(to right, rgba(5, 152, 206, 0.1), transparent);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+            z-index: 0;
+        }
+
+        .service-row:hover::before { transform: scaleX(1); }
+        .service-row:hover { padding-left: 20px; padding-right: 20px; }
+
+        .service-title {
+            font-size: clamp(2rem, 3vw, 2.5rem);
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            position: relative; z-index: 1;
+        }
+
+        .service-desc {
+            font-size: 1.25rem;
+            color: rgba(255,255,255,0.6);
+            max-width: 700px;
+            position: relative; z-index: 1;
+            transition: color 0.4s ease;
+        }
+
+        .service-row:hover .service-desc { color: var(--white); }
+        .service-row:hover .service-title { color: var(--accent-blue); }
+
+        /* ==========================================================================
+           9. OUTCOMES (Bento Box Grid)
+           ========================================================================== */
+        .outcomes-section {
+            padding: var(--space-xl) 0;
+        }
+
+        .outcomes-header {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+
+        .outcomes-header h2 { font-size: clamp(2.5rem, 4vw, 4rem); }
+
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(2, 300px);
+            gap: 24px;
+        }
+
+        .bento-card {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            padding: 48px;
+            border: 1px solid rgba(17, 56, 104, 0.05);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+        }
+
+        .bento-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* Specific Bento Sizing */
+        .bento-large { grid-column: span 2; background: var(--bg-page); }
+        .bento-vertical { grid-row: span 2; background: var(--text-main); color: var(--white); }
+
+        .metric {
+            font-family: 'Montserrat', sans-serif;
+            font-size: clamp(3rem, 5vw, 5rem);
+            font-weight: 800;
+            line-height: 1;
+            margin-bottom: 16px;
+        }
+
+        .bento-vertical .metric { color: var(--accent-blue); }
+        .bento-card:not(.bento-vertical) .metric { color: var(--accent-indigo); }
+
+        .metric-label { font-size: 1.25rem; font-weight: 600; font-family: 'Montserrat', sans-serif;}
+        .bento-vertical .metric-label { color: var(--white); }
+        .bento-card:not(.bento-vertical) .metric-label { color: var(--text-main); }
+
+        .bento-desc { font-size: 1rem; color: var(--text-muted); margin-top: auto;}
+        .bento-vertical .bento-desc { color: rgba(255,255,255,0.7); }
+
+        /* Pattern for vertical card */
+        .bento-vertical::after {
+            content: '';
+            position: absolute;
+            bottom: -50px; right: -50px;
+            width: 300px; height: 300px;
+            background: radial-gradient(circle, rgba(5, 152, 206, 0.2) 0%, transparent 70%);
+        }
+
+        /* ==========================================================================
+           10. FOOTER
+           ========================================================================== */
+        footer {
+            background: var(--white);
+            padding: 100px 0 40px;
+            border-top: 1px solid rgba(17, 56, 104, 0.05);
+        }
+
+        .footer-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 80px;
+        }
+
+        .footer-cta h2 {
+            font-size: clamp(2rem, 3vw, 3.5rem);
+            margin-bottom: 32px;
+        }
+
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 40px;
+            border-top: 1px solid rgba(17, 56, 104, 0.1);
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .footer-links { display: flex; gap: 24px; }
+
+        /* ==========================================================================
+           11. RESPONSIVE DESIGN
+           ========================================================================== */
+        @media (max-width: 1024px) {
+            .hero-grid { grid-template-columns: 1fr; text-align: center; }
+            .hero-text p { margin: 0 auto 48px; }
+            .hero-ctas { justify-content: center; }
+            .hero-visual { display: none; /* Hide complex 3D on tablet for clean reading */ }
+            
+            .problems-layout { grid-template-columns: 1fr; }
+            .problems-intro { position: relative; top: 0; margin-bottom: 40px; }
+            .problem-card { position: relative; top: 0 !important; } /* Disable stacking on mobile */
+            
+            .service-row { grid-template-columns: 1fr; gap: 16px; padding: 40px 0;}
+            
+            .bento-grid { grid-template-columns: 1fr; grid-template-rows: auto; }
+            .bento-large, .bento-vertical { grid-column: span 1; grid-row: span 1; height: 300px;}
+            
+            .nav-links, .nav-actions .btn { display: none; }
+            .mobile-menu { display: block; font-size: 1.5rem; color: var(--text-main); cursor: pointer; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- BACKGROUND SYSTEM: "Dots. Connected." Structured Metaphor -->
+    <div class="bg-system">
+        <div class="bg-glow-1"></div>
+        <div class="bg-glow-2"></div>
+        <div class="bg-grid"></div>
+        <!-- JS will inject animated signal dots here -->
+    </div>
+
+    <!-- NAVIGATION -->
+    <header id="header">
+        <div class="nav-inner">
+            <a href="#" class="logo">
+                Observata<span style="color: var(--accent-blue);">.</span>
+            </a>
+            
+            <nav class="nav-links">
+                <a href="#services">Services</a>
+                <a href="#pricing">Pricing</a>
+                <a href="#resources">Resources</a>
+                <a href="#about">About</a>
+                <a href="#contact">Contact</a>
+            </nav>
+
+            <div class="nav-actions">
+                <div class="lang">EN</div>
+                <a href="#" class="btn btn-primary" style="padding: 12px 28px; font-size: 0.9rem;">Start with clarity</a>
+                <div class="mobile-menu">☰</div>
+            </div>
+        </div>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section class="hero">
+        <div class="container hero-grid">
+            <div class="hero-text">
+                <div class="eyebrow reveal">Enterprise-Grade Operations</div>
+                <h1 class="reveal delay-1">Operate critical services with confidence.</h1>
+                <p class="reveal delay-2">We run observability, security, and search services with continuous responsibility — so your systems stay reliable, visible, and ready.</p>
+                <div class="hero-ctas reveal delay-3">
+                    <a href="#" class="btn btn-primary">Start with clarity</a>
+                    <a href="#" class="btn btn-secondary">Explore our approach</a>
+                </div>
+            </div>
+
+            <div class="hero-visual reveal delay-2">
+                <!-- Layered Dimensional Visual -->
+                <div class="acrylic-panel panel-1"></div>
+                <div class="acrylic-panel panel-2">
+                    <div class="mock-line w-full"></div>
+                    <div class="mock-line accent"></div>
+                    <div class="mock-line w-half"></div>
+                </div>
+                <div class="acrylic-panel panel-3">
+                    <div class="status-ring"></div>
+                    <div>
+                        <div style="font-family: 'Montserrat'; font-weight: 700; color: var(--text-main); font-size: 1.2rem;">System Health</div>
+                        <div style="font-size: 0.85rem; color: var(--accent-blue); font-weight: 600;">Continuous Sync</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TRUSTED BY -->
+    <section class="trusted-section">
+        <div class="container">
+            <div class="trusted-label reveal">Trusted by leading enterprise platforms</div>
+            <div class="logo-grid reveal delay-1">
+                <div class="logo-item">AxiomCorp</div>
+                <div class="logo-item">NexusData</div>
+                <div class="logo-item">Vanguard</div>
+                <div class="logo-item">SynergyTech</div>
+                <div class="logo-item">GlobalFin</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PROBLEMS WE SOLVE (Sticky Scroll Deck) -->
+    <section class="problems-section">
+        <div class="container problems-layout">
+            <div class="problems-intro">
+                <div class="eyebrow reveal">The Complexity Crisis</div>
+                <h2 class="reveal delay-1">Complex systems shouldn't mean blind spots.</h2>
+                <p class="reveal delay-2">Modern enterprises rely on business-critical platforms, but operational fragmentation creates real business risk. We transform chaotic complexity into engineered control.</p>
+            </div>
+            
+            <div class="cards-stack">
+                <div class="problem-card reveal">
+                    <div class="card-index">01</div>
+                    <h3>Fragmented Tooling</h3>
+                    <p>Siloed monitoring and security tools create isolated data streams, making root-cause analysis slow and inaccurate when every second counts in a crisis.</p>
+                </div>
+                <div class="problem-card reveal">
+                    <div class="card-index">02</div>
+                    <h3>Rising Complexity</h3>
+                    <p>As architectures scale dynamically, keeping platforms stable and performant requires deep, continuous engineering that internal teams struggle to staff and maintain.</p>
+                </div>
+                <div class="problem-card reveal">
+                    <div class="card-index">03</div>
+                    <h3>Weak Accountability</h3>
+                    <p>When systems fail, the line between infrastructure, platform, and application blurs. A lack of clear operational ownership leads to extended downtime and revenue loss.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SERVICE DOMAINS (Expansive Rows) -->
+    <section class="services-section" id="services">
+        <div class="container">
+            <div class="eyebrow reveal">Service Domains</div>
+            <h2 class="reveal delay-1">Engineered for absolute clarity.</h2>
+
+            <div class="services-list">
+                <!-- Service 1 -->
+                <div class="service-row reveal">
+                    <div class="service-title">Observability</div>
+                    <div class="service-desc">Unify logs, metrics, and traces. We maintain continuous oversight of your entire stack to ensure performance bottlenecks are identified before they impact users. Built on Elastic.</div>
+                </div>
+                <!-- Service 2 -->
+                <div class="service-row reveal delay-1">
+                    <div class="service-title">Cybersecurity</div>
+                    <div class="service-desc">Enterprise-grade threat detection and response. We engineer your security posture to evolve continuously, closing blind spots across endpoints and cloud. Built on CrowdStrike.</div>
+                </div>
+                <!-- Service 3 -->
+                <div class="service-row reveal delay-2">
+                    <div class="service-title">Enterprise Search</div>
+                    <div class="service-desc">Make fragmented data instantly accessible. We optimize distributed search architectures for sub-second query performance and absolute reliability at global scale.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- OUTCOMES (Bento Box Grid) -->
+    <section class="outcomes-section">
+        <div class="container">
+            <div class="outcomes-header">
+                <div class="eyebrow reveal" style="justify-content: center;">Measurable Results</div>
+                <h2 class="reveal delay-1">Outcomes we produce.</h2>
+            </div>
+
+            <div class="bento-grid">
+                <!-- Large horizontal -->
+                <div class="bento-card bento-large reveal">
+                    <div>
+                        <div class="metric">65%</div>
+                        <div class="metric-label">Faster Incident Resolution</div>
+                    </div>
+                    <div class="bento-desc">Dramatic decrease in MTTR across critical platforms via unified signal flow.</div>
+                </div>
+                
+                <!-- Vertical -->
+                <div class="bento-card bento-vertical reveal delay-1">
+                    <div>
+                        <div class="metric">24/7</div>
+                        <div class="metric-label">Accountability</div>
+                    </div>
+                    <div class="bento-desc">Continuous responsibility for platform health over time. We own the stability.</div>
+                </div>
+
+                <!-- Standard 1 -->
+                <div class="bento-card reveal delay-2">
+                    <div>
+                        <div class="metric">Zero</div>
+                        <div class="metric-label">Blind Spots</div>
+                    </div>
+                    <div class="bento-desc">Full-stack visibility established and actively maintained.</div>
+                </div>
+
+                <!-- Standard 2 -->
+                <div class="bento-card reveal delay-3">
+                    <div>
+                        <div class="metric">40%</div>
+                        <div class="metric-label">Reduced Risk</div>
+                    </div>
+                    <div class="bento-desc">Drop in critical severity incidents year-over-year.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container">
+            <div class="footer-top">
+                <div class="footer-cta reveal">
+                    <h2>Ready for operational clarity?</h2>
+                    <a href="#" class="btn btn-primary">Start the conversation</a>
+                </div>
+                <div class="reveal delay-1">
+                    <a href="#" class="logo">Observata<span style="color: var(--accent-blue);">.</span></a>
+                    <p style="margin-top: 16px; max-width: 300px;">Delivering stability, visibility, and control as a service.</p>
+                </div>
+            </div>
+            
+            <div class="footer-bottom reveal delay-2">
+                <p>&copy; 2024 Observata. All rights reserved.</p>
+                <div class="footer-links">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- SCRIPTS -->
+    <script>
+        // 1. Scroll Reveal Animations (Intersection Observer)
+        const revealElements = document.querySelectorAll('.reveal');
+        const revealObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target); // Run once
+                }
+            });
+        }, { root: null, margin: '0px', threshold: 0.15 });
+
+        revealElements.forEach(el => revealObserver.observe(el));
+
+        // 2. Header Blur on Scroll
+        const header = document.getElementById('header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // 3. "Dots. Connected." Background Signal Animation
+        // Injects pure CSS-animated dots into the background grid to show "signal flow"
+        const bgSystem = document.querySelector('.bg-system');
+        const numSignals = 15; // Controlled, not chaotic
+
+        for (let i = 0; i < numSignals; i++) {
+            const signal = document.createElement('div');
+            
+            // Randomize starting grid intersections (multiples of 80px based on background-size)
+            const x = Math.floor(Math.random() * 20) * 80;
+            const y = Math.floor(Math.random() * 15) * 80;
+            
+            // Base styles for the signal dot
+            Object.assign(signal.style, {
+                position: 'absolute',
+                width: '4px',
+                height: '4px',
+                backgroundColor: 'var(--accent-blue)',
+                boxShadow: '0 0 12px 2px var(--accent-blue)',
+                borderRadius: '50%',
+                left: `${x}px`,
+                top: `${y}px`,
+                opacity: Math.random() * 0.5 + 0.2, // Subtle opacity
+                transition: 'all 2s linear'
+            });
+
+            bgSystem.appendChild(signal);
+
+            // Animate on grid lines (right angles)
+            setInterval(() => {
+                // Move either X or Y by exactly 80px to follow the grid structure
+                const moveAxis = Math.random() > 0.5 ? 'left' : 'top';
+                const currentVal = parseInt(signal.style[moveAxis]);
+                const direction = Math.random() > 0.5 ? 80 : -80;
+                
+                signal.style[moveAxis] = `${currentVal + direction}px`;
+                
+                // Pulse effect
+                signal.style.opacity = Math.random() > 0.8 ? '1' : '0.3';
+            }, 2000 + Math.random() * 3000); // Slow, purposeful motion
+        }
+    </script>
+</body>
+</html>
