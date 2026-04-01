@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Realistic Particle Avatar</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: #030305;
+            color: #fff;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+        canvas {
+            display: block;
+            width: 100vw;
+            height: 100vh;
+        }
+        #ui-layer {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            pointer-events: none;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 20px;
+        }
+        .panel {
+            background: rgba(10, 10, 15, 0.85);
+            border: 1px solid rgba(100, 180, 255, 0.2);
+            border-radius: 8px;
+            padding: 15px;
+            pointer-events: auto;
+            backdrop-filter: blur(10px);
+        }
+        h3 { margin: 0 0 10px 0; font-weight: 400; color: #a1c4fd; font-size: 0.9rem; text-transform: uppercase; }
+        .controls-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+        button {
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 8px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.8rem;
+        }
+        button:hover { background: rgba(161, 196, 253, 0.2); border-color: #a1c4fd; }
+        button.active { background: #a1c4fd; color: #000; font-weight: bold; }
+        #controls { max-width: 600px; margin: 0 auto; }
+        .hint { font-size: 0.75rem; color: #777; margin-top: 5px; text-align: center; }
+    </style>
+    <!-- Load Three.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body>
+
+    <div id="ui-layer">
+        <div class="panel" id="controls">
+            <h3>Emotion Blends</h3>
+            <div class="controls-grid" id="emotion-btns">
+                <button class="active" onclick="setEmotion('neutral')">Neutral</button>
+                <button onclick="setEmotion('joy')">Joy</button>
+                <button onclick="setEmotion('anger')">Anger</button>
+                <button onclick="setEmotion('surprise')">Surprise</button>
+                <button onclick="setEmotion('sadness')">Sadness</button>
+            </div>
+
+            <h3>Viseme Triggers</h3>
+            <div class="controls-grid">
+                <button onclick="playViseme('aa')">Wide (Aa)</button>
+                <button onclick="playViseme('EE')">Stretch (Ee)</button>
+                <button onclick="playViseme('OO')">Pucker (Oh)</button>
+                <button onclick="playViseme('MM')">Closed (Mm)</button>
+                <button onclick="playSequence()" style="border-color: #4CAF50;">Play Sequence</button>
+            </div>
+            <p class="hint">Move mouse to test gaze tracking. The face topology is procedurally sculpted.</p>
+        </div>
+    </div>
+
+<script>
+/**
+ * REALISTIC PARTICLE AVATAR API
+ * Procedurally sculpted 3D face with depth-shading, semantic groups, and viseme blending.
+ */
+class ParticleAvatarAPI {
+    constructor(container) {
+        this.activeViseme = { id: 'neutral', weight: 0, timeLeft: 0 };
+        this.currentEmotion = { id: 'neutral', weight: 1.0 };
+        this.targetEmotion = { id: 'neutral', weight: 1.0 };
+        
+        this.eyeState = {
+            gazeTarget: new THREE.Vector2(0, 0),
+            currentGaze: new THREE.Vector2(0, 0),
+            blinkWeight: 0,
+            nextBlinkTime: this.random(2, 5)
+        };
+
+        this.initScene(container);
+        this.generateSculptedFace();
+        
+        this.clock = new THREE.Clock();
+        this.animate();
+    }
+
+    // --- PIPELINE API ---
+
+    sendViseme(event) {
+        const visemeMap = {
+            'aa': 'wide_open', 'A': 'wide_open',
+            'EE': 'stretched', 'E': 'stretched', 'I': 'stretched',
+            'OO': 'puckered', 'O': 'puckered', 'U': 'puckered',
+            'MM': 'closed', 'M': 'closed', 'P': 'closed', 'B': 'closed',
+            'neutral': 'neutral', 'sil': 'neutral'
+        };
+        const shape = visemeMap[event.viseme] || 'neutral';
+        this.activeViseme = { id: shape, weight: 1.0, timeLeft: (event.durationMs || 150) / 1000.0 };
+    }
+
+    setEmotion(emotionId, weight = 1.0) {
+        this.targetEmotion = { id: emotionId, weight: weight };
+    }
+
+    setGazeTarget(x, y) {
+        this.eyeState.gazeTarget.set(x, y);
+    }
+
+    // --- INTERNAL IMPLEMENTATION ---
+
+    initScene(container) {
+        this.scene = new THREE.Scene();
+        this.scene.fog = new THREE.FogExp2(0x030305, 0.15);
+        this.camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 0.1, 100);
+        this.camera.position.z = 6;
+
+        this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: "high-performance" });
+        this.renderer.setSize(window.innerWidth, window.innerHeight);
+        this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        container.appendChild(this.renderer.domElement);
+
+        window.addEventListener('resize', () => {
+            this.camera.aspect = window.innerWidth / window.innerHeight;
+            this.camera.updateProjectionMatrix();
+            this.renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+        
+        this.headGroup = new THREE.Group();
+        this.scene.add(this.headGroup);
+    }
+
+    // Helper for gaussian displacement (creates smooth facial features)
+    gauss(x, y, cx, cy, sx, sy) {
+        return Math.exp(-(Math.pow(x - cx, 2) / sx + Math.pow(y - cy, 2) / sy));
+    }
+
+    generateSculptedFace() {
+        this.geometry = new THREE.BufferGeometry();
+        const positions = [];
+        const colors = [];
+        this.semantics = [];
+        this.basePositions = [];
+
+        // Grid resolution (higher = more detailed face)
+        const res = 160; 
+        
+        for (let i = 0; i <= res; i++) {
+            for (let j = 0; j <= res; j++) {
+                // Map u,v from -1 to 1
+                let u = (i / res) * 2 - 1;
+                let v = (j / res) * 2 - 1;
+
+                // Create an oval face mask (discard particles outside)
+                if ((u*u)/(0.9*0.9) + (v*v)/(1.1*1.1) > 1) continue;
+
+                let x = u * 1.6;
+                let y = v * 2.2;
+                let z = 0;
+
+                // 1. Base Skull / Head Curve
+                z -= (u*u + v*v) * 0.8;
+
+                // 2. Jaw Taper
+                if (v < 0) {
+                    x *= (1.0 - Math.abs(v) * 0.4);
+                }
+
+                // 3. Sculpting Facial Features using math
+                const absU = Math.abs(u);
+
+                // Nose Bridge & Tip
+                z += this.gauss(u, v, 0, 0.1, 0.02, 0.3) * 0.45;
+                z += this.gauss(u, v, 0, -0.1, 0.03, 0.04) * 0.3;
+
+                // Eye Sockets (Pushed in)
+                z -= this.gauss(absU, v, 0.35, 0.25, 0.06, 0.03) * 0.25;
+                
+                // Eyeballs (Bulge back out inside sockets)
+                const isEyeball = this.gauss(absU, v, 0.35, 0.25, 0.015, 0.01) > 0.5;
+                if (isEyeball) z += 0.1;
+
+                // Brow Ridge
+                z += this.gauss(absU, v, 0.3, 0.4, 0.1, 0.02) * 0.15;
+
+                // Cheeks
+                z += this.gauss(absU, v, 0.4, -0.1, 0.1, 0.1) * 0.25;
+
+                // Mouth Muzzle (Barrel shape around lips)
+                z += this.gauss(u, v, 0, -0.4, 0.1, 0.08) * 0.2;
+
+                // Lips
+                z += this.gauss(u, v, 0, -0.35, 0.04, 0.005) * 0.08; // Upper
+                z += this.gauss(u, v, 0, -0.45, 0.04, 0.005) * 0.08; // Lower
+
+                // Chin
+                z += this.gauss(u, v, 0, -0.7, 0.05, 0.04) * 0.2;
+
+                positions.push(x, y, z);
+                this.basePositions.push({ x, y, z, u, v });
+
+                // 4. Fake Ambient Occlusion / Depth Shading
+                // High Z (peaks) get bright colors, low Z (valleys/edges) get dark colors
+                const depthMap = Math.max(0, Math.min(1, (z + 0.5) / 1.0));
+                
+                const color = new THREE.Color();
+                if (isEyeball) {
+                    color.setHex(0xddeeff); // Bright eyes
+                } else {
+                    // Gradient from deep blue to bright cyan based on depth
+                    color.setRGB(
+                        0.1 + depthMap * 0.5, 
+                        0.3 + depthMap * 0.6, 
+                        0.6 + depthMap * 0.4
+                    );
+                }
+                colors.push(color.r, color.g, color.b);
+
+                // 5. Semantic Weights for Animation
+                this.semantics.push({
+                    isEyeball: isEyeball ? 1 : 0,
+                    jaw: Math.max(0, 1 - (v + 0.8) / 0.5) * (v < -0.2 ? 1 : 0),
+                    upperLip: this.gauss(u, v, 0, -0.35, 0.08, 0.01),
+                    lowerLip: this.gauss(u, v, 0, -0.45, 0.08, 0.01),
+                    mouthCornerL: this.gauss(u, v, -0.2, -0.4, 0.02, 0.02),
+                    mouthCornerR: this.gauss(u, v, 0.2, -0.4, 0.02, 0.02),
+                    upperLid: this.gauss(absU, v, 0.35, 0.3, 0.04, 0.01),
+                    brow: this.gauss(absU, v, 0.3, 0.4, 0.05, 0.02),
+                    cheek: this.gauss(absU, v, 0.4, -0.1, 0.05, 0.05)
+                });
+            }
+        }
+
+        this.geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+        this.geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+
+        // Create a soft particle texture
+        const canvas = document.createElement('canvas');
+        canvas.width = 16; canvas.height = 16;
+        const ctx = canvas.getContext('2d');
+        const grad = ctx.createRadialGradient(8, 8, 0, 8, 8, 8);
+        grad.addColorStop(0, 'rgba(255,255,255,1)');
+        grad.addColorStop(1, 'rgba(0,0,0,0)');
+        ctx.fillStyle = grad;
+        ctx.fillRect(0,0,16,16);
+
+        const material = new THREE.PointsMaterial({
+            size: 0.035,
+            map: new THREE.CanvasTexture(canvas),
+            transparent: true,
+            opacity: 0.9,
+            vertexColors: true,
+            blending: THREE.AdditiveBlending,
+            depthWrite: false
+        });
+
+        this.pointsMesh = new THREE.Points(this.geometry, material);
+        this.headGroup.add(this.pointsMesh);
+    }
+
+    random(min, max) { return Math.random() * (max - min) + min; }
+
+    updateEyeLogic(dt) {
+        // Smooth gaze tracking
+        this.eyeState.currentGaze.lerp(this.eyeState.gazeTarget, dt * 5.0);
+
+        // Blinking
+        this.eyeState.nextBlinkTime -= dt;
+        if (this.eyeState.nextBlinkTime <= 0) {
+            this.eyeState.blinkWeight = 1.0;
+            this.eyeState.nextBlinkTime = this.random(2.0, 5.0);
+        }
+        if (this.eyeState.blinkWeight > 0) {
+            this.eyeState.blinkWeight -= dt * 7.0; // Blink speed
+            if (this.eyeState.blinkWeight < 0) this.eyeState.blinkWeight = 0;
+        }
+    }
+
+    applyMorphs(dt) {
+        const positions = this.geometry.attributes.position.array;
+
+        // Emotion Blending
+        if (this.currentEmotion.id !== this.targetEmotion.id) {
+            this.currentEmotion.weight -= dt * 4.0;
+            if (this.currentEmotion.weight <= 0) {
+                this.currentEmotion.id = this.targetEmotion.id;
+                this.currentEmotion.weight = 0;
+            }
+        } else {
+            this.currentEmotion.weight += (this.targetEmotion.weight - this.currentEmotion.weight) * dt * 4.0;
+        }
+
+        // Viseme handling
+        let vWeight = 0;
+        if (this.activeViseme.timeLeft > 0) {
+            this.activeViseme.timeLeft -= dt;
+            vWeight = 1.0;
+        } else {
+            this.activeViseme.id = 'neutral';
+        }
+
+        const eWeight = this.currentEmotion.weight;
+        const emo = this.currentEmotion.id;
+        const vis = this.activeViseme.id;
+
+        // Deform vertices
+        for (let i = 0; i < this.basePositions.length; i++) {
+            const base = this.basePositions[i];
+            const sem = this.semantics[i];
+            const idx = i * 3;
+
+            let x = base.x;
+            let y = base.y;
+            let z = base.z;
+
+            // --- VISEMES (Lips & Jaw) ---
+            if (vis === 'wide_open') {
+                y -= sem.jaw * 0.4 * vWeight;
+                y -= sem.lowerLip * 0.2 * vWeight;
+                y += sem.upperLip * 0.05 * vWeight;
+            } else if (vis === 'stretched') {
+                y -= sem.jaw * 0.1 * vWeight;
+                x -= sem.mouthCornerL * 0.3 * vWeight;
+                x += sem.mouthCornerR * 0.3 * vWeight;
+            } else if (vis === 'puckered') {
+                x += sem.mouthCornerL * 0.3 * vWeight;
+                x -= sem.mouthCornerR * 0.3 * vWeight;
+                z += (sem.upperLip + sem.lowerLip) * 0.2 * vWeight; // push lips forward
+            } else if (vis === 'closed') {
+                y += sem.lowerLip * 0.1 * vWeight;
+                y -= sem.upperLip * 0.05 * vWeight;
+            }
+
+            // --- EMOTIONS ---
+            if (emo === 'joy') {
+                y += (sem.mouthCornerL + sem.mouthCornerR) * 0.2 * eWeight; // smile
+                x -= sem.mouthCornerL * 0.1 * eWeight;
+                x += sem.mouthCornerR * 0.1 * eWeight;
+                y += sem.cheek * 0.1 * eWeight; // cheeks raise
+                y -= sem.upperLid * 0.05 * eWeight; // slight squint
+            } else if (emo === 'sadness') {
+                y -= (sem.mouthCornerL + sem.mouthCornerR) * 0.2 * eWeight; // frown
+                y += sem.brow * 0.1 * eWeight; // inner brows up
+                if (base.u < 0) x += sem.brow * 0.05 * eWeight;
+                else x -= sem.brow * 0.05 * eWeight;
+            } else if (emo === 'anger') {
+                y -= sem.brow * 0.15 * eWeight; // brows down
+                if (base.u < 0) x -= sem.brow * 0.1 * eWeight;
+                else x += sem.brow * 0.1 * eWeight;
+            } else if (emo === 'surprise') {
+                y += sem.brow * 0.2 * eWeight; // brows up
+                if (vis === 'neutral') {
+                    y -= sem.jaw * 0.2 * eWeight; // jaw drop
+                }
+            }
+
+            // --- EYES & BLINKING ---
+            if (sem.isEyeball) {
+                x += this.eyeState.currentGaze.x * 0.1;
+                y += this.eyeState.currentGaze.y * 0.1;
+            }
+            if (this.eyeState.blinkWeight > 0) {
+                y -= sem.upperLid * 0.15 * this.eyeState.blinkWeight;
+            }
+
+            positions[idx] = x;
+            positions[idx+1] = y;
+            positions[idx+2] = z;
+        }
+
+        this.geometry.attributes.position.needsUpdate = true;
+    }
+
+    animate() {
+        requestAnimationFrame(() => this.animate());
+        const dt = Math.min(this.clock.getDelta(), 0.1);
+
+        this.updateEyeLogic(dt);
+        this.applyMorphs(dt);
+
+        // Head rotation based on gaze
+        const time = this.clock.elapsedTime;
+        this.headGroup.rotation.y = this.eyeState.currentGaze.x * 0.3 + Math.sin(time * 0.5) * 0.05;
+        this.headGroup.rotation.x = -this.eyeState.currentGaze.y * 0.3 + Math.sin(time * 0.7) * 0.02;
+
+        this.renderer.render(this.scene, this.camera);
+    }
+}
+
+// --- INITIALIZATION & UI WIRING ---
+
+const avatar = new ParticleAvatarAPI(document.body);
+
+function setEmotion(id) {
+    avatar.setEmotion(id);
+    document.querySelectorAll('#emotion-btns button').forEach(b => b.classList.remove('active'));
+    event.target.classList.add('active');
+}
+
+function playViseme(id) {
+    avatar.sendViseme({ viseme: id, durationMs: 400 });
+}
+
+function playSequence() {
+    const seq = [
+        { v: 'neutral', t: 0 },
+        { v: 'EE', t: 100 }, // H
+        { v: 'aa', t: 300 }, // e
+        { v: 'MM', t: 500 }, // ll
+        { v: 'OO', t: 700 }, // o
+        { v: 'neutral', t: 1000 },
+        { v: 'OO', t: 1200 }, // W
+        { v: 'aa', t: 1400 }, // or
+        { v: 'MM', t: 1600 }, // ld
+        { v: 'neutral', t: 1800 }
+    ];
+    seq.forEach(e => setTimeout(() => avatar.sendViseme({ viseme: e.v, durationMs: 250 }), e.t));
+}
+
+// Gaze tracking
+document.addEventListener('mousemove', (e) => {
+    const x = (e.clientX / window.innerWidth) * 2 - 1;
+    const y = -(e.clientY / window.innerHeight) * 2 + 1;
+    avatar.setGazeTarget(x, y);
+});
+</script>
+</body>
+</html>

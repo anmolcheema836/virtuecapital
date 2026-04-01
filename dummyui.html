@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSU Mechanical Engineering | Engineering Solutions & Professional Training</title>
+    
+    <!-- Google Fonts: Plus Jakarta Sans for a modern, tech-forward, and professional look -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            blue: '#30365c',
+                            yellow: '#f8d922',
+                            yellowHover: '#e5c411',
+                            green: '#0F766E', /* Refined professional green */
+                            red: '#BE123C',   /* Refined professional red */
+                            dark: '#0B0F19',  /* Replacing #000 */
+                            light: '#FAFAFA', /* Replacing #FFF */
+                            gray: '#F3F4F6',
+                            surface: '#F8FAFC'
+                        }
+                    },
+                    animation: {
+                        'fade-out': 'fadeOut 1s ease-in-out forwards',
+                        'float': 'float 6s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        fadeOut: {
+                            '0%': { opacity: '1', visibility: 'visible' },
+                            '100%': { opacity: '0', visibility: 'hidden' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom non-Tailwind utilities for Aceternity/Magic UI vibe */
+        body { background-color: #FAFAFA; color: #0B0F19; }
+        .glass-nav {
+            background: rgba(250, 250, 250, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(48, 54, 92, 0.05);
+        }
+        .bento-card {
+            background: linear-gradient(145deg, #FAFAFA 0%, #F3F4F6 100%);
+            border: 1px solid rgba(48, 54, 92, 0.08);
+            transition: all 0.3s ease;
+        }
+        .bento-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px -15px rgba(48, 54, 92, 0.1);
+            border-color: rgba(48, 54, 92, 0.2);
+        }
+        .hero-gradient {
+            background: linear-gradient(to right, rgba(11, 15, 25, 0.95) 0%, rgba(48, 54, 92, 0.85) 100%), 
+                        url('https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=2070&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+        }
+        /* Loader styles */
+        #loader {
+            position: fixed; inset: 0; z-index: 9999;
+            background-color: #FAFAFA;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            transition: opacity 0.8s ease;
+        }
+        .logo-path {
+            stroke-dasharray: 200; stroke-dashoffset: 200;
+            animation: drawLine 2s ease forwards;
+        }
+        @keyframes drawLine { to { stroke-dashoffset: 0; } }
+        
+        /* Typography System */
+        .text-display { font-size: 3.5rem; line-height: 1.1; font-weight: 800; letter-spacing: -0.02em; }
+        .text-heading { font-size: 2.5rem; line-height: 1.2; font-weight: 700; letter-spacing: -0.01em; }
+        .text-subheading { font-size: 1.5rem; line-height: 1.4; font-weight: 600; }
+        .text-title { font-size: 1.25rem; font-weight: 600; }
+        .text-subtitle { font-size: 1rem; font-weight: 500; color: #4b5563; }
+        .text-paragraph { font-size: 1rem; line-height: 1.6; color: #4b5563; }
+        
+        @media (max-width: 768px) {
+            .text-display { font-size: 2.5rem; }
+            .text-heading { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-brand-yellow selection:text-brand-blue">
+
+    <!-- Introduction Loader -->
+    <div id="loader">
+        <svg width="120" height="120" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" class="mb-4">
+            <path class="logo-path" d="M50 5 L90 25 L90 75 L50 95 L10 75 L10 25 Z" stroke="#30365c" stroke-width="4" stroke-linejoin="round"/>
+            <path class="logo-path" d="M50 5 L50 45 L90 25" stroke="#f8d922" stroke-width="4" stroke-linejoin="round" style="animation-delay: 0.5s;"/>
+            <path class="logo-path" d="M50 45 L10 25" stroke="#30365c" stroke-width="4" stroke-linejoin="round" style="animation-delay: 0.8s;"/>
+            <path class="logo-path" d="M50 45 L50 95" stroke="#30365c" stroke-width="4" stroke-linejoin="round" style="animation-delay: 1.1s;"/>
+        </svg>
+        <div class="text-brand-blue font-bold tracking-widest uppercase text-sm animate-pulse">CSU Engineering</div>
+    </div>
+
+    <!-- Header / Nav Bar -->
+    <header class="fixed top-0 w-full z-50 glass-nav transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <!-- Brand Logo Mockup -->
+            <a href="#" class="flex items-center gap-3 group">
+                <svg width="40" height="40" viewBox="0 0 100 100" fill="none" class="group-hover:scale-105 transition-transform">
+                    <path d="M50 5 L90 25 L90 75 L50 95 L10 75 L10 25 Z" fill="#30365c"/>
+                    <path d="M50 5 L50 45 L90 25 Z" fill="#f8d922"/>
+                    <path d="M50 45 L10 25 L10 75 Z" fill="#1e223b"/>
+                </svg>
+                <span class="font-bold text-xl text-brand-blue tracking-tight">CSU <span class="font-light">Engineering</span></span>
+            </a>
+
+            <!-- Desktop Menu -->
+            <nav class="hidden md:flex items-center gap-8">
+                <a href="#" class="text-sm font-semibold text-brand-blue border-b-2 border-brand-yellow">Home</a>
+                <a href="#about" class="text-sm font-medium text-gray-600 hover:text-brand-blue transition-colors">About</a>
+                <a href="#services" class="text-sm font-medium text-gray-600 hover:text-brand-blue transition-colors">Services</a>
+                <a href="#portfolio" class="text-sm font-medium text-gray-600 hover:text-brand-blue transition-colors">Portfolio</a>
+                <a href="#contact" class="text-sm font-medium text-gray-600 hover:text-brand-blue transition-colors">Contact</a>
+            </nav>
+
+            <!-- CTA -->
+            <div class="hidden md:flex items-center gap-4">
+                <a href="#consultation" class="text-sm font-semibold text-brand-blue hover:text-brand-yellow transition-colors">Sign In</a>
+                <a href="#training" class="px-5 py-2.5 bg-brand-blue text-brand-light text-sm font-semibold rounded-lg hover:bg-[#1e223b] hover:shadow-lg hover:shadow-brand-blue/30 transition-all flex items-center gap-2">
+                    Request Consultation <i class="ph ph-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Hero Section -->
+        <section class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 hero-gradient overflow-hidden">
+            <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMSIgY3k9IjEiIHI9IjEiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4wNSkiLz48L3N2Zz4=')] opacity-50"></div>
+            
+            <div class="max-w-7xl mx-auto px-6 relative z-10 grid lg:grid-cols-2 gap-12 items-center">
+                <div class="text-brand-light">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-light/10 border border-brand-light/20 backdrop-blur-md text-sm font-medium text-brand-yellow mb-6">
+                        <span class="w-2 h-2 rounded-full bg-brand-yellow animate-pulse"></span>
+                        Advancing Engineering Excellence
+                    </div>
+                    <h1 class="text-display mb-6">
+                        Empowering Industry Through <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-yellow to-[#fcf096]">Strategic Engineering</span>
+                    </h1>
+                    <p class="text-paragraph text-brand-light/80 text-lg mb-8 max-w-lg">
+                        We deliver actionable solutions, optimize operations, and elevate workforce competency through expert technical consultation and professional training tailored for the industrial sector.
+                    </p>
+                    <div class="flex flex-wrap items-center gap-4">
+                        <a href="#training" class="px-6 py-3.5 bg-brand-yellow text-brand-blue font-bold rounded-lg hover:bg-brand-yellowHover hover:shadow-[0_0_20px_rgba(248,217,34,0.3)] transition-all flex items-center gap-2">
+                            Explore Training <i class="ph-bold ph-book-open-text"></i>
+                        </a>
+                        <a href="#consultation" class="px-6 py-3.5 bg-transparent border border-brand-light/30 text-brand-light font-bold rounded-lg hover:bg-brand-light/10 backdrop-blur-sm transition-all flex items-center gap-2">
+                            Discuss Your Project <i class="ph-bold ph-chats"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Hero Visual / Bento Element -->
+                <div class="hidden lg:block relative">
+                    <div class="absolute inset-0 bg-gradient-to-tr from-brand-blue/50 to-transparent rounded-2xl blur-3xl transform -rotate-6"></div>
+                    <div class="relative bg-brand-light/10 border border-brand-light/20 backdrop-blur-xl p-6 rounded-2xl shadow-2xl animate-float">
+                        <img src="https://images.unsplash.com/photo-1621905251189-08b45d6a269e?q=80&w=2069&auto=format&fit=crop" alt="Engineering Team" class="rounded-xl w-full h-auto shadow-inner mb-4">
+                        <div class="flex items-center gap-4 bg-brand-light p-4 rounded-xl shadow-lg transform -translate-y-8 -ml-8 w-4/5">
+                            <div class="w-12 h-12 bg-brand-blue rounded-full flex items-center justify-center text-brand-yellow text-xl">
+                                <i class="ph-fill ph-check-circle"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm font-bold text-brand-dark">Project Efficiency</p>
+                                <p class="text-xs text-gray-500">Increased by 35% on average</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Trust Bar / Stats -->
+            <div class="max-w-7xl mx-auto px-6 relative z-10 mt-20">
+                <p class="text-sm text-brand-light/60 font-medium mb-6 uppercase tracking-wider">Trusted by Industry Leaders</p>
+                <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8 items-center opacity-70 grayscale hover:grayscale-0 transition-all duration-500">
+                    <!-- Dummy Logos representing corporate clients -->
+                    <div class="flex items-center gap-2 text-brand-light text-xl font-bold"><i class="ph-fill ph-lightning text-3xl"></i> PLN Energy</div>
+                    <div class="flex items-center gap-2 text-brand-light text-xl font-bold"><i class="ph-fill ph-drop text-3xl"></i> Pertamina</div>
+                    <div class="flex items-center gap-2 text-brand-light text-xl font-bold"><i class="ph-fill ph-car-profile text-3xl"></i> Astra Ind.</div>
+                    <div class="flex items-center gap-2 text-brand-light text-xl font-bold"><i class="ph-fill ph-factory text-3xl"></i> Toyota Mfg</div>
+                    <div class="hidden lg:flex items-center gap-2 text-brand-light text-xl font-bold"><i class="ph-fill ph-shield-chevron text-3xl"></i> Chevron</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Value & Services Overview -->
+        <section id="services" class="py-24 bg-brand-light relative">
+            <div class="max-w-7xl mx-auto px-6">
+                <div class="text-center max-w-2xl mx-auto mb-16">
+                    <h2 class="text-brand-blue font-bold text-sm uppercase tracking-widest mb-2">Technical Consultancies</h2>
+                    <h3 class="text-heading text-brand-dark mb-4">Driving Operational Excellence</h3>
+                    <p class="text-paragraph">We go beyond generic advice. Our engineering consultation directly solves operational bottlenecks, mitigates technical risks, and ensures compliance.</p>
+                </div>
+
+                <!-- Structured Bento Cards for Services -->
+                <div class="grid md:grid-cols-3 gap-8">
+                    <!-- Service 1 -->
+                    <div class="bento-card p-8 rounded-2xl group cursor-pointer relative overflow-hidden">
+                        <div class="absolute top-0 right-0 w-32 h-32 bg-brand-blue/5 rounded-bl-full -z-10 transition-transform group-hover:scale-110"></div>
+                        <div class="w-14 h-14 bg-brand-surface border border-gray-200 rounded-xl flex items-center justify-center text-2xl text-brand-blue mb-6 shadow-sm group-hover:bg-brand-blue group-hover:text-brand-light transition-colors">
+                            <i class="ph ph-chart-line-up"></i>
+                        </div>
+                        <h4 class="text-title text-brand-dark mb-3">Feasibility Study (FS)</h4>
+                        <p class="text-subtitle mb-6 text-sm">Evaluate technical and financial viability before project execution to reduce project uncertainty.</p>
+                        <ul class="space-y-2 mb-8">
+                            <li class="flex items-start gap-2 text-sm text-gray-600"><i class="ph-fill ph-check-circle text-brand-green mt-0.5"></i> Identify risks early</li>
+                            <li class="flex items-start gap-2 text-sm text-gray-600"><i class="ph-fill ph-check-circle text-brand-green mt-0.5"></i> Optimize design decisions</li>
+                        </ul>
+                        <a href="#" class="inline-flex items-center gap-2 text-sm font-bold text-brand-blue group-hover:text-brand-yellow transition-colors mt-auto">
+                            View Details <i class="ph ph-arrow-right"></i>
+                        </a>
+                    </div>
+
+                    <!-- Service 2 -->
+                    <div class="bento-card p-8 rounded-2xl group cursor-pointer relative overflow-hidden">
+                        <div class="absolute top-0 right-0 w-32 h-32 bg-brand-blue/5 rounded-bl-full -z-10 transition-transform group-hover:scale-110"></div>
+                        <div class="w-14 h-14 bg-brand-surface border border-gray-200 rounded-xl flex items-center justify-center text-2xl text-brand-blue mb-6 shadow-sm group-hover:bg-brand-blue group-hover:text-brand-light transition-colors">
+                            <i class="ph ph-magnifying-glass"></i>
+                        </div>
+                        <h4 class="text-title text-brand-dark mb-3">Assessment & Testing</h4>
+                        <p class="text-subtitle mb-6 text-sm">Structural assessment, material testing, and quality evaluation to ensure compliance with standards.</p>
+                        <ul class="space-y-2 mb-8">
+                            <li class="flex items-start gap-2 text-sm text-gray-600"><i class="ph-fill ph-check-circle text-brand-green mt-0.5"></i> Optimize reliability & safety</li>
+                            <li class="flex items-start gap-2 text-sm text-gray-600"><i class="ph-fill ph-check-circle text-brand-green mt-0.5"></i> Evaluate material integrity</li>
+                        </ul>
+                        <a href="#" class="inline-flex items-center gap-2 text-sm font-bold text-brand-blue group-hover:text-brand-yellow transition-colors mt-auto">
+                            View Details <i class="ph ph-arrow-right"></i>
+                        </a>
+                    </div>
+
+                    <!-- Service 3 -->
+                    <div class="bento-card p-8 rounded-2xl group cursor-pointer relative overflow-hidden">
+                        <div class="absolute top-0 right-0 w-32 h-32 bg-brand-blue/5 rounded-bl-full -z-10 transition-transform group-hover:scale-110"></div>
+                        <div class="w-14 h-14 bg-brand-surface border border-gray-200 rounded-xl flex items-center justify-center text-2xl text-brand-blue mb-6 shadow-sm group-hover:bg-brand-blue group-hover:text-brand-light transition-colors">
+                            <i class="ph ph-gear"></i>
+                        </div>
+                        <h4 class="text-title text-brand-dark mb-3">Asset Management</h4>
+                        <p class="text-subtitle mb-6 text-sm">Strategic asset lifecycle management and optimization consulting to reduce operational costs.</p>
+                        <ul class="space-y-2 mb-8">
+                            <li class="flex items-start gap-2 text-sm text-gray-600"><i class="ph-fill ph-check-circle text-brand-green mt-0.5"></i> Extend equipment lifespan</li>
+                            <li class="flex items-start gap-2 text-sm text-gray-600"><i class="ph-fill ph-check-circle text-brand-green mt-0.5"></i> Implement effective maintenance</li>
+                        </ul>
+                        <a href="#" class="inline-flex items-center gap-2 text-sm font-bold text-brand-blue group-hover:text-brand-yellow transition-colors mt-auto">
+                            View Details <i class="ph ph-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- List Training Section (Integrated per requirements) -->
+        <section id="training" class="py-24 bg-brand-surface relative border-y border-gray-200 overflow-hidden">
+            <!-- Background Decoration -->
+            <div class="absolute top-0 right-0 w-1/2 h-full bg-brand-blue/5 skew-x-12 translate-x-32"></div>
+
+            <div class="max-w-7xl mx-auto px-6 relative z-10">
+                <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+                    <div class="max-w-2xl">
+                        <h2 class="text-brand-blue font-bold text-sm uppercase tracking-widest mb-2">Professional Development</h2>
+                        <h3 class="text-heading text-brand-dark mb-4">Training Programs</h3>
+                        <p class="text-paragraph">Industry-focused training designed to improve performance, reliability, and efficiency for engineering teams.</p>
+                    </div>
+                    
+                    <!-- Search & Filter Area -->
+                    <div class="flex-shrink-0">
+                        <div class="relative">
+                            <i class="ph ph-magnifying-glass absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                            <input type="text" placeholder="Search programs..." class="pl-11 pr-4 py-2.5 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue bg-brand-light w-full md:w-64 text-sm">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Interactive Filter Chips -->
+                <div class="flex flex-wrap gap-3 mb-10">
+                    <button class="px-5 py-2 rounded-full text-sm font-semibold bg-brand-blue text-brand-light shadow-md transition-all">All Programs</button>
+                    <button class="px-5 py-2 rounded-full text-sm font-medium bg-brand-light text-gray-600 border border-gray-200 hover:bg-gray-100 transition-all">Maintenance Management (12)</button>
+                    <button class="px-5 py-2 rounded-full text-sm font-medium bg-brand-light text-gray-600 border border-gray-200 hover:bg-gray-100 transition-all">Technical Training (8)</button>
+                    <button class="px-5 py-2 rounded-full text-sm font-medium bg-brand-light text-gray-600 border border-gray-200 hover:bg-gray-100 transition-all">Academic & Research (3)</button>
+                </div>
+
+                <!-- Structured Training Cards -->
+                <div class="grid lg:grid-cols-2 gap-6 mb-12">
+                    <!-- Training Card 1 -->
+                    <div class="bg-brand-light border border-gray-200 rounded-2xl p-6 flex flex-col sm:flex-row gap-6 hover:shadow-xl transition-shadow duration-300">
+                        <div class="sm:w-1/3 flex-shrink-0 h-48 sm:h-auto rounded-xl overflow-hidden relative">
+                            <img src="https://images.unsplash.com/photo-1581092160562-40aa08e78837?q=80&w=2070&auto=format&fit=crop" class="w-full h-full object-cover" alt="Vibration Analysis">
+                            <div class="absolute top-3 left-3 bg-brand-light/90 backdrop-blur-sm px-2.5 py-1 rounded text-xs font-bold text-brand-blue">
+                                Next: Oct 15
+                            </div>
+                        </div>
+                        <div class="flex flex-col flex-grow">
+                            <div class="flex flex-wrap gap-2 mb-3">
+                                <span class="px-2 py-1 bg-brand-blue/10 text-brand-blue rounded text-xs font-semibold">Maintenance</span>
+                                <span class="px-2 py-1 bg-gray-100 text-gray-600 rounded text-xs font-semibold flex items-center gap-1"><i class="ph ph-clock"></i> 3 Days</span>
+                                <span class="px-2 py-1 bg-brand-green/10 text-brand-green rounded text-xs font-semibold flex items-center gap-1"><i class="ph ph-trend-up"></i> Advanced</span>
+                            </div>
+                            <h4 class="text-title text-brand-dark mb-2 leading-tight">Vibration Analysis & Predictive Maintenance</h4>
+                            <p class="text-sm text-gray-600 mb-6 line-clamp-2">Techniques for machinery vibration analysis, condition monitoring, and predictive maintenance planning for industrial rotating equipment.</p>
+                            
+                            <div class="mt-auto flex items-center gap-3">
+                                <button class="flex-1 bg-brand-yellow text-brand-blue font-bold py-2 rounded-lg text-sm hover:bg-brand-yellowHover transition-colors text-center">Enquire Now</button>
+                                <button class="flex-1 bg-transparent border border-gray-300 text-gray-700 font-semibold py-2 rounded-lg text-sm hover:bg-gray-50 transition-colors text-center">View Details</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Training Card 2 -->
+                    <div class="bg-brand-light border border-gray-200 rounded-2xl p-6 flex flex-col sm:flex-row gap-6 hover:shadow-xl transition-shadow duration-300">
+                        <div class="sm:w-1/3 flex-shrink-0 h-48 sm:h-auto rounded-xl overflow-hidden relative">
+                            <img src="https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?q=80&w=2070&auto=format&fit=crop" class="w-full h-full object-cover" alt="Rotating Equipment">
+                            <div class="absolute top-3 left-3 bg-brand-light/90 backdrop-blur-sm px-2.5 py-1 rounded text-xs font-bold text-brand-blue">
+                                Next: Nov 02
+                            </div>
+                        </div>
+                        <div class="flex flex-col flex-grow">
+                            <div class="flex flex-wrap gap-2 mb-3">
+                                <span class="px-2 py-1 bg-brand-blue/10 text-brand-blue rounded text-xs font-semibold">Technical</span>
+                                <span class="px-2 py-1 bg-gray-100 text-gray-600 rounded text-xs font-semibold flex items-center gap-1"><i class="ph ph-clock"></i> 2 Days</span>
+                                <span class="px-2 py-1 bg-brand-blue/10 text-brand-blue rounded text-xs font-semibold flex items-center gap-1"><i class="ph ph-users"></i> All Levels</span>
+                            </div>
+                            <h4 class="text-title text-brand-dark mb-2 leading-tight">Rotating Equipment: Pumps, Compressors & Turbines</h4>
+                            <p class="text-sm text-gray-600 mb-6 line-clamp-2">In-depth training on the operation, maintenance, and troubleshooting of rotating machinery including centrifugal pumps and steam turbines.</p>
+                            
+                            <div class="mt-auto flex items-center gap-3">
+                                <button class="flex-1 bg-brand-yellow text-brand-blue font-bold py-2 rounded-lg text-sm hover:bg-brand-yellowHover transition-colors text-center">Enquire Now</button>
+                                <button class="flex-1 bg-transparent border border-gray-300 text-gray-700 font-semibold py-2 rounded-lg text-sm hover:bg-gray-50 transition-colors text-center">View Details</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Inhouse Training Strong Alternative CTA -->
+                <div class="bg-brand-blue rounded-2xl p-8 md:p-12 relative overflow-hidden shadow-2xl flex flex-col md:flex-row items-center justify-between gap-8">
+                    <!-- Deco element -->
+                    <div class="absolute -right-20 -top-20 w-64 h-64 bg-brand-light/10 rounded-full blur-3xl"></div>
+                    <div class="relative z-10 max-w-2xl text-center md:text-left">
+                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-yellow/20 text-brand-yellow text-xs font-bold uppercase tracking-wider mb-4 border border-brand-yellow/30">
+                            Corporate Solution
+                        </div>
+                        <h3 class="text-2xl font-bold text-brand-light mb-3">In-house Technical Training</h3>
+                        <p class="text-brand-light/80 text-sm md:text-base">Empower your workforce with expert engineering training delivered directly on-site at your facility. Tailored content aligned with your operational SOPs and minimal downtime.</p>
+                        <ul class="flex flex-col sm:flex-row gap-4 mt-6 text-sm text-brand-light/90">
+                            <li class="flex items-center justify-center md:justify-start gap-2"><i class="ph-fill ph-check-circle text-brand-yellow"></i> Customized Content</li>
+                            <li class="flex items-center justify-center md:justify-start gap-2"><i class="ph-fill ph-check-circle text-brand-yellow"></i> Zero Travel Downtime</li>
+                            <li class="flex items-center justify-center md:justify-start gap-2"><i class="ph-fill ph-check-circle text-brand-yellow"></i> Direct Expert Consultation</li>
+                        </ul>
+                    </div>
+                    <div class="relative z-10 flex-shrink-0 w-full md:w-auto">
+                        <button class="w-full md:w-auto bg-brand-light text-brand-blue font-bold px-8 py-4 rounded-xl shadow-lg hover:shadow-brand-light/20 hover:-translate-y-1 transition-all flex items-center justify-center gap-2">
+                            Request In-house Training <i class="ph-bold ph-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Proof / Testimonials -->
+        <section class="py-24 bg-brand-light">
+            <div class="max-w-7xl mx-auto px-6">
+                <div class="grid lg:grid-cols-2 gap-16 items-center">
+                    <div>
+                        <h2 class="text-brand-blue font-bold text-sm uppercase tracking-widest mb-2">Why Choose Us</h2>
+                        <h3 class="text-heading text-brand-dark mb-6">Proven results tailored to your industrial needs.</h3>
+                        <p class="text-paragraph mb-8">With over 15 years of industry experience and academic expertise, we deliver solutions that provide measurable improvements in operational performance.</p>
+                        
+                        <div class="grid sm:grid-cols-2 gap-6">
+                            <div class="p-5 rounded-xl bg-brand-surface border border-gray-100 shadow-sm">
+                                <div class="text-3xl font-extrabold text-brand-blue mb-1">150+</div>
+                                <p class="text-sm font-semibold text-brand-dark">Projects Delivered</p>
+                                <p class="text-xs text-gray-500 mt-1">Successfully completed engineering assessments.</p>
+                            </div>
+                            <div class="p-5 rounded-xl bg-brand-surface border border-gray-100 shadow-sm">
+                                <div class="text-3xl font-extrabold text-brand-blue mb-1">80+</div>
+                                <p class="text-sm font-semibold text-brand-dark">Enterprise Clients</p>
+                                <p class="text-xs text-gray-500 mt-1">Trusting our technical expertise.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Testimonial Visual -->
+                    <div class="relative">
+                        <div class="absolute inset-0 bg-brand-blue rounded-3xl transform translate-x-4 translate-y-4 opacity-10"></div>
+                        <div class="relative bg-brand-light border border-gray-200 rounded-3xl p-8 md:p-12 shadow-xl">
+                            <i class="ph-fill ph-quotes text-6xl text-brand-blue/10 absolute top-8 left-8"></i>
+                            <div class="relative z-10">
+                                <div class="flex items-center gap-1 mb-6">
+                                    <i class="ph-fill ph-star text-brand-yellow text-lg"></i>
+                                    <i class="ph-fill ph-star text-brand-yellow text-lg"></i>
+                                    <i class="ph-fill ph-star text-brand-yellow text-lg"></i>
+                                    <i class="ph-fill ph-star text-brand-yellow text-lg"></i>
+                                    <i class="ph-fill ph-star text-brand-yellow text-lg"></i>
+                                </div>
+                                <p class="text-lg md:text-xl font-medium text-brand-dark italic mb-8 leading-relaxed">
+                                    "CSU Engineering provided exceptional technical support that significantly improved our asset reliability. Their targeted training programs successfully closed the skill gaps within our mechanical systems team."
+                                </p>
+                                <div class="flex items-center gap-4">
+                                    <div class="w-12 h-12 bg-gray-200 rounded-full overflow-hidden">
+                                        <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=200&auto=format&fit=crop" class="w-full h-full object-cover" alt="Client">
+                                    </div>
+                                    <div>
+                                        <p class="font-bold text-brand-dark">Ir. Budi Santoso</p>
+                                        <p class="text-xs text-gray-500 font-medium uppercase tracking-wider">Maintenance Director, Oil & Gas Sector</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pre-Footer CTA -->
+        <section class="py-16 bg-brand-yellow">
+            <div class="max-w-7xl mx-auto px-6 text-center">
+                <h2 class="text-3xl font-bold text-brand-blue mb-4">Ready to Take the Next Step?</h2>
+                <p class="text-brand-blue/80 mb-8 max-w-xl mx-auto font-medium">Contact us today to discuss how our engineering expertise can help your organization grow and overcome technical challenges.</p>
+                <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
+                    <button class="bg-brand-blue text-brand-light px-8 py-3.5 rounded-lg font-bold shadow-lg hover:bg-[#1e223b] hover:shadow-xl hover:-translate-y-0.5 transition-all w-full sm:w-auto">
+                        Contact Us Now
+                    </button>
+                    <button class="bg-brand-light text-brand-blue border border-brand-blue/10 px-8 py-3.5 rounded-lg font-bold shadow-sm hover:bg-white transition-all w-full sm:w-auto">
+                        View Full Portfolio
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-brand-dark text-brand-light pt-20 pb-10 border-t border-gray-800">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+                
+                <!-- Brand Info -->
+                <div class="lg:col-span-1">
+                    <a href="#" class="flex items-center gap-3 mb-6">
+                        <svg width="32" height="32" viewBox="0 0 100 100" fill="none">
+                            <path d="M50 5 L90 25 L90 75 L50 95 L10 75 L10 25 Z" fill="#FAFAFA"/>
+                            <path d="M50 5 L50 45 L90 25 Z" fill="#f8d922"/>
+                            <path d="M50 45 L10 25 L10 75 Z" fill="#4b5563"/>
+                        </svg>
+                        <span class="font-bold text-xl tracking-tight text-brand-light">CSU <span class="font-light">Engineering</span></span>
+                    </a>
+                    <p class="text-gray-400 text-sm mb-6 leading-relaxed">
+                        A mechanical engineering-based service unit providing professional training and technical consultation for industrial sectors.
+                    </p>
+                    <div class="flex gap-4">
+                        <a href="#" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-brand-yellow hover:text-brand-dark transition-colors"><i class="ph-fill ph-linkedin-logo text-xl"></i></a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-brand-yellow hover:text-brand-dark transition-colors"><i class="ph-fill ph-instagram-logo text-xl"></i></a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-brand-yellow hover:text-brand-dark transition-colors"><i class="ph-fill ph-envelope-simple text-xl"></i></a>
+                    </div>
+                </div>
+
+                <!-- Quick Links -->
+                <div>
+                    <h4 class="text-brand-light font-bold mb-6">Quick Links</h4>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="text-sm text-gray-400 hover:text-brand-yellow transition-colors">About Us</a></li>
+                        <li><a href="#" class="text-sm text-gray-400 hover:text-brand-yellow transition-colors">Our Services</a></li>
+                        <li><a href="#" class="text-sm text-gray-400 hover:text-brand-yellow transition-colors">Portfolio</a></li>
+                        <li><a href="#" class="text-sm text-gray-400 hover:text-brand-yellow transition-colors">Management Team</a></li>
+                        <li><a href="#" class="text-sm text-gray-400 hover:text-brand-yellow transition-colors">Contact</a></li>
+                    </ul>
+                </div>
+
+                <!-- Services -->
+                <div>
+                    <h4 class="text-brand-light font-bold mb-6">Our Services</h4>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="text-sm text-gray-400 hover:text-brand-yellow transition-colors">Professional Training</a></li>
+                        <li><a href="#" class="text-sm text-gray-400 hover:text-brand-yellow transition-colors">Feasibility Study</a></li>
+                        <li><a href="#" class="text-sm text-gray-400 hover:text-brand-yellow transition-colors">Assessment & Testing</a></li>
+                        <li><a href="#" class="text-sm text-gray-400 hover:text-brand-yellow transition-colors">Asset Management</a></li>
+                        <li><a href="#" class="text-sm text-gray-400 hover:text-brand-yellow transition-colors">System Design</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact -->
+                <div>
+                    <h4 class="text-brand-light font-bold mb-6">Contact Info</h4>
+                    <ul class="space-y-4">
+                        <li class="flex items-start gap-3">
+                            <i class="ph-fill ph-map-pin text-brand-yellow mt-1 text-lg"></i>
+                            <span class="text-sm text-gray-400 leading-relaxed">Jl. Engineering No. 123<br>Jakarta, Indonesia 12345</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i class="ph-fill ph-envelope text-brand-yellow text-lg"></i>
+                            <span class="text-sm text-gray-400">info@csuengineering.com</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i class="ph-fill ph-phone text-brand-yellow text-lg"></i>
+                            <span class="text-sm text-gray-400">+62 21 1234 5678</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Bottom Footer -->
+            <div class="pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center gap-4">
+                <p class="text-xs text-gray-500">&copy; 2024 CSU Mechanical Engineering. All rights reserved.</p>
+                <div class="flex gap-4">
+                    <a href="#" class="text-xs text-gray-500 hover:text-brand-light">Privacy Policy</a>
+                    <a href="#" class="text-xs text-gray-500 hover:text-brand-light">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Interactive Scripts -->
+    <script>
+        // Remove loader after document is fully loaded
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                const loader = document.getElementById('loader');
+                loader.classList.add('animate-fade-out');
+                setTimeout(() => loader.style.display = 'none', 1000);
+            }, 1500); // 1.5s delay to show the nice SVG animation
+        });
+
+        // Sticky Navbar styling on scroll
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 20) {
+                navbar.classList.add('shadow-sm');
+                navbar.classList.replace('py-4', 'py-0');
+            } else {
+                navbar.classList.remove('shadow-sm');
+                navbar.classList.replace('py-0', 'py-4');
+            }
+        });
+    </script>
+</body>
+</html>
