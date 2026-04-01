@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Observata | Operate critical services with confidence</title>
+    
+    <!-- Google Fonts: Montserrat for Primary Headers, Inter for support text -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- DESIGN SYSTEM & VARIABLES --- */
+        :root {
+            /* Core Brand Colors */
+            --dark-blue: #113868;
+            --accent-blue: #0598ce;
+            --light-grey: #e7e9ea;
+            --white: #ffffff;
+            
+            /* Proposed Accent Color: Energetic Enterprise Orange (for CTAs/Highlights) */
+            --accent-orange: #F3622D; 
+            
+            /* Backgrounds & Text */
+            --bg-main: #f8f9fb; /* Slight off-white for depth */
+            --text-main: #113868; /* Avoiding pure black */
+            --text-muted: #4a6b8c;
+            
+            /* Glassmorphism & Shadows */
+            --glass-bg: rgba(255, 255, 255, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.4);
+            --shadow-soft: 0 20px 40px rgba(17, 56, 104, 0.08);
+            --shadow-deep: 0 30px 60px rgba(17, 56, 104, 0.12);
+            
+            /* Spacing */
+            --section-padding: 140px 5%;
+            --border-radius: 24px;
+        }
+
+        /* --- GLOBAL RESET & TYPOGRAPHY --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        h1, h2, h3, h4, .font-montserrat {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            color: var(--dark-blue);
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+        }
+
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+
+        /* --- UTILITY CLASSES --- */
+        .container {
+            max-width: 1320px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .fade-up {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        .fade-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px 32px;
+            border-radius: 50px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: var(--accent-orange);
+            color: var(--white);
+            box-shadow: 0 10px 20px rgba(243, 98, 45, 0.2);
+            border: 2px solid var(--accent-orange);
+        }
+
+        .btn-primary:hover {
+            background: #d84f1f;
+            border-color: #d84f1f;
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(243, 98, 45, 0.3);
+        }
+
+        .btn-secondary {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            color: var(--dark-blue);
+            border: 1px solid rgba(17, 56, 104, 0.2);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255,255,255,1);
+            border-color: var(--dark-blue);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-soft);
+        }
+
+        /* --- NAVIGATION --- */
+        header {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 100;
+            padding: 20px 5%;
+            transition: all 0.4s ease;
+        }
+
+        header.scrolled {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--light-grey);
+            box-shadow: 0 4px 20px rgba(17, 56, 104, 0.05);
+            padding: 15px 5%;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 800;
+            font-size: 1.5rem;
+            color: var(--dark-blue);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--accent-blue);
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 40px;
+        }
+
+        .nav-links a {
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            font-size: 0.95rem;
+            color: var(--dark-blue);
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px; left: 0;
+            width: 0%; height: 2px;
+            background: var(--accent-blue);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after { width: 100%; }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .lang-select {
+            font-weight: 500;
+            cursor: pointer;
+            color: var(--dark-blue);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .mobile-toggle { display: none; font-size: 1.5rem; cursor: pointer; }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: var(--section-padding);
+            padding-top: 180px;
+            overflow: hidden;
+        }
+
+        /* Soft Layered Mesh Gradients for Depth */
+        .hero-bg-gradients {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -2;
+            background: radial-gradient(circle at 10% 20%, rgba(5, 152, 206, 0.08) 0%, transparent 40%),
+                        radial-gradient(circle at 90% 80%, rgba(17, 56, 104, 0.05) 0%, transparent 40%),
+                        var(--bg-main);
+        }
+
+        /* The Canvas Network Background */
+        #networkCanvas {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+            opacity: 0.8;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-headline {
+            font-size: clamp(3rem, 5vw, 4.5rem);
+            margin-bottom: 24px;
+            background: linear-gradient(135deg, var(--dark-blue) 0%, #1e5a9c 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 10px 30px rgba(17, 56, 104, 0.1);
+        }
+
+        .hero-subhead {
+            font-size: clamp(1.1rem, 1.5vw, 1.3rem);
+            color: var(--text-muted);
+            margin-bottom: 40px;
+            max-width: 650px;
+            font-weight: 400;
+        }
+
+        .hero-ctas {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        /* Dimensional Floating Element in Hero */
+        .hero-visual-card {
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 450px;
+            height: auto;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--border-radius);
+            padding: 30px;
+            box-shadow: var(--shadow-deep);
+            z-index: 2;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(-50%) translateY(0); }
+            50% { transform: translateY(-50%) translateY(-15px); }
+            100% { transform: translateY(-50%) translateY(0); }
+        }
+
+        .visual-card-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            border-bottom: 1px solid rgba(17,56,104,0.1);
+            padding-bottom: 10px;
+        }
+
+        .status-dot {
+            width: 10px; height: 10px; border-radius: 50%;
+            background: #06D6A0;
+            display: inline-block;
+            box-shadow: 0 0 10px rgba(6, 214, 160, 0.5);
+        }
+
+        .signal-bar-wrap {
+            height: 8px; width: 100%;
+            background: var(--light-grey);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 15px;
+        }
+
+        .signal-bar {
+            height: 100%; width: 0%;
+            background: var(--accent-blue);
+            border-radius: 4px;
+            animation: loadSignal 3s infinite cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes loadSignal {
+            0% { width: 0%; opacity: 1;}
+            70% { width: 100%; opacity: 1;}
+            100% { width: 100%; opacity: 0;}
+        }
+
+        /* --- TRUSTED BY --- */
+        .trusted-section {
+            padding: 60px 5%;
+            background: var(--white);
+            border-top: 1px solid var(--light-grey);
+            border-bottom: 1px solid var(--light-grey);
+            text-align: center;
+        }
+
+        .trusted-title {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-muted);
+            margin-bottom: 30px;
+            font-weight: 600;
+        }
+
+        .logos-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 60px;
+            flex-wrap: wrap;
+            opacity: 0.6;
+            filter: grayscale(100%);
+            transition: all 0.3s;
+        }
+
+        .logos-wrapper:hover {
+            opacity: 0.9;
+            filter: grayscale(50%);
+        }
+
+        .logo-placeholder {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--dark-blue);
+        }
+
+        /* --- PROBLEMS WE SOLVE --- */
+        .problems-section {
+            padding: var(--section-padding);
+            position: relative;
+        }
+
+        .problems-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 80px;
+        }
+
+        .problems-sticky {
+            position: sticky;
+            top: 150px;
+            height: fit-content;
+        }
+
+        .section-tag {
+            display: inline-block;
+            padding: 6px 16px;
+            background: rgba(5, 152, 206, 0.1);
+            color: var(--accent-blue);
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .problems-title {
+            font-size: clamp(2.5rem, 4vw, 3.5rem);
+            margin-bottom: 20px;
+        }
+
+        .problems-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .problem-card {
+            background: var(--white);
+            padding: 40px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-soft);
+            border: 1px solid var(--light-grey);
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .problem-card:hover {
+            transform: translateX(-10px);
+            box-shadow: var(--shadow-deep);
+        }
+
+        .problem-card::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 0; bottom: 0;
+            width: 4px;
+            background: var(--accent-orange);
+            transform: scaleY(0);
+            transition: transform 0.4s ease;
+            transform-origin: bottom;
+        }
+
+        .problem-card:hover::before {
+            transform: scaleY(1);
+        }
+
+        .problem-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        /* --- SERVICE DOMAINS --- */
+        .services-section {
+            padding: var(--section-padding);
+            background: var(--dark-blue);
+            color: var(--white);
+            position: relative;
+        }
+
+        /* Dark area deep visual depth */
+        .services-bg {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at 50% 0%, rgba(5, 152, 206, 0.15) 0%, transparent 60%);
+            z-index: 0;
+        }
+
+        .services-header {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 80px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .services-header h2 {
+            color: var(--white);
+            font-size: clamp(2.5rem, 4vw, 3.5rem);
+            margin-bottom: 20px;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .service-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-radius: var(--border-radius);
+            padding: 50px 40px;
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .service-card:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--accent-blue);
+            transform: translateY(-10px);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.3);
+        }
+
+        .service-icon {
+            width: 60px; height: 60px;
+            background: rgba(5, 152, 206, 0.2);
+            border-radius: 16px;
+            display: flex; align-items: center; justify-content: center;
+            margin-bottom: 30px;
+            color: var(--accent-blue);
+        }
+
+        .service-card h3 {
+            color: var(--white);
+            font-size: 1.6rem;
+            margin-bottom: 16px;
+        }
+
+        .service-card p {
+            color: rgba(255,255,255,0.7);
+            font-size: 1rem;
+        }
+
+        /* --- OUTCOMES SECTION --- */
+        .outcomes-section {
+            padding: var(--section-padding);
+            background: var(--bg-main);
+            position: relative;
+        }
+
+        .outcomes-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+            margin-top: 60px;
+        }
+
+        .outcome-card {
+            background: var(--white);
+            padding: 40px 30px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-soft);
+            text-align: center;
+            border: 1px solid var(--light-grey);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .outcome-card::after {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%; width: 200%; height: 200%;
+            background: radial-gradient(circle, rgba(5, 152, 206, 0.05) 0%, transparent 70%);
+            opacity: 0; transition: opacity 0.5s;
+            pointer-events: none;
+        }
+
+        .outcome-card:hover::after { opacity: 1; }
+
+        .outcome-metric {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 3.5rem;
+            font-weight: 800;
+            color: var(--accent-blue);
+            margin-bottom: 10px;
+            line-height: 1;
+        }
+
+        .outcome-label {
+            font-weight: 600;
+            color: var(--dark-blue);
+        }
+
+        /* --- RESPONSIVE DESIGN --- */
+        @media (max-width: 1024px) {
+            .problems-grid { grid-template-columns: 1fr; }
+            .problems-sticky { position: relative; top: 0; margin-bottom: 40px; }
+            .services-grid { grid-template-columns: repeat(2, 1fr); }
+            .outcomes-grid { grid-template-columns: repeat(2, 1fr); }
+            .hero-visual-card { display: none; /* Hide complex floating card on smaller tablets for clarity */ }
+            .hero-content { text-align: center; margin: 0 auto; }
+            .hero-ctas { justify-content: center; }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links, .nav-right .btn, .lang-select { display: none; }
+            .mobile-toggle { display: block; }
+            .services-grid { grid-template-columns: 1fr; }
+            .outcomes-grid { grid-template-columns: 1fr; }
+            .hero-ctas { flex-direction: column; width: 100%; }
+            .hero-ctas .btn { width: 100%; }
+            .hero-headline { font-size: 2.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVIGATION -->
+    <header id="header">
+        <div class="nav-container">
+            <a href="#" class="logo">
+                Observata<span class="logo-dot"></span>
+            </a>
+            
+            <nav class="nav-links">
+                <a href="#services">Services</a>
+                <a href="#pricing">Pricing</a>
+                <a href="#resources">Resources</a>
+                <a href="#about">About</a>
+                <a href="#contact">Contact</a>
+            </nav>
+
+            <div class="nav-right">
+                <div class="lang-select">EN <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+                <a href="#contact" class="btn btn-primary" style="padding: 10px 24px; font-size: 0.9rem;">Start with clarity</a>
+                <div class="mobile-toggle">☰</div>
+            </div>
+        </div>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section class="hero">
+        <!-- Structural Depth Backgrounds -->
+        <div class="hero-bg-gradients"></div>
+        <canvas id="networkCanvas"></canvas> <!-- "Dots. Connected." Metaphor -->
+
+        <div class="container" style="width: 100%;">
+            <div class="hero-content fade-up">
+                <div class="section-tag" style="background: rgba(17,56,104,0.05); color: var(--dark-blue); margin-bottom: 24px;">Enterprise-Grade Operations</div>
+                <h1 class="hero-headline">Operate critical services with confidence.</h1>
+                <p class="hero-subhead">We run observability, security, and search services with continuous responsibility — so your systems stay reliable, visible, and ready.</p>
+                
+                <div class="hero-ctas">
+                    <a href="#" class="btn btn-primary">Start with clarity</a>
+                    <a href="#" class="btn btn-secondary">Explore our approach</a>
+                </div>
+            </div>
+
+            <!-- Dimensional Floating UI Element to add depth and enterprise-tech feel -->
+            <div class="hero-visual-card fade-up" style="transition-delay: 0.3s;">
+                <div class="visual-card-header">
+                    <span style="font-weight: 600; font-size: 0.9rem; color: var(--dark-blue);">Platform Health</span>
+                    <span style="font-size: 0.85rem; color: #06D6A0; display:flex; align-items:center; gap:6px;">
+                        <span class="status-dot"></span> Optimal
+                    </span>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                    <span style="font-size: 0.85rem; color: var(--text-muted);">Signal Ingestion Flow</span>
+                    <span style="font-size: 0.85rem; font-weight: 600; font-family: 'Montserrat';">99.999%</span>
+                </div>
+                <div class="signal-bar-wrap">
+                    <div class="signal-bar"></div>
+                </div>
+                
+                <div style="margin-top: 25px; display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                    <div style="background: rgba(17,56,104,0.03); padding: 15px; border-radius: 12px; border: 1px solid rgba(17,56,104,0.05);">
+                        <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;">Active Nodes</div>
+                        <div style="font-size: 1.2rem; font-weight: 700; color: var(--dark-blue); font-family: 'Montserrat'; margin-top: 4px;">1,204</div>
+                    </div>
+                    <div style="background: rgba(17,56,104,0.03); padding: 15px; border-radius: 12px; border: 1px solid rgba(17,56,104,0.05);">
+                        <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;">Threat Blocks</div>
+                        <div style="font-size: 1.2rem; font-weight: 700; color: var(--accent-blue); font-family: 'Montserrat'; margin-top: 4px;">24.5k</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TRUSTED BY SECTION -->
+    <section class="trusted-section">
+        <div class="container">
+            <div class="trusted-title fade-up">Trusted by enterprise leaders</div>
+            <div class="logos-wrapper fade-up" style="transition-delay: 0.2s;">
+                <!-- Abstract logo placeholders for clean structural feel -->
+                <div class="logo-placeholder">AxiomCorp</div>
+                <div class="logo-placeholder">NexusData</div>
+                <div class="logo-placeholder">Vanguard.io</div>
+                <div class="logo-placeholder">SynergyTech</div>
+                <div class="logo-placeholder">GlobalFin</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PROBLEMS WE SOLVE -->
+    <section class="problems-section">
+        <div class="container problems-grid">
+            <div class="problems-sticky fade-up">
+                <div class="section-tag">The Complexity Crisis</div>
+                <h2 class="problems-title">Complex systems shouldn't mean blind spots.</h2>
+                <p style="font-size: 1.1rem; color: var(--text-muted); max-width: 400px; margin-bottom: 30px;">
+                    Modern enterprises rely on business-critical platforms, but operational fragmentation creates real business risk. We transform chaotic complexity into controlled visibility.
+                </p>
+            </div>
+            
+            <div class="problems-cards">
+                <div class="problem-card fade-up">
+                    <h3 class="font-montserrat">Fragmented Tooling</h3>
+                    <p style="color: var(--text-muted);">Siloed monitoring and security tools create isolated data streams, making root-cause analysis slow and inaccurate when every second counts.</p>
+                </div>
+                <div class="problem-card fade-up">
+                    <h3 class="font-montserrat">Rising Operational Complexity</h3>
+                    <p style="color: var(--text-muted);">As architectures scale dynamically, keeping platforms stable and performant requires deep, continuous engineering that internal teams struggle to staff.</p>
+                </div>
+                <div class="problem-card fade-up">
+                    <h3 class="font-montserrat">Weak Accountability</h3>
+                    <p style="color: var(--text-muted);">When systems fail, the line between infrastructure, platform, and application blurs. A lack of clear operational ownership leads to extended downtime.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SERVICE DOMAINS -->
+    <section class="services-section" id="services">
+        <div class="services-bg"></div>
+        <div class="container">
+            <div class="services-header fade-up">
+                <div class="section-tag" style="background: rgba(255,255,255,0.1); color: var(--white); border: 1px solid rgba(255,255,255,0.2);">Service Domains</div>
+                <h2 class="font-montserrat">Engineered for absolute clarity.</h2>
+                <p style="font-size: 1.1rem; color: rgba(255,255,255,0.7);">Delivered as a service. Built on industry-leading platforms like Elastic and CrowdStrike.</p>
+            </div>
+
+            <div class="services-grid">
+                <!-- Card 1 -->
+                <div class="service-card fade-up" style="transition-delay: 0.1s;">
+                    <div class="service-icon">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                    </div>
+                    <h3 class="font-montserrat">Observability</h3>
+                    <p>Unify logs, metrics, and traces. We maintain continuous oversight of your entire stack to ensure performance bottlenecks are identified before they impact users.</p>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="service-card fade-up" style="transition-delay: 0.2s;">
+                    <div class="service-icon">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                    </div>
+                    <h3 class="font-montserrat">Cybersecurity</h3>
+                    <p>Enterprise-grade threat detection and response. We engineer your security posture to evolve continuously, closing blind spots across endpoints and cloud.</p>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="service-card fade-up" style="transition-delay: 0.3s;">
+                    <div class="service-icon">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    </div>
+                    <h3 class="font-montserrat">Enterprise Search</h3>
+                    <p>Make fragmented data instantly accessible. We optimize distributed search architectures for sub-second query performance and absolute reliability.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- OUTCOMES WE PRODUCE -->
+    <section class="outcomes-section">
+        <div class="container">
+            <div class="text-center fade-up" style="text-align: center; max-width: 600px; margin: 0 auto;">
+                <div class="section-tag">Measurable Results</div>
+                <h2 class="font-montserrat" style="font-size: clamp(2rem, 3vw, 2.5rem); margin-bottom: 15px;">Outcomes we produce.</h2>
+                <p style="color: var(--text-muted);">A partnership with Observata translates directly into quantifiable business stability and cost efficiency.</p>
+            </div>
+
+            <div class="outcomes-grid">
+                <div class="outcome-card fade-up" style="transition-delay: 0.1s;">
+                    <div class="outcome-metric">65%</div>
+                    <div class="outcome-label">Faster Resolution</div>
+                    <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 10px;">Decrease in MTTR across critical platforms.</p>
+                </div>
+                <div class="outcome-card fade-up" style="transition-delay: 0.2s;">
+                    <div class="outcome-metric">Zero</div>
+                    <div class="outcome-label">Blind Spots</div>
+                    <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 10px;">Full-stack visibility established and maintained.</p>
+                </div>
+                <div class="outcome-card fade-up" style="transition-delay: 0.3s;">
+                    <div class="outcome-metric">40%</div>
+                    <div class="outcome-label">Reduced Risk</div>
+                    <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 10px;">Drop in critical severity incidents year-over-year.</p>
+                </div>
+                <div class="outcome-card fade-up" style="transition-delay: 0.4s;">
+                    <div class="outcome-metric">24/7</div>
+                    <div class="outcome-label">Accountability</div>
+                    <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 10px;">Continuous oversight and platform health management.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER (Simplified structurally to close out the concept) -->
+    <footer style="background: var(--dark-blue); color: var(--white); padding: 80px 5% 40px; border-top: 1px solid rgba(255,255,255,0.1);">
+        <div class="container" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 40px;">
+            <div>
+                <a href="#" class="logo" style="color: var(--white);">Observata<span class="logo-dot"></span></a>
+                <p style="color: rgba(255,255,255,0.6); margin-top: 15px; max-width: 300px; font-size: 0.9rem;">Operate critical services with clarity, reliability, and long-term accountability.</p>
+            </div>
+            <div>
+                <a href="#" class="btn btn-primary">Start the conversation</a>
+            </div>
+        </div>
+        <div class="container" style="border-top: 1px solid rgba(255,255,255,0.1); margin-top: 60px; padding-top: 20px; display: flex; justify-content: space-between; font-size: 0.8rem; color: rgba(255,255,255,0.4);">
+            <p>&copy; 2024 Observata. All rights reserved.</p>
+            <div style="display: flex; gap: 20px;">
+                <a href="#">Privacy</a>
+                <a href="#">Terms</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- INTERACTIVITY & ANIMATION SCRIPTS -->
+    <script>
+        // --- SCROLL ANIMATIONS (Intersection Observer) ---
+        const observerOptions = { root: null, rootMargin: '0px', threshold: 0.15 };
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+        // --- HEADER SCROLL EFFECT ---
+        const header = document.getElementById('header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) { header.classList.add('scrolled'); } 
+            else { header.classList.remove('scrolled'); }
+        });
+
+        // --- "DOTS. CONNECTED." HTML5 CANVAS NETWORK BACKGROUND ---
+        // Concept: Controlled, intentional flow representing structured systems.
+        const canvas = document.getElementById('networkCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        let width, height;
+        let nodes = [];
+        
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = document.querySelector('.hero').offsetHeight;
+        }
+        
+        window.addEventListener('resize', resize);
+        resize();
+
+        class Node {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                // Horizontal purposeful flow, very slow
+                this.vx = (Math.random() * 0.5) + 0.1; 
+                this.vy = (Math.random() - 0.5) * 0.2; 
+                this.radius = Math.random() * 2 + 1.5;
+            }
+
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                
+                // Wrap around smoothly to maintain continuous flow
+                if (this.x > width + 50) this.x = -50;
+                if (this.y < -50) this.y = height + 50;
+                if (this.y > height + 50) this.y = -50;
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(17, 56, 104, 0.4)'; // Dark blue dots
+                ctx.fill();
+            }
+        }
+
+        // Initialize nodes based on screen size for optimal density
+        const nodeCount = Math.min(Math.floor(window.innerWidth / 15), 100);
+        for (let i = 0; i < nodeCount; i++) {
+            nodes.push(new Node());
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+            
+            // Draw connections
+            for (let i = 0; i < nodes.length; i++) {
+                for (let j = i + 1; j < nodes.length; j++) {
+                    const dx = nodes[i].x - nodes[j].x;
+                    const dy = nodes[i].y - nodes[j].y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    
+                    // Controlled connection distance (not chaotic)
+                    if (distance < 150) {
+                        ctx.beginPath();
+                        ctx.moveTo(nodes[i].x, nodes[i].y);
+                        ctx.lineTo(nodes[j].x, nodes[j].y);
+                        // Opacity based on distance for smooth fade
+                        const opacity = 1 - (distance / 150);
+                        ctx.strokeStyle = `rgba(5, 152, 206, ${opacity * 0.25})`; // Accent blue lines
+                        ctx.lineWidth = 1;
+                        ctx.stroke();
+                    }
+                }
+            }
+
+            // Update and draw nodes
+            nodes.forEach(node => {
+                node.update();
+                node.draw();
+            });
+
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+    </script>
+</body>
+</html>
