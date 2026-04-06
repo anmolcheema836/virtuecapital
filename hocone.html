@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>House of Conversation | The Scrapbook</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;1,9..40,400&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;1,9..144,400&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            /* Muted, earthy zine palette */
+            --bg-base: #F4EFE6;
+            --bg-dots: #DCD3C3;
+            --text-main: #3E3B35;
+            --accent-olive: #8A9A65;
+            --accent-rust: #C26D5C;
+            --accent-sand: #E6D0AB;
+            
+            --font-serif: 'Fraunces', serif;
+            --font-sans: 'DM Sans', sans-serif;
+            
+            /* Sketchy, hand-drawn border effect */
+            --border-sketch: 255px 15px 225px 15px/15px 225px 15px 255px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-base);
+            /* Dotted notebook paper effect */
+            background-image: radial-gradient(var(--bg-dots) 1.5px, transparent 1.5px);
+            background-size: 24px 24px;
+            color: var(--text-main);
+            font-family: var(--font-sans);
+            line-height: 1.5;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* ----- FIXED SIDEBAR (LEFT) ----- */
+        aside {
+            width: 350px;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background: var(--bg-base);
+            border-right: 2px solid var(--text-main);
+            padding: 3rem 2.5rem;
+            display: flex;
+            flex-direction: column;
+            z-index: 10;
+        }
+
+        .logo-area {
+            margin-bottom: 3rem;
+        }
+
+        .logo-area img {
+            max-width: 100%;
+            height: auto;
+            max-height: 120px;
+            object-fit: contain;
+        }
+
+        .logo-text {
+            font-family: var(--font-serif);
+            font-size: 2.5rem;
+            line-height: 1;
+            font-weight: 400;
+        }
+
+        .nav-links {
+            list-style: none;
+            margin-bottom: 4rem;
+        }
+
+        .nav-links li {
+            margin-bottom: 1rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-main);
+            font-family: var(--font-serif);
+            font-size: 1.4rem;
+            font-style: italic;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-rust);
+        }
+
+        .sidebar-blurb {
+            margin-top: auto;
+            font-size: 0.9rem;
+            background: #fff;
+            padding: 1.5rem;
+            border: 2px solid var(--text-main);
+            border-radius: var(--border-sketch);
+            box-shadow: 4px 4px 0px var(--accent-sand);
+        }
+
+        /* ----- MAIN CONTENT (RIGHT) ----- */
+        main {
+            margin-left: 350px;
+            padding: 4rem 5%;
+            width: calc(100% - 350px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .content-wrapper {
+            max-width: 900px;
+            width: 100%;
+        }
+
+        /* Featured Article / Hero */
+        .featured-post {
+            background: #fff;
+            padding: 1.5rem;
+            border: 2px solid var(--text-main);
+            border-radius: 4px;
+            box-shadow: 8px 8px 0px rgba(0,0,0,0.1);
+            transform: rotate(-1deg);
+            margin-bottom: 6rem;
+            position: relative;
+        }
+
+        .featured-badge {
+            position: absolute;
+            top: -15px;
+            right: -20px;
+            background: var(--accent-rust);
+            color: #fff;
+            padding: 0.5rem 1rem;
+            font-family: var(--font-serif);
+            font-style: italic;
+            border: 2px solid var(--text-main);
+            transform: rotate(5deg);
+            z-index: 2;
+        }
+
+        .featured-img-container {
+            width: 100%;
+            height: 500px;
+            overflow: hidden;
+            border: 2px solid var(--text-main);
+            margin-bottom: 1.5rem;
+        }
+
+        .featured-img-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .featured-post h2 {
+            font-family: var(--font-serif);
+            font-size: 3.5rem;
+            line-height: 1.1;
+            margin-bottom: 1rem;
+        }
+
+        /* Scrapbook Masonry Layout */
+        .scrapbook-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem 2rem;
+            padding-bottom: 4rem;
+        }
+
+        .polaroid {
+            background: #fff;
+            padding: 1rem 1rem 2rem 1rem;
+            border: 1px solid #ddd;
+            box-shadow: 2px 5px 15px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease;
+        }
+
+        /* Alternate rotations for the messy scrapbook feel */
+        .polaroid:nth-child(odd) { transform: rotate(2deg); }
+        .polaroid:nth-child(even) { transform: rotate(-3deg); margin-top: 4rem; }
+        
+        .polaroid:hover {
+            transform: scale(1.02) rotate(0deg);
+            z-index: 5;
+            position: relative;
+        }
+
+        .polaroid-img {
+            width: 100%;
+            aspect-ratio: 4/5;
+            background: #eee;
+            margin-bottom: 1.5rem;
+            border: 1px solid #eee;
+        }
+
+        .polaroid-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: sepia(10%) contrast(95%);
+        }
+
+        .polaroid-meta {
+            font-family: var(--font-serif);
+            color: var(--accent-olive);
+            font-style: italic;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .polaroid h3 {
+            font-family: var(--font-serif);
+            font-size: 1.8rem;
+            line-height: 1.2;
+            font-weight: 400;
+        }
+
+        /* Tape effect */
+        .tape {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%) rotate(-2deg);
+            width: 80px;
+            height: 25px;
+            background-color: rgba(255, 255, 255, 0.4);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            backdrop-filter: blur(2px);
+            z-index: 3;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            body {
+                flex-direction: column;
+            }
+            aside {
+                width: 100%;
+                height: auto;
+                position: relative;
+                border-right: none;
+                border-bottom: 2px solid var(--text-main);
+                padding: 2rem;
+                align-items: center;
+                text-align: center;
+            }
+            .nav-links {
+                display: flex;
+                gap: 2rem;
+                margin-bottom: 2rem;
+            }
+            .nav-links li { margin-bottom: 0; }
+            main {
+                margin-left: 0;
+                width: 100%;
+                padding: 3rem 1rem;
+            }
+            .featured-post h2 { font-size: 2.5rem; }
+            .scrapbook-grid {
+                grid-template-columns: 1fr;
+            }
+            .polaroid:nth-child(even) { margin-top: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <aside>
+        <div class="logo-area">
+            <img src="hoclogo.png" alt="House of Conversation" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+            <div class="logo-text" style="display:none;">House of<br>Conversation.</div>
+        </div>
+        
+        <ul class="nav-links">
+            <li><a href="#">Stories & Essays</a></li>
+            <li><a href="#">Slow Living</a></li>
+            <li><a href="#">The Gallery</a></li>
+            <li><a href="#">About Us</a></li>
+        </ul>
+
+        <div class="sidebar-blurb">
+            <strong>Welcome to the House.</strong><br>
+            A curated space for loud thoughts, gentle culture, and the beautiful mess of being human. Curated by Anmol Singh.
+        </div>
+    </aside>
+
+    <main>
+        <div class="content-wrapper">
+            
+            <article class="featured-post">
+                <div class="featured-badge">Latest Issue</div>
+                <div class="featured-img-container">
+                    <img src="https://peppermintmag.com/wp-content/uploads/2026/03/Cynthia-Nudel1.jpg" alt="Cynthia Nudel Feature">
+                </div>
+                <h2>The Art of Doing Absolutely Nothing in a Hyper-Connected World.</h2>
+                <p>Why resting is no longer a luxury, but a radical act of rebellion against the modern grind. We sit down to explore the silence.</p>
+            </article>
+
+            <div class="scrapbook-grid">
+                
+                <article class="polaroid">
+                    <div class="tape"></div>
+                    <div class="polaroid-img">
+                        <img src="https://hellolunchlady.com.au/cdn/shop/articles/opener_10-pikes_900x.jpg?v=1685602903" alt="Kids playing outdoors">
+                    </div>
+                    <div class="polaroid-meta">Culture</div>
+                    <h3>Why We Need to Relearn How to Play</h3>
+                </article>
+
+                <article class="polaroid">
+                    <div class="tape"></div>
+                    <div class="polaroid-img">
+                        <img src="https://hellolunchlady.com.au/cdn/shop/articles/bedtime_fears_900x.jpg?v=1673989103" alt="Bedtime Fears Illustration">
+                    </div>
+                    <div class="polaroid-meta">Reflections</div>
+                    <h3>Navigating the Quiet Anxieties of the Night</h3>
+                </article>
+
+                <article class="polaroid">
+                    <div class="tape"></div>
+                    <div class="polaroid-img">
+                        <img src="https://hellolunchlady.com.au/cdn/shop/articles/Screen-Shot-2021-04-21-at-2.10.45-pm_900x.png?v=1681688811" alt="Vintage abstract art">
+                    </div>
+                    <div class="polaroid-meta">Interviews</div>
+                    <h3>Finding Beauty in Imperfect Spaces</h3>
+                </article>
+
+            </div>
+        </div>
+    </main>
+
+</body>
+</html>
