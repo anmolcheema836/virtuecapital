@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JS Mastery - Interview Revision</title>
+    <style>
+        :root {
+            --bg-main: #0f172a;
+            --bg-sidebar: #1e293b;
+            --bg-card: #1e293b;
+            --bg-code: #020617;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent: #facc15;
+            --accent-hover: #eab308;
+            --border: #334155;
+            
+            /* Syntax Highlighting Colors */
+            --sh-keyword: #c678dd;
+            --sh-string: #98c379;
+            --sh-function: #61afef;
+            --sh-comment: #5c6370;
+            --sh-number: #d19a66;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: 300px;
+            background-color: var(--bg-sidebar);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease;
+            z-index: 100;
+        }
+
+        .sidebar-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .sidebar-header h1 {
+            color: var(--accent);
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .search-bar {
+            width: 100%;
+            padding: 10px;
+            background-color: var(--bg-main);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text-main);
+            outline: none;
+        }
+        .search-bar:focus {
+            border-color: var(--accent);
+        }
+
+        .progress-container {
+            margin-top: 15px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .progress-bar {
+            height: 6px;
+            background-color: var(--bg-main);
+            border-radius: 3px;
+            margin-top: 5px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background-color: var(--accent);
+            width: 0%;
+            transition: width 0.4s ease;
+        }
+
+        .topic-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 10px 0;
+        }
+
+        .topic-item {
+            padding: 12px 20px;
+            cursor: pointer;
+            color: var(--text-muted);
+            transition: all 0.2s;
+            border-left: 3px solid transparent;
+        }
+
+        .topic-item:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+            color: var(--text-main);
+        }
+
+        .topic-item.active {
+            background-color: rgba(250, 204, 21, 0.1);
+            color: var(--accent);
+            border-left-color: var(--accent);
+            font-weight: 600;
+        }
+        
+        .topic-item.completed::after {
+            content: ' ✓';
+            color: var(--accent);
+            font-size: 0.8em;
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            height: 100vh;
+        }
+
+        .top-nav {
+            display: none;
+            padding: 15px 20px;
+            background-color: var(--bg-sidebar);
+            border-bottom: 1px solid var(--border);
+            align-items: center;
+        }
+
+        .hamburger {
+            background: none;
+            border: none;
+            color: var(--text-main);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .content-area {
+            flex: 1;
+            overflow-y: auto;
+            padding: 40px;
+            scroll-behavior: smooth;
+        }
+
+        .content-wrapper {
+            max-width: 800px;
+            margin: 0 auto;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+
+        .content-wrapper.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .topic-title {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: var(--text-main);
+        }
+
+        .section {
+            background-color: var(--bg-card);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border);
+        }
+
+        .section h3 {
+            color: var(--accent);
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .section p {
+            line-height: 1.6;
+            color: var(--text-muted);
+        }
+
+        pre {
+            background-color: var(--bg-code);
+            padding: 15px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+            line-height: 1.5;
+            font-size: 0.95rem;
+            border: 1px solid var(--border);
+        }
+
+        /* Syntax Highlighting */
+        .sh-keyword { color: var(--sh-keyword); }
+        .sh-string { color: var(--sh-string); }
+        .sh-function { color: var(--sh-function); }
+        .sh-comment { color: var(--sh-comment); font-style: italic; }
+        .sh-number { color: var(--sh-number); }
+
+        /* Navigation Buttons */
+        .bottom-nav {
+            padding: 20px 40px;
+            background-color: var(--bg-sidebar);
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .nav-btn {
+            padding: 10px 20px;
+            background-color: transparent;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .nav-btn:hover:not(:disabled) {
+            background-color: var(--accent);
+            color: var(--bg-main);
+        }
+
+        .nav-btn:disabled {
+            border-color: var(--border);
+            color: var(--text-muted);
+            cursor: not-allowed;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .sidebar {
+                position: absolute;
+                height: 100vh;
+                transform: translateX(-100%);
+            }
+            .sidebar.mobile-open {
+                transform: translateX(0);
+            }
+            .top-nav {
+                display: flex;
+            }
+            .content-area {
+                padding: 20px;
+            }
+            .topic-title {
+                font-size: 2rem;
+            }
+            .bottom-nav {
+                padding: 15px 20px;
+            }
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-main); }
+        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h1>JS Interview 💛</h1>
+            <input type="text" id="searchInput" class="search-bar" placeholder="Search concepts...">
+            <div class="progress-container">
+                <span id="progressText">0 / 0 topics completed</span>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+            </div>
+        </div>
+        <div class="topic-list" id="topicList">
+            <!-- Populated by JS -->
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="top-nav">
+            <button class="hamburger" id="menuToggle">☰</button>
+        </div>
+
+        <div class="content-area" id="contentArea">
+            <div class="content-wrapper" id="contentWrapper">
+                <h2 class="topic-title" id="topicTitle">Select a Topic</h2>
+                
+                <div class="section">
+                    <h3>Explanation</h3>
+                    <p id="topicExplanation">...</p>
+                </div>
+
+                <div class="section">
+                    <h3>Code Example</h3>
+                    <pre><code id="topicCode">...</code></pre>
+                </div>
+
+                <div class="section">
+                    <h3>Real-life Use Case</h3>
+                    <p id="topicUseCase">...</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="bottom-nav">
+            <button class="nav-btn" id="prevBtn">← Previous</button>
+            <button class="nav-btn" id="nextBtn">Next →</button>
+        </div>
+    </main>
+
+    <script>
+        // --- DATA DICTIONARY ---
+        const allTopics = [
+            {
+                id: 'basics',
+                title: 'Variables (var, let, const)',
+                explanation: 'JavaScript has three ways to declare variables. <code>var</code> is function-scoped and hoisted with an initial value of undefined. <code>let</code> and <code>const</code> are block-scoped and hoisted but reside in the Temporal Dead Zone (TDZ) until initialization. <code>const</code> variables cannot be reassigned.',
+                code: `function scopeExample() {
+  if (true) {
+    var a = "I am var";
+    let b = "I am let";
+    const c = "I am const";
+  }
+  console.log(a); // "I am var"
+  // console.log(b); // ReferenceError
+  // console.log(c); // ReferenceError
+}`,
+                useCase: 'Use <code>const</code> by default to prevent accidental reassignments. Use <code>let</code> for loops and counters. Avoid <code>var</code> in modern code to prevent scoping bugs.'
+            },
+            {
+                id: 'functions',
+                title: 'Functions & Arrow Functions',
+                explanation: 'Standard functions have their own <code>this</code> context and can be used as constructors. Arrow functions (<code>() => {}</code>) introduced in ES6 are more concise and inherit <code>this</code> lexically from their parent scope.',
+                code: `const obj = {
+  name: 'JS Master',
+  regularFunc: function() {
+    setTimeout(function() {
+      console.log(this.name); // undefined (or window.name)
+    }, 100);
+  },
+  arrowFunc: function() {
+    setTimeout(() => {
+      console.log(this.name); // "JS Master"
+    }, 100);
+  }
+};`,
+                useCase: 'Arrow functions are perfect for callbacks (like in <code>.map()</code>, <code>.filter()</code>) and preserving the context of <code>this</code> inside objects or React class components.'
+            },
+            {
+                id: 'closures',
+                title: 'Scope & Closures',
+                explanation: 'A closure is created when a function remembers and accesses variables from its lexical scope even when that function is executing outside its original scope.',
+                code: `function createCounter() {
+  let count = 0; // Private variable
+  return function() {
+    count++;
+    return count;
+  };
+}
+
+const counter = createCounter();
+console.log(counter()); // 1
+console.log(counter()); // 2`,
+                useCase: 'Closures are heavily used for data privacy (encapsulation), currying, and creating factory functions. They are the backbone of state management patterns.'
+            },
+            {
+                id: 'hoisting',
+                title: 'Hoisting',
+                explanation: 'Hoisting is JavaScript\'s default behavior of moving declarations to the top of the current scope before code execution. Variable assignments are NOT hoisted. Function declarations are fully hoisted, but function expressions are not.',
+                code: `sayHello(); // Works! Outputs: "Hello"
+// sayHi(); // TypeError: sayHi is not a function
+
+function sayHello() {
+  console.log("Hello");
+}
+
+var sayHi = function() {
+  console.log("Hi");
+};`,
+                useCase: 'Understanding hoisting helps prevent <code>ReferenceErrors</code>. Best practice is to declare variables and functions at the top of their scope before using them.'
+            },
+            {
+                id: 'this',
+                title: 'The "this" Keyword',
+                explanation: '<code>this</code> refers to the object that is currently executing the code. Its value is determined by HOW a function is called: implicitly (object method), explicitly (call/apply/bind), via <code>new</code>, or default (window/global).',
+                code: `const person = {
+  name: 'Alice',
+  greet() {
+    console.log("Hi, I am " + this.name);
+  }
+};
+
+person.greet(); // "Hi, I am Alice"
+
+const greetFn = person.greet;
+greetFn(); // "Hi, I am undefined" (lost context)
+
+const boundGreet = person.greet.bind(person);
+boundGreet(); // "Hi, I am Alice"`,
+                useCase: 'Vital when building object-oriented code, manipulating the DOM (where <code>this</code> often refers to the clicked element), and using <code>.bind()</code> in React.'
+            },
+            {
+                id: 'prototypes',
+                title: 'Objects & Prototypes',
+                explanation: 'JavaScript uses Prototypal Inheritance. Every object has an internal link to another object called its prototype. If a property isn\'t found on the object itself, JS searches up the prototype chain.',
+                code: `const animal = {
+  eats: true
+};
+
+const dog = Object.create(animal);
+dog.barks = true;
+
+console.log(dog.barks); // true
+console.log(dog.eats); // true (inherited from animal prototype)
+console.log(dog.__proto__ === animal); // true`,
+                useCase: 'Used to share methods across multiple object instances efficiently to save memory, which is what happens under the hood when using the <code>class</code> syntax.'
+            },
+            {
+                id: 'classes',
+                title: 'Classes & OOP',
+                explanation: 'ES6 introduced the <code>class</code> keyword. It is syntactic sugar over prototypal inheritance. It allows for cleaner OOP patterns using inheritance (<code>extends</code>), constructors, and static methods.',
+                code: `class User {
+  constructor(name) {
+    this.name = name;
+  }
+  sayHi() {
+    return \`Hi, \${this.name}\`;
+  }
+}
+
+class Admin extends User {
+  constructor(name, role) {
+    super(name); // Call parent constructor
+    this.role = role;
+  }
+}
+
+const admin = new Admin('Bob', 'SuperAdmin');
+console.log(admin.sayHi()); // "Hi, Bob"`,
+                useCase: 'Building complex system architectures, UI components, or modular services where data and behavior are encapsulated together.'
+            },
+            {
+                id: 'arrays',
+                title: 'Arrays & Methods',
+                explanation: 'JavaScript arrays come with powerful built-in higher-order methods. <code>map()</code> transforms elements, <code>filter()</code> removes elements based on a condition, and <code>reduce()</code> accumulates a single value.',
+                code: `const numbers = [1, 2, 3, 4, 5];
+
+// Map: double the numbers
+const doubled = numbers.map(n => n * 2);
+
+// Filter: keep evens
+const evens = numbers.filter(n => n % 2 === 0);
+
+// Reduce: sum all numbers
+const sum = numbers.reduce((acc, curr) => acc + curr, 0);
+
+console.log({ doubled, evens, sum });`,
+                useCase: 'These methods are essential for data manipulation, formatting API responses, and rendering lists in modern frameworks like React.'
+            },
+            {
+                id: 'dom',
+                title: 'DOM Manipulation',
+                explanation: 'The Document Object Model (DOM) is an API that represents HTML documents as a tree of nodes. JS can add, remove, or modify these nodes dynamically.',
+                code: `// Create a new element
+const newDiv = document.createElement('div');
+
+// Add classes and content
+newDiv.classList.add('card');
+newDiv.textContent = 'Hello DOM!';
+
+// Append to DOM
+document.body.appendChild(newDiv);
+
+// Query an element and change style
+const title = document.querySelector('.title');
+if(title) title.style.color = 'red';`,
+                useCase: 'Used to create interactive web pages, dynamic forms, modals, and single-page application (SPA) rendering.'
+            },
+            {
+                id: 'events',
+                title: 'Events & Propagation',
+                explanation: 'Events are actions happening in the browser. Event Propagation has three phases: Capturing (down), Target, and Bubbling (up). You can stop propagation or use Event Delegation to handle events efficiently.',
+                code: `// Event Delegation Example
+const list = document.getElementById('myList');
+
+list.addEventListener('click', function(e) {
+  // Check if a specific child was clicked
+  if (e.target.tagName === 'LI') {
+    console.log('Clicked item:', e.target.textContent);
+  }
+});
+
+// Stopping Bubbling
+document.querySelector('.child').addEventListener('click', (e) => {
+  e.stopPropagation(); // Prevents parent handlers from firing
+});`,
+                useCase: 'Event delegation is used when you have a list of hundreds of items. Instead of 100 event listeners, you attach ONE listener to the parent element, saving massive memory.'
+            },
+            {
+                id: 'eventloop',
+                title: 'Event Loop & Call Stack',
+                explanation: 'JS is single-threaded. The Event Loop manages async execution. Synchronous code goes to the Call Stack. Async callbacks go to Web APIs, then to Queues (Microtask for Promises, Macrotask for setTimeout). The Event Loop pushes from Queue to Stack when the Stack is empty.',
+                code: `console.log('1. Start');
+
+setTimeout(() => {
+  console.log('4. Macrotask (setTimeout)');
+}, 0);
+
+Promise.resolve().then(() => {
+  console.log('3. Microtask (Promise)');
+});
+
+console.log('2. End');
+// Output: 1 -> 2 -> 3 -> 4`,
+                useCase: 'Understanding this prevents UI blocking and helps debug race conditions and complex async flows.'
+            },
+            {
+                id: 'promises',
+                title: 'Promises & Async/Await',
+                explanation: 'Promises represent the eventual completion (or failure) of an asynchronous operation. <code>async/await</code> is syntactic sugar over Promises, making async code look synchronous and easier to read.',
+                code: `// Promise version
+function getUser(id) {
+  return fetch(\`/api/users/\${id}\`)
+    .then(res => res.json())
+    .catch(err => console.error(err));
+}
+
+// Async/Await version
+async function getUserAsync(id) {
+  try {
+    const res = await fetch(\`/api/users/\${id}\`);
+    const data = await res.json();
+    return data;
+  } catch (err) {
+    console.error("Error:", err);
+  }
+}`,
+                useCase: 'Fetching data from APIs, reading files, or connecting to databases. Always wrap <code>await</code> in try/catch blocks for error handling.'
+            },
+            {
+                id: 'errorhandling',
+                title: 'Error Handling',
+                explanation: 'Errors in JS can break the application. Using <code>try...catch...finally</code> allows graceful handling. You can also throw custom errors using <code>throw new Error()</code>.',
+                code: `function divide(a, b) {
+  if (b === 0) {
+    throw new Error("Division by zero is not allowed.");
+  }
+  return a / b;
+}
+
+try {
+  let result = divide(10, 0);
+  console.log(result);
+} catch (error) {
+  console.error("Caught an error:", error.message);
+} finally {
+  console.log("Cleanup code runs regardless of success or error.");
+}`,
+                useCase: 'Handling bad user input, failed network requests, and preventing the whole app from crashing gracefully.'
+            },
+            {
+                id: 'es6',
+                title: 'ES6+ Features',
+                explanation: 'Modern JS includes Destructuring (extracting values from objects/arrays), Spread operator (<code>...</code> to unpack elements), Rest parameters (<code>...</code> to gather arguments), and Template Literals.',
+                code: `// Destructuring
+const user = { name: 'John', age: 30, city: 'NY' };
+const { name, age } = user;
+
+// Spread Operator (Copy/Merge)
+const arr1 = [1, 2];
+const arr2 = [...arr1, 3, 4]; // [1, 2, 3, 4]
+
+// Rest Parameter
+function sum(...args) {
+  return args.reduce((a, b) => a + b, 0);
+}
+console.log(sum(1, 2, 3)); // 6`,
+                useCase: 'Writing cleaner, more concise code. Heavy usage in React for passing props and updating immutable state.'
+            },
+            {
+                id: 'modules',
+                title: 'Modules (Import/Export)',
+                explanation: 'Modules allow you to split code into separate files. You can export functions, objects, or primitives from one module and import them into another using ES6 module syntax.',
+                code: `// math.js
+export const add = (a, b) => a + b;
+export default function multiply(a, b) {
+  return a * b;
+}
+
+// app.js
+import multiply, { add } from './math.js';
+
+console.log(add(2, 3));      // 5
+console.log(multiply(2, 3)); // 6`,
+                useCase: 'Organizing large codebases into reusable, maintainable files. Modern bundlers (Webpack, Vite) rely entirely on modules.'
+            },
+            {
+                id: 'memory',
+                title: 'Memory Management',
+                explanation: 'JS automatically manages memory via Garbage Collection (Mark and Sweep algorithm). It frees up memory when objects are no longer reachable. Memory leaks happen when unreachable code is still referenced.',
+                code: `// Potential Memory Leak Example
+let heavyData = new Array(10000).fill('data');
+
+setInterval(() => {
+  // If this interval is never cleared, heavyData 
+  // is kept in memory forever.
+  console.log(heavyData.length);
+}, 1000);
+
+// Fix: clear the interval when done!`,
+                useCase: 'Avoiding memory leaks in Single Page Applications (SPAs) by always clearing event listeners, intervals, and removing DOM nodes properly when components unmount.'
+            },
+            {
+                id: 'debounce',
+                title: 'Debouncing & Throttling',
+                explanation: 'Debounce ensures a function is not called again until a certain time passes without it being called. Throttle ensures a function is called at most once in a specified time period.',
+                code: `// Debounce Implementation
+function debounce(func, delay) {
+  let timeoutId;
+  return function(...args) {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => {
+      func.apply(this, args);
+    }, delay);
+  };
+}
+
+const search = debounce(() => console.log('Searching API...'), 500);
+// Calling search() rapidly will only fire 500ms AFTER the last call.`,
+                useCase: 'Debounce: Search inputs (wait till user stops typing). Throttle: Window resize or scrolling events (limit expensive calculations).'
+            },
+            {
+                id: 'currying',
+                title: 'Currying',
+                explanation: 'Currying is a functional programming technique where a function with multiple arguments is transformed into a sequence of nesting functions that take one argument at a time.',
+                code: `// Normal function
+function add(a, b, c) {
+  return a + b + c;
+}
+
+// Curried version
+function curriedAdd(a) {
+  return function(b) {
+    return function(c) {
+      return a + b + c;
+    }
+  }
+}
+
+// Arrow function shortcut
+const curryAdd = a => b => c => a + b + c;
+
+console.log(curriedAdd(1)(2)(3)); // 6`,
+                useCase: 'Creating highly reusable utility functions, configuring UI components partially, and composing functions in state management (like Redux middleware).'
+            },
+            {
+                id: 'polyfills',
+                title: 'Polyfills',
+                explanation: 'A polyfill is a piece of code (usually JavaScript) used to provide modern functionality on older browsers that do not natively support it.',
+                code: `// Polyfill for Array.prototype.includes
+if (!Array.prototype.includes) {
+  Array.prototype.includes = function(searchElement, fromIndex) {
+    var arr = Object(this);
+    var len = arr.length >>> 0;
+    if (len === 0) return false;
+    
+    var n = fromIndex | 0;
+    var k = Math.max(n >= 0 ? n : len - Math.abs(n), 0);
+    
+    while (k < len) {
+      if (arr[k] === searchElement) return true;
+      k++;
+    }
+    return false;
+  };
+}`,
+                useCase: 'Ensuring your application works on outdated browsers (like IE11) by manually injecting missing ES6+ methods.'
+            },
+            {
+                id: 'designpatterns',
+                title: 'Design Patterns (Singleton)',
+                explanation: 'Design patterns are typical solutions to common problems. The Singleton pattern ensures a class has only one instance and provides a global point of access to it.',
+                code: `class Database {
+  constructor() {
+    if (Database.instance) {
+      return Database.instance;
+    }
+    this.connection = "Connected!";
+    Database.instance = this;
+  }
+}
+
+const db1 = new Database();
+const db2 = new Database();
+
+console.log(db1 === db2); // true (Same instance)`,
+                useCase: 'Managing global state (like Redux store), creating database connections, or logging services where duplicate objects would cause bugs or waste memory.'
+            },
+            {
+                id: 'browserapis',
+                title: 'Browser APIs (Storage)',
+                explanation: 'Browsers provide APIs to store data locally. <code>localStorage</code> persists until explicitly deleted. <code>sessionStorage</code> clears when the tab is closed.',
+                code: `// Save data to localStorage
+const user = { name: 'John', token: 'xyz123' };
+localStorage.setItem('session', JSON.stringify(user));
+
+// Retrieve data
+const savedSession = localStorage.getItem('session');
+if (savedSession) {
+  const parsedData = JSON.parse(savedSession);
+  console.log(parsedData.name); // 'John'
+}
+
+// Remove data
+localStorage.removeItem('session');`,
+                useCase: 'Saving user preferences (Dark/Light mode), persisting authentication tokens (JWT), or keeping shopping cart data between page reloads.'
+            },
+            {
+                id: 'fetch',
+                title: 'Fetch & AJAX',
+                explanation: 'The Fetch API provides an interface for fetching resources (including across the network). It returns a Promise that resolves to the Response object, requiring you to parse the body (e.g., to JSON).',
+                code: `const postData = async () => {
+  const payload = { title: 'JS Master', body: 'Revision' };
+  
+  try {
+    const response = await fetch('https://jsonplaceholder.typicode.com/posts', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload)
+    });
+    
+    if (!response.ok) throw new Error('Network error');
+    
+    const data = await response.json();
+    console.log('Success:', data);
+  } catch (error) {
+    console.error('Fetch failed:', error);
+  }
+};`,
+                useCase: 'Integrating frontend apps with backend RESTful APIs, submitting form data, and building dynamic data-driven applications.'
+            }
+        ];
+
+        // --- APP STATE ---
+        let filteredTopics = [...allTopics];
+        let currentIndex = 0;
+        let viewedTopics = new Set();
+
+        // --- DOM ELEMENTS ---
+        const topicListEl = document.getElementById('topicList');
+        const searchInput = document.getElementById('searchInput');
+        const titleEl = document.getElementById('topicTitle');
+        const explanationEl = document.getElementById('topicExplanation');
+        const codeEl = document.getElementById('topicCode');
+        const useCaseEl = document.getElementById('topicUseCase');
+        const contentWrapper = document.getElementById('contentWrapper');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const progressText = document.getElementById('progressText');
+        const progressFill = document.getElementById('progressFill');
+        const sidebar = document.getElementById('sidebar');
+        const menuToggle = document.getElementById('menuToggle');
+
+        // --- SYNTAX HIGHLIGHTER ---
+        function highlightCode(str) {
+            let highlighted = str
+                .replace(/</g, "&lt;").replace(/>/g, "&gt;") // Escape HTML
+                .replace(/(\/\/.*)/g, '<span class="sh-comment">$1</span>') // Comments
+                .replace(/(['"`].*?['"`])/g, '<span class="sh-string">$1</span>') // Strings
+                .replace(/\b(const|let|var|function|return|if|else|for|while|class|extends|super|constructor|new|this|async|await|try|catch|finally|throw|export|import|default)\b/g, '<span class="sh-keyword">$1</span>') // Keywords
+                .replace(/\b(console|setTimeout|clearTimeout|setInterval|clearInterval|Promise|Object|Array|Math|JSON|document|window|localStorage|sessionStorage|fetch)\b/g, '<span class="sh-function">$1</span>') // Built-ins
+                .replace(/\b(\d+)\b/g, '<span class="sh-number">$1</span>'); // Numbers
+            return highlighted;
+        }
+
+        // --- CORE FUNCTIONS ---
+        function renderSidebar() {
+            topicListEl.innerHTML = '';
+            
+            if(filteredTopics.length === 0) {
+                topicListEl.innerHTML = '<div style="padding: 20px; color: var(--text-muted)">No topics found.</div>';
+                return;
+            }
+
+            filteredTopics.forEach((topic, index) => {
+                const div = document.createElement('div');
+                div.className = `topic-item ${index === currentIndex ? 'active' : ''} ${viewedTopics.has(topic.id) ? 'completed' : ''}`;
+                div.textContent = topic.title;
+                div.onclick = () => {
+                    currentIndex = index;
+                    loadTopic();
+                    if(window.innerWidth <= 768) toggleMobileSidebar();
+                };
+                topicListEl.appendChild(div);
+            });
+        }
+
+        function updateProgress() {
+            const total = allTopics.length;
+            const completed = viewedTopics.size;
+            progressText.textContent = `${completed} / ${total} topics completed`;
+            progressFill.style.width = `${(completed / total) * 100}%`;
+        }
+
+        function loadTopic() {
+            if(filteredTopics.length === 0) return;
+
+            const topic = filteredTopics[currentIndex];
+            viewedTopics.add(topic.id);
+            updateProgress();
+
+            // Transition effect
+            contentWrapper.classList.remove('show');
+            
+            setTimeout(() => {
+                titleEl.innerHTML = topic.title;
+                explanationEl.innerHTML = topic.explanation;
+                codeEl.innerHTML = highlightCode(topic.code);
+                useCaseEl.innerHTML = topic.useCase;
+                
+                // Update buttons
+                prevBtn.disabled = currentIndex === 0;
+                nextBtn.disabled = currentIndex === filteredTopics.length - 1;
+
+                // Re-render sidebar to update active/completed states
+                renderSidebar();
+
+                contentWrapper.classList.add('show');
+                
+                // Scroll to top
+                document.getElementById('contentArea').scrollTop = 0;
+            }, 200); // Wait for fade out
+        }
+
+        // --- EVENT LISTENERS ---
+        searchInput.addEventListener('input', (e) => {
+            const term = e.target.value.toLowerCase();
+            filteredTopics = allTopics.filter(t => 
+                t.title.toLowerCase().includes(term) || 
+                t.explanation.toLowerCase().includes(term)
+            );
+            currentIndex = 0;
+            renderSidebar();
+            if(filteredTopics.length > 0) loadTopic();
+        });
+
+        prevBtn.addEventListener('click', () => {
+            if (currentIndex > 0) {
+                currentIndex--;
+                loadTopic();
+            }
+        });
+
+        nextBtn.addEventListener('click', () => {
+            if (currentIndex < filteredTopics.length - 1) {
+                currentIndex++;
+                loadTopic();
+            }
+        });
+
+        function toggleMobileSidebar() {
+            sidebar.classList.toggle('mobile-open');
+        }
+
+        menuToggle.addEventListener('click', toggleMobileSidebar);
+
+        // --- INITIALIZATION ---
+        renderSidebar();
+        loadTopic();
+        updateProgress();
+
+        // Prevent CSS transitions firing on load
+        setTimeout(() => contentWrapper.classList.add('show'), 50);
+    </script>
+</body>
+</html>

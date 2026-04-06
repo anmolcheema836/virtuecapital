@@ -1,0 +1,994 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Angular Interview Revision Hub</title>
+    <style>
+        :root {
+            --bg-dark: #0f111a;
+            --bg-panel: #1e2130;
+            --bg-code: #14151f;
+            --text-main: #e0e6ed;
+            --text-muted: #8b949e;
+            --angular-red: #dd0031;
+            --angular-red-hover: #b90029;
+            --border-color: #2b3041;
+            --accent-blue: #00bcd4;
+            --success-green: #4caf50;
+            
+            /* Syntax Highlighting Colors */
+            --sh-keyword: #c678dd;
+            --sh-type: #e5c07b;
+            --sh-decorator: #61afef;
+            --sh-string: #98c379;
+            --sh-comment: #5c6370;
+            --sh-method: #56b6c2;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: 320px;
+            background-color: var(--bg-panel);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease;
+            z-index: 100;
+        }
+
+        .sidebar-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .sidebar-header h2 {
+            font-size: 1.2rem;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .sidebar-header h2 span {
+            color: var(--angular-red);
+            font-size: 1.5rem;
+        }
+
+        #search-input {
+            width: 100%;
+            padding: 10px;
+            background-color: var(--bg-dark);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            border-radius: 4px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        #search-input:focus {
+            border-color: var(--angular-red);
+        }
+
+        .progress-container {
+            margin-top: 15px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background-color: var(--bg-dark);
+            border-radius: 3px;
+            margin-top: 5px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background-color: var(--success-green);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .topic-list {
+            list-style: none;
+            overflow-y: auto;
+            flex-grow: 1;
+        }
+
+        .topic-list::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .topic-list::-webkit-scrollbar-thumb {
+            background-color: var(--border-color);
+            border-radius: 3px;
+        }
+
+        .topic-item {
+            padding: 12px 20px;
+            cursor: pointer;
+            border-bottom: 1px solid var(--border-color);
+            transition: background-color 0.2s;
+            font-size: 0.95rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .topic-item:hover {
+            background-color: rgba(221, 0, 49, 0.1);
+        }
+
+        .topic-item.active {
+            background-color: var(--angular-red);
+            color: white;
+            border-left: 4px solid white;
+        }
+        
+        .topic-item.viewed .status-dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--success-green);
+            border-radius: 50%;
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            background-color: var(--bg-dark);
+            position: relative;
+            overflow-y: auto;
+        }
+
+        .mobile-nav {
+            display: none;
+            padding: 15px;
+            background-color: var(--bg-panel);
+            border-bottom: 1px solid var(--border-color);
+            align-items: center;
+            gap: 15px;
+        }
+
+        .menu-btn {
+            background: none;
+            border: none;
+            color: var(--text-main);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .content-body {
+            padding: 40px;
+            max-width: 900px;
+            margin: 0 auto;
+            width: 100%;
+            opacity: 1;
+            transition: opacity 0.3s ease;
+        }
+
+        .category-badge {
+            display: inline-block;
+            background-color: var(--border-color);
+            color: var(--accent-blue);
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            color: white;
+        }
+
+        .section {
+            background-color: var(--bg-panel);
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .section h3 {
+            color: var(--angular-red);
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+
+        .section p {
+            line-height: 1.7;
+            font-size: 1.05rem;
+            color: var(--text-main);
+        }
+
+        pre {
+            background-color: var(--bg-code);
+            padding: 20px;
+            border-radius: 6px;
+            overflow-x: auto;
+            border: 1px solid #000;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .use-case-box {
+            border-left: 4px solid var(--accent-blue);
+            background-color: rgba(0, 188, 212, 0.05);
+        }
+
+        /* Syntax Highlighting Classes */
+        .keyword { color: var(--sh-keyword); }
+        .type { color: var(--sh-type); }
+        .decorator { color: var(--sh-decorator); }
+        .string { color: var(--sh-string); }
+        .comment { color: var(--sh-comment); font-style: italic; }
+        .method { color: var(--sh-method); }
+
+        /* Navigation Controls */
+        .nav-controls {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px 40px;
+            background-color: var(--bg-panel);
+            border-top: 1px solid var(--border-color);
+            position: sticky;
+            bottom: 0;
+            margin-top: auto;
+        }
+
+        button.nav-btn {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.2s;
+        }
+
+        button.nav-btn:hover:not(:disabled) {
+            background-color: var(--angular-red);
+            border-color: var(--angular-red);
+            color: white;
+        }
+
+        button.nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .sidebar {
+                position: absolute;
+                height: 100%;
+                transform: translateX(-100%);
+            }
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            .mobile-nav {
+                display: flex;
+            }
+            .content-body {
+                padding: 20px;
+            }
+            h1 { font-size: 1.8rem; }
+            .nav-controls { padding: 15px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h2><span>▲</span> Angular Rev Hub</h2>
+            <input type="text" id="search-input" placeholder="Search concepts...">
+            <div class="progress-container">
+                <span id="progress-text">0 / 0 topics covered</span>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill"></div>
+                </div>
+            </div>
+        </div>
+        <ul class="topic-list" id="topic-list">
+            <!-- Topics generated by JS -->
+        </ul>
+    </aside>
+
+    <main class="main-content">
+        <div class="mobile-nav">
+            <button class="menu-btn" id="menu-btn">☰</button>
+            <h2>Angular Rev Hub</h2>
+        </div>
+        
+        <div class="content-body" id="content-body">
+            <span class="category-badge" id="topic-category">Category</span>
+            <h1 id="topic-title">Topic Title</h1>
+            
+            <div class="section">
+                <h3>Simple Explanation</h3>
+                <p id="topic-explanation">Explanation goes here...</p>
+            </div>
+
+            <div class="section">
+                <h3>Code Example</h3>
+                <pre><code id="topic-code"></code></pre>
+            </div>
+
+            <div class="section use-case-box">
+                <h3>Real-life Scenario</h3>
+                <p id="topic-usecase">Use case goes here...</p>
+            </div>
+        </div>
+
+        <div class="nav-controls">
+            <button class="nav-btn" id="btn-prev">← Previous</button>
+            <button class="nav-btn" id="btn-next">Next →</button>
+        </div>
+    </main>
+
+    <script>
+        // --- DATA ---
+        const angularData = [
+            {
+                category: "Angular Fundamentals",
+                title: "What is Angular & Architecture",
+                explanation: "Angular is a platform and framework for building single-page client applications using HTML and TypeScript. Its architecture relies on Components (UI building blocks), Modules (grouping related code), Services (business logic), and Dependency Injection (wiring things together).",
+                code: `// Basic Angular application bootstrapper (main.ts)
+import { bootstrapApplication } from '@angular/platform-browser';
+import { AppComponent } from './app/app.component';
+
+bootstrapApplication(AppComponent)
+  .catch(err => console.error(err));`,
+                useCase: "Building enterprise-level Single Page Applications (SPAs) like banking portals or dashboards where strict structure and maintainability are crucial."
+            },
+            {
+                category: "Angular Fundamentals",
+                title: "Components & Templates",
+                explanation: "Components are the main building blocks of Angular applications. Each component consists of a TypeScript class (logic), an HTML template (view), and CSS styles. The @Component decorator provides metadata.",
+                code: `@Component({
+  selector: 'app-user-profile',
+  template: \`
+    <div class="card">
+      <h2>Welcome, {{ username }}!</h2>
+      <button (click)="logout()">Logout</button>
+    </div>
+  \`,
+  standalone: true
+})
+export class UserProfileComponent {
+  username: string = 'John Doe';
+  
+  logout(): void {
+    console.log('Logging out...');
+  }
+}`,
+                useCase: "Creating reusable UI widgets, such as a 'User Avatar' or a 'Data Table', that can be dropped anywhere in the app."
+            },
+            {
+                category: "Angular Fundamentals",
+                title: "Data Binding",
+                explanation: "Data binding bridges the component class and its view. Angular supports: Interpolation ({{ value }}), Property Binding ([property]='value'), Event Binding ((event)='handler()'), and Two-way Binding ([(ngModel)]='value').",
+                code: `@Component({
+  selector: 'app-binding',
+  template: \`
+    <!-- Interpolation -->
+    <p>{{ greeting }}</p>
+
+    <!-- Property Binding -->
+    <button [disabled]="isProcessing">Submit</button>
+
+    <!-- Event Binding -->
+    <button (click)="onClick()">Click Me</button>
+
+    <!-- Two-Way Binding (requires FormsModule) -->
+    <input [(ngModel)]="userName" placeholder="Name">
+  \`
+})
+export class BindingComponent {
+  greeting = 'Hello World';
+  isProcessing = false;
+  userName = '';
+
+  onClick() {
+    this.isProcessing = true;
+  }
+}`,
+                useCase: "Syncing a user's input from a search box instantly with a filtering property in the TypeScript class without writing manual DOM listeners."
+            },
+            {
+                category: "Angular Fundamentals",
+                title: "Directives (Structural & Attribute)",
+                explanation: "Directives add behavior to elements in the DOM. Structural directives change the DOM layout (e.g., *ngIf, *ngFor), while Attribute directives change the appearance or behavior of an element (e.g., ngClass, ngStyle). Note: Modern Angular offers the new control flow (@if, @for).",
+                code: `<!-- Modern Control Flow (Angular 17+) -->
+@if (isLoggedIn) {
+  <p>Welcome back!</p>
+} @else {
+  <p>Please log in.</p>
+}
+
+<ul>
+  @for (item of items; track item.id) {
+    <li [ngClass]="{'active': item.isActive}">{{ item.name }}</li>
+  }
+</ul>`,
+                useCase: "Displaying a loading spinner conditionally (*ngIf) while waiting for an API response, or rendering a list of products dynamically (*ngFor)."
+            },
+            {
+                category: "Angular Fundamentals",
+                title: "Pipes",
+                explanation: "Pipes transform data directly in the HTML template without modifying the underlying component data. Angular provides built-in pipes (DatePipe, UpperCasePipe, CurrencyPipe, AsyncPipe) and allows custom pipes.",
+                code: `@Component({
+  template: \`
+    <p>Original: {{ birthday }}</p>
+    <p>Formatted: {{ birthday | date:'longDate' }}</p>
+    <p>Price: {{ price | currency:'USD' }}</p>
+    <p>Async Data: {{ user$ | async | json }}</p>
+  \`
+})
+export class PipeExample {
+  birthday = new Date(1990, 3, 15);
+  price = 149.99;
+  user$ = this.userService.getUser(); // Observable
+}`,
+                useCase: "Formatting messy timestamps from a database into human-readable strings, or resolving an RxJS Observable straight in the template via the 'async' pipe."
+            },
+            {
+                category: "Advanced Core",
+                title: "Dependency Injection (DI) & Services",
+                explanation: "DI is a design pattern where a class requests dependencies from external sources rather than creating them. Services are singletons by default (when provided in 'root') used to share state, fetch data, or encapsulate business logic.",
+                code: `@Injectable({
+  providedIn: 'root' // Singleton across the app
+})
+export class ApiService {
+  constructor(private http: HttpClient) {}
+
+  getUsers(): Observable<User[]> {
+    return this.http.get<User[]>('/api/users');
+  }
+}
+
+// In Component:
+export class UserList {
+  // Angular injects the service automatically
+  constructor(private apiService: ApiService) {} 
+}`,
+                useCase: "Creating an AuthService to manage user login state, ensuring that every component checking authentication status references the exact same service instance."
+            },
+            {
+                category: "Advanced Core",
+                title: "Lifecycle Hooks",
+                explanation: "Angular components go through a lifecycle managed by Angular. Key hooks include: ngOnInit (initialization), ngOnChanges (input properties change), ngAfterViewInit (view loaded), and ngOnDestroy (cleanup).",
+                code: `export class TimerComponent implements OnInit, OnDestroy {
+  private timerId: any;
+
+  ngOnInit() {
+    // Best place to fetch initial data
+    this.timerId = setInterval(() => console.log('Tick'), 1000);
+  }
+
+  ngOnDestroy() {
+    // Critical: Clean up to prevent memory leaks!
+    clearInterval(this.timerId);
+  }
+}`,
+                useCase: "Subscribing to a WebSocket in `ngOnInit` and ensuring you close the connection or unsubscribe in `ngOnDestroy` so it doesn't run indefinitely when the user navigates away."
+            },
+            {
+                category: "Advanced Core",
+                title: "Standalone Components",
+                explanation: "Introduced in Angular 14+, Standalone Components eliminate the need for NgModules. A component can directly declare its own imports (pipes, directives, other components), drastically simplifying the learning curve and boilerplate.",
+                code: `import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { SharedButtonComponent } from './shared-button.component';
+
+@Component({
+  selector: 'app-dashboard',
+  standalone: true,
+  imports: [CommonModule, SharedButtonComponent],
+  template: \`
+    <h1>Dashboard</h1>
+    <app-shared-button>Click Me</app-shared-button>
+  \`
+})
+export class DashboardComponent {}`,
+                useCase: "Migrating an older Angular codebase to a modern, module-less architecture, making it easier to lazy-load single components without scaffolding extra modules."
+            },
+            {
+                category: "Advanced Core",
+                title: "Angular Signals",
+                explanation: "Signals are Angular's modern, reactive primitive for state management (Angular 16+). A Signal is a wrapper around a value that notifies interested consumers when that value changes, optimizing change detection.",
+                code: `import { Component, signal, computed, effect } from '@angular/core';
+
+@Component({
+  selector: 'app-counter',
+  template: \`
+    <p>Count: {{ count() }}</p>
+    <p>Double: {{ double() }}</p>
+    <button (click)="increment()">Add</button>
+  \`
+})
+export class CounterComponent {
+  // Writable signal
+  count = signal(0);
+  
+  // Computed signal (read-only, auto-updates)
+  double = computed(() => this.count() * 2);
+
+  constructor() {
+    // Side effect triggers when count changes
+    effect(() => console.log('Count is now:', this.count()));
+  }
+
+  increment() {
+    this.count.update(value => value + 1);
+  }
+}`,
+                useCase: "Managing highly dynamic state like a shopping cart total that needs to instantly recalculate and update specific parts of the UI without triggering global change detection cycles."
+            },
+            {
+                category: "Routing",
+                title: "Routing & Lazy Loading",
+                explanation: "The Angular Router enables navigation between views. Lazy loading allows you to defer the loading of code (modules or standalone components) until the user actually navigates to that route, speeding up the initial app load.",
+                code: `import { Routes } from '@angular/router';
+
+export const routes: Routes = [
+  { path: 'home', component: HomeComponent },
+  // Lazy loading a Standalone Component (Modern way)
+  { 
+    path: 'admin', 
+    loadComponent: () => import('./admin/admin.component')
+      .then(m => m.AdminComponent)
+  },
+  { path: '', redirectTo: '/home', pathMatch: 'full' },
+  { path: '**', component: NotFoundComponent }
+];`,
+                useCase: "Separating a heavy 'Admin Dashboard' from the public-facing 'Landing Page'. Regular users won't download the admin dashboard JavaScript, drastically improving load times."
+            },
+            {
+                category: "Routing",
+                title: "Route Guards",
+                explanation: "Guards control access to routes. Modern Angular uses functional guards (CanActivateFn) rather than class-based guards. They return a boolean, a Promise, or an Observable to permit or deny navigation.",
+                code: `import { CanActivateFn, Router } from '@angular/router';
+import { inject } from '@angular/core';
+import { AuthService } from './auth.service';
+
+export const authGuard: CanActivateFn = (route, state) => {
+  const authService = inject(AuthService);
+  const router = inject(Router);
+
+  if (authService.isAuthenticated()) {
+    return true;
+  }
+  
+  // Redirect to login if not authenticated
+  return router.parseUrl('/login');
+};
+
+// Usage in routes:
+// { path: 'profile', component: ProfileCmp, canActivate: [authGuard] }`,
+                useCase: "Preventing unauthorized users from typing '/dashboard' into the URL bar and accessing sensitive data. Instead, they are routed back to the login screen."
+            },
+            {
+                category: "Forms",
+                title: "Reactive Forms",
+                explanation: "Reactive Forms provide a model-driven approach. Logic and validation are defined in the TypeScript component using FormGroups and FormControls, offering better scalability, reusability, and testability than Template-driven forms.",
+                code: `import { Component } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+
+@Component({
+  template: \`
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <input formControlName="email" type="email">
+      <span *ngIf="loginForm.get('email')?.invalid">Invalid email</span>
+      
+      <button [disabled]="loginForm.invalid">Login</button>
+    </form>
+  \`
+})
+export class LoginComponent {
+  loginForm: FormGroup;
+
+  constructor(private fb: FormBuilder) {
+    this.loginForm = this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', Validators.minLength(6)]
+    });
+  }
+
+  onSubmit() {
+    console.log(this.loginForm.value);
+  }
+}`,
+                useCase: "Building complex, dynamic questionnaires or multi-step checkout processes where fields depend on each other and require strict custom validation."
+            },
+            {
+                category: "HTTP & APIs",
+                title: "Interceptors",
+                explanation: "HttpInterceptors sit between your app and the backend. They can intercept outgoing HTTP requests (e.g., to add auth headers) or incoming responses (e.g., to handle global errors).",
+                code: `import { HttpInterceptorFn } from '@angular/common/http';
+
+export const authInterceptor: HttpInterceptorFn = (req, next) => {
+  const token = localStorage.getItem('auth_token');
+  
+  // Clone request to add the new header
+  if (token) {
+    const clonedReq = req.clone({
+      setHeaders: { Authorization: \`Bearer \${token}\` }
+    });
+    return next(clonedReq);
+  }
+  
+  return next(req);
+};
+
+// Provide in app.config.ts: 
+// provideHttpClient(withInterceptors([authInterceptor]))`,
+                useCase: "Automatically attaching a JWT (JSON Web Token) to every API request without having to manually add it in every single service method."
+            },
+            {
+                category: "RxJS",
+                title: "Observables vs Promises",
+                explanation: "Both handle asynchronous operations. Promises handle a single event and execute immediately. Observables emit multiple values over time, are lazy (don't run until subscribed), and can be cancelled.",
+                code: `// PROMISE (Eager, single value, uncancelable)
+const myPromise = new Promise(resolve => {
+  console.log('Promise started');
+  setTimeout(() => resolve('Data'), 1000);
+});
+
+// OBSERVABLE (Lazy, multiple values, cancelable)
+const myObservable = new Observable(observer => {
+  console.log('Observable started'); // Won't log until subscribed!
+  observer.next('Data 1');
+  setTimeout(() => observer.next('Data 2'), 1000);
+});
+
+// Subscription is required to trigger the observable
+const sub = myObservable.subscribe(val => console.log(val));
+sub.unsubscribe(); // Cancels future emissions`,
+                useCase: "Using Observables for a search bar that emits multiple keystrokes over time. You can easily cancel the previous HTTP request if the user keeps typing using RxJS operators."
+            },
+            {
+                category: "RxJS",
+                title: "Subjects (BehaviorSubject)",
+                explanation: "A Subject is a special type of Observable that allows multicasting (sharing the same execution to multiple subscribers). A BehaviorSubject requires an initial value and emits its current value to new subscribers immediately.",
+                code: `import { BehaviorSubject } from 'rxjs';
+
+export class StateService {
+  // Private BehaviorSubject holds the data
+  private userSubject = new BehaviorSubject<string>('Guest');
+  
+  // Expose as an immutable Observable
+  user$ = this.userSubject.asObservable();
+
+  updateUser(name: string) {
+    this.userSubject.next(name);
+  }
+}
+
+// Any component subscribing to user$ will immediately get 'Guest', 
+// and will automatically receive any future updates.`,
+                useCase: "Managing application-wide state like 'Current Theme' (dark/light) or 'Logged in User Profile' where late-loading components need to know the current state immediately upon rendering."
+            },
+            {
+                category: "RxJS",
+                title: "Important Operators (map, switchMap, etc.)",
+                explanation: "RxJS operators allow you to manipulate streams of data. map() transforms data. filter() removes data. switchMap() cancels the previous inner observable and starts a new one (crucial for search/HTTP). mergeMap() runs them concurrently.",
+                code: `import { fromEvent } from 'rxjs';
+import { debounceTime, distinctUntilChanged, switchMap, map } from 'rxjs/operators';
+
+// Real-world search implementation
+const searchInput = document.getElementById('search');
+
+fromEvent(searchInput, 'input').pipe(
+  map((event: any) => event.target.value),
+  debounceTime(300), // Wait 300ms after last keystroke
+  distinctUntilChanged(), // Only proceed if value changed
+  switchMap(searchTerm => this.http.get(\`/api/search?q=\${searchTerm}\`))
+).subscribe(results => {
+  // If user types again before HTTP completes, switchMap cancels 
+  // the old HTTP request and starts a new one!
+  console.log(results);
+});`,
+                useCase: "Implementing an autocomplete search field. It prevents spamming the backend API on every keystroke and prevents race conditions from out-of-order API responses."
+            },
+            {
+                category: "Performance",
+                title: "OnPush Change Detection",
+                explanation: "By default, Angular checks every component in the tree during a change detection cycle. ChangeDetectionStrategy.OnPush tells Angular to only check this component if its Input properties change via reference, or an event originates from it.",
+                code: `import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
+
+@Component({
+  selector: 'app-heavy-table',
+  template: \`<div *ngFor="let row of data">{{ row.value }}</div>\`,
+  // Optimizes performance massively
+  changeDetection: ChangeDetectionStrategy.OnPush 
+})
+export class HeavyTableComponent {
+  // Angular only re-renders if the 'data' array REFERENCE changes
+  @Input() data: any[] = [];
+  
+  // Mutating the array (data.push()) will NOT trigger an update!
+  // You must provide a new reference: this.data = [...this.data, newItem];
+}`,
+                useCase: "Optimizing a massive data grid with thousands of cells. By using OnPush, the grid ignores global app state changes (like a timer ticking elsewhere) unless the grid's specific data changes."
+            },
+            {
+                category: "Advanced Topics",
+                title: "Content Projection (ng-content)",
+                explanation: "Content projection allows you to inject custom HTML content inside a child component from its parent. It makes components highly reusable (e.g., Modals, Cards) by using the <ng-content> tag.",
+                code: `// --- card.component.ts ---
+@Component({
+  selector: 'app-card',
+  template: \`
+    <div class="card-wrapper">
+      <div class="header">
+        <ng-content select="[card-title]"></ng-content>
+      </div>
+      <div class="body">
+        <ng-content></ng-content> <!-- Default projection -->
+      </div>
+    </div>
+  \`
+})
+export class CardComponent {}
+
+// --- Usage in parent ---
+<app-card>
+  <h2 card-title>My Custom Title</h2>
+  <p>This is the body content injected into the card.</p>
+  <button>Action</button>
+</app-card>`,
+                useCase: "Building a highly flexible UI library. You can create a reusable 'Modal' component, and let the developers pass in totally custom forms or text to the body of the modal without altering the Modal component itself."
+            },
+            {
+                category: "Advanced Topics",
+                title: "ViewChild & ContentChild",
+                explanation: "@ViewChild queries the component's own template to find an element, directive, or child component. @ContentChild queries the projected content (HTML passed via ng-content) from the parent.",
+                code: `@Component({
+  template: \`
+    <input #myInput type="text" placeholder="Focus me">
+    <app-child></app-child>
+  \`
+})
+export class ParentComponent implements AfterViewInit {
+  // Query by template reference variable
+  @ViewChild('myInput') inputRef!: ElementRef<HTMLInputElement>;
+  
+  // Query by component type
+  @ViewChild(ChildComponent) childCmp!: ChildComponent;
+
+  ngAfterViewInit() {
+    // View is fully initialized, safe to access DOM/children
+    this.inputRef.nativeElement.focus();
+    this.childCmp.callChildMethod();
+  }
+}`,
+                useCase: "Programmatically focusing an input field as soon as a component loads, or triggering a specific animation method living inside a child component from the parent."
+            },
+            {
+                category: "Security",
+                title: "XSS & DomSanitizer",
+                explanation: "Angular inherently protects against Cross-Site Scripting (XSS) by treating all values as untrusted and escaping them. If you must inject raw HTML (e.g., from a CMS), you must explicitly tell Angular it is safe using DomSanitizer.",
+                code: `import { Component, SecurityContext } from '@angular/core';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+
+@Component({
+  template: \`<div [innerHTML]="safeContent"></div>\`
+})
+export class SecurityCmp {
+  rawHtml = '<script>alert("Hacked")<\/script> <b>Safe text</b>';
+  safeContent: SafeHtml;
+
+  constructor(private sanitizer: DomSanitizer) {
+    // Tells Angular: "Trust this string as HTML, bypass security"
+    // WARNING: Only do this if you completely trust the source!
+    this.safeContent = this.sanitizer.bypassSecurityTrustHtml(this.rawHtml);
+    
+    // Better: Sanitize it (removes the script, keeps the bold tag)
+    const sanitized = this.sanitizer.sanitize(SecurityContext.HTML, this.rawHtml);
+  }
+}`,
+                useCase: "Rendering rich text articles stored in a database (which include <b>, <i>, <img> tags) dynamically into the DOM without escaping the tags into plain text."
+            }
+        ];
+
+        // --- STATE & DOM ELEMENTS ---
+        let currentIndex = 0;
+        let filteredData = [...angularData];
+        const viewedTopics = new Set([0]); // Track progress
+
+        const elements = {
+            sidebar: document.getElementById('sidebar'),
+            topicList: document.getElementById('topic-list'),
+            searchInput: document.getElementById('search-input'),
+            progressText: document.getElementById('progress-text'),
+            progressFill: document.getElementById('progress-fill'),
+            topicCategory: document.getElementById('topic-category'),
+            topicTitle: document.getElementById('topic-title'),
+            topicExplanation: document.getElementById('topic-explanation'),
+            topicCode: document.getElementById('topic-code'),
+            topicUsecase: document.getElementById('topic-usecase'),
+            btnPrev: document.getElementById('btn-prev'),
+            btnNext: document.getElementById('btn-next'),
+            menuBtn: document.getElementById('menu-btn'),
+            contentBody: document.getElementById('content-body')
+        };
+
+        // --- SYNTAX HIGHLIGHTER ---
+        function highlightCode(code) {
+            if (!code) return '';
+            
+            let html = code
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;');
+
+            // Keywords
+            html = html.replace(/\b(import|export|class|implements|constructor|this|return|if|else|const|let|var|new|from|private|public|protected|true|false)\b/g, '<span class="keyword">$1</span>');
+            
+            // Types & RxJS
+            html = html.replace(/\b(string|number|boolean|any|void|Observable|Subject|BehaviorSubject|Promise)\b/g, '<span class="type">$1</span>');
+            
+            // Decorators
+            html = html.replace(/@\w+/g, '<span class="decorator">$&</span>');
+            
+            // Strings (single, double, backticks)
+            html = html.replace(/('.*?'|".*?"|\`[\s\S]*?\`)/g, '<span class="string">$1</span>');
+            
+            // Method calls
+            html = html.replace(/(\w+)(?=\()/g, function(match, p1) {
+                if (['if', 'else', 'constructor', 'function'].includes(p1)) return p1;
+                return `<span class="method">${p1}</span>`;
+            });
+
+            // Comments
+            html = html.replace(/(\/\/.*)$/gm, '<span class="comment">$1</span>');
+
+            return html;
+        }
+
+        // --- CORE FUNCTIONS ---
+        function init() {
+            renderSidebar();
+            selectTopic(0, true);
+            updateProgress();
+
+            elements.searchInput.addEventListener('input', handleSearch);
+            elements.btnPrev.addEventListener('click', () => navigate(-1));
+            elements.btnNext.addEventListener('click', () => navigate(1));
+            elements.menuBtn.addEventListener('click', toggleSidebar);
+        }
+
+        function renderSidebar() {
+            elements.topicList.innerHTML = '';
+            filteredData.forEach((topic, i) => {
+                const li = document.createElement('li');
+                li.className = 'topic-item';
+                
+                // Check original index for viewed status
+                const originalIndex = angularData.indexOf(topic);
+                if (viewedTopics.has(originalIndex)) {
+                    li.classList.add('viewed');
+                }
+                if (i === currentIndex) {
+                    li.classList.add('active');
+                }
+
+                li.innerHTML = `
+                    <span>${topic.title}</span>
+                    <span class="status-dot"></span>
+                `;
+                li.addEventListener('click', () => {
+                    selectTopic(i);
+                    if (window.innerWidth <= 768) toggleSidebar();
+                });
+                elements.topicList.appendChild(li);
+            });
+        }
+
+        function selectTopic(index, noAnimation = false) {
+            if (index < 0 || index >= filteredData.length) return;
+            
+            currentIndex = index;
+            const topic = filteredData[index];
+            const originalIndex = angularData.indexOf(topic);
+            viewedTopics.add(originalIndex);
+            
+            const updateUI = () => {
+                elements.topicCategory.textContent = topic.category;
+                elements.topicTitle.textContent = topic.title;
+                elements.topicExplanation.textContent = topic.explanation;
+                elements.topicCode.innerHTML = highlightCode(topic.code);
+                elements.topicUsecase.textContent = topic.useCase;
+
+                elements.btnPrev.disabled = currentIndex === 0;
+                elements.btnNext.disabled = currentIndex === filteredData.length - 1;
+
+                updateProgress();
+                renderSidebar(); // Refresh sidebar active states
+            };
+
+            if (noAnimation) {
+                updateUI();
+            } else {
+                elements.contentBody.style.opacity = '0';
+                setTimeout(() => {
+                    updateUI();
+                    elements.contentBody.style.opacity = '1';
+                }, 150);
+            }
+        }
+
+        function navigate(direction) {
+            selectTopic(currentIndex + direction);
+        }
+
+        function handleSearch(e) {
+            const query = e.target.value.toLowerCase();
+            filteredData = angularData.filter(topic => 
+                topic.title.toLowerCase().includes(query) || 
+                topic.category.toLowerCase().includes(query) ||
+                topic.explanation.toLowerCase().includes(query)
+            );
+            currentIndex = 0;
+            if (filteredData.length > 0) {
+                selectTopic(0);
+            } else {
+                elements.topicList.innerHTML = '<li style="padding: 20px; color: #8b949e;">No topics found.</li>';
+                elements.topicTitle.textContent = "No Results";
+                elements.topicCategory.textContent = "Search";
+                elements.topicExplanation.textContent = "Try adjusting your search terms.";
+                elements.topicCode.innerHTML = "";
+                elements.topicUsecase.textContent = "";
+                elements.btnPrev.disabled = true;
+                elements.btnNext.disabled = true;
+            }
+        }
+
+        function updateProgress() {
+            const total = angularData.length;
+            const viewed = viewedTopics.size;
+            elements.progressText.textContent = `${viewed} / ${total} topics covered`;
+            elements.progressFill.style.width = `${(viewed / total) * 100}%`;
+        }
+
+        function toggleSidebar() {
+            elements.sidebar.classList.toggle('open');
+        }
+
+        // Run
+        init();
+    </script>
+</body>
+</html>
