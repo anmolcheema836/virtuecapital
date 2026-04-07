@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BRUTAL ERP // CU</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        /* --- BRUTALIST VARIABLES --- */
+        :root {
+            --bg: #e5e5e5;
+            --black: #000000;
+            --white: #ffffff;
+            
+            /* Aggressive Accent Colors */
+            --neon-green: #00ff00;
+            --magenta: #ff00ff;
+            --cyan: #00ffff;
+            --yellow: #ffff00;
+            --red: #ff3300;
+
+            /* Structural Elements */
+            --border-thick: 4px solid var(--black);
+            --border-thin: 2px solid var(--black);
+            --shadow: 8px 8px 0px var(--black);
+            --shadow-hover: 2px 2px 0px var(--black);
+            
+            /* Typography */
+            --font-head: 'Space Grotesk', sans-serif;
+            --font-body: 'Space Mono', monospace;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--black);
+            font-family: var(--font-body);
+            background-image: radial-gradient(var(--black) 1px, transparent 0);
+            background-size: 20px 20px;
+            overflow-x: hidden;
+        }
+
+        /* --- MARQUEE --- */
+        .marquee-container {
+            background: var(--yellow);
+            border-bottom: var(--border-thick);
+            padding: 10px 0;
+            overflow: hidden;
+            white-space: nowrap;
+            font-family: var(--font-head);
+            font-size: 1.2rem;
+            text-transform: uppercase;
+        }
+        .marquee-content {
+            display: inline-block;
+            animation: marquee 15s linear infinite;
+        }
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* --- LAYOUT --- */
+        .app-grid {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            min-height: 100vh;
+        }
+
+        /* --- SIDEBAR --- */
+        .sidebar {
+            background: var(--white);
+            border-right: var(--border-thick);
+            display: flex;
+            flex-direction: column;
+            z-index: 10;
+        }
+
+        .logo-box {
+            background: var(--black);
+            padding: 30px 20px;
+            border-bottom: var(--border-thick);
+            text-align: center;
+        }
+        .logo-box img {
+            max-width: 150px;
+        }
+
+        .nav-menu {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .nav-item {
+            padding: 20px;
+            font-family: var(--font-head);
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            border-bottom: var(--border-thick);
+            cursor: pointer;
+            transition: all 0.1s;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: var(--white);
+            color: var(--black);
+            text-decoration: none;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            background: var(--black);
+            color: var(--neon-green);
+            padding-left: 30px;
+        }
+
+        .user-profile {
+            padding: 20px;
+            border-top: var(--border-thick);
+            background: var(--magenta);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .user-profile img {
+            width: 50px;
+            height: 50px;
+            border: var(--border-thin);
+            background: var(--white);
+            box-shadow: 4px 4px 0px var(--black);
+        }
+        .user-info h4 { font-family: var(--font-head); text-transform: uppercase; font-size: 1.1rem;}
+        .user-info p { font-size: 0.8rem; font-weight: bold; }
+
+        /* --- MAIN CONTENT --- */
+        .main-content {
+            padding: 40px;
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 30px;
+            align-content: start;
+        }
+
+        /* Brutal Card Base */
+        .brutal-card {
+            background: var(--white);
+            border: var(--border-thick);
+            box-shadow: var(--shadow);
+            padding: 25px;
+            transition: all 0.1s ease-out;
+            position: relative;
+        }
+        .brutal-card:hover {
+            transform: translate(6px, 6px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .card-header {
+            font-family: var(--font-head);
+            font-size: 1.5rem;
+            text-transform: uppercase;
+            border-bottom: var(--border-thick);
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* --- SPECIFIC WIDGETS --- */
+        
+        /* KPIs */
+        .kpi-wrapper {
+            grid-column: span 12;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+        }
+        
+        .kpi-card {
+            padding: 20px;
+            border: var(--border-thick);
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .kpi-card h3 { font-family: var(--font-head); font-size: 3rem; line-height: 1; margin-bottom: 10px; }
+        .kpi-card p { font-weight: bold; text-transform: uppercase; border-top: var(--border-thin); padding-top: 10px; }
+
+        .bg-yellow { background: var(--yellow); }
+        .bg-cyan { background: var(--cyan); }
+        .bg-magenta { background: var(--magenta); }
+        .bg-green { background: var(--neon-green); }
+
+        /* Charts */
+        .chart-main { grid-column: span 8; height: 400px; }
+        .chart-side { grid-column: span 4; height: 400px; }
+        .chart-container { position: relative; height: 300px; width: 100%; }
+
+        /* Grades Table */
+        .grades-box { grid-column: span 7; }
+        table { width: 100%; border-collapse: collapse; border: var(--border-thick); }
+        th, td { border: var(--border-thick); padding: 15px; text-align: left; }
+        th { background: var(--black); color: var(--white); font-family: var(--font-head); text-transform: uppercase; font-size: 1.2rem; }
+        tr:nth-child(even) td { background: #f0f0f0; }
+        tr:hover td { background: var(--cyan); color: var(--black); }
+        
+        .brutal-progress {
+            width: 100%;
+            height: 20px;
+            border: var(--border-thin);
+            background: var(--white);
+            position: relative;
+        }
+        .brutal-bar { height: 100%; background: var(--black); border-right: var(--border-thin); }
+
+        .grade-tag {
+            display: inline-block;
+            padding: 5px 10px;
+            border: var(--border-thin);
+            font-family: var(--font-head);
+            font-size: 1.2rem;
+            background: var(--yellow);
+            box-shadow: 2px 2px 0px var(--black);
+        }
+
+        /* Schedule */
+        .schedule-box { grid-column: span 5; }
+        .schedule-list { list-style: none; }
+        .schedule-item {
+            display: grid;
+            grid-template-columns: 80px 1fr;
+            border: var(--border-thick);
+            margin-bottom: 15px;
+            background: var(--white);
+            box-shadow: 4px 4px 0px var(--black);
+            transition: all 0.1s;
+        }
+        .schedule-item:hover { transform: translate(2px, 2px); box-shadow: 2px 2px 0px var(--black); }
+        .s-time {
+            background: var(--black);
+            color: var(--white);
+            padding: 15px;
+            font-family: var(--font-head);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+        .s-details { padding: 15px; }
+        .s-details h4 { font-family: var(--font-head); font-size: 1.2rem; margin-bottom: 5px; text-transform: uppercase;}
+
+        /* Events */
+        .events-box { grid-column: span 6; }
+        .event-card {
+            border: var(--border-thick);
+            padding: 20px;
+            margin-bottom: 20px;
+            background: var(--white);
+            position: relative;
+        }
+        .event-card::before {
+            content: '!';
+            position: absolute;
+            top: -15px; right: -15px;
+            width: 30px; height: 30px;
+            background: var(--red);
+            color: var(--white);
+            font-family: var(--font-head);
+            font-size: 1.5rem;
+            display: flex; align-items: center; justify-content: center;
+            border: var(--border-thick);
+            border-radius: 50%;
+        }
+        .event-date { font-weight: bold; background: var(--black); color: var(--neon-green); display: inline-block; padding: 5px 10px; margin-bottom: 10px; }
+
+        /* Forum */
+        .forum-box { grid-column: span 6; }
+        .forum-post {
+            border: var(--border-thick);
+            margin-bottom: 20px;
+            background: var(--bg);
+        }
+        .f-header {
+            background: var(--black);
+            color: var(--white);
+            padding: 10px 15px;
+            display: flex; justify-content: space-between;
+            font-family: var(--font-head);
+        }
+        .f-body { padding: 20px; background: var(--white); font-weight: bold; }
+        .f-actions {
+            border-top: var(--border-thick);
+            display: flex;
+        }
+        .f-btn {
+            flex: 1; padding: 10px; border: none; border-right: var(--border-thick);
+            background: var(--white); font-family: var(--font-body); font-weight: bold;
+            cursor: pointer; transition: 0.1s; text-transform: uppercase;
+        }
+        .f-btn:last-child { border-right: none; }
+        .f-btn:hover { background: var(--magenta); color: var(--white); }
+
+        /* Mobile Menu */
+        .mobile-toggle { display: none; font-size: 2rem; cursor: pointer; padding: 10px; background: var(--black); color: var(--white); border: var(--border-thick); }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 1200px) {
+            .chart-main, .chart-side, .grades-box, .schedule-box, .events-box, .forum-box { grid-column: span 12; }
+            .kpi-wrapper { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 768px) {
+            .app-grid { grid-template-columns: 1fr; }
+            .sidebar { position: fixed; left: -100%; top: 0; height: 100vh; width: 80%; transition: 0.3s; box-shadow: 20px 0px 0px rgba(0,0,0,0.5); }
+            .sidebar.open { left: 0; }
+            .mobile-toggle { display: block; position: fixed; top: 50px; right: 20px; z-index: 100; }
+            .main-content { padding: 20px; padding-top: 80px; }
+            .kpi-wrapper { grid-template-columns: 1fr; }
+            .logo-box { padding: 20px 10px; }
+            th, td { padding: 10px; font-size: 0.9rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="marquee-container">
+        <div class="marquee-content">
+            // MID-SEMESTER EXAMS BEGIN MAY 05 // SYSTEM MAINTENANCE SCHEDULED FOR FRIDAY 2AM // REGISTER FOR TECH-HACK 2026 // MID-SEMESTER EXAMS BEGIN MAY 05 // SYSTEM MAINTENANCE SCHEDULED FOR FRIDAY 2AM //
+        </div>
+    </div>
+
+    <button class="mobile-toggle" id="menuBtn"><i class="fa-solid fa-bars"></i></button>
+
+    <div class="app-grid">
+        
+        <aside class="sidebar" id="sidebar">
+            <div class="logo-box">
+                <img src="https://www.cuchd.in/includes/assets/images/header-footer/cu-logo-white.webp" alt="CU Logo">
+            </div>
+            
+            <nav class="nav-menu">
+                <a class="nav-item active"><i class="fa-solid fa-terminal"></i> Dashboard</a>
+                <a class="nav-item"><i class="fa-solid fa-check-to-slot"></i> Attendance</a>
+                <a class="nav-item"><i class="fa-solid fa-skull"></i> Grades</a>
+                <a class="nav-item"><i class="fa-solid fa-calendar-days"></i> Schedule</a>
+                <a class="nav-item"><i class="fa-solid fa-bolt"></i> Events</a>
+                <a class="nav-item"><i class="fa-solid fa-users"></i> Forum</a>
+            </nav>
+
+            <div class="user-profile">
+                <img src="https://media.istockphoto.com/id/536988396/photo/confident-man-in-blue-sweater-portrait.jpg?s=612x612&w=0&k=20&c=Ww3dK11KMRuru6mqddVQ29u0XZxvq_dFghN2Ta6OCN4=" alt="User">
+                <div class="user-info">
+                    <h4>Anmol Singh</h4>
+                    <p>ID: CU-98234</p>
+                </div>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            
+            <div class="kpi-wrapper">
+                <div class="kpi-card bg-yellow">
+                    <h3>8.74</h3>
+                    <p>Current CGPA</p>
+                </div>
+                <div class="kpi-card bg-cyan">
+                    <h3>86%</h3>
+                    <p>Total Attendance</p>
+                </div>
+                <div class="kpi-card bg-magenta">
+                    <h3>104</h3>
+                    <p>Credits Earned</p>
+                </div>
+                <div class="kpi-card bg-green">
+                    <h3>04</h3>
+                    <p>Pending Tasks</p>
+                </div>
+            </div>
+
+            <div class="brutal-card chart-main">
+                <div class="card-header">
+                    <span>Performance Grid</span>
+                    <i class="fa-solid fa-wave-square"></i>
+                </div>
+                <div class="chart-container">
+                    <canvas id="lineChart"></canvas>
+                </div>
+            </div>
+
+            <div class="brutal-card chart-side">
+                <div class="card-header">
+                    <span>Presence</span>
+                    <i class="fa-solid fa-crosshairs"></i>
+                </div>
+                <div class="chart-container">
+                    <canvas id="pieChart"></canvas>
+                </div>
+            </div>
+
+            <div class="brutal-card grades-box">
+                <div class="card-header">
+                    <span>Current Semester Grades</span>
+                </div>
+                <div style="overflow-x: auto;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Code</th>
+                                <th>Course Module</th>
+                                <th>Progress</th>
+                                <th>Grade</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>BCA301</td>
+                                <td>Adv. PHP Dev</td>
+                                <td>
+                                    88%
+                                    <div class="brutal-progress"><div class="brutal-bar" style="width: 88%; background: var(--neon-green);"></div></div>
+                                </td>
+                                <td><span class="grade-tag">A+</span></td>
+                            </tr>
+                            <tr>
+                                <td>BCA302</td>
+                                <td>JS Data Structures</td>
+                                <td>
+                                    75%
+                                    <div class="brutal-progress"><div class="brutal-bar" style="width: 75%; background: var(--cyan);"></div></div>
+                                </td>
+                                <td><span class="grade-tag" style="background: var(--white);">B+</span></td>
+                            </tr>
+                            <tr>
+                                <td>BCA303</td>
+                                <td>UI/UX Principles</td>
+                                <td>
+                                    92%
+                                    <div class="brutal-progress"><div class="brutal-bar" style="width: 92%; background: var(--magenta);"></div></div>
+                                </td>
+                                <td><span class="grade-tag">A+</span></td>
+                            </tr>
+                            <tr>
+                                <td>BCA304</td>
+                                <td>Database Mgmt</td>
+                                <td>
+                                    68%
+                                    <div class="brutal-progress"><div class="brutal-bar" style="width: 68%; background: var(--red);"></div></div>
+                                </td>
+                                <td><span class="grade-tag" style="background: var(--black); color: var(--white);">C</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="brutal-card schedule-box">
+                <div class="card-header">
+                    <span>Daily Ops</span>
+                </div>
+                <ul class="schedule-list">
+                    <li class="schedule-item">
+                        <div class="s-time">09:30<br>AM</div>
+                        <div class="s-details">
+                            <h4>Adv. PHP Dev</h4>
+                            <p>LOC: Block 3, Room 402</p>
+                            <p>INSTR: Dr. Sharma</p>
+                        </div>
+                    </li>
+                    <li class="schedule-item" style="background: var(--yellow);">
+                        <div class="s-time">11:15<br>AM</div>
+                        <div class="s-details">
+                            <h4>UI/UX Lab</h4>
+                            <p>LOC: Design Studio 2</p>
+                            <p>INSTR: Prof. Verma</p>
+                        </div>
+                    </li>
+                    <li class="schedule-item">
+                        <div class="s-time">02:00<br>PM</div>
+                        <div class="s-details">
+                            <h4>Data Structures</h4>
+                            <p>LOC: Block 1, Room 105</p>
+                            <p>INSTR: Dr. Gill</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="brutal-card events-box">
+                <div class="card-header">
+                    <span>Campus Intel</span>
+                </div>
+                <div class="event-card" style="border-color: var(--magenta);">
+                    <div class="event-date">APR 15</div>
+                    <h3 style="font-family: var(--font-head); font-size: 1.4rem; margin-bottom: 10px; text-transform: uppercase;">TechHack 2026</h3>
+                    <p>48-hour brutal coding marathon. No sleep. Mandatory registration.</p>
+                </div>
+                <div class="event-card" style="border-color: var(--cyan);">
+                    <div class="event-date">APR 22</div>
+                    <h3 style="font-family: var(--font-head); font-size: 1.4rem; margin-bottom: 10px; text-transform: uppercase;">Web3 Guest Lecture</h3>
+                    <p>Industry experts discussing decentralization. Auditorium 1.</p>
+                </div>
+            </div>
+
+            <div class="brutal-card forum-box">
+                <div class="card-header">
+                    <span>Comms Network</span>
+                </div>
+                
+                <div class="forum-post">
+                    <div class="f-header">
+                        <span>Rohan G.</span>
+                        <span>[ 2 HOURS AGO ]</span>
+                    </div>
+                    <div class="f-body">
+                        Anyone figuring out the Dezrez API integration? Getting massive CORS blocks on local. Need bypass intel.
+                    </div>
+                    <div class="f-actions">
+                        <button class="f-btn" onclick="this.innerHTML = 'LIKED (13)'">LIKE (12)</button>
+                        <button class="f-btn">REPLY (5)</button>
+                    </div>
+                </div>
+
+                <div class="forum-post">
+                    <div class="f-header" style="background: var(--magenta);">
+                        <span>Simran K.</span>
+                        <span>[ 5 HOURS AGO ]</span>
+                    </div>
+                    <div class="f-body">
+                        Figma mockups dumped to the shared drive. Should we execute frontend in raw JS or spin up React?
+                    </div>
+                    <div class="f-actions">
+                        <button class="f-btn" onclick="this.innerHTML = 'LIKED (35)'">LIKE (34)</button>
+                        <button class="f-btn">REPLY (18)</button>
+                    </div>
+                </div>
+
+            </div>
+
+        </main>
+    </div>
+
+    <script>
+        // Mobile menu toggle
+        const menuBtn = document.getElementById('menuBtn');
+        const sidebar = document.getElementById('sidebar');
+        
+        menuBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('open');
+        });
+
+        // Interactive Nav
+        const navItems = document.querySelectorAll('.nav-item');
+        navItems.forEach(item => {
+            item.addEventListener('click', () => {
+                navItems.forEach(n => n.classList.remove('active'));
+                item.classList.add('active');
+                if(window.innerWidth <= 768) sidebar.classList.remove('open');
+            });
+        });
+
+        // --- BRUTALIST CHART CONFIGURATION ---
+        Chart.defaults.font.family = "'Space Mono', monospace";
+        Chart.defaults.color = '#000000';
+        Chart.defaults.font.size = 14;
+        Chart.defaults.font.weight = 'bold';
+        
+        // 1. Line Chart (Straight lines, brutal edges)
+        const ctxLine = document.getElementById('lineChart').getContext('2d');
+        new Chart(ctxLine, {
+            type: 'line',
+            data: {
+                labels: ['SEM 1', 'SEM 2', 'SEM 3', 'SEM 4', 'SEM 5'],
+                datasets: [{
+                    label: 'SGPA',
+                    data: [8.2, 8.5, 8.4, 8.9, 8.74],
+                    borderColor: '#000000',
+                    borderWidth: 4,
+                    backgroundColor: '#ffff00',
+                    pointBackgroundColor: '#ff00ff',
+                    pointBorderColor: '#000000',
+                    pointBorderWidth: 3,
+                    pointRadius: 6,
+                    pointHoverRadius: 10,
+                    pointStyle: 'rect', // Square points
+                    tension: 0, // 0 tension = sharp jagged lines (Brutalist style)
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    y: {
+                        min: 7, max: 10,
+                        grid: { color: '#000000', lineWidth: 2, drawBorder: true },
+                        border: { width: 4, color: '#000' }
+                    },
+                    x: {
+                        grid: { color: '#000000', lineWidth: 2, drawBorder: true },
+                        border: { width: 4, color: '#000' }
+                    }
+                }
+            }
+        });
+
+        // 2. Pie Chart (Harsh slices, heavy borders)
+        const ctxPie = document.getElementById('pieChart').getContext('2d');
+        new Chart(ctxPie, {
+            type: 'pie',
+            data: {
+                labels: ['PRESENT', 'ABSENT', 'LEAVE'],
+                datasets: [{
+                    data: [86, 10, 4],
+                    backgroundColor: ['#00ff00', '#ff3300', '#ffff00'],
+                    borderColor: '#000000',
+                    borderWidth: 4,
+                    hoverOffset: 10
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: { padding: 20, font: { family: "'Space Grotesk', sans-serif", size: 14 } }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

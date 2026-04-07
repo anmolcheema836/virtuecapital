@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>House of Conversation | The Gallery</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            /* Soft, Organic Palette */
+            --bg-canvas: #FCFAF8;
+            --text-deep: #2A3B2C; /* Deep Forest Green for softer contrast */
+            --text-light: #5A6B5C;
+            --shape-peach: #F3E1D4;
+            --shape-sage: #E0E5D8;
+            --shape-yellow: #F9F0D8;
+            
+            --font-head: 'Playfair Display', serif;
+            --font-body: 'Outfit', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-canvas);
+            color: var(--text-deep);
+            font-family: var(--font-body);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* ----- MINIMALIST NAVIGATION ----- */
+        header {
+            padding: 2rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: absolute;
+            top: 0;
+            width: 100%;
+            z-index: 100;
+        }
+
+        .logo img {
+            height: 50px;
+            object-fit: contain;
+        }
+
+        .logo-fallback {
+            font-family: var(--font-head);
+            font-size: 1.5rem;
+            font-weight: 600;
+            font-style: italic;
+        }
+
+        nav ul {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--text-deep);
+            font-weight: 400;
+            font-size: 0.95rem;
+            text-transform: lowercase;
+            letter-spacing: 0.05em;
+            position: relative;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            background: var(--text-deep);
+            border-radius: 50%;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%) scale(0);
+            transition: transform 0.3s ease;
+        }
+
+        nav a:hover::after {
+            transform: translateX(-50%) scale(1);
+        }
+
+        /* ----- HERO SECTION (ARCH LAYOUT) ----- */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 6rem 5% 2rem;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        .hero-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5rem;
+            width: 100%;
+            align-items: center;
+        }
+
+        .hero-text h1 {
+            font-family: var(--font-head);
+            font-size: clamp(3.5rem, 6vw, 6rem);
+            line-height: 1.1;
+            margin-bottom: 2rem;
+            font-weight: 500;
+        }
+
+        .hero-text h1 span {
+            font-style: italic;
+            color: #8C6A5D;
+        }
+
+        .hero-text p {
+            font-size: 1.2rem;
+            color: var(--text-light);
+            max-width: 80%;
+            margin-bottom: 3rem;
+        }
+
+        .explore-btn {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            background-color: var(--text-deep);
+            color: var(--bg-canvas);
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 300;
+            letter-spacing: 0.05em;
+            transition: background 0.3s ease;
+        }
+
+        .explore-btn:hover {
+            background-color: #8C6A5D;
+        }
+
+        .hero-visual {
+            position: relative;
+            height: 700px;
+            display: flex;
+            justify-content: center;
+        }
+
+        /* Architectural Image Shape */
+        .arch-image {
+            width: 80%;
+            height: 100%;
+            background-color: var(--shape-peach);
+            border-radius: 200px 200px 0 0; /* Creates the arch */
+            overflow: hidden;
+            position: relative;
+            z-index: 2;
+        }
+
+        .arch-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.95;
+        }
+
+        /* Decorative background shape */
+        .bg-circle {
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background-color: var(--shape-yellow);
+            border-radius: 50%;
+            bottom: -50px;
+            left: -50px;
+            z-index: 1;
+        }
+
+        /* ----- STAGGERED EDITORIAL FLOW ----- */
+        .story-flow {
+            padding: 8rem 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            font-family: var(--font-head);
+            font-size: 3rem;
+            font-style: italic;
+            margin-bottom: 6rem;
+            font-weight: 400;
+        }
+
+        .story-row {
+            display: flex;
+            align-items: center;
+            gap: 6rem;
+            margin-bottom: 8rem;
+        }
+
+        .story-row.reverse {
+            flex-direction: row-reverse;
+        }
+
+        .story-image-wrap {
+            flex: 1;
+            position: relative;
+        }
+
+        /* Different shapes for different stories */
+        .shape-circle {
+            width: 100%;
+            aspect-ratio: 1/1;
+            border-radius: 50%;
+            overflow: hidden;
+            background: var(--shape-sage);
+        }
+
+        .shape-pill {
+            width: 100%;
+            aspect-ratio: 3/4;
+            border-radius: 200px;
+            overflow: hidden;
+            background: var(--shape-peach);
+        }
+
+        .shape-rectangle {
+            width: 100%;
+            aspect-ratio: 4/5;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .story-image-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.7s ease;
+        }
+
+        .story-image-wrap:hover img {
+            transform: scale(1.05);
+        }
+
+        .story-content {
+            flex: 1;
+            padding: 2rem;
+        }
+
+        .meta-tag {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: #8C6A5D;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .story-content h2 {
+            font-family: var(--font-head);
+            font-size: 2.5rem;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+            font-weight: 500;
+        }
+
+        .story-content p {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            margin-bottom: 2rem;
+        }
+
+        .read-more {
+            font-family: var(--font-head);
+            font-style: italic;
+            font-size: 1.2rem;
+            color: var(--text-deep);
+            text-decoration: none;
+            border-bottom: 1px solid var(--text-deep);
+            padding-bottom: 2px;
+        }
+
+        /* ----- FOOTER ----- */
+        footer {
+            background-color: var(--shape-sage);
+            padding: 8rem 5% 4rem;
+            text-align: center;
+        }
+
+        .footer-logo {
+            font-family: var(--font-head);
+            font-size: 2.5rem;
+            font-style: italic;
+            margin-bottom: 2rem;
+        }
+
+        .newsletter-form {
+            max-width: 500px;
+            margin: 0 auto 4rem;
+            display: flex;
+            border-bottom: 1px solid var(--text-deep);
+            padding-bottom: 0.5rem;
+        }
+
+        .newsletter-form input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            outline: none;
+            font-family: var(--font-body);
+            font-size: 1.1rem;
+            color: var(--text-deep);
+        }
+
+        .newsletter-form button {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            font-family: var(--font-head);
+            font-size: 1.1rem;
+            font-style: italic;
+            color: var(--text-deep);
+        }
+
+        .copyright {
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 900px) {
+            .hero-container, .story-row, .story-row.reverse {
+                grid-template-columns: 1fr;
+                flex-direction: column;
+                gap: 3rem;
+            }
+            .hero-visual { height: 500px; }
+            nav ul { display: none; }
+            .hero { padding-top: 8rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">
+            <img src="hoclogo.png" alt="House of Conversation" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+            <div class="logo-fallback" style="display:none;">H.O.C</div>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#">Journal</a></li>
+                <li><a href="#">Essays</a></li>
+                <li><a href="#">Gallery</a></li>
+                <li><a href="#">About</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="hero-container">
+                <div class="hero-text">
+                    <h1>Culture, <br><span>slowly</span> spoken.</h1>
+                    <p>A quiet corner of the internet dedicated to lifestyle, art, and the beautiful mess of being human. Curated by Anmol Singh.</p>
+                    <a href="#" class="explore-btn">Enter the House</a>
+                </div>
+                <div class="hero-visual">
+                    <div class="bg-circle"></div>
+                    <div class="arch-image">
+                        <img src="https://peppermintmag.com/wp-content/uploads/2026/03/Cynthia-Nudel1.jpg" alt="Cynthia Nudel Feature">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="story-flow">
+            <h2 class="section-header">Latest Reflections</h2>
+
+            <div class="story-row">
+                <div class="story-image-wrap">
+                    <div class="shape-circle">
+                        <img src="https://hellolunchlady.com.au/cdn/shop/articles/opener_10-pikes_900x.jpg?v=1685602903" alt="Kids playing outdoors">
+                    </div>
+                </div>
+                <div class="story-content">
+                    <span class="meta-tag">Lifestyle</span>
+                    <h2>Why We Need to Relearn How to Play</h2>
+                    <p>In a world obsessed with productivity, perhaps the most radical thing we can do is engage in activities that have absolutely no purpose at all.</p>
+                    <a href="#" class="read-more">Read the Essay</a>
+                </div>
+            </div>
+
+            <div class="story-row reverse">
+                <div class="story-image-wrap">
+                    <div class="shape-pill">
+                        <img src="https://hellolunchlady.com.au/cdn/shop/articles/bedtime_fears_900x.jpg?v=1673989103" alt="Bedtime Fears Illustration">
+                    </div>
+                </div>
+                <div class="story-content">
+                    <span class="meta-tag">Culture</span>
+                    <h2>Navigating the Quiet Anxieties of the Night</h2>
+                    <p>When the house goes to sleep, the mind often wakes up. A look at the collective worries that bind us together in the dark hours.</p>
+                    <a href="#" class="read-more">Read the Essay</a>
+                </div>
+            </div>
+
+            <div class="story-row">
+                <div class="story-image-wrap">
+                    <div class="shape-rectangle">
+                        <img src="https://hellolunchlady.com.au/cdn/shop/articles/Screen-Shot-2021-04-21-at-2.10.45-pm_900x.png?v=1681688811" alt="Vintage abstract art">
+                    </div>
+                </div>
+                <div class="story-content">
+                    <span class="meta-tag">Art & Design</span>
+                    <h2>Finding Beauty in Imperfect Spaces</h2>
+                    <p>Moving away from the sterile, perfectly curated grids of social media and embracing the wobbly, the worn, and the well-loved.</p>
+                    <a href="#" class="read-more">Read the Essay</a>
+                </div>
+            </div>
+
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-logo">House of Conversation.</div>
+        <form class="newsletter-form">
+            <input type="email" placeholder="Leave your email for our weekly letters" required>
+            <button type="submit">Subscribe</button>
+        </form>
+        <div class="copyright">© 2026 House of Conversation. Curated in Punjab.</div>
+    </footer>
+
+</body>
+</html>

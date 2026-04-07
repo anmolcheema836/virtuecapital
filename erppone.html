@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chandigarh University | Next-Gen Portal</title>
+    
+    <link href="https://api.fontshare.com/v2/css?f[]=clash-display@400,500,600,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        /* ==========================================
+           1. MODERN CSS VARIABLES & TOKENS
+           ========================================== */
+        :root {
+            /* Core Theme: Dark Glass */
+            --bg-base: #050505;
+            --bg-surface: rgba(20, 20, 20, 0.6);
+            --bg-surface-hover: rgba(30, 30, 30, 0.8);
+            
+            /* Accents (Neon Cyberpunk/Web3 vibes) */
+            --accent-primary: #6366f1;   /* Indigo */
+            --accent-secondary: #8b5cf6; /* Violet */
+            --accent-cyan: #06b6d4;      /* Cyan */
+            --accent-emerald: #10b981;   /* Emerald */
+            --accent-rose: #f43f5e;      /* Rose */
+            
+            /* Text & Borders */
+            --text-high: #ffffff;
+            --text-med: #a1a1aa;
+            --text-low: #52525b;
+            --border-subtle: rgba(255, 255, 255, 0.08);
+            --border-glow: rgba(99, 102, 241, 0.3);
+
+            /* Geometry */
+            --radius-sm: 12px;
+            --radius-md: 24px;
+            --radius-lg: 32px;
+            --radius-pill: 100px;
+            
+            /* Animations */
+            --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+            --ease-in-out-circ: cubic-bezier(0.85, 0, 0.15, 1);
+            --transition-fast: 0.2s var(--ease-out-expo);
+            --transition-med: 0.5s var(--ease-out-expo);
+            --transition-slow: 0.8s var(--ease-out-expo);
+        }
+
+        /* ==========================================
+           2. RESET & BASE STYLES
+           ========================================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body {
+            background-color: var(--bg-base);
+            color: var(--text-high);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
+            min-height: 100vh;
+            /* Subtle grain/noise background typical of Awwwards sites */
+            background-image: radial-gradient(circle at 50% 0%, rgba(99, 102, 241, 0.1) 0%, transparent 50%),
+                              radial-gradient(circle at 100% 100%, rgba(6, 182, 212, 0.05) 0%, transparent 50%);
+        }
+
+        h1, h2, h3, h4, h5, h6, .display-font {
+            font-family: 'Clash Display', sans-serif;
+            font-weight: 600;
+        }
+
+        ::-webkit-scrollbar { width: 4px; height: 4px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: var(--text-low); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--accent-primary); }
+
+        /* ==========================================
+           3. LAYOUT STRUCTURE
+           ========================================== */
+        .app-wrapper {
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Mobile Overlay */
+        .glass-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            z-index: 90;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity var(--transition-med);
+        }
+        .glass-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        /* ==========================================
+           4. SIDEBAR (SLEEK & MINIMAL)
+           ========================================== */
+        .sidebar {
+            width: 260px;
+            background: rgba(10, 10, 10, 0.4);
+            border-right: 1px solid var(--border-subtle);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            z-index: 100;
+            transition: transform var(--transition-med);
+        }
+
+        .sidebar-brand {
+            padding: 40px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .sidebar-brand img {
+            width: 140px;
+            opacity: 0.9;
+            transition: var(--transition-fast);
+        }
+        .sidebar-brand img:hover { opacity: 1; transform: scale(1.05); }
+
+        .close-menu {
+            display: none;
+            color: var(--text-med);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .nav-group {
+            padding: 0 20px;
+            margin-bottom: 20px;
+            flex-grow: 1;
+        }
+
+        .nav-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--text-low);
+            margin-bottom: 12px;
+            padding-left: 10px;
+            font-weight: 700;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            color: var(--text-med);
+            text-decoration: none;
+            border-radius: var(--radius-sm);
+            margin-bottom: 4px;
+            transition: var(--transition-fast);
+            font-weight: 500;
+            font-size: 0.9rem;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .nav-item i {
+            margin-right: 14px;
+            font-size: 1.1rem;
+            width: 20px;
+            text-align: center;
+            transition: var(--transition-fast);
+        }
+
+        /* Hover Effect: Modern Sliding Highlight */
+        .nav-item::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 0; bottom: 0;
+            width: 3px;
+            background: var(--accent-primary);
+            transform: scaleY(0);
+            transition: transform var(--transition-fast);
+            border-radius: 0 4px 4px 0;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            color: var(--text-high);
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .nav-item.active::before, .nav-item:hover::before {
+            transform: scaleY(0.6);
+        }
+
+        .nav-item.active i, .nav-item:hover i {
+            color: var(--accent-cyan);
+            transform: translateX(3px);
+        }
+
+        /* User Profile Snippet in Sidebar Bottom */
+        .sidebar-footer {
+            padding: 24px;
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        .user-mini {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: var(--transition-fast);
+        }
+        .user-mini:hover { background: rgba(255, 255, 255, 0.05); }
+
+        .user-avatar {
+            width: 36px; height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-cyan));
+            padding: 2px;
+        }
+        .user-avatar img {
+            width: 100%; height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            background: var(--bg-base);
+        }
+        .user-details h5 { font-size: 0.85rem; font-family: 'Plus Jakarta Sans', sans-serif; }
+        .user-details p { font-size: 0.7rem; color: var(--text-med); }
+
+        /* ==========================================
+           5. MAIN CONTENT & HEADER
+           ========================================== */
+        .main-pane {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            position: relative;
+            padding-bottom: 40px;
+        }
+
+        /* Floating Top Navigation */
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 24px 40px;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            background: linear-gradient(to bottom, rgba(5,5,5,0.9) 0%, rgba(5,5,5,0) 100%);
+            backdrop-filter: blur(4px);
+        }
+
+        .mobile-toggle {
+            display: none;
+            font-size: 1.5rem;
+            color: var(--text-high);
+            cursor: pointer;
+            padding: 8px;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-sm);
+        }
+
+        .greeting h1 {
+            font-size: 1.5rem;
+            letter-spacing: -0.02em;
+        }
+        .greeting p {
+            font-size: 0.9rem;
+            color: var(--text-med);
+            margin-top: 4px;
+        }
+
+        .header-tools {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        /* Command Search */
+        .cmd-search {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-pill);
+            padding: 8px 16px;
+            width: 260px;
+            transition: var(--transition-fast);
+        }
+        .cmd-search:focus-within {
+            border-color: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.05);
+            box-shadow: 0 0 0 4px rgba(255,255,255,0.02);
+        }
+        .cmd-search i { color: var(--text-med); font-size: 0.9rem; margin-right: 12px; }
+        .cmd-search input {
+            border: none; background: transparent; color: var(--text-high);
+            font-family: inherit; font-size: 0.85rem; width: 100%; outline: none;
+        }
+        .cmd-key {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-med);
+            font-size: 0.65rem;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-weight: 600;
+        }
+
+        /* Glass Icon Buttons */
+        .glass-btn {
+            width: 44px; height: 44px;
+            display: flex; align-items: center; justify-content: center;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-subtle);
+            border-radius: 50%;
+            color: var(--text-high);
+            cursor: pointer;
+            transition: var(--transition-fast);
+            position: relative;
+        }
+        .glass-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+        .ping {
+            position: absolute; top: 0; right: 0;
+            width: 10px; height: 10px;
+            background: var(--accent-rose);
+            border-radius: 50%;
+            border: 2px solid var(--bg-base);
+        }
+        .ping::after {
+            content: ''; position: absolute; inset: -4px;
+            border: 2px solid var(--accent-rose);
+            border-radius: 50%;
+            animation: ripple 1.5s infinite ease-out;
+        }
+
+        @keyframes ripple {
+            0% { transform: scale(0.5); opacity: 1; }
+            100% { transform: scale(2); opacity: 0; }
+        }
+
+        /* ==========================================
+           6. BENTO GRID ARCHITECTURE
+           ========================================== */
+        .dashboard-content {
+            padding: 0 40px;
+            flex-grow: 1;
+        }
+
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            grid-auto-rows: minmax(140px, auto);
+            gap: 24px;
+        }
+
+        /* The Box Itself */
+        .bento-box {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            padding: 24px;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            transition: var(--transition-med);
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Subtle Hover Spotlight Effect */
+        .bento-box::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: radial-gradient(800px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 255, 255, 0.03), transparent 40%);
+            z-index: 0;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .bento-box:hover::before { opacity: 1; }
+        .bento-box:hover { border-color: rgba(255, 255, 255, 0.15); transform: translateY(-2px); box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
+        
+        .box-content { position: relative; z-index: 1; flex-grow: 1; display: flex; flex-direction: column;}
+
+        .box-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .box-title {
+            font-size: 1.1rem;
+            color: var(--text-high);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .box-title i { color: var(--text-med); font-size: 1rem; }
+
+        /* Specific Grid Spans */
+        .box-hero { grid-column: span 8; grid-row: span 2; background: linear-gradient(145deg, rgba(30,30,30,0.8) 0%, rgba(15,15,15,0.9) 100%); }
+        .box-stats { grid-column: span 4; grid-row: span 2; padding: 0; background: transparent; border: none; }
+        .box-chart { grid-column: span 8; grid-row: span 3; }
+        .box-schedule { grid-column: span 4; grid-row: span 4; }
+        .box-grades { grid-column: span 5; grid-row: span 3; }
+        .box-forum { grid-column: span 3; grid-row: span 3; }
+
+        /* --- 6A. Hero Box --- */
+        .hero-inner {
+            display: flex; justify-content: space-between; align-items: center; height: 100%;
+        }
+        .hero-text h2 { font-size: 2.5rem; line-height: 1.1; margin-bottom: 12px; }
+        .hero-text span { color: var(--accent-cyan); }
+        .hero-text p { color: var(--text-med); max-width: 80%; line-height: 1.6; }
+        
+        /* 3D Abstract Element Simulation */
+        .hero-art {
+            position: relative;
+            width: 150px; height: 150px;
+        }
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(30px);
+            animation: floatOrb 6s ease-in-out infinite alternate;
+        }
+        .orb-1 { width: 100px; height: 100px; background: var(--accent-primary); top: 0; left: 0; }
+        .orb-2 { width: 80px; height: 80px; background: var(--accent-cyan); bottom: 0; right: 0; animation-delay: -3s; }
+        @keyframes floatOrb { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(20px, -20px) scale(1.2); } }
+
+        /* --- 6B. Mini Stats Grid --- */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+            gap: 16px;
+            height: 100%;
+        }
+        .stat-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            padding: 20px;
+            display: flex; flex-direction: column; justify-content: center;
+            transition: var(--transition-med);
+        }
+        .stat-card:hover { border-color: var(--accent-primary); background: rgba(99, 102, 241, 0.05); }
+        .stat-icon {
+            width: 40px; height: 40px;
+            border-radius: 12px;
+            background: rgba(255,255,255,0.05);
+            display: flex; align-items: center; justify-content: center;
+            margin-bottom: 12px;
+            color: var(--accent-cyan);
+            font-size: 1.2rem;
+        }
+        .stat-val { font-size: 1.8rem; font-family: 'Clash Display'; font-weight: 600; line-height: 1; margin-bottom: 4px; }
+        .stat-label { font-size: 0.75rem; color: var(--text-med); font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; }
+
+        /* --- 6C. Chart Area --- */
+        .chart-wrapper { position: relative; width: 100%; flex-grow: 1; min-height: 250px; }
+
+        /* --- 6D. Timeline / Schedule --- */
+        .timeline { margin-top: 10px; display: flex; flex-direction: column; gap: 24px; position: relative; }
+        .timeline::before {
+            content: ''; position: absolute;
+            left: 5px; top: 10px; bottom: 10px;
+            width: 2px; background: rgba(255,255,255,0.05);
+        }
+        .time-node { display: flex; gap: 16px; position: relative; z-index: 1; }
+        .node-dot {
+            width: 12px; height: 12px;
+            border-radius: 50%;
+            background: var(--bg-base);
+            border: 2px solid var(--accent-cyan);
+            margin-top: 5px;
+            box-shadow: 0 0 10px rgba(6, 182, 212, 0.5);
+        }
+        .time-node:nth-child(2) .node-dot { border-color: var(--accent-primary); box-shadow: 0 0 10px rgba(99, 102, 241, 0.5); }
+        .time-node:nth-child(3) .node-dot { border-color: var(--accent-emerald); box-shadow: 0 0 10px rgba(16, 185, 129, 0.5); }
+        
+        .node-content h4 { font-size: 1rem; margin-bottom: 4px; font-weight: 600; }
+        .node-content p { font-size: 0.8rem; color: var(--text-med); display: flex; align-items: center; gap: 6px; margin-bottom: 2px;}
+        .node-time { font-family: 'Clash Display'; font-size: 0.85rem; color: var(--accent-cyan); margin-top: 6px; display: inline-block; background: rgba(6,182,212,0.1); padding: 2px 8px; border-radius: 4px;}
+
+        /* --- 6E. Grades / Data List --- */
+        .data-list { display: flex; flex-direction: column; gap: 16px; }
+        .data-row {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 16px;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.03);
+            border-radius: var(--radius-sm);
+            transition: var(--transition-fast);
+        }
+        .data-row:hover { background: rgba(255,255,255,0.05); transform: translateX(4px); border-color: rgba(255,255,255,0.1); }
+        .subj-info { display: flex; align-items: center; gap: 16px; }
+        .subj-icon { width: 40px; height: 40px; border-radius: 10px; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; font-family:'Clash Display'; font-weight:600;}
+        .subj-text h4 { font-size: 0.95rem; }
+        .subj-text p { font-size: 0.75rem; color: var(--text-med); }
+        
+        .grade-pill {
+            padding: 6px 16px;
+            border-radius: var(--radius-pill);
+            font-family: 'Clash Display';
+            font-size: 0.9rem;
+            font-weight: 600;
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--accent-emerald);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+        .grade-b { background: rgba(99, 102, 241, 0.1); color: var(--accent-primary); border-color: rgba(99, 102, 241, 0.2); }
+
+        /* --- 6F. Forum Mini --- */
+        .forum-list { display: flex; flex-direction: column; gap: 16px; }
+        .forum-msg { display: flex; gap: 12px; }
+        .forum-msg img { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; }
+        .msg-bubble {
+            background: rgba(255,255,255,0.04);
+            padding: 12px 16px;
+            border-radius: 2px 16px 16px 16px;
+            font-size: 0.85rem;
+            color: var(--text-med);
+            line-height: 1.5;
+            border: 1px solid rgba(255,255,255,0.02);
+        }
+        .msg-bubble span { display: block; color: var(--text-high); font-weight: 600; font-size: 0.8rem; margin-bottom: 4px; }
+
+        /* ==========================================
+           7. ANIMATIONS (Awwwards Style Stagger)
+           ========================================== */
+        .reveal-up {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: floatUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        @keyframes floatUp { to { opacity: 1; transform: translateY(0); } }
+        
+        /* Stagger delays */
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.3s; }
+        .delay-4 { animation-delay: 0.4s; }
+        .delay-5 { animation-delay: 0.5s; }
+
+        /* ==========================================
+           8. RESPONSIVE DESIGN (Adaptive Grid)
+           ========================================== */
+        @media (max-width: 1400px) {
+            .box-hero { grid-column: span 12; }
+            .box-stats { grid-column: span 12; grid-template-columns: repeat(4, 1fr); grid-template-rows: 1fr; }
+            .box-chart { grid-column: span 7; }
+            .box-schedule { grid-column: span 5; }
+            .box-grades { grid-column: span 7; }
+            .box-forum { grid-column: span 5; }
+        }
+
+        @media (max-width: 1024px) {
+            .sidebar {
+                position: fixed;
+                left: -280px;
+                height: 100vh;
+            }
+            .sidebar.active { transform: translateX(280px); }
+            .close-menu { display: block; }
+            .mobile-toggle { display: block; }
+            .cmd-search { display: none; }
+            .top-nav { padding: 20px; }
+            .dashboard-content { padding: 0 20px; }
+            
+            .box-stats { grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(2, 1fr); }
+            .box-chart, .box-schedule, .box-grades, .box-forum { grid-column: span 12; }
+        }
+
+        @media (max-width: 600px) {
+            .stats-grid, .box-stats { grid-template-columns: 1fr; grid-template-rows: auto; }
+            .hero-text h2 { font-size: 2rem; }
+            .hero-art { display: none; } /* Hide 3D blobs on small mobile to save space */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-wrapper">
+        
+        <div class="glass-overlay" id="overlay"></div>
+
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-brand">
+                <img src="https://www.cuchd.in/includes/assets/images/header-footer/cu-logo-white.webp" alt="Chandigarh University">
+                <i class="fa-solid fa-xmark close-menu" id="closeBtn"></i>
+            </div>
+
+            <div class="nav-group">
+                <div class="nav-label">Main Menu</div>
+                <a class="nav-item active"><i class="fa-solid fa-layer-group"></i> Overview</a>
+                <a class="nav-item"><i class="fa-solid fa-book-journal-whills"></i> Academics</a>
+                <a class="nav-item"><i class="fa-solid fa-chart-pie"></i> Analytics</a>
+                <a class="nav-item"><i class="fa-solid fa-calendar-day"></i> Schedule</a>
+            </div>
+
+            <div class="nav-group">
+                <div class="nav-label">Community</div>
+                <a class="nav-item"><i class="fa-solid fa-globe"></i> Forum</a>
+                <a class="nav-item"><i class="fa-solid fa-bolt"></i> Events</a>
+                <a class="nav-item"><i class="fa-solid fa-folder-open"></i> Resources</a>
+            </div>
+
+            <div class="sidebar-footer">
+                <div class="user-mini">
+                    <div class="user-avatar">
+                        <img src="https://i.pravatar.cc/150?u=anmol" alt="Avatar">
+                    </div>
+                    <div class="user-details">
+                        <h5>Anmol Singh</h5>
+                        <p>BCA</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <main class="main-pane">
+            
+            <header class="top-nav">
+                <div style="display: flex; align-items: center; gap: 16px;">
+                    <i class="fa-solid fa-bars mobile-toggle" id="menuToggle"></i>
+                    <div class="greeting">
+                        <h1 class="display-font">Good Afternoon.</h1>
+                        <p>Welcome back, Anmol! Your dashboard is synced.</p>
+                    </div>
+                </div>
+
+                <div class="header-tools">
+                    <div class="cmd-search">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" placeholder="Search anything...">
+                        <span class="cmd-key">⌘K</span>
+                    </div>
+                    <div class="glass-btn">
+                        <i class="fa-regular fa-bell"></i>
+                        <div class="ping"></div>
+                    </div>
+                    <div class="glass-btn">
+                        <i class="fa-solid fa-gear"></i>
+                    </div>
+                </div>
+            </header>
+
+            <div class="dashboard-content">
+                <div class="bento-grid">
+                    
+                    <div class="bento-box box-hero reveal-up">
+                        <div class="box-content hero-inner">
+                            <div class="hero-text">
+                                <h2>Keep pushing, <br><span>Anmol.</span></h2>
+                                <p>You are in the top 12% of your batch this semester. Keep up the momentum in your Web Development modules.</p>
+                            </div>
+                            <div class="hero-art">
+                                <div class="orb orb-1"></div>
+                                <div class="orb orb-2"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="box-stats reveal-up delay-1">
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <div class="stat-icon"><i class="fa-solid fa-star"></i></div>
+                                <div class="stat-val">8.74</div>
+                                <div class="stat-label">Current CGPA</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-icon" style="color: var(--accent-primary);"><i class="fa-solid fa-fingerprint"></i></div>
+                                <div class="stat-val">86%</div>
+                                <div class="stat-label">Attendance</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-icon" style="color: var(--accent-emerald);"><i class="fa-solid fa-award"></i></div>
+                                <div class="stat-val">104</div>
+                                <div class="stat-label">Credits</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-icon" style="color: var(--accent-rose);"><i class="fa-solid fa-fire"></i></div>
+                                <div class="stat-val">4</div>
+                                <div class="stat-label">Tasks Due</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bento-box box-chart reveal-up delay-2">
+                        <div class="box-header">
+                            <div class="box-title"><i class="fa-solid fa-chart-column"></i> Performance Analytics</div>
+                            <i class="fa-solid fa-ellipsis" style="color: var(--text-med); cursor: pointer;"></i>
+                        </div>
+                        <div class="box-content chart-wrapper">
+                            <canvas id="mainChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="bento-box box-schedule reveal-up delay-3">
+                        <div class="box-header">
+                            <div class="box-title"><i class="fa-solid fa-clock"></i> Timeline</div>
+                        </div>
+                        <div class="box-content">
+                            <div class="timeline">
+                                <div class="time-node">
+                                    <div class="node-dot"></div>
+                                    <div class="node-content">
+                                        <h4>Advanced PHP Dev</h4>
+                                        <p><i class="fa-solid fa-location-arrow"></i> Lab 402, Block 3</p>
+                                        <p><i class="fa-solid fa-user-astronaut"></i> Dr. Sharma</p>
+                                        <span class="node-time">09:30 AM</span>
+                                    </div>
+                                </div>
+                                <div class="time-node">
+                                    <div class="node-dot"></div>
+                                    <div class="node-content">
+                                        <h4>UI/UX Fundamentals</h4>
+                                        <p><i class="fa-solid fa-location-arrow"></i> Design Studio 2</p>
+                                        <span class="node-time">11:15 AM</span>
+                                    </div>
+                                </div>
+                                <div class="time-node">
+                                    <div class="node-dot"></div>
+                                    <div class="node-content">
+                                        <h4>Data Structures in JS</h4>
+                                        <p><i class="fa-solid fa-location-arrow"></i> Lab 105, Block 1</p>
+                                        <p><i class="fa-solid fa-user-astronaut"></i> Dr. Gill</p>
+                                        <span class="node-time">02:00 PM</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bento-box box-grades reveal-up delay-4">
+                        <div class="box-header">
+                            <div class="box-title"><i class="fa-solid fa-layer-group"></i> Active Modules</div>
+                        </div>
+                        <div class="box-content data-list">
+                            
+                            <div class="data-row">
+                                <div class="subj-info">
+                                    <div class="subj-icon">PH</div>
+                                    <div class="subj-text">
+                                        <h4>Adv. PHP Development</h4>
+                                        <p>BCA301 • 4 Credits</p>
+                                    </div>
+                                </div>
+                                <div class="grade-pill">A+</div>
+                            </div>
+
+                            <div class="data-row">
+                                <div class="subj-info">
+                                    <div class="subj-icon" style="color:var(--accent-primary);">JS</div>
+                                    <div class="subj-text">
+                                        <h4>Data Structures JS</h4>
+                                        <p>BCA302 • 4 Credits</p>
+                                    </div>
+                                </div>
+                                <div class="grade-pill grade-b">B+</div>
+                            </div>
+
+                            <div class="data-row">
+                                <div class="subj-info">
+                                    <div class="subj-icon" style="color:var(--accent-cyan);">UI</div>
+                                    <div class="subj-text">
+                                        <h4>UI/UX Principles</h4>
+                                        <p>BCA303 • 3 Credits</p>
+                                    </div>
+                                </div>
+                                <div class="grade-pill">A+</div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="bento-box box-forum reveal-up delay-5">
+                        <div class="box-header">
+                            <div class="box-title"><i class="fa-regular fa-comments"></i> Live Forum</div>
+                        </div>
+                        <div class="box-content forum-list">
+                            <div class="forum-msg">
+                                <img src="https://i.pravatar.cc/150?u=123" alt="User">
+                                <div class="msg-bubble">
+                                    <span>Rohan G.</span>
+                                    Anyone facing CORS issues with the Dezrez API integration in dev?
+                                </div>
+                            </div>
+                            <div class="forum-msg">
+                                <img src="https://i.pravatar.cc/150?u=456" alt="User">
+                                <div class="msg-bubble">
+                                    <span>Simran K.</span>
+                                    Just finished the Figma mockups. Next step: converting to React! 🚀
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // 1. Mobile Sidebar Logic
+        const menuBtn = document.getElementById('menuToggle');
+        const closeBtn = document.getElementById('closeBtn');
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('overlay');
+
+        function toggleMenu() {
+            sidebar.classList.toggle('active');
+            overlay.classList.toggle('active');
+        }
+
+        menuBtn.addEventListener('click', toggleMenu);
+        closeBtn.addEventListener('click', toggleMenu);
+        overlay.addEventListener('click', toggleMenu);
+
+        // Interactive Nav
+        const navItems = document.querySelectorAll('.nav-item');
+        navItems.forEach(item => {
+            item.addEventListener('click', () => {
+                navItems.forEach(n => n.classList.remove('active'));
+                item.classList.add('active');
+                if(window.innerWidth <= 1024) toggleMenu();
+            });
+        });
+
+        // 2. Mouse Tracking Spotlight Effect for Bento Cards
+        document.querySelectorAll('.bento-box').forEach(box => {
+            box.addEventListener('mousemove', e => {
+                const rect = box.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                box.style.setProperty('--mouse-x', `${x}px`);
+                box.style.setProperty('--mouse-y', `${y}px`);
+            });
+        });
+
+        // 3. Premium Chart.js Configuration (Vercel/Linear Style)
+        Chart.defaults.font.family = "'Plus Jakarta Sans', sans-serif";
+        Chart.defaults.color = '#52525b';
+        Chart.defaults.scale.grid.display = false; // Hide ugly grids
+
+        const ctx = document.getElementById('mainChart').getContext('2d');
+        
+        // Vibrant neon gradient fill
+        let gradient = ctx.createLinearGradient(0, 0, 0, 400);
+        gradient.addColorStop(0, 'rgba(6, 182, 212, 0.5)'); // Cyan top
+        gradient.addColorStop(1, 'rgba(6, 182, 212, 0.0)'); // Fade to transparent
+
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan'],
+                datasets: [{
+                    label: 'Performance Score',
+                    data: [82, 85, 83, 89, 87, 92],
+                    borderColor: '#06b6d4', // Neon Cyan line
+                    borderWidth: 3,
+                    backgroundColor: gradient,
+                    fill: true,
+                    tension: 0.4, // Smooth bezier
+                    pointBackgroundColor: '#050505',
+                    pointBorderColor: '#06b6d4',
+                    pointBorderWidth: 2,
+                    pointRadius: 4,
+                    pointHoverRadius: 6,
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: 'rgba(20, 20, 20, 0.9)',
+                        titleFont: { family: "'Clash Display', sans-serif", size: 14 },
+                        bodyFont: { size: 13 },
+                        padding: 12,
+                        cornerRadius: 8,
+                        borderColor: 'rgba(255,255,255,0.1)',
+                        borderWidth: 1,
+                        displayColors: false
+                    }
+                },
+                scales: {
+                    y: {
+                        display: false, // Extreme minimal look, rely on tooltip
+                        min: 70, max: 100
+                    },
+                    x: {
+                        border: { display: false },
+                        ticks: { font: { weight: '600' }, color: '#a1a1aa' }
+                    }
+                },
+                interaction: {
+                    intersect: false,
+                    mode: 'index',
+                },
+            }
+        });
+    </script>
+</body>
+</html>
