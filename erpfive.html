@@ -1,0 +1,1595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CU — Student ERP Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Syne:wght@400;500;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg: #080c10;
+    --bg-2: #0d1117;
+    --bg-3: #111820;
+    --surface: rgba(255,255,255,0.03);
+    --surface-hover: rgba(255,255,255,0.06);
+    --border: rgba(255,255,255,0.07);
+    --border-bright: rgba(255,255,255,0.14);
+    --gold: #c9a84c;
+    --gold-light: #e8c97a;
+    --gold-dim: rgba(201,168,76,0.15);
+    --teal: #3ecfb2;
+    --teal-dim: rgba(62,207,178,0.12);
+    --rose: #e8607a;
+    --rose-dim: rgba(232,96,122,0.12);
+    --blue: #4a9eff;
+    --blue-dim: rgba(74,158,255,0.12);
+    --text-primary: #f0ece4;
+    --text-secondary: rgba(240,236,228,0.55);
+    --text-muted: rgba(240,236,228,0.3);
+    --font-display: 'Cormorant Garamond', serif;
+    --font-ui: 'Syne', sans-serif;
+    --font-mono: 'DM Mono', monospace;
+    --sidebar-w: 240px;
+    --radius: 12px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text-primary);
+    font-family: var(--font-ui);
+    min-height: 100vh;
+    overflow-x: hidden;
+    cursor: default;
+  }
+
+  /* ── Grain overlay ── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 1000; opacity: 0.5;
+  }
+
+  /* ── Layout ── */
+  .app { display: flex; min-height: 100vh; }
+
+  /* ── Sidebar ── */
+  .sidebar {
+    width: var(--sidebar-w);
+    background: var(--bg-2);
+    border-right: 1px solid var(--border);
+    display: flex; flex-direction: column;
+    position: fixed; top: 0; left: 0; bottom: 0;
+    z-index: 100;
+    padding: 0;
+  }
+
+  .sidebar-brand {
+    padding: 24px 20px 22px;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 12px;
+  }
+
+  .brand-logo-wrap {
+    width: 38px; height: 38px;
+    background: var(--gold);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  .brand-logo-wrap img { width: 100%; height: 100%; object-fit: cover; }
+
+  .brand-text { display: flex; flex-direction: column; }
+
+  .brand-name {
+    font-family: var(--font-display);
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: var(--text-primary);
+    line-height: 1.1;
+  }
+
+  .brand-sub {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    color: var(--gold);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+
+  .sidebar-section { padding: 20px 12px 8px; }
+
+  .sidebar-label {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    padding: 0 8px;
+    margin-bottom: 6px;
+  }
+
+  .nav-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 9px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-bottom: 2px;
+    position: relative;
+    text-decoration: none;
+  }
+
+  .nav-item:hover { background: var(--surface-hover); }
+
+  .nav-item.active {
+    background: var(--gold-dim);
+    border: 1px solid rgba(201,168,76,0.2);
+  }
+
+  .nav-item.active::before {
+    content: '';
+    position: absolute; left: 0; top: 50%; transform: translateY(-50%);
+    width: 3px; height: 60%; background: var(--gold);
+    border-radius: 0 2px 2px 0;
+  }
+
+  .nav-icon {
+    width: 18px; height: 18px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+
+  .nav-label {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    transition: color 0.2s;
+  }
+
+  .nav-item.active .nav-label,
+  .nav-item:hover .nav-label { color: var(--text-primary); }
+
+  .nav-badge {
+    margin-left: auto;
+    background: var(--gold);
+    color: var(--bg);
+    font-size: 9px;
+    font-weight: 700;
+    font-family: var(--font-mono);
+    padding: 2px 6px;
+    border-radius: 20px;
+  }
+
+  .sidebar-divider {
+    height: 1px;
+    background: var(--border);
+    margin: 8px 12px;
+  }
+
+  .sidebar-user {
+    margin-top: auto;
+    padding: 16px 12px;
+    border-top: 1px solid var(--border);
+    display: flex; align-items: center; gap: 10px;
+  }
+
+  .user-avatar {
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--gold) 0%, var(--rose) 100%);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 700;
+    color: var(--bg); flex-shrink: 0;
+    font-family: var(--font-display);
+  }
+
+  .user-info { flex: 1; min-width: 0; }
+
+  .user-name {
+    font-size: 12px; font-weight: 600;
+    color: var(--text-primary);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+
+  .user-id {
+    font-family: var(--font-mono);
+    font-size: 10px; color: var(--text-muted);
+    margin-top: 1px;
+  }
+
+  /* ── Main content ── */
+  .main {
+    margin-left: var(--sidebar-w);
+    flex: 1;
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+  }
+
+  /* ── Top bar ── */
+  .topbar {
+    height: 64px;
+    display: flex; align-items: center;
+    padding: 0 32px;
+    border-bottom: 1px solid var(--border);
+    background: rgba(8,12,16,0.8);
+    backdrop-filter: blur(20px);
+    position: sticky; top: 0; z-index: 50;
+    gap: 16px;
+  }
+
+  .topbar-greeting {
+    flex: 1;
+  }
+
+  .topbar-greeting .hello {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text-muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .topbar-greeting .name {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--text-primary);
+    line-height: 1.2;
+  }
+
+  .topbar-actions { display: flex; align-items: center; gap: 12px; }
+
+  .search-wrap {
+    display: flex; align-items: center; gap: 8px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 14px;
+    width: 220px;
+    transition: all 0.2s;
+  }
+
+  .search-wrap:focus-within {
+    border-color: var(--border-bright);
+    background: var(--surface-hover);
+  }
+
+  .search-wrap input {
+    background: none; border: none; outline: none;
+    font-family: var(--font-ui);
+    font-size: 12px;
+    color: var(--text-primary);
+    width: 100%;
+  }
+
+  .search-wrap input::placeholder { color: var(--text-muted); }
+
+  .icon-btn {
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; transition: all 0.2s;
+    font-size: 15px; color: var(--text-secondary);
+    position: relative;
+  }
+
+  .icon-btn:hover { background: var(--surface-hover); color: var(--text-primary); }
+
+  .notif-dot {
+    position: absolute; top: 6px; right: 6px;
+    width: 7px; height: 7px;
+    background: var(--rose); border-radius: 50%;
+    border: 1.5px solid var(--bg-2);
+  }
+
+  .topbar-date {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-muted);
+    padding: 0 8px;
+    border-left: 1px solid var(--border);
+  }
+
+  /* ── Content area ── */
+  .content {
+    padding: 28px 32px 40px;
+    flex: 1;
+  }
+
+  /* ── Section header ── */
+  .section-header {
+    display: flex; align-items: baseline; gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  .section-title {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--text-primary);
+    font-style: italic;
+    letter-spacing: -0.01em;
+  }
+
+  .section-line {
+    flex: 1; height: 1px;
+    background: var(--border);
+  }
+
+  .section-meta {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text-muted);
+    letter-spacing: 0.08em;
+  }
+
+  /* ── Stat cards row ── */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin-bottom: 28px;
+  }
+
+  .stat-card {
+    background: var(--bg-3);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s;
+  }
+
+  .stat-card:hover {
+    border-color: var(--border-bright);
+    transform: translateY(-2px);
+  }
+
+  .stat-card::after {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 60px; height: 60px;
+    border-radius: 0 var(--radius) 0 60px;
+    opacity: 0.06;
+  }
+
+  .stat-card.gold::after { background: var(--gold); }
+  .stat-card.teal::after { background: var(--teal); }
+  .stat-card.rose::after { background: var(--rose); }
+  .stat-card.blue::after { background: var(--blue); }
+
+  .stat-label {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+  }
+
+  .stat-value {
+    font-family: var(--font-display);
+    font-size: 38px;
+    font-weight: 300;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+  }
+
+  .stat-card.gold .stat-value { color: var(--gold-light); }
+  .stat-card.teal .stat-value { color: var(--teal); }
+  .stat-card.rose .stat-value { color: var(--rose); }
+  .stat-card.blue .stat-value { color: var(--blue); }
+
+  .stat-sub {
+    font-size: 11px;
+    color: var(--text-muted);
+    display: flex; align-items: center; gap: 5px;
+  }
+
+  .stat-badge {
+    font-family: var(--font-mono);
+    font-size: 9px; font-weight: 400;
+    padding: 2px 6px; border-radius: 4px;
+  }
+
+  .badge-up { background: rgba(62,207,178,0.15); color: var(--teal); }
+  .badge-down { background: rgba(232,96,122,0.15); color: var(--rose); }
+  .badge-neutral { background: var(--gold-dim); color: var(--gold); }
+
+  .stat-sparkline {
+    position: absolute; bottom: 0; right: 0; left: 0;
+    height: 30px; opacity: 0.3;
+  }
+
+  /* ── 3-col main grid ── */
+  .main-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 320px;
+    gap: 14px;
+    margin-bottom: 14px;
+  }
+
+  .card {
+    background: var(--bg-3);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+
+  .card:hover { border-color: var(--border-bright); }
+
+  .card-header {
+    padding: 16px 20px 14px;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 8px;
+  }
+
+  .card-title {
+    font-family: var(--font-ui);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    flex: 1;
+  }
+
+  .card-action {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--gold);
+    cursor: pointer;
+    letter-spacing: 0.05em;
+  }
+
+  .card-body { padding: 18px 20px; }
+
+  /* ── Chart containers ── */
+  .chart-wrap {
+    position: relative;
+    height: 180px;
+  }
+
+  .chart-wrap-sm {
+    position: relative;
+    height: 140px;
+  }
+
+  /* ── Subject progress ── */
+  .subject-list { display: flex; flex-direction: column; gap: 12px; }
+
+  .subject-item {}
+
+  .subject-top {
+    display: flex; align-items: center;
+    margin-bottom: 5px;
+    gap: 8px;
+  }
+
+  .subject-dot {
+    width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0;
+  }
+
+  .subject-name {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-primary);
+    flex: 1;
+  }
+
+  .subject-grade {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-secondary);
+  }
+
+  .subject-score {
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 300;
+    color: var(--text-primary);
+  }
+
+  .progress-bar {
+    height: 3px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    border-radius: 2px;
+    transition: width 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  /* ── Schedule ── */
+  .schedule-list { display: flex; flex-direction: column; gap: 0; }
+
+  .schedule-item {
+    display: flex; gap: 12px;
+    padding: 11px 0;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+  }
+
+  .schedule-item:last-child { border-bottom: none; }
+
+  .sched-time {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text-muted);
+    width: 60px; flex-shrink: 0;
+    padding-top: 2px;
+  }
+
+  .sched-dot-col {
+    display: flex; flex-direction: column; align-items: center;
+    gap: 0;
+    padding-top: 5px;
+  }
+
+  .sched-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .sched-line {
+    width: 1px; flex: 1; min-height: 20px;
+    background: var(--border);
+    margin-top: 3px;
+  }
+
+  .schedule-item:last-child .sched-line { display: none; }
+
+  .sched-info { flex: 1; }
+
+  .sched-subject {
+    font-size: 12px; font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 2px;
+  }
+
+  .sched-meta {
+    font-size: 10px; color: var(--text-muted);
+    font-family: var(--font-mono);
+  }
+
+  .sched-active {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.05em;
+    color: var(--teal);
+    background: var(--teal-dim);
+    padding: 2px 7px; border-radius: 4px;
+    align-self: center;
+    flex-shrink: 0;
+  }
+
+  /* ── Attendance ring ── */
+  .attendance-wrap {
+    display: flex; flex-direction: column; align-items: center;
+    padding: 10px 0 6px;
+  }
+
+  .ring-container {
+    position: relative; width: 120px; height: 120px;
+    margin-bottom: 12px;
+  }
+
+  .ring-container canvas { position: absolute; top: 0; left: 0; }
+
+  .ring-center {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+  }
+
+  .ring-pct {
+    font-family: var(--font-display);
+    font-size: 28px; font-weight: 300;
+    color: var(--text-primary);
+    line-height: 1;
+  }
+
+  .ring-lbl {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    color: var(--text-muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+
+  .attendance-subjects { width: 100%; }
+
+  .att-row {
+    display: flex; align-items: center; gap: 8px;
+    padding: 7px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .att-row:last-child { border-bottom: none; }
+
+  .att-name { font-size: 11px; color: var(--text-secondary); flex: 1; }
+
+  .att-bar-wrap {
+    width: 70px; height: 4px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 2px; overflow: hidden;
+  }
+
+  .att-bar-fill {
+    height: 100%; border-radius: 2px;
+  }
+
+  .att-pct {
+    font-family: var(--font-mono);
+    font-size: 10px; color: var(--text-secondary);
+    width: 28px; text-align: right;
+  }
+
+  /* ── Bottom grid ── */
+  .bottom-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 14px;
+  }
+
+  /* ── Events ── */
+  .events-list { display: flex; flex-direction: column; gap: 8px; }
+
+  .event-item {
+    display: flex; gap: 12px; align-items: flex-start;
+    padding: 11px 14px;
+    border-radius: 8px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    transition: all 0.2s;
+    cursor: pointer;
+  }
+
+  .event-item:hover { background: var(--surface-hover); border-color: var(--border-bright); }
+
+  .event-date-box {
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    width: 36px; height: 36px;
+    border-radius: 7px; flex-shrink: 0;
+  }
+
+  .evt-day {
+    font-family: var(--font-display);
+    font-size: 18px; font-weight: 300;
+    line-height: 1;
+  }
+
+  .evt-mon {
+    font-family: var(--font-mono);
+    font-size: 8px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-top: 1px;
+  }
+
+  .event-text { flex: 1; }
+
+  .evt-title { font-size: 12px; font-weight: 600; color: var(--text-primary); margin-bottom: 2px; }
+  .evt-venue { font-size: 10px; color: var(--text-muted); font-family: var(--font-mono); }
+
+  .evt-tag {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    padding: 2px 7px; border-radius: 4px;
+    align-self: flex-start;
+    flex-shrink: 0;
+  }
+
+  /* ── Forum ── */
+  .forum-list { display: flex; flex-direction: column; gap: 0; }
+
+  .forum-item {
+    padding: 11px 0;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .forum-item:last-child { border-bottom: none; }
+
+  .forum-item:hover .forum-title { color: var(--gold-light); }
+
+  .forum-top { display: flex; align-items: center; gap: 6px; margin-bottom: 4px; }
+
+  .forum-category {
+    font-family: var(--font-mono);
+    font-size: 8px;
+    padding: 2px 6px; border-radius: 3px;
+    text-transform: uppercase; letter-spacing: 0.06em;
+  }
+
+  .forum-title { font-size: 12px; font-weight: 500; color: var(--text-primary); margin-bottom: 4px; transition: color 0.15s; }
+  .forum-excerpt { font-size: 11px; color: var(--text-muted); line-height: 1.4; margin-bottom: 6px; }
+
+  .forum-meta { display: flex; align-items: center; gap: 10px; }
+
+  .forum-meta-item {
+    display: flex; align-items: center; gap: 4px;
+    font-family: var(--font-mono);
+    font-size: 10px; color: var(--text-muted);
+  }
+
+  /* ── Announcements ── */
+  .ann-list { display: flex; flex-direction: column; gap: 8px; }
+
+  .ann-item {
+    padding: 12px 14px;
+    border-radius: 8px;
+    border-left: 3px solid;
+    background: var(--surface);
+  }
+
+  .ann-title { font-size: 12px; font-weight: 600; color: var(--text-primary); margin-bottom: 3px; }
+  .ann-body { font-size: 11px; color: var(--text-muted); line-height: 1.5; margin-bottom: 6px; }
+
+  .ann-footer {
+    display: flex; align-items: center; justify-content: space-between;
+  }
+
+  .ann-time {
+    font-family: var(--font-mono);
+    font-size: 9px; color: var(--text-muted);
+  }
+
+  .ann-from {
+    font-family: var(--font-mono);
+    font-size: 9px; color: var(--text-secondary);
+  }
+
+  /* ── CGPA trend ── */
+  .cgpa-header {
+    display: flex; align-items: flex-end; gap: 16px;
+    margin-bottom: 12px;
+  }
+
+  .cgpa-big {
+    font-family: var(--font-display);
+    font-size: 48px; font-weight: 300;
+    color: var(--gold-light);
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+
+  .cgpa-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text-muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding-bottom: 8px;
+  }
+
+  .cgpa-delta {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--teal);
+    background: var(--teal-dim);
+    padding: 3px 8px; border-radius: 4px;
+    margin-bottom: 10px;
+  }
+
+  /* ── Animations ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes pulse-dot {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50%       { transform: scale(1.6); opacity: 0.5; }
+  }
+
+  .stats-grid .stat-card { animation: fadeUp 0.5s ease both; }
+  .stats-grid .stat-card:nth-child(1) { animation-delay: 0.05s; }
+  .stats-grid .stat-card:nth-child(2) { animation-delay: 0.1s; }
+  .stats-grid .stat-card:nth-child(3) { animation-delay: 0.15s; }
+  .stats-grid .stat-card:nth-child(4) { animation-delay: 0.2s; }
+
+  .main-grid .card { animation: fadeUp 0.5s ease both; }
+  .main-grid .card:nth-child(1) { animation-delay: 0.25s; }
+  .main-grid .card:nth-child(2) { animation-delay: 0.3s; }
+  .main-grid .card:nth-child(3) { animation-delay: 0.35s; }
+
+  .bottom-grid .card { animation: fadeUp 0.5s ease both; }
+  .bottom-grid .card:nth-child(1) { animation-delay: 0.4s; }
+  .bottom-grid .card:nth-child(2) { animation-delay: 0.45s; }
+  .bottom-grid .card:nth-child(3) { animation-delay: 0.5s; }
+
+  .live-pulse {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--teal);
+    animation: pulse-dot 1.8s infinite;
+    display: inline-block;
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border-bright); border-radius: 2px; }
+
+  /* ── Semester selector ── */
+  .semester-tabs {
+    display: flex; gap: 2px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 3px;
+  }
+
+  .sem-tab {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    padding: 5px 10px; border-radius: 5px;
+    cursor: pointer; transition: all 0.2s;
+    color: var(--text-muted);
+  }
+
+  .sem-tab.active {
+    background: var(--gold-dim);
+    color: var(--gold);
+    border: 1px solid rgba(201,168,76,0.2);
+  }
+
+  .sem-tab:hover:not(.active) { color: var(--text-secondary); }
+
+  /* ── GPA pills ── */
+  .gpa-pill-grid {
+    display: grid; grid-template-columns: repeat(4,1fr); gap: 8px;
+    margin-top: 14px;
+  }
+
+  .gpa-pill {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 10px;
+    text-align: center;
+  }
+
+  .gpa-sem {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    margin-bottom: 4px;
+  }
+
+  .gpa-val {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 300;
+    color: var(--gold-light);
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 1200px) {
+    .main-grid { grid-template-columns: 1fr 1fr; }
+    .main-grid .card:nth-child(3) { grid-column: span 2; }
+    .bottom-grid { grid-template-columns: 1fr 1fr; }
+    .bottom-grid .card:nth-child(3) { grid-column: span 2; }
+  }
+
+  @media (max-width: 900px) {
+    :root { --sidebar-w: 200px; }
+    .stats-grid { grid-template-columns: 1fr 1fr; }
+    .content { padding: 20px 20px 32px; }
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- ═══════════ SIDEBAR ═══════════ -->
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-logo-wrap">
+        <img src="https://www.cuchd.in/includes/assets/images/header-footer/cu-logo-white.webp" alt="CU Logo">
+      </div>
+      <div class="brand-text">
+        <span class="brand-name">Chandigarh University</span>
+        <span class="brand-sub">Student Portal</span>
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-label">Overview</div>
+
+      <div class="nav-item active">
+        <span class="nav-icon">⊞</span>
+        <span class="nav-label">Dashboard</span>
+      </div>
+
+      <div class="nav-item">
+        <span class="nav-icon">📅</span>
+        <span class="nav-label">Timetable</span>
+      </div>
+
+      <div class="nav-item">
+        <span class="nav-icon">📊</span>
+        <span class="nav-label">Attendance</span>
+        <span class="nav-badge">!</span>
+      </div>
+
+      <div class="nav-item">
+        <span class="nav-icon">🎓</span>
+        <span class="nav-label">Grades</span>
+      </div>
+
+      <div class="nav-item">
+        <span class="nav-icon">📚</span>
+        <span class="nav-label">Courses</span>
+      </div>
+    </div>
+
+    <div class="sidebar-divider"></div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-label">Community</div>
+
+      <div class="nav-item">
+        <span class="nav-icon">💬</span>
+        <span class="nav-label">Forum</span>
+        <span class="nav-badge">3</span>
+      </div>
+
+      <div class="nav-item">
+        <span class="nav-icon">🔔</span>
+        <span class="nav-label">Announcements</span>
+      </div>
+
+      <div class="nav-item">
+        <span class="nav-icon">📅</span>
+        <span class="nav-label">Events</span>
+      </div>
+    </div>
+
+    <div class="sidebar-divider"></div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-label">Account</div>
+
+      <div class="nav-item">
+        <span class="nav-icon">👤</span>
+        <span class="nav-label">Profile</span>
+      </div>
+
+      <div class="nav-item">
+        <span class="nav-icon">⚙</span>
+        <span class="nav-label">Settings</span>
+      </div>
+    </div>
+
+    <div class="sidebar-user">
+      <div class="user-avatar">RK</div>
+      <div class="user-info">
+        <div class="user-name">Rahul Kapoor</div>
+        <div class="user-id">21CSE4086</div>
+      </div>
+      <div style="font-size:14px; color:var(--text-muted); cursor:pointer;">⇥</div>
+    </div>
+  </aside>
+
+  <!-- ═══════════ MAIN ═══════════ -->
+  <main class="main">
+
+    <!-- Top bar -->
+    <header class="topbar">
+      <div class="topbar-greeting">
+        <div class="hello">Good Morning</div>
+        <div class="name">Rahul Kapoor <span style="font-style:italic; color:var(--gold); font-size:18px;">—</span></div>
+      </div>
+      <div class="topbar-actions">
+        <div class="search-wrap">
+          <span style="font-size:13px; color:var(--text-muted);">⌕</span>
+          <input type="text" placeholder="Search courses, events…">
+          <span style="font-family:var(--font-mono); font-size:10px; color:var(--text-muted);">⌘K</span>
+        </div>
+        <div class="icon-btn">🔔<span class="notif-dot"></span></div>
+        <div class="icon-btn">✉</div>
+        <div class="icon-btn">◑</div>
+        <div class="topbar-date">Wed, 09 Apr 2025</div>
+      </div>
+    </header>
+
+    <!-- Content -->
+    <div class="content">
+
+      <!-- ── Section header ── -->
+      <div class="section-header" style="margin-bottom:20px;">
+        <div style="font-family:var(--font-mono); font-size:9px; color:var(--text-muted); letter-spacing:0.12em; text-transform:uppercase; margin-right:4px;">B.Tech CSE · Sem VI</div>
+        <span class="section-title">Academic Overview</span>
+        <div class="section-line"></div>
+        <div style="display:flex; gap:4px;">
+          <div class="live-pulse"></div>
+          <span style="font-family:var(--font-mono); font-size:10px; color:var(--teal); letter-spacing:0.06em;">LIVE</span>
+        </div>
+      </div>
+
+      <!-- ── Stat cards ── -->
+      <div class="stats-grid">
+
+        <div class="stat-card gold">
+          <div class="stat-label">Cumulative GPA</div>
+          <div class="stat-value">8.74</div>
+          <div class="stat-sub">
+            <span class="stat-badge badge-up">▲ +0.12</span>
+            <span>this semester</span>
+          </div>
+        </div>
+
+        <div class="stat-card teal">
+          <div class="stat-label">Overall Attendance</div>
+          <div class="stat-value">84<span style="font-size:20px; font-weight:300; opacity:0.7;">%</span></div>
+          <div class="stat-sub">
+            <span class="stat-badge badge-neutral">⚠ 75% min</span>
+            <span>required</span>
+          </div>
+        </div>
+
+        <div class="stat-card rose">
+          <div class="stat-label">Assignments Pending</div>
+          <div class="stat-value">3</div>
+          <div class="stat-sub">
+            <span class="stat-badge badge-down">2 due soon</span>
+            <span>this week</span>
+          </div>
+        </div>
+
+        <div class="stat-card blue">
+          <div class="stat-label">Credits Completed</div>
+          <div class="stat-value">112</div>
+          <div class="stat-sub">
+            <span class="stat-badge badge-neutral">160 total</span>
+            <span>70% done</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ── Main 3-col grid ── -->
+      <div class="main-grid">
+
+        <!-- Academic Performance -->
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">Academic Performance</span>
+            <div class="semester-tabs">
+              <div class="sem-tab">S4</div>
+              <div class="sem-tab">S5</div>
+              <div class="sem-tab active">S6</div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="cgpa-header">
+              <div>
+                <div class="cgpa-big">8.74</div>
+              </div>
+              <div>
+                <div class="cgpa-label">CGPA · Sem VI</div>
+                <div class="cgpa-delta">▲ +0.12 vs last sem</div>
+              </div>
+            </div>
+
+            <div class="chart-wrap">
+              <canvas id="perfChart"></canvas>
+            </div>
+
+            <div class="gpa-pill-grid" style="margin-top:16px;">
+              <div class="gpa-pill"><div class="gpa-sem">Sem I</div><div class="gpa-val">7.8</div></div>
+              <div class="gpa-pill"><div class="gpa-sem">Sem II</div><div class="gpa-val">8.1</div></div>
+              <div class="gpa-pill"><div class="gpa-sem">Sem III</div><div class="gpa-val">8.3</div></div>
+              <div class="gpa-pill"><div class="gpa-sem">Sem IV</div><div class="gpa-val">8.5</div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Subject Grades -->
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">Subject Grades — Sem VI</span>
+            <span class="card-action">Details →</span>
+          </div>
+          <div class="card-body">
+            <div style="height:160px; margin-bottom:20px;">
+              <canvas id="radarChart"></canvas>
+            </div>
+            <div class="subject-list">
+              <div class="subject-item">
+                <div class="subject-top">
+                  <div class="subject-dot" style="background:#c9a84c;"></div>
+                  <span class="subject-name">Machine Learning</span>
+                  <span class="subject-grade">A+</span>
+                  <span class="subject-score">92</span>
+                </div>
+                <div class="progress-bar"><div class="progress-fill" style="width:92%; background:var(--gold);"></div></div>
+              </div>
+              <div class="subject-item">
+                <div class="subject-top">
+                  <div class="subject-dot" style="background:#4a9eff;"></div>
+                  <span class="subject-name">Cloud Computing</span>
+                  <span class="subject-grade">A</span>
+                  <span class="subject-score">87</span>
+                </div>
+                <div class="progress-bar"><div class="progress-fill" style="width:87%; background:var(--blue);"></div></div>
+              </div>
+              <div class="subject-item">
+                <div class="subject-top">
+                  <div class="subject-dot" style="background:#3ecfb2;"></div>
+                  <span class="subject-name">Compiler Design</span>
+                  <span class="subject-grade">B+</span>
+                  <span class="subject-score">79</span>
+                </div>
+                <div class="progress-bar"><div class="progress-fill" style="width:79%; background:var(--teal);"></div></div>
+              </div>
+              <div class="subject-item">
+                <div class="subject-top">
+                  <div class="subject-dot" style="background:#e8607a;"></div>
+                  <span class="subject-name">Software Engineering</span>
+                  <span class="subject-grade">A</span>
+                  <span class="subject-score">85</span>
+                </div>
+                <div class="progress-bar"><div class="progress-fill" style="width:85%; background:var(--rose);"></div></div>
+              </div>
+              <div class="subject-item">
+                <div class="subject-top">
+                  <div class="subject-dot" style="background:#b06ef5;"></div>
+                  <span class="subject-name">Data Networks</span>
+                  <span class="subject-grade">B+</span>
+                  <span class="subject-score">76</span>
+                </div>
+                <div class="progress-bar"><div class="progress-fill" style="width:76%; background:#b06ef5;"></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Today's Schedule + Attendance -->
+        <div style="display:flex; flex-direction:column; gap:14px;">
+
+          <!-- Today's Lectures -->
+          <div class="card">
+            <div class="card-header">
+              <span class="card-title">Today's Lectures</span>
+              <span class="card-action">Full →</span>
+            </div>
+            <div class="card-body" style="padding:14px 16px;">
+              <div class="schedule-list">
+                <div class="schedule-item">
+                  <div class="sched-time">08:00</div>
+                  <div class="sched-dot-col">
+                    <div class="sched-dot" style="background:var(--rose);"></div>
+                    <div class="sched-line"></div>
+                  </div>
+                  <div class="sched-info">
+                    <div class="sched-subject">Machine Learning</div>
+                    <div class="sched-meta">LH-301 · Dr. Priya Mehta</div>
+                  </div>
+                </div>
+                <div class="schedule-item">
+                  <div class="sched-time">10:00</div>
+                  <div class="sched-dot-col">
+                    <div class="sched-dot" style="background:var(--teal); animation: pulse-dot 1.8s infinite;"></div>
+                    <div class="sched-line"></div>
+                  </div>
+                  <div class="sched-info">
+                    <div class="sched-subject">Cloud Computing</div>
+                    <div class="sched-meta">LH-204 · Prof. Arjun Singh</div>
+                  </div>
+                  <div class="sched-active">LIVE</div>
+                </div>
+                <div class="schedule-item">
+                  <div class="sched-time">12:00</div>
+                  <div class="sched-dot-col">
+                    <div class="sched-dot" style="background:var(--border-bright);"></div>
+                    <div class="sched-line"></div>
+                  </div>
+                  <div class="sched-info">
+                    <div class="sched-subject">Compiler Design</div>
+                    <div class="sched-meta">LH-108 · Dr. Kavita Rao</div>
+                  </div>
+                </div>
+                <div class="schedule-item">
+                  <div class="sched-time">14:00</div>
+                  <div class="sched-dot-col">
+                    <div class="sched-dot" style="background:var(--border-bright);"></div>
+                    <div class="sched-line"></div>
+                  </div>
+                  <div class="sched-info">
+                    <div class="sched-subject">Lab: ML Practice</div>
+                    <div class="sched-meta">CL-02 · Dr. Priya Mehta</div>
+                  </div>
+                </div>
+                <div class="schedule-item">
+                  <div class="sched-time">16:00</div>
+                  <div class="sched-dot-col">
+                    <div class="sched-dot" style="background:var(--border-bright);"></div>
+                  </div>
+                  <div class="sched-info">
+                    <div class="sched-subject">Software Engg.</div>
+                    <div class="sched-meta">LH-302 · Prof. N. Sharma</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Attendance Ring -->
+          <div class="card">
+            <div class="card-header">
+              <span class="card-title">Attendance</span>
+              <span class="card-action">Report →</span>
+            </div>
+            <div class="card-body" style="padding:14px 16px;">
+              <div class="attendance-wrap">
+                <div class="ring-container">
+                  <canvas id="attendanceRing" width="120" height="120"></canvas>
+                  <div class="ring-center">
+                    <div class="ring-pct">84%</div>
+                    <div class="ring-lbl">Overall</div>
+                  </div>
+                </div>
+                <div class="attendance-subjects" style="width:100%;">
+                  <div class="att-row">
+                    <div class="att-name">Machine Learning</div>
+                    <div class="att-bar-wrap"><div class="att-bar-fill" style="width:90%; background:var(--gold);"></div></div>
+                    <div class="att-pct">90%</div>
+                  </div>
+                  <div class="att-row">
+                    <div class="att-name">Cloud Computing</div>
+                    <div class="att-bar-wrap"><div class="att-bar-fill" style="width:88%; background:var(--blue);"></div></div>
+                    <div class="att-pct">88%</div>
+                  </div>
+                  <div class="att-row">
+                    <div class="att-name">Compiler Design</div>
+                    <div class="att-bar-wrap"><div class="att-bar-fill" style="width:72%; background:var(--rose);"></div></div>
+                    <div class="att-pct" style="color:var(--rose);">72%</div>
+                  </div>
+                  <div class="att-row">
+                    <div class="att-name">Software Engg.</div>
+                    <div class="att-bar-wrap"><div class="att-bar-fill" style="width:85%; background:var(--teal);"></div></div>
+                    <div class="att-pct">85%</div>
+                  </div>
+                  <div class="att-row">
+                    <div class="att-name">Data Networks</div>
+                    <div class="att-bar-wrap"><div class="att-bar-fill" style="width:76%; background:#b06ef5;"></div></div>
+                    <div class="att-pct">76%</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- end col-3 -->
+
+      </div><!-- end main-grid -->
+
+      <!-- ── Bottom 3-col ── -->
+      <div class="bottom-grid">
+
+        <!-- Events -->
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">Upcoming Events</span>
+            <span class="card-action">All →</span>
+          </div>
+          <div class="card-body">
+            <div class="events-list">
+
+              <div class="event-item">
+                <div class="event-date-box" style="background:var(--gold-dim);">
+                  <div class="evt-day" style="color:var(--gold-light);">12</div>
+                  <div class="evt-mon" style="color:var(--gold);">APR</div>
+                </div>
+                <div class="event-text">
+                  <div class="evt-title">Hackathon 2025 — CUTech Fest</div>
+                  <div class="evt-venue">🏛 Auditorium A · 9:00 AM</div>
+                </div>
+                <div class="evt-tag" style="background:var(--gold-dim); color:var(--gold);">TECH</div>
+              </div>
+
+              <div class="event-item">
+                <div class="event-date-box" style="background:var(--teal-dim);">
+                  <div class="evt-day" style="color:var(--teal);">15</div>
+                  <div class="evt-mon" style="color:var(--teal); opacity:0.7;">APR</div>
+                </div>
+                <div class="event-text">
+                  <div class="evt-title">Mid-Semester Examinations</div>
+                  <div class="evt-venue">📋 All Departments · 10:00 AM</div>
+                </div>
+                <div class="evt-tag" style="background:var(--rose-dim); color:var(--rose);">EXAM</div>
+              </div>
+
+              <div class="event-item">
+                <div class="event-date-box" style="background:var(--blue-dim);">
+                  <div class="evt-day" style="color:var(--blue);">18</div>
+                  <div class="evt-mon" style="color:var(--blue); opacity:0.7;">APR</div>
+                </div>
+                <div class="event-text">
+                  <div class="evt-title">Guest Lecture: AI in Industry</div>
+                  <div class="evt-venue">🎤 Seminar Hall · 2:00 PM</div>
+                </div>
+                <div class="evt-tag" style="background:var(--blue-dim); color:var(--blue);">TALK</div>
+              </div>
+
+              <div class="event-item">
+                <div class="event-date-box" style="background:rgba(176,110,245,0.1);">
+                  <div class="evt-day" style="color:#b06ef5;">22</div>
+                  <div class="evt-mon" style="color:#b06ef5; opacity:0.7;">APR</div>
+                </div>
+                <div class="event-text">
+                  <div class="evt-title">Cultural Fest — Utsav 2025</div>
+                  <div class="evt-venue">🎭 Open Ground · All Day</div>
+                </div>
+                <div class="evt-tag" style="background:rgba(176,110,245,0.1); color:#b06ef5;">FEST</div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- Announcements -->
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">Announcements</span>
+            <span class="card-action">All →</span>
+          </div>
+          <div class="card-body">
+            <div class="ann-list">
+
+              <div class="ann-item" style="border-color:var(--rose);">
+                <div class="ann-title">⚠ Mid-Sem Schedule Released</div>
+                <div class="ann-body">Mid-semester exams begin April 15. Admit cards available in portal from April 12.</div>
+                <div class="ann-footer">
+                  <span class="ann-time">2 hours ago</span>
+                  <span class="ann-from">Academic Section</span>
+                </div>
+              </div>
+
+              <div class="ann-item" style="border-color:var(--gold);">
+                <div class="ann-title">📚 Library — Extended Hours</div>
+                <div class="ann-body">Central library will remain open till 11 PM from April 10–30 during exam season.</div>
+                <div class="ann-footer">
+                  <span class="ann-time">Yesterday</span>
+                  <span class="ann-from">Library</span>
+                </div>
+              </div>
+
+              <div class="ann-item" style="border-color:var(--teal);">
+                <div class="ann-title">🏆 Hackathon Registrations Open</div>
+                <div class="ann-body">Teams of 2–4 can register for CUTech Fest Hackathon 2025 via the events portal.</div>
+                <div class="ann-footer">
+                  <span class="ann-time">2 days ago</span>
+                  <span class="ann-from">Student Affairs</span>
+                </div>
+              </div>
+
+              <div class="ann-item" style="border-color:var(--blue);">
+                <div class="ann-title">🔄 Fee Payment Deadline</div>
+                <div class="ann-body">Semester VII fee must be paid by April 30 to avoid late fee penalty.</div>
+                <div class="ann-footer">
+                  <span class="ann-time">3 days ago</span>
+                  <span class="ann-from">Accounts</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- Forum -->
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">Student Forum</span>
+            <span class="card-action">Discuss →</span>
+          </div>
+          <div class="card-body">
+            <div style="display:flex; gap:8px; margin-bottom:14px;">
+              <div style="flex:1; background:var(--surface); border:1px solid var(--border); border-radius:7px; padding:8px 12px; font-size:12px; color:var(--text-muted); cursor:pointer;">Write a discussion post…</div>
+              <div style="width:34px; height:34px; background:var(--gold-dim); border:1px solid rgba(201,168,76,0.3); border-radius:7px; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:16px;">✎</div>
+            </div>
+            <div class="forum-list">
+              <div class="forum-item">
+                <div class="forum-top">
+                  <div class="forum-category" style="background:var(--gold-dim); color:var(--gold);">ML</div>
+                  <span style="font-family:var(--font-mono); font-size:9px; color:var(--text-muted);">· 14 min ago</span>
+                </div>
+                <div class="forum-title">Best resources for LSTM implementation in TensorFlow?</div>
+                <div class="forum-excerpt">Looking for practical tutorials beyond the docs — anyone tried the DeepLearning.ai course?</div>
+                <div class="forum-meta">
+                  <div class="forum-meta-item">▲ <span>23</span></div>
+                  <div class="forum-meta-item">💬 <span>8 replies</span></div>
+                  <div class="forum-meta-item">👤 <span>Ankit S.</span></div>
+                </div>
+              </div>
+
+              <div class="forum-item">
+                <div class="forum-top">
+                  <div class="forum-category" style="background:var(--rose-dim); color:var(--rose);">EXAM</div>
+                  <span style="font-family:var(--font-mono); font-size:9px; color:var(--text-muted);">· 1 hr ago</span>
+                </div>
+                <div class="forum-title">Mid-sem exam pattern for Compiler Design?</div>
+                <div class="forum-excerpt">Will it include SDT and syntax-directed translation or just the theory parts?</div>
+                <div class="forum-meta">
+                  <div class="forum-meta-item">▲ <span>17</span></div>
+                  <div class="forum-meta-item">💬 <span>12 replies</span></div>
+                  <div class="forum-meta-item">👤 <span>Pooja R.</span></div>
+                </div>
+              </div>
+
+              <div class="forum-item">
+                <div class="forum-top">
+                  <div class="forum-category" style="background:var(--blue-dim); color:var(--blue);">CLUB</div>
+                  <span style="font-family:var(--font-mono); font-size:9px; color:var(--text-muted);">· 3 hrs ago</span>
+                </div>
+                <div class="forum-title">CodeChef Chapter — weekly contest this Friday</div>
+                <div class="forum-excerpt">All CS/IT students welcome! 7 PM at Innovation Lab. Prizes for top 3 coders.</div>
+                <div class="forum-meta">
+                  <div class="forum-meta-item">▲ <span>41</span></div>
+                  <div class="forum-meta-item">💬 <span>5 replies</span></div>
+                  <div class="forum-meta-item">👤 <span>CodeChef CU</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- end bottom-grid -->
+
+    </div><!-- end content -->
+  </main>
+
+</div>
+
+<script>
+// ── Chart.js defaults ──
+Chart.defaults.color = 'rgba(240,236,228,0.4)';
+Chart.defaults.borderColor = 'rgba(255,255,255,0.06)';
+Chart.defaults.font.family = "'DM Mono', monospace";
+Chart.defaults.font.size = 10;
+
+// ── Performance Line Chart ──
+const perfCtx = document.getElementById('perfChart').getContext('2d');
+const gradLine = perfCtx.createLinearGradient(0, 0, 0, 180);
+gradLine.addColorStop(0, 'rgba(201,168,76,0.3)');
+gradLine.addColorStop(1, 'rgba(201,168,76,0)');
+
+new Chart(perfCtx, {
+  type: 'line',
+  data: {
+    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug'],
+    datasets: [{
+      data: [72, 78, 74, 81, 79, 85, 88, 92],
+      borderColor: '#c9a84c',
+      borderWidth: 2,
+      backgroundColor: gradLine,
+      fill: true,
+      tension: 0.4,
+      pointBackgroundColor: '#c9a84c',
+      pointRadius: 3,
+      pointHoverRadius: 5,
+    }, {
+      data: [68, 72, 70, 75, 74, 78, 80, 85],
+      borderColor: 'rgba(74,158,255,0.6)',
+      borderWidth: 1.5,
+      borderDash: [4, 4],
+      backgroundColor: 'transparent',
+      fill: false,
+      tension: 0.4,
+      pointRadius: 0,
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false }, tooltip: {
+      backgroundColor: '#111820',
+      borderColor: 'rgba(255,255,255,0.1)',
+      borderWidth: 1,
+      titleColor: '#f0ece4',
+      bodyColor: 'rgba(240,236,228,0.6)',
+    }},
+    scales: {
+      x: { grid: { display: false }, ticks: { font: { size: 9 } } },
+      y: { grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { font: { size: 9 } }, min: 60, max: 100 }
+    }
+  }
+});
+
+// ── Radar Chart ──
+const radarCtx = document.getElementById('radarChart').getContext('2d');
+new Chart(radarCtx, {
+  type: 'radar',
+  data: {
+    labels: ['ML', 'Cloud', 'Compiler', 'SE', 'Networks', 'Maths'],
+    datasets: [{
+      data: [92, 87, 79, 85, 76, 82],
+      borderColor: '#c9a84c',
+      backgroundColor: 'rgba(201,168,76,0.1)',
+      borderWidth: 1.5,
+      pointBackgroundColor: '#c9a84c',
+      pointRadius: 3,
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      r: {
+        min: 50, max: 100,
+        grid: { color: 'rgba(255,255,255,0.06)' },
+        angleLines: { color: 'rgba(255,255,255,0.06)' },
+        ticks: { backdropColor: 'transparent', stepSize: 25, font: { size: 8 } },
+        pointLabels: { font: { size: 9 }, color: 'rgba(240,236,228,0.5)' }
+      }
+    }
+  }
+});
+
+// ── Attendance Doughnut ──
+const ringCtx = document.getElementById('attendanceRing').getContext('2d');
+new Chart(ringCtx, {
+  type: 'doughnut',
+  data: {
+    datasets: [{
+      data: [84, 16],
+      backgroundColor: ['#3ecfb2', 'rgba(255,255,255,0.05)'],
+      borderWidth: 0,
+      borderRadius: 4,
+    }]
+  },
+  options: {
+    cutout: '74%',
+    responsive: false,
+    plugins: { legend: { display: false }, tooltip: { enabled: false } },
+    animation: { animateRotate: true, duration: 1200, easing: 'easeOutQuart' }
+  }
+});
+
+// ── Sparkline (hidden canvas) / Progress bars animate on load ──
+window.addEventListener('load', () => {
+  document.querySelectorAll('.progress-fill').forEach(el => {
+    const w = el.style.width;
+    el.style.width = '0%';
+    setTimeout(() => { el.style.width = w; }, 400);
+  });
+
+  document.querySelectorAll('.att-bar-fill').forEach(el => {
+    const w = el.style.width;
+    el.style.width = '0%';
+    setTimeout(() => {
+      el.style.transition = 'width 1s cubic-bezier(0.16,1,0.3,1)';
+      el.style.width = w;
+    }, 600);
+  });
+});
+</script>
+</body>
+</html>

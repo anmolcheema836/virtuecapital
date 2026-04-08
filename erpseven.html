@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+
+<html lang="en" class="scroll-smooth">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Portal | Premium Dashboard</title>
+
+<!-- Fonts: Poppins (Headings) & Inter (Body) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+
+<!-- Icons: Phosphor Icons (Modern & Clean) -->
+<script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = {
+        theme: {
+            extend: {
+                fontFamily: {
+                    sans: ['Inter', 'sans-serif'],
+                    heading: ['Poppins', 'sans-serif'],
+                },
+                colors: {
+                    primary: {
+                        DEFAULT: '#D72022',
+                        50: '#fdf2f2',
+                        100: '#fbe5e5',
+                        500: '#D72022',
+                        600: '#b91c1c',
+                    },
+                    accent: {
+                        DEFAULT: '#F8A602',
+                        50: '#fffbf0',
+                        100: '#fef0c7',
+                        500: '#F8A602',
+                    },
+                    surface: '#f8fafc',
+                    panel: '#ffffff',
+                },
+                boxShadow: {
+                    'soft': '0 4px 20px -2px rgba(0, 0, 0, 0.03)',
+                    'float': '0 10px 40px -10px rgba(0, 0, 0, 0.08)',
+                },
+                animation: {
+                    'fade-in-up': 'fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                    'blob': 'blob 7s infinite',
+                },
+                keyframes: {
+                    fadeInUp: {
+                        '0%': { opacity: '0', transform: 'translateY(20px)' },
+                        '100%': { opacity: '1', transform: 'translateY(0)' },
+                    },
+                    blob: {
+                        '0%': { transform: 'translate(0px, 0px) scale(1)' },
+                        '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+                        '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+                        '100%': { transform: 'translate(0px, 0px) scale(1)' },
+                    }
+                }
+            }
+        }
+    }
+</script>
+
+<style>
+    /* Custom Styles & Utilities */
+    body {
+        background-color: theme('colors.surface');
+        color: theme('colors.slate.800');
+        overflow-x: hidden;
+    }
+
+    /* Glassmorphism */
+    .glass {
+        background: rgba(255, 255, 255, 0.85);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+        background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+        background: theme('colors.slate.300');
+        border-radius: 10px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+        background: theme('colors.slate.400');
+    }
+
+    /* Animation Delays */
+    .delay-100 { animation-delay: 100ms; }
+    .delay-200 { animation-delay: 200ms; }
+    .delay-300 { animation-delay: 300ms; }
+    .delay-400 { animation-delay: 400ms; }
+
+    /* Timeline Dot */
+    .timeline-dot::before {
+        content: '';
+        position: absolute;
+        left: -29px;
+        top: 6px;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background-color: white;
+        border: 2px solid theme('colors.primary.DEFAULT');
+        z-index: 10;
+    }
+    .timeline-dot.active::before {
+        background-color: theme('colors.primary.DEFAULT');
+        box-shadow: 0 0 0 4px theme('colors.primary.100');
+    }
+    .timeline-dot.accent::before {
+        border-color: theme('colors.accent.DEFAULT');
+    }
+    
+    /* Micro-interactions */
+    .nav-item {
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .nav-item:hover {
+        transform: translateX(4px);
+    }
+    .card-hover {
+        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .card-hover:hover {
+        transform: translateY(-4px);
+        box-shadow: theme('boxShadow.float');
+    }
+
+    /* Chart Canvas wrapper */
+    .chart-container {
+        position: relative;
+        height: 300px;
+        width: 100%;
+    }
+</style>
+</head>
+<body class="antialiased text-slate-800 selection:bg-primary selection:text-white">
+
+
+<!-- Background Decorative Blobs -->
+<div class="fixed top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
+    <div class="absolute top-[-10%] left-[-10%] w-[40vw] h-[40vw] rounded-full bg-primary/5 blur-3xl animate-blob"></div>
+    <div class="absolute top-[20%] right-[-5%] w-[30vw] h-[30vw] rounded-full bg-accent/5 blur-3xl animate-blob animation-delay-2000"></div>
+    <div class="absolute bottom-[-20%] left-[20%] w-[50vw] h-[50vw] rounded-full bg-purple-500/5 blur-3xl animate-blob animation-delay-4000"></div>
+</div>
+
+<!-- Mobile Sidebar Overlay -->
+<div id="sidebar-overlay" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-40 hidden lg:hidden transition-opacity duration-300 opacity-0" onclick="toggleSidebar()"></div>
+
+<div class="flex h-screen overflow-hidden">
+
+    <!-- Sidebar -->
+    <aside id="sidebar" class="fixed top-0 left-0 z-50 h-full w-[280px] bg-panel border-r border-slate-100 flex flex-col transition-transform duration-400 cubic-bezier(0.16, 1, 0.3, 1) -translate-x-full lg:translate-x-0 lg:static">
+        
+        <!-- Sidebar Header / Logo (Desktop focus, also visible here) -->
+        <div class="h-20 flex items-center px-6 border-b border-slate-50">
+            <div class="bg-black p-2.5 rounded-xl shadow-md shadow-black/30 flex items-center justify-center">
+    <img src="https://www.cuchd.in/includes/assets/images/header-footer/cu-logo-white.webp" alt="University Logo" class="h-6 w-auto object-contain">
+</div>
+            <span class="ml-3 font-heading font-bold text-lg text-slate-900 tracking-tight">Student Portal</span>
+            <!-- Close btn mobile -->
+            <button onclick="toggleSidebar()" class="ml-auto lg:hidden text-slate-400 hover:text-slate-600">
+                <i class="ph ph-x text-2xl"></i>
+            </button>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="flex-1 overflow-y-auto py-6 px-4 space-y-1.5 custom-scrollbar">
+            <p class="px-4 text-xs font-semibold text-slate-400 uppercase tracking-wider mb-4 mt-2">Menu</p>
+            
+            <a href="#" class="nav-item flex items-center px-4 py-3 text-primary bg-primary-50 rounded-xl font-medium relative overflow-hidden group">
+                <div class="absolute left-0 top-0 bottom-0 w-1 bg-primary rounded-r-md"></div>
+                <i class="ph ph-squares-four text-xl mr-3"></i>
+                Dashboard
+            </a>
+            
+            <a href="#" class="nav-item flex items-center px-4 py-3 text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-xl font-medium transition-colors">
+                <i class="ph ph-book-open text-xl mr-3"></i>
+                Academics
+            </a>
+            
+            <a href="#" class="nav-item flex items-center px-4 py-3 text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-xl font-medium transition-colors">
+                <i class="ph ph-calendar-check text-xl mr-3"></i>
+                Attendance
+            </a>
+            
+            <a href="#" class="nav-item flex items-center px-4 py-3 text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-xl font-medium transition-colors flex justify-between">
+                <div class="flex items-center">
+                    <i class="ph ph-calendar-blank text-xl mr-3"></i>
+                    Schedule
+                </div>
+                <span class="bg-accent/10 text-accent text-[10px] font-bold px-2 py-0.5 rounded-full">2 NEW</span>
+            </a>
+
+            <p class="px-4 text-xs font-semibold text-slate-400 uppercase tracking-wider mb-4 mt-8">Connect</p>
+
+            <a href="#" class="nav-item flex items-center px-4 py-3 text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-xl font-medium transition-colors">
+                <i class="ph ph-users text-xl mr-3"></i>
+                Student Forum
+            </a>
+            
+            <a href="#" class="nav-item flex items-center px-4 py-3 text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-xl font-medium transition-colors">
+                <i class="ph ph-megaphone text-xl mr-3"></i>
+                Announcements
+            </a>
+        </nav>
+
+        <!-- Bottom Support Card -->
+        <div class="p-4 m-4 bg-gradient-to-br from-slate-50 to-slate-100 rounded-2xl border border-slate-100 relative overflow-hidden">
+            <div class="absolute top-0 right-0 p-4 opacity-5">
+                <i class="ph ph-lifebuoy text-6xl"></i>
+            </div>
+            <h4 class="font-heading font-semibold text-sm text-slate-800 mb-1">Need Help?</h4>
+            <p class="text-xs text-slate-500 mb-3">Contact the IT support desk for technical issues.</p>
+            <button class="w-full bg-white text-slate-700 text-xs font-semibold py-2 rounded-lg border border-slate-200 hover:border-slate-300 hover:shadow-sm transition-all shadow-soft flex items-center justify-center">
+                <i class="ph ph-chat-circle-dots mr-2 text-primary"></i> Get Support
+            </button>
+        </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="flex-1 flex flex-col min-w-0 overflow-hidden relative z-10">
+        
+        <!-- Mobile Sticky Navbar (CRITICAL REQUIREMENT) -->
+        <header class="glass sticky top-0 z-30 w-full h-20 flex items-center justify-between px-4 sm:px-6 lg:px-10">
+            
+            <!-- Left: Hamburger (Mobile) & Page Title (Desktop) -->
+            <div class="flex items-center">
+                <button onclick="toggleSidebar()" class="lg:hidden p-2 -ml-2 mr-2 text-slate-600 hover:text-primary transition-colors focus:outline-none rounded-lg hover:bg-slate-100">
+                    <i class="ph ph-list text-2xl"></i>
+                </button>
+                
+                <!-- Logo (Mobile only, Desktop is in sidebar) - Ensuring it's ALWAYS visible -->
+                <div class="lg:hidden bg-primary p-2 rounded-xl flex items-center justify-center shadow-sm">
+                    <img src="https://www.cuchd.in/includes/assets/images/header-footer/cu-logo-white.webp" alt="Logo" class="h-5 w-auto object-contain">
+                </div>
+
+                <div class="hidden lg:block">
+                    <h1 class="text-2xl font-heading font-bold text-slate-900 tracking-tight">Overview</h1>
+                    <p class="text-sm text-slate-500 font-medium">Welcome back, Alex! Here's your summary.</p>
+                </div>
+            </div>
+
+            <!-- Right: Search, Actions, Profile -->
+            <div class="flex items-center space-x-2 sm:space-x-4 lg:space-x-6">
+                
+                <!-- Search Bar (Desktop) / Icon (Mobile) -->
+                <div class="hidden md:flex items-center relative group">
+                    <i class="ph ph-magnifying-glass absolute left-3 text-slate-400 group-focus-within:text-primary transition-colors"></i>
+                    <input type="text" placeholder="Search subjects, events..." class="w-64 pl-10 pr-4 py-2.5 bg-slate-100/50 border border-slate-200 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/30 focus:bg-white transition-all placeholder:text-slate-400">
+                    <div class="absolute right-3 px-2 py-0.5 rounded bg-slate-200 text-[10px] font-bold text-slate-500">⌘K</div>
+                </div>
+                
+                <button class="md:hidden p-2 text-slate-500 hover:text-slate-800 hover:bg-slate-100 rounded-full transition-colors">
+                    <i class="ph ph-magnifying-glass text-xl"></i>
+                </button>
+
+                <!-- Notifications -->
+                <button class="relative p-2 text-slate-500 hover:text-slate-800 hover:bg-slate-100 rounded-full transition-colors group">
+                    <i class="ph ph-bell text-xl group-hover:animate-wiggle"></i>
+                    <span class="absolute top-1.5 right-1.5 w-2.5 h-2.5 bg-primary rounded-full border-2 border-white animate-pulse"></span>
+                </button>
+
+                <!-- Profile Dropdown -->
+                <div class="flex items-center pl-2 sm:pl-4 border-l border-slate-200 cursor-pointer group">
+                    <div class="text-right mr-3 hidden sm:block">
+                        <p class="text-sm font-semibold text-slate-800 leading-none mb-1 group-hover:text-primary transition-colors">Alex Carter</p>
+                        <p class="text-[11px] font-medium text-slate-500 leading-none">B.Tech CSE - 6th Sem</p>
+                    </div>
+                    <div class="relative">
+                        <img src="https://i.pravatar.cc/150?img=11" alt="Profile" class="w-10 h-10 rounded-full border-2 border-white shadow-sm object-cover group-hover:border-primary/20 transition-all">
+                        <div class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-white rounded-full"></div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Page Content Scrollable Area -->
+        <div class="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-10 pb-24 scroll-smooth">
+            
+            <!-- Mobile Title (Hidden on Desktop) -->
+            <div class="lg:hidden mb-6 mt-2 opacity-0 animate-fade-in-up">
+                <h1 class="text-2xl font-heading font-bold text-slate-900 tracking-tight">Overview</h1>
+                <p class="text-sm text-slate-500">Welcome back, Alex!</p>
+            </div>
+
+            <!-- Top Metrics Section -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 mb-8">
+                
+                <!-- Metric Card 1 -->
+                <div class="bg-panel rounded-[24px] p-6 shadow-soft border border-slate-100 card-hover relative overflow-hidden opacity-0 animate-fade-in-up">
+                    <div class="absolute top-0 right-0 -mt-4 -mr-4 w-24 h-24 bg-gradient-to-br from-green-50 to-transparent rounded-full opacity-50"></div>
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="w-12 h-12 rounded-2xl bg-green-50 text-green-600 flex items-center justify-center shadow-sm">
+                            <i class="ph ph-check-circle text-2xl"></i>
+                        </div>
+                        <span class="flex items-center text-xs font-semibold text-green-600 bg-green-50 px-2 py-1 rounded-lg">
+                            <i class="ph ph-trend-up mr-1"></i> +2.5%
+                        </span>
+                    </div>
+                    <h3 class="text-slate-500 text-sm font-medium mb-1">Overall Attendance</h3>
+                    <div class="flex items-baseline">
+                        <h2 class="text-3xl font-heading font-bold text-slate-900 tracking-tight">85.4<span class="text-xl text-slate-400 font-normal">%</span></h2>
+                    </div>
+                    <div class="w-full bg-slate-100 rounded-full h-1.5 mt-4 overflow-hidden">
+                        <div class="bg-green-500 h-1.5 rounded-full" style="width: 85.4%"></div>
+                    </div>
+                </div>
+
+                <!-- Metric Card 2 -->
+                <div class="bg-panel rounded-[24px] p-6 shadow-soft border border-slate-100 card-hover relative overflow-hidden opacity-0 animate-fade-in-up delay-100">
+                    <div class="absolute top-0 right-0 -mt-4 -mr-4 w-24 h-24 bg-gradient-to-br from-blue-50 to-transparent rounded-full opacity-50"></div>
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center shadow-sm">
+                            <i class="ph ph-graduation-cap text-2xl"></i>
+                        </div>
+                        <span class="text-xs font-semibold text-slate-500 bg-slate-50 px-2 py-1 rounded-lg">Target: 8.5</span>
+                    </div>
+                    <h3 class="text-slate-500 text-sm font-medium mb-1">Current SGPA</h3>
+                    <div class="flex items-baseline">
+                        <h2 class="text-3xl font-heading font-bold text-slate-900 tracking-tight">8.42</h2>
+                    </div>
+                    <p class="text-xs text-slate-400 mt-4"><span class="text-blue-500 font-medium">Top 15%</span> of your batch</p>
+                </div>
+
+                <!-- Metric Card 3 -->
+                <div class="bg-panel rounded-[24px] p-6 shadow-soft border border-slate-100 card-hover relative overflow-hidden opacity-0 animate-fade-in-up delay-200">
+                    <div class="absolute top-0 right-0 -mt-4 -mr-4 w-24 h-24 bg-gradient-to-br from-primary-50 to-transparent rounded-full opacity-50"></div>
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="w-12 h-12 rounded-2xl bg-primary-50 text-primary flex items-center justify-center shadow-sm">
+                            <i class="ph ph-files text-2xl"></i>
+                        </div>
+                        <span class="flex items-center text-xs font-semibold text-primary bg-primary-50 px-2 py-1 rounded-lg animate-pulse">
+                            Due soon
+                        </span>
+                    </div>
+                    <h3 class="text-slate-500 text-sm font-medium mb-1">Pending Assignments</h3>
+                    <div class="flex items-baseline">
+                        <h2 class="text-3xl font-heading font-bold text-slate-900 tracking-tight">3</h2>
+                    </div>
+                    <p class="text-xs text-slate-400 mt-4">Next deadline in <span class="font-semibold text-primary">2 days</span></p>
+                </div>
+
+                <!-- Metric Card 4 -->
+                <div class="bg-panel rounded-[24px] p-6 shadow-soft border border-slate-100 card-hover relative overflow-hidden opacity-0 animate-fade-in-up delay-300">
+                    <div class="absolute top-0 right-0 -mt-4 -mr-4 w-24 h-24 bg-gradient-to-br from-accent-50 to-transparent rounded-full opacity-50"></div>
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="w-12 h-12 rounded-2xl bg-accent-50 text-accent flex items-center justify-center shadow-sm">
+                            <i class="ph ph-exam text-2xl"></i>
+                        </div>
+                    </div>
+                    <h3 class="text-slate-500 text-sm font-medium mb-1">Upcoming Exams</h3>
+                    <div class="flex items-baseline">
+                        <h2 class="text-3xl font-heading font-bold text-slate-900 tracking-tight">2</h2>
+                    </div>
+                    <p class="text-xs text-slate-400 mt-4">Mid-terms start next week</p>
+                </div>
+
+            </div>
+
+            <!-- Charts Section -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+                
+                <!-- Performance Chart (Col span 2) -->
+                <div class="lg:col-span-2 bg-panel rounded-[24px] p-6 sm:p-8 shadow-soft border border-slate-100 opacity-0 animate-fade-in-up delay-200">
+                    <div class="flex justify-between items-center mb-6">
+                        <div>
+                            <h3 class="font-heading font-bold text-lg text-slate-900">Academic Performance</h3>
+                            <p class="text-sm text-slate-500">SGPA trend over semesters</p>
+                        </div>
+                        <button class="px-4 py-2 text-sm font-medium text-slate-600 bg-slate-50 rounded-xl hover:bg-slate-100 transition-colors border border-slate-100">
+                            Detailed Report
+                        </button>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="performanceChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Attendance Chart (Col span 1) -->
+                <div class="bg-panel rounded-[24px] p-6 sm:p-8 shadow-soft border border-slate-100 flex flex-col opacity-0 animate-fade-in-up delay-300">
+                    <div class="flex justify-between items-center mb-2">
+                        <h3 class="font-heading font-bold text-lg text-slate-900">Attendance Distribution</h3>
+                        <button class="text-slate-400 hover:text-primary"><i class="ph ph-dots-three text-2xl"></i></button>
+                    </div>
+                    
+                    <div class="relative flex-1 flex items-center justify-center min-h-[220px]">
+                        <canvas id="attendanceChart" class="max-h-[220px]"></canvas>
+                        <!-- Inner Text for Doughnut -->
+                        <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none mt-2">
+                            <span class="text-3xl font-heading font-bold text-slate-900">85%</span>
+                            <span class="text-[10px] font-medium text-slate-400 uppercase tracking-wider">Total Present</span>
+                        </div>
+                    </div>
+
+                    <!-- Custom Legend below chart -->
+                    <div class="mt-6 space-y-3">
+                        <div class="flex items-center justify-between text-sm">
+                            <div class="flex items-center text-slate-600">
+                                <span class="w-3 h-3 rounded-full bg-green-500 mr-2 shadow-sm"></span> Present
+                            </div>
+                            <span class="font-semibold text-slate-900">320 hrs</span>
+                        </div>
+                        <div class="flex items-center justify-between text-sm">
+                            <div class="flex items-center text-slate-600">
+                                <span class="w-3 h-3 rounded-full bg-accent mr-2 shadow-sm"></span> Late
+                            </div>
+                            <span class="font-semibold text-slate-900">25 hrs</span>
+                        </div>
+                        <div class="flex items-center justify-between text-sm">
+                            <div class="flex items-center text-slate-600">
+                                <span class="w-3 h-3 rounded-full bg-primary mr-2 shadow-sm"></span> Absent
+                            </div>
+                            <span class="font-semibold text-slate-900">30 hrs</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Schedule & Announcements -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-8">
+                
+                <!-- Today's Schedule -->
+                <div class="lg:col-span-5 bg-panel rounded-[24px] p-6 sm:p-8 shadow-soft border border-slate-100 opacity-0 animate-fade-in-up delay-200">
+                    <div class="flex justify-between items-center mb-8">
+                        <div>
+                            <h3 class="font-heading font-bold text-lg text-slate-900">Today's Schedule</h3>
+                            <p class="text-sm text-slate-500">Wednesday, Oct 25</p>
+                        </div>
+                        <span class="bg-primary-50 text-primary px-3 py-1 rounded-full text-xs font-semibold">3 Classes</span>
+                    </div>
+
+                    <div class="relative border-l-2 border-slate-100 ml-3 space-y-8 pb-4">
+                        
+                        <!-- Past Class -->
+                        <div class="relative pl-6 timeline-dot group">
+                            <p class="text-xs font-semibold text-slate-400 mb-0.5 group-hover:text-primary transition-colors">09:00 AM - 10:30 AM</p>
+                            <div class="bg-slate-50 rounded-2xl p-4 border border-slate-100 group-hover:border-slate-200 transition-colors">
+                                <h4 class="font-heading font-semibold text-slate-800 text-sm">Data Structures & Algorithms</h4>
+                                <div class="flex items-center mt-2 text-xs text-slate-500">
+                                    <i class="ph ph-map-pin mr-1.5 text-slate-400"></i> Room 302, Block B
+                                    <span class="mx-2">•</span>
+                                    <i class="ph ph-user mr-1.5 text-slate-400"></i> Dr. Smith
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Current Class (Active) -->
+                        <div class="relative pl-6 timeline-dot active group">
+                            <div class="absolute -left-[35px] top-6 w-2 h-full bg-gradient-to-b from-primary-100 to-transparent -z-10 rounded-full hidden"></div>
+                            <p class="text-xs font-bold text-primary mb-0.5 flex items-center">
+                                11:00 AM - 12:30 PM <span class="ml-2 bg-primary text-white text-[9px] px-1.5 py-0.5 rounded animate-pulse">NOW</span>
+                            </p>
+                            <div class="bg-white rounded-2xl p-4 border-2 border-primary/20 shadow-md shadow-primary/5 transform scale-[1.02] transition-transform">
+                                <h4 class="font-heading font-bold text-primary text-sm">Machine Learning Basics</h4>
+                                <div class="flex items-center mt-2 text-xs text-slate-600">
+                                    <i class="ph ph-map-pin mr-1.5 text-primary/70"></i> Lab 4, Tech Block
+                                    <span class="mx-2">•</span>
+                                    <i class="ph ph-user mr-1.5 text-primary/70"></i> Prof. Davis
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Upcoming Class -->
+                        <div class="relative pl-6 timeline-dot accent group">
+                            <p class="text-xs font-semibold text-slate-500 mb-0.5 group-hover:text-accent transition-colors">02:00 PM - 03:00 PM</p>
+                            <div class="bg-slate-50 rounded-2xl p-4 border border-slate-100 group-hover:border-accent/30 transition-colors">
+                                <h4 class="font-heading font-semibold text-slate-800 text-sm">Computer Networks</h4>
+                                <div class="flex items-center mt-2 text-xs text-slate-500">
+                                    <i class="ph ph-map-pin mr-1.5 text-slate-400"></i> Room 105, Block A
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Announcements & Forum -->
+                <div class="lg:col-span-7 flex flex-col gap-6">
+                    
+                    <!-- Announcements -->
+                    <div class="bg-panel rounded-[24px] p-6 shadow-soft border border-slate-100 opacity-0 animate-fade-in-up delay-300">
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 class="font-heading font-bold text-lg text-slate-900">Notice Board</h3>
+                            <a href="#" class="text-sm font-medium text-primary hover:text-primary-600 transition-colors">View All</a>
+                        </div>
+
+                        <div class="space-y-4">
+                            <!-- Item 1 -->
+                            <div class="group flex items-start gap-4 p-3 -mx-3 rounded-xl hover:bg-slate-50 cursor-pointer transition-colors border border-transparent hover:border-slate-100">
+                                <div class="mt-1 bg-red-100 text-primary p-2 rounded-lg group-hover:bg-primary group-hover:text-white transition-colors">
+                                    <i class="ph ph-warning-circle text-xl"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="flex items-center gap-2 mb-1">
+                                        <span class="bg-primary/10 text-primary text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wide">Important</span>
+                                        <span class="text-xs text-slate-400">2 hours ago</span>
+                                    </div>
+                                    <h4 class="text-sm font-semibold text-slate-800 mb-1 group-hover:text-primary transition-colors">End Semester Exam Datesheet Released</h4>
+                                    <p class="text-xs text-slate-500 line-clamp-1">Please check the official portal to download your final examination datesheet for Fall semester.</p>
+                                </div>
+                            </div>
+
+                            <!-- Item 2 -->
+                            <div class="group flex items-start gap-4 p-3 -mx-3 rounded-xl hover:bg-slate-50 cursor-pointer transition-colors border border-transparent hover:border-slate-100">
+                                <div class="mt-1 bg-accent/20 text-accent p-2 rounded-lg group-hover:bg-accent group-hover:text-white transition-colors">
+                                    <i class="ph ph-calendar-star text-xl"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="flex items-center gap-2 mb-1">
+                                        <span class="bg-accent/10 text-accent text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wide">Event</span>
+                                        <span class="text-xs text-slate-400">Yesterday</span>
+                                    </div>
+                                    <h4 class="text-sm font-semibold text-slate-800 mb-1">Tech Fest 2024 Registration Open</h4>
+                                    <p class="text-xs text-slate-500 line-clamp-1">Register your team for hackathons and coding competitions. Early bird closes soon.</p>
+                                </div>
+                            </div>
+                            
+                            <!-- Item 3 -->
+                            <div class="group flex items-start gap-4 p-3 -mx-3 rounded-xl hover:bg-slate-50 cursor-pointer transition-colors border border-transparent hover:border-slate-100">
+                                <div class="mt-1 bg-blue-100 text-blue-600 p-2 rounded-lg group-hover:bg-blue-500 group-hover:text-white transition-colors">
+                                    <i class="ph ph-briefcase text-xl"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="flex items-center gap-2 mb-1">
+                                        <span class="bg-blue-50 text-blue-600 text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wide">Placement</span>
+                                        <span class="text-xs text-slate-400">Oct 20</span>
+                                    </div>
+                                    <h4 class="text-sm font-semibold text-slate-800 mb-1">Campus Drive: Google Pre-placement Talk</h4>
+                                    <p class="text-xs text-slate-500 line-clamp-1">Mandatory for all 3rd and 4th year CSE/IT students. Venue: Main Auditorium.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Student Forum Snippet -->
+            <div class="bg-transparent opacity-0 animate-fade-in-up delay-400 mb-6">
+                 <div class="flex justify-between items-end mb-6">
+                    <div>
+                        <h3 class="font-heading font-bold text-xl text-slate-900">Student Forum Discussions</h3>
+                        <p class="text-sm text-slate-500 mt-1">Join the conversation with your peers</p>
+                    </div>
+                    <button class="flex items-center text-sm font-medium text-white bg-slate-900 px-4 py-2 rounded-xl hover:bg-slate-800 transition-colors shadow-sm">
+                        <i class="ph ph-plus mr-2"></i> New Post
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                    
+                    <!-- Forum Card 1 -->
+                    <div class="bg-panel p-5 rounded-[20px] shadow-sm border border-slate-100 hover:shadow-md transition-shadow cursor-pointer group">
+                        <div class="flex items-center mb-3">
+                            <img src="https://i.pravatar.cc/150?img=32" alt="Avatar" class="w-8 h-8 rounded-full mr-3">
+                            <div>
+                                <p class="text-xs font-semibold text-slate-800">Sarah Jenkins</p>
+                                <p class="text-[10px] text-slate-400">2 hours ago in <span class="text-primary font-medium">Academics</span></p>
+                            </div>
+                        </div>
+                        <h4 class="font-heading text-sm font-semibold text-slate-900 mb-2 group-hover:text-primary transition-colors">Resources for Advanced Database Systems?</h4>
+                        <p class="text-xs text-slate-500 line-clamp-2 mb-4">Hey everyone, I'm struggling a bit with the normalization normal forms chapter. Does anyone have good video recommendations or notes?</p>
+                        <div class="flex items-center text-xs text-slate-400 gap-4 pt-3 border-t border-slate-50">
+                            <span class="flex items-center hover:text-primary transition-colors"><i class="ph ph-heart mr-1.5 text-base"></i> 24</span>
+                            <span class="flex items-center hover:text-slate-700 transition-colors"><i class="ph ph-chat-circle mr-1.5 text-base"></i> 8 Comments</span>
+                        </div>
+                    </div>
+
+                    <!-- Forum Card 2 -->
+                    <div class="bg-panel p-5 rounded-[20px] shadow-sm border border-slate-100 hover:shadow-md transition-shadow cursor-pointer group">
+                        <div class="flex items-center mb-3">
+                            <img src="https://i.pravatar.cc/150?img=12" alt="Avatar" class="w-8 h-8 rounded-full mr-3">
+                            <div>
+                                <p class="text-xs font-semibold text-slate-800">Mike Ross</p>
+                                <p class="text-[10px] text-slate-400">5 hours ago in <span class="text-accent font-medium">Events</span></p>
+                            </div>
+                        </div>
+                        <h4 class="font-heading text-sm font-semibold text-slate-900 mb-2 group-hover:text-accent transition-colors">Looking for a frontend dev for hackathon!</h4>
+                        <p class="text-xs text-slate-500 line-clamp-2 mb-4">We are a team of 3 (2 backend, 1 AI) looking for someone who knows React/Tailwind for the upcoming TechSynergy hackathon.</p>
+                        <div class="flex items-center text-xs text-slate-400 gap-4 pt-3 border-t border-slate-50">
+                            <span class="flex items-center hover:text-primary transition-colors"><i class="ph ph-heart mr-1.5 text-base text-primary fill-primary"></i> 45</span>
+                            <span class="flex items-center hover:text-slate-700 transition-colors"><i class="ph ph-chat-circle mr-1.5 text-base"></i> 12 Comments</span>
+                        </div>
+                    </div>
+
+                    <!-- Forum Card 3 (Hidden on tablet, shown on desktop) -->
+                    <div class="hidden md:block bg-panel p-5 rounded-[20px] shadow-sm border border-slate-100 hover:shadow-md transition-shadow cursor-pointer group">
+                        <div class="flex items-center mb-3">
+                            <div class="w-8 h-8 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center text-xs font-bold mr-3">JD</div>
+                            <div>
+                                <p class="text-xs font-semibold text-slate-800">John Doe</p>
+                                <p class="text-[10px] text-slate-400">Yesterday in <span class="text-blue-500 font-medium">General</span></p>
+                            </div>
+                        </div>
+                        <h4 class="font-heading text-sm font-semibold text-slate-900 mb-2 group-hover:text-blue-600 transition-colors">Library timings extended during exams</h4>
+                        <p class="text-xs text-slate-500 line-clamp-2 mb-4">Just confirmed with the chief librarian, the central library will be open 24/7 starting next Monday until the end of finals.</p>
+                        <div class="flex items-center text-xs text-slate-400 gap-4 pt-3 border-t border-slate-50">
+                            <span class="flex items-center hover:text-primary transition-colors"><i class="ph ph-heart mr-1.5 text-base"></i> 112</span>
+                            <span class="flex items-center hover:text-slate-700 transition-colors"><i class="ph ph-chat-circle mr-1.5 text-base"></i> 4 Comments</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Footer area -->
+            <footer class="mt-12 text-center pb-4 opacity-50">
+                <p class="text-[11px] font-medium text-slate-400">© 2024 University Student Portal. Designed with <i class="ph-fill ph-heart text-primary"></i></p>
+            </footer>
+
+        </div>
+    </main>
+</div>
+
+<!-- Javascript for Interactions and Charts -->
+<script>
+    // --- Mobile Sidebar Logic ---
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebar-overlay');
+    let isSidebarOpen = false;
+
+    function toggleSidebar() {
+        isSidebarOpen = !isSidebarOpen;
+        if (isSidebarOpen) {
+            sidebar.classList.remove('-translate-x-full');
+            overlay.classList.remove('hidden');
+            // slight delay to allow display block to apply before changing opacity
+            setTimeout(() => overlay.classList.remove('opacity-0'), 10);
+            document.body.classList.add('overflow-hidden'); // Prevent background scrolling
+        } else {
+            sidebar.classList.add('-translate-x-full');
+            overlay.classList.add('opacity-0');
+            setTimeout(() => overlay.classList.add('hidden'), 300); // match transition duration
+            document.body.classList.remove('overflow-hidden');
+        }
+    }
+
+    // --- Chart.js Configuration ---
+    document.addEventListener('DOMContentLoaded', function() {
+        
+        // Common Chart Setup
+        Chart.defaults.font.family = "'Inter', sans-serif";
+        Chart.defaults.color = '#64748b'; // slate-500
+        
+        // 1. Performance Line Chart
+        const ctxPerf = document.getElementById('performanceChart').getContext('2d');
+        
+        // Create Gradient for Line Fill
+        let gradientFill = ctxPerf.createLinearGradient(0, 0, 0, 300);
+        gradientFill.addColorStop(0, 'rgba(215, 32, 34, 0.2)'); // Primary color light
+        gradientFill.addColorStop(1, 'rgba(215, 32, 34, 0)');
+
+        new Chart(ctxPerf, {
+            type: 'line',
+            data: {
+                labels: ['Sem 1', 'Sem 2', 'Sem 3', 'Sem 4', 'Sem 5', 'Sem 6 (Cur)'],
+                datasets: [{
+                    label: 'SGPA',
+                    data: [7.8, 8.1, 7.9, 8.5, 8.3, 8.42],
+                    borderColor: '#D72022', // Primary
+                    backgroundColor: gradientFill,
+                    borderWidth: 3,
+                    pointBackgroundColor: '#ffffff',
+                    pointBorderColor: '#D72022',
+                    pointBorderWidth: 2,
+                    pointRadius: 4,
+                    pointHoverRadius: 6,
+                    fill: true,
+                    tension: 0.4 // Smooth curve
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: '#0f172a',
+                        padding: 12,
+                        titleFont: { family: 'Poppins', size: 13 },
+                        bodyFont: { size: 13 },
+                        displayColors: false,
+                        callbacks: {
+                            label: function(context) { return 'SGPA: ' + context.parsed.y; }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        min: 6,
+                        max: 10,
+                        border: { display: false },
+                        grid: { color: '#f1f5f9', drawTicks: false } // slate-100
+                    },
+                    x: {
+                        border: { display: false },
+                        grid: { display: false }
+                    }
+                },
+                interaction: { mode: 'index', intersect: false }
+            }
+        });
+
+        // 2. Attendance Doughnut Chart
+        const ctxAtt = document.getElementById('attendanceChart').getContext('2d');
+        new Chart(ctxAtt, {
+            type: 'doughnut',
+            data: {
+                labels: ['Present', 'Late', 'Absent'],
+                datasets: [{
+                    data: [85, 5, 10],
+                    backgroundColor: [
+                        '#22c55e', // green-500
+                        '#F8A602', // Accent
+                        '#D72022'  // Primary
+                    ],
+                    borderWidth: 0,
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '75%', // Thin ring
+                plugins: {
+                    legend: { display: false }, // Using custom HTML legend
+                    tooltip: {
+                        backgroundColor: '#ffffff',
+                        titleColor: '#0f172a',
+                        bodyColor: '#64748b',
+                        borderColor: '#e2e8f0',
+                        borderWidth: 1,
+                        padding: 10,
+                        boxPadding: 4,
+                        usePointStyle: true,
+                        callbacks: {
+                            label: function(context) { return context.label + ': ' + context.parsed + '%'; }
+                        }
+                    }
+                }
+            }
+        });
+    });
+</script>
+</body>
+</html>

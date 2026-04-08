@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student ERP | Premium Dashboard</title>
+    
+    <!-- Premium Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Remix Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        :root {
+            --bg-base: #030305;
+            --bg-surface: rgba(255, 255, 255, 0.02);
+            --bg-surface-hover: rgba(255, 255, 255, 0.05);
+            --border-color: rgba(255, 255, 255, 0.08);
+            --text-primary: #FFFFFF;
+            --text-secondary: #A1A1AA;
+            --accent-1: #8B5CF6; /* Purple */
+            --accent-2: #06B6D4; /* Cyan */
+            --accent-3: #10B981; /* Emerald */
+            --accent-4: #F59E0B; /* Amber */
+            --danger: #F43F5E;
+            --radius-xl: 32px;
+            --radius-lg: 24px;
+            --radius-md: 16px;
+            --font-display: 'Outfit', sans-serif;
+            --font-body: 'Plus Jakarta Sans', sans-serif;
+            --sidebar-width: 280px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-base);
+            color: var(--text-primary);
+            font-family: var(--font-body);
+            display: flex;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Ambient Background Glows */
+        .ambient-glow {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(140px);
+            z-index: 0;
+            opacity: 0.3;
+            pointer-events: none;
+            animation: breathe 8s infinite alternate ease-in-out;
+        }
+        .glow-1 { top: -10%; left: -10%; width: 500px; height: 500px; background: var(--accent-1); }
+        .glow-2 { bottom: -10%; right: -10%; width: 600px; height: 600px; background: var(--accent-2); animation-delay: 2s; }
+
+        @keyframes breathe {
+            0% { transform: scale(1); opacity: 0.2; }
+            100% { transform: scale(1.1); opacity: 0.4; }
+        }
+
+        /* Mobile Header */
+        .mobile-header {
+            display: none;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 24px;
+            background: rgba(3, 3, 5, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-color);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 90;
+        }
+        .mobile-header img {
+            height: 32px;
+        }
+        .menu-btn {
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        /* Sidebar Overlay */
+        .sidebar-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            z-index: 95;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s ease;
+        }
+        .sidebar-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Sidebar Navigation */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: rgba(10, 10, 10, 0.6);
+            backdrop-filter: blur(30px);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            padding: 40px 24px;
+            position: fixed;
+            height: 100vh;
+            z-index: 100;
+            transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+
+        .brand-logo {
+            margin-bottom: 48px;
+            padding: 0 12px;
+            animation: slideInLeft 0.8s ease-out;
+        }
+        .brand-logo img {
+            max-width: 160px;
+            height: auto;
+        }
+
+        .nav-menu {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .nav-item {
+            animation: slideInLeft 0.8s ease-out forwards;
+            opacity: 0;
+        }
+        /* Staggered Sidebar Animations */
+        .nav-item:nth-child(1) { animation-delay: 0.1s; }
+        .nav-item:nth-child(2) { animation-delay: 0.2s; }
+        .nav-item:nth-child(3) { animation-delay: 0.3s; }
+        .nav-item:nth-child(4) { animation-delay: 0.4s; }
+        .nav-item:nth-child(5) { animation-delay: 0.5s; }
+        .nav-item:nth-child(6) { animation-delay: 0.6s; }
+
+        .nav-item a {
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-size: 15px;
+            font-weight: 500;
+            padding: 14px 16px;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-item a::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 0; width: 100%; height: 100%;
+            background: linear-gradient(90deg, rgba(255,255,255,0.05) 0%, transparent 100%);
+            transform: translateX(-100%);
+            transition: transform 0.4s ease;
+        }
+
+        .nav-item a:hover::before, .nav-item.active a::before {
+            transform: translateX(0);
+        }
+
+        .nav-item a:hover, .nav-item.active a {
+            color: var(--text-primary);
+            box-shadow: inset 0 0 0 1px var(--border-color);
+        }
+        
+        .nav-item.active a i { color: var(--accent-2); text-shadow: 0 0 12px rgba(6, 182, 212, 0.5); }
+
+        /* Main Content Area */
+        .main-content {
+            margin-left: var(--sidebar-width);
+            padding: 40px 48px;
+            width: calc(100% - var(--sidebar-width));
+            z-index: 1;
+        }
+
+        /* Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 40px;
+            animation: fadeDown 0.8s ease-out;
+        }
+
+        .greeting h1 {
+            font-family: var(--font-display);
+            font-size: 40px;
+            font-weight: 600;
+            line-height: 1.2;
+            background: linear-gradient(135deg, #fff, #8A8A93);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .greeting p {
+            color: var(--text-secondary);
+            font-size: 16px;
+            margin-top: 8px;
+        }
+
+        .profile-widget {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            background: var(--bg-surface);
+            padding: 8px 16px 8px 8px;
+            border-radius: 100px;
+            border: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .profile-widget:hover {
+            background: var(--bg-surface-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        .profile-img {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: url('https://i.pravatar.cc/150?img=11') center/cover;
+            border: 2px solid var(--border-color);
+        }
+
+        /* Quick Actions (Glass Pills) */
+        .quick-actions {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 32px;
+            animation: fadeInUp 0.8s ease-out 0.2s backwards;
+            flex-wrap: wrap;
+        }
+        .action-btn {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-color);
+            padding: 12px 24px;
+            border-radius: 100px;
+            color: var(--text-primary);
+            font-size: 14px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+        .action-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Bento Grid System */
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            grid-auto-rows: minmax(120px, auto);
+            gap: 24px;
+        }
+
+        .card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 28px;
+            backdrop-filter: blur(20px);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease, border-color 0.4s ease;
+            display: flex;
+            flex-direction: column;
+            animation: fadeInUp 0.8s ease-out backwards;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Animated Glow Border on Hover */
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            border-radius: var(--radius-lg);
+            padding: 2px;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 24px 48px rgba(0,0,0,0.5);
+            background: var(--bg-surface-hover);
+        }
+        .card:hover::before { opacity: 1; }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .card-title {
+            font-family: var(--font-display);
+            font-size: 20px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Specific Card Sizing & Delay */
+        .c-performance { grid-column: span 8; grid-row: span 2; animation-delay: 0.1s;}
+        .c-attendance { grid-column: span 4; grid-row: span 1; display: flex; align-items: center; animation-delay: 0.2s;}
+        .c-fees { grid-column: span 4; grid-row: span 1; animation-delay: 0.3s; display: flex; align-items: center;}
+        
+        .c-schedule { grid-column: span 4; grid-row: span 2; animation-delay: 0.4s;}
+        .c-assignments { grid-column: span 4; grid-row: span 2; animation-delay: 0.5s;}
+        .c-events { grid-column: span 4; grid-row: span 2; animation-delay: 0.6s;}
+
+        /* Charts Containers */
+        .chart-container {
+            position: relative;
+            height: 100%;
+            width: 100%;
+            min-height: 220px;
+            flex-grow: 1;
+        }
+
+        .attendance-wrap {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        .attendance-text h2 { font-family: var(--font-display); font-size: 48px; color: var(--accent-3); line-height: 1; text-shadow: 0 0 20px rgba(16, 185, 129, 0.4);}
+        .attendance-text p { color: var(--text-secondary); font-size: 14px; margin-top: 4px;}
+
+        /* Fees Widget */
+        .fees-wrap { display: flex; justify-content: space-between; width: 100%; align-items: center;}
+        .fees-amount { font-family: var(--font-display); font-size: 32px; color: var(--accent-1); margin-top: 8px; }
+        .pay-btn { background: var(--text-primary); color: var(--bg-base); padding: 8px 16px; border-radius: 8px; font-weight: 600; font-size: 13px; text-decoration: none; transition: 0.3s; }
+        .pay-btn:hover { background: var(--accent-1); color: #fff; }
+
+        /* Timelines & Lists */
+        .timeline {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .timeline-item {
+            display: flex;
+            gap: 16px;
+            position: relative;
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+        .timeline-item:hover { transform: translateX(8px); }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 5px;
+            top: 24px;
+            bottom: -20px;
+            width: 2px;
+            background: var(--border-color);
+        }
+        .timeline-item:last-child::before { display: none; }
+        
+        .time-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--border-color);
+            margin-top: 4px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        /* Pulsing Active Dot */
+        .time-dot.active {
+            background: var(--accent-2);
+            box-shadow: 0 0 0 0 rgba(6, 182, 212, 0.4);
+            animation: pulseGlow 2s infinite;
+        }
+
+        .timeline-content h4 { font-weight: 500; font-size: 16px; margin-bottom: 4px;}
+        .timeline-content p { font-size: 13px; color: var(--text-secondary); display: flex; gap: 8px; align-items: center;}
+
+        /* Assignments (Progress Bars) */
+        .assignment-list { display: flex; flex-direction: column; gap: 20px; }
+        .assign-item { width: 100%; }
+        .assign-header { display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 8px;}
+        .assign-header span:last-child { color: var(--text-secondary); font-size: 12px;}
+        .progress-bg { width: 100%; height: 6px; background: rgba(255,255,255,0.05); border-radius: 10px; overflow: hidden; }
+        .progress-bar { height: 100%; border-radius: 10px; position: relative; }
+        .progress-bar::after {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        /* Events */
+        .event-card {
+            background: rgba(255,255,255,0.02);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            margin-bottom: 12px;
+            border: 1px solid var(--border-color);
+            display: flex;
+            gap: 16px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .event-card:hover {
+            background: rgba(255,255,255,0.05);
+            border-color: rgba(255,255,255,0.15);
+            transform: translateX(5px);
+        }
+        .event-date {
+            background: rgba(6, 182, 212, 0.1);
+            color: var(--accent-2);
+            padding: 10px;
+            border-radius: 12px;
+            text-align: center;
+            min-width: 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .event-date span { display: block; font-size: 20px; font-weight: 700; font-family: var(--font-display); line-height: 1;}
+        .event-date small { font-size: 11px; text-transform: uppercase; margin-top: 2px;}
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes pulseGlow {
+            0% { box-shadow: 0 0 0 0 rgba(6, 182, 212, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(6, 182, 212, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(6, 182, 212, 0); }
+        }
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        /* Scrollbar styles */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-base); }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #555; }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 1200px) {
+            .c-performance { grid-column: span 12; }
+            .c-attendance, .c-fees { grid-column: span 6; }
+            .c-schedule, .c-assignments, .c-events { grid-column: span 6; }
+        }
+
+        @media (max-width: 900px) {
+            /* Enable Mobile Header & Hide Desktop Sidebar */
+            .mobile-header { display: flex; }
+            
+            .sidebar { 
+                transform: translateX(-100%); 
+                box-shadow: 20px 0 50px rgba(0,0,0,0.5);
+            }
+            .sidebar.active { transform: translateX(0); }
+            
+            .main-content { 
+                margin-left: 0; 
+                width: 100%; 
+                padding: 88px 20px 32px 20px; /* Top padding for mobile header */
+            }
+            
+            .bento-grid { display: flex; flex-direction: column; }
+            
+            header { flex-direction: column; align-items: flex-start; gap: 20px; }
+            .quick-actions { overflow-x: auto; padding-bottom: 10px; scrollbar-width: none; }
+            .quick-actions::-webkit-scrollbar { display: none; }
+            .action-btn { white-space: nowrap; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Ambient Lights -->
+    <div class="ambient-glow glow-1"></div>
+    <div class="ambient-glow glow-2"></div>
+
+    <!-- Mobile Header -->
+    <div class="mobile-header">
+        <img src="https://www.cuchd.in/includes/assets/images/header-footer/cu-logo-white.webp" alt="University Logo">
+        <button class="menu-btn" id="mobileMenuBtn">
+            <i class="ri-menu-4-line"></i>
+        </button>
+    </div>
+
+    <!-- Sidebar Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="brand-logo">
+            <img src="https://www.cuchd.in/includes/assets/images/header-footer/cu-logo-white.webp" alt="University Logo">
+        </div>
+        <ul class="nav-menu">
+            <li class="nav-item active"><a href="#"><i class="ri-dashboard-line"></i> Dashboard</a></li>
+            <li class="nav-item"><a href="#"><i class="ri-book-read-line"></i> Academics</a></li>
+            <li class="nav-item"><a href="#"><i class="ri-calendar-event-line"></i> Schedule</a></li>
+            <li class="nav-item"><a href="#"><i class="ri-file-text-line"></i> Assignments</a></li>
+            <li class="nav-item"><a href="#"><i class="ri-pie-chart-line"></i> Attendance</a></li>
+            <li class="nav-item"><a href="#"><i class="ri-bank-card-line"></i> Financials</a></li>
+            <li class="nav-item" style="margin-top: auto;"><a href="#"><i class="ri-settings-4-line"></i> Settings</a></li>
+        </ul>
+    </aside>
+
+    <!-- Main Dashboard -->
+    <main class="main-content">
+        <header>
+            <div class="greeting">
+                <h1 id="timeGreeting">Good Morning, Alex</h1>
+                <p>Welcome to your academic command center. Fall 2024.</p>
+            </div>
+            <div class="profile-widget">
+                <div class="profile-img"></div>
+                <div>
+                    <div style="font-size: 14px; font-weight: 600;">Alex Mercer</div>
+                    <div style="font-size: 12px; color: var(--text-secondary);">B.Tech CSE &bull; Sem 5</div>
+                </div>
+                <i class="ri-arrow-down-s-line" style="color: var(--text-secondary); margin-right: 8px;"></i>
+            </div>
+        </header>
+
+        <!-- Quick Actions -->
+        <div class="quick-actions">
+            <button class="action-btn"><i class="ri-download-cloud-line" style="color: var(--accent-2);"></i> Transcript</button>
+            <button class="action-btn"><i class="ri-book-3-line" style="color: var(--accent-1);"></i> Library Due: 2</button>
+            <button class="action-btn"><i class="ri-stethoscope-line" style="color: var(--danger);"></i> Medical Leave</button>
+            <button class="action-btn"><i class="ri-ticket-2-line" style="color: var(--accent-4);"></i> Helpdesk</button>
+        </div>
+
+        <div class="bento-grid">
+            
+            <!-- Academic Performance (Line Chart) -->
+            <div class="card c-performance">
+                <div class="card-header">
+                    <h2 class="card-title"><i class="ri-bar-chart-box-line" style="color: var(--accent-1);"></i> Academic Growth</h2>
+                    <span style="background: rgba(139, 92, 246, 0.1); color: var(--accent-1); padding: 6px 12px; border-radius: 20px; font-size: 13px; font-weight: 600; border: 1px solid rgba(139, 92, 246, 0.3);">Current: 8.9 CGPA</span>
+                </div>
+                <div class="chart-container">
+                    <canvas id="performanceChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Attendance Overview -->
+            <div class="card c-attendance">
+                <div class="attendance-wrap">
+                    <div>
+                        <h2 class="card-title" style="margin-bottom: 8px;"><i class="ri-checkbox-circle-line" style="color: var(--accent-3);"></i> Attendance</h2>
+                        <div class="attendance-text">
+                            <h2>88%</h2>
+                            <p>You are in the green zone.</p>
+                        </div>
+                    </div>
+                    <div style="width: 110px; height: 110px; position: relative;">
+                        <canvas id="attendanceChart"></canvas>
+                        <!-- Center icon for chart -->
+                        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: var(--text-secondary); font-size: 20px;">
+                            <i class="ri-user-follow-line"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fee Status Widget -->
+            <div class="card c-fees">
+                <div class="fees-wrap">
+                    <div>
+                        <h2 class="card-title" style="margin-bottom: 4px; font-size: 16px;"><i class="ri-wallet-3-line" style="color: var(--accent-4);"></i> Pending Dues</h2>
+                        <div class="fees-amount">$1,250<span style="font-size: 14px; color: var(--text-secondary); font-family: var(--font-body);">.00</span></div>
+                        <p style="font-size: 12px; color: var(--danger); margin-top: 4px;">Due in 14 Days</p>
+                    </div>
+                    <a href="#" class="pay-btn">Pay Now <i class="ri-arrow-right-line" style="vertical-align: middle;"></i></a>
+                </div>
+            </div>
+
+            <!-- Upcoming Lectures -->
+            <div class="card c-schedule">
+                <div class="card-header">
+                    <h2 class="card-title"><i class="ri-time-line" style="color: var(--accent-2);"></i> Today's Flow</h2>
+                </div>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="time-dot active"></div>
+                        <div class="timeline-content">
+                            <h4 style="color: var(--text-primary);">Advanced Data Structures</h4>
+                            <p><i class="ri-map-pin-line"></i> Block 4, Room 302 &bull; 10:00 AM</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="time-dot"></div>
+                        <div class="timeline-content">
+                            <h4>UI/UX Design Principles</h4>
+                            <p><i class="ri-macbook-line"></i> Design Lab 1 &bull; 12:30 PM</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="time-dot" style="background: var(--text-secondary); border: 2px solid var(--bg-surface);"></div>
+                        <div class="timeline-content">
+                            <h4 style="color: var(--text-secondary); text-decoration: line-through;">Quantum Computing</h4>
+                            <p>Cancelled by Prof. Davis</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="time-dot"></div>
+                        <div class="timeline-content">
+                            <h4>Cloud Computing Lab</h4>
+                            <p><i class="ri-server-line"></i> Lab 4B &bull; 03:00 PM</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pending Assignments -->
+            <div class="card c-assignments">
+                <div class="card-header">
+                    <h2 class="card-title"><i class="ri-file-edit-line" style="color: var(--accent-1);"></i> Tasks & Deadlines</h2>
+                    <a href="#" style="color: var(--text-secondary); font-size: 13px; text-decoration: none; border-bottom: 1px dashed var(--border-color);">View All</a>
+                </div>
+                <div class="assignment-list">
+                    <!-- Task 1 -->
+                    <div class="assign-item">
+                        <div class="assign-header">
+                            <span style="font-weight: 500;">DBMS Case Study</span>
+                            <span style="color: var(--danger);">Tomorrow</span>
+                        </div>
+                        <div class="progress-bg">
+                            <div class="progress-bar" style="width: 80%; background: var(--danger);"></div>
+                        </div>
+                    </div>
+                    <!-- Task 2 -->
+                    <div class="assign-item">
+                        <div class="assign-header">
+                            <span style="font-weight: 500;">UI/UX Wireframes</span>
+                            <span>3 Days Left</span>
+                        </div>
+                        <div class="progress-bg">
+                            <div class="progress-bar" style="width: 45%; background: var(--accent-4);"></div>
+                        </div>
+                    </div>
+                    <!-- Task 3 -->
+                    <div class="assign-item">
+                        <div class="assign-header">
+                            <span style="font-weight: 500;">Network Security Report</span>
+                            <span>1 Week Left</span>
+                        </div>
+                        <div class="progress-bg">
+                            <div class="progress-bar" style="width: 15%; background: var(--accent-3);"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Events & Announcements -->
+            <div class="card c-events">
+                <div class="card-header">
+                    <h2 class="card-title"><i class="ri-notification-3-line" style="color: var(--danger);"></i> Campus Radar</h2>
+                </div>
+                <div class="event-card">
+                    <div class="event-date">
+                        <span>24</span>
+                        <small>Oct</small>
+                    </div>
+                    <div>
+                        <h4 style="font-size: 15px; margin-bottom: 4px;">Annual Tech Symposium</h4>
+                        <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.4;">Main Auditorium. Mandatory for CSE students.</p>
+                    </div>
+                </div>
+                <div class="event-card">
+                    <div class="event-date" style="background: rgba(139, 92, 246, 0.1); color: var(--accent-1);">
+                        <span>28</span>
+                        <small>Oct</small>
+                    </div>
+                    <div>
+                        <h4 style="font-size: 15px; margin-bottom: 4px;">Hackathon Registration</h4>
+                        <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.4;">Last day to submit your 4-member team details.</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        // Set dynamic greeting
+        const hour = new Date().getHours();
+        const greetingElement = document.getElementById('timeGreeting');
+        if(hour < 12) greetingElement.innerText = "Good Morning, Alex";
+        else if(hour < 18) greetingElement.innerText = "Good Afternoon, Alex";
+        else greetingElement.innerText = "Good Evening, Alex";
+
+        // Mobile Sidebar Toggle Logic
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const sidebar = document.getElementById('sidebar');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+        const navLinks = document.querySelectorAll('.nav-item a');
+
+        function toggleSidebar() {
+            sidebar.classList.toggle('active');
+            sidebarOverlay.classList.toggle('active');
+        }
+
+        mobileMenuBtn.addEventListener('click', toggleSidebar);
+        sidebarOverlay.addEventListener('click', toggleSidebar);
+        
+        // Close sidebar when clicking a link on mobile
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                if(window.innerWidth <= 900) {
+                    toggleSidebar();
+                }
+            });
+        });
+
+        // Global Chart Defaults for dark theme
+        Chart.defaults.color = '#A1A1AA';
+        Chart.defaults.font.family = "'Plus Jakarta Sans', sans-serif";
+
+        // 1. Performance Line Chart (Smooth Gradient)
+        const ctxPerf = document.getElementById('performanceChart').getContext('2d');
+        const gradientPerf = ctxPerf.createLinearGradient(0, 0, 0, 400);
+        gradientPerf.addColorStop(0, 'rgba(139, 92, 246, 0.6)'); // Purple
+        gradientPerf.addColorStop(1, 'rgba(139, 92, 246, 0.0)');
+
+        new Chart(ctxPerf, {
+            type: 'line',
+            data: {
+                labels: ['Sem 1', 'Sem 2', 'Sem 3', 'Sem 4', 'Sem 5'],
+                datasets: [{
+                    label: 'SGPA',
+                    data: [8.2, 8.5, 8.4, 9.1, 8.9],
+                    borderColor: '#8B5CF6',
+                    backgroundColor: gradientPerf,
+                    borderWidth: 3,
+                    pointBackgroundColor: '#030305',
+                    pointBorderColor: '#8B5CF6',
+                    pointBorderWidth: 3,
+                    pointRadius: 6,
+                    pointHoverRadius: 8,
+                    fill: true,
+                    tension: 0.4 // Smooth curves
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                animation: { duration: 2000, easing: 'easeOutQuart' },
+                plugins: { 
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: 'rgba(10, 10, 10, 0.9)',
+                        titleFont: { size: 14, family: "'Outfit', sans-serif" },
+                        bodyFont: { size: 14 },
+                        padding: 12,
+                        borderColor: 'rgba(255,255,255,0.1)',
+                        borderWidth: 1,
+                        displayColors: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: false,
+                        min: 7, max: 10,
+                        grid: { color: 'rgba(255, 255, 255, 0.05)', drawBorder: false }
+                    },
+                    x: { grid: { display: false, drawBorder: false } }
+                }
+            }
+        });
+
+        // 2. Attendance Doughnut Chart
+        const ctxAtt = document.getElementById('attendanceChart').getContext('2d');
+        new Chart(ctxAtt, {
+            type: 'doughnut',
+            data: {
+                labels: ['Attended', 'Missed'],
+                datasets: [{
+                    data: [88, 12],
+                    backgroundColor: ['#10B981', 'rgba(255, 255, 255, 0.05)'],
+                    borderWidth: 0,
+                    hoverOffset: 5
+                }]
+            },
+            options: {
+                cutout: '80%',
+                responsive: true,
+                maintainAspectRatio: false,
+                animation: { animateScale: true, animateRotate: true, duration: 1500 },
+                plugins: { legend: { display: false }, tooltip: { enabled: false } }
+            }
+        });
+    </script>
+</body>
+</html>
