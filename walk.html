@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="en" class="lenis lenis-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A global foundation dedicated to protecting vulnerable animals, inspired by the peaceful journey of a dog and 18 monks across the United States.">
+    <title>Compassion Walk | Global Movement</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.33/dist/lenis.min.js"></script>
+
+    <style>
+        /* CSS Variables */
+        :root {
+            --bg-light: #F9F8F6;
+            --bg-dark: #1A1C1A;
+            --text-dark: #1A1C1A;
+            --text-light: #F9F8F6;
+            --accent: #8A9A86; /* Sage Green */
+            --accent-warm: #C4A484; /* Soft Earth */
+            --font-display: 'Cormorant Garamond', serif;
+            --font-body: 'Plus Jakarta Sans', sans-serif;
+            --spacing-lg: clamp(4rem, 10vw, 10rem);
+        }
+
+        /* Lenis Smooth Scroll Setup */
+        html.lenis { height: auto; }
+        .lenis.lenis-smooth { scroll-behavior: auto; }
+        .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+        .lenis.lenis-stopped { overflow: hidden; }
+        .lenis.lenis-scrolling iframe { pointer-events: none; }
+
+        /* Reset & Base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            cursor: default;
+        }
+
+        /* Typography */
+        h1, h2, h3, h4, h5 {
+            font-family: var(--font-display);
+            font-weight: 400;
+            line-height: 1.1;
+        }
+
+        .text-huge {
+            font-size: clamp(3rem, 8vw, 10rem);
+            letter-spacing: -0.02em;
+        }
+
+        .text-large {
+            font-size: clamp(2.5rem, 5vw, 6rem);
+            letter-spacing: -0.01em;
+        }
+
+        .text-medium {
+            font-size: clamp(1.5rem, 3vw, 3rem);
+        }
+
+        p {
+            font-size: clamp(1rem, 1.2vw, 1.25rem);
+            line-height: 1.6;
+            font-weight: 300;
+        }
+
+        /* Utilities */
+        .container {
+            width: 100%;
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 0 5vw;
+        }
+
+        .section {
+            padding: var(--spacing-lg) 0;
+        }
+
+        .img-wrapper {
+            overflow: hidden;
+            position: relative;
+        }
+
+        .img-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transform-origin: center;
+        }
+
+        /* Preloader */
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background-color: var(--bg-dark);
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--text-light);
+        }
+        .loader-text {
+            font-family: var(--font-display);
+            font-size: 3rem;
+            font-style: italic;
+            overflow: hidden;
+        }
+        .loader-text span {
+            display: inline-block;
+            transform: translateY(100%);
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 2rem 5vw;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            mix-blend-mode: difference;
+            color: var(--text-light);
+        }
+
+        .logo {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 3rem;
+        }
+
+        .nav-links a {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            text-decoration: none;
+            color: inherit;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background-color: currentColor;
+            transform: translateX(-101%);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .nav-links a:hover::after {
+            transform: translateX(0);
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 120%; /* For parallax */
+            z-index: -1;
+        }
+
+        .hero-bg img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(0.6);
+        }
+
+        .hero-content {
+            text-align: center;
+            color: var(--text-light);
+            z-index: 1;
+            padding-top: 5rem;
+        }
+
+        .hero-title {
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+
+        .hero-title span {
+            display: inline-block;
+        }
+
+        .hero-subtitle {
+            font-family: var(--font-body);
+            font-size: clamp(1rem, 1.5vw, 1.5rem);
+            font-weight: 300;
+            max-width: 600px;
+            margin: 0 auto;
+            opacity: 0;
+        }
+
+        /* Marquee */
+        .marquee-section {
+            background-color: var(--bg-dark);
+            color: var(--accent);
+            padding: 2rem 0;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        .marquee-inner {
+            display: inline-block;
+            white-space: nowrap;
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 4vw, 4rem);
+            font-style: italic;
+        }
+
+        /* Story Section (Asymmetrical Split) */
+        .story {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5vw;
+            align-items: center;
+        }
+
+        .story-img {
+            height: 80vh;
+            border-radius: 4px;
+        }
+
+        .story-text-wrapper {
+            padding-right: 5vw;
+        }
+
+        .story-text-wrapper h2 {
+            margin-bottom: 2rem;
+        }
+
+        .story-text-wrapper p {
+            margin-bottom: 2rem;
+            color: #555;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem 2.5rem;
+            font-family: var(--font-body);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-light);
+            background-color: var(--bg-dark);
+            text-decoration: none;
+            border-radius: 100px;
+            transition: background-color 0.4s ease;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn:hover {
+            background-color: var(--accent);
+        }
+
+        /* Impact Section (Awwwards Style Grid) */
+        .impact {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+        }
+
+        .impact-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 2rem;
+            margin-top: 5rem;
+        }
+
+        .impact-item {
+            position: relative;
+            padding: 3rem;
+            border: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            overflow: hidden;
+            group: hover;
+            transition: border-color 0.4s ease;
+        }
+
+        .impact-item:hover {
+            border-color: var(--accent);
+        }
+
+        .impact-item-1 { grid-column: 1 / 8; min-height: 400px; }
+        .impact-item-2 { grid-column: 8 / 13; min-height: 400px; }
+        .impact-item-3 { grid-column: 1 / 6; min-height: 400px; }
+        .impact-item-4 { grid-column: 6 / 13; min-height: 400px; }
+
+        .impact-bg {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            object-fit: cover;
+            opacity: 0;
+            transform: scale(1.1);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+            z-index: 0;
+        }
+
+        .impact-item:hover .impact-bg {
+            opacity: 0.4;
+            transform: scale(1);
+        }
+
+        .impact-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .impact-item h3 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Donation Section (Minimalist & High Conversion) */
+        .donate {
+            background-color: var(--accent-warm);
+            color: var(--bg-dark);
+            text-align: center;
+        }
+
+        .donate-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .donate h2 {
+            margin-bottom: 1.5rem;
+        }
+
+        .donation-form {
+            margin-top: 4rem;
+            background: var(--bg-light);
+            padding: 3rem;
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+        }
+
+        .amount-row {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            justify-content: center;
+        }
+
+        .amount-btn {
+            flex: 1;
+            padding: 1.5rem 1rem;
+            border: 1px solid rgba(0,0,0,0.1);
+            background: transparent;
+            border-radius: 12px;
+            cursor: pointer;
+            font-family: var(--font-body);
+            transition: all 0.3s ease;
+        }
+
+        .amount-btn span {
+            display: block;
+            font-size: 1.5rem;
+            font-weight: 500;
+            color: var(--bg-dark);
+            margin-bottom: 0.2rem;
+        }
+
+        .amount-btn small {
+            color: #666;
+            font-size: 0.8rem;
+        }
+
+        .amount-btn.active, .amount-btn:hover {
+            border-color: var(--bg-dark);
+            background: var(--bg-dark);
+        }
+
+        .amount-btn.active span, .amount-btn:hover span,
+        .amount-btn.active small, .amount-btn:hover small {
+            color: var(--text-light);
+        }
+
+        .btn-large {
+            width: 100%;
+            padding: 1.5rem;
+            font-size: 1.1rem;
+            border-radius: 12px;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            padding: 6rem 5vw 2rem;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 4rem;
+            margin-bottom: 6rem;
+        }
+
+        .footer-heading {
+            font-size: clamp(2rem, 4vw, 3.5rem);
+            margin-bottom: 2rem;
+            max-width: 500px;
+        }
+
+        .footer-links h4 {
+            font-family: var(--font-body);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 1rem;
+        }
+
+        .footer-links a {
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: #fff;
+        }
+
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.5);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .story { grid-template-columns: 1fr; }
+            .story-img { height: 60vh; order: -1; }
+            .impact-item-1, .impact-item-2, .impact-item-3, .impact-item-4 {
+                grid-column: 1 / -1;
+            }
+            .footer-grid { grid-template-columns: 1fr; gap: 3rem; }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .amount-row { flex-direction: column; }
+        }
+
+        /* GSAP Utility Classes */
+        .reveal-text {
+            clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+        }
+        .reveal-text span {
+            display: inline-block;
+            transform: translateY(100%);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="loader">
+        <div class="loader-text">
+            <span>Awakening Compassion...</span>
+        </div>
+    </div>
+
+    <nav>
+        <a href="#" class="logo">Compassion Walk</a>
+        <div class="nav-links">
+            <a href="#story">The Story</a>
+            <a href="#impact">Impact</a>
+            <a href="#donate">Donate</a>
+        </div>
+        <a href="#donate" class="btn" style="background: transparent; border: 1px solid #fff; padding: 0.8rem 1.5rem;">Join Us</a>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-bg" data-speed="0.5">
+            <img src="https://wwmt.com/resources/media2/16x9/975/986/0x29/90/d8eeb3a3-870f-482e-b23e-3f6ba64c3615-monk.png" alt="Serene path in mist">
+        </div>
+        <div class="hero-content">
+            <h1 class="text-huge hero-title" id="hero-title">
+                One Step.<br>Global Impact.
+            </h1>
+            <p class="hero-subtitle">Inspired by a peaceful dog and 18 monks walking across America, we protect the vulnerable.</p>
+        </div>
+    </section>
+
+    <div class="marquee-section">
+        <div class="marquee-inner" id="marquee1">
+            PEACE • COMPASSION • SANCTUARY • MOVEMENT • HARMONY • LOVE • PEACE • COMPASSION • SANCTUARY • MOVEMENT • HARMONY • LOVE •
+        </div>
+    </div>
+
+    <section id="story" class="section container story">
+        <div class="story-text-wrapper">
+            <h2 class="text-large reveal-text">The Walk That<br>Inspired the World</h2>
+            <p class="gsap-fade-up">In a world often divided, a quiet journey united us. When Bhikkhu Pannakara and 18 Venerable monks embarked on a peaceful walk across the United States, they were joined by an unexpected companion: a stray dog who walked quietly by their side.</p>
+            <p class="gsap-fade-up">Mile after mile, through rain and sun, this faithful friend became a living symbol of the compassion the monks were preaching. He didn't ask for much—just presence, kindness, and to share the journey.</p>
+            <p class="gsap-fade-up" style="font-family: var(--font-display); font-size: 1.5rem; font-style: italic; color: var(--accent); margin-top: 3rem; border-left: 2px solid var(--accent); padding-left: 1.5rem;">
+                "True peace encompasses all living beings. The dog didn't just walk with us; he showed the world that love speaks a universal language without a single word."
+            </p>
+        </div>
+        <div class="img-wrapper story-img">
+            <img class="gsap-img-reveal" src="https://www.hindustantimes.com/ht-img/img/2026/01/07/cropped/1-1/aloka_1767752613052_1767752623773.jpg" alt="Peaceful dog resting in nature">
+        </div>
+    </section>
+
+    <section id="impact" class="section impact">
+        <div class="container">
+            <h2 class="text-large reveal-text">Our Global<br>Mission</h2>
+            
+            <div class="impact-grid">
+                
+                <div class="impact-item impact-item-1 gsap-fade-up">
+                    <img class="impact-bg" src="https://images.unsplash.com/photo-1532629345422-7515f3d16bb6?auto=format&fit=crop&q=80&w=800" alt="Charity">
+                    <div class="impact-content">
+                        <h3>Global Rescue</h3>
+                        <p>Providing immediate care, medical attention, and safe havens for vulnerable animals across the globe.</p>
+                    </div>
+                </div>
+
+                <div class="impact-item impact-item-2 gsap-fade-up" style="background-color: var(--accent);">
+                    <div class="impact-content" style="color: var(--bg-dark);">
+                        <h3>Awareness</h3>
+                        <p>Educating communities on animal welfare and cultivating a culture of empathy and responsibility.</p>
+                    </div>
+                </div>
+
+                <div class="impact-item impact-item-3 gsap-fade-up" style="background-color: var(--accent-warm);">
+                    <div class="impact-content" style="color: var(--bg-dark);">
+                        <h3>Peace Walks</h3>
+                        <p>Organizing community walks to raise funds and awareness, honoring the journey that started it all.</p>
+                    </div>
+                </div>
+
+                <div class="impact-item impact-item-4 gsap-fade-up">
+                    <img class="impact-bg" src="https://images.unsplash.com/photo-1502444330042-d1a1ddf9bb5b?auto=format&fit=crop&q=80&w=800" alt="Community">
+                    <div class="impact-content">
+                        <h3>Community Aid</h3>
+                        <p>Partnering with local shelters to provide food, resources, and volunteer support where it's needed most.</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="donate" class="section donate">
+        <div class="container donate-container">
+            <h2 class="text-large reveal-text">Walk With Us</h2>
+            <p class="gsap-fade-up">Your contribution directly funds animal rescues, shelter support, and educational programs. Every act of generosity ripples across the globe.</p>
+
+            <form class="donation-form gsap-fade-up" onsubmit="event.preventDefault();">
+                <div style="display: flex; justify-content: center; gap: 2rem; margin-bottom: 2rem; font-weight: 500;">
+                    <label style="cursor: pointer;"><input type="radio" name="freq" checked> One-Time</label>
+                    <label style="cursor: pointer;"><input type="radio" name="freq"> Monthly</label>
+                </div>
+
+                <div class="amount-row">
+                    <button type="button" class="amount-btn active" onclick="selectAmount(this)">
+                        <span>₹500</span>
+                        <small>$10 USD</small>
+                    </button>
+                    <button type="button" class="amount-btn" onclick="selectAmount(this)">
+                        <span>₹2000</span>
+                        <small>$25 USD</small>
+                    </button>
+                    <button type="button" class="amount-btn" onclick="selectAmount(this)">
+                        <span>₹5000</span>
+                        <small>$50 USD</small>
+                    </button>
+                </div>
+
+                <button type="submit" class="btn btn-large">Donate Securely</button>
+                
+                <p style="margin-top: 1.5rem; font-size: 0.8rem; color: #888;">🔒 256-bit Secure Checkout • Instant Tax Receipt</p>
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <h2 class="footer-heading">Compassion is a Journey.</h2>
+                    <a href="#donate" class="btn">Support the Mission</a>
+                </div>
+                <div class="footer-links">
+                    <h4>Organization</h4>
+                    <ul>
+                        <li><a href="#story">Our Origin</a></li>
+                        <li><a href="#impact">Impact Report</a></li>
+                        <li><a href="#">Volunteer Network</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Legal & Trust</h4>
+                    <ul>
+                        <li><a href="#">Financial Transparency</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Compassion Walk Foundation. All rights reserved.</p>
+                <p>Designed for all living beings.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Simple function to split text for Awwwards style reveal
+        function splitTextIntoSpans(selector) {
+            const elements = document.querySelectorAll(selector);
+            elements.forEach(el => {
+                const text = el.innerText;
+                el.innerHTML = '';
+                const lines = text.split('\n');
+                lines.forEach((line, index) => {
+                    const lineWrapper = document.createElement('div');
+                    lineWrapper.style.overflow = 'hidden';
+                    lineWrapper.style.display = 'inline-block';
+                    
+                    const span = document.createElement('span');
+                    span.innerText = line;
+                    span.style.display = 'inline-block';
+                    
+                    lineWrapper.appendChild(span);
+                    el.appendChild(lineWrapper);
+                    
+                    if(index < lines.length - 1) {
+                        el.appendChild(document.createElement('br'));
+                    }
+                });
+            });
+        }
+
+        // Initialize Smooth Scroll (Lenis)
+        const lenis = new Lenis({
+            duration: 1.2,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            direction: 'vertical',
+            gestureDirection: 'vertical',
+            smooth: true,
+            mouseMultiplier: 1,
+            smoothTouch: false,
+            touchMultiplier: 2,
+            infinite: false,
+        })
+
+        // Synchronize Lenis with GSAP ScrollTrigger
+        lenis.on('scroll', ScrollTrigger.update)
+        gsap.ticker.add((time)=>{
+            lenis.raf(time * 1000)
+        })
+        gsap.ticker.lagSmoothing(0)
+
+        // Split text before animating
+        splitTextIntoSpans('#hero-title');
+        splitTextIntoSpans('.reveal-text');
+
+        // Master Timeline for Initial Load
+        const tl = gsap.timeline();
+
+        // Preloader Animation
+        tl.to('.loader-text span', {
+            y: 0,
+            duration: 1,
+            ease: "power4.out"
+        })
+        .to('.loader-text span', {
+            y: "-100%",
+            duration: 0.8,
+            ease: "power4.in",
+            delay: 0.5
+        })
+        .to('.loader', {
+            y: "-100%",
+            duration: 1,
+            ease: "power4.inOut"
+        }, "-=0.2")
+        // Hero Text Reveal
+        .from('#hero-title span', {
+            y: 150,
+            rotationZ: 5,
+            opacity: 0,
+            duration: 1.2,
+            stagger: 0.1,
+            ease: "power4.out"
+        }, "-=0.5")
+        .to('.hero-subtitle', {
+            opacity: 1,
+            y: -20,
+            duration: 1,
+            ease: "power3.out"
+        }, "-=0.8");
+
+        // Scroll Animations
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Hero Parallax Background
+        gsap.to('.hero-bg', {
+            yPercent: 30,
+            ease: "none",
+            scrollTrigger: {
+                trigger: ".hero",
+                start: "top top",
+                end: "bottom top",
+                scrub: true
+            }
+        });
+
+        // Marquee Animation
+        gsap.to('#marquee1', {
+            xPercent: -50,
+            ease: "none",
+            scrollTrigger: {
+                trigger: ".marquee-section",
+                start: "top bottom",
+                end: "bottom top",
+                scrub: 1
+            }
+        });
+
+        // Story Image Parallax Zoom
+        gsap.fromTo('.gsap-img-reveal', 
+            { scale: 1.2, transformOrigin: 'center center' },
+            { 
+                scale: 1,
+                ease: "none",
+                scrollTrigger: {
+                    trigger: ".story-img",
+                    start: "top bottom",
+                    end: "bottom top",
+                    scrub: true
+                }
+            }
+        );
+
+        // General Text Reveal on Scroll
+        const revealElements = document.querySelectorAll('.reveal-text');
+        revealElements.forEach(el => {
+            gsap.from(el.querySelectorAll('span'), {
+                scrollTrigger: {
+                    trigger: el,
+                    start: "top 85%",
+                },
+                y: 100,
+                opacity: 0,
+                duration: 1,
+                stagger: 0.1,
+                ease: "power4.out"
+            });
+        });
+
+        // Fade up items
+        const fadeUpItems = document.querySelectorAll('.gsap-fade-up');
+        fadeUpItems.forEach(el => {
+            gsap.from(el, {
+                scrollTrigger: {
+                    trigger: el,
+                    start: "top 85%",
+                },
+                y: 40,
+                opacity: 0,
+                duration: 1,
+                ease: "power3.out"
+            });
+        });
+
+        // Donation Button UI Logic
+        function selectAmount(clickedBtn) {
+            document.querySelectorAll('.amount-btn').forEach(btn => btn.classList.remove('active'));
+            clickedBtn.classList.add('active');
+        }
+    </script>
+</body>
+</html>
