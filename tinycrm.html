@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TinyCRM - Hospitality Lead System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .kanban-col { min-height: 70vh; }
+        .toast { transition: all 0.3s ease-in-out; }
+    </style>
+</head>
+<body class="bg-gray-100 font-sans h-screen flex overflow-hidden">
+
+    <!-- Sidebar -->
+    <aside class="w-64 bg-slate-900 text-white flex flex-col">
+        <div class="p-6">
+            <h1 class="text-2xl font-bold tracking-wider"><i class="fa-solid fa-house-chimney text-blue-400"></i> TinyCRM</h1>
+            <p class="text-xs text-slate-400 mt-1">Single Property Edition</p>
+        </div>
+        <nav class="flex-1 px-4 space-y-2">
+            <a href="#" class="block px-4 py-2 bg-blue-600 rounded-lg"><i class="fa-solid fa-list-check mr-2"></i> Pipeline View</a>
+            <a href="#" class="block px-4 py-2 text-slate-300 hover:bg-slate-800 rounded-lg"><i class="fa-solid fa-id-card mr-2"></i> ID & Check-In Tracker</a>
+            <a href="#" class="block px-4 py-2 text-slate-300 hover:bg-slate-800 rounded-lg"><i class="fa-solid fa-chart-pie mr-2"></i> Win/Loss Reports</a>
+        </nav>
+        <div class="p-4">
+            <button onclick="simulateNewLead()" class="w-full bg-green-600 hover:bg-green-500 text-white py-2 rounded-lg text-sm font-bold shadow-lg">
+                <i class="fa-brands fa-whatsapp"></i> Simulate Incoming Lead
+            </button>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 flex flex-col h-screen overflow-hidden">
+        <!-- Header -->
+        <header class="bg-white shadow-sm px-8 py-4 flex justify-between items-center z-10">
+            <h2 class="text-xl font-bold text-gray-800">Lead Pipeline</h2>
+            <div class="flex items-center space-x-4">
+                <span class="text-sm text-gray-500"><i class="fa-solid fa-robot text-purple-500"></i> AI Parsing: Active</span>
+                <span class="text-sm text-gray-500"><i class="fa-brands fa-whatsapp text-green-500"></i> WA Auto-Reply: Active</span>
+            </div>
+        </header>
+
+        <!-- Kanban Board -->
+        <div class="flex-1 overflow-x-auto p-8">
+            <div class="flex space-x-6 h-full" id="kanban-board">
+                <!-- Columns injected by JS -->
+            </div>
+        </div>
+    </main>
+
+    <!-- Lead Detail Modal (Hidden by default) -->
+    <div id="leadModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50">
+        <div class="bg-white rounded-xl shadow-2xl w-3/4 h-5/6 flex overflow-hidden">
+            <!-- Chat / Interaction History -->
+            <div class="w-1/2 bg-gray-50 border-r border-gray-200 flex flex-col">
+                <div class="p-4 bg-white border-b flex justify-between items-center">
+                    <h3 class="font-bold text-gray-800" id="modalName">Guest Name</h3>
+                    <span id="modalSource" class="text-xs px-2 py-1 rounded bg-gray-200">Source</span>
+                </div>
+                <div class="flex-1 p-4 overflow-y-auto space-y-4" id="chatHistory">
+                    <!-- Chat injected by JS -->
+                </div>
+                <div class="p-4 bg-white border-t">
+                    <input type="text" placeholder="Type a manual reply to take over..." class="w-full border rounded-lg px-4 py-2 text-sm focus:outline-none focus:border-blue-500">
+                </div>
+            </div>
+            
+            <!-- CRM Data & AI Parsing -->
+            <div class="w-1/2 p-6 flex flex-col overflow-y-auto">
+                <div class="flex justify-between items-start mb-6">
+                    <h3 class="text-lg font-bold text-gray-800"><i class="fa-solid fa-wand-magic-sparkles text-purple-500"></i> AI Extracted Data</h3>
+                    <button onclick="closeModal()" class="text-gray-400 hover:text-red-500"><i class="fa-solid fa-xmark text-xl"></i></button>
+                </div>
+
+                <div class="space-y-4">
+                    <div>
+                        <label class="text-xs text-gray-500 font-bold uppercase">Dates Requested</label>
+                        <div class="bg-purple-50 border border-purple-100 p-2 rounded text-sm text-gray-800" id="modalDates"></div>
+                    </div>
+                    <div>
+                        <label class="text-xs text-gray-500 font-bold uppercase">Guest Count</label>
+                        <div class="bg-purple-50 border border-purple-100 p-2 rounded text-sm text-gray-800" id="modalGuests"></div>
+                    </div>
+                    
+                    <hr class="my-4">
+
+                    <div>
+                        <label class="text-xs text-gray-500 font-bold uppercase mb-1 block">Lead Stage</label>
+                        <select class="w-full border rounded p-2 text-sm" id="stageSelect" onchange="checkWinLoss(this.value)">
+                            <option value="New">New</option>
+                            <option value="Replied">Replied</option>
+                            <option value="Qualified">Qualified</option>
+                            <option value="Quoted">Quoted</option>
+                            <option value="Won">Won (Booking Confirmed)</option>
+                            <option value="Lost">Lost</option>
+                        </select>
+                    </div>
+
+                    <!-- Win/Loss Logic (Hidden by default) -->
+                    <div id="winLossTracker" class="hidden bg-slate-100 p-4 rounded-lg mt-4 border border-slate-300">
+                        <label class="text-xs text-gray-600 font-bold uppercase block mb-1" id="winLossLabel">Reason</label>
+                        <select class="w-full border rounded p-2 text-sm mb-2" id="lossReason">
+                            <option>Budget too low</option>
+                            <option>Booked elsewhere</option>
+                            <option>Dates unavailable</option>
+                            <option>No reply</option>
+                            <option>Other</option>
+                        </select>
+                        <input type="text" id="winValue" placeholder="$ Booking Value" class="w-full border rounded p-2 text-sm hidden">
+                    </div>
+
+                    <hr class="my-4">
+
+                    <!-- Pre-Arrival Admin -->
+                    <div>
+                        <label class="text-xs text-gray-500 font-bold uppercase mb-2 block"><i class="fa-solid fa-passport"></i> Check-in Admin</label>
+                        <div class="space-y-2 text-sm">
+                            <label class="flex items-center space-x-2 cursor-pointer">
+                                <input type="checkbox" class="rounded text-blue-600" id="idReq"> <span>ID Requested</span>
+                            </label>
+                            <label class="flex items-center space-x-2 cursor-pointer">
+                                <input type="checkbox" class="rounded text-blue-600" id="idRec"> <span>ID Received</span>
+                            </label>
+                            <label class="flex items-center space-x-2 cursor-pointer">
+                                <input type="checkbox" class="rounded text-green-600" id="idApp"> <span class="font-bold text-green-700">Approved for Arrival</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="fixed bottom-5 right-5 bg-green-600 text-white px-6 py-3 rounded-lg shadow-xl translate-y-20 opacity-0 toast flex items-center space-x-3 z-50">
+        <i class="fa-brands fa-whatsapp text-2xl"></i>
+        <div>
+            <p class="font-bold text-sm">New WhatsApp Lead!</p>
+            <p class="text-xs text-green-100">AI auto-reply and brochure sent.</p>
+        </div>
+    </div>
+
+    <script>
+        const stages = ['New', 'Replied', 'Qualified', 'Quoted', 'Won', 'Lost'];
+        let leads = [
+            { id: 1, name: "+1 (555) 019-2834", source: "WhatsApp", icon: "fa-brands fa-whatsapp text-green-500", stage: "New", messyMsg: "Hey do u guys have availability for next thurs to sunday? its me my wife and our 2 dogs. how much?", dates: "Next Thursday - Sunday", guests: "2 Adults, 2 Pets", autoReplied: true },
+            { id: 2, name: "Airbnb Forward", source: "Email", icon: "fa-solid fa-envelope text-red-500", stage: "Qualified", messyMsg: "FWD: Inquiry from Sarah. [Dates: Oct 12 - Oct 15]. [Guests: 4]. Message: Hi, is the pool heated?", dates: "Oct 12 - Oct 15", guests: "4", autoReplied: true },
+            { id: 3, name: "TravelLife_99", source: "Instagram DM", icon: "fa-brands fa-instagram text-pink-500", stage: "Quoted", messyMsg: "Saw your reel! Price for a weekend in November?", dates: "Unspecified Weekend in Nov", guests: "Unknown", autoReplied: true }
+        ];
+
+        let activeLeadId = null;
+
+        function renderKanban() {
+            const board = document.getElementById('kanban-board');
+            board.innerHTML = '';
+
+            stages.forEach(stage => {
+                const col = document.createElement('div');
+                col.className = 'w-72 flex-shrink-0 flex flex-col bg-gray-200 rounded-lg p-3 kanban-col';
+                
+                const header = document.createElement('h3');
+                header.className = 'font-bold text-gray-700 mb-3 text-sm uppercase tracking-wide flex justify-between';
+                const stageCount = leads.filter(l => l.stage === stage).length;
+                header.innerHTML = `${stage} <span class="bg-gray-300 text-gray-700 px-2 rounded-full text-xs">${stageCount}</span>`;
+                col.appendChild(header);
+
+                leads.filter(l => l.stage === stage).forEach(lead => {
+                    const card = document.createElement('div');
+                    card.className = 'bg-white p-4 rounded shadow-sm mb-3 cursor-pointer hover:shadow-md border-l-4 border-blue-500 transition-all';
+                    card.onclick = () => openModal(lead);
+                    card.innerHTML = `
+                        <div class="flex justify-between items-start mb-2">
+                            <span class="font-bold text-sm text-gray-800">${lead.name}</span>
+                            <i class="${lead.icon}"></i>
+                        </div>
+                        <p class="text-xs text-gray-500 truncate">${lead.messyMsg}</p>
+                    `;
+                    col.appendChild(card);
+                });
+
+                board.appendChild(col);
+            });
+        }
+
+        function openModal(lead) {
+            activeLeadId = lead.id;
+            document.getElementById('leadModal').classList.remove('hidden');
+            document.getElementById('modalName').innerText = lead.name;
+            document.getElementById('modalSource').innerHTML = `<i class="${lead.icon}"></i> ${lead.source}`;
+            
+            document.getElementById('modalDates').innerText = lead.dates;
+            document.getElementById('modalGuests').innerText = lead.guests;
+            document.getElementById('stageSelect').value = lead.stage;
+            
+            document.getElementById('winLossTracker').classList.add('hidden');
+
+            const chat = document.getElementById('chatHistory');
+            chat.innerHTML = `
+                <div class="flex flex-col items-start">
+                    <span class="text-xs text-gray-400 mb-1">Incoming (Messy Format)</span>
+                    <div class="bg-gray-200 text-gray-800 p-3 rounded-lg rounded-tl-none text-sm max-w-[80%]">
+                        ${lead.messyMsg}
+                    </div>
+                </div>
+            `;
+
+            if(lead.autoReplied) {
+                chat.innerHTML += `
+                    <div class="flex flex-col items-end mt-4">
+                        <span class="text-xs text-green-500 font-bold mb-1"><i class="fa-solid fa-robot"></i> System Auto-Reply</span>
+                        <div class="bg-blue-600 text-white p-3 rounded-lg rounded-tr-none text-sm max-w-[80%]">
+                            Hello! Thank you for inquiring about our property. I have received your request. <br><br>
+                            Attached is our digital brochure. A human team member will review your dates shortly!
+                            <div class="mt-2 bg-blue-700 p-2 rounded flex items-center">
+                                <i class="fa-solid fa-file-pdf text-red-300 mr-2 text-lg"></i> Property_Brochure.pdf
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('leadModal').classList.add('hidden');
+            // Save stage changes
+            if(activeLeadId) {
+                const leadIndex = leads.findIndex(l => l.id === activeLeadId);
+                leads[leadIndex].stage = document.getElementById('stageSelect').value;
+                renderKanban();
+            }
+        }
+
+        function checkWinLoss(val) {
+            const tracker = document.getElementById('winLossTracker');
+            const reasonDrop = document.getElementById('lossReason');
+            const winVal = document.getElementById('winValue');
+            const label = document.getElementById('winLossLabel');
+
+            if(val === 'Lost') {
+                tracker.classList.remove('hidden');
+                reasonDrop.classList.remove('hidden');
+                winVal.classList.add('hidden');
+                label.innerText = 'Reason for Loss';
+            } else if (val === 'Won') {
+                tracker.classList.remove('hidden');
+                reasonDrop.classList.add('hidden');
+                winVal.classList.remove('hidden');
+                label.innerText = 'Booking Value ($)';
+            } else {
+                tracker.classList.add('hidden');
+            }
+        }
+
+        function simulateNewLead() {
+            const newLead = { 
+                id: Date.now(), 
+                name: "New Guest WhatsApp", 
+                source: "WhatsApp", 
+                icon: "fa-brands fa-whatsapp text-green-500", 
+                stage: "New", 
+                messyMsg: "Hi I saw your property on google. Is it free for christmas? 10 people.", 
+                dates: "Christmas", 
+                guests: "10", 
+                autoReplied: true 
+            };
+            leads.unshift(newLead);
+            renderKanban();
+
+            // Show Toast
+            const toast = document.getElementById('toast');
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+
+        // Initialize
+        renderKanban();
+    </script>
+</body>
+</html>

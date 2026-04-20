@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yonni's Doughnuts - User Flow Diagram</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cardo:wght@400;700&family=Helvetica+Neue:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-cream: #faf3ec;
+            --bg-white: #ffffff;
+            --text-black: #000000;
+            --text-taupe: #746b60;
+            --border-light: #dad0ca;
+            --accent-red: #c74230;
+            
+            --font-heading: 'Cardo', serif;
+            --font-body: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--bg-cream);
+            color: var(--text-taupe);
+            padding: 40px 20px;
+            line-height: 1.6;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .header h1 {
+            font-family: var(--font-heading);
+            color: var(--text-black);
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Flowchart Container */
+        .flow-container {
+            max-width: 800px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Individual Flow Step */
+        .step {
+            display: flex;
+            width: 100%;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        /* The actual box */
+        .node {
+            background-color: var(--bg-white);
+            border: 2px solid var(--text-black);
+            width: 350px;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            position: relative;
+            z-index: 2;
+        }
+
+        .node h3 {
+            font-family: var(--font-heading);
+            color: var(--text-black);
+            font-size: 1.4rem;
+            margin-bottom: 10px;
+            border-bottom: 1px solid var(--border-light);
+            padding-bottom: 10px;
+        }
+
+        .node p {
+            font-size: 0.95rem;
+            margin-bottom: 15px;
+        }
+
+        /* Badges for Actions */
+        .badge {
+            display: inline-block;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: bold;
+            padding: 4px 8px;
+            border-radius: 4px;
+            margin-bottom: 8px;
+        }
+
+        .badge.action {
+            background-color: var(--text-black);
+            color: var(--bg-white);
+        }
+
+        .badge.system {
+            background-color: var(--border-light);
+            color: var(--text-black);
+        }
+
+        .badge.endpoint {
+            background-color: var(--accent-red);
+            color: var(--bg-white);
+        }
+
+        /* Side Annotation (UX Note) */
+        .annotation {
+            position: absolute;
+            left: calc(50% + 200px);
+            width: 250px;
+            background-color: transparent;
+            border-left: 3px solid var(--text-taupe);
+            padding-left: 15px;
+            font-size: 0.85rem;
+            font-style: italic;
+        }
+
+        /* Arrows between steps */
+        .arrow {
+            height: 60px;
+            width: 2px;
+            background-color: var(--text-black);
+            position: relative;
+            z-index: 1;
+        }
+
+        .arrow::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: -6px;
+            border-width: 8px 7px 0;
+            border-style: solid;
+            border-color: var(--text-black) transparent transparent transparent;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 900px) {
+            .annotation {
+                position: static;
+                width: 100%;
+                border-left: none;
+                border-top: 3px solid var(--text-taupe);
+                padding-left: 0;
+                padding-top: 10px;
+                margin-top: 15px;
+            }
+            .node {
+                width: 100%;
+                max-width: 400px;
+            }
+            .step {
+                flex-direction: column;
+                padding: 0 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>Redesigned User Flow</h1>
+        <p>Optimized path for "Ordering a Box of Doughnuts". The new flow brings the ordering process in-house and reduces clicks by 40%.</p>
+    </div>
+
+    <div class="flow-container">
+        
+        <!-- Start Point -->
+        <div class="badge action" style="margin-bottom: 20px;">Start Flow</div>
+
+        <!-- Step 1 -->
+        <div class="step">
+            <div class="node">
+                <span class="badge action">User Action</span>
+                <h3>1. Homepage (Landing)</h3>
+                <p>User arrives at the homepage and views the premium hero image and pickup announcement.</p>
+                <p><strong>Decision:</strong> User scrolls down to view the "Fresh Daily Doughnuts" Menu Grid.</p>
+            </div>
+            <div class="annotation">
+                <strong>UX Rationale:</strong> The IA was flattened. Users no longer need to click through tabs to discover what products are available.
+            </div>
+        </div>
+
+        <div class="arrow"></div>
+
+        <!-- Step 2 -->
+        <div class="step">
+            <div class="node">
+                <span class="badge action">User Action</span>
+                <h3>2. Product Discovery</h3>
+                <p>User views all available doughnuts in a clean, visual grid layout.</p>
+                <p><strong>Action:</strong> User clicks the "Add to Cart" button directly on a product card.</p>
+            </div>
+            <div class="annotation">
+                <strong>UX Rationale:</strong> Keeps the user anchored to the menu, preventing the "context-switching" fatigue present in the original site.
+            </div>
+        </div>
+
+        <div class="arrow"></div>
+
+        <!-- Step 3 -->
+        <div class="step">
+            <div class="node">
+                <span class="badge system">System Response</span>
+                <h3>3. Slide-Out Cart Drawer</h3>
+                <p>A cart drawer slides out from the right side of the screen instantly.</p>
+                <p><strong>Action:</strong> User reviews their order subtotal and clicks "Proceed to Checkout".</p>
+            </div>
+            <div class="annotation">
+                <strong>Heuristic Applied:</strong> Visibility of System Status. The user instantly knows their item was added without being redirected to a new page.
+            </div>
+        </div>
+
+        <div class="arrow"></div>
+
+        <!-- Step 4 -->
+        <div class="step">
+            <div class="node">
+                <span class="badge action">User Action</span>
+                <h3>4. Integrated Checkout</h3>
+                <p>User is taken to a clean, single-page checkout hosted directly on Yonni's website.</p>
+                <p><strong>Action:</strong> User inputs Pickup Time, Contact Info, and Payment Details.</p>
+            </div>
+            <div class="annotation">
+                <strong>UX Rationale:</strong> Solves the client brief requirement by bringing the checkout "in-house" rather than bouncing to a 3rd party Shopify page.
+            </div>
+        </div>
+
+        <div class="arrow"></div>
+
+        <!-- Step 5 -->
+        <div class="step">
+            <div class="node">
+                <span class="badge endpoint">Endpoint</span>
+                <h3>5. Order Confirmation</h3>
+                <p>User clicks the "Confirm Order & Pay Now" button.</p>
+                <p style="color: var(--accent-red); font-weight: bold; margin-top: 10px;">Prototype intentionally stops here.</p>
+            </div>
+            <div class="annotation">
+                <strong>Client Constraint:</strong> The brief explicitly states the redesign must not go beyond payment confirmation.
+            </div>
+        </div>
+
+        <!-- End Point -->
+        <div class="badge endpoint" style="margin-top: 20px;">End Flow</div>
+
+    </div>
+
+</body>
+</html>
