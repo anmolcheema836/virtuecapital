@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Crumbs&Flake® | Break Your Diet. Not Your Vibe.</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
+
+    <style>
+        :root {
+            --pink: #FFD1DC;
+            --yellow: #FFF2B2;
+            --lavender: #E6D6FF;
+            --mint: #DFFFE2;
+            --dark: #111111;
+            --light: #FAFAFA;
+            --font-heading: 'Syne', sans-serif;
+            --font-body: 'Inter', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            cursor: none; /* Custom cursor */
+        }
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--light);
+            color: var(--dark);
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(255, 209, 220, 0.4) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, rgba(230, 214, 255, 0.4) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(255, 242, 178, 0.4) 0px, transparent 50%),
+                radial-gradient(at 0% 100%, rgba(223, 255, 226, 0.4) 0px, transparent 50%);
+            background-attachment: fixed;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Noise Overlay */
+        .noise {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.04;
+            background: url('data:image/svg+xml;utf8,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)"/%3E%3C/svg%3E');
+        }
+
+        /* Custom Cursor */
+        .cursor {
+            position: fixed;
+            top: 0; left: 0;
+            width: 20px; height: 20px;
+            background: var(--dark);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 10000;
+            transform: translate(-50%, -50%);
+            transition: width 0.2s, height 0.2s, background 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0px;
+        }
+        .cursor.hover {
+            width: 60px; height: 60px;
+            background: var(--pink);
+            mix-blend-mode: difference;
+        }
+        .cursor.emoji-hover {
+            width: 50px; height: 50px;
+            background: transparent;
+            font-size: 30px;
+            mix-blend-mode: normal;
+        }
+
+        /* Loader */
+        .loader {
+            position: fixed;
+            inset: 0;
+            background: var(--dark);
+            z-index: 99999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            color: var(--light);
+            font-family: var(--font-heading);
+        }
+        .loader h1 {
+            font-size: clamp(2rem, 5vw, 3rem);
+            animation: pulse 1.5s infinite;
+        }
+
+        /* Typography */
+        h1, h2, h3, h4 {
+            font-family: var(--font-heading);
+            text-transform: uppercase;
+            line-height: 0.9;
+            letter-spacing: -0.02em;
+        }
+        
+        .title-huge {
+            font-size: clamp(2.8rem, 8vw, 9rem);
+            text-align: center;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .text-outline {
+            color: transparent;
+            -webkit-text-stroke: 1.5px var(--dark);
+        }
+
+        /* Nav - Fixed for real logo colors */
+        nav {
+            position: fixed;
+            top: 0; width: 100%;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            background: rgba(250, 250, 250, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+        .logo img { 
+            height: 45px; 
+            width: auto;
+            object-fit: contain;
+            display: block;
+        }
+        .nav-links { display: flex; gap: 2rem; align-items: center; }
+        .nav-links a { color: var(--dark); text-decoration: none; font-weight: 600; text-transform: uppercase; font-size: 0.9rem; transition: color 0.3s;}
+        .nav-links a:hover { color: var(--pink); }
+
+        /* Buttons */
+        .btn {
+            padding: 1rem 2.5rem;
+            border: none;
+            border-radius: 50px;
+            font-family: var(--font-heading);
+            font-size: clamp(0.9rem, 2vw, 1.2rem);
+            font-weight: 700;
+            background: var(--dark);
+            color: var(--light);
+            text-transform: uppercase;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            white-space: nowrap;
+        }
+        .btn:hover {
+            transform: scale(1.05);
+            animation: jelly 0.5s ease;
+        }
+        .btn-light {
+            background: var(--light);
+            color: var(--dark);
+            border: 2px solid var(--dark);
+        }
+
+        /* Sections */
+        section {
+            padding: 8rem 2rem;
+            position: relative;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        /* Hero */
+        .hero {
+            height: 100vh;
+            min-height: 600px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            padding-top: 5rem;
+        }
+        .hero-sub {
+            font-size: clamp(1rem, 2.5vw, 1.2rem);
+            font-weight: 500;
+            margin-bottom: 2rem;
+            text-align: center;
+            z-index: 2;
+            padding: 0 1rem;
+        }
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            z-index: 2;
+        }
+        .floating-element {
+            position: absolute;
+            border-radius: 20px;
+            pointer-events: none;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            animation: float 6s ease-in-out infinite;
+            z-index: 1;
+        }
+        .el-1 { top: 20%; left: 10%; width: clamp(150px, 15vw, 250px); height: clamp(180px, 20vw, 300px); background: url('https://images.unsplash.com/photo-1578985545062-69928b1d9587?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80') center/cover; transform: rotate(-10deg); }
+        .el-2 { top: 40%; right: 5%; width: clamp(120px, 12vw, 200px); height: clamp(150px, 15vw, 250px); background: url('https://images.unsplash.com/photo-1587668178277-295251f900ce?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80') center/cover; transform: rotate(15deg); animation-delay: -2s;}
+        .el-3 { bottom: 10%; left: 20%; width: clamp(100px, 10vw, 180px); height: clamp(100px, 10vw, 180px); background: url('https://images.unsplash.com/photo-1621303837174-89787a7d4729?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80') center/cover; border-radius: 50%; transform: rotate(5deg); animation-delay: -4s;}
+
+        /* Marquee - Fixed looping */
+        .marquee {
+            background: var(--dark);
+            color: var(--light);
+            padding: 1.2rem 0;
+            overflow: hidden;
+            display: flex;
+            font-family: var(--font-heading);
+            font-size: clamp(1.2rem, 3vw, 2rem);
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+        .marquee-inner {
+            display: flex;
+            width: max-content;
+            animation: marquee 20s linear infinite;
+        }
+        .marquee-inner span {
+            padding: 0 2rem;
+        }
+
+        /* Products Grid */
+        .viral-products {
+            background: transparent;
+        }
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+        }
+        .section-header h2 {
+            font-size: clamp(2.5rem, 6vw, 5rem);
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+        .product-card {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 30px;
+            padding: 1.2rem;
+            border: 1px solid rgba(255,255,255,0.8);
+            transition: all 0.4s ease;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+        .product-card:hover {
+            transform: translateY(-8px) scale(1.01);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.06);
+            background: rgba(255, 255, 255, 0.9);
+        }
+        .img-wrap {
+            width: 100%;
+            height: clamp(250px, 30vh, 350px);
+            border-radius: 20px;
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+        .img-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        .product-card:hover .img-wrap img {
+            transform: scale(1.08);
+        }
+        .product-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            padding-right: 65px; /* Critical fix: Creates safe space for absolute button */
+            position: relative;
+            flex-grow: 1;
+            justify-content: flex-end;
+        }
+        .product-info h3 { 
+            font-size: clamp(1.2rem, 2.5vw, 1.5rem); 
+            line-height: 1.1;
+        }
+        .product-info p { 
+            font-size: 0.9rem; 
+            opacity: 0.7; 
+            line-height: 1.4;
+        }
+        .price { 
+            font-weight: 600; 
+            font-size: 1.2rem; 
+            margin-top: auto;
+            color: var(--dark);
+        }
+        
+        .add-to-cart {
+            width: 50px; height: 50px;
+            background: var(--dark);
+            color: var(--light);
+            border-radius: 50%;
+            display: flex; justify-content: center; align-items: center;
+            font-size: 1.5rem;
+            border: none;
+            position: absolute;
+            bottom: 1.2rem; right: 1.2rem;
+            transition: transform 0.3s, background 0.3s, color 0.3s;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .add-to-cart:hover {
+            transform: scale(1.1) rotate(90deg);
+            background: var(--pink);
+            color: var(--dark);
+        }
+
+        /* Why Us */
+        .why-us-wrapper {
+            padding: 2rem;
+        }
+        .why-us {
+            background: var(--lavender);
+            border-radius: 40px;
+            padding: clamp(3rem, 8vw, 6rem) clamp(1.5rem, 4vw, 2rem);
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+        .feature {
+            background: rgba(255,255,255,0.4);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 2.5rem 1.5rem;
+            border-radius: 30px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.5);
+            transition: transform 0.3s ease;
+        }
+        .feature:hover {
+            transform: translateY(-5px);
+        }
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        .feature h3 { font-size: 1.3rem; margin-bottom: 0.8rem; }
+        .feature p { font-size: 0.95rem; opacity: 0.8; line-height: 1.4;}
+
+        /* Story Experience */
+        .story {
+            min-height: 80vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+        }
+        .story h2 {
+            font-size: clamp(2.5rem, 8vw, 7rem);
+            max-width: 90%;
+            margin: 0 auto;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--dark);
+            color: var(--light);
+            padding: clamp(4rem, 10vw, 6rem) 2rem 2rem;
+            border-top-left-radius: 40px;
+            border-top-right-radius: 40px;
+            position: relative;
+            z-index: 10;
+        }
+        .footer-huge {
+            font-size: clamp(2.5rem, 8vw, 15rem);
+            text-align: center;
+            font-family: var(--font-heading);
+            line-height: 0.8;
+            margin-bottom: clamp(2rem, 6vw, 4rem);
+            color: var(--pink);
+            word-wrap: break-word;
+        }
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 2rem;
+            font-size: 0.9rem;
+            padding-bottom: 4rem; /* Safe space for mobile CTA */
+        }
+
+        /* Mobile Sticky CTA */
+        .mobile-cta {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: calc(100% - 40px);
+            background: var(--pink);
+            color: var(--dark);
+            padding: 1.2rem;
+            border-radius: 50px;
+            text-align: center;
+            font-family: var(--font-heading);
+            font-weight: 800;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            z-index: 999;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            text-decoration: none;
+            transition: transform 0.2s ease;
+        }
+        .mobile-cta:active {
+            transform: translateX(-50%) scale(0.95);
+        }
+
+        /* Animations */
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(var(--rot)); }
+            50% { transform: translateY(-20px) rotate(calc(var(--rot) + 5deg)); }
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(0.95); }
+        }
+        @keyframes jelly {
+            0%, 100% { transform: scale(1, 1); }
+            25% { transform: scale(0.9, 1.1); }
+            50% { transform: scale(1.1, 0.9); }
+            75% { transform: scale(0.95, 1.05); }
+        }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 992px) {
+            .el-1, .el-2, .el-3 { display: none; } 
+        }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; } 
+            nav { padding: 1rem; justify-content: center; } 
+            
+            section { padding: 4rem 1.5rem; }
+            .hero { padding-top: 6rem; }
+            .hero-buttons { flex-direction: column; width: 100%; max-width: 300px; }
+            .hero-buttons .btn { width: 100%; }
+
+            .why-us-wrapper { padding: 1rem; }
+            .why-us { padding: 4rem 1.5rem; border-radius: 30px; }
+            
+            .footer-bottom { flex-direction: column; text-align: center; padding-bottom: 5rem;}
+            
+            .mobile-cta { display: block; } 
+        }
+
+        @media (max-width: 480px) {
+            .grid { grid-template-columns: 1fr; } 
+            .section-header { text-align: center; justify-content: center; }
+            .text-outline { -webkit-text-stroke: 1px var(--dark); }
+        }
+
+        /* Disable Custom Cursor on Touch Devices */
+        @media (hover: none) and (pointer: coarse) {
+            * { cursor: auto !important; }
+            .cursor { display: none !important; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="loader">
+        <h1>Baking... 🍪</h1>
+    </div>
+
+    <div class="cursor"></div>
+    <div class="noise"></div>
+
+    <nav>
+        <div class="logo">
+            <img src="crumbslogo.png" alt="Crumbs&Flake®" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+            <span style="display:none; font-family: var(--font-heading); font-size: 1.2rem; font-weight: 800;">CRUMBS&FLAKE®</span>
+        </div>
+        <div class="nav-links">
+            <a href="#menu" class="hover-target">Menu</a>
+            <a href="#about" class="hover-target">Our Story</a>
+            <a href="#cart" class="hover-target">Cart (0)</a>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="el-1 floating-element hover-emoji" style="--rot: -10deg;" data-emoji="🍰"></div>
+        <div class="el-2 floating-element hover-emoji" style="--rot: 15deg;" data-emoji="✨"></div>
+        <div class="el-3 floating-element hover-emoji" style="--rot: 5deg;" data-emoji="🍩"></div>
+        
+        <h1 class="title-huge gs-reveal">BREAK YOUR <span class="text-outline">DIET.</span><br>NOT YOUR VIBE.</h1>
+        <p class="hero-sub gs-reveal">Desserts that look illegal and taste unreal.</p>
+        <div class="hero-buttons gs-reveal">
+            <button class="btn hover-target">Order Now</button>
+            <button class="btn btn-light hover-target">Explore Menu</button>
+        </div>
+    </section>
+
+    <div class="marquee">
+        <div class="marquee-inner">
+            <span>WARNING: HIGHLY ADDICTIVE ✨</span>
+            <span>THIS CAKE IS BETTER THAN YOUR EX ✨</span>
+            <span>NOT SHARING IS SELF-CARE ✨</span>
+            <span>WARNING: HIGHLY ADDICTIVE ✨</span>
+            <span>THIS CAKE IS BETTER THAN YOUR EX ✨</span>
+            <span>NOT SHARING IS SELF-CARE ✨</span>
+            <span>WARNING: HIGHLY ADDICTIVE ✨</span>
+            <span>THIS CAKE IS BETTER THAN YOUR EX ✨</span>
+            <span>NOT SHARING IS SELF-CARE ✨</span>
+            <span>WARNING: HIGHLY ADDICTIVE ✨</span>
+            <span>THIS CAKE IS BETTER THAN YOUR EX ✨</span>
+            <span>NOT SHARING IS SELF-CARE ✨</span>
+        </div>
+    </div>
+
+    <section class="viral-products" id="menu">
+        <div class="section-header gs-reveal">
+            <h2>VIRAL<br>CRAVINGS</h2>
+            <button class="btn btn-light hover-target" style="display: inline-block;">View All</button>
+        </div>
+        <div class="grid">
+            <div class="product-card gs-reveal hover-target">
+                <div class="img-wrap">
+                    <img src="https://images.unsplash.com/photo-1588195538326-c5b1e9f80a1b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Dream Cake" loading="lazy">
+                </div>
+                <div class="product-info">
+                    <h3>The 5-in-1 Dream Cake</h3>
+                    <p>Viral smash cake. Chocolate overload.</p>
+                    <div class="price">₹1299</div>
+                </div>
+                <button class="add-to-cart hover-target" aria-label="Add to cart">+</button>
+            </div>
+            <div class="product-card gs-reveal hover-target">
+                <div class="img-wrap">
+                    <img src="https://cdn.shopify.com/s/files/1/0638/6217/7980/files/a4b09dc978.webp?v=1749885730" alt="Aesthetic Bento Cake" loading="lazy">
+                </div>
+                <div class="product-info">
+                    <h3>Aesthetic Bento</h3>
+                    <p>Korean style mini cake. Custom designs.</p>
+                    <div class="price">₹550</div>
+                </div>
+                <button class="add-to-cart hover-target" aria-label="Add to cart">+</button>
+            </div>
+            <div class="product-card gs-reveal hover-target">
+                <div class="img-wrap">
+                    <img src="https://images.unsplash.com/photo-1558961363-fa8fdf82db35?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Cookies" loading="lazy">
+                </div>
+                <div class="product-info">
+                    <h3>Chunky NYC Cookies</h3>
+                    <p>Gooey center, crispy edges.</p>
+                    <div class="price">₹250</div>
+                </div>
+                <button class="add-to-cart hover-target" aria-label="Add to cart">+</button>
+            </div>
+        </div>
+    </section>
+
+    <div class="why-us-wrapper" id="about">
+        <section class="why-us">
+            <h2 class="title-huge gs-reveal">MAIN CHARACTER<br>ENERGY</h2>
+            <div class="features-grid">
+                <div class="feature gs-reveal">
+                    <div class="feature-icon">👩‍🍳</div>
+                    <h3>Freshly Baked</h3>
+                    <p>Made fresh on order by Vinaika Aggarwal for peak quality.</p>
+                </div>
+                <div class="feature gs-reveal">
+                    <div class="feature-icon">✨</div>
+                    <h3>Aesthetic AF</h3>
+                    <p>Designed for your Instagram feed, styled to perfection.</p>
+                </div>
+                <div class="feature gs-reveal">
+                    <div class="feature-icon">🍫</div>
+                    <h3>Premium Stuff</h3>
+                    <p>Only the finest couverture chocolates and real ingredients.</p>
+                </div>
+                <div class="feature gs-reveal">
+                    <div class="feature-icon">🎁</div>
+                    <h3>Gifting Goals</h3>
+                    <p>Luxury packaging that makes unboxing an experience.</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <section class="story">
+        <h2 class="gs-reveal story-text">Not just a dessert.<br>It's a <span style="color: var(--pink)">Dopamine</span> hit.</h2>
+    </section>
+
+    <footer>
+        <h2 class="footer-huge gs-reveal hover-emoji" data-emoji="💖">CRUMBS&FLAKE</h2>
+        <div style="text-align: center; margin-bottom: clamp(2rem, 5vw, 4rem);">
+            <button class="btn hover-target" style="background: var(--pink); color: var(--dark);">Satisfy Cravings Now</button>
+        </div>
+        <div class="footer-bottom">
+            <div>© 2026 Crumbs&Flake®. Delhi, India.</div>
+            <div style="display: flex; gap: 1.5rem;">
+                <a href="#" style="color: var(--light); text-decoration: none; font-weight: 500;" class="hover-target">Instagram</a>
+                <a href="#" style="color: var(--light); text-decoration: none; font-weight: 500;" class="hover-target">WhatsApp</a>
+            </div>
+        </div>
+    </footer>
+
+    <a href="#menu" class="mobile-cta">
+        Order Now
+    </a>
+
+    <script>
+        // Remove Loader
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                gsap.to('.loader', {
+                    yPercent: -100,
+                    duration: 0.8,
+                    ease: "power4.inOut",
+                    onComplete: () => { document.querySelector('.loader').style.display = 'none'; }
+                });
+            }, 1000);
+        });
+
+        // Initialize Lenis for Smooth Scroll (Only if not on touch device for better performance)
+        const isTouchDevice = (('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0));
+        
+        if (!isTouchDevice) {
+            const lenis = new Lenis({
+                duration: 1.2,
+                easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+                direction: 'vertical',
+                gestureDirection: 'vertical',
+                smooth: true,
+                mouseMultiplier: 1,
+                smoothTouch: false,
+                touchMultiplier: 2,
+                infinite: false,
+            });
+
+            function raf(time) {
+                lenis.raf(time);
+                requestAnimationFrame(raf);
+            }
+            requestAnimationFrame(raf);
+        }
+
+        // Custom Cursor Logic
+        if (!isTouchDevice) {
+            const cursor = document.querySelector('.cursor');
+            const hoverTargets = document.querySelectorAll('.hover-target');
+            const emojiTargets = document.querySelectorAll('.hover-emoji');
+
+            document.addEventListener('mousemove', (e) => {
+                cursor.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
+            });
+
+            hoverTargets.forEach(target => {
+                target.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+                target.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+            });
+
+            emojiTargets.forEach(target => {
+                target.addEventListener('mouseenter', (e) => {
+                    cursor.classList.add('emoji-hover');
+                    cursor.innerText = target.getAttribute('data-emoji');
+                });
+                target.addEventListener('mouseleave', () => {
+                    cursor.classList.remove('emoji-hover');
+                    cursor.innerText = '';
+                });
+            });
+        }
+
+        // Add to Cart Micro-interaction
+        document.querySelectorAll('.add-to-cart').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                const originalText = this.innerText;
+                this.innerText = '✓';
+                this.style.background = 'var(--mint)';
+                this.style.color = 'var(--dark)';
+                
+                // Create bursting emojis
+                for(let i=0; i<3; i++) {
+                    let particle = document.createElement('div');
+                    particle.innerText = '✨';
+                    particle.style.position = 'fixed';
+                    particle.style.left = e.clientX + 'px';
+                    particle.style.top = e.clientY + 'px';
+                    particle.style.pointerEvents = 'none';
+                    particle.style.zIndex = '9999';
+                    document.body.appendChild(particle);
+                    
+                    gsap.to(particle, {
+                        x: (Math.random() - 0.5) * 100,
+                        y: (Math.random() - 0.5) * 100 - 50,
+                        opacity: 0,
+                        duration: 1,
+                        onComplete: () => particle.remove()
+                    });
+                }
+
+                setTimeout(() => {
+                    this.innerText = originalText;
+                    this.style.background = '';
+                    this.style.color = '';
+                }, 2000);
+            });
+        });
+
+        // GSAP Scroll Animations
+        gsap.registerPlugin(ScrollTrigger);
+
+        const revealElements = document.querySelectorAll(".gs-reveal");
+        revealElements.forEach((elem) => {
+            gsap.fromTo(elem, 
+                { y: 40, opacity: 0 }, 
+                {
+                    y: 0,
+                    opacity: 1,
+                    duration: 0.8,
+                    ease: "power3.out",
+                    scrollTrigger: {
+                        trigger: elem,
+                        start: "top 85%",
+                        toggleActions: "play none none reverse"
+                    }
+                }
+            );
+        });
+
+        // Parallax effect on Story section text (disable on mobile to save performance)
+        if(!isTouchDevice) {
+            gsap.to(".story-text", {
+                yPercent: -50,
+                ease: "none", 
+                scrollTrigger: {
+                    trigger: ".story",
+                    start: "top bottom",
+                    end: "bottom top",
+                    scrub: true
+                }
+            });
+        }
+    </script>
+</body>
+</html>

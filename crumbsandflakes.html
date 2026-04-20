@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="en" class="antialiased">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Crumbs&Flake® | Break Your Diet. Not Your Vibe.</title>
+    <meta name="description" content="Premium Gen-Z dessert brand in Delhi. Dream cakes, bombolinis, bento cakes, and aesthetic desserts.">
+
+    <!-- Fonts -->
+    <link href="https://api.fontshare.com/v2/css?f[]=clash-display@200,300,400,500,600,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brandPink: '#FFD1DC',
+                        brandYellow: '#FFF2B2',
+                        brandLavender: '#E6D6FF',
+                        brandMint: '#DFFFE2',
+                        brandDark: '#121212',
+                    },
+                    fontFamily: {
+                        heading: ['Clash Display', 'sans-serif'],
+                        body: ['Inter', 'sans-serif'],
+                    },
+                    animation: {
+                        'spin-slow': 'spin 10s linear infinite',
+                        'marquee': 'marquee 25s linear infinite',
+                    },
+                    keyframes: {
+                        marquee: {
+                            '0%': { transform: 'translateX(0%)' },
+                            '100%': { transform: 'translateX(-50%)' }, /* Move exactly half the width for a seamless loop */
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Styles & Overrides */
+        :root {
+            --cursor-size: 20px;
+        }
+
+        /* Strict overflow hidden to prevent marquee breaking out on mobile */
+        html, body {
+            max-width: 100vw;
+            overflow-x: hidden;
+            background-color: #FFFDF9;
+            color: #121212;
+        }
+
+        /* Custom cursor hidden on touch devices */
+        @media (pointer: fine) {
+            body { cursor: none; }
+        }
+
+        /* Noise Texture */
+        .noise {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            pointer-events: none;
+            z-index: 9998;
+            opacity: 0.04;
+            background: url('data:image/svg+xml;utf8,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)"/%3E%3C/svg%3E');
+        }
+
+        /* Custom Cursor */
+        #cursor {
+            position: fixed;
+            top: 0; left: 0;
+            width: var(--cursor-size);
+            height: var(--cursor-size);
+            background-color: #121212;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: width 0.3s, height 0.3s, background-color 0.3s;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            font-size: 0px;
+        }
+        
+        @media (pointer: fine) {
+            #cursor { display: flex; }
+        }
+        
+        #cursor.hover-mode {
+            width: 60px;
+            height: 60px;
+            background-color: #FFD1DC;
+            font-size: 24px;
+            mix-blend-mode: normal;
+        }
+
+        /* Glassmorphism */
+        .glass {
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        /* Hide Scrollbar */
+        ::-webkit-scrollbar { width: 0px; height: 0px; background: transparent; }
+
+        /* Typography outlines */
+        .text-outline {
+            color: transparent;
+            -webkit-text-stroke: 1.5px #121212;
+        }
+        @media (min-width: 768px) {
+            .text-outline { -webkit-text-stroke: 2px #121212; }
+        }
+
+        /* Jelly Button Animation */
+        .btn-jelly:hover {
+            animation: jelly 0.5s ease;
+        }
+        @keyframes jelly {
+            0%, 100% { transform: scale(1, 1); }
+            25% { transform: scale(0.95, 1.05); }
+            50% { transform: scale(1.05, 0.95); }
+            75% { transform: scale(0.98, 1.02); }
+        }
+
+        /* Gradient Blob Backgrounds */
+        .blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            z-index: -1;
+            opacity: 0.6;
+        }
+
+        /* Smash Cake Effect */
+        .smash-overlay {
+            position: absolute; inset: 0; background: url('https://www.transparenttextures.com/patterns/shattered-glass.png');
+            opacity: 0; pointer-events: none; transition: opacity 0.2s;
+        }
+        .is-smashed .smash-overlay { opacity: 0.8; }
+        
+        .floating-emoji {
+            position: fixed;
+            pointer-events: none;
+            font-size: 2rem;
+            animation: floatUp 1.5s ease-out forwards;
+            z-index: 9999;
+        }
+        
+        @keyframes floatUp {
+            0% { transform: translateY(0) scale(1); opacity: 1; }
+            100% { transform: translateY(-100px) scale(1.5); opacity: 0; }
+        }
+
+        /* Loader */
+        #loader {
+            position: fixed; inset: 0; z-index: 10000; background: #FFF2B2;
+            display: flex; align-items: center; justify-content: center; flex-direction: column;
+        }
+
+        /* Make logo immune to any global filters */
+        .brand-logo {
+            filter: none !important;
+            -webkit-filter: none !important;
+            mix-blend-mode: normal !important;
+        }
+    </style>
+</head>
+<body class="font-body selection:bg-brandPink selection:text-brandDark">
+
+    <!-- Preloader -->
+    <div id="loader">
+        <div class="text-6xl mb-4 animate-bounce">🍪</div>
+        <h1 class="font-heading text-2xl font-bold uppercase tracking-widest text-brandDark text-center px-4">Baking your aesthetic...</h1>
+    </div>
+
+    <!-- Noise & Cursor -->
+    <div class="noise"></div>
+    <div id="cursor">✨</div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-4 left-4 right-4 z-50 glass rounded-full px-5 py-3 flex justify-between items-center transition-transform duration-300" id="navbar">
+        <a href="#" class="flex items-center hover-target">
+            <!-- Explicitly showing crumbslogo.png with absolute original colors -->
+            <img src="crumbslogo.png" alt="Crumbs&Flake Logo" class="brand-logo h-8 md:h-10 w-auto object-contain block" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+            <!-- Fallback text just in case the image is missing -->
+            <span class="font-heading font-bold text-xl md:text-2xl tracking-tight hidden">Crumbs&Flake<sup class="text-xs">®</sup></span>
+        </a>
+        
+        <div class="hidden md:flex items-center gap-8 font-medium">
+            <a href="#menu" class="hover:text-brandPink transition-colors hover-target">Menu</a>
+            <a href="#viral" class="hover:text-brandPink transition-colors hover-target">Viral Hits</a>
+            <a href="#about" class="hover:text-brandPink transition-colors hover-target">Our Vibe</a>
+        </div>
+
+        <div class="flex items-center gap-4">
+            <button class="hover-target relative flex items-center justify-center p-2 rounded-full bg-white/50 hover:bg-brandPink transition-colors">
+                <i data-lucide="shopping-bag" class="w-5 h-5 md:w-6 md:h-6"></i>
+                <span class="absolute -top-1 -right-1 bg-brandDark text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center">2</span>
+            </button>
+            <button class="md:hidden hover-target p-2">
+                <i data-lucide="menu" class="w-6 h-6"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section class="relative h-[100svh] w-full flex items-center justify-center overflow-hidden pt-16">
+        <!-- Background Blobs -->
+        <div class="blob bg-brandPink w-[300px] md:w-[500px] h-[300px] md:h-[500px] top-0 left-[-10%] mix-blend-multiply"></div>
+        <div class="blob bg-brandYellow w-[250px] md:w-[400px] h-[250px] md:h-[400px] bottom-[10%] right-[-5%] mix-blend-multiply"></div>
+        <div class="blob bg-brandLavender w-[400px] md:w-[600px] h-[400px] md:h-[600px] bottom-[-10%] left-[20%] mix-blend-multiply"></div>
+
+        <!-- Floating Elements (GSAP) -->
+        <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Cake" class="floating-el absolute top-[15%] right-[5%] md:top-[20%] md:right-[15%] w-24 md:w-48 h-24 md:h-48 object-cover rounded-full shadow-2xl rotate-12 border-4 border-white opacity-80 md:opacity-100 z-0">
+        <img src="https://images.unsplash.com/photo-1551024506-0bccd828d307?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Dessert" class="floating-el absolute bottom-[20%] left-[5%] md:bottom-[25%] md:left-[10%] w-20 md:w-40 h-20 md:h-40 object-cover rounded-3xl shadow-xl -rotate-6 border-4 border-white opacity-80 md:opacity-100 z-0">
+
+        <div class="text-center z-10 px-4 w-full flex flex-col items-center">
+            <div class="overflow-hidden">
+                <h1 class="hero-text font-heading text-[14vw] md:text-[8vw] leading-[0.9] font-bold text-outline uppercase">Break Your Diet.</h1>
+            </div>
+            <div class="overflow-hidden">
+                <h1 class="hero-text font-heading text-[14vw] md:text-[8vw] leading-[0.9] font-bold uppercase text-brandDark">Not Your Vibe.</h1>
+            </div>
+            <p class="hero-subtext mt-6 text-base md:text-xl font-medium max-w-md mx-auto text-gray-800">Desserts that look illegal and taste unreal. Delhi's favorite Gen-Z bakery.</p>
+            
+            <div class="mt-8 flex flex-col sm:flex-row gap-4 hero-btns w-full sm:w-auto px-4 sm:px-0">
+                <button class="btn-jelly bg-brandDark text-white px-8 py-4 rounded-full font-semibold text-lg hover-target flex items-center justify-center gap-2 w-full sm:w-auto shadow-xl">
+                    Order Now <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                </button>
+                <button class="btn-jelly bg-white/60 backdrop-blur-md px-8 py-4 rounded-full font-semibold text-lg border-2 border-brandDark hover-target w-full sm:w-auto">
+                    Explore Menu
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- WRAPPED MARQUEE TO PREVENT MOBILE BREAKOUT -->
+    <div class="w-full max-w-[100vw] overflow-hidden relative z-20 -my-2 py-6 pointer-events-none">
+        <div class="w-[110vw] -ml-[5vw] bg-brandDark text-brandMint py-3 md:py-4 flex border-y-2 border-brandDark transform -rotate-2 shadow-xl">
+            <!-- Double content for seamless looping -->
+            <div class="animate-marquee flex w-max font-heading text-lg md:text-2xl font-bold uppercase tracking-wider">
+                <div class="flex whitespace-nowrap">
+                    <span class="mx-4">• WARNING: HIGHLY ADDICTIVE</span>
+                    <span class="mx-4">• NOT SHARING IS SELF-CARE</span>
+                    <span class="mx-4">• MAIN CHARACTER ENERGY</span>
+                    <span class="mx-4">• DELHI'S FINEST</span>
+                </div>
+                <div class="flex whitespace-nowrap">
+                    <span class="mx-4">• WARNING: HIGHLY ADDICTIVE</span>
+                    <span class="mx-4">• NOT SHARING IS SELF-CARE</span>
+                    <span class="mx-4">• MAIN CHARACTER ENERGY</span>
+                    <span class="mx-4">• DELHI'S FINEST</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- VIRAL PRODUCTS (Horizontal Scroll) -->
+    <section id="viral" class="py-20 pl-4 md:pl-12 bg-white relative z-10">
+        <div class="pr-4 md:pr-12 mb-10 flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
+            <div>
+                <h2 class="font-heading text-4xl md:text-7xl font-bold uppercase leading-tight">The Viral<br class="hidden md:block">Collection</h2>
+                <p class="mt-2 text-gray-600 font-medium">As seen on your FYP.</p>
+            </div>
+            <div class="hidden md:flex gap-2">
+                <button class="w-12 h-12 rounded-full border border-gray-300 flex items-center justify-center hover:bg-brandPink hover-target transition-colors"><i data-lucide="arrow-left"></i></button>
+                <button class="w-12 h-12 rounded-full bg-brandDark text-white flex items-center justify-center hover-target transition-colors"><i data-lucide="arrow-right"></i></button>
+            </div>
+        </div>
+
+        <!-- Snap mandatory container -->
+        <div class="flex overflow-x-auto gap-4 md:gap-6 pb-12 pr-4 md:pr-12 snap-x snap-mandatory hide-scrollbar cursor-grab" id="viral-carousel">
+            
+            <!-- Product 1: Smash Cake -->
+            <div class="w-[85vw] sm:w-[300px] md:min-w-[400px] flex-shrink-0 snap-center group hover-target" onclick="triggerSmash(this)">
+                <div class="relative h-[350px] md:h-[400px] rounded-[2rem] overflow-hidden mb-4 bg-brandPink cursor-pointer">
+                    <img src="https://images.unsplash.com/photo-1621303837174-89787a7d4729?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt="Dream Cake">
+                    <div class="smash-overlay"></div>
+                    <div class="absolute top-4 left-4 bg-white/90 backdrop-blur px-3 py-1 rounded-full text-xs font-bold uppercase shadow-sm">Best Seller</div>
+                    <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                        <span class="bg-brandYellow text-brandDark px-6 py-3 rounded-full font-bold transform translate-y-4 group-hover:translate-y-0 transition-all text-sm md:text-base">Click to Smash 🔨</span>
+                    </div>
+                </div>
+                <h3 class="font-heading text-xl md:text-2xl font-bold">The 5-in-1 Dream Cake</h3>
+                <p class="text-gray-500 text-sm md:text-base mb-3">Crack the chocolate shell. Experience heaven.</p>
+                <div class="flex justify-between items-center">
+                    <span class="font-bold text-lg md:text-xl">₹950</span>
+                    <button class="w-10 h-10 rounded-full bg-brandDark text-white flex items-center justify-center hover:bg-brandPink hover:text-brandDark transition-colors">
+                        <i data-lucide="plus" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Product 2 -->
+            <div class="w-[85vw] sm:w-[300px] md:min-w-[400px] flex-shrink-0 snap-center group hover-target">
+                <div class="relative h-[350px] md:h-[400px] rounded-[2rem] overflow-hidden mb-4 bg-brandMint">
+                    <img src="https://images.unsplash.com/photo-1550617931-e17a7b70dce2?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt="Bento Cake">
+                    <div class="absolute bottom-4 right-4 bg-white/90 backdrop-blur px-3 py-1 rounded-full text-xs font-bold uppercase shadow-sm">Customizable</div>
+                </div>
+                <h3 class="font-heading text-xl md:text-2xl font-bold">Aesthetic Bento Cakes</h3>
+                <p class="text-gray-500 text-sm md:text-base mb-3">This cake is better than your ex.</p>
+                <div class="flex justify-between items-center">
+                    <span class="font-bold text-lg md:text-xl">₹450</span>
+                    <button class="w-10 h-10 rounded-full bg-brandDark text-white flex items-center justify-center hover:bg-brandPink hover:text-brandDark transition-colors">
+                        <i data-lucide="plus" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Product 3 -->
+            <div class="w-[85vw] sm:w-[300px] md:min-w-[400px] flex-shrink-0 snap-center group hover-target">
+                <div class="relative h-[350px] md:h-[400px] rounded-[2rem] overflow-hidden mb-4 bg-brandLavender">
+                    <img src="https://images.unsplash.com/photo-1612203985729-70726954388c?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt="Bombolini">
+                </div>
+                <h3 class="font-heading text-xl md:text-2xl font-bold">Nutella Bombolinis</h3>
+                <p class="text-gray-500 text-sm md:text-base mb-3">Italian doughnuts stuffed to the brim.</p>
+                <div class="flex justify-between items-center">
+                    <span class="font-bold text-lg md:text-xl">₹350 <span class="text-xs font-normal text-gray-400">/ box of 2</span></span>
+                    <button class="w-10 h-10 rounded-full bg-brandDark text-white flex items-center justify-center hover:bg-brandPink hover:text-brandDark transition-colors">
+                        <i data-lucide="plus" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Product 4 -->
+            <div class="w-[85vw] sm:w-[300px] md:min-w-[400px] flex-shrink-0 snap-center group hover-target">
+                <div class="relative h-[350px] md:h-[400px] rounded-[2rem] overflow-hidden mb-4 bg-brandYellow">
+                    <img src="https://images.unsplash.com/photo-1499636136210-6f4ee915583e?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt="Cookies">
+                </div>
+                <h3 class="font-heading text-xl md:text-2xl font-bold">Gooey NY Cookies</h3>
+                <p class="text-gray-500 text-sm md:text-base mb-3">Thick, chunky, and melts in your mouth.</p>
+                <div class="flex justify-between items-center">
+                    <span class="font-bold text-lg md:text-xl">₹200 <span class="text-xs font-normal text-gray-400">/ pc</span></span>
+                    <button class="w-10 h-10 rounded-full bg-brandDark text-white flex items-center justify-center hover:bg-brandPink hover:text-brandDark transition-colors">
+                        <i data-lucide="plus" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- WHY US (Grid Section) -->
+    <section class="py-20 px-4 md:px-12 bg-brandPink relative overflow-hidden" id="about">
+        <!-- Abstract shape background -->
+        <div class="absolute top-0 right-0 w-full h-full bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxkZWZzPjxwYXR0ZXJuIGlkPSJwIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PGNpcmNsZSBjeD0iNTAiIGN5PSI1MCIgcj0iMiIgZmlsbD0icmdiYSgwLDAsMCwwLjEpIi8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI3ApIi8+PC9zdmc+')] z-0"></div>
+
+        <div class="max-w-6xl mx-auto relative z-10">
+            <div class="text-center mb-12">
+                <h2 class="font-heading text-4xl md:text-7xl font-bold uppercase leading-tight">The Crumbs<br>& Flake Vibe</h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+                <div class="glass p-6 md:p-8 rounded-[2rem] hover:-translate-y-2 transition-transform duration-300">
+                    <div class="w-12 h-12 md:w-14 md:h-14 bg-white rounded-full flex items-center justify-center mb-4 md:mb-6 shadow-sm">
+                        <i data-lucide="clock" class="text-brandDark w-5 h-5 md:w-6 md:h-6"></i>
+                    </div>
+                    <h3 class="font-heading text-xl md:text-2xl font-bold mb-2">Made Fresh on Order</h3>
+                    <p class="text-gray-800 text-sm md:text-base">No stale display case cakes here. Your dessert is whipped up specifically for you, ensuring peak freshness.</p>
+                </div>
+                <div class="glass p-6 md:p-8 rounded-[2rem] hover:-translate-y-2 transition-transform duration-300">
+                    <div class="w-12 h-12 md:w-14 md:h-14 bg-white rounded-full flex items-center justify-center mb-4 md:mb-6 shadow-sm">
+                        <i data-lucide="camera" class="text-brandDark w-5 h-5 md:w-6 md:h-6"></i>
+                    </div>
+                    <h3 class="font-heading text-xl md:text-2xl font-bold mb-2">Viral Aesthetics</h3>
+                    <p class="text-gray-800 text-sm md:text-base">Designed to make your Instagram feed pop. Yes, the camera eats first.</p>
+                </div>
+                <div class="glass p-6 md:p-8 rounded-[2rem] hover:-translate-y-2 transition-transform duration-300">
+                    <div class="w-12 h-12 md:w-14 md:h-14 bg-white rounded-full flex items-center justify-center mb-4 md:mb-6 shadow-sm">
+                        <i data-lucide="star" class="text-brandDark w-5 h-5 md:w-6 md:h-6"></i>
+                    </div>
+                    <h3 class="font-heading text-xl md:text-2xl font-bold mb-2">Premium Ingredients</h3>
+                    <p class="text-gray-800 text-sm md:text-base">Belgian chocolate, pure butter, and zero compromises. Handcrafted by founder Vinaika Aggarwal.</p>
+                </div>
+                <div class="glass p-6 md:p-8 rounded-[2rem] hover:-translate-y-2 transition-transform duration-300">
+                    <div class="w-12 h-12 md:w-14 md:h-14 bg-white rounded-full flex items-center justify-center mb-4 md:mb-6 shadow-sm">
+                        <i data-lucide="gift" class="text-brandDark w-5 h-5 md:w-6 md:h-6"></i>
+                    </div>
+                    <h3 class="font-heading text-xl md:text-2xl font-bold mb-2">Perfect for Gifting</h3>
+                    <p class="text-gray-800 text-sm md:text-base">Custom hampers and dessert jars that say "I love you" better than words ever could.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- IMMERSIVE STORY (Parallax) -->
+    <section class="h-[80vh] md:h-[120vh] relative flex items-center justify-center overflow-hidden bg-brandDark text-white" id="parallax-section">
+        <div class="absolute inset-0 z-0 opacity-40">
+            <img src="https://images.unsplash.com/photo-1588195538326-c5b1e9f80a1b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80" alt="Texture" class="w-full h-full object-cover parallax-bg">
+        </div>
+        <div class="relative z-10 text-center px-4 max-w-4xl mx-auto parallax-text w-full">
+            <h2 class="font-heading text-[10vw] md:text-[5vw] leading-tight font-bold uppercase">Not just desserts.</h2>
+            <h2 class="font-heading text-[10vw] md:text-[5vw] leading-tight font-bold uppercase text-brandYellow">It's a main character moment.</h2>
+            <p class="mt-6 md:mt-8 text-lg md:text-2xl font-light text-gray-300 px-4">Indulgence redefined. Every bite is designed to trigger dopamine.</p>
+        </div>
+    </section>
+
+    <!-- FULL MENU GRID -->
+    <section id="menu" class="py-20 px-4 md:px-12 bg-[#FFFDF9]">
+        <div class="flex flex-col md:flex-row justify-between items-center mb-10 gap-6">
+            <h2 class="font-heading text-4xl md:text-6xl font-bold uppercase text-center md:text-left leading-tight">Shop Your<br class="hidden md:block">Cravings</h2>
+            
+            <!-- Filters -->
+            <div class="flex flex-wrap justify-center md:justify-end gap-2 w-full md:w-auto">
+                <button class="px-5 py-2 text-sm md:text-base rounded-full bg-brandDark text-white font-medium hover-target">All</button>
+                <button class="px-5 py-2 text-sm md:text-base rounded-full border border-gray-300 hover:border-brandDark font-medium transition-colors hover-target">Cakes</button>
+                <button class="px-5 py-2 text-sm md:text-base rounded-full border border-gray-300 hover:border-brandDark font-medium transition-colors hover-target">Cookies</button>
+                <button class="px-5 py-2 text-sm md:text-base rounded-full border border-gray-300 hover:border-brandDark font-medium transition-colors hover-target">Jars</button>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+            <!-- Item 1 -->
+            <div class="group cursor-pointer hover-target">
+                <div class="relative aspect-square rounded-[2rem] overflow-hidden bg-gray-100 mb-4">
+                    <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Cake" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                    <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                        <button class="bg-white text-brandDark px-6 py-3 rounded-full font-bold transform translate-y-4 group-hover:translate-y-0 transition-all btn-jelly text-sm md:text-base">Quick Add</button>
+                    </div>
+                </div>
+                <h4 class="font-heading text-lg md:text-xl font-bold">Classic Chocolate Dream Cake</h4>
+                <p class="text-brandDark font-medium mt-1">₹950</p>
+            </div>
+            <!-- Item 2 -->
+            <div class="group cursor-pointer hover-target">
+                <div class="relative aspect-square rounded-[2rem] overflow-hidden bg-gray-100 mb-4">
+                    <img src="https://images.unsplash.com/photo-1606890737304-57a1ca8a5b62?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Cake" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                    <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                        <button class="bg-white text-brandDark px-6 py-3 rounded-full font-bold transform translate-y-4 group-hover:translate-y-0 transition-all btn-jelly text-sm md:text-base">Quick Add</button>
+                    </div>
+                </div>
+                <h4 class="font-heading text-lg md:text-xl font-bold">Lotus Biscoff Cheesecake</h4>
+                <p class="text-brandDark font-medium mt-1">₹1200</p>
+            </div>
+            <!-- Item 3 -->
+            <div class="group cursor-pointer hover-target">
+                <div class="relative aspect-square rounded-[2rem] overflow-hidden bg-gray-100 mb-4">
+                    <img src="https://images.unsplash.com/photo-1558961363-fa8fdf82db35?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Cookie" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                    <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                        <button class="bg-white text-brandDark px-6 py-3 rounded-full font-bold transform translate-y-4 group-hover:translate-y-0 transition-all btn-jelly text-sm md:text-base">Quick Add</button>
+                    </div>
+                </div>
+                <h4 class="font-heading text-lg md:text-xl font-bold">Triple Choc Chunk Cookie</h4>
+                <p class="text-brandDark font-medium mt-1">₹220</p>
+            </div>
+            <!-- Item 4 -->
+            <div class="group cursor-pointer hover-target">
+                <div class="relative aspect-square rounded-[2rem] overflow-hidden bg-gray-100 mb-4">
+                    <img src="https://assets.winni.in/product/primary/2022/10/76271.jpeg?dpr=1&w=1000" alt="Jar" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                    <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                        <button class="bg-white text-brandDark px-6 py-3 rounded-full font-bold transform translate-y-4 group-hover:translate-y-0 transition-all btn-jelly text-sm md:text-base">Quick Add</button>
+                    </div>
+                </div>
+                <h4 class="font-heading text-lg md:text-xl font-bold">Red Velvet Dessert Jar</h4>
+                <p class="text-brandDark font-medium mt-1">₹350</p>
+            </div>
+        </div>
+        
+        <div class="mt-12 text-center">
+            <button class="btn-jelly bg-brandDark text-white px-8 py-4 rounded-full font-semibold text-lg hover-target inline-block shadow-lg">
+                View Full Menu
+            </button>
+        </div>
+    </section>
+
+    <!-- SOCIAL PROOF (Insta Grid) Wrapped nicely -->
+    <section class="py-20 overflow-hidden bg-brandYellow max-w-[100vw]">
+        <div class="text-center mb-10 px-4">
+            <h2 class="font-heading text-3xl md:text-5xl font-bold uppercase">As seen on your feed</h2>
+            <p class="mt-2 text-brandDark font-medium">Tag @crumbsandflake to be featured</p>
+        </div>
+        
+        <!-- Marquee Grid (w-max to prevent mobile layout break) -->
+        <div class="flex w-max animate-marquee pb-4">
+            <div class="flex gap-4 px-2">
+                <img src="https://images.unsplash.com/photo-1551024601-bec78aea704b?ixlib=rb-4.0.3&w=400&q=80" class="w-48 h-48 md:w-80 md:h-80 object-cover rounded-3xl shadow-sm" alt="Social">
+                <img src="https://images.unsplash.com/photo-1603532648955-039310d9ed75?ixlib=rb-4.0.3&w=400&q=80" class="w-48 h-48 md:w-80 md:h-80 object-cover rounded-3xl shadow-sm" alt="Social">
+                <img src="https://images.unsplash.com/photo-1587668178277-295251f900ce?ixlib=rb-4.0.3&w=400&q=80" class="w-48 h-48 md:w-80 md:h-80 object-cover rounded-3xl shadow-sm" alt="Social">
+                <img src="https://images.unsplash.com/photo-1519869325930-281384150729?ixlib=rb-4.0.3&w=400&q=80" class="w-48 h-48 md:w-80 md:h-80 object-cover rounded-3xl shadow-sm" alt="Social">
+            </div>
+            <!-- Duplicate for seamless loop -->
+            <div class="flex gap-4 px-2">
+                <img src="https://images.unsplash.com/photo-1551024601-bec78aea704b?ixlib=rb-4.0.3&w=400&q=80" class="w-48 h-48 md:w-80 md:h-80 object-cover rounded-3xl shadow-sm" alt="Social">
+                <img src="https://images.unsplash.com/photo-1603532648955-039310d9ed75?ixlib=rb-4.0.3&w=400&q=80" class="w-48 h-48 md:w-80 md:h-80 object-cover rounded-3xl shadow-sm" alt="Social">
+                <img src="https://images.unsplash.com/photo-1587668178277-295251f900ce?ixlib=rb-4.0.3&w=400&q=80" class="w-48 h-48 md:w-80 md:h-80 object-cover rounded-3xl shadow-sm" alt="Social">
+                <img src="https://images.unsplash.com/photo-1519869325930-281384150729?ixlib=rb-4.0.3&w=400&q=80" class="w-48 h-48 md:w-80 md:h-80 object-cover rounded-3xl shadow-sm" alt="Social">
+            </div>
+        </div>
+    </section>
+
+    <!-- BIG CTA -->
+    <section class="py-24 md:py-32 px-4 text-center bg-brandMint relative overflow-hidden">
+        <h2 class="font-heading text-[12vw] leading-none font-bold uppercase text-outline">Your Cravings</h2>
+        <h2 class="font-heading text-[12vw] leading-none font-bold uppercase text-brandDark relative z-10">Deserve Better.</h2>
+        
+        <button class="mt-8 md:mt-12 btn-jelly bg-brandDark text-white px-8 md:px-10 py-4 md:py-5 rounded-full font-bold text-lg md:text-xl hover-target inline-flex items-center gap-3 relative z-10 shadow-2xl">
+            Satisfy Them Now <span class="text-2xl">🍰</span>
+        </button>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-brandDark text-white pt-20 pb-24 md:pb-12 px-6 md:px-12 rounded-t-[2.5rem] md:rounded-t-[3rem] -mt-6 relative z-20">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-10 md:gap-12 mb-12">
+            <div class="col-span-1 md:col-span-2">
+                <!-- Footer Logo -> Ensuring exact colors without filters -->
+                <img src="crumbslogo.png" alt="Crumbs&Flake Logo" class="brand-logo h-12 md:h-16 w-auto object-contain mb-4 block" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                <span class="font-heading font-bold text-3xl tracking-tight mb-4 hidden text-brandPink">Crumbs&Flake<sup class="text-xl">®</sup></span>
+                
+                <p class="text-gray-400 max-w-sm mb-6 text-sm md:text-base">Premium home bakery based in Delhi. Founded by Vinaika Aggarwal. Bringing aesthetic, Gen-Z approved desserts straight to your door.</p>
+                <!-- WhatsApp Button -->
+                <a href="#" class="inline-flex items-center gap-2 bg-[#25D366] text-white px-6 py-3 rounded-full font-bold hover-target hover:scale-105 transition-transform text-sm md:text-base">
+                    <i data-lucide="message-circle" class="w-5 h-5"></i> Order via WhatsApp
+                </a>
+            </div>
+            
+            <div>
+                <h4 class="font-heading text-lg md:text-xl font-bold mb-4 md:mb-6 text-brandYellow">Explore</h4>
+                <ul class="space-y-2 md:space-y-3 text-sm md:text-base text-gray-400">
+                    <li><a href="#" class="hover:text-white transition-colors hover-target">Menu</a></li>
+                    <li><a href="#" class="hover:text-white transition-colors hover-target">Custom Orders</a></li>
+                    <li><a href="#" class="hover:text-white transition-colors hover-target">Corporate Gifting</a></li>
+                    <li><a href="#" class="hover:text-white transition-colors hover-target">Track Order</a></li>
+                </ul>
+            </div>
+            
+            <div>
+                <h4 class="font-heading text-lg md:text-xl font-bold mb-4 md:mb-6 text-brandYellow">Legal & Info</h4>
+                <ul class="space-y-2 md:space-y-3 text-sm md:text-base text-gray-400">
+                    <li><a href="#" class="hover:text-white transition-colors hover-target">Delhi NCR Delivery</a></li>
+                    <li><a href="#" class="hover:text-white transition-colors hover-target">COD & UPI Available</a></li>
+                    <li><a href="#" class="hover:text-white transition-colors hover-target">Privacy Policy</a></li>
+                    <li><a href="#" class="hover:text-white transition-colors hover-target">T&C</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-center md:text-left">
+            <p class="text-gray-500 text-xs md:text-sm">© 2024 Crumbs&Flake®. All rights reserved.</p>
+            <div class="flex gap-4">
+                <a href="#" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-brandPink hover:text-brandDark transition-colors hover-target">
+                    <i data-lucide="instagram" class="w-4 h-4 md:w-5 md:h-5"></i>
+                </a>
+                <a href="#" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-brandPink hover:text-brandDark transition-colors hover-target">
+                    <i data-lucide="facebook" class="w-4 h-4 md:w-5 md:h-5"></i>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- MOBILE STICKY BOTTOM BAR -->
+    <div class="md:hidden fixed bottom-4 left-4 right-4 z-[60] glass bg-brandDark/95 text-white p-2 rounded-full flex justify-between items-center shadow-[0_10px_40px_rgba(0,0,0,0.3)] border border-gray-700">
+        <div class="flex items-center gap-3 pl-3 text-sm">
+            <div class="w-10 h-10 bg-brandPink rounded-full flex items-center justify-center text-brandDark font-bold shadow-inner">
+                <i data-lucide="shopping-bag" class="w-4 h-4"></i>
+            </div>
+            <span class="font-bold">₹0.00</span>
+        </div>
+        <button class="bg-brandPink text-brandDark px-5 py-2.5 rounded-full font-bold btn-jelly text-sm">
+            View Cart
+        </button>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.32/dist/lenis.min.js"></script>
+    
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // 1. Lenis Smooth Scrolling (Disabled on mobile touch for better native feel)
+        const isTouch = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+        
+        if (!isTouch) {
+            const lenis = new Lenis({
+                duration: 1.2,
+                easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+                direction: 'vertical',
+                gestureDirection: 'vertical',
+                smooth: true,
+                mouseMultiplier: 1,
+            });
+
+            function raf(time) {
+                lenis.raf(time);
+                requestAnimationFrame(raf);
+            }
+            requestAnimationFrame(raf);
+        }
+
+        // 2. Preloader & Initial Animations
+        window.addEventListener('load', () => {
+            gsap.to('#loader', {
+                yPercent: -100,
+                duration: 0.8,
+                ease: "power4.inOut",
+                delay: 0.3,
+                onComplete: () => {
+                    document.getElementById('loader').style.display = 'none';
+                }
+            });
+
+            // Hero Animations
+            gsap.from('.hero-text', {
+                y: 100,
+                opacity: 0,
+                duration: 1,
+                stagger: 0.1,
+                ease: "power4.out",
+                delay: 0.8
+            });
+            gsap.from('.hero-subtext, .hero-btns', {
+                y: 30,
+                opacity: 0,
+                duration: 1,
+                ease: "power3.out",
+                delay: 1.2
+            });
+            gsap.from('.blob', {
+                scale: 0.8,
+                opacity: 0,
+                duration: 2,
+                stagger: 0.2,
+                ease: "power2.out",
+                delay: 0.4
+            });
+        });
+
+        // 3. Custom Cursor (Desktop only)
+        if (!isTouch) {
+            const cursor = document.getElementById('cursor');
+            const hoverTargets = document.querySelectorAll('.hover-target, button, a');
+
+            document.addEventListener('mousemove', (e) => {
+                cursor.style.left = e.clientX + 'px';
+                cursor.style.top = e.clientY + 'px';
+            });
+
+            hoverTargets.forEach(target => {
+                target.addEventListener('mouseenter', () => {
+                    cursor.classList.add('hover-mode');
+                    cursor.innerHTML = target.innerText.toLowerCase().includes('smash') ? '🔨' : '🍰';
+                });
+                target.addEventListener('mouseleave', () => {
+                    cursor.classList.remove('hover-mode');
+                    cursor.innerHTML = '✨';
+                });
+            });
+        }
+
+        // Click effect (Floating Emojis)
+        document.addEventListener('click', (e) => {
+            if(e.target.closest('button') || e.target.closest('a') || e.target.closest('.brand-logo')) return;
+            const emojis = ['✨', '💖', '🍪', '🍰'];
+            const emoji = document.createElement('div');
+            emoji.className = 'floating-emoji';
+            emoji.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+            emoji.style.left = e.clientX + 'px';
+            emoji.style.top = e.clientY + 'px';
+            document.body.appendChild(emoji);
+            setTimeout(() => emoji.remove(), 1500);
+        });
+
+        // 4. GSAP ScrollTrigger Animations
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Floating elements animation
+        gsap.to('.floating-el', {
+            y: -15,
+            rotation: "+=4",
+            duration: 2.5,
+            yoyo: true,
+            repeat: -1,
+            ease: "sine.inOut",
+            stagger: 0.3
+        });
+
+        // Parallax Section (Scaled down for mobile to avoid jumping)
+        gsap.to('.parallax-bg', {
+            yPercent: isTouch ? 15 : 30,
+            ease: "none",
+            scrollTrigger: {
+                trigger: "#parallax-section",
+                start: "top bottom",
+                end: "bottom top",
+                scrub: true
+            }
+        });
+
+        gsap.from('.parallax-text h2', {
+            y: 50,
+            opacity: 0,
+            stagger: 0.1,
+            scrollTrigger: {
+                trigger: "#parallax-section",
+                start: "top center+=100",
+                end: "center center",
+                scrub: 1
+            }
+        });
+
+        // Navbar Hide/Show on scroll
+        let lastScrollY = window.scrollY;
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > lastScrollY && window.scrollY > 150) {
+                navbar.style.transform = 'translateY(-150%)'; // Hide
+            } else {
+                navbar.style.transform = 'translateY(0)'; // Show
+            }
+            lastScrollY = window.scrollY;
+        }, { passive: true });
+
+        // 5. Interactive Smash Cake Function
+        function triggerSmash(element) {
+            if(element.classList.contains('is-smashed')) return;
+            element.classList.add('is-smashed');
+            
+            // Particles burst
+            for(let i=0; i<8; i++) {
+                const particle = document.createElement('div');
+                particle.innerText = '🍫';
+                particle.className = 'floating-emoji';
+                particle.style.position = 'absolute';
+                particle.style.left = '50%';
+                particle.style.top = '50%';
+                particle.style.transform = `translate(-50%, -50%) rotate(${Math.random()*360}deg)`;
+                element.querySelector('.relative').appendChild(particle);
+                
+                gsap.to(particle, {
+                    x: (Math.random() - 0.5) * 150,
+                    y: (Math.random() - 0.5) * 150,
+                    opacity: 0,
+                    duration: 1,
+                    ease: "power3.out",
+                    onComplete: () => particle.remove()
+                });
+            }
+            
+            // Change text
+            const btn = element.querySelector('.bg-brandYellow');
+            if(btn) {
+                btn.innerText = 'Smashed! In cart 😉';
+                btn.classList.replace('bg-brandYellow', 'bg-brandMint');
+            }
+        }
+    </script>
+</body>
+</html>
