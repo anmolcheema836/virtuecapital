@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Escape Media | Creative Powerhouse</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/locomotive-scroll@3.5.4/dist/locomotive-scroll.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" />
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Inter:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        :root {
+            --white: #FFFFFF;
+            --off-white: #F4F4F4;
+            --black: #000000;
+            --dark-gray: #1A1A1A;
+            --red: #E60000;
+            --light-gray: #E0E0E0;
+            --text-gray: #666666;
+        }
+
+        html, body {
+            height: 100%;
+            width: 100%;
+            background-color: var(--white);
+            color: var(--black);
+        }
+
+        ::selection {
+            background-color: var(--red);
+            color: var(--white);
+        }
+
+        /* Loader */
+        #loader {
+            height: 100vh;
+            width: 100%;
+            background-color: var(--white);
+            position: fixed;
+            z-index: 9999;
+            top: 0;
+            transition: all ease 0.7s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #loader h1 {
+            font-size: 4vw;
+            color: transparent;
+            background: linear-gradient(to right, var(--black), var(--red));
+            -webkit-background-clip: text;
+            position: absolute;
+            opacity: 0;
+            animation: load 1s linear forwards;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 800;
+        }
+
+        #loader h1:nth-child(2) { animation-delay: 1s; }
+        #loader h1:nth-child(3) { animation-delay: 2s; }
+
+        @keyframes load {
+            0% { opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
+        /* Fixed Overlay Image Container */
+        #fixed {
+            height: 30vw;
+            width: 24vw;
+            border-radius: 1vw;
+            position: fixed;
+            z-index: 99;
+            left: 50%;
+            top: 25%;
+            display: none;
+            background-size: cover;
+            background-position: center;
+            pointer-events: none;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+
+        #main {
+            z-index: 10;
+            position: relative;
+            background-color: var(--white);
+        }
+
+        /* Page 1 - Hero */
+        #page1 {
+            min-height: 100vh;
+            width: 100%;
+            position: relative;
+            padding: 0 3vw;
+            overflow: hidden;
+            background-color: var(--white);
+        }
+
+        nav {
+            padding: 2vw 0vw;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+            z-index: 100;
+        }
+
+        nav img {
+            height: 30px; /* Scaled down slightly for premium feel */
+        }
+
+        nav h3 {
+            display: none;
+            z-index: 100;
+            font-weight: 500;
+            cursor: pointer;
+            color: var(--black);
+        }
+
+        #npart {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        #npart span {
+            padding: 10px 20px;
+            border: 1px solid var(--light-gray);
+            border-radius: 50px;
+            position: relative;
+            overflow: hidden;
+            transition: border-color 0.3s;
+        }
+
+        #npart span::after {
+            content: "";
+            height: 100%;
+            width: 100%;
+            background-color: var(--black);
+            position: absolute;
+            left: 0;
+            bottom: -100%;
+            border-radius: 50%;
+            transition: all ease .4s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+
+        #npart span:hover {
+            border-color: var(--black);
+        }
+
+        #npart span:hover::after {
+            bottom: 0;
+            border-radius: 0;
+        }
+
+        #npart span a {
+            text-decoration: none;
+            color: var(--black);
+            z-index: 10;
+            position: relative;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        #npart span:hover a {
+            color: var(--white);
+        }
+
+        #center {
+            height: 70vh;
+            width: 100%;
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            padding-bottom: 3vw;
+            border-bottom: 1px solid var(--light-gray);
+            position: relative;
+            z-index: 10;
+        }
+
+        #left {
+            width: 35vw;
+            font-size: 1.4vw;
+            line-height: 2vw;
+            font-weight: 400;
+            color: var(--text-gray);
+        }
+
+        #right {
+            font-size: 7vw;
+            line-height: 6.8vw;
+            text-align: right;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            color: var(--black);
+        }
+
+        /* PREMIUM CURSIVE TEXT FIX */
+        #right span {
+            color: var(--red);
+            font-family: 'Great Vibes', cursive; /* Applied new font */
+            font-size: 10vw; /* Scaled up to balance with block text */
+            font-weight: 400;
+            display: inline-block;
+            line-height: 0.8;
+            padding-right: 1vw; /* Prevent cut-offs on italic edge */
+        }
+
+        /* Gooey Shapes */
+        #heroshape {
+            width: 46vw;
+            height: 36vw;
+            position: absolute;
+            right: 0;
+            top: 78vh;
+            z-index: 1;
+        }
+
+        #hero-1, #hero-2, #hero-3 {
+            position: absolute;
+            filter: blur(40px);
+            border-radius: 50%;
+        }
+
+        #hero-1 { background-color: var(--red); width: 100%; height: 100%; opacity: 0.8; }
+        #hero-2 { background: linear-gradient(var(--red), #ff4d4d); width: 30vw; height: 30vw; animation: shape2 5s linear infinite alternate; }
+        #hero-3 { background: linear-gradient(var(--red), #990000); width: 30vw; height: 30vw; animation: shape 3s linear infinite alternate; }
+
+        @keyframes shape { from { transform: translate(55%, -3%); } to { transform: translate(0%, 10%); } }
+        @keyframes shape2 { from { transform: translate(5%, -5%); } to { transform: translate(-20%, 30%); } }
+
+        #page1 video {
+            margin-top: 3vw;
+            width: 100%;
+            height: 80vh;
+            object-fit: cover;
+            border-radius: 1.5vw;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Page 2 - Marquee & About */
+        #page2 {
+            min-height: 100vh;
+            width: 100%;
+            position: relative;
+            padding-top: 8vw;
+            background-color: var(--white);
+        }
+
+        #cnt { overflow-x: auto; white-space: nowrap; }
+        #cnt::-webkit-scrollbar { display: none; }
+
+        .marquee { display: inline-block; white-space: nowrap; animation: marquee 15s linear infinite; }
+        .marquee h1 { font-size: 9vw; display: inline-block; font-weight: 800; letter-spacing: -0.03em; color: var(--black); }
+        .marquee div { background-color: var(--red); height: 60px; width: 60px; border-radius: 50%; display: inline-block; margin: 1vw 3vw;   }
+
+        @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-100%); } }
+
+        #p2-bottom {
+            min-height: 80vh;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 5vw 4.5vw;
+            position: relative;
+            z-index: 10;
+        }
+
+        #p2-bottom h1 { width: 60%; font-size: 3.5vw; line-height: 4.2vw; font-weight: 500; color: var(--black); }
+
+        #bpart { width: 25%; display: flex; flex-direction: column; gap: 2vw; }
+        #bpart img { width: 100%; border-radius: 1vw; filter: grayscale(100%); transition: filter 0.5s; }
+        #bpart img:hover { filter: grayscale(0%); }
+        #bpart p { font-weight: 400; font-size: 1.1vw; line-height: 1.6vw; color: var(--text-gray); }
+
+        #gooeyshape {
+            height: 32vw; width: 32vw; position: absolute; border-radius: 50%;
+            background: linear-gradient(to top right, var(--red), #ff4d4d);
+            top: 50%; left: 25%; filter: blur(50px);
+            animation: gooey 6s infinite alternate ease-in-out; z-index: 1; opacity: 0.3;
+        }
+
+        @keyframes gooey { from { transform: translate(10%, -10%) skew(0); } to { transform: translate(-10%, 10%) skew(-12deg); } }
+
+        /* Page 3 - Core Services */
+        #page3 {
+            min-height: 100vh; width: 100%; position: relative; padding: 5vw 0vw; background-color: var(--white);
+        }
+
+        .section-title { padding: 0 4vw; font-size: 1vw; text-transform: uppercase; font-weight: 600; color: var(--red); margin-bottom: 2vw; letter-spacing: 1px; }
+
+        #elem-container { margin-top: 2vw; }
+
+        .elem {
+            height: 160px; width: 100%; position: relative; border-bottom: 1px solid var(--light-gray);
+            overflow: hidden; display: flex; justify-content: space-between; align-items: center; padding: 0 4vw;
+            cursor: pointer; background-color: var(--white);
+        }
+        .elem:first-child { border-top: 1px solid var(--light-gray); }
+        .elem h2 { font-size: 3.5vw; position: relative; z-index: 9; font-weight: 700; color: var(--black); transition: color 0.3s; }
+        .epart { width: 25%; text-align: right; position: relative; z-index: 9; }
+        .elem h3 { font-size: 1vw; text-transform: uppercase; font-weight: 500; color: var(--black); transition: color 0.3s; }
+        .elem h4 { color: var(--text-gray); font-size: 1vw; font-weight: 400; margin-top: 0.2vw; transition: color 0.3s; }
+
+        .elem .overlay {
+            height: 100%; width: 100%; background-color: var(--black); position: absolute; left: 0; top: -100%; transition: all ease 0.4s;
+        }
+        .elem:hover .overlay { top: 0; }
+        .elem:hover h2, .elem:hover h3, .elem:hover h4 { color: var(--white); }
+
+        /* Page 4 - Interactive Tabs (FIXED DESKTOP) */
+        #page4 {
+            min-height: auto; /* Fixed Zoomed Out Issue */
+            width: 100%;
+            padding: 4vw 4vw;
+            background-color: var(--white);
+        }
+
+        #cnt2 {
+            background-color: var(--off-white);
+            border-radius: 2vw; /* Converted to sleek bento box */
+            height: 100vh; 
+            width: 100%;
+            display: flex;
+            overflow: hidden;
+        }
+
+        .cntpart1 {
+            width: 45%; padding: 8vw; display: flex; flex-direction: column; justify-content: center; background-color: var(--black);
+        }
+
+        .cntpart1 h1 {
+            border-left: 4px solid #333; padding: 1vw 2vw; font-size: 3.5vw; cursor: pointer; color: #555;
+            transition: all 0.3s; margin-bottom: 1vw; font-weight: 700;
+        }
+
+        .cntpart1 h1.active { border-left-color: var(--red); color: var(--white); }
+        .cntpart1 p { color: #ccc; margin-top: 3vw; font-size: 1.1vw; font-weight: 400; line-height: 1.8vw; }
+
+        .cntpart2 {
+            width: 55%;
+            background-image: url('https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=1000&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            transition: background-image 0.4s ease;
+            filter: grayscale(100%);
+        }
+
+        /* Page 5 - Swiper */
+        #page5 { height: 60vh; width: 100%; padding: 5vw 2vw; cursor: grab; background-color: var(--white); }
+
+        .swiper-slide { width: 30%; border-left: 1px solid var(--light-gray); padding: 0 3vw; }
+        .swiper-slide h3 { font-size: 2.5vw; margin-bottom: 1vw; color: var(--red); font-weight: 800; text-transform: uppercase; }
+        .swiper-slide p { font-weight: 400; font-size: 1.2vw; line-height: 1.6vw; color: var(--text-gray); }
+
+        /* Mobile Menu Overlay */
+        #full-scr {
+            height: 100vh; width: 100%; background-color: rgba(255,255,255,0.98); position: fixed; z-index: 1000;
+            top: -100%; transition: all ease 0.6s; opacity: 0; backdrop-filter: blur(10px);
+        }
+        h1{
+            font-size: larger;
+        }
+
+        #full-div1 { height: 100%; width: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 4vw; }
+        #full-div1 h1 { font-size: 12vw; color: var(--black); text-transform: uppercase; font-weight: 800; cursor: pointer; }
+        #full-div1 h1:hover { color: var(--red); }
+
+        #close { position: absolute; top: 5vw; right: 5vw; font-size: 6vw; cursor: pointer; color: var(--black); padding: 2vw; }
+
+        /* Footer (FIXED DESKTOP) */
+        footer {
+            height: auto; /* Removed 100vh to fix zoomed out look */
+            min-height: 60vh; /* Gave it a structured min height */
+            width: 100%;
+            background-color: var(--black);
+            color: var(--white);
+            position: relative;
+            z-index: 9;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 6vw 5vw 3vw 5vw;
+            gap: 6vw; /* Added gap to distribute content gracefully */
+        }
+
+        #foottop { display: flex; justify-content: space-between; align-items: flex-start; }
+
+        .foot-nav { display: flex; flex-direction: column; gap: 1vw; }
+        .foot-nav a { font-size: 2.5vw; color: var(--white); text-decoration: none; font-weight: 600; transition: color 0.3s; }
+        .foot-nav a:hover { color: var(--red); }
+
+        .foot-newsletter { width: 35%; }
+        .foot-newsletter p { font-size: 1.2vw; margin-bottom: 2vw; font-weight: 400; color: #ccc; }
+
+        #email { display: flex; border-bottom: 1px solid #555; padding-bottom: 1vw; transition: border-color 0.3s; }
+        #email:focus-within { border-color: var(--red); }
+        #email input[type="email"] { flex: 1; background: transparent; border: none; outline: none; font-size: 1.2vw; color: var(--white); }
+        #email input[type="email"]::placeholder { color: rgba(255,255,255,0.4); }
+        #email button { background: transparent; border: none; font-size: 2vw; cursor: pointer; color: var(--white); transition: color 0.3s; }
+        #email button:hover { color: var(--red); }
+
+        .foot-massive {
+            font-size: 14vw; /* Scaled down slightly to fit better */
+            line-height: 0.8; text-align: center; font-weight: 800; letter-spacing: -0.02em; color: var(--white);
+        }
+        .foot-massive span { color: var(--red); }
+
+        #footlow { display: flex; justify-content: space-between; border-top: 1px solid #333; padding-top: 2vw; }
+        #footlow h3 { font-size: 1vw; font-weight: 400; color: #888; }
+
+        .foot-socials { display: flex; gap: 3vw; }
+        .foot-socials h3 { cursor: pointer; transition: color 0.3s; }
+        .foot-socials h3:hover { color: var(--red); }
+
+
+        /* RESPONSIVE CSS FIXES */
+        @media (max-width: 768px) {
+            #loader h1 { font-size: 8vw; }
+            #page1 { padding: 0 5vw; }
+            nav { padding: 5vw 0; }
+            nav img { height: 24px; }
+            #npart { display: none; }
+            nav h3 { display: block; border: 1px solid var(--light-gray); padding: 2vw 5vw; border-radius: 30px; font-size: 3.5vw;}
+            
+            #center { flex-direction: column-reverse; align-items: flex-start; height: auto; padding-top: 20vw; padding-bottom: 10vw; border-bottom: none; gap: 8vw; }
+            #left { width: 100%; font-size: 4.5vw; line-height: 6.5vw; }
+            #right { font-size: 14vw; line-height: 13vw; text-align: left; }
+            
+            /* Mobile Hero Span adjustment */
+            #right span { font-size: 18vw; padding-right: 0; } 
+            
+            #page1 video { height: 50vh; border-radius: 4vw; margin-top: 5vw; }
+            
+            .marquee h1 { font-size: 15vw; }
+            .marquee div { height: 40px; width: 40px; }
+            
+            #p2-bottom { flex-direction: column; padding: 15vw 5vw; gap: 10vw; }
+            #p2-bottom h1 { width: 100%; font-size: 7.5vw; line-height: 9.5vw; margin-bottom: 0; }
+            #bpart { width: 100%; }
+            #bpart p { font-size: 4vw; line-height: 6vw; }
+            #bpart img { border-radius: 3vw; }
+            
+            #page3 { padding: 15vw 0vw; }
+            .section-title { font-size: 3.5vw; padding: 0 5vw; margin-bottom: 5vw; }
+            .elem { height: auto; padding: 8vw 5vw; flex-direction: column; align-items: flex-start; gap: 4vw; }
+            .elem h2 { font-size: 8vw; }
+            .epart { width: 100%; text-align: left; display: flex; justify-content: space-between; }
+            .elem h3, .elem h4 { font-size: 3.5vw; }
+            
+            #fixed { display: none !important; }
+            
+            /* Mobile Page 4 Fixes */
+            #page4 { padding: 10vw 5vw; }
+            #cnt2 { flex-direction: column; height: auto; border-radius: 4vw; }
+            .cntpart1 { width: 100%; padding: 10vw 6vw; }
+            .cntpart1 h1 { font-size: 8vw; padding: 2vw 4vw; margin-bottom: 4vw; }
+            .cntpart1 p { font-size: 4vw; line-height: 6vw; width: 100%; margin-top: 6vw; }
+            .cntpart2 { width: 100%; height: 50vh; }
+            
+            #page5 { height: auto; padding: 15vw 5vw; }
+            .swiper-slide { width: 85%; border-left: none; padding: 0 2vw; }
+            .swiper-slide h3 { font-size: 10vw; margin-bottom: 2vw; }
+            .swiper-slide p { font-size: 4.5vw; line-height: 6.5vw; }
+            
+            /* Mobile Footer Fixes */
+            footer { min-height: auto; padding: 15vw 5vw 8vw 5vw; gap: 12vw; }
+            #foottop { flex-direction: column; gap: 10vw; }
+            .foot-nav a { font-size: 10vw; }
+            .foot-newsletter { width: 100%; }
+            .foot-newsletter p { font-size: 4.5vw; line-height: 6.5vw; margin-bottom: 6vw; }
+            #email { padding-bottom: 2vw; }
+            #email input[type="email"] { font-size: 4.5vw; }
+            #email button { font-size: 6vw; }
+            
+            .foot-massive { font-size: 15vw; line-height: 1; }
+            
+            #footlow { flex-direction: column; gap: 6vw; border-top: 1px solid #333; padding-top: 6vw; }
+            #footlow h3 { font-size: 4vw; }
+            .foot-socials { width: 100%; justify-content: space-between; }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="loader">
+        <h1>STRATEGY</h1>
+        <h1>CREATIVITY</h1>
+        <h1>ESCAPE</h1>
+    </div>
+
+    <div id="fixed"></div>
+
+    <div id="main">
+        <section id="page1">
+            <nav>
+                <img src="escapelogo.png" alt="Escape Media">
+                <div id="npart">
+                    <span><a href="#">About</a></span>
+                    <span><a href="#">Services</a></span>
+                    <span><a href="#">Contact</a></span>
+                </div>
+                <h3>Menu</h3>
+            </nav>
+            <div id="center">
+                <div id="left">
+                    <h3>Blending media creativity & tech innovation to amplify your digital presence.</h3>
+                </div>
+                <div id="right">
+                    <h1>AMPLIFY <br> YOUR <br> <span>Presence</span></h1>
+                </div>
+            </div>
+            <div id="heroshape">
+                <div id="hero-1"></div>
+                <div id="hero-2"></div>
+                <div id="hero-3"></div>
+            </div>
+            <video autoplay loop muted src="reel.mp4"></video>
+        </section>
+
+        <section id="page2">
+            <div id="cnt">
+                <div class="marquee">
+                    <h1>BRANDING</h1><div></div>
+                    <h1>CONTENT CREATION</h1><div></div>
+                    <h1>SOCIAL GROWTH</h1><div></div>
+                    <h1>MARKETING STRATEGY</h1><div></div>
+                </div>
+                <div class="marquee">
+                    <h1>BRANDING</h1><div></div>
+                    <h1>CONTENT CREATION</h1><div></div>
+                    <h1>SOCIAL GROWTH</h1><div></div>
+                    <h1>MARKETING STRATEGY</h1><div></div>
+                </div>
+            </div>
+
+            <div id="p2-bottom">
+                <h1>Escape Media is a creative powerhouse. We specialise in branding and creative content creation that not only captures attention but drives real business results.</h1>
+                <div id="bpart">
+                    <img src="escapeimage.png" alt="Agency Strategy">
+                    <p>From crafting compelling brand stories to designing visually striking campaigns, our team blends strategy, creativity, and innovation to help brands stand out in crowded markets.</p>
+                </div>
+            </div>
+            <div id="gooeyshape"></div>
+        </section>
+
+        <section id="page3">
+            <div class="section-title">Our Core Services</div>
+            <div id="elem-container">
+                <div class="elem" data-image="https://img.freepik.com/free-photo/set-up-studio-shoot_53876-144951.jpg?semt=ais_hybrid&w=740&q=80">
+                    <div class="overlay"></div>
+                    <h2>Creative Content Creation</h2>
+                    <div class="epart">
+                        <h3>Production</h3>
+                        <h4>Photo, Video, Graphics</h4>
+                    </div>
+                </div>
+                <div class="elem" data-image="https://thumbs.dreamstime.com/b/brand-strategy-concept-golden-cog-gears-d-illustration-mechanism-cogwheels-glow-effect-rendering-81977268.jpg">
+                    <div class="overlay"></div>
+                    <h2>Brand Strategy & Positioning</h2>
+                    <div class="epart">
+                        <h3>Identity</h3>
+                        <h4>Market Relevance</h4>
+                    </div>
+                </div>
+                <div class="elem" data-image="https://selzy.com/en/blog/wp-content/uploads-webpc/uploads/2025/02/social-media-marketing-trends-780x380.png.webp">
+                    <div class="overlay"></div>
+                    <h2>Social Media Growth</h2>
+                    <div class="epart">
+                        <h3>Engagement</h3>
+                        <h4>Community Building</h4>
+                    </div>
+                </div>
+                <div class="elem" data-image="https://filecamp.com/wp-content/uploads/2021/01/20943871-marketing-scaled.jpg">
+                    <div class="overlay"></div>
+                    <h2>Marketing Campaign Development</h2>
+                    <div class="epart">
+                        <h3>Execution</h3>
+                        <h4>Performance Driven</h4>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="page4">
+            <div id="cnt2">
+                <div class="cntpart1">
+                    <h1 class="active" data-src="escapeimage.png" data-text="We align your business objectives with tailored marketing strategies. Whether you’re launching or rebranding, we deliver solutions that make your brand resonate.">Marketing Strategy</h1>
+                    
+                    <h1 data-src="https://images.unsplash.com/photo-1432888498266-38ffec3eaf0a?q=80&w=1000&auto=format&fit=crop" data-text="Elevating your presence through targeted digital marketing. We leverage data, trends, and technology to maximize your reach and drive measurable outcomes.">Digital Marketing</h1>
+                    
+                    <h1 data-src="https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=1000&auto=format&fit=crop" data-text="From content strategy to content marketing, we craft stories that engage. We blend creativity with strategy to ensure your message thrives across all platforms.">Content Strategy</h1>
+                    
+                    <p id="dynamic-p">We align your business objectives with tailored marketing strategies. Whether you’re launching or rebranding, we deliver solutions that make your brand resonate.</p>
+                </div>
+                <div class="cntpart2"></div>
+            </div>
+        </section>
+
+        <section id="page5">
+            <div class="swiper mySwiper">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide">
+                        <h3>20k+</h3>
+                        <p>Dedicated followers engaged with our agency's journey and creative insights.</p>
+                    </div>
+                    <div class="swiper-slide">
+                        <h3>11-50</h3>
+                        <p>Talented employees forming our core team of strategists, creators, and innovators.</p>
+                    </div>
+                    <div class="swiper-slide">
+                        <h3>Marketing</h3>
+                        <p>Specialized services encompassing digital marketing, content marketing, and social media.</p>
+                    </div>
+                    <div class="swiper-slide">
+                        <h3>Powerhouse</h3>
+                        <p>A creative force dedicated to helping brands stand out and thrive in crowded markets.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <div id="foottop">
+                <div class="foot-nav">
+                    <a href="#">Home</a>
+                    <a href="#">About</a>
+                    <a href="#">Services</a>
+                    <a href="#">Posts</a>
+                    <a href="#">Jobs</a>
+                </div>
+                <div class="foot-newsletter">
+                    <p>Connect with Escape Media for tailored solutions that drive real business results.</p>
+                    <div id="email">
+                        <input type="email" placeholder="Email address">
+                        <button>→</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="foot-massive">escape <span>media</span></div>
+            
+            <div id="footlow">
+                <div>
+                    <h3>© 2026 Escape Media</h3>
+                    <h3>Marketing Services</h3>
+                </div>
+                <div class="foot-socials">
+                    <h3>LinkedIn</h3>
+                    <h3>People</h3>
+                    <h3>Message</h3>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <div id="full-scr">
+        <div id="close"><i class="ri-close-line"></i></div>
+        <div id="full-div1">
+            <h1>About</h1>
+            <h1>Services</h1>
+            <h1>Contact</h1>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/locomotive-scroll@3.5.4/dist/locomotive-scroll.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+    <script>
+        // Locomotive Scroll Initialization
+        const locoScroll = new LocomotiveScroll({
+            el: document.querySelector("#main"),
+            smooth: true,
+            multiplier: 1.2
+        });
+
+        // Loader
+        const loaderAnim = () => {
+            var loader = document.querySelector("#loader");
+            setTimeout(function () {
+                loader.style.top = "-100%";
+            }, 3500);
+        }
+        loaderAnim();
+
+        // Swiper Initialization
+        const initSwiper = () => {
+            var swiper = new Swiper(".mySwiper", {
+                slidesPerView: "auto",
+                loop: false,
+                spaceBetween: 50,
+                grabCursor: true,
+                breakpoints: {
+                    768: { spaceBetween: 100 }
+                }
+            });
+        }
+        initSwiper();
+
+        // Page 4 Interactive Headings
+        const initInteractiveHeadings = () => {
+            var h1s = document.querySelectorAll('.cntpart1 h1');
+            var p = document.querySelector('#dynamic-p');
+            var img = document.querySelector('.cntpart2');
+
+            h1s.forEach(function (h1) {
+                h1.addEventListener('click', function () {
+                    h1s.forEach(el => el.classList.remove('active'));
+                    this.classList.add('active');
+
+                    var text = this.getAttribute("data-text");
+                    var image = this.getAttribute("data-src");
+
+                    p.textContent = text;
+                    img.style.backgroundImage = `url(${image})`;
+                });
+            });
+        }
+        initInteractiveHeadings();
+
+        // Hover Image Reveal Logic
+        const initHoverReveal = () => {
+            var elemC = document.querySelector("#elem-container");
+            var fixed = document.querySelector("#fixed");
+            
+            elemC.addEventListener("mouseenter", function () {
+                fixed.style.display = "block";
+            });
+            elemC.addEventListener("mouseleave", function () {
+                fixed.style.display = "none";
+            });
+
+            var elems = document.querySelectorAll(".elem");
+            elems.forEach(function (e) {
+                e.addEventListener("mouseenter", function () {
+                    var image = e.getAttribute("data-image");
+                    fixed.style.backgroundImage = `url(${image})`;
+                });
+            });
+        }
+        
+        if (window.innerWidth > 768) { 
+            initHoverReveal(); 
+        }
+
+        // Mobile Menu
+        const initMenu = () => {
+            var menuBtn = document.querySelector("nav h3");
+            var fullScr = document.querySelector("#full-scr");
+            var closeBtn = document.querySelector("#close");
+            
+            menuBtn.addEventListener("click", function () {
+                fullScr.style.top = 0;
+                fullScr.style.opacity = 1;
+            });
+
+            closeBtn.addEventListener("click", function(){
+                fullScr.style.top = "-100%";
+                fullScr.style.opacity = 0;
+            });
+        }
+        initMenu();
+
+    </script>
+</body>
+</html>
