@@ -1,0 +1,1122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NexaStruct | Integrated Design & Engineering</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        /* CSS Variables - Premium Dark & Yellow Theme */
+        :root {
+            --bg-color: #0a0a0a;
+            --surface-color: #141414;
+            --surface-hover: #1f1f1f;
+            --text-main: #ffffff;
+            --text-muted: #a1a1aa;
+            --border-color: #27272a;
+            --accent: #ffbd34; /* Brand Yellow */
+            --transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* Base & Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            line-height: 1.1;
+        }
+
+        a {
+            color: var(--text-main);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            object-fit: cover;
+        }
+
+        /* Layout Utilities */
+        .container {
+            max-width: 1440px;
+            margin: 0 auto;
+            /* Explicit left/right padding so it never gets overwritten */
+            padding-left: 5vw;
+            padding-right: 5vw;
+        }
+
+        .section-padding {
+            /* Separated vertical padding so it doesn't kill side padding */
+            padding-top: 8rem;
+            padding-bottom: 8rem;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem 2.5rem;
+            background: var(--accent);
+            color: #000000;
+            border: none;
+            border-radius: 100px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+        }
+
+        .btn:hover {
+            background: #ffffff;
+            color: #000000;
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--text-main);
+            border: 2px solid var(--border-color);
+        }
+
+        .btn-outline:hover {
+            border-color: var(--accent);
+            background: var(--accent);
+            color: #000000;
+        }
+
+        /* Header / Nav (Dark Glassmorphism) */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 1.2rem 5vw;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            background: rgba(10, 10, 10, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .brand-logo {
+            position: relative;
+            z-index: 101;
+        }
+
+        .brand-logo img {
+            height: 35px;
+            width: auto;
+            display: block;
+            filter: drop-shadow(0 2px 10px rgba(0,0,0,0.5));
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+        }
+
+        .nav-links a {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-main);
+            position: relative;
+            padding: 0.5rem 0;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0%;
+            height: 2px;
+            background: var(--accent);
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            z-index: 101;
+        }
+
+        /* Mobile Hamburger Menu */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 30px;
+            height: 20px;
+            cursor: pointer;
+            z-index: 101;
+            background: transparent;
+            border: none;
+            padding: 0;
+        }
+
+        .hamburger span {
+            display: block;
+            width: 100%;
+            height: 2px;
+            background-color: var(--text-main);
+            transition: var(--transition);
+            border-radius: 2px;
+        }
+
+        /* Mobile Menu Overlay */
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: var(--bg-color);
+            z-index: 99;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 2rem 5vw;
+            transform: translateY(-100%);
+            opacity: 0;
+            visibility: hidden;
+            transition: transform 0.5s cubic-bezier(0.77, 0, 0.175, 1), opacity 0.4s ease;
+        }
+
+        .mobile-menu.active {
+            transform: translateY(0);
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .mobile-nav-links {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            text-align: left;
+        }
+
+        .mobile-nav-links a {
+            font-family: 'Syne', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .mobile-nav-links a:hover,
+        .mobile-nav-links a:active {
+            color: var(--accent);
+        }
+
+        .contact-bar {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+        }
+
+        /* Hero */
+        .hero {
+            padding-top: 10rem;
+            padding-bottom: 6rem;
+            border-bottom: 1px solid var(--border-color);
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 10%;
+            right: 10%;
+            width: 40vw;
+            height: 40vw;
+            background: radial-gradient(circle, rgba(255,189,52,0.08) 0%, rgba(10,10,10,0) 60%);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 8vw, 7rem);
+            max-width: 1100px;
+            margin-bottom: 2rem;
+            line-height: 1.1;
+        }
+
+        .hero-images {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 1.5rem;
+            margin-top: 4rem;
+        }
+
+        .hero-img-wrapper {
+            border-radius: 16px;
+            overflow: hidden;
+            background: var(--surface-color);
+        }
+
+        .hero-img-wrapper img {
+            width: 100%;
+            height: 60vh;
+            transition: transform 1.5s ease;
+            opacity: 0.9;
+        }
+        
+        .hero-img-wrapper:hover img {
+            transform: scale(1.05);
+            opacity: 1;
+        }
+
+        /* Features */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-top: -3rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        .feature-card {
+            background: var(--surface-color);
+            padding: 2.5rem;
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            border-top: 4px solid transparent;
+            transition: var(--transition);
+        }
+
+        .feature-card:hover {
+            border-top-color: var(--accent);
+            background: var(--surface-hover);
+            transform: translateY(-5px);
+        }
+
+        .feature-card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* Core Services */
+        .section-header {
+            margin-bottom: 4rem;
+        }
+
+        .section-label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--accent);
+            display: block;
+            margin-bottom: 1rem;
+        }
+
+        .section-header h2 {
+            font-size: clamp(2rem, 5vw, 4rem);
+        }
+
+        .services-images {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+
+        .service-img-card {
+            position: relative;
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .service-img-card img {
+            width: 100%;
+            height: 400px;
+            opacity: 0.8;
+            transition: var(--transition);
+        }
+
+        .service-img-card:hover img {
+            opacity: 1;
+            transform: scale(1.03);
+        }
+
+        .service-img-card h3 {
+            position: absolute;
+            bottom: 1.5rem;
+            left: 1.5rem;
+            color: #fff;
+            font-size: 1.5rem;
+            z-index: 2;
+        }
+
+        .service-img-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 60%;
+            background: linear-gradient(transparent, rgba(10,10,10,0.9));
+            pointer-events: none;
+        }
+
+        /* About & Process */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+        }
+
+        .process-list {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .process-item {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 1.5rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .process-num {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--accent);
+        }
+
+        .process-item h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .process-item p {
+            color: var(--text-muted);
+        }
+
+        /* Projects */
+        .project-list {
+            display: flex;
+            flex-direction: column;
+            gap: 6rem;
+        }
+
+        .project-item {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .project-item:nth-child(even) {
+            grid-template-columns: 1fr 1fr;
+            direction: rtl;
+        }
+
+        .project-item:nth-child(even) > * {
+            direction: ltr;
+        }
+
+        .project-content .num {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .project-content h4 {
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            margin-bottom: 1rem;
+        }
+
+        .project-content p {
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+            max-width: 400px;
+        }
+
+        .project-img {
+            border-radius: 16px;
+            overflow: hidden;
+            background: var(--surface-color);
+        }
+
+        /* Testimonials */
+        .testimonials {
+            background: var(--surface-color);
+        }
+
+        .testi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .testi-card {
+            background: var(--bg-color);
+            padding: 3rem;
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+            transition: var(--transition);
+        }
+
+        .testi-card:hover {
+            border-color: var(--accent);
+        }
+
+        .testi-card p {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            font-style: italic;
+            color: #d4d4d8;
+        }
+
+        .testi-author {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .testi-author img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 2px solid var(--accent);
+        }
+
+        .testi-author span {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        /* Contact & Stats */
+        .contact-stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: start;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 1rem 0;
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid var(--border-color);
+            font-family: inherit;
+            font-size: 1rem;
+            color: var(--text-main);
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            border-bottom-color: var(--accent);
+        }
+
+        .stats-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            background: var(--surface-color);
+            padding: 3rem;
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+        }
+
+        .stat-item h3 {
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
+            margin-bottom: 0.5rem;
+            color: var(--accent);
+        }
+
+        .stat-item p {
+            color: #d4d4d8;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Footer */
+        footer {
+            border-top: 1px solid var(--border-color);
+            padding-top: 5rem;
+            padding-bottom: 2rem;
+            background: #050505;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1.5fr;
+            gap: 3rem;
+            margin-bottom: 4rem;
+        }
+
+        .footer-logo img {
+            height: 35px;
+            width: auto;
+            margin-bottom: 1.5rem;
+            filter: drop-shadow(0 2px 5px rgba(0,0,0,0.8));
+        }
+
+        .footer-col h4 {
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-main);
+        }
+
+        .footer-col ul {
+            list-style: none;
+        }
+
+        .footer-col li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-col a {
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .footer-col a:hover {
+            color: var(--accent);
+        }
+
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        /* Animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* =========================================
+           RESPONSIVE MEDIA QUERIES
+           ========================================= */
+
+        @media (max-width: 1024px) {
+            .nav-links { display: none; }
+            .hamburger { display: flex; }
+            .header-btn { display: none; } 
+            
+            .hero-images, .about-grid, .project-item, .project-item:nth-child(even), .contact-stats-grid {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+            .project-item:nth-child(even) { direction: ltr; }
+            
+            .features-grid, .services-images {
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            }
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .section-padding {
+                padding-top: 5rem;
+                padding-bottom: 5rem;
+            }
+            .hero {
+                padding-top: 8rem;
+                padding-bottom: 4rem;
+            }
+            .contact-bar {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+            .hero-images {
+                margin-top: 2rem;
+            }
+            .hero-img-wrapper img {
+                height: 40vh;
+            }
+            .features-grid {
+                margin-top: 2rem;
+            }
+            .feature-card {
+                padding: 1.5rem;
+            }
+            .services-images .service-img-card img {
+                height: 300px;
+            }
+            .project-list {
+                gap: 4rem;
+            }
+            .stats-wrapper {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 2.5rem;
+            }
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 2.5rem;
+            }
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+                justify-content: center;
+            }
+            .footer-bottom div {
+                justify-content: center;
+            }
+        }
+
+        /* Hamburger Active Animation */
+        .hamburger.active span:nth-child(1) {
+            transform: translateY(9px) rotate(45deg);
+        }
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+        .hamburger.active span:nth-child(3) {
+            transform: translateY(-9px) rotate(-45deg);
+        }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="#home" class="brand-logo">
+            <img src="https://nexastruct.org/assets/images/logo.png" alt="NexaStruct">
+        </a>
+        
+        <nav class="nav-links">
+            <a href="#home">Home</a>
+            <a href="#about">About</a>
+            <a href="#team">Team</a>
+            <a href="#projects">Projects</a>
+            <a href="#faq">FAQ</a>
+            <a href="#contact">Contact</a>
+        </nav>
+
+        <div class="header-actions">
+            <a href="#contact" class="btn header-btn">Get A Quote</a>
+            <button class="hamburger" aria-label="Toggle Navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
+
+    <div class="mobile-menu">
+        <nav class="mobile-nav-links">
+            <a href="#home">Home</a>
+            <a href="#about">About</a>
+            <a href="#team">Team</a>
+            <a href="#projects">Projects</a>
+            <a href="#faq">FAQ</a>
+            <a href="#contact">Contact</a>
+        </nav>
+        <a href="#contact" class="btn" style="margin-top: 3rem; align-self: flex-start;">Get A Quote</a>
+    </div>
+
+    <section class="hero container" id="home">
+        <div class="contact-bar reveal">
+            <span>895 Penn Street, San Diego, CA 92154, US.</span>
+            <span>info@nexastruct.org</span>
+        </div>
+        <h1 class="reveal" style="transition-delay: 0.1s;">Integrated design and engineering for buildings that perform</h1>
+        
+        <div class="hero-images reveal" style="transition-delay: 0.2s;">
+            <div class="hero-img-wrapper">
+                <img src="https://nexastruct.org/assets/images/slider/slide-1.jpg" alt="Building Architecture">
+            </div>
+            <div class="hero-img-wrapper" style="margin-top: auto;">
+                <img src="https://nexastruct.org/assets/images/slider/slide-2.jpg" alt="Structural Engineering">
+            </div>
+        </div>
+    </section>
+
+    <section class="container" style="position: relative;">
+        <div class="features-grid">
+            <div class="feature-card reveal">
+                <h3>Architectural design</h3>
+                <p>Concept development, planning, and documentation that balance aesthetics, code compliance, and buildability.</p>
+            </div>
+            <div class="feature-card reveal" style="transition-delay: 0.1s;">
+                <h3>Structural engineering</h3>
+                <p>Analysis and design for safety and efficiency—steel, concrete, and specialty systems for complex structures.</p>
+            </div>
+            <div class="feature-card reveal" style="transition-delay: 0.2s;">
+                <h3>MEP systems</h3>
+                <p>Mechanical, electrical, and plumbing engineering coordinated with architecture and structure from day one.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-padding container" id="services">
+        <div class="section-header reveal">
+            <span class="section-label">What we deliver</span>
+            <h2>Our core services</h2>
+            <p style="max-width: 600px; margin-top: 1rem; color: var(--text-muted);">NexaStruct provides architectural design, structural engineering, and MEP as an integrated offering or as standalone disciplines—aligned with your project delivery method.</p>
+        </div>
+
+        <div class="services-images">
+            <div class="service-img-card reveal">
+                <img src="https://nexastruct.org/assets/images/services/img-1.jpg" alt="Architectural design">
+                <h3>Architectural design</h3>
+            </div>
+            <div class="service-img-card reveal" style="transition-delay: 0.1s;">
+                <img src="https://nexastruct.org/assets/images/services/img-2.jpg" alt="Structural engineering">
+                <h3>Structural engineering</h3>
+            </div>
+            <div class="service-img-card reveal" style="transition-delay: 0.2s;">
+                <img src="https://nexastruct.org/assets/images/services/img-3.jpg" alt="MEP engineering">
+                <h3>MEP engineering</h3>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-padding container" id="about" style="border-top: 1px solid var(--border-color);">
+        <div class="about-grid">
+            <div class="reveal">
+                <span class="section-label">NexaStruct</span>
+                <h2 style="font-size: clamp(2.5rem, 5vw, 3rem); margin-bottom: 2rem;">Who we are</h2>
+                <div style="border-radius: 16px; overflow: hidden; margin-bottom: 2rem;">
+                    <img src="https://nexastruct.org/assets/images/about-pic.jpg" alt="About NexaStruct" style="width: 100%; height: auto;">
+                </div>
+                <a href="#about" class="btn btn-outline">Company introduction</a>
+            </div>
+
+            <div class="process-list">
+                <div class="process-item reveal">
+                    <span class="process-num">01</span>
+                    <div>
+                        <h3>Integrated delivery</h3>
+                        <p>Architecture, structure, and MEP developed together to reduce clashes and rework in the field.</p>
+                    </div>
+                </div>
+                <div class="process-item reveal">
+                    <span class="process-num">02</span>
+                    <div>
+                        <h3>Full-service engineering</h3>
+                        <p>From early studies and peer review through construction administration and as-built support.</p>
+                    </div>
+                </div>
+                <div class="process-item reveal">
+                    <span class="process-num">03</span>
+                    <div>
+                        <h3>Modern tooling</h3>
+                        <p>BIM-ready workflows and clear documentation so contractors can execute with confidence.</p>
+                    </div>
+                </div>
+                <div class="process-item reveal">
+                    <span class="process-num">04</span>
+                    <div>
+                        <h3>Responsive support</h3>
+                        <p>Engineers available when you need answers—RFIs, site visits, and coordination meetings.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-padding container" id="projects">
+        <div class="section-header reveal text-center" style="text-align: center; margin-bottom: 4rem;">
+            <span class="section-label" style="margin: 0 auto 1rem;">Recently we have finished</span>
+            <h2>Featured projects</h2>
+            <p style="max-width: 600px; margin: 1rem auto 0; color: var(--text-muted);">A selection of recent work spanning commercial, institutional, and industrial buildings—where integrated design and engineering made the difference.</p>
+        </div>
+
+        <div class="project-list">
+            <div class="project-item reveal">
+                <div class="project-content">
+                    <span class="num">01</span>
+                    <h4>Corporate headquarters retrofit</h4>
+                    <p>Full architectural refresh with structural strengthening and new MEP for higher efficiency.</p>
+                    <a href="#contact" class="btn btn-outline">Contact us</a>
+                </div>
+                <div class="project-img">
+                    <img src="https://nexastruct.org/assets/images/projects/img-1.jpg" alt="Corporate headquarters retrofit">
+                </div>
+            </div>
+            <div class="project-item reveal">
+                <div class="project-content">
+                    <span class="num">02</span>
+                    <h4>Manufacturing plant expansion</h4>
+                    <p>New steel frame, equipment foundations, and process MEP coordinated with production schedules.</p>
+                    <a href="#contact" class="btn btn-outline">Contact us</a>
+                </div>
+                <div class="project-img">
+                    <img src="https://nexastruct.org/assets/images/projects/img-2.jpg" alt="Manufacturing plant expansion">
+                </div>
+            </div>
+            <div class="project-item reveal">
+                <div class="project-content">
+                    <span class="num">03</span>
+                    <h4>Education campus building</h4>
+                    <p>Design-build support: architecture, lateral system, and classroom MEP for comfort and code compliance.</p>
+                    <a href="#contact" class="btn btn-outline">Contact us</a>
+                </div>
+                <div class="project-img">
+                    <img src="https://nexastruct.org/assets/images/projects/img-3.jpg" alt="Education campus building">
+                </div>
+            </div>
+            <div class="project-item reveal">
+                <div class="project-content">
+                    <span class="num">04</span>
+                    <h4>Healthcare clinic fit-out</h4>
+                    <p>Specialized MEP, structural openings, and interior architecture for clinical workflows.</p>
+                    <a href="#contact" class="btn btn-outline">Contact us</a>
+                </div>
+                <div class="project-img">
+                    <img src="https://nexastruct.org/assets/images/projects/img-4.jpg" alt="Healthcare clinic fit-out">
+                </div>
+            </div>
+        </div>
+        
+        <div class="reveal" style="text-align: center; margin-top: 4rem;">
+            <a href="#projects" class="btn" style="background: transparent; color: var(--accent); border: none; text-decoration: underline; padding: 1rem;">View all projects</a>
+        </div>
+    </section>
+
+    <section class="section-padding testimonials" id="team">
+        <div class="container">
+            <div class="testi-grid">
+                <div class="testi-card reveal">
+                    <p>"NexaStruct brought our architectural, structural, and MEP scopes into one coordinated model. Issues were caught in design—not on site. The team was professional and easy to work with."</p>
+                    <div class="testi-author">
+                        <img src="https://nexastruct.org/assets/images/testimonials/img-1.jpg" alt="Jordan Ellis">
+                        <div>
+                            <h4>Jordan Ellis</h4>
+                            <span>Development director</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testi-card reveal" style="transition-delay: 0.1s;">
+                    <p>"We needed structural and MEP upgrades under a tight occupancy window. NexaStruct delivered clear packages and responded quickly to contractor questions. We would engage them again."</p>
+                    <div class="testi-author">
+                        <img src="https://nexastruct.org/assets/images/testimonials/img-2.jpg" alt="Maria Chen">
+                        <div>
+                            <h4>Maria Chen</h4>
+                            <span>Facilities manager</span>
+                        </div>
+                    </div>
+                </div>
+                 <div class="testi-card reveal" style="transition-delay: 0.2s;">
+                    <p>"NexaStruct brought our architectural, structural, and MEP scopes into one coordinated model. Issues were caught in design—not on site. The team was professional and easy to work with."</p>
+                    <div class="testi-author">
+                        <img src="https://nexastruct.org/assets/images/testimonials/img-1.jpg" alt="Jordan Ellis">
+                        <div>
+                            <h4>Jordan Ellis</h4>
+                            <span>Development director</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-padding container" id="contact">
+        <div class="reveal" style="margin-bottom: 4rem; max-width: 800px;">
+            <h2 style="font-size: clamp(2rem, 4vw, 3rem); margin-bottom: 1rem;">Trusted engineering for complex building projects across sectors</h2>
+            <p style="font-size: 1.2rem; color: var(--text-muted);">Tell us about your brief—we will propose the right team and schedule. Need architectural, structural, or MEP support on your next project?</p>
+        </div>
+
+        <div class="contact-stats-grid">
+            <div class="reveal">
+                <form>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Your Name *">
+                    </div>
+                    <div class="form-group">
+                        <input type="email" class="form-control" placeholder="Your Email *">
+                    </div>
+                    <div class="form-group">
+                        <textarea class="form-control" rows="3" placeholder="Message..."></textarea>
+                    </div>
+                    <button type="submit" class="btn" style="margin-bottom: 3rem; width: 100%;">Send message</button>
+                </form>
+
+                <div style="color: var(--text-muted); font-size: 0.95rem; line-height: 2;">
+                    <p><strong>Phone:</strong> +1 (555) 010-4200</p>
+                    <p><strong>Email:</strong> info@nexastruct.org</p>
+                    <p><strong>Fax:</strong> +1 (555) 010-4201</p>
+                    <p><strong>Address:</strong> 895 Penn Street, San Diego, CA 92154, US</p>
+                    <p><strong>Hours:</strong> Mon–Fri, 9:00 AM – 5:00 PM</p>
+                </div>
+            </div>
+
+            <div class="stats-wrapper reveal" style="transition-delay: 0.2s;">
+                <div class="stat-item">
+                    <h3>300+</h3>
+                    <p>Certified Engineers</p>
+                </div>
+                <div class="stat-item">
+                    <h3>150+</h3>
+                    <p>Happy Clients</p>
+                </div>
+                <div class="stat-item">
+                    <h3>100+</h3>
+                    <p>Award Won</p>
+                </div>
+                <div class="stat-item">
+                    <h3>120+</h3>
+                    <p>Projects Done</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="container">
+        <div class="footer-grid">
+            <div class="footer-col">
+                <a href="#home" class="footer-logo" style="display: inline-block;">
+                    <img src="https://nexastruct.org/assets/images/logo.png" alt="NexaStruct">
+                </a>
+                <p style="color: var(--text-muted); font-size: 0.95rem; padding-right: 2rem;">NexaStruct delivers integrated architectural design, structural engineering, and MEP for clients who need one accountable partner from concept through construction.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Navigation</h4>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#team">Team</a></li>
+                    <li><a href="#projects">Projects</a></li>
+                    <li><a href="#faq">FAQ</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Our services</h4>
+                <ul>
+                    <li><a href="#services">Architectural design</a></li>
+                    <li><a href="#services">Structural engineering</a></li>
+                    <li><a href="#services">MEP engineering</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Contact info</h4>
+                <ul style="color: var(--text-muted); font-size: 0.95rem;">
+                    <li style="margin-bottom: 1rem;">895 Penn Street, San Diego, CA 92154, US.</li>
+                    <li>Email: info@nexastruct.org</li>
+                    <li>Phone: +1 (555) 010-4200</li>
+                    <li>Fax: +1 (555) 010-4201</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2026 NexaStruct. All rights reserved.</p>
+            <div style="display: flex; gap: 1.5rem;">
+                <a href="#about" style="color: var(--text-muted);">About</a>
+                <a href="#faq" style="color: var(--text-muted);">FAQ</a>
+                <a href="#contact" style="color: var(--text-muted);">Contact</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            
+            // 1. Scroll Reveal Animation
+            const reveals = document.querySelectorAll(".reveal");
+            const revealOnScroll = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add("active");
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                threshold: 0.1,
+                rootMargin: "0px 0px -50px 0px"
+            });
+            reveals.forEach(reveal => revealOnScroll.observe(reveal));
+
+            // 2. Mobile Menu Toggle Logic
+            const hamburger = document.querySelector(".hamburger");
+            const mobileMenu = document.querySelector(".mobile-menu");
+            const mobileLinks = document.querySelectorAll(".mobile-nav-links a, .mobile-menu .btn");
+
+            hamburger.addEventListener("click", () => {
+                hamburger.classList.toggle("active");
+                mobileMenu.classList.toggle("active");
+                // Prevent background scrolling when menu is open
+                document.body.style.overflow = mobileMenu.classList.contains("active") ? "hidden" : "auto";
+            });
+
+            // Close menu when clicking a link
+            mobileLinks.forEach(link => {
+                link.addEventListener("click", () => {
+                    hamburger.classList.remove("active");
+                    mobileMenu.classList.remove("active");
+                    document.body.style.overflow = "auto";
+                });
+            });
+        });
+    </script>
+</body>
+</html>
