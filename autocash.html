@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AutoCash | Premium Vehicle Valuation</title>
+    
+    <!-- Fonts: Outfit for Display, Inter for Body -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Outfit:wght@300;500;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* =========================================
+           VARIABLES & RESET
+        ========================================= */
+        :root {
+            --bg-page: #FDFDFD;
+            --bg-surface: #FFFFFF;
+            --bg-alt: #F4F5F7;
+            --text-main: #0A0A0A;
+            --text-muted: #666666;
+            --accent: #0055FF;
+            --accent-hover: #0044CC;
+            --border: rgba(0, 0, 0, 0.08);
+            --ease: cubic-bezier(0.25, 1, 0.5, 1);
+            --radius-lg: 24px;
+            --radius-pill: 100px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* =========================================
+           TYPOGRAPHY
+        ========================================= */
+        h1, h2, h3, h4, .brand {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+        }
+
+        h1 {
+            font-size: clamp(3rem, 8vw, 6.5rem);
+            margin-bottom: 1.5rem;
+        }
+
+        h2 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            margin-bottom: 1rem;
+        }
+
+        h3 {
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            margin-bottom: 1rem;
+        }
+
+        p {
+            color: var(--text-muted);
+            font-size: 1.125rem;
+            max-width: 600px;
+        }
+
+        .tag {
+            display: inline-block;
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.875rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+
+        /* =========================================
+           LAYOUT UTILITIES
+        ========================================= */
+        .container {
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 5vw;
+        }
+
+        section {
+            padding: 8rem 0;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+        }
+
+        .grid-4 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 2rem;
+        }
+
+        /* =========================================
+           COMPONENTS
+        ========================================= */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.125rem 2.5rem;
+            border-radius: var(--radius-pill);
+            font-family: 'Outfit', sans-serif;
+            font-weight: 500;
+            font-size: 1rem;
+            text-decoration: none;
+            transition: all 0.4s var(--ease);
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-primary {
+            background-color: var(--accent);
+            color: #FFF;
+            box-shadow: 0 8px 24px rgba(0, 85, 255, 0.25);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--accent-hover);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 32px rgba(0, 85, 255, 0.35);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--text-main);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--text-main);
+            background-color: var(--bg-alt);
+        }
+
+        /* =========================================
+           NAVIGATION
+        ========================================= */
+        header {
+            position: fixed;
+            top: 0; left: 0; width: 100%;
+            padding: 1.5rem 0;
+            z-index: 1000;
+            transition: all 0.4s var(--ease);
+            background: rgba(253, 253, 253, 0);
+        }
+
+        header.scrolled {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 0;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand {
+            font-size: 1.5rem;
+            color: var(--text-main);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-main);
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover { color: var(--accent); }
+
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        .menu-toggle span {
+            display: block;
+            width: 24px; height: 2px;
+            background-color: var(--text-main);
+            transition: 0.3s;
+        }
+
+        /* =========================================
+           HERO SECTION
+        ========================================= */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding-top: 6rem;
+            position: relative;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-btns {
+            display: flex;
+            gap: 1rem;
+            margin-top: 3rem;
+        }
+
+        .hero-visual {
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(135deg, #F4F5F7 0%, #E2E8F0 100%);
+            border-bottom-left-radius: 40px;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .hero-visual img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.9;
+            mix-blend-mode: multiply;
+        }
+
+        /* =========================================
+           SERVICES SECTION
+        ========================================= */
+        .service-card {
+            background: var(--bg-surface);
+            padding: 3rem;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border);
+            transition: all 0.5s var(--ease);
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.04);
+            border-color: rgba(0, 85, 255, 0.2);
+        }
+
+        .service-icon {
+            width: 64px; height: 64px;
+            border-radius: 16px;
+            background: var(--bg-alt);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            color: var(--accent);
+        }
+
+        /* =========================================
+           ABOUT SECTION
+        ========================================= */
+        .about { background-color: var(--bg-alt); }
+        
+        .about-image {
+            width: 100%;
+            height: 600px;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+        }
+
+        .about-image img {
+            width: 100%; height: 100%; object-fit: cover;
+        }
+
+        .trust-list {
+            margin-top: 2rem;
+            list-style: none;
+        }
+
+        .trust-list li {
+            font-size: 1.125rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-weight: 500;
+        }
+
+        .trust-list li::before {
+            content: "✦";
+            color: var(--accent);
+            font-size: 1.2rem;
+        }
+
+        /* =========================================
+           HOW IT WORKS SECTION
+        ========================================= */
+        .step-card {
+            position: relative;
+            padding: 2rem 0;
+        }
+
+        .step-number {
+            font-family: 'Outfit', sans-serif;
+            font-size: 4rem;
+            font-weight: 800;
+            color: var(--bg-alt);
+            line-height: 1;
+            margin-bottom: 1rem;
+            -webkit-text-stroke: 1px var(--border);
+        }
+
+        /* =========================================
+           FORM SECTION (Awwwards Style)
+        ========================================= */
+        .form-section {
+            background-color: var(--text-main);
+            color: var(--bg-surface);
+            border-radius: 40px;
+            margin: 0 2vw;
+            padding: 8rem 0;
+        }
+
+        .form-section p { color: #A1A1AA; }
+        
+        .custom-form {
+            background: #1A1A1A;
+            padding: 4rem;
+            border-radius: var(--radius-lg);
+            margin-top: 3rem;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .form-group.full { grid-column: 1 / -1; }
+
+        .custom-form label {
+            display: block;
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+            color: #A1A1AA;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .custom-form input, 
+        .custom-form select, 
+        .custom-form textarea {
+            width: 100%;
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+            padding: 1rem 0;
+            color: #FFF;
+            font-family: inherit;
+            font-size: 1.125rem;
+            transition: border-color 0.3s;
+            border-radius: 0;
+        }
+
+        .custom-form input:focus, 
+        .custom-form select:focus, 
+        .custom-form textarea:focus {
+            outline: none;
+            border-bottom-color: var(--accent);
+        }
+
+        .custom-form select option { background: #1A1A1A; color: #FFF; }
+        
+        /* Custom File Input */
+        input[type="file"] {
+            color: transparent;
+        }
+        input[type="file"]::file-selector-button {
+            background: rgba(255,255,255,0.1);
+            color: #FFF;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius-pill);
+            cursor: pointer;
+            margin-right: 1rem;
+            transition: 0.3s;
+        }
+        input[type="file"]::file-selector-button:hover {
+            background: var(--accent);
+        }
+
+        .success-state {
+            display: none;
+            text-align: center;
+            padding: 4rem 2rem;
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid #10B981;
+            border-radius: var(--radius-lg);
+            color: #10B981;
+        }
+
+        /* =========================================
+           TESTIMONIALS & CTA
+        ========================================= */
+        .testimonial-card {
+            padding: 3rem;
+            border-bottom: 1px solid var(--border);
+            border-left: 1px solid transparent;
+            transition: 0.3s;
+        }
+        .testimonial-card:hover {
+            border-left: 4px solid var(--accent);
+            background: var(--bg-alt);
+        }
+
+        .stars { color: var(--text-main); margin-bottom: 1rem; letter-spacing: 2px;}
+
+        .cta-banner {
+            text-align: center;
+            padding: 10rem 0;
+        }
+
+        .cta-banner h2 { font-size: clamp(3rem, 6vw, 5rem); }
+
+        /* =========================================
+           FOOTER
+        ========================================= */
+        footer {
+            background: var(--bg-alt);
+            padding: 6rem 0 2rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 4rem;
+            margin-bottom: 4rem;
+        }
+
+        .footer-col h4 {
+            font-size: 1.25rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-col a, .footer-col p {
+            color: var(--text-muted);
+            text-decoration: none;
+            display: block;
+            margin-bottom: 0.75rem;
+            transition: 0.3s;
+        }
+
+        .footer-col a:hover { color: var(--accent); }
+
+        .copyright {
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.875rem;
+        }
+
+        /* =========================================
+           ANIMATIONS
+        ========================================= */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: 1s var(--ease);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* =========================================
+           RESPONSIVE DESIGN
+        ========================================= */
+        @media (max-width: 1024px) {
+            .hero-visual { width: 40%; }
+            .hero-content { max-width: 60%; }
+        }
+
+        @media (max-width: 768px) {
+            .hero { padding-top: 8rem; text-align: center; }
+            .hero-content { max-width: 100%; }
+            .hero-visual { display: none; }
+            .hero-btns { justify-content: center; }
+            
+            .grid-2 { grid-template-columns: 1fr; }
+            
+            .nav-links {
+                position: fixed;
+                top: 0; right: -100%;
+                width: 100%; height: 100vh;
+                background: var(--bg-surface);
+                flex-direction: column;
+                justify-content: center;
+                transition: right 0.5s var(--ease);
+            }
+            
+            .nav-links.active { right: 0; }
+            .nav-links a { font-size: 2rem; font-family: 'Outfit'; }
+            .menu-toggle { display: flex; }
+
+            .form-section { margin: 0; border-radius: 0; padding: 4rem 5vw; }
+            .custom-form { padding: 2rem; }
+            .form-grid { grid-template-columns: 1fr; }
+            
+            .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header id="header">
+        <div class="container nav-container">
+            <a href="#" class="brand">AutoCash.</a>
+            <nav class="nav-links" id="navLinks">
+                <a href="#services">Expertise</a>
+                <a href="#about">Philosophy</a>
+                <a href="#process">Process</a>
+                <a href="#quote" class="btn btn-primary" style="padding: 0.75rem 1.5rem; color:#fff;">Evaluate Vehicle</a>
+            </nav>
+            <div class="menu-toggle" id="menuToggle">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content reveal">
+                <span class="tag">Liquidate Your Asset</span>
+                <h1>Turn Your Car Into Capital.</h1>
+                <p>We provide a frictionless, premium service to purchase your vehicle outright. Real-time market valuation, instant payment, and complimentary concierge pickup.</p>
+                <div class="hero-btns">
+                    <a href="#quote" class="btn btn-primary">Get Market Value</a>
+                    <a href="#process" class="btn btn-secondary">Explore Process</a>
+                </div>
+            </div>
+        </div>
+        <div class="hero-visual reveal" style="transition-delay: 0.2s;">
+            <!-- Placeholder abstract/clean car image -->
+            <img src="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="Premium vehicle detail">
+        </div>
+    </section>
+
+    <!-- SERVICES -->
+    <section id="services" class="container">
+        <span class="tag reveal">Our Expertise</span>
+        <h2 class="reveal">Comprehensive<br>Vehicle Acquisition.</h2>
+        
+        <div class="grid-3" style="margin-top: 4rem;">
+            <div class="service-card reveal">
+                <div class="service-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                </div>
+                <h3>Capital Transfer</h3>
+                <p>We pay competitive market rates for all vehicle classes. Funds are wired or provided as a certified draft instantly upon agreement.</p>
+            </div>
+            <div class="service-card reveal" style="transition-delay: 0.1s;">
+                <div class="service-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
+                </div>
+                <h3>Concierge Removal</h3>
+                <p>Logistics shouldn't be your concern. Our fleet handles complimentary, secure extraction from your residence or facility.</p>
+            </div>
+            <div class="service-card reveal" style="transition-delay: 0.2s;">
+                <div class="service-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                </div>
+                <h3>Paperwork Execution</h3>
+                <p>We assume all legal and administrative burdens. Title transfers, DMV notifications, and liability releases are handled internally.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about" class="about">
+        <div class="container grid-2">
+            <div class="about-image reveal">
+                <img src="https://img.freepik.com/premium-photo/two-diverse-professional-business-men-executive-leaders-shaking-hands-office-meeting_709984-642.jpg" alt="Executive shaking hands">
+            </div>
+            <div class="reveal">
+                <span class="tag">The AutoCash Standard</span>
+                <h2>Redefining automotive liquidation.</h2>
+                <p>Selling a vehicle privately is an inefficient allocation of your time. Dealing with low-ball offers, unsafe meetups, and complex paperwork is a thing of the past.</p>
+                <p style="margin-top: 1rem;">AutoCash was engineered to provide a seamless exit strategy for your automotive assets, backed by data-driven valuations.</p>
+                
+                <ul class="trust-list">
+                    <li>Algorithmic pricing for maximum yield</li>
+                    <li>Zero-friction nationwide pickup within 24 hours</li>
+                    <li>A+ Rating with the Better Business Bureau</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- PROCESS -->
+    <section id="process" class="container">
+        <span class="tag reveal">Methodology</span>
+        <h2 class="reveal">Four steps to capital.</h2>
+        
+        <div class="grid-4" style="margin-top: 4rem;">
+            <div class="step-card reveal">
+                <div class="step-number">01</div>
+                <h3>Submit Data</h3>
+                <p>Provide your vehicle's specifications through our secure portal.</p>
+            </div>
+            <div class="step-card reveal" style="transition-delay: 0.1s;">
+                <div class="step-number">02</div>
+                <h3>Algorithmic Offer</h3>
+                <p>Our system analyzes market trends to generate a precise valuation.</p>
+            </div>
+            <div class="step-card reveal" style="transition-delay: 0.2s;">
+                <div class="step-number">03</div>
+                <h3>Dispatch</h3>
+                <p>Accept the offer and we dispatch our logistics team to your location.</p>
+            </div>
+            <div class="step-card reveal" style="transition-delay: 0.3s;">
+                <div class="step-number">04</div>
+                <h3>Fulfillment</h3>
+                <p>Vehicle is verified, paperwork signed, and funds are transferred instantly.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- FORM SECTION -->
+    <section id="quote" class="form-section">
+        <div class="container">
+            <div class="grid-2">
+                <div class="reveal">
+                    <span class="tag" style="color: #FFF; border: 1px solid rgba(255,255,255,0.2); padding: 5px 15px; border-radius: 50px;">Initiate Valuation</span>
+                    <h2>Discover the true worth of your asset.</h2>
+                    <p>Enter your details below. Our valuation team will contact you within 15 minutes with a binding cash offer.</p>
+                </div>
+                
+                <div class="reveal">
+                    <!-- Success Message -->
+                    <div id="formSuccess" class="success-state">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-bottom: 1rem;"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                        <h3>Data Received Successfully.</h3>
+                        <p>Our valuation algorithm is processing your details. An associate will contact you momentarily.</p>
+                    </div>
+
+                    <!-- Form -->
+                    <form id="valuationForm" class="custom-form">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>Client Name</label>
+                                <input type="text" required placeholder="Jane Doe">
+                            </div>
+                            <div class="form-group">
+                                <label>Direct Contact</label>
+                                <input type="tel" required placeholder="(555) 000-0000">
+                            </div>
+                            <div class="form-group full">
+                                <label>Electronic Mail</label>
+                                <input type="email" required placeholder="jane@company.com">
+                            </div>
+                            <div class="form-group">
+                                <label>Vehicle Year</label>
+                                <select required>
+                                    <option value="" disabled selected>Select Year</option>
+                                    <option value="2024">2024</option>
+                                    <option value="2023">2023</option>
+                                    <option value="2022">2022</option>
+                                    <option value="older">2021 or Older</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Make & Model</label>
+                                <input type="text" required placeholder="e.g. Tesla Model 3">
+                            </div>
+                            <div class="form-group full">
+                                <label>Asset Condition</label>
+                                <select required>
+                                    <option value="" disabled selected>Select current state</option>
+                                    <option value="mint">Pristine / Factory Condition</option>
+                                    <option value="good">Standard Wear / Running</option>
+                                    <option value="fair">Mechanical Issues</option>
+                                    <option value="poor">Non-Operational / Salvage</option>
+                                </select>
+                            </div>
+                            <div class="form-group full">
+                                <label>Supporting Imagery (Optional)</label>
+                                <input type="file" multiple accept="image/*">
+                            </div>
+                            <div class="form-group full">
+                                <label>Additional Specifications</label>
+                                <textarea rows="2" placeholder="List any aftermarket modifications or specific damage..."></textarea>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">Submit for Valuation</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TESTIMONIALS -->
+    <section id="testimonials" class="container">
+        <span class="tag reveal">Client Relations</span>
+        <h2 class="reveal">Proven Outcomes.</h2>
+        
+        <div class="grid-3" style="margin-top: 4rem;">
+            <div class="testimonial-card reveal">
+                <div class="stars">★★★★★</div>
+                <p>"Impeccable service. The algorithmic quote was 15% higher than local dealerships. The logistics team arrived precisely on time and the funds cleared immediately."</p>
+                <div style="margin-top: 2rem;">
+                    <h4 style="font-size: 1.1rem;">Marcus T.</h4>
+                    <span style="font-size: 0.875rem; color: var(--text-muted);">Liquidated a 2019 Audi Q5</span>
+                </div>
+            </div>
+            <div class="testimonial-card reveal" style="transition-delay: 0.1s;">
+                <div class="stars">★★★★★</div>
+                <p>"A completely frictionless experience. Uploaded my car's details, agreed to the valuation, and they handled the rest. This is how automotive transactions should work."</p>
+                <div style="margin-top: 2rem;">
+                    <h4 style="font-size: 1.1rem;">Elena R.</h4>
+                    <span style="font-size: 0.875rem; color: var(--text-muted);">Liquidated a 2015 Honda Accord</span>
+                </div>
+            </div>
+            <div class="testimonial-card reveal" style="transition-delay: 0.2s;">
+                <div class="stars">★★★★★</div>
+                <p>"Even for a non-running asset sitting in my garage, AutoCash provided a fair quote and handled the extraction flawlessly. Highly recommended for busy professionals."</p>
+                <div style="margin-top: 2rem;">
+                    <h4 style="font-size: 1.1rem;">Jonathan S.</h4>
+                    <span style="font-size: 0.875rem; color: var(--text-muted);">Liquidated a 2008 Ford F-150</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-banner">
+        <div class="container reveal">
+            <h2>Ready to liquidate?</h2>
+            <p style="margin: 1.5rem auto 3rem; max-width: 500px;">Stop letting your vehicle depreciate. Secure your cash offer today with zero obligations.</p>
+            <a href="#quote" class="btn btn-primary">Initiate Valuation Now</a>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <a href="#" class="brand" style="font-size: 2rem;">AutoCash.</a>
+                    <p style="margin-top: 1rem; max-width: 300px;">The premier destination for instantaneous, data-driven vehicle acquisitions.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Navigation</h4>
+                    <a href="#services">Our Expertise</a>
+                    <a href="#about">Philosophy</a>
+                    <a href="#process">Process</a>
+                    <a href="#quote">Valuation Portal</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Headquarters</h4>
+                    <p>800 Innovation Way<br>Suite 400<br>San Francisco, CA 94103</p>
+                    <p style="margin-top: 1rem; font-weight: 500; color: var(--text-main);">contact@autocash-premium.com</p>
+                    <p>1 (800) 555-0199</p>
+                </div>
+            </div>
+            <div class="copyright">
+                &copy; 2026 AutoCash Holdings LLC. All Rights Reserved. Conceptual Demo.
+            </div>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT -->
+    <script>
+        // 1. Sticky Header Logic
+        const header = document.getElementById('header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // 2. Mobile Menu Toggle
+        const menuToggle = document.getElementById('menuToggle');
+        const navLinks = document.getElementById('navLinks');
+        const links = navLinks.querySelectorAll('a');
+
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+
+        links.forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+            });
+        });
+
+        // 3. Scroll Reveal Observer
+        const revealElements = document.querySelectorAll('.reveal');
+        
+        const revealOptions = {
+            threshold: 0.1,
+            rootMargin: "0px 0px -50px 0px"
+        };
+
+        const revealOnScroll = new IntersectionObserver(function(entries, observer) {
+            entries.forEach(entry => {
+                if (!entry.isIntersecting) return;
+                entry.target.classList.add('active');
+                observer.unobserve(entry.target); // Unobserve to only animate once
+            });
+        }, revealOptions);
+
+        revealElements.forEach(el => {
+            revealOnScroll.observe(el);
+        });
+
+        // 4. Form Submission Simulation
+        const form = document.getElementById('valuationForm');
+        const successState = document.getElementById('formSuccess');
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault(); 
+            
+            // UI Feedback
+            const btn = form.querySelector('button');
+            const originalText = btn.innerText;
+            btn.innerText = 'Encrypting & Processing...';
+            btn.style.opacity = '0.7';
+            btn.style.pointerEvents = 'none';
+            
+            // Simulate Network Request
+            setTimeout(() => {
+                form.style.display = 'none';
+                successState.style.display = 'block';
+                successState.style.animation = 'fadeIn 0.5s forwards';
+            }, 1500);
+        });
+    </script>
+</body>
+</html>
