@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LearnFlow | Modern LMS</title>
+    <!-- Tailwind CSS for Modern UI -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: { primary: '#4F46E5', secondary: '#0F172A' }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #F8FAFC; }
+        .view-section { display: none; animation: fadeIn 0.4s ease-in-out; }
+        .view-section.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        /* Custom Scrollbar for sidebars */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 10px; }
+    </style>
+</head>
+<body class="text-slate-800 antialiased flex flex-col min-h-screen">
+
+    <!-- Sticky Navbar -->
+    <nav class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center cursor-pointer" onclick="navigateTo('home-view')">
+                    <div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center text-white font-bold text-xl mr-2">L</div>
+                    <span class="font-bold text-xl text-secondary">LearnFlow</span>
+                </div>
+                
+                <!-- Center Search -->
+                <div class="hidden md:flex flex-1 max-w-md mx-8">
+                    <div class="relative w-full">
+                        <i class="fa-solid fa-search absolute left-3 top-3 text-slate-400"></i>
+                        <input type="text" class="w-full bg-slate-100 rounded-full py-2 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-primary/50" placeholder="Search for courses...">
+                    </div>
+                </div>
+
+                <!-- Right Nav (Auth Simulation) -->
+                <div class="flex items-center space-x-4">
+                    <button onclick="toggleRole()" id="role-btn" class="text-sm font-medium text-slate-500 hover:text-primary transition">Switch to Instructor</button>
+                    <div class="h-8 w-8 rounded-full bg-slate-200 border-2 border-white shadow-sm overflow-hidden cursor-pointer" onclick="navigateTo('dashboard-view')">
+                        <img src="https://ui-avatars.com/api/?name=User&background=4F46E5&color=fff" alt="Profile">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="flex-grow">
+        
+        <!-- VIEW: HOME / CATALOG -->
+        <section id="home-view" class="view-section active max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+            <!-- Hero -->
+            <div class="bg-secondary rounded-3xl p-10 mb-12 text-white shadow-xl relative overflow-hidden">
+                <div class="relative z-10 max-w-2xl">
+                    <h1 class="text-4xl font-bold mb-4">Master modern skills, beautifully.</h1>
+                    <p class="text-slate-300 mb-8 text-lg">Join thousands of students learning design, engineering, and business from top industry experts.</p>
+                    <button class="bg-primary hover:bg-indigo-500 text-white font-semibold py-3 px-6 rounded-lg transition shadow-lg shadow-primary/30">Explore Catalog</button>
+                </div>
+                <!-- Decorative background elements -->
+                <div class="absolute top-0 right-0 w-64 h-64 bg-indigo-500 rounded-full mix-blend-multiply filter blur-3xl opacity-50 transform translate-x-20 -translate-y-10"></div>
+            </div>
+
+            <!-- Filters -->
+            <div class="flex space-x-4 mb-8 overflow-x-auto pb-2">
+                <button class="bg-white border border-slate-200 px-4 py-2 rounded-full text-sm font-medium hover:border-primary hover:text-primary transition">All Courses</button>
+                <button class="bg-white border border-slate-200 px-4 py-2 rounded-full text-sm font-medium hover:border-primary hover:text-primary transition">Design</button>
+                <button class="bg-white border border-slate-200 px-4 py-2 rounded-full text-sm font-medium hover:border-primary hover:text-primary transition">Engineering</button>
+            </div>
+
+            <!-- Course Grid -->
+            <div id="course-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <!-- Populated by JS -->
+            </div>
+        </section>
+
+        <!-- VIEW: COURSE DETAIL -->
+        <section id="course-detail-view" class="view-section max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+            <button onclick="navigateTo('home-view')" class="text-slate-500 hover:text-primary mb-6"><i class="fa-solid fa-arrow-left mr-2"></i>Back to Catalog</button>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
+                <div class="lg:col-span-2">
+                    <h1 id="detail-title" class="text-3xl font-bold text-secondary mb-4">Course Title</h1>
+                    <p id="detail-desc" class="text-slate-600 mb-6 line-clamp-3">Course description goes here...</p>
+                    
+                    <div class="flex items-center space-x-4 mb-8">
+                        <div class="flex items-center"><i class="fa-solid fa-clock text-primary mr-2"></i><span id="detail-time" class="text-sm">4h 30m</span></div>
+                        <div class="flex items-center"><i class="fa-solid fa-user-graduate text-primary mr-2"></i><span class="text-sm">1,204 Students</span></div>
+                    </div>
+
+                    <h3 class="text-xl font-semibold mb-4">Course Syllabus</h3>
+                    <div class="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden">
+                        <!-- Dummy Syllabus Items -->
+                        <div class="p-4 border-b border-slate-100 hover:bg-slate-50 cursor-pointer flex justify-between items-center" onclick="navigateTo('lesson-view')">
+                            <div class="flex items-center"><div class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center mr-3"><i class="fa-solid fa-play text-xs text-primary"></i></div><span class="font-medium">1. Introduction to the course</span></div>
+                            <span class="text-sm text-slate-400">5:20</span>
+                        </div>
+                        <div class="p-4 border-b border-slate-100 hover:bg-slate-50 cursor-pointer flex justify-between items-center" onclick="navigateTo('lesson-view')">
+                            <div class="flex items-center"><div class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center mr-3"><i class="fa-solid fa-play text-xs text-primary"></i></div><span class="font-medium">2. Setting up your environment</span></div>
+                            <span class="text-sm text-slate-400">12:45</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Sticky Sidebar Card -->
+                <div class="lg:col-span-1 relative">
+                    <div class="sticky top-24 bg-white rounded-2xl shadow-xl border border-slate-100 overflow-hidden">
+                        <img id="detail-img" src="" alt="Course Cover" class="w-full h-48 object-cover">
+                        <div class="p-6">
+                            <h2 class="text-2xl font-bold mb-4">$49.99</h2>
+                            <button onclick="enrollCourse()" class="w-full bg-primary hover:bg-indigo-500 text-white font-bold py-3 px-4 rounded-lg transition mb-3">Enroll Now</button>
+                            <p class="text-xs text-center text-slate-500">30-Day Money-Back Guarantee</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- VIEW: VIDEO LESSON -->
+        <section id="lesson-view" class="view-section h-[calc(100vh-64px)] overflow-hidden">
+            <div class="flex flex-col lg:flex-row h-full">
+                <!-- Video Area -->
+                <div class="flex-grow bg-slate-900 flex flex-col relative">
+                    <button onclick="navigateTo('course-detail-view')" class="absolute top-4 left-4 z-10 bg-black/50 text-white px-3 py-1 rounded-md text-sm hover:bg-black/80 transition"><i class="fa-solid fa-arrow-left mr-2"></i>Back</button>
+                    <!-- Simulated Video Player -->
+                    <div class="flex-grow flex items-center justify-center bg-black relative">
+                        <div class="text-center text-white">
+                            <div class="w-20 h-20 rounded-full bg-primary/80 flex items-center justify-center mx-auto mb-4 cursor-pointer hover:scale-105 transition">
+                                <i class="fa-solid fa-play text-2xl ml-1"></i>
+                            </div>
+                            <p class="text-slate-300">Video Player Simulation</p>
+                        </div>
+                        <!-- Custom Video Controls Mockup -->
+                        <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4 flex items-center space-x-4">
+                            <i class="fa-solid fa-pause text-white cursor-pointer"></i>
+                            <div class="h-1 flex-grow bg-slate-600 rounded-full cursor-pointer"><div class="h-full bg-primary w-1/3 rounded-full relative"><div class="absolute right-0 top-1/2 transform -translate-y-1/2 w-3 h-3 bg-white rounded-full"></div></div></div>
+                            <span class="text-white text-xs">5:20 / 15:45</span>
+                            <i class="fa-solid fa-expand text-white cursor-pointer"></i>
+                        </div>
+                    </div>
+                    <!-- Lesson Info -->
+                    <div class="bg-white p-6 border-b border-slate-200 shrink-0">
+                        <h2 class="text-2xl font-bold text-secondary mb-2">1. Introduction to the course</h2>
+                        <div class="flex space-x-4 text-sm text-slate-500">
+                            <button class="flex items-center hover:text-primary"><i class="fa-solid fa-file-pdf mr-1"></i> Download Slides</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sidebar Syllabus -->
+                <div class="w-full lg:w-96 bg-white border-l border-slate-200 overflow-y-auto shrink-0 flex flex-col">
+                    <div class="p-4 border-b border-slate-200 bg-slate-50">
+                        <h3 class="font-bold text-secondary">Course Content</h3>
+                        <div class="w-full bg-slate-200 rounded-full h-1.5 mt-3"><div class="bg-green-500 h-1.5 rounded-full" style="width: 33%"></div></div>
+                        <p class="text-xs text-slate-500 mt-1">33% Completed</p>
+                    </div>
+                    <div class="p-4 bg-primary/5 border-l-4 border-primary cursor-pointer">
+                        <p class="text-xs text-primary font-bold mb-1">Lesson 1</p>
+                        <p class="font-medium text-sm">Introduction to the course</p>
+                    </div>
+                    <div class="p-4 border-b border-slate-100 hover:bg-slate-50 cursor-pointer">
+                        <p class="text-xs text-slate-400 font-bold mb-1">Lesson 2</p>
+                        <p class="font-medium text-sm text-slate-600">Setting up your environment</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- VIEW: DASHBOARD (Dual Role) -->
+        <section id="dashboard-view" class="view-section max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+            <h1 class="text-3xl font-bold text-secondary mb-8" id="dashboard-title">Student Dashboard</h1>
+            
+            <!-- Student Content -->
+            <div id="student-dash-content">
+                <h2 class="text-xl font-semibold mb-4">My Learning</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden flex">
+                        <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" class="w-32 object-cover">
+                        <div class="p-4 flex flex-col justify-center w-full">
+                            <h3 class="font-bold text-sm mb-2">Advanced React Patterns</h3>
+                            <div class="w-full bg-slate-100 rounded-full h-1.5 mb-1"><div class="bg-primary h-1.5 rounded-full" style="width: 60%"></div></div>
+                            <span class="text-xs text-slate-500">60% Complete</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Instructor Content -->
+            <div id="instructor-dash-content" class="hidden">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-xl font-semibold">Manage Courses</h2>
+                    <button class="bg-primary hover:bg-indigo-500 text-white py-2 px-4 rounded-lg text-sm transition" onclick="alert('Open Create Course Modal')"><i class="fa-solid fa-plus mr-2"></i>Create Course</button>
+                </div>
+                
+                <!-- Stat Cards -->
+                <div class="grid grid-cols-3 gap-6 mb-8">
+                    <div class="bg-white p-6 rounded-xl border border-slate-100 shadow-sm"><p class="text-slate-500 text-sm">Total Revenue</p><p class="text-2xl font-bold">$4,250</p></div>
+                    <div class="bg-white p-6 rounded-xl border border-slate-100 shadow-sm"><p class="text-slate-500 text-sm">Active Students</p><p class="text-2xl font-bold">124</p></div>
+                    <div class="bg-white p-6 rounded-xl border border-slate-100 shadow-sm"><p class="text-slate-500 text-sm">Rating</p><p class="text-2xl font-bold">4.8 <i class="fa-solid fa-star text-yellow-400 text-sm"></i></p></div>
+                </div>
+
+                <!-- Course Table -->
+                <div class="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden">
+                    <table class="w-full text-left">
+                        <thead class="bg-slate-50 text-slate-500 text-sm border-b border-slate-100">
+                            <tr><th class="p-4 font-medium">Course</th><th class="p-4 font-medium">Status</th><th class="p-4 font-medium">Students</th><th class="p-4 font-medium">Actions</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-b border-slate-50 hover:bg-slate-50/50">
+                                <td class="p-4 flex items-center"><img src="https://images.unsplash.com/photo-1561070791-2526d30994b5?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" class="w-10 h-10 rounded-md object-cover mr-3"><span class="font-medium text-sm">UI/UX Design Masterclass</span></td>
+                                <td class="p-4"><span class="bg-green-100 text-green-700 text-xs px-2 py-1 rounded-full font-medium">Published</span></td>
+                                <td class="p-4 text-sm">89</td>
+                                <td class="p-4"><button class="text-slate-400 hover:text-primary"><i class="fa-solid fa-pen-to-square"></i></button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Mock Logic -->
+    <script>
+        // 1. Mock Data
+        const dummyCourses = [
+            { id: 1, title: "Advanced React Patterns", instructor: "Sarah Drasner", time: "6h 20m", img: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80", tag: "Engineering" },
+            { id: 2, title: "UI/UX Design Masterclass", instructor: "Gary Simon", time: "8h 15m", img: "https://images.unsplash.com/photo-1561070791-2526d30994b5?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80", tag: "Design" },
+            { id: 3, title: "Figma to Webflow", instructor: "Ran Segall", time: "4h 45m", img: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80", tag: "Design" },
+            { id: 4, title: "Python for Data Science", instructor: "Jose Portilla", time: "12h 00m", img: "https://media.licdn.com/dms/image/v2/C5612AQHAcoqRBSRrjg/article-cover_image-shrink_720_1280/article-cover_image-shrink_720_1280/0/1597381825584?e=2147483647&v=beta&t=D-NvCfvdK1zsFeZpmvaTvG6OY1a_cFnVibl0uebJe9A", tag: "Engineering" }
+        ];
+
+        let currentRole = 'STUDENT'; // or 'INSTRUCTOR'
+
+        // 2. View Navigation
+        function navigateTo(viewId) {
+            document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+            document.getElementById(viewId).classList.add('active');
+            window.scrollTo(0, 0);
+        }
+
+        // 3. Render Catalog
+        function renderCourses() {
+            const grid = document.getElementById('course-grid');
+            grid.innerHTML = '';
+            dummyCourses.forEach(course => {
+                grid.innerHTML += `
+                    <div class="bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-100 hover:shadow-xl hover:-translate-y-1 transition duration-300 cursor-pointer" onclick="openCourseDetail(${course.id})">
+                        <div class="relative">
+                            <img src="${course.img}" alt="${course.title}" class="w-full h-48 object-cover">
+                            <span class="absolute top-3 left-3 bg-white/90 backdrop-blur text-xs font-bold px-2 py-1 rounded text-slate-700">${course.tag}</span>
+                        </div>
+                        <div class="p-5">
+                            <h3 class="font-bold text-lg text-secondary mb-1 line-clamp-1">${course.title}</h3>
+                            <p class="text-sm text-slate-500 mb-4">${course.instructor}</p>
+                            <div class="flex items-center justify-between border-t border-slate-100 pt-3">
+                                <span class="text-xs font-medium text-slate-400"><i class="fa-solid fa-clock mr-1"></i> ${course.time}</span>
+                                <span class="text-primary font-bold">$49</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        // 4. Handle Course Detail Population
+        function openCourseDetail(id) {
+            const course = dummyCourses.find(c => c.id === id);
+            document.getElementById('detail-title').innerText = course.title;
+            document.getElementById('detail-time').innerText = course.time;
+            document.getElementById('detail-img').src = course.img;
+            navigateTo('course-detail-view');
+        }
+
+        // 5. Simulate Interactions
+        function enrollCourse() {
+            alert("Enrollment Simulated! Redirecting to lesson player...");
+            navigateTo('lesson-view');
+        }
+
+        // 6. Role Simulation
+        function toggleRole() {
+            currentRole = currentRole === 'STUDENT' ? 'INSTRUCTOR' : 'STUDENT';
+            document.getElementById('role-btn').innerText = currentRole === 'STUDENT' ? 'Switch to Instructor' : 'Switch to Student';
+            
+            // Update Dashboard View based on role
+            document.getElementById('dashboard-title').innerText = currentRole === 'STUDENT' ? 'Student Dashboard' : 'Instructor Dashboard';
+            
+            if (currentRole === 'STUDENT') {
+                document.getElementById('student-dash-content').classList.remove('hidden');
+                document.getElementById('instructor-dash-content').classList.add('hidden');
+            } else {
+                document.getElementById('student-dash-content').classList.add('hidden');
+                document.getElementById('instructor-dash-content').classList.remove('hidden');
+            }
+            
+            alert(`Simulated Auth: Switched to ${currentRole} Mode`);
+        }
+
+        // Initialize App
+        window.onload = renderCourses;
+    </script>
+</body>
+</html>

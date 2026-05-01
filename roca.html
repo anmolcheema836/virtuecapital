@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ROCA – Construction Firm</title>
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* CSS Variables */
+        :root {
+            --primary: #ffb600; /* Construction Yellow/Orange */
+            --dark: #111111;
+            --gray-dark: #222222;
+            --gray-light: #f4f4f4;
+            --text-color: #666666;
+            --white: #ffffff;
+            --font-main: 'Barlow', sans-serif;
+            --transition: all 0.3s ease;
+        }
+
+        /* Reset & Base */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: var(--font-main); color: var(--text-color); line-height: 1.6; background: var(--white); overflow-x: hidden; }
+        a { text-decoration: none; color: inherit; transition: var(--transition); }
+        ul { list-style: none; }
+        img { max-width: 100%; height: auto; display: block; }
+        
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 15px; }
+        .section-padding { padding: 100px 0; }
+        .bg-gray { background-color: var(--gray-light); }
+        .text-center { text-align: center; }
+
+        /* Buttons */
+        .btn { display: inline-block; padding: 14px 35px; background: var(--primary); color: var(--dark); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; border: 2px solid var(--primary); cursor: pointer; transition: var(--transition); }
+        .btn:hover { background: transparent; color: var(--primary); }
+        .btn-dark { background: var(--dark); border-color: var(--dark); color: var(--white); }
+        .btn-dark:hover { background: var(--primary); border-color: var(--primary); color: var(--dark); }
+
+        /* Top Header */
+        .top-header { background: var(--gray-dark); color: #aaa; font-size: 14px; padding: 10px 0; }
+        .top-header .container { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; }
+        .top-header ul { display: flex; gap: 20px; }
+        .top-header a:hover { color: var(--primary); }
+        .top-header i { color: var(--primary); margin-right: 5px; }
+
+        /* Navbar */
+        .navbar { background: var(--white); padding: 20px 0; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        .navbar .container { display: flex; justify-content: space-between; align-items: center; }
+        .logo img { height: 40px; }
+        .nav-links { display: flex; gap: 30px; font-weight: 600; color: var(--dark); text-transform: uppercase; font-size: 15px; }
+        .nav-links a:hover { color: var(--primary); }
+        
+        /* Hero Section */
+        .hero { height: 80vh; background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://shtheme.com/demosd/norconwp/wp-content/uploads/2022/04/2-3.jpg') center/cover; display: flex; align-items: center; color: var(--white); }
+        .hero-content h4 { font-size: 20px; color: var(--primary); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; }
+        .hero-content h1 { font-size: 60px; font-weight: 800; text-transform: uppercase; line-height: 1.1; margin-bottom: 20px; }
+        .hero-content h1 span { color: var(--primary); }
+        .hero-content p { font-size: 18px; max-width: 600px; margin-bottom: 30px; }
+        .hero-btns { display: flex; gap: 15px; }
+
+        /* Section Titles */
+        .section-subtitle { color: var(--primary); font-weight: 600; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; }
+        .section-title { font-size: 40px; font-weight: 800; color: var(--dark); text-transform: uppercase; margin-bottom: 40px; }
+        .section-title span { color: var(--primary); }
+
+        /* About Section */
+        .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: center; }
+        .about-list li { display: flex; align-items: center; margin-bottom: 15px; font-weight: 500; color: var(--dark); }
+        .about-list i { color: var(--primary); font-size: 20px; margin-right: 15px; }
+        .about-signature { margin-top: 30px; display: flex; align-items: center; gap: 20px; border-top: 1px solid #eee; padding-top: 20px; }
+        .about-img { position: relative; }
+        .about-img-box { position: absolute; bottom: -30px; left: -30px; background: var(--primary); color: var(--dark); padding: 30px; font-weight: 600; font-size: 18px; max-width: 250px; }
+
+        /* Grid Layouts (Services, Projects, Team, Blog) */
+        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
+        .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 30px; }
+        
+        /* Service Cards */
+        .service-card { background: var(--white); padding-bottom: 30px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); transition: var(--transition); }
+        .service-card:hover { transform: translateY(-10px); }
+        .service-card img { width: 100%; height: 250px; object-fit: cover; }
+        .service-card-cont { padding: 30px 30px 0; position: relative; }
+        .service-icon { width: 60px; height: 60px; background: var(--primary); color: var(--dark); display: flex; justify-content: center; align-items: center; font-size: 24px; position: absolute; top: -30px; right: 30px; }
+        .service-card h5 { font-size: 20px; color: var(--dark); margin-bottom: 15px; }
+        .link-btn { color: var(--primary); font-weight: 600; text-transform: uppercase; font-size: 14px; margin-top: 15px; display: inline-block; }
+
+        /* Process & Counters (Parallax BGs) */
+        .parallax-section { background: linear-gradient(rgba(17,17,17,0.85), rgba(17,17,17,0.85)), url('https://shtheme.com/demosd/norconwp/wp-content/uploads/2022/05/banner2.jpg') center/cover fixed; color: var(--white); text-align: center; }
+        .parallax-section .section-title { color: var(--white); }
+        .process-step i { font-size: 50px; color: var(--primary); margin-bottom: 20px; }
+        .process-step h6 { font-size: 20px; }
+        .process-step h6 span { color: var(--primary); margin-right: 5px; }
+        .counter-box h3 { font-size: 50px; color: var(--primary); margin: 15px 0 5px; }
+        .counter-box h6 { font-size: 18px; font-weight: 400; text-transform: uppercase; letter-spacing: 1px; }
+
+        /* Projects */
+        .project-card { position: relative; overflow: hidden; }
+        .project-card img { width: 100%; height: 400px; object-fit: cover; transition: var(--transition); }
+        .project-card:hover img { transform: scale(1.1); }
+        .project-caption { position: absolute; bottom: 0; left: 0; width: 100%; background: rgba(17, 17, 17, 0.9); color: var(--white); padding: 30px; transform: translateY(calc(100% - 80px)); transition: var(--transition); }
+        .project-card:hover .project-caption { transform: translateY(0); }
+        .project-caption h4 { font-size: 22px; color: var(--primary); margin-bottom: 15px; }
+        .project-caption p { font-size: 14px; margin-bottom: 15px; }
+
+        /* Core Values */
+        .value-box { background: var(--white); padding: 40px; text-align: center; box-shadow: 0 5px 20px rgba(0,0,0,0.03); transition: var(--transition); border-bottom: 3px solid transparent; }
+        .value-box:hover { border-bottom-color: var(--primary); transform: translateY(-5px); }
+        .value-box i { font-size: 40px; color: var(--primary); margin-bottom: 20px; }
+        .value-box h5 { font-size: 20px; color: var(--dark); margin-bottom: 15px; }
+
+        /* Team */
+        .team-card { text-align: center; background: var(--white); box-shadow: 0 5px 20px rgba(0,0,0,0.05); overflow: hidden; }
+        .team-card img { width: 100%; height: 350px; object-fit: cover; }
+        .team-info { padding: 25px; }
+        .team-info h3 { font-size: 20px; color: var(--dark); }
+        .team-info span { display: block; color: var(--primary); font-size: 14px; margin-top: 5px; text-transform: uppercase; font-weight: 600; }
+
+        /* Blog */
+        .blog-card { background: var(--white); box-shadow: 0 5px 20px rgba(0,0,0,0.05); }
+        .blog-img { position: relative; }
+        .blog-img img { width: 100%; height: 250px; object-fit: cover; }
+        .blog-date { position: absolute; bottom: -20px; left: 30px; background: var(--primary); color: var(--dark); padding: 10px 15px; text-align: center; font-weight: 700; line-height: 1.2; }
+        .blog-date i { display: block; font-style: normal; font-size: 24px; }
+        .blog-cont { padding: 40px 30px 30px; }
+        .blog-cont h5 { font-size: 20px; color: var(--dark); margin-bottom: 15px; transition: var(--transition); }
+        .blog-cont h5:hover { color: var(--primary); cursor: pointer; }
+
+        /* Testimonials */
+        .testi-section { background: linear-gradient(rgba(17,17,17,0.9), rgba(17,17,17,0.9)), url('https://shtheme.com/demosd/norconwp/wp-content/uploads/2022/05/banner.jpg') center/cover; color: var(--white); }
+        .testi-section .section-title { color: var(--white); }
+        .testi-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: center; }
+        .vid-area { position: relative; height: 300px; background: url('https://shtheme.com/demosd/norconwp/wp-content/uploads/2022/04/2-3.jpg') center/cover; display: flex; align-items: center; justify-content: center; }
+        .play-btn { width: 80px; height: 80px; border: 2px solid var(--white); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--white); font-size: 24px; transition: var(--transition); }
+        .play-btn:hover { background: var(--primary); border-color: var(--primary); color: var(--dark); }
+        .testi-card { background: rgba(255,255,255,0.05); padding: 40px; border-left: 3px solid var(--primary); }
+        .testi-card p { font-style: italic; margin-bottom: 20px; font-size: 18px; }
+        .author { display: flex; align-items: center; gap: 15px; }
+        .author img { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; }
+        .author h6 { font-size: 16px; color: var(--white); }
+        .author span { font-size: 13px; color: var(--primary); }
+
+        /* Footer */
+        .footer { background: var(--dark); color: #aaa; padding: 80px 0 20px; }
+        .footer-top { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; border-bottom: 1px solid #333; padding-bottom: 50px; margin-bottom: 50px; }
+        .footer-contact { display: flex; align-items: center; gap: 20px; }
+        .footer-contact i { font-size: 30px; color: var(--primary); }
+        .footer-contact h6 { color: var(--white); font-size: 18px; margin-bottom: 5px; }
+        
+        .footer-main { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 50px; margin-bottom: 50px; }
+        .footer-logo img { height: 40px; margin-bottom: 20px; filter: invert(1) brightness(100); }
+        .widget-title { color: var(--white); font-size: 20px; margin-bottom: 20px; text-transform: uppercase; }
+        .footer-links li { margin-bottom: 10px; }
+        .footer-links a:hover { color: var(--primary); }
+        
+        .newsletter input { width: 100%; padding: 15px; background: #222; border: 1px solid #333; color: var(--white); margin-bottom: 10px; }
+        .newsletter .btn { width: 100%; }
+
+        .copyright { text-align: center; border-top: 1px solid #333; padding-top: 20px; font-size: 14px; }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .grid-3, .grid-4, .about-grid, .testi-grid, .footer-top, .footer-main { grid-template-columns: 1fr; }
+            .hero-content h1 { font-size: 40px; }
+            .top-header { display: none; }
+            .nav-links { display: none; /* Add JS for mobile menu in production */ }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Top Header -->
+    <div class="top-header">
+        <div class="container">
+            <ul>
+                <li><a href="tel:+12033334444"><i class="fa-solid fa-phone"></i> +1 203-333-4444</a></li>
+                <li><a href="mailto:info@construction.com"><i class="fa-solid fa-envelope"></i> info@construction.com</a></li>
+                <li><i class="fa-solid fa-location-dot"></i> 24 King St, SC 29401 USA</li>
+            </ul>
+            <ul>
+                <li><a href="#"><i class="fa-brands fa-whatsapp"></i></a></li>
+                <li><a href="#"><i class="fa-brands fa-twitter"></i></a></li>
+                <li><a href="#"><i class="fa-brands fa-instagram"></i></a></li>
+                <li><a href="#"><i class="fa-brands fa-youtube"></i></a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="#" class="logo">
+                <img src="roca.png" alt="Norcon Logo">
+            </a>
+            <div class="nav-links">
+                <a href="#">Home</a>
+                <a href="#">About</a>
+                <a href="#">Services</a>
+                <a href="#">Projects</a>
+                <a href="#">Shop</a>
+                <a href="#">Pages</a>
+                <a href="#">Blog</a>
+                <a href="#">Contact</a>
+            </div>
+            <div class="nav-cart">
+                <a href="#"><i class="fa-solid fa-shopping-cart"></i></a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Slider -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h4>Architecture Design</h4>
+                <h1>We Build <br><span>Great Projects</span></h1>
+                <p>Our 25 years working experience make a different construction building. Viverra tristique usto duis vitae diam neque nivamus estan the atin viverra nectow drana setlie.</p>
+                <div class="hero-btns">
+                    <a href="#" class="btn">Our Projects</a>
+                    <a href="#" class="btn btn-dark">Our Services</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="section-padding">
+        <div class="container about-grid">
+            <div>
+                <div class="section-subtitle">Construction Firm</div>
+                <h2 class="section-title">About <span>ROCA</span></h2>
+                <p style="margin-bottom: 20px;">Our company at libero tristique mattis. Suspendisse potenti sed leonra magnain dignissim justo porta eget. Curabitur luctus magna numsaton vivention esellentesue the miss tenis vitae mollie.</p>
+                <p style="margin-bottom: 30px;">Curabitur luctus magna numsaton vivention esellentesue the mis awa vitaotenti sed leonra magnain dignissim porta.</p>
+                
+                <ul class="about-list">
+                    <li><i class="fa-solid fa-circle-check"></i> Over 25 years of experience</li>
+                    <li><i class="fa-solid fa-circle-check"></i> 100+ successfully executed projects</li>
+                    <li><i class="fa-solid fa-circle-check"></i> Exceptional work quality</li>
+                </ul>
+
+                <div class="about-signature">
+                    <img src="https://shtheme.com/demosd/norconwp/wp-content/uploads/2022/05/signature-dark.svg" alt="Signature" style="height: 40px;">
+                    <div>
+                        <strong style="color: var(--dark); font-size: 18px; display: block;">Bruce D. Fisher</strong>
+                        <span>CEO & Founder</span>
+                    </div>
+                </div>
+            </div>
+            <div class="about-img">
+                <img src="https://shtheme.com/demosd/norconwp/wp-content/uploads/2022/05/about.jpg" alt="About Construction">
+                <div class="about-img-box">
+                    Our 25 years working experience make a different construction building.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="section-padding bg-gray text-center">
+        <div class="container">
+            <div class="section-subtitle">What We Do</div>
+            <h2 class="section-title">Our <span>Services</span></h2>
+            
+            <div class="grid-3 text-left">
+                <!-- Service 1 -->
+                <div class="service-card">
+                    <img src="https://shtheme.com/demosd/norconwp/wp-content/uploads/2022/04/4-2.jpg" alt="Energy and Environment">
+                    <div class="service-card-cont">
+                        <div class="service-icon"><i class="fa-solid fa-leaf"></i></div>
+                        <h5>Energy and Environment</h5>
+                        <p>Our Services Energy and Environment About the service Architecture lonon lorem ac erat suscipit...</p>
+                        <a href="#" class="link-btn">View Service <i class="fa-solid fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                <!-- Service 2 -->
+                <div class="service-card">
+                    <img src="https://shtheme.com/demosd/norconwp/wp-content/uploads/2022/04/5-1.jpg" alt="Construction Management">
+                    <div class="service-card-cont">
+                        <div class="service-icon"><i class="fa-solid fa-gear"></i></div>
+                        <h5>Construction Management</h5>
+                        <p>Our Services Construction Management About the service Architecture lonon lorem ac erat suscipit...</p>
+                        <a href="#" class="link-btn">View Service <i class="fa-solid fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                <!-- Service 3 -->
+                <div class="service-card">
+                    <img src="https://shtheme.com/demosd/norconwp/wp-content/uploads/2022/04/6.jpg" alt="Interior Design">
+                    <div class="service-card-cont">
+                        <div class="service-icon"><i class="fa-solid fa-couch"></i></div>
+                        <h5>Interior Design</h5>
+                        <p>Our Services Project Planning About the service Architecture lonon lorem ac erat suscipit bibendum...</p>
+                        <a href="#" class="link-btn">View Service <i class="fa-solid fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Process Section -->
+    <section class="section-padding parallax-section">
+        <div class="container">
+            <h5 class="section-subtitle">How We Work</h5>
+            <h2 class="section-title">Our Process</h2>
+            <p style="max-width: 700px; margin: 0 auto 50px;">Suspendisse potenti sed laoen ultra magna in dignissim justo porta miss acurabitur luctus magna numsation elentesue the miss vitae moie.</p>
+            
+            <div class="grid-4">
+                <div class="process-step">
+                    <i class="fa-regular fa-file-lines"></i>
+                    <h6><span>01.</span> Planning</h6>
+                </div>
+                <div class="process-step">
+                    <i class="fa-solid fa-pen-ruler"></i>
+                    <h6><span>02.</span> Design</h6>
+                </div>
+                <div class="process-step">
+                    <i class="fa-solid fa-helmet-safety"></i>
+                    <h6><span>03.</span> Construct</h6>
+                </div>
+                <div class="process-step">
+                    <i class="fa-solid fa-trophy"></i>
+                    <h6><span>04.</span> Finishing</h6>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section class="section-padding">
+        <div class="container">
+            <div class="section-subtitle">Latest Works</div>
+            <h2 class="section-title">Our <span>Projects</span></h2>
+            
+            <div class="grid-3">
+                <div class="project-card">
+                    <img src="https://shtheme.com/demosd/norconwp/wp-content/uploads/2022/04/4-3.jpg" alt="Interior Remodeling">
+                    <div class="project-caption">
+                        <h4>Interior Remodeling</h4>
+                        <p>Westport, CT Interior Remodeling Quisque pretium fermentum quam, sit amet cursus ante...</p>
+                        <a href="#" class="link-btn" style="color:var(--white);">Discover <i class="fa-solid fa-arrow-right" style="color:var(--primary);"></i></a>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <img src="https://shtheme.com/demosd/norconwp/wp-content/uploads/2022/04/1-5.jpg" alt="Factory Construction">
+                    <div class="project-caption">
+                        <h4>Factory Construction</h4>
+                        <p>Westport, CT Factory Construction Quisque pretium fermentum quam, sit amet cursus ante...</p>
+                        <a href="#" class="link-btn" style="color:var(--white);">Discover <i class="fa-solid fa-arrow-right" style="color:var(--primary);"></i></a>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <img src="https://shtheme.com/demosd/norconwp/wp-content/uploads/2022/04/6-1.jpg" alt="Residential Construction">
+                    <div class="project-caption">
+                        <h4>Residential Construction</h4>
+                        <p>Westport, CT Residential Construction Quisque pretium fermentum quam, sit amet cursus...</p>
+                        <a href="#" class="link-btn" style="color:var(--white);">Discover <i class="fa-solid fa-arrow-right" style="color:var(--primary);"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Core Values Section -->
+    <section class="section-padding bg-gray">
+        <div class="container">
+            <div class="section-subtitle">Our Values</div>
+            <h2 class="section-title">Core <span>Values</span></h2>
+            
+            <div class="grid-3">
+                <div class="value-box">
+                    <i class="fa-solid fa-shield-halved"></i>
+                    <h5>Safety</h5>
+                    <p>Safety will always come first as we strive for accident-free projects. Fusce tidunt nis ace park norttito amet space.</p>
+                </div>
+                <div class="value-box">
+                    <i class="fa-regular fa-lightbulb"></i>
+                    <h5>Innovation</h5>
+                    <p>Nulla quis effi vivento acus suvina sene in atue eduis euro vesatien arcum the onte nisl auctor a menas vitae.</p>
+                </div>
+                <div class="value-box">
+                    <i class="fa-solid fa-certificate"></i>
+                    <h5>Quality</h5>
+                    <p>Nulla quis effi vivento acus suvina sene in atue eduis euro vesatien arcum the onte nisl auctor a menas vitae.</p>
+                </div>
+                <div class="value-box">
+                    <i class="fa-solid fa-handshake"></i>
+                    <h5>Integrity</h5>
+                    <p>Nulla quis effi vivento acus suvina sene in atue eduis euro vesatien arcum the onte nisl auctor a menas vitae.</p>
+                </div>
+                <div class="value-box">
+                    <i class="fa-solid fa-chess-knight"></i>
+                    <h5>Strategy</h5>
+                    <p>Nulla quis effi vivento acus suvina sene in atue eduis euro vesatien arcum the onte nisl auctor a menas vitae.</p>
+                </div>
+                <div class="value-box">
+                    <i class="fa-solid fa-users"></i>
+                    <h5>Inclusion</h5>
+                    <p>Nulla quis effi vivento acus suvina sene in atue eduis euro vesatien arcum the onte nisl auctor a menas vitae.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section class="section-padding">
+        <div class="container">
+            <div class="section-subtitle">Expert Worker</div>
+            <h2 class="section-title">Meet <span>Our Team</span></h2>
+            
+            <div class="grid-3">
+                <div class="team-card">
+                    <img src="https://shtheme.com/demosd/norconwp/wp-content/uploads/2022/05/1.jpg" alt="Adam Norman">
+                    <div class="team-info">
+                        <h3>Adam Norman</h3>
+                        <span>CEO & Founder</span>
+                    </div>
+                </div>
+                <div class="team-card">
+                    <img src="https://shtheme.com/demosd/norconwp/wp-content/uploads/2022/05/6.jpg" alt="Enrico Brown">
+                    <div class="team-info">
+                        <h3>Enrico Brown</h3>
+                        <span>Head of Sales</span>
+                    </div>
+                </div>
+                <div class="team-card">
+                    <img src="https://shtheme.com/demosd/norconwp/wp-content/uploads/2022/05/5.jpg" alt="John Snow">
+                    <div class="team-info">
+                        <h3>John Snow</h3>
+                        <span>Lead Project Manager</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Counters Section -->
+    <section class="section-padding parallax-section">
+        <div class="container grid-4">
+            <div class="counter-box">
+                <i class="fa-solid fa-pen-nib" style="font-size: 40px; color: var(--primary);"></i>
+                <h3 class="count">576</h3>
+                <h6><span>01.</span> Projects Design</h6>
+            </div>
+            <div class="counter-box">
+                <i class="fa-regular fa-face-smile" style="font-size: 40px; color: var(--primary);"></i>
+                <h3 class="count">576</h3>
+                <h6><span>02.</span> Happy Clients</h6>
+            </div>
+            <div class="counter-box">
+                <i class="fa-solid fa-check-double" style="font-size: 40px; color: var(--primary);"></i>
+                <h3 class="count">576</h3>
+                <h6><span>03.</span> Completed Projects</h6>
+            </div>
+            <div class="counter-box">
+                <i class="fa-solid fa-user-gear" style="font-size: 40px; color: var(--primary);"></i>
+                <h3 class="count">576</h3>
+                <h6><span>04.</span> Skilled Professionals</h6>
+            </div>
+        </div>
+    </section>
+
+    <!-- Blog Section -->
+    <section class="section-padding bg-gray">
+        <div class="container">
+            <div class="section-subtitle">Latest News</div>
+            <h2 class="section-title">Our <span>Blog</span></h2>
+            
+            <div class="grid-3">
+                <div class="blog-card">
+                    <div class="blog-img">
+                        <img src="https://shtheme.com/demosd/norconwp/wp-content/uploads/2022/04/2-5.jpg" alt="Blog Post">
+                        <div class="blog-date"><span>April</span><i>28</i></div>
+                    </div>
+                    <div class="blog-cont">
+                        <h5>Construction Site Security Guide</h5>
+                        <p style="color: #999; font-size: 14px; text-transform: uppercase; margin-top: 15px;"><i class="fa-solid fa-folder-open" style="color: var(--primary);"></i> exterior</p>
+                    </div>
+                </div>
+                <div class="blog-card">
+                    <div class="blog-img">
+                        <img src="https://shtheme.com/demosd/norconwp/wp-content/uploads/2022/04/3-5.jpg" alt="Blog Post">
+                        <div class="blog-date"><span>April</span><i>28</i></div>
+                    </div>
+                    <div class="blog-cont">
+                        <h5>Modern Glass Building in Construction</h5>
+                        <p style="color: #999; font-size: 14px; text-transform: uppercase; margin-top: 15px;"><i class="fa-solid fa-folder-open" style="color: var(--primary);"></i> interior</p>
+                    </div>
+                </div>
+                <div class="blog-card">
+                    <div class="blog-img">
+                        <img src="https://shtheme.com/demosd/norconwp/wp-content/uploads/2022/04/4-5.jpg" alt="Blog Post">
+                        <div class="blog-date"><span>April</span><i>28</i></div>
+                    </div>
+                    <div class="blog-cont">
+                        <h5>Factory renovation architecture works</h5>
+                        <p style="color: #999; font-size: 14px; text-transform: uppercase; margin-top: 15px;"><i class="fa-solid fa-folder-open" style="color: var(--primary);"></i> industrial</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials & Video Section -->
+    <section class="section-padding testi-section">
+        <div class="container testi-grid">
+            <div>
+                <div class="vid-area">
+                    <a href="#" class="play-btn"><i class="fa-solid fa-play"></i></a>
+                </div>
+                <div style="margin-top: 30px;">
+                    <h6 class="section-subtitle">Promo Video</h6>
+                    <h2 class="section-title">Video About Company</h2>
+                    <p>Video showing our 25 years of business experience.</p>
+                </div>
+            </div>
+            <div>
+                <h6 class="section-subtitle">What said about us</h6>
+                <h2 class="section-title">Customer Reviews</h2>
+                
+                <div class="testi-card">
+                    <p>"Sed ut perspiciatis unde omnis iste natus error voluptatem accusanm doloremque laudantium, totam rem aperiam, eaque ipsa quae ab inven tore veritatis et quasi architecto beatae"</p>
+                    <div class="author">
+                        <img src="https://shtheme.com/demosd/norconwp/wp-content/uploads/2022/05/comment3.jpg" alt="Emily White">
+                        <div>
+                            <h6>Emily White</h6>
+                            <span>Los Angeles, CA</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <!-- Top Contacts -->
+            <div class="footer-top">
+                <div class="footer-contact">
+                    <i class="fa-solid fa-phone"></i>
+                    <div>
+                        <h6>Call us</h6>
+                        <p>+1 203-333-4444</p>
+                    </div>
+                </div>
+                <div class="footer-contact">
+                    <i class="fa-solid fa-envelope"></i>
+                    <div>
+                        <h6>Write to us</h6>
+                        <p>info@construction.com</p>
+                    </div>
+                </div>
+                <div class="footer-contact">
+                    <i class="fa-solid fa-location-dot"></i>
+                    <div>
+                        <h6>Address</h6>
+                        <p>24 King St, SC 29401 USA</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Footer Widgets -->
+            <div class="footer-main">
+                <div>
+                    <a href="#" class="footer-logo"><img src="roca.png" alt="Norcon"></a>
+                    <p style="margin-bottom: 20px;">Quisque imperdiet sapien porttito the bibendum sellentesque the commodo erat acar accumsa lobortis, enim diam the nesuen.</p>
+                    <div class="top-header" style="background:transparent; padding:0;">
+                        <ul style="gap:15px;">
+                            <li><a href="#"><i class="fa-brands fa-whatsapp"></i></a></li>
+                            <li><a href="#"><i class="fa-brands fa-twitter"></i></a></li>
+                            <li><a href="#"><i class="fa-brands fa-instagram"></i></a></li>
+                            <li><a href="#"><i class="fa-brands fa-youtube"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="widget-title">Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">About</a></li>
+                        <li><a href="#">Services</a></li>
+                        <li><a href="#">Projects</a></li>
+                        <li><a href="#">Blog</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="widget-title">Subscribe</h3>
+                    <p style="margin-bottom: 20px;">Want to be notified about our news. Just sign up and we’ll send you a notification by email.</p>
+                    <form class="newsletter">
+                        <input type="email" placeholder="Email Address" required>
+                        <button type="submit" class="btn">Send</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Copyright -->
+            <div class="copyright">
+                <p>&copy; 2026 Roca Construction Group. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
