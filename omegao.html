@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Omega CST | Custom Software & AI Solutions</title>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        navy: '#030712',      /* Ultra Dark Navy */
+                        deepblue: '#0f172a',  
+                        electric: '#00d2ff',  
+                        electricHover: '#3aedff'
+                    },
+                    boxShadow: {
+                        'soft': '0 20px 40px -15px rgba(0,0,0,0.05)',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Awwwards Minimalist Utilities */
+        body { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+        
+        .minimal-card { transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+        .minimal-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 30px 60px -20px rgba(0,0,0,0.08);
+            border-color: transparent;
+        }
+
+        /* Hidden Scrollbar but functional */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="font-sans text-gray-800 bg-white selection:bg-electric selection:text-navy">
+
+    <!-- 2.1 Header Navigation -->
+    <nav class="fixed w-full z-50 bg-navy/80 backdrop-blur-md border-b border-white/5 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12">
+            <div class="flex justify-between items-center h-24">
+                <div class="flex-shrink-0 flex items-center">
+                    <span class="text-white font-bold text-2xl tracking-tighter">Omega<span class="text-electric">.</span></span>
+                </div>
+                
+                <div class="hidden lg:flex space-x-10">
+                    <a href="#" class="text-white text-sm font-medium">Home</a>
+                    <a href="#" class="text-gray-400 hover:text-white text-sm font-medium transition-colors">About</a>
+                    <a href="#" class="text-gray-400 hover:text-white text-sm font-medium transition-colors">Services</a>
+                    <a href="#" class="text-gray-400 hover:text-white text-sm font-medium transition-colors">Products</a>
+                    <a href="#" class="text-gray-400 hover:text-white text-sm font-medium transition-colors">Industries</a>
+                    <a href="#" class="text-gray-400 hover:text-white text-sm font-medium transition-colors">Portfolio</a>
+                </div>
+                
+                <div class="hidden lg:flex items-center space-x-6">
+                    <a href="#" class="text-white text-sm font-medium hover:text-electric transition-colors">Contact</a>
+                    <a href="#" class="bg-white text-navy hover:bg-electric hover:text-navy text-sm font-bold px-6 py-3 rounded-full transition-all duration-300">Consultation</a>
+                </div>
+
+                <div class="lg:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-white focus:outline-none p-2">
+                        <i class="ph ph-list text-3xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden absolute top-24 left-0 w-full bg-navy border-b border-white/10 shadow-2xl lg:hidden">
+            <div class="flex flex-col px-6 py-8 space-y-6">
+                <a href="#" class="text-white text-2xl font-light tracking-tight">Home</a>
+                <a href="#" class="text-gray-400 text-2xl font-light hover:text-electric">About</a>
+                <a href="#" class="text-gray-400 text-2xl font-light hover:text-electric">Services</a>
+                <a href="#" class="text-gray-400 text-2xl font-light hover:text-electric">Products</a>
+                <a href="#" class="text-gray-400 text-2xl font-light hover:text-electric">Industries</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 1. Hero Section -->
+    <section class="relative pt-40 pb-20 lg:pt-56 lg:pb-40 bg-navy overflow-hidden">
+        <div class="absolute top-1/4 right-1/4 w-[500px] h-[500px] bg-electric/10 rounded-full blur-[150px] pointer-events-none"></div>
+        <div class="max-w-7xl mx-auto px-6 lg:px-12 relative z-10">
+            <div class="grid lg:grid-cols-12 gap-16 items-center">
+                <div class="lg:col-span-7">
+                    <div class="inline-flex items-center space-x-2 border border-white/10 bg-white/5 rounded-full px-4 py-2 mb-8">
+                        <span class="w-2 h-2 rounded-full bg-electric animate-pulse"></span>
+                        <span class="text-xs text-gray-300 font-medium uppercase tracking-widest">UAE Based Agency</span>
+                    </div>
+                    <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-[1.1] tracking-tighter mb-8">
+                        Precision Software & <br>
+                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-white to-electric">Intelligent AI.</span>
+                    </h1>
+                    <p class="text-lg md:text-xl text-gray-400 mb-10 max-w-xl font-light leading-relaxed">
+                        Empowering SMEs and enterprises through modernization, seamless automation, and ultimate scalability.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-5">
+                        <a href="#" class="bg-white hover:bg-electric text-navy font-semibold px-8 py-4 rounded-full transition-colors text-center text-sm tracking-wide">Book Consultation</a>
+                        <a href="#services" class="border border-white/20 text-white hover:bg-white/5 font-semibold px-8 py-4 rounded-full transition-colors text-center text-sm tracking-wide">Explore Services</a>
+                    </div>
+                </div>
+                <div class="lg:col-span-5 relative hidden md:block">
+                    <!-- Dashboard Mockup Abstract -->
+                    <div class="bg-deepblue rounded-2xl border border-white/10 p-6 shadow-2xl transform lg:rotate-2">
+                        <div class="flex items-center justify-between mb-8 border-b border-white/10 pb-4">
+                            <div class="flex space-x-2">
+                                <div class="w-2.5 h-2.5 rounded-full bg-red-500/50"></div>
+                                <div class="w-2.5 h-2.5 rounded-full bg-yellow-500/50"></div>
+                                <div class="w-2.5 h-2.5 rounded-full bg-green-500/50"></div>
+                            </div>
+                        </div>
+                        <div class="space-y-4">
+                            <div class="h-4 bg-white/5 rounded-full w-3/4"></div>
+                            <div class="h-4 bg-white/5 rounded-full w-1/2"></div>
+                            <div class="h-4 bg-electric/20 rounded-full w-5/6 mt-8"></div>
+                        </div>
+                        <div class="absolute -bottom-8 -left-8 bg-white text-navy p-5 rounded-2xl shadow-xl">
+                            <p class="text-xs text-gray-500 font-medium uppercase tracking-wider mb-1">Scalability</p>
+                            <p class="text-3xl font-bold tracking-tighter">+300%</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 2. Trust Bar -->
+    <section class="py-16 bg-white border-b border-gray-100">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-12 text-center md:text-left divide-x divide-gray-100">
+                <div class="md:pl-0 pl-4">
+                    <h3 class="text-4xl font-light text-navy tracking-tighter mb-2">12+</h3>
+                    <p class="text-xs text-gray-400 uppercase tracking-widest font-medium">Years' Exp</p>
+                </div>
+                <div class="pl-8">
+                    <h3 class="text-4xl font-light text-navy tracking-tighter mb-2">UAE</h3>
+                    <p class="text-xs text-gray-400 uppercase tracking-widest font-medium">Based HQ</p>
+                </div>
+                <div class="pl-8">
+                    <h3 class="text-4xl font-light text-navy tracking-tighter mb-2">15+</h3>
+                    <p class="text-xs text-gray-400 uppercase tracking-widest font-medium">Industries</p>
+                </div>
+                <div class="pl-8">
+                    <h3 class="text-4xl font-light text-navy tracking-tighter mb-2">200+</h3>
+                    <p class="text-xs text-gray-400 uppercase tracking-widest font-medium">Projects</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. Problem–Solution Block -->
+    <section class="py-32 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12">
+            <div class="grid md:grid-cols-2 gap-16 items-center">
+                <div>
+                    <span class="text-red-500 text-sm font-bold uppercase tracking-widest mb-4 block">The Problem</span>
+                    <h2 class="text-4xl font-bold text-navy tracking-tighter leading-tight mb-8">Operations held back by legacy friction.</h2>
+                    <ul class="space-y-6">
+                        <li class="flex items-start"><i class="ph ph-x text-red-500 text-xl mr-4 mt-0.5"></i><span class="text-gray-600 font-light text-lg">Manual, error-prone operations</span></li>
+                        <li class="flex items-start"><i class="ph ph-x text-red-500 text-xl mr-4 mt-0.5"></i><span class="text-gray-600 font-light text-lg">Scattered data & disconnected systems</span></li>
+                        <li class="flex items-start"><i class="ph ph-x text-red-500 text-xl mr-4 mt-0.5"></i><span class="text-gray-600 font-light text-lg">Outdated, slow legacy reporting</span></li>
+                        <li class="flex items-start"><i class="ph ph-x text-red-500 text-xl mr-4 mt-0.5"></i><span class="text-gray-600 font-light text-lg">Low visibility into critical metrics</span></li>
+                    </ul>
+                </div>
+                <div class="bg-navy p-12 rounded-3xl relative overflow-hidden">
+                    <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-electric/20 rounded-full blur-[50px]"></div>
+                    <span class="text-electric text-sm font-bold uppercase tracking-widest mb-4 block">The Solution</span>
+                    <h2 class="text-3xl font-bold text-white tracking-tighter leading-tight mb-8">Streamlined, intelligent digital ecosystems.</h2>
+                    <ul class="space-y-6">
+                        <li class="flex items-start"><i class="ph ph-check text-electric text-xl mr-4 mt-0.5"></i><span class="text-gray-300 font-light text-lg">Expert Technology Consulting</span></li>
+                        <li class="flex items-start"><i class="ph ph-check text-electric text-xl mr-4 mt-0.5"></i><span class="text-gray-300 font-light text-lg">System-wide Automation</span></li>
+                        <li class="flex items-start"><i class="ph ph-check text-electric text-xl mr-4 mt-0.5"></i><span class="text-gray-300 font-light text-lg">Custom App Development</span></li>
+                        <li class="flex items-start"><i class="ph ph-check text-electric text-xl mr-4 mt-0.5"></i><span class="text-gray-300 font-light text-lg">AI & Centralized Data Systems</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. Core Services Preview -->
+    <section id="services" class="py-32 bg-white border-b border-gray-100">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-20">
+                <div class="max-w-2xl">
+                    <span class="text-electric text-sm font-bold uppercase tracking-widest mb-4 block">Core Services</span>
+                    <h2 class="text-4xl md:text-5xl font-bold text-navy tracking-tighter leading-tight">Digital transformation, <br>end-to-end.</h2>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- 6 Cards per spec -->
+                <div class="bg-gray-50/50 p-10 rounded-2xl border border-gray-100 minimal-card group cursor-pointer">
+                    <i class="ph ph-strategy text-4xl text-gray-300 group-hover:text-electric transition-colors mb-8 block"></i>
+                    <h3 class="text-xl font-bold text-navy mb-3 tracking-tight">Technology Consulting</h3>
+                    <p class="text-gray-500 font-light leading-relaxed text-sm">Strategic roadmaps mapping IT to business goals.</p>
+                </div>
+                <div class="bg-gray-50/50 p-10 rounded-2xl border border-gray-100 minimal-card group cursor-pointer">
+                    <i class="ph ph-code text-4xl text-gray-300 group-hover:text-electric transition-colors mb-8 block"></i>
+                    <h3 class="text-xl font-bold text-navy mb-3 tracking-tight">Custom Software</h3>
+                    <p class="text-gray-500 font-light leading-relaxed text-sm">Bespoke operational architecture.</p>
+                </div>
+                <div class="bg-gray-50/50 p-10 rounded-2xl border border-gray-100 minimal-card group cursor-pointer">
+                    <i class="ph ph-browser text-4xl text-gray-300 group-hover:text-electric transition-colors mb-8 block"></i>
+                    <h3 class="text-xl font-bold text-navy mb-3 tracking-tight">Web Development</h3>
+                    <p class="text-gray-500 font-light leading-relaxed text-sm">Scalable, mobile-first web platforms.</p>
+                </div>
+                <div class="bg-gray-50/50 p-10 rounded-2xl border border-gray-100 minimal-card group cursor-pointer">
+                    <i class="ph ph-device-mobile text-4xl text-gray-300 group-hover:text-electric transition-colors mb-8 block"></i>
+                    <h3 class="text-xl font-bold text-navy mb-3 tracking-tight">Mobile Apps</h3>
+                    <p class="text-gray-500 font-light leading-relaxed text-sm">Native iOS & Android experiences.</p>
+                </div>
+                <div class="bg-gray-50/50 p-10 rounded-2xl border border-gray-100 minimal-card group cursor-pointer">
+                    <i class="ph ph-brain text-4xl text-gray-300 group-hover:text-electric transition-colors mb-8 block"></i>
+                    <h3 class="text-xl font-bold text-navy mb-3 tracking-tight">AI & Data</h3>
+                    <p class="text-gray-500 font-light leading-relaxed text-sm">Machine learning and centralized analytics.</p>
+                </div>
+                <div class="bg-gray-50/50 p-10 rounded-2xl border border-gray-100 minimal-card group cursor-pointer">
+                    <i class="ph ph-arrows-merge text-4xl text-gray-300 group-hover:text-electric transition-colors mb-8 block"></i>
+                    <h3 class="text-xl font-bold text-navy mb-3 tracking-tight">System Automation</h3>
+                    <p class="text-gray-500 font-light leading-relaxed text-sm">API integrations and workflow automation.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. Products Preview -->
+    <section class="py-32 bg-white">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12">
+            <div class="text-center max-w-3xl mx-auto mb-20">
+                <span class="text-electric text-sm font-bold uppercase tracking-widest mb-4 block">Products</span>
+                <h2 class="text-4xl md:text-5xl font-bold text-navy tracking-tighter mb-6">Ready-Made Platforms</h2>
+                <p class="text-gray-500 font-light text-lg">Deploy industry-specific architecture rapidly to solve core needs.</p>
+            </div>
+
+            <!-- Top 3 Featured Products -->
+            <div class="grid md:grid-cols-3 gap-8 mb-12">
+                <div class="group cursor-pointer">
+                    <div class="bg-gray-50 rounded-2xl aspect-[4/3] p-6 mb-6 relative overflow-hidden border border-gray-100">
+                        <div class="absolute inset-x-6 bottom-0 top-12 bg-white rounded-t-lg shadow-lg border border-gray-200 p-4 transform group-hover:translate-y-2 transition-transform">
+                            <div class="w-1/2 h-3 bg-gray-200 rounded mb-4"></div>
+                            <div class="w-full h-16 bg-gray-100 rounded mb-2"></div>
+                            <div class="w-full h-16 bg-gray-100 rounded"></div>
+                        </div>
+                    </div>
+                    <h3 class="font-bold text-xl text-navy tracking-tight mb-2">Laundry Management</h3>
+                    <p class="text-gray-500 text-sm font-light">POS, tracking, routing.</p>
+                </div>
+                <div class="group cursor-pointer">
+                    <div class="bg-gray-50 rounded-2xl aspect-[4/3] p-6 mb-6 relative overflow-hidden border border-gray-100">
+                        <div class="absolute inset-x-6 bottom-0 top-12 bg-white rounded-t-lg shadow-lg border border-gray-200 p-4 transform group-hover:translate-y-2 transition-transform">
+                            <div class="flex gap-2 mb-4"><div class="w-8 h-8 bg-gray-200 rounded-full"></div><div class="w-8 h-8 bg-gray-200 rounded-full"></div></div>
+                            <div class="w-full h-24 bg-electric/10 rounded"></div>
+                        </div>
+                    </div>
+                    <h3 class="font-bold text-xl text-navy tracking-tight mb-2">Production Mgmt</h3>
+                    <p class="text-gray-500 text-sm font-light">Cycles, inventory, workforce.</p>
+                </div>
+                <div class="group cursor-pointer">
+                    <div class="bg-gray-50 rounded-2xl aspect-[4/3] p-6 mb-6 relative overflow-hidden border border-gray-100">
+                        <div class="absolute inset-x-6 bottom-0 top-12 bg-navy rounded-t-lg shadow-lg border border-gray-800 p-4 transform group-hover:translate-y-2 transition-transform">
+                            <div class="w-1/3 h-3 bg-white/20 rounded mb-6"></div>
+                            <div class="grid grid-cols-2 gap-2"><div class="h-12 bg-white/10 rounded"></div><div class="h-12 bg-white/10 rounded"></div></div>
+                        </div>
+                    </div>
+                    <h3 class="font-bold text-xl text-navy tracking-tight mb-2">Omega CRM</h3>
+                    <p class="text-gray-500 text-sm font-light">Leads, pipelines, closing.</p>
+                </div>
+            </div>
+            
+            <!-- Remaining Products List -->
+            <div class="flex flex-wrap justify-center gap-4">
+                <span class="px-4 py-2 border border-gray-200 rounded-full text-sm font-medium text-gray-600">POS Systems</span>
+                <span class="px-4 py-2 border border-gray-200 rounded-full text-sm font-medium text-gray-600">Accounting Solutions</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. Industries Served -->
+    <section class="py-32 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12 text-center">
+            <span class="text-electric text-sm font-bold uppercase tracking-widest mb-4 block">Sectors</span>
+            <h2 class="text-4xl font-bold text-navy tracking-tighter mb-16">Industries We Empower</h2>
+            
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <div class="bg-white p-8 rounded-2xl border border-gray-100 minimal-card group">
+                    <i class="ph ph-shopping-bag text-3xl text-gray-400 group-hover:text-navy mb-4 block transition-colors"></i>
+                    <span class="font-semibold text-navy text-sm tracking-wide">Retail</span>
+                </div>
+                <div class="bg-white p-8 rounded-2xl border border-gray-100 minimal-card group">
+                    <i class="ph ph-t-shirt text-3xl text-gray-400 group-hover:text-navy mb-4 block transition-colors"></i>
+                    <span class="font-semibold text-navy text-sm tracking-wide">Laundry</span>
+                </div>
+                <div class="bg-white p-8 rounded-2xl border border-gray-100 minimal-card group">
+                    <i class="ph ph-truck text-3xl text-gray-400 group-hover:text-navy mb-4 block transition-colors"></i>
+                    <span class="font-semibold text-navy text-sm tracking-wide">Logistics</span>
+                </div>
+                <div class="bg-white p-8 rounded-2xl border border-gray-100 minimal-card group">
+                    <i class="ph ph-factory text-3xl text-gray-400 group-hover:text-navy mb-4 block transition-colors"></i>
+                    <span class="font-semibold text-navy text-sm tracking-wide">Manufacturing</span>
+                </div>
+                <div class="bg-white p-8 rounded-2xl border border-gray-100 minimal-card group">
+                    <i class="ph ph-buildings text-3xl text-gray-400 group-hover:text-navy mb-4 block transition-colors"></i>
+                    <span class="font-semibold text-navy text-sm tracking-wide">Hospitality</span>
+                </div>
+                <div class="bg-white p-8 rounded-2xl border border-gray-100 minimal-card group">
+                    <i class="ph ph-heartbeat text-3xl text-gray-400 group-hover:text-navy mb-4 block transition-colors"></i>
+                    <span class="font-semibold text-navy text-sm tracking-wide">Healthcare</span>
+                </div>
+                <div class="bg-white p-8 rounded-2xl border border-gray-100 minimal-card group">
+                    <i class="ph ph-chart-line-up text-3xl text-gray-400 group-hover:text-navy mb-4 block transition-colors"></i>
+                    <span class="font-semibold text-navy text-sm tracking-wide">SMEs</span>
+                </div>
+                <div class="bg-white p-8 rounded-2xl border border-gray-100 minimal-card group">
+                    <i class="ph ph-swap text-3xl text-gray-400 group-hover:text-navy mb-4 block transition-colors"></i>
+                    <span class="font-semibold text-navy text-sm tracking-wide">Trading</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 7. Process Section (FIXED SCROLL) -->
+    <section class="py-32 bg-navy text-white overflow-hidden relative">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12 relative z-10">
+            <div class="flex justify-between items-end mb-16">
+                <div>
+                    <span class="text-electric text-sm font-bold uppercase tracking-widest mb-4 block">Methodology</span>
+                    <h2 class="text-4xl md:text-5xl font-bold tracking-tighter leading-tight">Delivery Process.</h2>
+                </div>
+                <!-- Custom Scroll Buttons for Desktop UX -->
+                <div class="hidden md:flex space-x-3">
+                    <button id="btn-left" class="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center hover:bg-white/10 transition-colors">
+                        <i class="ph ph-arrow-left text-xl"></i>
+                    </button>
+                    <button id="btn-right" class="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center hover:bg-white/10 transition-colors">
+                        <i class="ph ph-arrow-right text-xl"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Scroll Container -->
+            <div id="process-scroll" class="flex overflow-x-auto pb-8 pt-4 snap-x snap-mandatory no-scrollbar scroll-smooth -mx-6 px-6 lg:-mx-0 lg:px-0">
+                <div class="flex space-x-6 min-w-max">
+                    <!-- Step 1 -->
+                    <div class="w-80 bg-white/5 p-10 rounded-3xl border border-white/10 relative snap-start group hover:border-white/30 transition-colors">
+                        <div class="text-white/10 group-hover:text-white/20 transition-colors font-bold text-7xl absolute top-6 right-6 tracking-tighter">01</div>
+                        <div class="mt-16">
+                            <h4 class="font-bold text-xl mb-3 tracking-tight">Discover</h4>
+                            <p class="text-sm text-gray-400 font-light leading-relaxed">Requirement gathering and business analysis.</p>
+                        </div>
+                    </div>
+                    <!-- Step 2 -->
+                    <div class="w-80 bg-white/5 p-10 rounded-3xl border border-white/10 relative snap-start group hover:border-white/30 transition-colors">
+                        <div class="text-white/10 group-hover:text-white/20 transition-colors font-bold text-7xl absolute top-6 right-6 tracking-tighter">02</div>
+                        <div class="mt-16">
+                            <h4 class="font-bold text-xl mb-3 tracking-tight">Design</h4>
+                            <p class="text-sm text-gray-400 font-light leading-relaxed">UI/UX wireframing and architecture planning.</p>
+                        </div>
+                    </div>
+                    <!-- Step 3 -->
+                    <div class="w-80 bg-white/5 p-10 rounded-3xl border border-white/10 relative snap-start group hover:border-white/30 transition-colors">
+                        <div class="text-white/10 group-hover:text-white/20 transition-colors font-bold text-7xl absolute top-6 right-6 tracking-tighter">03</div>
+                        <div class="mt-16">
+                            <h4 class="font-bold text-xl mb-3 tracking-tight">Develop</h4>
+                            <p class="text-sm text-gray-400 font-light leading-relaxed">Agile coding, sprints, and continuous testing.</p>
+                        </div>
+                    </div>
+                    <!-- Step 4 -->
+                    <div class="w-80 bg-white/5 p-10 rounded-3xl border border-white/10 relative snap-start group hover:border-white/30 transition-colors">
+                        <div class="text-white/10 group-hover:text-white/20 transition-colors font-bold text-7xl absolute top-6 right-6 tracking-tighter">04</div>
+                        <div class="mt-16">
+                            <h4 class="font-bold text-xl mb-3 tracking-tight">Integrate</h4>
+                            <p class="text-sm text-gray-400 font-light leading-relaxed">Connecting third-party APIs and existing tools.</p>
+                        </div>
+                    </div>
+                    <!-- Step 5 -->
+                    <div class="w-80 bg-white/5 p-10 rounded-3xl border border-white/10 relative snap-start group hover:border-white/30 transition-colors">
+                        <div class="text-white/10 group-hover:text-white/20 transition-colors font-bold text-7xl absolute top-6 right-6 tracking-tighter">05</div>
+                        <div class="mt-16">
+                            <h4 class="font-bold text-xl mb-3 tracking-tight">Train</h4>
+                            <p class="text-sm text-gray-400 font-light leading-relaxed">Staff onboarding and seamless system handovers.</p>
+                        </div>
+                    </div>
+                    <!-- Step 6 -->
+                    <div class="w-80 bg-white/5 p-10 rounded-3xl border border-white/10 relative snap-start group hover:border-white/30 transition-colors">
+                        <div class="text-white/10 group-hover:text-white/20 transition-colors font-bold text-7xl absolute top-6 right-6 tracking-tighter">06</div>
+                        <div class="mt-16">
+                            <h4 class="font-bold text-xl mb-3 tracking-tight">Support</h4>
+                            <p class="text-sm text-gray-400 font-light leading-relaxed">Ongoing maintenance and scalable updates.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 8. Why Omega -->
+    <section class="py-32 bg-white">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12">
+            <div class="text-center mb-20 max-w-2xl mx-auto">
+                <h2 class="text-4xl font-bold text-navy tracking-tighter mb-4">Why Choose Omega?</h2>
+                <p class="text-gray-500 font-light">We don't just write code; we partner with you to solve real bottlenecks.</p>
+            </div>
+            
+            <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-y-12 gap-x-8">
+                <div class="flex flex-col items-center text-center">
+                    <div class="w-16 h-16 rounded-full bg-gray-50 flex items-center justify-center mb-6"><i class="ph ph-map-pin text-2xl text-navy"></i></div>
+                    <h4 class="font-bold text-lg text-navy mb-2 tracking-tight">UAE-Based</h4>
+                    <p class="text-sm text-gray-500 font-light">Deep local market understanding.</p>
+                </div>
+                <div class="flex flex-col items-center text-center">
+                    <div class="w-16 h-16 rounded-full bg-gray-50 flex items-center justify-center mb-6"><i class="ph ph-users text-2xl text-navy"></i></div>
+                    <h4 class="font-bold text-lg text-navy mb-2 tracking-tight">Consulting-First</h4>
+                    <p class="text-sm text-gray-500 font-light">Strategy dictates execution.</p>
+                </div>
+                <div class="flex flex-col items-center text-center">
+                    <div class="w-16 h-16 rounded-full bg-gray-50 flex items-center justify-center mb-6"><i class="ph ph-wallet text-2xl text-navy"></i></div>
+                    <h4 class="font-bold text-lg text-navy mb-2 tracking-tight">Affordable</h4>
+                    <p class="text-sm text-gray-500 font-light">Competitive, transparent pricing.</p>
+                </div>
+                <div class="flex flex-col items-center text-center">
+                    <div class="w-16 h-16 rounded-full bg-gray-50 flex items-center justify-center mb-6"><i class="ph ph-devices text-2xl text-navy"></i></div>
+                    <h4 class="font-bold text-lg text-navy mb-2 tracking-tight">Multi-Platform</h4>
+                    <p class="text-sm text-gray-500 font-light">Web, iOS, and Android readiness.</p>
+                </div>
+                <div class="flex flex-col items-center text-center">
+                    <div class="w-16 h-16 rounded-full bg-gray-50 flex items-center justify-center mb-6"><i class="ph ph-pencil-circle text-2xl text-navy"></i></div>
+                    <h4 class="font-bold text-lg text-navy mb-2 tracking-tight">Custom-Built</h4>
+                    <p class="text-sm text-gray-500 font-light">Tailored exactly to your workflow.</p>
+                </div>
+                <div class="flex flex-col items-center text-center">
+                    <div class="w-16 h-16 rounded-full bg-gray-50 flex items-center justify-center mb-6"><i class="ph ph-lifebuoy text-2xl text-navy"></i></div>
+                    <h4 class="font-bold text-lg text-navy mb-2 tracking-tight">Ongoing Support</h4>
+                    <p class="text-sm text-gray-500 font-light">Partnered for the long haul.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 9. Case Study Preview -->
+    <section class="py-32 bg-gray-50 border-t border-gray-100">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12">
+            <div class="mb-16">
+                <span class="text-electric text-sm font-bold uppercase tracking-widest mb-4 block">Proven Results</span>
+                <h2 class="text-4xl font-bold text-navy tracking-tighter">Impact Studies</h2>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-8">
+                <!-- Case Study 1 -->
+                <div class="bg-white p-10 rounded-3xl border border-gray-100 minimal-card group">
+                    <div class="flex justify-between items-start mb-8">
+                        <span class="px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-xs font-bold tracking-wider uppercase">Logistics</span>
+                        <i class="ph ph-arrow-up-right text-2xl text-gray-300 group-hover:text-navy transition-colors"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-navy tracking-tight mb-6">Automated Fleet Routing</h3>
+                    <div class="space-y-4 mb-8">
+                        <div><span class="text-xs text-gray-400 font-bold uppercase block mb-1">Problem</span><p class="text-sm text-gray-600 font-light">High fuel costs and delayed deliveries due to manual routing.</p></div>
+                        <div><span class="text-xs text-gray-400 font-bold uppercase block mb-1">Solution</span><p class="text-sm text-gray-600 font-light">Custom AI routing dashboard.</p></div>
+                    </div>
+                    <div class="border-t border-gray-100 pt-6">
+                        <p class="text-3xl font-bold text-navy tracking-tighter">-30% <span class="text-sm font-light text-gray-500 tracking-normal ml-2">Fuel Cost Reduction</span></p>
+                    </div>
+                </div>
+
+                <!-- Case Study 2 -->
+                <div class="bg-white p-10 rounded-3xl border border-gray-100 minimal-card group">
+                    <div class="flex justify-between items-start mb-8">
+                        <span class="px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-xs font-bold tracking-wider uppercase">Retail</span>
+                        <i class="ph ph-arrow-up-right text-2xl text-gray-300 group-hover:text-navy transition-colors"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-navy tracking-tight mb-6">Omnichannel POS Sync</h3>
+                    <div class="space-y-4 mb-8">
+                        <div><span class="text-xs text-gray-400 font-bold uppercase block mb-1">Problem</span><p class="text-sm text-gray-600 font-light">Disconnected online and offline inventory.</p></div>
+                        <div><span class="text-xs text-gray-400 font-bold uppercase block mb-1">Solution</span><p class="text-sm text-gray-600 font-light">Centralized cloud POS & ERP integration.</p></div>
+                    </div>
+                    <div class="border-t border-gray-100 pt-6">
+                        <p class="text-3xl font-bold text-navy tracking-tighter">100% <span class="text-sm font-light text-gray-500 tracking-normal ml-2">Inventory Sync Rate</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 10. Final CTA -->
+    <section class="py-32 bg-navy relative overflow-hidden">
+        <div class="absolute right-0 bottom-0 transform translate-x-1/3 translate-y-1/3 w-[800px] h-[800px] border-[1px] border-white/5 rounded-full pointer-events-none"></div>
+        <div class="max-w-4xl mx-auto px-6 lg:px-12 text-center relative z-10">
+            <h2 class="text-5xl md:text-7xl font-bold text-white tracking-tighter mb-8 leading-tight">Scale Without <br>Friction.</h2>
+            <p class="text-xl text-gray-400 mb-12 font-light max-w-2xl mx-auto">
+                Ready to modernize your business operations? Consult with our engineers today.
+            </p>
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-6">
+                <a href="#" class="w-full sm:w-auto bg-white text-navy hover:bg-electric font-bold px-10 py-5 rounded-full transition-all duration-300 text-sm tracking-wide">
+                    Contact Form Shortcut
+                </a>
+                <a href="#" class="w-full sm:w-auto text-white hover:text-electric font-medium px-10 py-5 transition-colors text-sm tracking-wide flex items-center justify-center">
+                    <i class="ph ph-whatsapp-logo text-xl mr-2"></i> Chat on WhatsApp
+                </a>
+            </div>
+            <div class="mt-12 flex justify-center space-x-8 text-sm text-gray-500 font-light">
+                <span class="flex items-center"><i class="ph ph-phone mr-2"></i> Phone</span>
+                <span class="flex items-center"><i class="ph ph-envelope mr-2"></i> Email</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-navy pt-10 pb-10 border-t border-white/5 text-sm">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12 flex flex-col md:flex-row justify-between items-center text-gray-600 font-light">
+            <p>&copy; 2026 Omega CST. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Interactive Scripts -->
+    <script>
+        // Mobile Menu Toggle
+        const btn = document.getElementById('mobile-menu-btn');
+        const menu = document.getElementById('mobile-menu');
+        btn.addEventListener('click', () => menu.classList.toggle('hidden'));
+
+        // Fixed Scroll for Delivery Process
+        const processScroll = document.getElementById('process-scroll');
+        const btnLeft = document.getElementById('btn-left');
+        const btnRight = document.getElementById('btn-right');
+
+        // Scroll by roughly the width of one card + gap
+        if(btnLeft && btnRight && processScroll) {
+            btnLeft.addEventListener('click', () => {
+                processScroll.scrollBy({ left: -344, behavior: 'smooth' });
+            });
+            btnRight.addEventListener('click', () => {
+                processScroll.scrollBy({ left: 344, behavior: 'smooth' });
+            });
+        }
+    </script>
+</body>
+</html>
