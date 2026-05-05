@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orlay Pay | Continuità di vendita per eventi live</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Font ad alto contrasto: Plus Jakarta Sans per titoli puliti e Inter per la lettura -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Palette Light & Premium */
+            --bg: #ffffff; 
+            --bg-secondary: #f8fafc; /* Grigio chiarissimo per spezzare */
+            --text: #0f172a; /* Slate 900 - quasi nero */
+            --text-dim: #64748b; /* Slate 500 */
+            --accent: #2563eb; /* Blu primario brillante */
+            --accent-hover: #1d4ed8; 
+            --accent-light: #eff6ff; /* Sfondo blu leggerissimo */
+            --border: #e2e8f0; /* Bordi leggeri */
+            --card-bg: #ffffff;
+            --radius-lg: 24px;
+            --radius-md: 16px;
+            --section-padding: clamp(5rem, 10vw, 8rem);
+            --container-padding: clamp(1.5rem, 5vw, 4rem);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Hero Pattern Background */
+        .bg-pattern {
+            position: absolute;
+            inset: 0;
+            z-index: -1;
+            background-image: 
+                linear-gradient(to right, var(--border) 1px, transparent 1px),
+                linear-gradient(to bottom, var(--border) 1px, transparent 1px);
+            background-size: 40px 40px;
+            opacity: 0.3;
+            mask-image: radial-gradient(circle at center 30%, black, transparent 80%);
+            -webkit-mask-image: radial-gradient(circle at center 30%, black, transparent 80%);
+        }
+
+        h1, h2, h3, h4, .eyebrow {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            color: var(--text);
+        }
+
+        p {
+            color: var(--text-dim);
+            font-size: clamp(1.05rem, 1.2vw, 1.25rem);
+            font-weight: 400;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 var(--container-padding);
+        }
+
+        .section-padding {
+            padding: var(--section-padding) 0;
+        }
+
+        .eyebrow {
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 0.15em;
+            color: var(--accent);
+            display: inline-block;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+            background: var(--accent-light);
+            padding: 0.5rem 1rem;
+            border-radius: 100px;
+        }
+
+        /* Nav */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 1.2rem 0;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+
+        nav .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* In un tema chiaro, se il logo originale è bianco, potresti doverlo filtrare tramite CSS o usarne una versione scura. Qui applico un filtro invert per sicurezza, rimuovilo se il logo è già adatto a sfondi chiari. */
+        .logo img {
+            height: 36px;
+            display: block;
+ 
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--text);
+            color: var(--bg);
+            padding: 1rem 2.5rem;
+            border-radius: 100px;
+            text-decoration: none;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            background: var(--accent);
+            color: white;
+            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.3);
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-hover);
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            padding-top: calc(100px + 5vw);
+            text-align: center;
+            padding-bottom: 5rem;
+        }
+
+        .hero h1 {
+            font-size: clamp(3rem, 7vw, 6rem);
+            font-weight: 800;
+            line-height: 1.05;
+            letter-spacing: -0.03em;
+            margin-bottom: 1.5rem;
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero p {
+            max-width: 650px;
+            margin: 0 auto 2.5rem;
+        }
+
+        .micro-tags {
+            margin-top: 3rem;
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            font-size: 0.9rem;
+            color: var(--text-dim);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-weight: 500;
+        }
+
+        .hero-visual {
+            margin-top: 5rem;
+            position: relative;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            border: 1px solid var(--border);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
+            background: var(--bg-secondary);
+            padding: 1rem;
+        }
+
+        .hero-visual img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: calc(var(--radius-lg) - 1rem);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Grid System */
+        .bento-grid {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        /* Problema */
+        .problem-section {
+            background: var(--bg-secondary);
+        }
+
+        .section-header {
+            max-width: 700px;
+            margin-bottom: 4rem;
+        }
+
+        .section-header h2 {
+            font-size: clamp(2.5rem, 4vw, 3.5rem);
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+            margin-top: 1rem;
+        }
+
+        .problems-grid {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        .card {
+            padding: 3rem 2rem;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
+        }
+
+        .card:hover {
+            border-color: var(--accent);
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05);
+        }
+
+        .card svg {
+            color: var(--accent);
+            margin-bottom: 2rem;
+            width: 40px;
+            height: 40px;
+        }
+
+        .card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Sticky Soluzione */
+        .solution-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6rem;
+            align-items: start;
+        }
+
+        .sticky-left {
+            position: sticky;
+            top: 120px;
+        }
+
+        .benefits-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .benefit-item {
+            display: flex;
+            gap: 1.5rem;
+            padding: 2.5rem;
+            background: var(--card-bg);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+
+        .benefit-item:hover {
+            border-color: var(--accent);
+            box-shadow: 0 10px 30px rgba(37, 99, 235, 0.08);
+        }
+
+        .benefit-number {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--border);
+            line-height: 1;
+            transition: color 0.3s ease;
+        }
+
+        .benefit-item:hover .benefit-number {
+            color: var(--accent);
+        }
+
+        .benefit-text h4 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Screens & Features */
+        .feature-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: clamp(4rem, 8vw, 8rem);
+            align-items: center;
+        }
+
+        .feature-row.reverse {
+            direction: rtl;
+        }
+        
+        .feature-row.reverse > * {
+            direction: ltr;
+        }
+
+        .feature-text h2 {
+            font-size: clamp(2.5rem, 4vw, 3.5rem);
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+        }
+
+        .caption {
+            margin-top: 2rem;
+            font-size: 0.95rem;
+            border-left: 3px solid var(--border);
+            padding-left: 1rem;
+            color: var(--text-dim);
+        }
+
+        .mockup-container {
+            background: var(--bg-secondary);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            border: 1px solid var(--border);
+            position: relative;
+        }
+
+        /* Marquee Chips - Light Theme */
+        .target-section {
+            overflow: hidden;
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            padding: 6rem 0;
+        }
+
+        .target-header {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 4rem;
+        }
+
+        .marquee-container {
+            width: 100vw;
+            margin-left: calc(-50vw + 50%);
+            display: flex;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .marquee-container::before, .marquee-container::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            width: 15vw;
+            height: 100%;
+            z-index: 2;
+        }
+
+        .marquee-container::before {
+            left: 0;
+            background: linear-gradient(to right, var(--bg-secondary), transparent);
+        }
+
+        .marquee-container::after {
+            right: 0;
+            background: linear-gradient(to left, var(--bg-secondary), transparent);
+        }
+
+        .marquee-content {
+            display: flex;
+            white-space: nowrap;
+            animation: marquee 20s linear infinite;
+            gap: 3rem;
+            padding: 0 1rem;
+        }
+
+        .marquee-chip {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: clamp(3rem, 5vw, 5rem);
+            font-weight: 800;
+            color: transparent;
+            -webkit-text-stroke: 1px #cbd5e1;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+        }
+
+        .marquee-chip:hover {
+            color: var(--accent);
+            -webkit-text-stroke: 1px var(--accent);
+        }
+
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* Analytics Mini Cards */
+        .analytics-grid {
+            grid-template-columns: repeat(4, 1fr);
+            margin-top: 4rem;
+        }
+
+        .mini-card {
+            padding: 2rem 1.5rem;
+            border-left: 1px solid var(--border);
+            transition: all 0.3s;
+        }
+
+        .mini-card:first-child {
+            border-left: none;
+        }
+
+        .mini-card:hover {
+            background: var(--bg-secondary);
+        }
+
+        .mini-card h4 {
+            font-size: 1.25rem;
+            margin-bottom: 0.75rem;
+            color: var(--text);
+        }
+
+        /* Minimalist Light Form */
+        .form-section {
+            border-top: 1px solid var(--border);
+        }
+
+        .form-header {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 4rem;
+        }
+
+        .form-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: clamp(2rem, 5vw, 4rem);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .full-width {
+            grid-column: 1 / -1;
+        }
+
+        .input-group label {
+            display: block;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 0.5rem;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            background: var(--bg-secondary);
+            border: 1px solid transparent;
+            padding: 1rem 1.25rem;
+            color: var(--text);
+            font-size: 1rem;
+            font-family: 'Inter', sans-serif;
+            outline: none;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            background: var(--bg);
+            border-color: var(--accent);
+            box-shadow: 0 0 0 4px var(--accent-light);
+        }
+
+        input::placeholder, textarea::placeholder {
+            color: #94a3b8;
+        }
+
+        select {
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%230f172a%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 1em;
+        }
+
+        .privacy-note {
+            margin-top: 1.5rem;
+            font-size: 0.85rem;
+            text-align: center;
+        }
+
+        footer {
+            padding: 3rem 0;
+            text-align: center;
+            border-top: 1px solid var(--border);
+            background: var(--bg-secondary);
+            color: var(--text-dim);
+            font-weight: 500;
+        }
+
+        /* Animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .delay-1 { transition-delay: 0.1s; }
+        .delay-2 { transition-delay: 0.2s; }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .solution-layout {
+                grid-template-columns: 1fr;
+                gap: 4rem;
+            }
+            .sticky-left {
+                position: relative;
+                top: 0;
+            }
+            .problems-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .analytics-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .mini-card {
+                border-left: none;
+                border-top: 1px solid var(--border);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .problems-grid, .analytics-grid, .feature-row, .form-grid {
+                grid-template-columns: 1fr;
+            }
+            .hero {
+                padding-top: calc(100px + 10vw);
+            }
+            .hero-visual {
+                margin-top: 3rem;
+            }
+            .section-header, .form-header {
+                text-align: left;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <nav id="navbar">
+        <div class="container">
+            <div class="logo">
+                <img src="orlaylogo.png" alt="Orlay Pay">
+            </div>
+            <a href="#demo" class="btn btn-primary">Richiedi Demo</a>
+        </div>
+    </nav>
+
+    <main>
+        <!-- 1. Hero -->
+        <section class="hero">
+            <div class="bg-pattern"></div>
+            <div class="container">
+                <div class="reveal active">
+                    <span class="eyebrow">Continuità di vendita per eventi live</span>
+                    <h1>Il pubblico è già lì.<br> Non perdere vendite nei momenti di picco.</h1>
+                    <p>Orlay Pay aiuta organizzatori, venue e operatori food & beverage a rendere ordine, incasso e ritiro più fluidi: meno code, meno rinunce, più controllo operativo.</p>
+                    
+                    <a href="#demo" class="btn btn-primary" style="padding: 1.2rem 3rem; font-size: 1.1rem;">Richiedi una demo</a>
+                    
+                    <div class="micro-tags">
+                        <span>• Food & beverage</span>
+                        <span>• Hospitality</span>
+                        <span>• Aree VIP</span>
+                        <span>• Punti bar</span>
+                        <span>• Merchandising</span>
+                    </div>
+                </div>
+
+                <div class="hero-visual reveal delay-1 active">
+                    <img src="hero.png" alt="Console Organizzatore Orlay Pay">
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. Il Problema -->
+        <section class="section-padding problem-section">
+            <div class="container">
+                <div class="section-header reveal">
+                    <span class="eyebrow">La Criticità</span>
+                    <h2>La vendita si perde prima del pagamento.</h2>
+                    <p style="margin-top: 1.5rem;">
+                        Quando l’affluenza cresce, il punto di servizio diventa il collo di bottiglia: il pubblico aspetta, ordina meno o rinuncia. Lo staff gestisce confusione invece di servire.
+                    </p>
+                </div>
+
+                <div class="bento-grid problems-grid">
+                    <div class="card reveal">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                        <h3>Code e doppia attesa</h3>
+                        <p>Il fan perde tempo prezioso tra la scelta, il pagamento e l’effettivo ritiro.</p>
+                    </div>
+                    <div class="card reveal delay-1">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                        <h3>Staff sotto pressione</h3>
+                        <p>Il banco rallenta quando deve ricostruire ordini, importi e gestire l'improvvisazione.</p>
+                    </div>
+                    <div class="card reveal delay-2">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M18 9l-6 6-3-3-3 3"/></svg>
+                        <h3>Dati frammentati</h3>
+                        <p>A fine evento è quasi impossibile capire esattamente dove e perché si è persa la domanda.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. La Soluzione -->
+        <section class="section-padding">
+            <div class="container solution-layout">
+                <div class="sticky-left reveal">
+                    <span class="eyebrow">La Soluzione</span>
+                    <h2>Una regia unica per trasformare il servizio in ricavo.</h2>
+                    <p style="margin-top: 1.5rem;">Orlay Pay rende più leggibile il percorso del fan, più veloce il lavoro dello staff e più chiaro il controllo dell’organizzatore.</p>
+                </div>
+
+                <div class="benefits-list">
+                    <div class="benefit-item reveal">
+                        <div class="benefit-number">01</div>
+                        <div class="benefit-text">
+                            <h4>Più ordini completati</h4>
+                            <p>Soprattutto nelle finestre di massima domanda.</p>
+                        </div>
+                    </div>
+                    <div class="benefit-item reveal delay-1">
+                        <div class="benefit-number">02</div>
+                        <div class="benefit-text">
+                            <h4>Più velocità al banco</h4>
+                            <p>Meno passaggi manuali, meno errori, meno improvvisazione.</p>
+                        </div>
+                    </div>
+                    <div class="benefit-item reveal delay-1">
+                        <div class="benefit-number">03</div>
+                        <div class="benefit-text">
+                            <h4>Più controllo per zona</h4>
+                            <p>Ordini, incassi e performance leggibili per ogni area.</p>
+                        </div>
+                    </div>
+                    <div class="benefit-item reveal delay-1">
+                        <div class="benefit-number">04</div>
+                        <div class="benefit-text">
+                            <h4>Più valore post-evento</h4>
+                            <p>Dati utili per decidere pricing, staffing e layout futuri.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. Console Organizzatore -->
+        <section class="section-padding container">
+            <div class="feature-row">
+                <div class="feature-text reveal">
+                    <span class="eyebrow">Dashboard</span>
+                    <h2>Controllo live dell’evento.</h2>
+                    <p>Monitora ordini, incassi, ritiri, punti di servizio e aree critiche da una sola vista operativa.</p>
+                    <p class="caption">Capisci dove la domanda cresce, dove il servizio rallenta e cosa correggere durante l’evento.</p>
+                </div>
+                <div class="mockup-container reveal delay-1">
+                    <!-- Dashboard Mockup Riadattato per Tema Chiaro -->
+                    <div style="display: flex; flex-direction: column; gap: 15px;">
+                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px;">
+                            <div style="background: #ffffff; border: 1px solid var(--border); border-radius: 12px; padding: 15px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
+                                <div style="font-size: 11px; color: var(--text-dim); margin-bottom: 5px; font-weight: 600;">INCASSATO</div>
+                                <div style="font-size: 24px; color: var(--text); font-weight: 800; font-family: 'Plus Jakarta Sans';">€42.450</div>
+                            </div>
+                            <div style="background: #ffffff; border: 1px solid var(--border); border-radius: 12px; padding: 15px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
+                                <div style="font-size: 11px; color: var(--text-dim); margin-bottom: 5px; font-weight: 600;">ORDINI</div>
+                                <div style="font-size: 24px; color: var(--text); font-weight: 800; font-family: 'Plus Jakarta Sans';">1.240</div>
+                            </div>
+                            <div style="background: #ffffff; border: 1px solid var(--border); border-radius: 12px; padding: 15px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
+                                <div style="font-size: 11px; color: var(--text-dim); margin-bottom: 5px; font-weight: 600;">ATTESA MEDIANA</div>
+                                <div style="font-size: 24px; color: var(--text); font-weight: 800; font-family: 'Plus Jakarta Sans';">2m 40s</div>
+                            </div>
+                        </div>
+                        <div style="height: 220px; background: #ffffff; border: 1px solid var(--border); border-radius: 12px; position: relative; padding: 20px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
+                            <div style="width: 100%; height: 1px; background: var(--border); position: absolute; bottom: 40px; left:0;"></div>
+                            <div style="display: flex; align-items: flex-end; height: 100%; gap: 15px; justify-content: space-around; padding-bottom: 40px;">
+                                <div style="width: 40px; height: 40%; background: #e2e8f0; border-radius: 6px 6px 0 0;"></div>
+                                <div style="width: 40px; height: 70%; background: #bfdbfe; border-radius: 6px 6px 0 0;"></div>
+                                <div style="width: 40px; height: 95%; background: var(--accent); border-radius: 6px 6px 0 0; position: relative;">
+                                    <div style="position:absolute; top:-30px; left:50%; transform:translateX(-50%); background:var(--text); color:white; font-size:10px; padding:4px 8px; border-radius:4px; font-weight:bold;">PICCO</div>
+                                </div>
+                                <div style="width: 40px; height: 60%; background: #bfdbfe; border-radius: 6px 6px 0 0;"></div>
+                            </div>
+                            <span style="position: absolute; bottom: 12px; left: 20px; font-size: 11px; color: var(--text-dim); font-weight: 600; letter-spacing: 0.5px;">PERFORMANCE TIMELINE</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. Mappa ed Aree -->
+        <section class="section-padding container">
+            <div class="feature-row reverse">
+                <div class="feature-text reveal">
+                    <span class="eyebrow">Layout</span>
+                    <h2>L’evento diventa più leggibile.</h2>
+                    <p>Mappe, informazioni e percorsi aiutano il pubblico a capire dove andare e riducono domande ripetitive allo staff.</p>
+                    <p class="caption">Utile per food court, bar, hospitality, VIP, merch e punti di ritiro dedicati.</p>
+                </div>
+                <div class="mockup-container reveal delay-1" style="height: 100%; min-height: 380px; display: flex; align-items: center; justify-content: center; background: #f8fafc; overflow: hidden;">
+                    <!-- Map Mockup Riadattato per Tema Chiaro -->
+                    <svg width="100%" height="100%" viewBox="0 0 400 300" style="max-height: 350px;">
+                        <rect x="50" y="50" width="300" height="200" rx="16" fill="#ffffff" stroke="#e2e8f0" stroke-width="2" />
+                        <path d="M100 150 L300 150 M200 50 L200 250" stroke="#f1f5f9" stroke-width="2" stroke-dasharray="8 8"/>
+                        
+                        <circle cx="100" cy="100" r="18" fill="#eff6ff" stroke="var(--accent)" stroke-width="2"/>
+                        <circle cx="100" cy="100" r="6" fill="var(--accent)" />
+                        <text x="128" y="104" fill="var(--text)" font-size="12" font-family="Plus Jakarta Sans" font-weight="700">BAR A</text>
+                        
+                        <circle cx="300" cy="150" r="18" fill="#eff6ff" stroke="var(--accent)" stroke-width="2"/>
+                        <circle cx="300" cy="150" r="6" fill="var(--accent)" />
+                        <text x="328" y="154" fill="var(--text)" font-size="12" font-family="Plus Jakarta Sans" font-weight="700">VIP AREA</text>
+                        
+                        <circle cx="150" cy="220" r="18" fill="#eff6ff" stroke="var(--accent)" stroke-width="2"/>
+                        <circle cx="150" cy="220" r="6" fill="var(--accent)" />
+                        <text x="178" y="224" fill="var(--text)" font-size="12" font-family="Plus Jakarta Sans" font-weight="700">FOOD COURT</text>
+                    </svg>
+                    <div style="position: absolute; bottom: 20px; left: 20px; background: #ffffff; padding: 10px 16px; border-radius: 100px; font-size: 11px; font-weight: 600; letter-spacing: 0.5px; border: 1px solid var(--border); color: var(--text); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
+                        <span style="display:inline-block; width:8px; height:8px; background:var(--accent); border-radius:50%; margin-right:6px;"></span>
+                        PUNTI VENDITA ATTIVI
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. Per chi è (Marquee Chiaro) -->
+        <section class="target-section">
+            <div class="container">
+                <div class="target-header reveal">
+                    <span class="eyebrow">Target</span>
+                    <h2>Pensato per eventi dove ogni minuto di coda costa ricavo.</h2>
+                    <p style="margin-top: 1.5rem;">Orlay Pay è adatto a contesti con alta densità di pubblico, più punti di servizio e domanda concentrata in finestre brevi.</p>
+                </div>
+            </div>
+            
+            <div class="marquee-container reveal delay-1">
+                <div class="marquee-content">
+                    <div class="marquee-chip">Festival</div>
+                    <div class="marquee-chip">Concerti</div>
+                    <div class="marquee-chip">Stadi e palazzetti</div>
+                    <div class="marquee-chip">Food court</div>
+                    <div class="marquee-chip">Hospitality</div>
+                    <div class="marquee-chip">Aree VIP</div>
+                    <div class="marquee-chip">Merchandising</div>
+                    <div class="marquee-chip">Eventi corporate</div>
+                    <!-- Duplicato per scroll continuo -->
+                    <div class="marquee-chip">Festival</div>
+                    <div class="marquee-chip">Concerti</div>
+                    <div class="marquee-chip">Stadi e palazzetti</div>
+                    <div class="marquee-chip">Food court</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 7. Analytics -->
+        <section class="section-padding container">
+            <div class="section-header reveal" style="text-align: center; margin: 0 auto;">
+                <span class="eyebrow">Data Intelligence</span>
+                <h2>Il valore non finisce a fine serata.</h2>
+                <p style="margin-top: 1.5rem;">Leggi cosa converte, cosa rallenta e dove si perde domanda. Usa i dati per migliorare ogni aspetto del prossimo evento.</p>
+            </div>
+
+            <div class="analytics-grid">
+                <div class="mini-card reveal">
+                    <h4>Performance per area</h4>
+                    <p>Quali zone vendono e quali rallentano.</p>
+                </div>
+                <div class="mini-card reveal delay-1">
+                    <h4>Picchi reali</h4>
+                    <p>Quando la domanda cresce davvero.</p>
+                </div>
+                <div class="mini-card reveal delay-2">
+                    <h4>Mix prodotti</h4>
+                    <p>Cosa viene scelto e cosa resta indietro.</p>
+                </div>
+                <div class="mini-card reveal delay-3">
+                    <h4>Decisioni migliori</h4>
+                    <p>Meno percezioni, più evidenze operative.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 8. Form Light & Clean -->
+        <section id="demo" class="section-padding form-section">
+            <div class="container">
+                <div class="form-header reveal">
+                    <h2>Vuoi capire dove il tuo evento sta perdendo vendite?</h2>
+                    <p style="margin-top: 1.5rem;">Prenota una demo: analizziamo insieme flussi, punti bar, aree critiche e opportunità di ricavo.</p>
+                </div>
+
+                <div class="form-container reveal delay-1">
+                    <form id="demo-form">
+                        <div class="form-grid">
+                            <div class="input-group">
+                                <label>Nome</label>
+                                <input type="text" placeholder="Nome completo" required>
+                            </div>
+                            <div class="input-group">
+                                <label>Azienda / Venue</label>
+                                <input type="text" placeholder="Es. Stadio Olimpico" required>
+                            </div>
+                            <div class="input-group">
+                                <label>Tipo di evento</label>
+                                <select>
+                                    <option>Concerto / Festival</option>
+                                    <option>Sportivo</option>
+                                    <option>Corporate / Fiera</option>
+                                    <option>Altro</option>
+                                </select>
+                            </div>
+                            <div class="input-group">
+                                <label>Email</label>
+                                <input type="email" placeholder="email@esempio.com" required>
+                            </div>
+                            <div class="input-group">
+                                <label>Telefono</label>
+                                <input type="tel" placeholder="+39 ...">
+                            </div>
+                            <div class="input-group full-width">
+                                <label>Messaggio opzionale</label>
+                                <textarea rows="3" placeholder="Parlaci del tuo prossimo evento..."></textarea>
+                            </div>
+                        </div>
+                        <div style="text-align: center; margin-top: 3rem;">
+                            <button type="submit" class="btn btn-primary" style="width: 100%; padding: 1.2rem; font-size: 1.1rem;">Richiedi una demo ora</button>
+                            <p class="privacy-note">Ti ricontattiamo solo per valutare il progetto Orlay Pay più adatto a te.</p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>© 2026 Orlay Pay. Tutti i diritti riservati.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Effetto Blur sulla Navigazione allo scroll
+        const nav = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 20) {
+                nav.style.boxShadow = '0 4px 6px -1px rgba(0, 0, 0, 0.05)';
+            } else {
+                nav.style.boxShadow = 'none';
+            }
+        });
+
+        // Intersection Observer per animazioni in scroll (Reveal)
+        const revealElements = document.querySelectorAll('.reveal');
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
+
+        revealElements.forEach(el => revealObserver.observe(el));
+
+        // Gestione del Form simulata
+        document.getElementById('demo-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Grazie! La tua richiesta è stata inviata correttamente. Ti ricontatteremo a breve.');
+            this.reset();
+        });
+    </script>
+</body>
+</html>
