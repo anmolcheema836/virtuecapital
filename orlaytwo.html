@@ -3,920 +3,984 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Orlay Pay | Continuità di vendita per eventi live</title>
+    <title>Orlay Pay | Brutalist Edition</title>
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <!-- Font ad alto contrasto: Plus Jakarta Sans per titoli puliti e Inter per la lettura -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <!-- Geometric Sans-Serif -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800;900&family=Plus+Jakarta+Sans:wght@700;800;900&display=swap" rel="stylesheet">
+    
     <style>
         :root {
-            /* Palette Light & Premium */
-            --bg: #ffffff; 
-            --bg-secondary: #f8fafc; /* Grigio chiarissimo per spezzare */
-            --text: #0f172a; /* Slate 900 - quasi nero */
-            --text-dim: #64748b; /* Slate 500 */
-            --accent: #2563eb; /* Blu primario brillante */
-            --accent-hover: #1d4ed8; 
-            --accent-light: #eff6ff; /* Sfondo blu leggerissimo */
-            --border: #e2e8f0; /* Bordi leggeri */
-            --card-bg: #ffffff;
-            --radius-lg: 24px;
-            --radius-md: 16px;
-            --section-padding: clamp(5rem, 10vw, 8rem);
-            --container-padding: clamp(1.5rem, 5vw, 4rem);
+            /* Brutalist Palette */
+            --bg: #4C70F0; /* Electric Cobalt Blue */
+            --fg: #000000; /* Solid Black */
+            --white: #ffffff; /* Stark White for contrast inside cards */
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        /* Lenis Smooth Scroll Fixes */
         html {
-            scroll-behavior: smooth;
+            scroll-behavior: auto;
+        }
+        
+        html.lenis {
+            height: auto;
+        }
+
+        .lenis.lenis-smooth {
+            scroll-behavior: auto !important;
+        }
+
+        .lenis.lenis-smooth [data-lenis-prevent] {
+            overscroll-behavior: contain;
+        }
+
+        .lenis.lenis-stopped {
+            overflow: hidden;
         }
 
         body {
             background-color: var(--bg);
-            color: var(--text);
+            color: var(--fg);
             font-family: 'Inter', sans-serif;
-            line-height: 1.6;
+            margin: 0;
+            padding: 0;
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
         }
 
-        /* Hero Pattern Background */
-        .bg-pattern {
-            position: absolute;
-            inset: 0;
-            z-index: -1;
-            background-image: 
-                linear-gradient(to right, var(--border) 1px, transparent 1px),
-                linear-gradient(to bottom, var(--border) 1px, transparent 1px);
-            background-size: 40px 40px;
-            opacity: 0.3;
-            mask-image: radial-gradient(circle at center 30%, black, transparent 80%);
-            -webkit-mask-image: radial-gradient(circle at center 30%, black, transparent 80%);
+        ::selection {
+            background: var(--fg);
+            color: var(--bg);
         }
 
-        h1, h2, h3, h4, .eyebrow {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            color: var(--text);
-        }
-
-        p {
-            color: var(--text-dim);
-            font-size: clamp(1.05rem, 1.2vw, 1.25rem);
-            font-weight: 400;
-        }
-
+        /* Layout & Utilities */
         .container {
-            max-width: 1400px;
+            padding: 0 4vw;
+            max-width: 1600px;
             margin: 0 auto;
-            padding: 0 var(--container-padding);
         }
 
-        .section-padding {
-            padding: var(--section-padding) 0;
-        }
-
-        .eyebrow {
-            text-transform: uppercase;
-            font-size: 0.85rem;
-            letter-spacing: 0.15em;
-            color: var(--accent);
-            display: inline-block;
-            margin-bottom: 1.5rem;
-            font-weight: 700;
-            background: var(--accent-light);
-            padding: 0.5rem 1rem;
-            border-radius: 100px;
-        }
-
-        /* Nav */
-        nav {
-            position: fixed;
-            top: 0;
+        .divider {
+            border: none;
+            border-top: 2px solid var(--fg);
+            margin: 0;
             width: 100%;
-            z-index: 1000;
-            padding: 1.2rem 0;
-            background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--border);
-            transition: all 0.3s ease;
         }
 
-        nav .container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        a {
+            color: var(--fg);
+            text-decoration: none;
         }
 
-        /* In un tema chiaro, se il logo originale è bianco, potresti doverlo filtrare tramite CSS o usarne una versione scura. Qui applico un filtro invert per sicurezza, rimuovilo se il logo è già adatto a sfondi chiari. */
-        .logo img {
-            height: 36px;
-            display: block;
- 
+        h1, h2, h3, h4 {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            text-transform: uppercase;
+            line-height: 1;
+            margin: 0;
         }
 
-        .btn {
+        /* Brutalist Card/Mockup Style */
+        .brutal-card {
+            background: var(--white);
+            border: 2px solid var(--fg);
+            box-shadow: 8px 8px 0px var(--fg);
+            padding: 2rem;
+            color: var(--fg);
+        }
+
+        .brutal-btn {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            background: var(--text);
+            background: var(--fg);
             color: var(--bg);
-            padding: 1rem 2.5rem;
-            border-radius: 100px;
-            text-decoration: none;
+            padding: 1.2rem 3rem;
             font-family: 'Plus Jakarta Sans', sans-serif;
-            font-weight: 600;
-            font-size: 1rem;
-            transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
-            border: none;
-            cursor: pointer;
-        }
-
-        .btn:hover {
-            transform: translateY(-2px);
-            background: var(--accent);
-            color: white;
-            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.3);
-        }
-
-        .btn-primary {
-            background: var(--accent);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background: var(--accent-hover);
-        }
-
-        /* Hero Section */
-        .hero {
-            position: relative;
-            padding-top: calc(100px + 5vw);
-            text-align: center;
-            padding-bottom: 5rem;
-        }
-
-        .hero h1 {
-            font-size: clamp(3rem, 7vw, 6rem);
             font-weight: 800;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            border: 2px solid var(--fg);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 6px 6px 0px rgba(0,0,0,0);
+        }
+
+        .brutal-btn:hover {
+            background: var(--white);
+            color: var(--fg);
+            transform: translate(-4px, -4px);
+            box-shadow: 6px 6px 0px var(--fg);
+        }
+
+        /* Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 4vw;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-size: 0.9rem;
+            border-bottom: 2px solid var(--fg);
+        }
+
+        .header-left span {
+            display: inline-block;
+            margin-right: 0.5rem;
+        }
+
+        .hover-invert {
+            display: inline-block;
+            transition: all 0.2s ease;
+            padding: 0.2rem 0.5rem;
+            margin-left: -0.5rem;
+            font-weight: 800;
+        }
+
+        .hover-invert:hover {
+            background-color: var(--fg);
+            color: var(--bg);
+            font-style: italic;
+        }
+
+        /* Massive Branding */
+        .brand-container {
+            overflow: hidden;
+            padding: 2rem 4vw 0rem 4vw;
+            background: var(--bg);
+            border-bottom: 2px solid var(--fg);
+        }
+
+        .brand-name {
+            font-size: clamp(4rem, 16vw, 22rem);
+            font-weight: 900;
+            line-height: 0.8;
+            letter-spacing: -0.05em;
+            white-space: nowrap;
+            text-align: center;
+        }
+
+        /* Hero Text */
+        .hero {
+            padding: 6rem 0 0 0;
+        }
+
+        .hero-inner {
+            width: 80%;
+            margin-bottom: 4rem;
+        }
+
+        .hero-eyebrow {
+            display: inline-block;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-weight: 800;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            background: var(--white);
+            color: var(--fg);
+            border: 2px solid var(--fg);
+            padding: 0.5rem 1rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 4px 4px 0px var(--fg);
+        }
+
+        .hero h2 {
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            font-weight: 900;
             line-height: 1.05;
             letter-spacing: -0.03em;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero p {
+            font-size: clamp(1.2rem, 1.5vw, 1.5rem);
+            font-weight: 500;
+            line-height: 1.4;
+            max-width: 800px;
+            margin-bottom: 3rem;
+        }
+
+        .micro-tags {
+            margin-top: 3rem;
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            font-size: 1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        /* Hero Image - FIXED TO BE FULLY VISIBLE */
+        .hero-visual-container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .hero-visual-wrapper {
+            width: 100%;
+            height: auto; /* Lascia che l'immagine definisca l'altezza */
+            border: 2px solid var(--fg);
+            background: var(--fg);
+            overflow: hidden;
+            will-change: transform;
+            transform-origin: 50% 0%; 
+        }
+
+        .hero-visual-wrapper img {
+            width: 100%;
+            height: auto; /* Mantiene l'aspect ratio originale */
+            display: block; /* Rimuove lo spazio extra sotto l'immagine */
+            object-fit: contain; /* Assicura che non venga tagliata */
+        }
+
+        /* Problema / Soluzione */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0; /* Divided by borders */
+            border-top: 2px solid var(--fg);
+        }
+
+        .list-section {
+            padding: 6rem 4vw;
+            border-right: 2px solid var(--fg);
+        }
+
+        .list-section:last-child {
+            border-right: none;
+            background: var(--white); /* White block to create contrast */
+        }
+
+        .list-section h3 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            margin-bottom: 2rem;
+        }
+
+        .list-section > p {
+            margin-bottom: 3rem; 
+            font-weight: 600; 
+            font-size: 1.2rem;
+            max-width: 500px;
+        }
+
+        .brutal-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            font-size: clamp(1.1rem, 1.2vw, 1.3rem);
+            font-weight: 500;
+        }
+
+        .brutal-list li {
+            padding: 1.5rem 0;
+            border-bottom: 2px solid var(--fg);
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .brutal-list li:first-child {
+            border-top: 2px solid var(--fg);
+        }
+
+        .brutal-list li span.list-title {
+            font-weight: 900;
+            font-family: 'Plus Jakarta Sans';
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .brutal-list li span.list-title::before {
+            content: '—';
+            margin-right: 1rem;
+        }
+
+        /* Features (Dashboard / Mappa) */
+        .feature-block {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            border-top: 2px solid var(--fg);
+        }
+
+        .feature-block.reverse {
+            direction: rtl;
+        }
+        
+        .feature-block.reverse > * {
+            direction: ltr;
+        }
+
+        .feature-text {
+            padding: 6rem 4vw;
+            border-right: 2px solid var(--fg);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .feature-block.reverse .feature-text {
+            border-right: none;
+            border-left: 2px solid var(--fg);
+        }
+
+        .feature-visual {
+            padding: 4rem 4vw;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--white);
+        }
+
+        .feature-text h3 {
+            font-size: clamp(3rem, 5vw, 6rem);
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-text p {
+            font-size: clamp(1.1rem, 1.2vw, 1.3rem);
+            font-weight: 500;
+        }
+
+        .caption {
+            margin-top: 2rem;
+            padding-left: 1rem;
+            border-left: 4px solid var(--fg);
+            font-weight: 700 !important;
+        }
+
+        /* Mockup Internals */
+        .mockup-dashboard {
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .stat-box {
+            border: 2px solid var(--fg);
+            padding: 15px;
+            background: var(--bg);
+            color: var(--fg);
+        }
+
+        .stat-box-title { font-size: 11px; font-weight: 800; margin-bottom: 5px; }
+        .stat-box-val { font-size: 24px; font-weight: 900; font-family: 'Plus Jakarta Sans'; }
+
+        .chart-box {
+            height: 220px;
+            border: 2px solid var(--fg);
+            position: relative;
+            padding: 20px;
+            background: var(--white);
+        }
+
+        .chart-line {
+            width: 100%; height: 2px; background: var(--fg); position: absolute; bottom: 40px; left:0;
+        }
+
+        .chart-bars {
+            display: flex; align-items: flex-end; height: 100%; gap: 15px; justify-content: space-around; padding-bottom: 40px;
+        }
+
+        .bar { width: 40px; background: var(--bg); border: 2px solid var(--fg); border-bottom: none; }
+        .bar.peak { background: var(--fg); position: relative; }
+        .peak-tag { position:absolute; top:-35px; left:50%; transform:translateX(-50%); background:var(--white); border:2px solid var(--fg); color:var(--fg); font-size:10px; padding:4px 8px; font-weight:900; }
+
+        /* Target Audience Section */
+        .target-section {
+            padding: 6rem 4vw;
+            border-top: 2px solid var(--fg);
+            text-align: center;
+        }
+
+        .target-section h2 {
+            font-size: clamp(2.5rem, 4vw, 4.5rem);
             margin-bottom: 1.5rem;
             max-width: 1000px;
             margin-left: auto;
             margin-right: auto;
         }
 
-        .hero p {
-            max-width: 650px;
-            margin: 0 auto 2.5rem;
-        }
-
-        .micro-tags {
-            margin-top: 3rem;
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-            flex-wrap: wrap;
-            font-size: 0.9rem;
-            color: var(--text-dim);
-            font-family: 'Plus Jakarta Sans', sans-serif;
+        .target-section p {
+            font-size: clamp(1.2rem, 1.5vw, 1.5rem);
             font-weight: 500;
-        }
-
-        .hero-visual {
-            margin-top: 5rem;
-            position: relative;
-            border-radius: var(--radius-lg);
-            overflow: hidden;
-            border: 1px solid var(--border);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
-            background: var(--bg-secondary);
-            padding: 1rem;
-        }
-
-        .hero-visual img {
-            width: 100%;
-            height: auto;
-            display: block;
-            border-radius: calc(var(--radius-lg) - 1rem);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-        }
-
-        /* Grid System */
-        .bento-grid {
-            display: grid;
-            gap: 1.5rem;
-        }
-
-        /* Problema */
-        .problem-section {
-            background: var(--bg-secondary);
-        }
-
-        .section-header {
-            max-width: 700px;
-            margin-bottom: 4rem;
-        }
-
-        .section-header h2 {
-            font-size: clamp(2.5rem, 4vw, 3.5rem);
-            line-height: 1.1;
-            letter-spacing: -0.02em;
-            margin-top: 1rem;
-        }
-
-        .problems-grid {
-            grid-template-columns: repeat(3, 1fr);
-        }
-
-        .card {
-            padding: 3rem 2rem;
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-md);
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
-        }
-
-        .card:hover {
-            border-color: var(--accent);
-            transform: translateY(-5px);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05);
-        }
-
-        .card svg {
-            color: var(--accent);
-            margin-bottom: 2rem;
-            width: 40px;
-            height: 40px;
-        }
-
-        .card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-        }
-
-        /* Sticky Soluzione */
-        .solution-layout {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 6rem;
-            align-items: start;
-        }
-
-        .sticky-left {
-            position: sticky;
-            top: 120px;
-        }
-
-        .benefits-list {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        .benefit-item {
-            display: flex;
-            gap: 1.5rem;
-            padding: 2.5rem;
-            background: var(--card-bg);
-            border-radius: var(--radius-lg);
-            border: 1px solid var(--border);
-            transition: all 0.3s ease;
-        }
-
-        .benefit-item:hover {
-            border-color: var(--accent);
-            box-shadow: 0 10px 30px rgba(37, 99, 235, 0.08);
-        }
-
-        .benefit-number {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            font-size: 2.5rem;
-            font-weight: 800;
-            color: var(--border);
-            line-height: 1;
-            transition: color 0.3s ease;
-        }
-
-        .benefit-item:hover .benefit-number {
-            color: var(--accent);
-        }
-
-        .benefit-text h4 {
-            font-size: 1.5rem;
-            margin-bottom: 0.5rem;
-        }
-
-        /* Screens & Features */
-        .feature-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: clamp(4rem, 8vw, 8rem);
-            align-items: center;
-        }
-
-        .feature-row.reverse {
-            direction: rtl;
-        }
-        
-        .feature-row.reverse > * {
-            direction: ltr;
-        }
-
-        .feature-text h2 {
-            font-size: clamp(2.5rem, 4vw, 3.5rem);
-            line-height: 1.1;
-            margin-bottom: 1.5rem;
-        }
-
-        .caption {
-            margin-top: 2rem;
-            font-size: 0.95rem;
-            border-left: 3px solid var(--border);
-            padding-left: 1rem;
-            color: var(--text-dim);
-        }
-
-        .mockup-container {
-            background: var(--bg-secondary);
-            border-radius: var(--radius-lg);
-            padding: 2rem;
-            border: 1px solid var(--border);
-            position: relative;
-        }
-
-        /* Marquee Chips - Light Theme */
-        .target-section {
-            overflow: hidden;
-            background: var(--bg-secondary);
-            border-top: 1px solid var(--border);
-            border-bottom: 1px solid var(--border);
-            padding: 6rem 0;
-        }
-
-        .target-header {
-            text-align: center;
             max-width: 800px;
-            margin: 0 auto 4rem;
+            margin: 0 auto 3rem auto;
         }
 
-        .marquee-container {
-            width: 100vw;
-            margin-left: calc(-50vw + 50%);
-            display: flex;
+        /* Marquee */
+        .marquee-wrapper {
+            border-top: 2px solid var(--fg);
+            border-bottom: 2px solid var(--fg);
+            padding: 3rem 0;
             overflow: hidden;
-            position: relative;
-        }
-
-        .marquee-container::before, .marquee-container::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            width: 15vw;
-            height: 100%;
-            z-index: 2;
-        }
-
-        .marquee-container::before {
-            left: 0;
-            background: linear-gradient(to right, var(--bg-secondary), transparent);
-        }
-
-        .marquee-container::after {
-            right: 0;
-            background: linear-gradient(to left, var(--bg-secondary), transparent);
-        }
-
-        .marquee-content {
             display: flex;
             white-space: nowrap;
-            animation: marquee 20s linear infinite;
-            gap: 3rem;
-            padding: 0 1rem;
+            background-color: var(--white);
         }
 
-        .marquee-chip {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            font-size: clamp(3rem, 5vw, 5rem);
-            font-weight: 800;
-            color: transparent;
-            -webkit-text-stroke: 1px #cbd5e1;
+        .marquee {
+            display: flex;
+            animation: scroll 15s linear infinite;
+        }
+
+        .marquee span {
+            font-size: clamp(3rem, 6vw, 6rem);
+            font-weight: 900;
+            font-family: 'Plus Jakarta Sans';
             text-transform: uppercase;
-            transition: all 0.3s ease;
+            letter-spacing: -0.03em;
+            padding-right: 3rem;
+            color: var(--fg);
         }
 
-        .marquee-chip:hover {
-            color: var(--accent);
-            -webkit-text-stroke: 1px var(--accent);
-        }
-
-        @keyframes marquee {
+        @keyframes scroll {
             0% { transform: translateX(0); }
             100% { transform: translateX(-50%); }
         }
 
         /* Analytics Mini Cards */
+        .analytics-section {
+            border-bottom: 2px solid var(--fg);
+        }
+
+        .analytics-header {
+            padding: 6rem 4vw;
+            border-bottom: 2px solid var(--fg);
+            text-align: center;
+        }
+        
+        .analytics-header h2 {
+            font-size: clamp(3rem, 5vw, 6rem);
+            margin-bottom: 1.5rem;
+        }
+
         .analytics-grid {
+            display: grid;
             grid-template-columns: repeat(4, 1fr);
-            margin-top: 4rem;
         }
 
         .mini-card {
-            padding: 2rem 1.5rem;
-            border-left: 1px solid var(--border);
-            transition: all 0.3s;
+            padding: 4rem 2rem;
+            border-right: 2px solid var(--fg);
+            transition: all 0.2s;
+            background: var(--bg);
         }
 
-        .mini-card:first-child {
-            border-left: none;
+        .mini-card:last-child {
+            border-right: none;
         }
 
         .mini-card:hover {
-            background: var(--bg-secondary);
+            background: var(--white);
         }
 
         .mini-card h4 {
-            font-size: 1.25rem;
-            margin-bottom: 0.75rem;
-            color: var(--text);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
         }
 
-        /* Minimalist Light Form */
+        /* Form Brutalista */
         .form-section {
-            border-top: 1px solid var(--border);
+            padding: 8rem 4vw;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4vw;
+            align-items: center;
         }
 
-        .form-header {
-            text-align: center;
-            max-width: 800px;
-            margin: 0 auto 4rem;
+        .form-header h2 {
+            font-size: clamp(3rem, 5vw, 5rem);
+            margin-bottom: 2rem;
         }
 
-        .form-container {
-            max-width: 800px;
-            margin: 0 auto;
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-lg);
-            padding: clamp(2rem, 5vw, 4rem);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05);
+        .brutal-form {
+            background: var(--white);
+            border: 2px solid var(--fg);
+            padding: 4rem;
+            box-shadow: 12px 12px 0px var(--fg);
         }
 
         .form-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 2rem;
+            margin-bottom: 2rem;
         }
 
-        .full-width {
-            grid-column: 1 / -1;
-        }
+        .full-width { grid-column: 1 / -1; }
 
         .input-group label {
             display: block;
             font-family: 'Plus Jakarta Sans', sans-serif;
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: var(--text);
+            font-size: 0.9rem;
+            font-weight: 800;
+            text-transform: uppercase;
             margin-bottom: 0.5rem;
         }
 
         input, textarea, select {
             width: 100%;
-            background: var(--bg-secondary);
-            border: 1px solid transparent;
-            padding: 1rem 1.25rem;
-            color: var(--text);
-            font-size: 1rem;
-            font-family: 'Inter', sans-serif;
-            outline: none;
-            border-radius: 12px;
-            transition: all 0.3s ease;
-        }
-
-        input:focus, textarea:focus, select:focus {
             background: var(--bg);
-            border-color: var(--accent);
-            box-shadow: 0 0 0 4px var(--accent-light);
+            border: 2px solid var(--fg);
+            padding: 1.2rem;
+            color: var(--fg);
+            font-size: 1.1rem;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            outline: none;
+            border-radius: 0;
+            transition: all 0.2s ease;
+            box-sizing: border-box;
         }
 
-        input::placeholder, textarea::placeholder {
-            color: #94a3b8;
+        input::placeholder, textarea::placeholder { color: rgba(0,0,0,0.6); }
+        
+        input:focus, textarea:focus, select:focus {
+            background: var(--white);
+            box-shadow: 4px 4px 0px var(--fg);
+            transform: translate(-2px, -2px);
         }
 
-        select {
-            appearance: none;
-            background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%230f172a%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E");
-            background-repeat: no-repeat;
-            background-position: right 1rem center;
-            background-size: 1em;
-        }
-
-        .privacy-note {
-            margin-top: 1.5rem;
+        .privacy-microcopy {
             font-size: 0.85rem;
+            font-weight: 600;
+            margin-top: 1.5rem;
             text-align: center;
         }
 
+        /* Footer */
         footer {
-            padding: 3rem 0;
-            text-align: center;
-            border-top: 1px solid var(--border);
-            background: var(--bg-secondary);
-            color: var(--text-dim);
-            font-weight: 500;
+            padding: 8rem 4vw 4rem 4vw;
+            display: flex;
+            flex-direction: column;
+            gap: 4rem;
+            border-top: 2px solid var(--fg);
+            background: var(--white);
         }
 
-        /* Animations */
-        .reveal {
+        .footer-email {
+            font-size: clamp(4rem, 10vw, 12rem);
+            font-weight: 900;
+            font-family: 'Plus Jakarta Sans';
+            line-height: 0.85;
+            letter-spacing: -0.04em;
+            text-decoration: none;
+            color: var(--fg);
+            transition: color 0.3s ease;
+        }
+
+        .footer-email:hover {
+            color: var(--bg);
+            -webkit-text-stroke: 4px var(--fg);
+        }
+
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 1rem;
+        }
+
+        .footer-links a {
+            margin-left: 2rem;
+            text-decoration: underline;
+            text-decoration-thickness: 2px;
+            text-underline-offset: 6px;
+        }
+
+        /* GSAP Initial States */
+        .gs-reveal-text {
+            clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+        }
+
+        .gs-reveal-item {
+            transform: translateY(100%);
+            opacity: 0;
+        }
+        
+        .gs-fade-up {
             opacity: 0;
             transform: translateY(40px);
-            transition: all 0.8s cubic-bezier(0.25, 1, 0.5, 1);
         }
-
-        .reveal.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .delay-1 { transition-delay: 0.1s; }
-        .delay-2 { transition-delay: 0.2s; }
 
         /* Responsive */
         @media (max-width: 1024px) {
-            .solution-layout {
-                grid-template-columns: 1fr;
-                gap: 4rem;
-            }
-            .sticky-left {
-                position: relative;
-                top: 0;
-            }
-            .problems-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            .analytics-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            .mini-card {
-                border-left: none;
-                border-top: 1px solid var(--border);
-            }
+            .feature-block { grid-template-columns: 1fr; border-bottom: none; }
+            .feature-text { border-right: none; border-bottom: 2px solid var(--fg); }
+            .feature-block.reverse .feature-text { border-left: none; }
+            .form-section { grid-template-columns: 1fr; }
+            .analytics-grid { grid-template-columns: repeat(2, 1fr); }
+            .mini-card:nth-child(2) { border-right: none; }
+            .mini-card { border-bottom: 2px solid var(--fg); }
         }
 
         @media (max-width: 768px) {
-            .problems-grid, .analytics-grid, .feature-row, .form-grid {
-                grid-template-columns: 1fr;
-            }
-            .hero {
-                padding-top: calc(100px + 10vw);
-            }
-            .hero-visual {
-                margin-top: 3rem;
-            }
-            .section-header, .form-header {
-                text-align: left;
-            }
+            .grid-2 { grid-template-columns: 1fr; }
+            .list-section { border-right: none; border-bottom: 2px solid var(--fg); }
+            .hero-inner { width: 100%; }
+            .form-grid { grid-template-columns: 1fr; }
+            .analytics-grid { grid-template-columns: 1fr; }
+            .mini-card { border-right: none !important; }
+            .brutal-form { padding: 2rem; }
+            .footer-bottom { flex-direction: column; align-items: flex-start; gap: 2rem; }
+            .footer-links a { margin-left: 0; margin-right: 1.5rem; }
+            .stat-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
 
-    <nav id="navbar">
-        <div class="container">
-            <div class="logo">
-                <img src="orlaylogo.png" alt="Orlay Pay">
-            </div>
-            <a href="#demo" class="btn btn-primary">Richiedi Demo</a>
+    <!-- Header -->
+    <header>
+        <div class="header-left">
+            <span>•</span> Event Digital Infrastructure
         </div>
-    </nav>
+        <div class="header-right">
+            <a href="#demo" class="hover-invert">Say Hello 👋</a>
+        </div>
+    </header>
 
-    <main>
-        <!-- 1. Hero -->
-        <section class="hero">
-            <div class="bg-pattern"></div>
-            <div class="container">
-                <div class="reveal active">
-                    <span class="eyebrow">Continuità di vendita per eventi live</span>
-                    <h1>Il pubblico è già lì.<br> Non perdere vendite nei momenti di picco.</h1>
-                    <p>Orlay Pay aiuta organizzatori, venue e operatori food & beverage a rendere ordine, incasso e ritiro più fluidi: meno code, meno rinunce, più controllo operativo.</p>
-                    
-                    <a href="#demo" class="btn btn-primary" style="padding: 1.2rem 3rem; font-size: 1.1rem;">Richiedi una demo</a>
-                    
-                    <div class="micro-tags">
-                        <span>• Food & beverage</span>
-                        <span>• Hospitality</span>
-                        <span>• Aree VIP</span>
-                        <span>• Punti bar</span>
-                        <span>• Merchandising</span>
-                    </div>
-                </div>
+    <!-- Massive Branding Reveal -->
+    <div class="brand-container gs-reveal-text">
+        <h1 class="brand-name gs-reveal-item">ORLAY PAY</h1>
+    </div>
 
-                <div class="hero-visual reveal delay-1 active">
-                    <img src="hero.png" alt="Console Organizzatore Orlay Pay">
-                </div>
-            </div>
-        </section>
-
-        <!-- 2. Il Problema -->
-        <section class="section-padding problem-section">
-            <div class="container">
-                <div class="section-header reveal">
-                    <span class="eyebrow">La Criticità</span>
-                    <h2>La vendita si perde prima del pagamento.</h2>
-                    <p style="margin-top: 1.5rem;">
-                        Quando l’affluenza cresce, il punto di servizio diventa il collo di bottiglia: il pubblico aspetta, ordina meno o rinuncia. Lo staff gestisce confusione invece di servire.
-                    </p>
-                </div>
-
-                <div class="bento-grid problems-grid">
-                    <div class="card reveal">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-                        <h3>Code e doppia attesa</h3>
-                        <p>Il fan perde tempo prezioso tra la scelta, il pagamento e l’effettivo ritiro.</p>
-                    </div>
-                    <div class="card reveal delay-1">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                        <h3>Staff sotto pressione</h3>
-                        <p>Il banco rallenta quando deve ricostruire ordini, importi e gestire l'improvvisazione.</p>
-                    </div>
-                    <div class="card reveal delay-2">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M18 9l-6 6-3-3-3 3"/></svg>
-                        <h3>Dati frammentati</h3>
-                        <p>A fine evento è quasi impossibile capire esattamente dove e perché si è persa la domanda.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- 3. La Soluzione -->
-        <section class="section-padding">
-            <div class="container solution-layout">
-                <div class="sticky-left reveal">
-                    <span class="eyebrow">La Soluzione</span>
-                    <h2>Una regia unica per trasformare il servizio in ricavo.</h2>
-                    <p style="margin-top: 1.5rem;">Orlay Pay rende più leggibile il percorso del fan, più veloce il lavoro dello staff e più chiaro il controllo dell’organizzatore.</p>
-                </div>
-
-                <div class="benefits-list">
-                    <div class="benefit-item reveal">
-                        <div class="benefit-number">01</div>
-                        <div class="benefit-text">
-                            <h4>Più ordini completati</h4>
-                            <p>Soprattutto nelle finestre di massima domanda.</p>
-                        </div>
-                    </div>
-                    <div class="benefit-item reveal delay-1">
-                        <div class="benefit-number">02</div>
-                        <div class="benefit-text">
-                            <h4>Più velocità al banco</h4>
-                            <p>Meno passaggi manuali, meno errori, meno improvvisazione.</p>
-                        </div>
-                    </div>
-                    <div class="benefit-item reveal delay-1">
-                        <div class="benefit-number">03</div>
-                        <div class="benefit-text">
-                            <h4>Più controllo per zona</h4>
-                            <p>Ordini, incassi e performance leggibili per ogni area.</p>
-                        </div>
-                    </div>
-                    <div class="benefit-item reveal delay-1">
-                        <div class="benefit-number">04</div>
-                        <div class="benefit-text">
-                            <h4>Più valore post-evento</h4>
-                            <p>Dati utili per decidere pricing, staffing e layout futuri.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- 4. Console Organizzatore -->
-        <section class="section-padding container">
-            <div class="feature-row">
-                <div class="feature-text reveal">
-                    <span class="eyebrow">Dashboard</span>
-                    <h2>Controllo live dell’evento.</h2>
-                    <p>Monitora ordini, incassi, ritiri, punti di servizio e aree critiche da una sola vista operativa.</p>
-                    <p class="caption">Capisci dove la domanda cresce, dove il servizio rallenta e cosa correggere durante l’evento.</p>
-                </div>
-                <div class="mockup-container reveal delay-1">
-                    <!-- Dashboard Mockup Riadattato per Tema Chiaro -->
-                    <div style="display: flex; flex-direction: column; gap: 15px;">
-                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px;">
-                            <div style="background: #ffffff; border: 1px solid var(--border); border-radius: 12px; padding: 15px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
-                                <div style="font-size: 11px; color: var(--text-dim); margin-bottom: 5px; font-weight: 600;">INCASSATO</div>
-                                <div style="font-size: 24px; color: var(--text); font-weight: 800; font-family: 'Plus Jakarta Sans';">€42.450</div>
-                            </div>
-                            <div style="background: #ffffff; border: 1px solid var(--border); border-radius: 12px; padding: 15px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
-                                <div style="font-size: 11px; color: var(--text-dim); margin-bottom: 5px; font-weight: 600;">ORDINI</div>
-                                <div style="font-size: 24px; color: var(--text); font-weight: 800; font-family: 'Plus Jakarta Sans';">1.240</div>
-                            </div>
-                            <div style="background: #ffffff; border: 1px solid var(--border); border-radius: 12px; padding: 15px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
-                                <div style="font-size: 11px; color: var(--text-dim); margin-bottom: 5px; font-weight: 600;">ATTESA MEDIANA</div>
-                                <div style="font-size: 24px; color: var(--text); font-weight: 800; font-family: 'Plus Jakarta Sans';">2m 40s</div>
-                            </div>
-                        </div>
-                        <div style="height: 220px; background: #ffffff; border: 1px solid var(--border); border-radius: 12px; position: relative; padding: 20px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
-                            <div style="width: 100%; height: 1px; background: var(--border); position: absolute; bottom: 40px; left:0;"></div>
-                            <div style="display: flex; align-items: flex-end; height: 100%; gap: 15px; justify-content: space-around; padding-bottom: 40px;">
-                                <div style="width: 40px; height: 40%; background: #e2e8f0; border-radius: 6px 6px 0 0;"></div>
-                                <div style="width: 40px; height: 70%; background: #bfdbfe; border-radius: 6px 6px 0 0;"></div>
-                                <div style="width: 40px; height: 95%; background: var(--accent); border-radius: 6px 6px 0 0; position: relative;">
-                                    <div style="position:absolute; top:-30px; left:50%; transform:translateX(-50%); background:var(--text); color:white; font-size:10px; padding:4px 8px; border-radius:4px; font-weight:bold;">PICCO</div>
-                                </div>
-                                <div style="width: 40px; height: 60%; background: #bfdbfe; border-radius: 6px 6px 0 0;"></div>
-                            </div>
-                            <span style="position: absolute; bottom: 12px; left: 20px; font-size: 11px; color: var(--text-dim); font-weight: 600; letter-spacing: 0.5px;">PERFORMANCE TIMELINE</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- 5. Mappa ed Aree -->
-        <section class="section-padding container">
-            <div class="feature-row reverse">
-                <div class="feature-text reveal">
-                    <span class="eyebrow">Layout</span>
-                    <h2>L’evento diventa più leggibile.</h2>
-                    <p>Mappe, informazioni e percorsi aiutano il pubblico a capire dove andare e riducono domande ripetitive allo staff.</p>
-                    <p class="caption">Utile per food court, bar, hospitality, VIP, merch e punti di ritiro dedicati.</p>
-                </div>
-                <div class="mockup-container reveal delay-1" style="height: 100%; min-height: 380px; display: flex; align-items: center; justify-content: center; background: #f8fafc; overflow: hidden;">
-                    <!-- Map Mockup Riadattato per Tema Chiaro -->
-                    <svg width="100%" height="100%" viewBox="0 0 400 300" style="max-height: 350px;">
-                        <rect x="50" y="50" width="300" height="200" rx="16" fill="#ffffff" stroke="#e2e8f0" stroke-width="2" />
-                        <path d="M100 150 L300 150 M200 50 L200 250" stroke="#f1f5f9" stroke-width="2" stroke-dasharray="8 8"/>
-                        
-                        <circle cx="100" cy="100" r="18" fill="#eff6ff" stroke="var(--accent)" stroke-width="2"/>
-                        <circle cx="100" cy="100" r="6" fill="var(--accent)" />
-                        <text x="128" y="104" fill="var(--text)" font-size="12" font-family="Plus Jakarta Sans" font-weight="700">BAR A</text>
-                        
-                        <circle cx="300" cy="150" r="18" fill="#eff6ff" stroke="var(--accent)" stroke-width="2"/>
-                        <circle cx="300" cy="150" r="6" fill="var(--accent)" />
-                        <text x="328" y="154" fill="var(--text)" font-size="12" font-family="Plus Jakarta Sans" font-weight="700">VIP AREA</text>
-                        
-                        <circle cx="150" cy="220" r="18" fill="#eff6ff" stroke="var(--accent)" stroke-width="2"/>
-                        <circle cx="150" cy="220" r="6" fill="var(--accent)" />
-                        <text x="178" y="224" fill="var(--text)" font-size="12" font-family="Plus Jakarta Sans" font-weight="700">FOOD COURT</text>
-                    </svg>
-                    <div style="position: absolute; bottom: 20px; left: 20px; background: #ffffff; padding: 10px 16px; border-radius: 100px; font-size: 11px; font-weight: 600; letter-spacing: 0.5px; border: 1px solid var(--border); color: var(--text); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
-                        <span style="display:inline-block; width:8px; height:8px; background:var(--accent); border-radius:50%; margin-right:6px;"></span>
-                        PUNTI VENDITA ATTIVI
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- 6. Per chi è (Marquee Chiaro) -->
-        <section class="target-section">
-            <div class="container">
-                <div class="target-header reveal">
-                    <span class="eyebrow">Target</span>
-                    <h2>Pensato per eventi dove ogni minuto di coda costa ricavo.</h2>
-                    <p style="margin-top: 1.5rem;">Orlay Pay è adatto a contesti con alta densità di pubblico, più punti di servizio e domanda concentrata in finestre brevi.</p>
-                </div>
-            </div>
+    <!-- Hero Content -->
+    <section class="hero">
+        <div class="container hero-inner gs-fade-up">
+            <div class="hero-eyebrow">Continuità di vendita per eventi live ad alta affluenza</div>
+            <h2>Il pubblico è già lì. Non perdere vendite nei momenti di picco.</h2>
+            <p>Orlay Pay aiuta organizzatori, venue e operatori food & beverage a rendere ordine, incasso e ritiro più fluidi: meno code, meno rinunce, più controllo operativo.</p>
             
-            <div class="marquee-container reveal delay-1">
-                <div class="marquee-content">
-                    <div class="marquee-chip">Festival</div>
-                    <div class="marquee-chip">Concerti</div>
-                    <div class="marquee-chip">Stadi e palazzetti</div>
-                    <div class="marquee-chip">Food court</div>
-                    <div class="marquee-chip">Hospitality</div>
-                    <div class="marquee-chip">Aree VIP</div>
-                    <div class="marquee-chip">Merchandising</div>
-                    <div class="marquee-chip">Eventi corporate</div>
-                    <!-- Duplicato per scroll continuo -->
-                    <div class="marquee-chip">Festival</div>
-                    <div class="marquee-chip">Concerti</div>
-                    <div class="marquee-chip">Stadi e palazzetti</div>
-                    <div class="marquee-chip">Food court</div>
-                </div>
+            <a href="#demo" class="brutal-btn">Richiedi una demo</a>
+            
+            <div class="micro-tags">
+                <span>• Food & beverage</span>
+                <span>• Hospitality</span>
+                <span>• Aree VIP</span>
+                <span>• Punti bar</span>
+                <span>• Merchandising</span>
             </div>
-        </section>
+        </div>
 
-        <!-- 7. Analytics -->
-        <section class="section-padding container">
-            <div class="section-header reveal" style="text-align: center; margin: 0 auto;">
-                <span class="eyebrow">Data Intelligence</span>
-                <h2>Il valore non finisce a fine serata.</h2>
-                <p style="margin-top: 1.5rem;">Leggi cosa converte, cosa rallenta e dove si perde domanda. Usa i dati per migliorare ogni aspetto del prossimo evento.</p>
+        <!-- Nine Sixty Style Hero Image Zoom Parallax - FIX: Fully visible image -->
+        <div class="hero-visual-container">
+            <div class="hero-visual-wrapper gs-hero-zoom">
+                <img src="hero.png" alt="Orlay Pay Console Hero Mockup">
             </div>
+        </div>
+    </section>
 
-            <div class="analytics-grid">
-                <div class="mini-card reveal">
-                    <h4>Performance per area</h4>
-                    <p>Quali zone vendono e quali rallentano.</p>
-                </div>
-                <div class="mini-card reveal delay-1">
-                    <h4>Picchi reali</h4>
-                    <p>Quando la domanda cresce davvero.</p>
-                </div>
-                <div class="mini-card reveal delay-2">
-                    <h4>Mix prodotti</h4>
-                    <p>Cosa viene scelto e cosa resta indietro.</p>
-                </div>
-                <div class="mini-card reveal delay-3">
-                    <h4>Decisioni migliori</h4>
-                    <p>Meno percezioni, più evidenze operative.</p>
-                </div>
+    <!-- Services (Problems / Solutions) -->
+    <section class="grid-2">
+        <div class="list-section gs-fade-up">
+            <h3>Il problema</h3>
+            <p>La vendita si perde prima del pagamento.</p>
+            <ul class="brutal-list">
+                <li>
+                    <span class="list-title">Code e doppia attesa</span>
+                    Quando l’affluenza cresce, il punto di servizio diventa il collo di bottiglia. Il fan perde tempo tra scelta, pagamento e ritiro.
+                </li>
+                <li>
+                    <span class="list-title">Staff sotto pressione</span>
+                    Il banco rallenta quando deve ricostruire ordini, importi e prossime azioni. Lo staff gestisce confusione invece di servire.
+                </li>
+                <li>
+                    <span class="list-title">Dati frammentati</span>
+                    L’organizzatore vede i dati quando è troppo tardi. A fine evento è difficile capire dove si è persa domanda.
+                </li>
+            </ul>
+        </div>
+        <div class="list-section gs-fade-up">
+            <h3>La soluzione</h3>
+            <p>Una regia unica per trasformare il servizio in ricavo.</p>
+            <ul class="brutal-list">
+                <li>
+                    <span class="list-title">Più ordini completati</span>
+                    Orlay Pay rende più leggibile il percorso del fan, soprattutto nelle finestre di massima domanda.
+                </li>
+                <li>
+                    <span class="list-title">Più velocità al banco</span>
+                    Più veloce il lavoro dello staff: meno passaggi manuali, meno errori, meno improvvisazione.
+                </li>
+                <li>
+                    <span class="list-title">Più controllo per zona</span>
+                    Ordini, incassi, ritiri e performance leggibili per area. Più chiaro il controllo dell’organizzatore.
+                </li>
+                <li>
+                    <span class="list-title">Più valore post-evento</span>
+                    Il risultato è un evento più ordinato nei momenti critici. Dati utili per decidere pricing, staffing e layout successivi.
+                </li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section>
+        <!-- Schermata 1: Console Organizzatore -->
+        <div class="feature-block">
+            <div class="feature-text gs-fade-up">
+                <h3>Controllo live dell’evento.</h3>
+                <p>Monitora ordini, incassi, ritiri, punti di servizio e aree critiche da una sola vista operativa.</p>
+                <p class="caption">Capisci dove la domanda cresce, dove il servizio rallenta e cosa correggere durante l’evento.</p>
             </div>
-        </section>
-
-        <!-- 8. Form Light & Clean -->
-        <section id="demo" class="section-padding form-section">
-            <div class="container">
-                <div class="form-header reveal">
-                    <h2>Vuoi capire dove il tuo evento sta perdendo vendite?</h2>
-                    <p style="margin-top: 1.5rem;">Prenota una demo: analizziamo insieme flussi, punti bar, aree critiche e opportunità di ricavo.</p>
-                </div>
-
-                <div class="form-container reveal delay-1">
-                    <form id="demo-form">
-                        <div class="form-grid">
-                            <div class="input-group">
-                                <label>Nome</label>
-                                <input type="text" placeholder="Nome completo" required>
-                            </div>
-                            <div class="input-group">
-                                <label>Azienda / Venue</label>
-                                <input type="text" placeholder="Es. Stadio Olimpico" required>
-                            </div>
-                            <div class="input-group">
-                                <label>Tipo di evento</label>
-                                <select>
-                                    <option>Concerto / Festival</option>
-                                    <option>Sportivo</option>
-                                    <option>Corporate / Fiera</option>
-                                    <option>Altro</option>
-                                </select>
-                            </div>
-                            <div class="input-group">
-                                <label>Email</label>
-                                <input type="email" placeholder="email@esempio.com" required>
-                            </div>
-                            <div class="input-group">
-                                <label>Telefono</label>
-                                <input type="tel" placeholder="+39 ...">
-                            </div>
-                            <div class="input-group full-width">
-                                <label>Messaggio opzionale</label>
-                                <textarea rows="3" placeholder="Parlaci del tuo prossimo evento..."></textarea>
-                            </div>
+            <div class="feature-visual gs-fade-up">
+                <div class="brutal-card mockup-dashboard">
+                    <div class="stat-grid">
+                        <div class="stat-box">
+                            <div class="stat-box-title">INCASSATO</div>
+                            <div class="stat-box-val">€42.450</div>
                         </div>
-                        <div style="text-align: center; margin-top: 3rem;">
-                            <button type="submit" class="btn btn-primary" style="width: 100%; padding: 1.2rem; font-size: 1.1rem;">Richiedi una demo ora</button>
-                            <p class="privacy-note">Ti ricontattiamo solo per valutare il progetto Orlay Pay più adatto a te.</p>
+                        <div class="stat-box">
+                            <div class="stat-box-title">ORDINI</div>
+                            <div class="stat-box-val">1.240</div>
                         </div>
-                    </form>
+                        <div class="stat-box">
+                            <div class="stat-box-title">TICKET MEDIO</div>
+                            <div class="stat-box-val">€34.20</div>
+                        </div>
+                    </div>
+                    <div class="chart-box">
+                        <div class="chart-line"></div>
+                        <div class="chart-bars">
+                            <div class="bar" style="height: 40%;"></div>
+                            <div class="bar" style="height: 70%;"></div>
+                            <div class="bar peak" style="height: 95%;">
+                                <div class="peak-tag">PICCO</div>
+                            </div>
+                            <div class="bar" style="height: 60%;"></div>
+                        </div>
+                        <span style="position: absolute; bottom: 12px; left: 20px; font-size: 11px; font-weight: 800;">ANDAMENTO NEL TEMPO</span>
+                    </div>
                 </div>
             </div>
-        </section>
-    </main>
+        </div>
 
+        <!-- Schermata 2: Mappa, aree e percorsi -->
+        <div class="feature-block reverse">
+            <div class="feature-text gs-fade-up">
+                <h3>L’evento diventa più leggibile.</h3>
+                <p>Mappe, informazioni e percorsi aiutano il pubblico a capire dove andare e riducono domande ripetitive allo staff.</p>
+                <p class="caption">Utile per food court, bar, hospitality, VIP, merch e punti di ritiro dedicati.</p>
+            </div>
+            <div class="feature-visual gs-fade-up">
+                <div class="brutal-card" style="width:100%; max-width:600px; position:relative;">
+                    <svg width="100%" height="auto" viewBox="0 0 400 300">
+                        <rect x="50" y="50" width="300" height="200" fill="var(--bg)" stroke="var(--fg)" stroke-width="4" />
+                        <path d="M100 150 L300 150 M200 50 L200 250" stroke="var(--fg)" stroke-width="4" stroke-dasharray="12 12"/>
+                        
+                        <circle cx="100" cy="100" r="22" fill="var(--white)" stroke="var(--fg)" stroke-width="4"/>
+                        <circle cx="100" cy="100" r="8" fill="var(--fg)" />
+                        <text x="135" y="105" fill="var(--white)" font-size="16" font-family="Plus Jakarta Sans" font-weight="900">BAR A</text>
+                        
+                        <circle cx="300" cy="150" r="22" fill="var(--white)" stroke="var(--fg)" stroke-width="4"/>
+                        <circle cx="300" cy="150" r="8" fill="var(--fg)" />
+                        <text x="335" y="155" fill="var(--white)" font-size="16" font-family="Plus Jakarta Sans" font-weight="900">VIP</text>
+                        
+                        <circle cx="150" cy="220" r="22" fill="var(--white)" stroke="var(--fg)" stroke-width="4"/>
+                        <circle cx="150" cy="220" r="8" fill="var(--fg)" />
+                        <text x="185" y="225" fill="var(--white)" font-size="16" font-family="Plus Jakarta Sans" font-weight="900">FOOD COURT</text>
+                    </svg>
+                    <div style="position: absolute; bottom: -15px; left: 20px; background: var(--white); padding: 10px 16px; font-size: 11px; font-weight: 900; border: 2px solid var(--fg); color: var(--fg); box-shadow: 4px 4px 0px var(--fg);">
+                        <span style="display:inline-block; width:10px; height:10px; background:var(--fg); margin-right:6px;"></span>
+                        AREE E PUNTI DI SERVIZIO
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Per chi è -->
+    <section class="target-section gs-fade-up">
+        <h2>Pensato per eventi dove ogni minuto di coda costa ricavo.</h2>
+        <p>Orlay Pay è adatto a contesti con alta densità di pubblico, più punti di servizio e domanda concentrata in finestre brevi.</p>
+    </section>
+
+    <!-- Marquee -->
+    <div class="marquee-wrapper">
+        <div class="marquee">
+            <span>FESTIVAL • CONCERTI • STADI E PALAZZETTI • FOOD COURT • HOSPITALITY • AREE VIP • MERCHANDISING • EVENTI CORPORATE •</span>
+            <span>FESTIVAL • CONCERTI • STADI E PALAZZETTI • FOOD COURT • HOSPITALITY • AREE VIP • MERCHANDISING • EVENTI CORPORATE •</span>
+        </div>
+    </div>
+
+    <!-- Analytics e post-evento -->
+    <section class="analytics-section">
+        <div class="analytics-header gs-fade-up">
+            <h2>Il valore non finisce a fine serata.</h2>
+            <p style="font-size: clamp(1.2rem, 1.5vw, 1.5rem); font-weight: 600;">Leggi cosa converte, cosa rallenta e dove si perde domanda. Usa i dati per migliorare pricing, staffing, layout e offerta del prossimo evento.</p>
+        </div>
+        <div class="analytics-grid">
+            <div class="mini-card gs-fade-up">
+                <h4>Performance per area</h4>
+                <p>Quali zone vendono e quali rallentano.</p>
+            </div>
+            <div class="mini-card gs-fade-up">
+                <h4>Picchi reali</h4>
+                <p>Quando la domanda cresce davvero.</p>
+            </div>
+            <div class="mini-card gs-fade-up">
+                <h4>Mix prodotti</h4>
+                <p>Cosa viene scelto, cosa resta indietro.</p>
+            </div>
+            <div class="mini-card gs-fade-up">
+                <h4>Decisioni migliori</h4>
+                <p>Meno percezioni, più evidenze operative.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Form CTA Finale -->
+    <section id="demo" class="form-section">
+        <div class="form-header gs-fade-up">
+            <h2>Vuoi capire dove il tuo evento sta perdendo vendite?</h2>
+            <p>Prenota una demo: analizziamo insieme flussi, punti bar, aree critiche e opportunità di ricavo.</p>
+        </div>
+        <div class="gs-fade-up">
+            <form id="demo-form" class="brutal-form">
+                <div class="form-grid">
+                    <div class="input-group">
+                        <label>Nome</label>
+                        <input type="text" placeholder="Nome completo" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Azienda / venue</label>
+                        <input type="text" placeholder="Azienda" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Tipo di evento</label>
+                        <select>
+                            <option>Concerto / Festival</option>
+                            <option>Sportivo</option>
+                            <option>Corporate</option>
+                            <option>Altro</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>Email</label>
+                        <input type="email" placeholder="email@esempio.com" required>
+                    </div>
+                    <div class="input-group full-width">
+                        <label>Telefono</label>
+                        <input type="tel" placeholder="+39" required>
+                    </div>
+                    <div class="input-group full-width">
+                        <label>Messaggio (Opzionale)</label>
+                        <textarea rows="3" placeholder="Parlaci del tuo evento..."></textarea>
+                    </div>
+                </div>
+                <button type="submit" class="brutal-btn" style="width: 100%;">Richiedi una demo</button>
+                <p class="privacy-microcopy">Ti ricontattiamo solo per valutare il progetto Orlay Pay.</p>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
     <footer>
-        <div class="container">
-            <p>© 2026 Orlay Pay. Tutti i diritti riservati.</p>
+        <a href="mailto:hello@orlaypay.com" class="footer-email">HELLO@<br>ORLAYPAY.COM</a>
+        
+        <div class="footer-bottom">
+            <div class="footer-info">
+                © 2026 Orlay Pay<br>
+                Event Digital Infrastructure
+            </div>
+            <div class="footer-links">
+                <a href="#" class="hover-invert">Privacy Policy</a>
+                <a href="#" class="hover-invert">Cookie Policy</a>
+            </div>
         </div>
     </footer>
 
+    <!-- Scripts: GSAP & Lenis -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.33/dist/lenis.min.js"></script>
+
     <script>
-        // Effetto Blur sulla Navigazione allo scroll
-        const nav = document.getElementById('navbar');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 20) {
-                nav.style.boxShadow = '0 4px 6px -1px rgba(0, 0, 0, 0.05)';
-            } else {
-                nav.style.boxShadow = 'none';
-            }
+        // 1. Lenis Smooth Scroll Setup
+        const lenis = new Lenis({
+            duration: 1.2,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            smooth: true,
         });
 
-        // Intersection Observer per animazioni in scroll (Reveal)
-        const revealElements = document.querySelectorAll('.reveal');
-        const revealObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('active');
-                }
+        lenis.on('scroll', ScrollTrigger.update);
+        gsap.ticker.add((time) => { lenis.raf(time * 1000); });
+        gsap.ticker.lagSmoothing(0);
+
+        // 2. Initial Page Load Animation
+        window.addEventListener('load', () => {
+            const tl = gsap.timeline();
+
+            // Reveal massive text
+            tl.to(".gs-reveal-item", {
+                y: "0%",
+                opacity: 1,
+                duration: 1.2,
+                ease: "expo.out",
+                delay: 0.1
+            })
+            // Fade up hero text & tags
+            .to(".hero .gs-fade-up", {
+                y: 0,
+                opacity: 1,
+                duration: 1,
+                stagger: 0.15,
+                ease: "power3.out"
+            }, "-=0.8");
+        });
+
+        // 3. ScrollTrigger Fade Ups
+        gsap.utils.toArray('.gs-fade-up:not(.hero .gs-fade-up)').forEach(elem => {
+            gsap.to(elem, {
+                scrollTrigger: {
+                    trigger: elem,
+                    start: 'top 85%',
+                },
+                y: 0,
+                opacity: 1,
+                duration: 1,
+                ease: 'power3.out'
             });
-        }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
+        });
 
-        revealElements.forEach(el => revealObserver.observe(el));
+        // 4. Parallax Hero Image Zoom (Nine Sixty Style)
+        gsap.fromTo(".gs-hero-zoom", 
+            {
+                scale: 0.8,
+                borderRadius: "32px"
+            },
+            {
+                scale: 1,
+                borderRadius: "0px",
+                ease: "none",
+                scrollTrigger: {
+                    trigger: ".hero",
+                    start: "top top",
+                    end: "+=600",
+                    scrub: true
+                }
+            }
+        );
 
-        // Gestione del Form simulata
+        // Form Submit
         document.getElementById('demo-form').addEventListener('submit', function(e) {
             e.preventDefault();
-            alert('Grazie! La tua richiesta è stata inviata correttamente. Ti ricontatteremo a breve.');
+            alert('Azione Brutalista: Richiesta Inviata!');
             this.reset();
         });
     </script>

@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern UI Framework - Data Grid V2</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        brand: { green: '#22c55e', dark: '#0f172a' }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        
+        .bg-granite {
+            background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.4)), url('https://images.unsplash.com/photo-1629196914282-e8d1b327b827?q=80&w=2000&auto=format&fit=crop');
+            background-size: cover; background-position: center;
+        }
+
+        .sidebar-expanded { width: 16rem; }
+        .sidebar-collapsed { width: 4rem; }
+        .menu-text { transition: opacity 0.2s; }
+        .sidebar-collapsed .menu-text { opacity: 0; display: none; }
+        .sidebar-expanded .menu-text { opacity: 1; display: inline-block; }
+
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+        /* Table default hover & selection */
+        .data-table tbody tr { transition: background-color 0.15s; }
+        .data-table tbody tr:hover:not(.row-selected) { background-color: #f1f5f9; }
+        .data-table tbody tr.row-selected { background-color: #ecfdf5; } /* Highlight for selected rows */
+
+        /* Column Dragging Styles */
+        th.dragging { opacity: 0.5; background-color: #e2e8f0; }
+        th.drag-over { border-left: 3px solid #22c55e; }
+
+        /* Audit Mode hover overrides */
+        .data-table.audit-mode tbody tr:hover { background-color: transparent !important; }
+        .data-table.audit-mode tbody tr.row-selected { background-color: transparent !important; }
+        .data-table.audit-mode tbody td { transition: all 0.1s ease; border: 1px solid transparent; }
+        .data-table.audit-mode tbody td:hover { 
+            border: 1px solid #22c55e; 
+            background-color: #f0fdf4 !important; 
+            cursor: crosshair; 
+            box-shadow: 0 0 0 1px #22c55e inset;
+        }
+
+        /* Tooltip for truncated text */
+        .truncate-cell {
+            max-width: 140px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        /* Floating Tooltip styling */
+        #custom-tooltip {
+            position: fixed;
+            pointer-events: none;
+            z-index: 1000;
+            background: #0f172a;
+            color: #fff;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            transition: opacity 0.2s;
+            max-width: 300px;
+            word-wrap: break-word;
+        }
+        
+        .glass-popout {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Fixed scrolling structural classes */
+        .grid-layout-wrapper { display: flex; flex-direction: column; height: 100%; overflow: hidden; }
+        .grid-header-fixed { flex: 0 0 auto; }
+        .grid-body-scrollable { flex: 1 1 auto; overflow: auto; position: relative; }
+        .grid-footer-fixed { flex: 0 0 auto; }
+    </style>
+</head>
+<body class="bg-gray-50 text-slate-800 antialiased overflow-hidden h-screen w-screen selection:bg-brand-green selection:text-white">
+
+    <!-- Tooltip Element -->
+    <div id="custom-tooltip"></div>
+
+    <!-- VIEW 1: SIGN IN PAGE -->
+    <div id="view-login" class="flex h-full w-full transition-opacity duration-500">
+        <div class="hidden lg:flex w-1/2 bg-granite items-center justify-center relative">
+            <div class="absolute inset-0 bg-brand-dark/20 backdrop-blur-[2px]"></div>
+            <div class="z-10 text-white text-center p-12">
+                <h1 class="text-5xl font-bold mb-4 tracking-tight"><span class="text-brand-green">Focus</span> on what matters</h1>
+                <p class="text-2xl font-light">we <span class="text-brand-green font-medium">automate</span> the rest.</p>
+            </div>
+        </div>
+
+        <div class="w-full lg:w-1/2 flex items-center justify-center p-8 bg-white">
+            <div class="w-full max-w-sm flex flex-col items-center">
+                <div class="w-16 h-16 bg-slate-900 rounded-xl flex items-center justify-center mb-8 shadow-lg">
+                    <i class="fa-solid fa-layer-group text-brand-green text-3xl"></i>
+                </div>
+                <h2 class="text-3xl font-semibold mb-8 text-slate-900">Welcome Back</h2>
+                <form class="w-full space-y-5" onsubmit="event.preventDefault(); toggleView();">
+                    <div><input type="email" value="admin@nexastruct.org" placeholder="Email" class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-brand-green/50 text-sm" required></div>
+                    <div>
+                        <input type="password" value="admin12345" placeholder="Password" class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-brand-green/50 text-sm" required>
+                        <div class="flex justify-end mt-2"><a href="#" class="text-xs text-slate-500 hover:text-brand-green">Forgot password?</a></div>
+                    </div>
+                    <button type="submit" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-medium py-3 rounded-lg transition-all shadow-md text-sm">Login</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- VIEW 2: MAIN DASHBOARD -->
+    <div id="view-dashboard" class="hidden flex h-full w-full bg-gray-50 opacity-0 transition-opacity duration-500">
+        
+        <!-- Sidebar -->
+        <aside id="sidebar" class="sidebar-collapsed bg-slate-900 border-r border-slate-800 flex flex-col transition-all duration-300 z-30 text-slate-400 relative" onmouseenter="expandSidebar()" onmouseleave="collapseSidebar()">
+            <div class="h-16 flex items-center justify-center border-b border-slate-800 text-white w-full px-4 cursor-pointer hover:bg-slate-800 transition-colors">
+                <i class="fa-solid fa-layer-group text-brand-green text-xl"></i>
+                <span class="menu-text ml-3 font-semibold hidden">SYSTEM</span>
+            </div>
+            <nav class="flex-1 py-4 flex flex-col gap-2 px-2 overflow-y-auto">
+                <a href="#" class="flex items-center p-3 rounded-lg hover:bg-slate-800 hover:text-white group">
+                    <div class="w-6 flex justify-center"><i class="fa-solid fa-house"></i></div>
+                    <span class="menu-text ml-3 text-sm font-medium">Home</span>
+                </a>
+                <div class="flex flex-col">
+                    <a href="#" class="flex items-center p-3 rounded-lg bg-brand-green/10 text-brand-green group cursor-pointer" onclick="toggleSubmenu('data-submenu', event)">
+                        <div class="w-6 flex justify-center"><i class="fa-solid fa-table"></i></div>
+                        <span class="menu-text ml-3 text-sm font-medium flex-1">Data Tables</span>
+                        <i class="fa-solid fa-chevron-down text-xs menu-text"></i>
+                    </a>
+                    <div id="data-submenu" class="flex-col pl-10 pr-2 py-2 gap-2 hidden menu-text">
+                        <a href="#" class="block py-2 text-sm text-white">Active Records</a>
+                    </div>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col min-w-0 overflow-hidden bg-white">
+            
+            <!-- App Header -->
+            <header class="h-14 bg-white border-b border-slate-200 flex items-center justify-between px-4 z-20 flex-none">
+                <div class="flex items-center gap-4">
+                    <h1 class="text-base font-semibold text-slate-800">Entity Management</h1>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button class="w-8 h-8 rounded-full flex items-center justify-center text-slate-500 hover:bg-slate-100"><i class="fa-solid fa-magnifying-glass text-sm"></i></button>
+                    <div class="h-5 w-px bg-slate-200 mx-1"></div>
+                    <div class="relative">
+                        <button onclick="toggleDropdown('user-dropdown', event)" class="flex items-center gap-2 hover:bg-slate-50 p-1 rounded-full border border-transparent hover:border-slate-200 transition-all">
+                            <div class="w-7 h-7 rounded-full bg-brand-green/20 text-brand-green flex items-center justify-center text-xs font-bold">AD</div>
+                        </button>
+                        <div id="user-dropdown" class="hidden absolute right-0 mt-2 w-48 glass-popout rounded-xl p-2 z-50">
+                            <button onclick="toggleView()" class="w-full text-left px-3 py-2 text-sm text-red-600 hover:bg-red-50 rounded-lg flex items-center gap-2">
+                                <i class="fa-solid fa-arrow-right-from-bracket w-4"></i> Sign Out
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Navigation Tabs (Entities, Regimes, etc.) -->
+            <div class="border-b border-slate-200 px-2 bg-slate-50 flex items-center gap-1 overflow-x-auto whitespace-nowrap scrollbar-hide flex-none">
+                <a href="#" class="px-4 py-2 text-sm font-medium text-brand-green border-b-2 border-brand-green">Entities</a>
+                <a href="#" class="px-4 py-2 text-sm font-medium text-slate-500 hover:text-slate-800 hover:bg-slate-100 rounded-t-sm">Regimes</a>
+                <a href="#" class="px-4 py-2 text-sm font-medium text-slate-500 hover:text-slate-800 hover:bg-slate-100 rounded-t-sm">SMOs</a>
+                <a href="#" class="px-4 py-2 text-sm font-medium text-slate-500 hover:text-slate-800 hover:bg-slate-100 rounded-t-sm">Shareholders</a>
+                <a href="#" class="px-4 py-2 text-sm font-medium text-slate-500 hover:text-slate-800 hover:bg-slate-100 rounded-t-sm">Depositaries</a>
+                <a href="#" class="px-4 py-2 text-sm font-medium text-slate-500 hover:text-slate-800 hover:bg-slate-100 rounded-t-sm">Auditors</a>
+                <a href="#" class="px-4 py-2 text-sm font-medium text-slate-500 hover:text-slate-800 hover:bg-slate-100 rounded-t-sm">Liquidators</a>
+                <a href="#" class="px-4 py-2 text-sm font-medium text-slate-500 hover:text-slate-800 hover:bg-slate-100 rounded-t-sm">GIN</a>
+                <a href="#" class="px-4 py-2 text-sm font-medium text-slate-500 hover:text-slate-800 hover:bg-slate-100 rounded-t-sm">LEI</a>
+                <a href="#" class="px-4 py-2 text-sm font-medium text-slate-500 hover:text-slate-800 hover:bg-slate-100 rounded-t-sm">CSSF</a>
+                <a href="#" class="px-4 py-2 text-sm font-medium text-slate-500 hover:text-slate-800 hover:bg-slate-100 rounded-t-sm">RBO AC</a>
+                <a href="#" class="px-4 py-2 text-sm font-medium text-slate-500 hover:text-slate-800 hover:bg-slate-100 rounded-t-sm">RBO</a>
+            </div>
+
+            <!-- Workspace Grid Container -->
+            <main class="grid-layout-wrapper flex-1 bg-white relative">
+                <!-- Toast Container -->
+                <div id="toast-container" class="absolute top-4 right-4 z-50 flex flex-col gap-2"></div>
+
+                <!-- Toolbar (Compact) -->
+                <div class="grid-header-fixed border-b border-slate-200 bg-white p-2">
+                    <div class="flex flex-wrap items-center justify-between gap-2">
+                        <div class="flex items-center gap-2">
+                            <div class="relative">
+                                <i class="fa-solid fa-search absolute left-2.5 top-1/2 transform -translate-y-1/2 text-slate-400 text-xs"></i>
+                                <input type="text" placeholder="Search all columns..." class="pl-7 pr-3 py-1 text-xs border border-slate-300 rounded focus:outline-none focus:border-brand-green w-56">
+                            </div>
+                            <button class="px-2 py-1 text-xs font-medium text-blue-600 border border-blue-200 bg-blue-50 hover:bg-blue-100 rounded transition-colors"><i class="fa-solid fa-xmark mr-1"></i> Clear Filters</button>
+                            <button class="px-2 py-1 text-xs font-medium text-slate-600 border border-slate-200 bg-slate-50 hover:bg-slate-100 rounded"><i class="fa-solid fa-filter mr-1"></i> Filter</button>
+                        </div>
+
+                        <div class="flex items-center gap-3">
+                            <div class="flex items-center gap-2 bg-slate-100 px-2 py-1 rounded border border-slate-200">
+                                <span class="text-xs font-medium text-slate-600"><i class="fa-solid fa-crosshairs mr-1"></i>Audit</span>
+                                <label class="relative inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" id="auditToggle" class="sr-only peer" onchange="toggleAuditMode()">
+                                    <div class="w-7 h-4 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-brand-green"></div>
+                                </label>
+                            </div>
+                            <button class="px-3 py-1.5 text-xs font-medium text-white bg-blue-600 hover:bg-blue-700 rounded transition-colors shadow-sm">Access Custom View (0)</button>
+                            <button class="px-3 py-1.5 text-xs font-medium text-white bg-slate-800 hover:bg-slate-900 rounded transition-colors shadow-sm">Actions <i class="fa-solid fa-caret-down ml-1"></i></button>
+                        </div>
+                    </div>
+                    
+                    <!-- Active Filters Block -->
+                    <div class="flex items-center gap-2 mt-2 pt-2 border-t border-slate-100 overflow-x-auto pb-1 scrollbar-hide">
+                        <span class="text-xs text-slate-500 whitespace-nowrap">Active filters:</span>
+                        <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-medium bg-blue-50 text-blue-700 border border-blue-200 whitespace-nowrap">
+                            Legal Name: MSG <button class="ml-1 hover:text-blue-900"><i class="fa-solid fa-xmark"></i></button>
+                        </span>
+                        <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-medium bg-blue-50 text-blue-700 border border-blue-200 whitespace-nowrap">
+                            Group: MSG <button class="ml-1 hover:text-blue-900"><i class="fa-solid fa-xmark"></i></button>
+                        </span>
+                        <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-medium bg-blue-50 text-blue-700 border border-blue-200 whitespace-nowrap">
+                            Jurisdiction: LU <button class="ml-1 hover:text-blue-900"><i class="fa-solid fa-xmark"></i></button>
+                        </span>
+                        <span class="text-xs text-slate-400 ml-2 whitespace-nowrap">Found 15 results</span>
+                    </div>
+                </div>
+
+                <!-- Scrollable Data Grid -->
+                <div class="grid-body-scrollable">
+                    <table id="mainTable" class="data-table w-full text-left border-collapse min-w-max">
+                        <thead class="bg-slate-50 shadow-sm sticky top-0 z-10">
+                            <tr>
+                                <th class="px-3 py-2 text-[10px] font-semibold text-slate-500 uppercase tracking-wider border-b border-r border-slate-200 w-10 text-center bg-slate-50">
+                                    <input type="checkbox" class="rounded border-slate-300 focus:ring-brand-green" onchange="toggleAllRows(this)">
+                                </th>
+                                <!-- Draggable Columns -->
+                                <th draggable="true" ondragstart="handleDragStart(event)" ondragover="handleDragOver(event)" ondrop="handleDrop(event)" ondragenter="handleDragEnter(event)" ondragleave="handleDragLeave(event)" data-col-index="1" class="px-3 py-2 text-[10px] font-semibold text-slate-600 uppercase tracking-wider border-b border-r border-slate-200 bg-slate-50 cursor-move group relative min-w-[100px]">
+                                    <div class="flex items-center justify-between">
+                                        <span>Last Scan <i class="fa-solid fa-sort text-slate-300 ml-1"></i></span>
+                                        <button onclick="toggleColMenu('col-menu-1', event)" class="opacity-0 group-hover:opacity-100 p-1 hover:bg-slate-200 rounded"><i class="fa-solid fa-ellipsis-vertical"></i></button>
+                                    </div>
+                                    <div id="col-menu-1" class="hidden absolute left-0 top-full mt-1 w-36 glass-popout rounded shadow-lg z-50 text-left normal-case border border-slate-200">
+                                        <button class="w-full text-left px-3 py-1.5 text-xs text-slate-700 hover:bg-slate-50"><i class="fa-solid fa-arrow-left mr-2"></i> Pin Left</button>
+                                        <button class="w-full text-left px-3 py-1.5 text-xs text-slate-700 hover:bg-slate-50"><i class="fa-solid fa-arrow-right mr-2"></i> Pin Right</button>
+                                        <button class="w-full text-left px-3 py-1.5 text-xs text-red-600 hover:bg-red-50 border-t border-slate-100"><i class="fa-solid fa-eye-slash mr-2"></i> Hide Column</button>
+                                    </div>
+                                </th>
+                                <th draggable="true" ondragstart="handleDragStart(event)" ondragover="handleDragOver(event)" ondrop="handleDrop(event)" ondragenter="handleDragEnter(event)" ondragleave="handleDragLeave(event)" data-col-index="2" class="px-3 py-2 text-[10px] font-semibold text-blue-600 uppercase tracking-wider border-b border-r border-blue-100 bg-blue-50 cursor-move group relative min-w-[100px]">
+                                    <!-- Highlighted filtered column -->
+                                    <div class="flex items-center justify-between">
+                                        <span>Jurisdiction</span>
+                                        <button class="p-1 hover:bg-blue-100 rounded text-blue-600"><i class="fa-solid fa-filter"></i></button>
+                                    </div>
+                                </th>
+                                <th draggable="true" ondragstart="handleDragStart(event)" ondragover="handleDragOver(event)" ondrop="handleDrop(event)" ondragenter="handleDragEnter(event)" ondragleave="handleDragLeave(event)" data-col-index="3" class="px-3 py-2 text-[10px] font-semibold text-slate-600 uppercase tracking-wider border-b border-r border-slate-200 bg-slate-50 cursor-move group relative min-w-[80px]">
+                                    <div class="flex items-center justify-between">
+                                        <span>ID <i class="fa-solid fa-sort text-slate-300 ml-1"></i></span>
+                                    </div>
+                                </th>
+                                <th draggable="true" ondragstart="handleDragStart(event)" ondragover="handleDragOver(event)" ondrop="handleDrop(event)" ondragenter="handleDragEnter(event)" ondragleave="handleDragLeave(event)" data-col-index="4" class="px-3 py-2 text-[10px] font-semibold text-blue-600 uppercase tracking-wider border-b border-r border-blue-100 bg-blue-50 cursor-move group relative min-w-[200px]">
+                                    <div class="flex items-center justify-between">
+                                        <span>Legal Name</span>
+                                        <button class="p-1 hover:bg-blue-100 rounded text-blue-600"><i class="fa-solid fa-filter"></i></button>
+                                    </div>
+                                </th>
+                                <th draggable="true" ondragstart="handleDragStart(event)" ondragover="handleDragOver(event)" ondrop="handleDrop(event)" ondragenter="handleDragEnter(event)" ondragleave="handleDragLeave(event)" data-col-index="5" class="px-3 py-2 text-[10px] font-semibold text-slate-600 uppercase tracking-wider border-b border-r border-slate-200 bg-slate-50 cursor-move group relative min-w-[150px]">
+                                    <div class="flex items-center justify-between">
+                                        <span>Legal Form</span>
+                                    </div>
+                                </th>
+                                <th draggable="true" ondragstart="handleDragStart(event)" ondragover="handleDragOver(event)" ondrop="handleDrop(event)" ondragenter="handleDragEnter(event)" ondragleave="handleDragLeave(event)" data-col-index="6" class="px-3 py-2 text-[10px] font-semibold text-slate-600 uppercase tracking-wider border-b border-r border-slate-200 bg-slate-50 cursor-move group relative min-w-[120px]">
+                                    <div class="flex items-center justify-between">
+                                        <span>Address</span>
+                                    </div>
+                                </th>
+                            </tr>
+                            <!-- Sub Header for inline filters (Visual only for prototype) -->
+                            <tr class="bg-white border-b border-slate-200">
+                                <th class="p-1 border-r border-slate-200 bg-slate-50"></th>
+                                <th class="p-1 border-r border-slate-200"><input type="text" placeholder="Q Filter..." class="w-full text-[10px] px-1 py-0.5 border border-slate-200 rounded"></th>
+                                <th class="p-1 border-r border-slate-200"><input type="text" placeholder="LU" class="w-full text-[10px] px-1 py-0.5 border border-blue-300 bg-blue-50 rounded text-blue-700"></th>
+                                <th class="p-1 border-r border-slate-200"><input type="text" placeholder="Q Filter..." class="w-full text-[10px] px-1 py-0.5 border border-slate-200 rounded"></th>
+                                <th class="p-1 border-r border-slate-200"><input type="text" placeholder="MSG" class="w-full text-[10px] px-1 py-0.5 border border-blue-300 bg-blue-50 rounded text-blue-700"></th>
+                                <th class="p-1 border-r border-slate-200"><input type="text" placeholder="Q Filter..." class="w-full text-[10px] px-1 py-0.5 border border-slate-200 rounded"></th>
+                                <th class="p-1 border-r border-slate-200"><input type="text" placeholder="Q Filter..." class="w-full text-[10px] px-1 py-0.5 border border-slate-200 rounded"></th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-xs divide-y divide-slate-200 text-slate-700 bg-white" id="tableBody">
+                            <tr>
+                                <td class="px-3 py-1.5 border-r border-slate-100 text-center"><input type="checkbox" class="row-checkbox rounded border-slate-300 focus:ring-brand-green" onchange="toggleRowSelection(this)"></td>
+                                <td class="px-3 py-1.5 border-r border-slate-100 text-slate-500">26/APR</td>
+                                <td class="px-3 py-1.5 border-r border-slate-100 bg-blue-50/30">LU</td>
+                                <td class="px-3 py-1.5 border-r border-slate-100 font-medium text-blue-600 hover:underline cursor-pointer">5130</td>
+                                <td class="px-3 py-1.5 border-r border-slate-100 font-medium bg-blue-50/30 text-slate-900">HYDRO MSG PARTNERS INC</td>
+                                <td class="px-3 py-1.5 border-r border-slate-100"><span class="truncate-cell custom-hover-title" data-fulltext="Société à responsabilité limitée (SARL)">Société à res...</span></td>
+                                <td class="px-3 py-1.5 border-r border-slate-100"><span class="truncate-cell custom-hover-title" data-fulltext="15 Rue du Fort Bourbon, L-1249 Luxembourg">15 Rue du F...</span></td>
+                            </tr>
+                            <tr>
+                                <td class="px-3 py-1.5 border-r border-slate-100 text-center"><input type="checkbox" class="row-checkbox rounded border-slate-300 focus:ring-brand-green" onchange="toggleRowSelection(this)"></td>
+                                <td class="px-3 py-1.5 border-r border-slate-100 text-slate-500">26/APR</td>
+                                <td class="px-3 py-1.5 border-r border-slate-100 bg-blue-50/30">LU</td>
+                                <td class="px-3 py-1.5 border-r border-slate-100 font-medium text-blue-600 hover:underline cursor-pointer">5134</td>
+                                <td class="px-3 py-1.5 border-r border-slate-100 font-medium bg-blue-50/30 text-slate-900">ASSET MSG HOLDINGS</td>
+                                <td class="px-3 py-1.5 border-r border-slate-100"><span class="truncate-cell custom-hover-title" data-fulltext="Société Anonyme (SA)">Société Ano...</span></td>
+                                <td class="px-3 py-1.5 border-r border-slate-100"><span class="truncate-cell custom-hover-title" data-fulltext="5 Heienhaff, L-1736 Senningerberg, Luxembourg">5 Heienhaff...</span></td>
+                            </tr>
+                            <tr>
+                                <td class="px-3 py-1.5 border-r border-slate-100 text-center"><input type="checkbox" class="row-checkbox rounded border-slate-300 focus:ring-brand-green" onchange="toggleRowSelection(this)"></td>
+                                <td class="px-3 py-1.5 border-r border-slate-100 text-slate-500">25/APR</td>
+                                <td class="px-3 py-1.5 border-r border-slate-100 bg-blue-50/30">LU</td>
+                                <td class="px-3 py-1.5 border-r border-slate-100 font-medium text-blue-600 hover:underline cursor-pointer">8291</td>
+                                <td class="px-3 py-1.5 border-r border-slate-100 font-medium bg-blue-50/30 text-slate-900">GLOBAL MSG VENTURES</td>
+                                <td class="px-3 py-1.5 border-r border-slate-100"><span class="truncate-cell custom-hover-title" data-fulltext="Société en commandite spéciale (SCSp)">Société en co...</span></td>
+                                <td class="px-3 py-1.5 border-r border-slate-100"><span class="truncate-cell custom-hover-title" data-fulltext="2 Avenue Charles de Gaulle, L-1653 Luxembourg">2 Avenue Cha...</span></td>
+                            </tr>
+                            <!-- Filler rows to demonstrate scrolling -->
+                            <tr><td class="px-3 py-1.5 border-r border-slate-100 text-center"><input type="checkbox" class="row-checkbox rounded border-slate-300" onchange="toggleRowSelection(this)"></td><td class="px-3 py-1.5 border-r border-slate-100 text-slate-300">--</td><td class="px-3 py-1.5 border-r border-slate-100 bg-blue-50/30 text-slate-300">--</td><td class="px-3 py-1.5 border-r border-slate-100 text-slate-300">--</td><td class="px-3 py-1.5 border-r border-slate-100 bg-blue-50/30 text-slate-300">--</td><td class="px-3 py-1.5 border-r border-slate-100 text-slate-300">--</td><td class="px-3 py-1.5 border-r border-slate-100 text-slate-300">--</td></tr>
+                            <tr><td class="px-3 py-1.5 border-r border-slate-100 text-center"><input type="checkbox" class="row-checkbox rounded border-slate-300" onchange="toggleRowSelection(this)"></td><td class="px-3 py-1.5 border-r border-slate-100 text-slate-300">--</td><td class="px-3 py-1.5 border-r border-slate-100 bg-blue-50/30 text-slate-300">--</td><td class="px-3 py-1.5 border-r border-slate-100 text-slate-300">--</td><td class="px-3 py-1.5 border-r border-slate-100 bg-blue-50/30 text-slate-300">--</td><td class="px-3 py-1.5 border-r border-slate-100 text-slate-300">--</td><td class="px-3 py-1.5 border-r border-slate-100 text-slate-300">--</td></tr>
+                            <tr><td class="px-3 py-1.5 border-r border-slate-100 text-center"><input type="checkbox" class="row-checkbox rounded border-slate-300" onchange="toggleRowSelection(this)"></td><td class="px-3 py-1.5 border-r border-slate-100 text-slate-300">--</td><td class="px-3 py-1.5 border-r border-slate-100 bg-blue-50/30 text-slate-300">--</td><td class="px-3 py-1.5 border-r border-slate-100 text-slate-300">--</td><td class="px-3 py-1.5 border-r border-slate-100 bg-blue-50/30 text-slate-300">--</td><td class="px-3 py-1.5 border-r border-slate-100 text-slate-300">--</td><td class="px-3 py-1.5 border-r border-slate-100 text-slate-300">--</td></tr>
+                            <tr><td class="px-3 py-1.5 border-r border-slate-100 text-center"><input type="checkbox" class="row-checkbox rounded border-slate-300" onchange="toggleRowSelection(this)"></td><td class="px-3 py-1.5 border-r border-slate-100 text-slate-300">--</td><td class="px-3 py-1.5 border-r border-slate-100 bg-blue-50/30 text-slate-300">--</td><td class="px-3 py-1.5 border-r border-slate-100 text-slate-300">--</td><td class="px-3 py-1.5 border-r border-slate-100 bg-blue-50/30 text-slate-300">--</td><td class="px-3 py-1.5 border-r border-slate-100 text-slate-300">--</td><td class="px-3 py-1.5 border-r border-slate-100 text-slate-300">--</td></tr>
+                            <tr><td class="px-3 py-1.5 border-r border-slate-100 text-center"><input type="checkbox" class="row-checkbox rounded border-slate-300" onchange="toggleRowSelection(this)"></td><td class="px-3 py-1.5 border-r border-slate-100 text-slate-300">--</td><td class="px-3 py-1.5 border-r border-slate-100 bg-blue-50/30 text-slate-300">--</td><td class="px-3 py-1.5 border-r border-slate-100 text-slate-300">--</td><td class="px-3 py-1.5 border-r border-slate-100 bg-blue-50/30 text-slate-300">--</td><td class="px-3 py-1.5 border-r border-slate-100 text-slate-300">--</td><td class="px-3 py-1.5 border-r border-slate-100 text-slate-300">--</td></tr>
+                            <tr><td class="px-3 py-1.5 border-r border-slate-100 text-center"><input type="checkbox" class="row-checkbox rounded border-slate-300" onchange="toggleRowSelection(this)"></td><td class="px-3 py-1.5 border-r border-slate-100 text-slate-300">--</td><td class="px-3 py-1.5 border-r border-slate-100 bg-blue-50/30 text-slate-300">--</td><td class="px-3 py-1.5 border-r border-slate-100 text-slate-300">--</td><td class="px-3 py-1.5 border-r border-slate-100 bg-blue-50/30 text-slate-300">--</td><td class="px-3 py-1.5 border-r border-slate-100 text-slate-300">--</td><td class="px-3 py-1.5 border-r border-slate-100 text-slate-300">--</td></tr>
+                            <tr><td class="px-3 py-1.5 border-r border-slate-100 text-center"><input type="checkbox" class="row-checkbox rounded border-slate-300" onchange="toggleRowSelection(this)"></td><td class="px-3 py-1.5 border-r border-slate-100 text-slate-300">--</td><td class="px-3 py-1.5 border-r border-slate-100 bg-blue-50/30 text-slate-300">--</td><td class="px-3 py-1.5 border-r border-slate-100 text-slate-300">--</td><td class="px-3 py-1.5 border-r border-slate-100 bg-blue-50/30 text-slate-300">--</td><td class="px-3 py-1.5 border-r border-slate-100 text-slate-300">--</td><td class="px-3 py-1.5 border-r border-slate-100 text-slate-300">--</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Fixed Footer / Pagination -->
+                <div class="grid-footer-fixed p-2 border-t border-slate-200 bg-white text-[10px] text-slate-500 flex justify-between items-center shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] z-20">
+                    <div class="flex items-center gap-2">
+                        <span>Total: 3</span>
+                        <select class="border border-slate-200 rounded px-1 py-0.5"><option>50</option><option>100</option></select>
+                    </div>
+                    <div class="flex gap-1 items-center">
+                        <button class="px-1.5 py-0.5 border border-slate-200 rounded bg-white hover:bg-slate-100 text-slate-400"><i class="fa-solid fa-angle-left"></i></button>
+                        <button class="px-2 py-0.5 border border-brand-green rounded bg-brand-green text-white">1</button>
+                        <button class="px-1.5 py-0.5 border border-slate-200 rounded bg-white hover:bg-slate-100 text-slate-400"><i class="fa-solid fa-angle-right"></i></button>
+                    </div>
+                    <span>Showing 1 to 3 of 3 items</span>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        // --- View & Sidebar Management ---
+        function toggleView() {
+            const login = document.getElementById('view-login');
+            const dash = document.getElementById('view-dashboard');
+            
+            if (dash.classList.contains('hidden')) {
+                login.classList.add('opacity-0');
+                setTimeout(() => {
+                    login.classList.add('hidden');
+                    dash.classList.remove('hidden');
+                    void dash.offsetWidth; 
+                    dash.classList.remove('opacity-0');
+                }, 500);
+            } else {
+                dash.classList.add('opacity-0');
+                setTimeout(() => {
+                    dash.classList.add('hidden');
+                    login.classList.remove('hidden');
+                    void login.offsetWidth;
+                    login.classList.remove('opacity-0');
+                }, 500);
+            }
+        }
+
+        const sidebar = document.getElementById('sidebar');
+        function expandSidebar() {
+            sidebar.classList.remove('sidebar-collapsed');
+            sidebar.classList.add('sidebar-expanded');
+            document.querySelectorAll('.menu-text').forEach(el => {
+                if(!el.classList.contains('hidden')) el.style.display = '';
+            });
+        }
+
+        function collapseSidebar() {
+            sidebar.classList.remove('sidebar-expanded');
+            sidebar.classList.add('sidebar-collapsed');
+            const submenu = document.getElementById('data-submenu');
+            if(submenu) { submenu.classList.add('hidden'); submenu.classList.remove('flex'); }
+        }
+
+        // --- Dropdowns ---
+        function toggleDropdown(id, event) {
+            if (event) event.stopPropagation();
+            document.querySelectorAll('.glass-popout').forEach(el => {
+                if (el.id !== id) el.classList.add('hidden');
+            });
+            const el = document.getElementById(id);
+            if (el) el.classList.toggle('hidden');
+        }
+
+        function toggleColMenu(id, event) {
+            event.stopPropagation();
+            toggleDropdown(id, null);
+        }
+
+        document.addEventListener('click', function(event) {
+            document.querySelectorAll('.glass-popout').forEach(el => el.classList.add('hidden'));
+        });
+
+        // --- Row Selection Highlighting ---
+        function toggleRowSelection(checkbox) {
+            const row = checkbox.closest('tr');
+            if (checkbox.checked) row.classList.add('row-selected');
+            else row.classList.remove('row-selected');
+        }
+
+        function toggleAllRows(masterCheckbox) {
+            const checkboxes = document.querySelectorAll('.row-checkbox');
+            checkboxes.forEach(cb => {
+                cb.checked = masterCheckbox.checked;
+                toggleRowSelection(cb);
+            });
+        }
+
+        // --- Audit Mode ---
+        function toggleAuditMode() {
+            const table = document.getElementById('mainTable');
+            const isChecked = document.getElementById('auditToggle').checked;
+            if (isChecked) {
+                table.classList.add('audit-mode');
+                showToast('Audit Mode Enabled. Hover & click cells to inspect data.');
+            } else {
+                table.classList.remove('audit-mode');
+            }
+        }
+        
+        document.getElementById('tableBody').addEventListener('click', function(e) {
+            const table = document.getElementById('mainTable');
+            const td = e.target.closest('td');
+            // Ensure audit mode triggers on td click, not internal elements like checkboxes
+            if (td && table.classList.contains('audit-mode') && !e.target.closest('input')) {
+                // Get exact text, preferring the full data attribute if it was truncated
+                let text = td.innerText.trim();
+                const truncateSpan = td.querySelector('.truncate-cell');
+                if (truncateSpan && truncateSpan.dataset.fulltext) {
+                    text = truncateSpan.dataset.fulltext;
+                }
+                if (text !== '' && text !== '--') {
+                    showToast('Auditing Cell Data: ' + text);
+                }
+            }
+        });
+
+        // --- Toast Notification ---
+        function showToast(message) {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = 'bg-slate-900 text-white text-xs px-4 py-3 rounded shadow-lg transform transition-all duration-300 translate-y-[-1rem] opacity-0 flex items-center';
+            toast.innerHTML = `<i class="fa-solid fa-circle-info text-brand-green mr-2"></i> ${message}`;
+            container.appendChild(toast);
+            setTimeout(() => toast.classList.remove('translate-y-[-1rem]', 'opacity-0'), 10);
+            setTimeout(() => {
+                toast.classList.add('translate-y-[-1rem]', 'opacity-0');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // --- Smart Tooltips for Truncated Text ---
+        const tooltip = document.getElementById('custom-tooltip');
+        document.querySelectorAll('.custom-hover-title').forEach(el => {
+            el.addEventListener('mouseenter', function(e) {
+                // Only show tooltip if text is actually truncated (scrollWidth > offsetWidth)
+                if (this.offsetWidth < this.scrollWidth || this.dataset.fulltext) {
+                    tooltip.innerText = this.dataset.fulltext || this.innerText;
+                    tooltip.style.opacity = 1;
+                    tooltip.style.left = e.pageX + 10 + 'px';
+                    tooltip.style.top = e.pageY + 10 + 'px';
+                }
+            });
+            el.addEventListener('mousemove', function(e) {
+                tooltip.style.left = e.pageX + 10 + 'px';
+                tooltip.style.top = e.pageY + 10 + 'px';
+            });
+            el.addEventListener('mouseleave', function() {
+                tooltip.style.opacity = 0;
+            });
+        });
+
+        // --- Column Drag & Drop (Vanilla JS Swap Logic) ---
+        let draggedColIndex = null;
+
+        function handleDragStart(e) {
+            // Don't drag if clicking a button inside the header
+            if(e.target.tagName.toLowerCase() === 'button' || e.target.closest('button')) {
+                e.preventDefault();
+                return;
+            }
+            draggedColIndex = e.target.cellIndex;
+            e.target.classList.add('dragging');
+            e.dataTransfer.effectAllowed = 'move';
+        }
+
+        function handleDragOver(e) {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'move';
+            return false;
+        }
+
+        function handleDragEnter(e) {
+            const targetTh = e.target.closest('th');
+            if (targetTh && targetTh.cellIndex !== draggedColIndex && targetTh.cellIndex > 0) {
+                targetTh.classList.add('drag-over');
+            }
+        }
+
+        function handleDragLeave(e) {
+            const targetTh = e.target.closest('th');
+            if (targetTh) {
+                targetTh.classList.remove('drag-over');
+            }
+        }
+
+        function handleDrop(e) {
+            e.stopPropagation();
+            const targetTh = e.target.closest('th');
+            
+            document.querySelectorAll('th').forEach(th => {
+                th.classList.remove('dragging', 'drag-over');
+            });
+
+            if (targetTh && draggedColIndex !== null && targetTh.cellIndex > 0 && targetTh.cellIndex !== draggedColIndex) {
+                const targetIndex = targetTh.cellIndex;
+                swapColumns(draggedColIndex, targetIndex);
+                showToast(`Swapped column ${draggedColIndex} with column ${targetIndex}`);
+            }
+            draggedColIndex = null;
+            return false;
+        }
+
+        function swapColumns(fromIndex, toIndex) {
+            const table = document.getElementById('mainTable');
+            const rows = table.rows;
+            
+            for (let i = 0; i < rows.length; i++) {
+                const cells = rows[i].cells;
+                if (cells[fromIndex] && cells[toIndex]) {
+                    // For a true swap in DOM:
+                    const cell1 = cells[fromIndex];
+                    const cell2 = cells[toIndex];
+                    
+                    // Clone nodes to swap them safely
+                    const clone1 = cell1.cloneNode(true);
+                    const clone2 = cell2.cloneNode(true);
+                    
+                    rowReplaceChild(rows[i], clone2, cell1);
+                    rowReplaceChild(rows[i], clone1, cell2);
+                }
+            }
+            // Re-attach event listeners for tooltips on the new cloned nodes
+            rebindTooltips();
+        }
+
+        function rowReplaceChild(row, newChild, oldChild) {
+            row.insertBefore(newChild, oldChild);
+            row.removeChild(oldChild);
+        }
+
+        function rebindTooltips() {
+            document.querySelectorAll('.custom-hover-title').forEach(el => {
+                // Remove old listeners by cloning
+                const newEl = el.cloneNode(true);
+                el.parentNode.replaceChild(newEl, el);
+                
+                newEl.addEventListener('mouseenter', function(e) {
+                    if (this.offsetWidth < this.scrollWidth || this.dataset.fulltext) {
+                        tooltip.innerText = this.dataset.fulltext || this.innerText;
+                        tooltip.style.opacity = 1;
+                        tooltip.style.left = e.pageX + 10 + 'px';
+                        tooltip.style.top = e.pageY + 10 + 'px';
+                    }
+                });
+                newEl.addEventListener('mousemove', function(e) {
+                    tooltip.style.left = e.pageX + 10 + 'px';
+                    tooltip.style.top = e.pageY + 10 + 'px';
+                });
+                newEl.addEventListener('mouseleave', function() {
+                    tooltip.style.opacity = 0;
+                });
+            });
+        }
+    </script>
+</body>
+</html>
