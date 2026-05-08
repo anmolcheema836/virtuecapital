@@ -242,7 +242,9 @@
         .marquee-content {
             display: flex;
             white-space: nowrap;
-            animation: scrollText 25s linear infinite;
+            /* Using width fit-content ensures smooth doubling */
+            width: fit-content;
+            animation: scrollText 10s linear infinite;
         }
 
         .marquee-content span {
@@ -630,14 +632,6 @@
             <span>Kitchener <i>/</i></span>
             <span>Kitchener-Waterloo <i>/</i></span>
             <span>Hamilton & Surroundings <i>/</i></span>
-            <span>Serving the GTA <i>/</i></span>
-            <span>Kitchener <i>/</i></span>
-            <span>Kitchener-Waterloo <i>/</i></span>
-            <span>Hamilton & Surroundings <i>/</i></span>
-            <span>Serving the GTA <i>/</i></span>
-            <span>Kitchener <i>/</i></span>
-            <span>Kitchener-Waterloo <i>/</i></span>
-            <span>Hamilton & Surroundings <i>/</i></span>
         </div>
     </div>
 
@@ -802,5 +796,24 @@
         </div>
     </footer>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const marqueeContent = document.querySelector('.marquee-content');
+            
+            if(marqueeContent) {
+                // Ensure the animation translates by exactly half the total cloned width
+                // Cloning the internal nodes ensures 50% shift creates a perfect infinite loop
+                const children = Array.from(marqueeContent.children);
+                
+                // Duplicate nodes exactly once
+                children.forEach(child => {
+                    const clone = child.cloneNode(true);
+                    // Add aria-hidden to clones so screen readers don't read them twice
+                    clone.setAttribute('aria-hidden', 'true');
+                    marqueeContent.appendChild(clone);
+                });
+            }
+        });
+    </script>
 </body>
 </html>
