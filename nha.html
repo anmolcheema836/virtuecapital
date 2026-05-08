@@ -16,7 +16,7 @@
             --bg-surface: #ffffff;
             --text-main: #111418;
             --text-muted: #5a6069;
-            --accent-brand: #0f4c81; /* Professional, deep trust blue */
+            --accent-brand: #0f4c81; 
             --accent-hover: #0a355c;
             --alert-red: #d93838;
             --border-color: #e4e7ec;
@@ -357,6 +357,38 @@
             color: var(--text-muted);
         }
 
+        /* --- Full Width Package Card --- */
+        .package-card {
+            grid-column: 1 / -1;
+            display: flex;
+            align-items: center;
+            padding: 24px;
+            gap: 40px;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+        }
+
+        .package-card .card-img-wrapper {
+            flex: 1.2;
+            height: 360px;
+            margin-bottom: 0;
+        }
+
+        .package-card .card-content {
+            flex: 1;
+            padding: 24px 40px 24px 0;
+        }
+
+        .package-card .card-content h3 {
+            font-size: 2.2rem;
+            margin-bottom: 16px;
+        }
+
+        .package-card .card-content p {
+            font-size: 1.15rem;
+            line-height: 1.6;
+        }
+
         /* --- Why Choose Us (Neo-Bento Layout) --- */
         .why-choose-us {
             padding: 120px 0;
@@ -398,9 +430,10 @@
             color: var(--accent-brand);
         }
 
-        .bento-icon svg {
+        .bento-icon svg, .bento-icon img {
             width: 32px;
             height: 32px;
+            object-fit: contain;
         }
 
         .bento-item h3 {
@@ -515,6 +548,23 @@
             .bento-grid { grid-template-columns: 1fr 1fr; }
             .bento-span-2 { grid-column: span 2; }
             .footer-grid { grid-template-columns: 1fr 1fr; gap: 40px; text-align: left; }
+            
+            .package-card {
+                flex-direction: column;
+                padding: 12px;
+                gap: 0;
+            }
+            .package-card .card-img-wrapper {
+                width: 100%;
+                height: 240px;
+                margin-bottom: 24px;
+            }
+            .package-card .card-content {
+                padding: 0 16px 20px;
+            }
+            .package-card .card-content h3 {
+                font-size: 1.6rem;
+            }
         }
 
         @media (max-width: 768px) {
@@ -560,7 +610,7 @@
         <div class="container hero-grid">
             <div class="hero-content">
                 <h1>Commercial Kitchen <span>Cleaning Specialists.</span></h1>
-                <p>Protect your business from grease fires. We deliver NFPA 96 certified cleaning services to restaurants and commercial facilities across Ontario.</p>
+                <p>Protect your business from grease fires. We deliver NFPA 96 certified cleaning services to restaurants and commercial facilities across the GTA, Kitchener, Kitchener-Waterloo, Hamilton and surroundings.</p>
                 <div class="hero-actions">
                     <a href="tel:+19057573900" class="btn-primary">Call +1-905-757-3900</a>
                     <div class="cert-badge">
@@ -601,67 +651,45 @@
             <div class="service-grid">
                 <div class="service-card">
                     <div class="card-img-wrapper">
-                        <img src="https://powerhoodssystems.ca/images/services/hood-cleaning-hero.jpg" alt="Hood & Duct Cleaning">
+                        <img src="https://powerhoodssystems.ca/images/services/hood-cleaning-hero.jpg" alt="Exhaust Hood and Fan Cleaning">
                     </div>
                     <div class="card-content">
                         <span class="tag">Fire Safety</span>
-                        <h3>Hood & Duct Cleaning</h3>
-                        <p>Complete removal of grease buildup down to the bare metal, ensuring maximum fire safety and full compliance with local codes.</p>
+                        <h3>Exhaust Hood & Fan Cleaning</h3>
+                        <p>NFPA 96 Certified hood and duct cleaning, comprehensive exhaust system maintenance, fan cleaning, and filter exchange programs.</p>
                     </div>
                 </div>
 
                 <div class="service-card">
                     <div class="card-img-wrapper">
-                        <img src="https://powerhoodssystems.ca/images/services/exhaust-repair-hero.jpg" alt="Fan Cleaning">
-                    </div>
-                    <div class="card-content">
-                        <span class="tag">Maintenance</span>
-                        <h3>Fan Cleaning</h3>
-                        <p>Detailed degreasing of rooftop and inline exhaust fans to maintain optimal airflow and prevent costly mechanical breakdowns.</p>
-                    </div>
-                </div>
-
-                <div class="service-card">
-                    <div class="card-img-wrapper">
-                        <img src="https://powerhoodssystems.ca/images/services/duct-cleaning-hero.jpg" alt="Exhaust System Maintenance">
-                    </div>
-                    <div class="card-content">
-                        <span class="tag">System Health</span>
-                        <h3>Exhaust System Maintenance</h3>
-                        <p>Ongoing preventative care and component inspections to extend the operational life of your kitchen's entire ventilation system.</p>
-                    </div>
-                </div>
-
-                <div class="service-card">
-                    <div class="card-img-wrapper">
-                        <img src="https://powerhoodssystems.ca/images/services/equipment-cleaning-hero.jpg" alt="Appliance Cleaning">
+                        <img src="https://powerhoodssystems.ca/images/services/equipment-cleaning-hero.jpg" alt="Commercial Appliance Cleaning">
                     </div>
                     <div class="card-content">
                         <span class="tag">Deep Clean</span>
-                        <h3>Appliance Cleaning</h3>
-                        <p>Rigorous deep cleaning for commercial ovens, fryers, and grills to remove baked-on carbon and restore equipment to peak efficiency.</p>
+                        <h3>Commercial Appliance Cleaning</h3>
+                        <p>Rigorous deep cleaning and degreasing for commercial ovens, fryers, grills, and other heavy-duty equipment to restore peak efficiency.</p>
                     </div>
                 </div>
 
                 <div class="service-card">
                     <div class="card-img-wrapper">
-                        <img src="https://powerhoodssystems.ca/images/services/deep-cleaning-hero.jpg" alt="Commercial Janitorial">
+                        <img src="https://powerhoodssystems.ca/images/services/deep-cleaning-hero.jpg" alt="Commercial Kitchen Janitorial Cleaning">
                     </div>
                     <div class="card-content">
                         <span class="tag">Facility Care</span>
-                        <h3>Commercial Janitorial</h3>
-                        <p>Professional sanitation of high-traffic kitchen areas, including heavy-duty floor scrubbing, wall washing, and washroom upkeep.</p>
+                        <h3>Commercial Janitorial Services</h3>
+                        <p>Professional sanitation of high-traffic kitchen areas, including heavy-duty floor scrubbing, wall washing, and complete toilet upkeep.</p>
                     </div>
                 </div>
 
-                <div class="service-card">
+                <div class="service-card package-card">
                     <div class="card-img-wrapper">
-                        <img src="https://powerhoodssystems.ca/images/services/sanitation-hero.jpg" alt="Filter Exchange">
+                        <img src="https://powerhoodssystems.ca/images/services/sanitation-hero.jpg" alt="Complete Kitchen Cleaning Package">
                     </div>
                     <div class="card-content">
-                        <span class="tag">Compliance</span>
-                        <h3>Filter Exchange Program</h3>
-                        <p>Scheduled replacement and cleaning of grease filters to ensure uninterrupted kitchen safety and proper system exhaust flow.</p>
+                        <span class="tag">All-in-One</span>
+                        <h3>The Complete Package</h3>
+                        <p>A comprehensive all-together bundle combining exhaust, appliance, and janitorial cleaning. We handle the dirty work from top to bottom, providing you with a fully sanitized, inspection-ready kitchen.</p>
                     </div>
                 </div>
             </div>
@@ -678,8 +706,8 @@
             <div class="bento-grid">
                 <div class="bento-item bento-span-2">
                     <div>
-                        <div class="bento-icon">
-                            <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                        <div class="bento-icon" style="background: transparent;">
+                            <img src="https://iconape.com/wp-content/files/cl/81148/svg/nfpa-logo.svg" alt="NFPA Certified">
                         </div>
                         <h3>100% NFPA 96 Compliant</h3>
                         <p>We clean down to the bare metal in strict accordance with the National Fire Protection Association (NFPA) standard 96. Upon completion, we provide you with a recognized certificate of performance to satisfy fire marshals, health inspectors, and insurance agents.</p>
@@ -726,9 +754,9 @@
                 <p>Get a free quote in under 2 hours. Emergency service available 24/7 across Ontario.</p>
                 <div class="cta-actions">
                     <a class="btn-primary btn-lg" href="/contact">Get Free Quote</a>
-                    <a href="tel:+16473826490" class="btn-outline-light btn-lg">
+                    <a href="tel:+19057573900" class="btn-outline-light btn-lg">
                         <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" style="width: 20px; height: 20px;" xmlns="http://www.w3.org/2000/svg"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
-                        Call Now: +1 647-382-6490
+                        Call Now: +1-905-757-3900
                     </a>
                 </div>
             </div>
@@ -754,14 +782,15 @@
 
                 <div class="footer-col">
                     <h4>Contact Us</h4>
-                    <a href="tel:+19057573900">+1 (905) 757-3900</a>
+                    <a href="tel:+19057573900">+1-905-757-3900</a>
                     <a href="mailto:nhcleaninginc@outlook.com">nhcleaninginc@outlook.com</a>
                 </div>
                 
                 <div class="footer-col">
                     <h4>Service Areas</h4>
-                    <p>Greater Toronto Area (GTA)</p>
-                    <p>Kitchener & Waterloo</p>
+                    <p>GTA</p>
+                    <p>Kitchener</p>
+                    <p>Kitchener-Waterloo</p>
                     <p>Hamilton & Surroundings</p>
                 </div>
             </div>
