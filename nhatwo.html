@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>National Hood Cleaning Inc. | NFPA 96 Certified</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- Core Variables & Reset --- */
+        :root {
+            --bg-base: #f4f4f0;
+            --text-dark: #111111;
+            --accent: #FF4500; /* Safety Orange */
+            --white: #ffffff;
+            --font-display: 'Space Grotesk', sans-serif;
+            --font-body: 'Inter', sans-serif;
+            --border-heavy: 2px solid var(--text-dark);
+            --brutal-shadow: 6px 6px 0px var(--text-dark);
+            --brutal-shadow-hover: 10px 10px 0px var(--text-dark);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-base);
+            color: var(--text-dark);
+            font-family: var(--font-body);
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+            line-height: 1.5;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        img {
+            max-width: 100%;
+            display: block;
+        }
+
+        /* --- Layout Utility --- */
+        .wrapper {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 0 4vw; 
+        }
+
+        .grid-layout {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 24px;
+        }
+
+        /* --- UI Elements --- */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            background-color: var(--accent);
+            color: var(--white);
+            padding: 16px 32px;
+            border: var(--border-heavy);
+            box-shadow: var(--brutal-shadow);
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .btn svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .btn:hover {
+            transform: translate(-4px, -4px);
+            box-shadow: var(--brutal-shadow-hover);
+        }
+
+        .btn.btn-outline {
+            background-color: var(--white);
+            color: var(--text-dark);
+        }
+
+        .btn.btn-dark {
+            background-color: var(--text-dark);
+            color: var(--white);
+        }
+
+        /* --- Navbar --- */
+        .navbar {
+            border-bottom: var(--border-heavy);
+            background-color: var(--bg-base);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0; 
+        }
+
+        .logo img {
+            height: 80px; 
+            width: auto;
+            filter: grayscale(100%) contrast(1.2);
+            transition: height 0.3s ease;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            font-family: var(--font-display);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 1.05rem;
+        }
+
+        .nav-links a:hover {
+            text-decoration: underline;
+            text-underline-offset: 4px;
+            text-decoration-thickness: 2px;
+            color: var(--accent);
+        }
+
+        /* --- Hero Section --- */
+        .hero {
+            padding: 8vw 0;
+            border-bottom: var(--border-heavy);
+        }
+
+        .hero .grid-layout {
+            align-items: center;
+        }
+
+        .hero-text {
+            grid-column: span 7;
+        }
+
+        .badge {
+            display: inline-block;
+            font-family: var(--font-display);
+            font-weight: 700;
+            text-transform: uppercase;
+            border: var(--border-heavy);
+            padding: 8px 16px;
+            border-radius: 50px;
+            margin-bottom: 32px;
+            background: var(--white);
+        }
+
+        .hero-text h1 {
+            font-family: var(--font-display);
+            font-size: clamp(2.5rem, 5vw, 5.5rem);
+            line-height: 1;
+            text-transform: uppercase;
+            margin-bottom: 32px;
+            letter-spacing: -0.03em;
+        }
+
+        .hero-text p {
+            font-size: 1.25rem;
+            max-width: 85%;
+            margin-bottom: 40px;
+        }
+
+        .hero-visual {
+            grid-column: span 5;
+            position: relative;
+        }
+
+        .img-container {
+            border: var(--border-heavy);
+            box-shadow: var(--brutal-shadow);
+            background: var(--white);
+            padding: 16px;
+        }
+
+        .img-container img {
+            border: var(--border-heavy);
+            width: 100%;
+            height: auto;
+            aspect-ratio: 4/5;
+            object-fit: cover;
+            filter: grayscale(20%);
+            transition: filter 0.3s;
+        }
+
+        .img-container:hover img {
+            filter: grayscale(0%);
+        }
+
+        /* --- Brutalist Marquee --- */
+        .marquee {
+            border-bottom: var(--border-heavy);
+            background-color: var(--accent);
+            color: var(--text-dark);
+            overflow: hidden;
+            padding: 24px 0;
+            display: flex;
+        }
+
+        .marquee-track {
+            display: flex;
+            white-space: nowrap;
+            animation: marquee 15s linear infinite;
+        }
+
+        .marquee-track span {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 0 2vw;
+        }
+
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* --- Editorial Services Roster --- */
+        .services {
+            padding: 8vw 0;
+            border-bottom: var(--border-heavy);
+        }
+
+        .section-title {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 4vw, 4rem);
+            text-transform: uppercase;
+            border-bottom: var(--border-heavy);
+            padding-bottom: 24px;
+            margin-bottom: 64px;
+        }
+
+        .service-list {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .service-row {
+            display: grid;
+            grid-template-columns: 1fr 2fr 1fr;
+            gap: 24px;
+            align-items: center;
+            border: var(--border-heavy);
+            background: var(--white);
+            box-shadow: 4px 4px 0px var(--text-dark);
+            padding: 32px;
+            transition: all 0.2s ease;
+        }
+
+        .service-row:hover {
+            transform: translate(-4px, -4px);
+            box-shadow: var(--brutal-shadow-hover);
+            background: var(--text-dark);
+            color: var(--white);
+        }
+
+        .service-row:hover .service-img img {
+            filter: grayscale(0%);
+        }
+
+        .service-img {
+            width: 120px;
+            height: 120px;
+            border: var(--border-heavy);
+            overflow: hidden;
+            border-radius: 50%;
+        }
+
+        .service-row:hover .service-img {
+            border-color: var(--white);
+        }
+
+        .service-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(100%);
+            transition: filter 0.3s;
+        }
+
+        .service-info h3 {
+            font-family: var(--font-display);
+            font-size: clamp(1.5rem, 2vw, 2rem);
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .service-info p {
+            font-size: 1.1rem;
+        }
+
+        .service-meta {
+            text-align: right;
+            font-family: var(--font-display);
+            font-weight: 700;
+        }
+
+        /* --- Why Choose Us Section --- */
+        .why-us {
+            padding: 8vw 0;
+            background-color: var(--bg-base);
+            border-bottom: var(--border-heavy);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 32px;
+        }
+
+        .feature-card {
+            border: var(--border-heavy);
+            padding: 40px 32px;
+            background: var(--white);
+            box-shadow: var(--brutal-shadow);
+            transition: all 0.2s ease;
+        }
+
+        .feature-card:hover {
+            transform: translate(-4px, -4px);
+            box-shadow: var(--brutal-shadow-hover);
+        }
+
+        .feature-num {
+            font-family: var(--font-display);
+            font-size: 4rem;
+            color: var(--accent);
+            line-height: 1;
+            margin-bottom: 16px;
+            font-weight: 700;
+        }
+
+        .feature-card h3 {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        /* --- CTA Section --- */
+        .cta-section {
+            padding: 8vw 0;
+            background-color: var(--accent);
+            border-bottom: var(--border-heavy);
+            text-align: center;
+        }
+
+        .cta-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .cta-section h2 {
+            font-family: var(--font-display);
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            text-transform: uppercase;
+            margin-bottom: 24px;
+            color: var(--text-dark);
+            line-height: 1.1;
+        }
+
+        .cta-section p {
+            font-size: 1.25rem;
+            font-weight: 500;
+            margin-bottom: 48px;
+            color: var(--text-dark);
+        }
+
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+
+        /* --- Footer --- */
+        .footer {
+            background-color: var(--white);
+            padding: 8vw 0 4vw;
+        }
+
+        .footer .grid-layout {
+            border-bottom: var(--border-heavy);
+            padding-bottom: 64px;
+            margin-bottom: 32px;
+        }
+
+        .footer-brand {
+            grid-column: span 4;
+        }
+
+        .footer-brand h2 {
+            font-family: var(--font-display);
+            font-size: 2.2rem;
+            line-height: 1.1;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+        }
+        
+        .footer-brand p {
+            font-weight: 500;
+            color: #555;
+        }
+
+        .footer-nav {
+            grid-column: span 2;
+        }
+
+        .footer-contact {
+            grid-column: span 3;
+        }
+
+        .footer-areas {
+            grid-column: span 3;
+        }
+
+        .footer-col h4 {
+            font-family: var(--font-display);
+            font-size: 1.25rem;
+            text-transform: uppercase;
+            margin-bottom: 24px;
+            border-bottom: 2px solid var(--text-dark);
+            display: inline-block;
+            padding-bottom: 4px;
+        }
+
+        .footer-col ul {
+            list-style: none;
+        }
+
+        .footer-col li {
+            margin-bottom: 12px;
+            font-size: 1.1rem;
+        }
+
+        .footer-col a:hover {
+            color: var(--accent);
+            text-decoration: underline;
+            text-underline-offset: 4px;
+        }
+
+        .copyright {
+            display: flex;
+            justify-content: space-between;
+            font-weight: 500;
+        }
+
+        /* --- Responsive / Mobile --- */
+        @media (max-width: 1024px) {
+            .hero-text { grid-column: span 12; margin-bottom: 48px; }
+            .hero-visual { grid-column: span 8; grid-column-start: 3; }
+            .service-row { grid-template-columns: 1fr; text-align: center; justify-items: center; }
+            .service-meta { text-align: center; }
+            .footer-brand { grid-column: span 12; margin-bottom: 40px; }
+            .footer-nav, .footer-contact, .footer-areas { grid-column: span 4; }
+        }
+
+        @media (max-width: 768px) {
+            /* Explicite Mobile Padding */
+            .wrapper {
+                padding: 0 24px; 
+            }
+
+            /* Mobile Logo Size */
+            .logo img {
+                height: 40px; 
+            }
+
+            .nav-inner {
+                padding: 16px 0;
+            }
+
+            .nav-links { display: none; }
+            
+            .hero-text p { max-width: 100%; }
+            .hero-visual { grid-column: span 12; }
+            
+            .marquee-track span { font-size: 1.5rem; }
+            
+            .footer-nav, .footer-contact, .footer-areas { grid-column: span 12; margin-bottom: 32px; }
+            .copyright { flex-direction: column; gap: 16px; text-align: center; }
+            
+            .btn { width: 100%; text-align: center; }
+            .cta-buttons { flex-direction: column; gap: 16px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="wrapper nav-inner">
+            <a href="/" class="logo">
+                <img src="nhlogo.png" alt="National Hood Cleaning Inc">
+            </a>
+            
+            <div class="nav-links">
+                <a href="/">Home</a>
+                <a href="#services">Services</a>
+                <a href="/about">About Us</a>
+                <a href="/contact">Contact</a>
+            </div>
+
+            <a href="tel:+19057573900" class="btn btn-outline" style="margin-bottom: 0; width: auto;">Free Quote</a>
+        </div>
+    </nav>
+
+    <header class="hero wrapper">
+        <div class="grid-layout">
+            <div class="hero-text">
+                <div class="badge">EST. 2024 &mdash; NFPA 96 Certified</div>
+                <h1>Commercial Kitchen Specialists.</h1>
+                <p>Industrial-grade hood, duct, and appliance cleaning. We execute rigid compliance standards to protect your facility from severe fire hazards.</p>
+                <div style="display: flex; gap: 16px; flex-wrap: wrap;">
+                    <a href="tel:+19057573900" class="btn">Call Dispatch</a>
+                    <a href="#services" class="btn btn-outline">View Services</a>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="img-container">
+                    <img src="https://powerhoodssystems.ca/images/hero/hero-1.png" alt="Industrial Hood Cleaning Process">
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="marquee">
+        <div class="marquee-track">
+            <span>Serving GTA</span> <span>&#10042;</span>
+            <span>Kitchener</span> <span>&#10042;</span>
+            <span>Kitchener-Waterloo</span> <span>&#10042;</span>
+            <span>Hamilton & Surroundings</span> <span>&#10042;</span>
+            <span>Serving GTA</span> <span>&#10042;</span>
+            <span>Kitchener</span> <span>&#10042;</span>
+            <span>Kitchener-Waterloo</span> <span>&#10042;</span>
+            <span>Hamilton & Surroundings</span> <span>&#10042;</span>
+        </div>
+    </div>
+
+    <section id="services" class="services wrapper">
+        <h2 class="section-title">System Operations</h2>
+        
+        <div class="service-list">
+            <article class="service-row">
+                <div class="service-img">
+                    <img src="https://powerhoodssystems.ca/images/services/hood-cleaning-hero.jpg" alt="Hood Cleaning">
+                </div>
+                <div class="service-info">
+                    <h3>Hood & Duct Extraction</h3>
+                    <p>Complete grease removal to bare metal. Full fire-code compliance.</p>
+                </div>
+                <div class="service-meta">01 / COMPLIANCE</div>
+            </article>
+
+            <article class="service-row">
+                <div class="service-img">
+                    <img src="https://powerhoodssystems.ca/images/services/exhaust-repair-hero.jpg" alt="Fan Cleaning">
+                </div>
+                <div class="service-info">
+                    <h3>Ventilation / Fan Prep</h3>
+                    <p>Rooftop and inline fan degreasing. Restores maximum CFM airflow.</p>
+                </div>
+                <div class="service-meta">02 / AIRFLOW</div>
+            </article>
+
+            <article class="service-row">
+                <div class="service-img">
+                    <img src="https://powerhoodssystems.ca/images/services/equipment-cleaning-hero.jpg" alt="Appliance">
+                </div>
+                <div class="service-info">
+                    <h3>Appliance Degreasing</h3>
+                    <p>Carbon elimination for commercial ovens, deep fryers, and grills.</p>
+                </div>
+                <div class="service-meta">03 / EQUIPMENT</div>
+            </article>
+
+            <article class="service-row">
+                <div class="service-img">
+                    <img src="https://powerhoodssystems.ca/images/services/deep-cleaning-hero.jpg" alt="Janitorial">
+                </div>
+                <div class="service-info">
+                    <h3>Industrial Janitorial</h3>
+                    <p>Heavy-duty floor, wall, and facility sanitation procedures.</p>
+                </div>
+                <div class="service-meta">04 / FACILITY</div>
+            </article>
+
+            <article class="service-row">
+                <div class="service-img">
+                    <img src="https://powerhoodssystems.ca/images/services/sanitation-hero.jpg" alt="Filters">
+                </div>
+                <div class="service-info">
+                    <h3>Filter Exchange Network</h3>
+                    <p>Automated replacement and washing of hood grease filters.</p>
+                </div>
+                <div class="service-meta">05 / MAINTENANCE</div>
+            </article>
+        </div>
+    </section>
+
+    <section class="why-us">
+        <div class="wrapper">
+            <h2 class="section-title">The Standard</h2>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-num">01</div>
+                    <h3>NFPA 96 Certified</h3>
+                    <p>We adhere strictly to the National Fire Protection Association guidelines, ensuring your commercial kitchen passes all local fire and health inspections.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-num">02</div>
+                    <h3>24/7 Emergency</h3>
+                    <p>Kitchen emergencies don't wait for business hours. Our rapid-response dispatch team is available around the clock across the GTA.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-num">03</div>
+                    <h3>Photo Verification</h3>
+                    <p>We provide comprehensive before-and-after photo documentation for your records, giving you absolute transparency and peace of mind.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-num">04</div>
+                    <h3>Fully Insured</h3>
+                    <p>Operate without liability stress. Our technicians are fully trained, bonded, and insured to handle complex commercial environments.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section">
+        <div class="wrapper">
+            <div class="cta-content">
+                <h2>Book Your Hood Cleaning Today</h2>
+                <p>Get a free quote in under 2 hours. Emergency service available 24/7 across the GTA and surrounding regions.</p>
+                <div class="cta-buttons">
+                    <a href="/contact" class="btn btn-dark">Get Free Quote</a>
+                    <a href="tel:+19057573900" class="btn btn-outline">
+                        <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                        </svg>
+                        Call Now: +1-905-757-3900
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="wrapper">
+            <div class="grid-layout">
+                <div class="footer-brand">
+                    <h2>National Hood<br>Cleaning Inc.</h2>
+                    <p>COMMERCIAL KITCHEN CLEANING SPECIALISTS</p>
+                </div>
+                
+                <div class="footer-col footer-nav">
+                    <h4>Navigation</h4>
+                    <ul>
+                        <li><a href="/">Home</a></li>
+                        <li><a href="#services">Services</a></li>
+                        <li><a href="/about">About Us</a></li>
+                        <li><a href="/contact">Contact Us</a></li>
+                        <li><a href="/sitemap">Sitemap</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col footer-contact">
+                    <h4>Direct Line</h4>
+                    <ul>
+                        <li><a href="tel:+19057573900">T: +1 905-757-3900</a></li>
+                        <li><a href="mailto:nhcleaninginc@outlook.com">E: nhcleaninginc@outlook.com</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col footer-areas">
+                    <h4>Jurisdiction</h4>
+                    <ul>
+                        <li>Greater Toronto Area (GTA)</li>
+                        <li>Kitchener & Waterloo</li>
+                        <li>Hamilton Region</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2026 National Hood Cleaning Inc.</p>
+                <p>NFPA 96 CERTIFIED &mdash; FULLY INSURED</p>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

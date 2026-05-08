@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>National Hood Cleaning Inc | Premium Commercial Kitchen Care</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- Premium Minimalist Variables --- */
+        :root {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f4f4f5;
+            --text-primary: #09090b;
+            --text-secondary: #52525b;
+            --border-light: #e4e4e7;
+            --accent-black: #000000;
+            --font-display: 'Outfit', sans-serif;
+            --font-body: 'Inter', sans-serif;
+            --transition-fluid: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* --- Reset & Base --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden;
+        }
+
+        a { text-decoration: none; color: inherit; }
+        img { max-width: 100%; display: block; object-fit: cover; }
+        
+        .container {
+            width: 100%;
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 0 5vw;
+        }
+
+        /* --- Buttons --- */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px 32px;
+            font-family: var(--font-body);
+            font-size: 0.875rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-radius: 0; 
+            transition: var(--transition-fluid);
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .btn-dark {
+            background-color: var(--accent-black);
+            color: var(--bg-primary);
+            border: 1px solid var(--accent-black);
+        }
+
+        .btn-dark:hover {
+            background-color: transparent;
+            color: var(--accent-black);
+        }
+
+        .btn-light {
+            background-color: transparent;
+            color: var(--bg-primary);
+            border: 1px solid var(--bg-primary);
+        }
+
+        .btn-light:hover {
+            background-color: var(--bg-primary);
+            color: var(--accent-black);
+        }
+
+        /* --- Navigation --- */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-light);
+            padding: 16px 0;
+            transition: var(--transition-fluid);
+        }
+
+        .nav-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo img {
+            max-height: 80px; /* Constrains the custom logo height */
+            width: auto;
+            display: block;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 40px;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .nav-links a {
+            position: relative;
+            padding-bottom: 4px;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0%;
+            height: 1px;
+            background-color: var(--text-primary);
+            transition: var(--transition-fluid);
+        }
+
+        .nav-links a:hover::after { width: 100%; }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .contact-number {
+            font-family: var(--font-display);
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        /* Mobile Menu Setup */
+        .mobile-menu-toggle { display: none; }
+        .mobile-menu-icon {
+            display: none;
+            cursor: pointer;
+            flex-direction: column;
+            gap: 6px;
+            z-index: 1001;
+        }
+        .mobile-menu-icon span {
+            display: block;
+            width: 28px;
+            height: 2px;
+            background-color: var(--text-primary);
+            transition: var(--transition-fluid);
+        }
+
+        /* --- Hero Section --- */
+        .hero {
+            padding: 180px 0 100px;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6vw;
+            align-items: center;
+        }
+
+        .hero-content h1 {
+            font-family: var(--font-display);
+            font-size: clamp(3rem, 6vw, 6.5rem);
+            font-weight: 800;
+            line-height: 1;
+            letter-spacing: -0.04em;
+            margin-bottom: 32px;
+        }
+
+        .hero-content p {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            color: var(--text-secondary);
+            max-width: 90%;
+            margin-bottom: 48px;
+            font-weight: 300;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .hero-meta {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 24px;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+            margin-top: 48px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border-light);
+        }
+
+        .hero-image-wrapper {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 4/5;
+            overflow: hidden;
+            background: var(--bg-secondary);
+        }
+
+        .hero-image-wrapper img {
+            width: 100%;
+            height: 100%;
+            transition: transform 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .hero-image-wrapper:hover img { transform: scale(1.05); }
+
+        /* --- Marquee --- */
+        .marquee-wrapper {
+            border-bottom: 1px solid var(--border-light);
+            padding: 24px 0;
+            overflow: hidden;
+            display: flex;
+            background: var(--bg-primary);
+        }
+
+        .marquee-content {
+            display: flex;
+            white-space: nowrap;
+            animation: marquee 20s linear infinite;
+        }
+
+        .marquee-content span {
+            font-family: var(--font-display);
+            font-size: clamp(1.2rem, 3vw, 1.5rem);
+            font-weight: 300;
+            color: var(--text-secondary);
+            padding: 0 40px;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+        }
+
+        .marquee-content span b {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* --- Section Headers --- */
+        .section-header {
+            margin-bottom: 80px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            padding-bottom: 24px;
+            border-bottom: 1px solid var(--text-primary);
+            flex-wrap: wrap;
+            gap: 24px;
+        }
+
+        .section-header h2 {
+            font-family: var(--font-display);
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            line-height: 1;
+        }
+
+        .section-header p {
+            max-width: 400px;
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+
+        /* --- Services --- */
+        .services-section {
+            padding: 120px 0;
+        }
+
+        .service-list {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1px;
+            background-color: var(--border-light); 
+            border: 1px solid var(--border-light);
+        }
+
+        .service-card {
+            background-color: var(--bg-primary);
+            padding: 48px;
+            transition: var(--transition-fluid);
+        }
+
+        .service-card:hover { background-color: var(--bg-secondary); }
+
+        .service-number {
+            font-family: var(--font-display);
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 40px;
+            display: block;
+        }
+
+        .service-card h3 {
+            font-family: var(--font-display);
+            font-size: clamp(1.25rem, 2vw, 1.75rem);
+            font-weight: 600;
+            margin-bottom: 16px;
+            letter-spacing: -0.02em;
+        }
+
+        .service-card p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        /* --- Why Choose Us (Neo-Bento) --- */
+        .bento-section {
+            padding: 120px 0;
+            background-color: var(--bg-secondary);
+        }
+
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            grid-auto-rows: minmax(320px, auto);
+        }
+
+        .bento-box {
+            background-color: var(--bg-primary);
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .bento-box.span-2 { grid-column: span 2; }
+        
+        .bento-icon { margin-bottom: 32px; }
+        .bento-icon svg {
+            width: 32px;
+            height: 32px;
+            stroke: var(--text-primary);
+            stroke-width: 1.5;
+        }
+
+        .bento-box h3 {
+            font-family: var(--font-display);
+            font-size: clamp(1.25rem, 2.5vw, 1.5rem);
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .bento-box p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .bento-image {
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .bento-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(100%);
+            transition: var(--transition-fluid);
+        }
+
+        .bento-image:hover img {
+            filter: grayscale(0%);
+            transform: scale(1.05);
+        }
+
+        /* --- CTA Section --- */
+        .cta-section {
+            padding: 160px 0;
+            background-color: var(--accent-black);
+            color: var(--bg-primary);
+            text-align: center;
+        }
+
+        .cta-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .cta-content h2 {
+            font-family: var(--font-display);
+            font-size: clamp(2.5rem, 5vw, 5rem);
+            font-weight: 800;
+            letter-spacing: -0.04em;
+            line-height: 1.1;
+            margin-bottom: 24px;
+        }
+
+        .cta-content p {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            font-weight: 300;
+            color: #a1a1aa;
+            margin-bottom: 48px;
+            padding: 0 5vw;
+        }
+
+        .cta-actions {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        /* --- Footer --- */
+        .footer {
+            padding: 80px 0 40px;
+            background-color: var(--bg-primary);
+            border-top: 1px solid var(--border-light);
+        }
+
+        .footer-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 80px;
+            flex-wrap: wrap;
+            gap: 60px;
+        }
+
+        .footer-logo img {
+            max-height: 48px;
+            width: auto;
+        }
+
+        .footer-links {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 80px;
+        }
+
+        .footer-col h4 {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+        }
+
+        .footer-col a, .footer-col p {
+            display: block;
+            font-size: 0.95rem;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+            transition: var(--transition-fluid);
+        }
+
+        .footer-col a:hover { color: var(--text-secondary); }
+
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 32px;
+            border-top: 1px solid var(--border-light);
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        /* --- Deep Responsive Media Queries --- */
+
+        /* Tablet (Max 1024px) */
+        @media (max-width: 1024px) {
+            /* Mobile Navigation Overlay */
+            .mobile-menu-icon { display: flex; }
+            .nav-actions { display: none; }
+            
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 100vw;
+                height: 100vh;
+                background: var(--bg-primary);
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                font-size: 2rem;
+                transition: var(--transition-fluid);
+                gap: 40px;
+            }
+
+            .mobile-menu-toggle:checked ~ .nav-links {
+                right: 0;
+            }
+
+            /* Cross Icon Animation */
+            .mobile-menu-toggle:checked ~ .mobile-menu-icon span:nth-child(1) {
+                transform: translateY(8px) rotate(45deg);
+            }
+            .mobile-menu-toggle:checked ~ .mobile-menu-icon span:nth-child(2) {
+                opacity: 0;
+            }
+            .mobile-menu-toggle:checked ~ .mobile-menu-icon span:nth-child(3) {
+                transform: translateY(-8px) rotate(-45deg);
+            }
+
+            .hero-grid { grid-template-columns: 1fr; gap: 40px; }
+            .hero-content { padding-top: 40px; }
+            .hero-image-wrapper { aspect-ratio: 16/9; }
+            
+            .service-list { grid-template-columns: repeat(2, 1fr); }
+            
+            .bento-grid { grid-template-columns: repeat(2, 1fr); }
+            
+            .footer-links { grid-template-columns: repeat(2, 1fr); gap: 40px; }
+        }
+
+        /* Mobile Landscape & Below (Max 768px) */
+        @media (max-width: 768px) {
+            .logo img {
+            max-height: 40px; }
+            .hero { padding: 120px 0 60px; min-height: auto; }
+            .hero-content h1 { text-align: left; }
+            .hero-content p { max-width: 100%; }
+            .hero-meta { flex-direction: column; align-items: flex-start; gap: 16px; }
+
+            .section-header { flex-direction: column; align-items: flex-start; }
+            .section-header p { text-align: left; }
+
+            .service-list { grid-template-columns: 1fr; }
+            .service-card { padding: 32px; }
+
+            .bento-section { padding: 80px 0; }
+            .bento-grid { grid-template-columns: 1fr; }
+            .bento-box.span-2 { grid-column: span 1; }
+            .bento-box { padding: 32px; }
+            .bento-image { display: none; } /* Hide pure image blocks on tiny screens to save space */
+
+            .cta-section { padding: 100px 0; }
+            .cta-actions { flex-direction: column; width: 100%; }
+            .cta-actions .btn { width: 100%; }
+
+            .footer-top { flex-direction: column; gap: 48px; }
+            .footer-links { grid-template-columns: 1fr; gap: 48px; width: 100%; }
+            .footer-bottom { flex-direction: column; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="container nav-inner">
+            <a href="/" class="logo">
+                <img src="nhlogo.png" alt="National Hood Cleaning Inc">
+            </a>
+            
+            <input type="checkbox" id="mobile-toggle" class="mobile-menu-toggle">
+            <label for="mobile-toggle" class="mobile-menu-icon">
+                <span></span>
+                <span></span>
+                <span></span>
+            </label>
+
+            <div class="nav-links">
+                <a href="/">Home</a>
+                <a href="#services">Expertise</a>
+                <a href="/about">Standard</a>
+                <a href="/contact">Contact</a>
+            </div>
+
+            <div class="nav-actions">
+                <span class="contact-number">+1 (905) 757-3900</span>
+                <a href="/contact" class="btn btn-dark">Get a Quote</a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="container hero-grid">
+            <div class="hero-content">
+                <h1>Precision Kitchen Exhaust Cleaning.</h1>
+                <p>We deliver uncompromising, NFPA 96 certified sanitation to commercial kitchens, ensuring maximum fire safety and operational continuity across Ontario.</p>
+                
+                <div class="hero-actions">
+                    <a href="/contact" class="btn btn-dark">Book Consultation</a>
+                </div>
+
+                <div class="hero-meta">
+                    <span>Cert. NFPA 96</span>
+                    <span>Fully Insured</span>
+                    <span>24/7 Response</span>
+                </div>
+            </div>
+            <div class="hero-image-wrapper">
+                <img src="https://powerhoodssystems.ca/images/hero/hero-1.png" alt="Pristine Commercial Kitchen Hood">
+            </div>
+        </div>
+    </section>
+
+    <div class="marquee-wrapper">
+        <div class="marquee-content">
+            <span>Serving <b>The GTA</b></span>
+            <span>Serving <b>Kitchener</b></span>
+            <span>Serving <b>Waterloo</b></span>
+            <span>Serving <b>Hamilton</b></span>
+            <span>Serving <b>The GTA</b></span>
+            <span>Serving <b>Kitchener</b></span>
+            <span>Serving <b>Waterloo</b></span>
+            <span>Serving <b>Hamilton</b></span>
+        </div>
+        <div class="marquee-content">
+            <span>Serving <b>The GTA</b></span>
+            <span>Serving <b>Kitchener</b></span>
+            <span>Serving <b>Waterloo</b></span>
+            <span>Serving <b>Hamilton</b></span>
+            <span>Serving <b>The GTA</b></span>
+            <span>Serving <b>Kitchener</b></span>
+            <span>Serving <b>Waterloo</b></span>
+            <span>Serving <b>Hamilton</b></span>
+        </div>
+    </div>
+
+    <section id="services" class="services-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Our Expertise</h2>
+                <p>Comprehensive ventilation and sanitation solutions designed to keep your kitchen running safely and efficiently.</p>
+            </div>
+            
+            <div class="service-list">
+                <div class="service-card">
+                    <span class="service-number">01</span>
+                    <h3>Hood & Duct Cleaning</h3>
+                    <p>Complete removal of grease buildup down to the bare metal, ensuring maximum fire safety and full compliance with local codes.</p>
+                </div>
+
+                <div class="service-card">
+                    <span class="service-number">02</span>
+                    <h3>Fan Degreasing</h3>
+                    <p>Detailed degreasing of rooftop and inline exhaust fans to maintain optimal airflow and prevent costly mechanical breakdowns.</p>
+                </div>
+
+                <div class="service-card">
+                    <span class="service-number">03</span>
+                    <h3>System Maintenance</h3>
+                    <p>Ongoing preventative care and component inspections to extend the operational life of your kitchen's entire ventilation system.</p>
+                </div>
+
+                <div class="service-card">
+                    <span class="service-number">04</span>
+                    <h3>Appliance Restoration</h3>
+                    <p>Rigorous deep cleaning for commercial ovens, fryers, and grills to remove baked-on carbon and restore equipment efficiency.</p>
+                </div>
+
+                <div class="service-card">
+                    <span class="service-number">05</span>
+                    <h3>Facility Janitorial</h3>
+                    <p>Professional sanitation of high-traffic kitchen areas, including heavy-duty floor scrubbing, wall washing, and washroom upkeep.</p>
+                </div>
+
+                <div class="service-card">
+                    <span class="service-number">06</span>
+                    <h3>Filter Exchange</h3>
+                    <p>Scheduled replacement and cleaning of grease filters to ensure uninterrupted kitchen safety and proper system exhaust flow.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="bento-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>The Standard</h2>
+                <p>We do not compromise on safety. Our processes set the benchmark for commercial exhaust sanitation across Ontario.</p>
+            </div>
+
+            <div class="bento-grid">
+                <div class="bento-box span-2">
+                    <div class="bento-icon">
+                        <svg viewBox="0 0 24 24" fill="none"><path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </div>
+                    <div>
+                        <h3>NFPA 96 Certification</h3>
+                        <p>We clean down to the bare metal in strict accordance with the National Fire Protection Association. Upon completion, you receive a recognized certificate of performance to satisfy marshals and insurers.</p>
+                    </div>
+                </div>
+
+                <div class="bento-box bento-image span-2">
+                    <img src="https://powerhoodssystems.ca/images/services/hood-cleaning-hero.jpg" alt="Cleaning Process">
+                </div>
+
+                <div class="bento-box">
+                    <div class="bento-icon">
+                        <svg viewBox="0 0 24 24" fill="none"><path d="M12 8V12L15 15M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </div>
+                    <div>
+                        <h3>24/7 Response</h3>
+                        <p>Kitchen emergencies don't stick to business hours. We operate round-the-clock for minimal disruption.</p>
+                    </div>
+                </div>
+
+                <div class="bento-box">
+                    <div class="bento-icon">
+                        <svg viewBox="0 0 24 24" fill="none"><path d="M3 9L12 2L21 9V20C21 20.5523 20.5523 21 20 21H4C3.44772 21 3 20.5523 3 20V9Z" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 21V12H15V21" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </div>
+                    <div>
+                        <h3>Fully Insured</h3>
+                        <p>Comprehensive liability insurance. Your property is fully protected against accidental damage.</p>
+                    </div>
+                </div>
+
+                <div class="bento-box span-2">
+                    <div class="bento-icon">
+                        <svg viewBox="0 0 24 24" fill="none"><path d="M3 15C3 17.8284 3 19.2426 3.87868 20.1213C4.75736 21 6.17157 21 9 21H15C17.8284 21 19.2426 21 20.1213 20.1213C21 19.2426 21 17.8284 21 15" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 3V16M12 16L8 12M12 16L16 12" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </div>
+                    <div>
+                        <h3>Visual Proof</h3>
+                        <p>Transparency is our policy. We provide high-resolution before and after photo documentation of your entire exhaust system.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-content">
+                <h2>Secure Your Kitchen Today.</h2>
+                <p>Get a free, no-obligation quote in under 2 hours. Emergency service available 24/7 across Ontario.</p>
+                <div class="cta-actions">
+                    <a href="/contact" class="btn btn-light">Request an Estimate</a>
+                    <a href="tel:+16473826490" class="btn btn-dark">Call +1 647-382-6490</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-top">
+                <a href="/" class="footer-logo">
+                    <img src="nhlogo.png" alt="National Hood Cleaning Inc">
+                </a>
+                
+                <div class="footer-links">
+                    <div class="footer-col">
+                        <h4>Company</h4>
+                        <a href="/">Home</a>
+                        <a href="/about">The Standard</a>
+                        <a href="#services">Expertise</a>
+                    </div>
+
+                    <div class="footer-col">
+                        <h4>Contact</h4>
+                        <a href="tel:+19057573900">+1 (905) 757-3900</a>
+                        <a href="mailto:nhcleaninginc@outlook.com">nhcleaninginc@outlook.com</a>
+                        <a href="/contact">Request Quote</a>
+                    </div>
+                    
+                    <div class="footer-col">
+                        <h4>Coverage</h4>
+                        <p>Greater Toronto Area</p>
+                        <p>Kitchener & Waterloo</p>
+                        <p>Hamilton Region</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2026 National Hood Cleaning Inc.</p>
+                <p>NFPA 96 Certified Service Provider</p>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
