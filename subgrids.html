@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subgrids | Exciting and Strategic Grid-Based Game</title>
+    <meta name="description" content="Subgrids is a dynamic, fast-paced strategy game combining elements of chess and modern warfare. Customize your experience with unique game options and skins. Play now and experience the thrill!">
+    <meta name="keywords" content="Subgrids, strategy game, chess-like game, board game, game options, grid-based game, game skins, custom gameplay, multiplayer strategy, Project UFO, tactical game">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="Subgrids Team">
+    <meta property="og:title" content="Subgrids | Exciting and Strategic Grid-Based Game">
+    <meta property="og:description" content="Subgrids is a fast-paced, customizable strategy game combining chess-like strategy with exciting game options. Play and enjoy unique skins, game modes, and immersive gameplay.">
+    <meta property="og:image" content="https://subgrids.com/imgs/new_back5.png">
+    <meta property="og:url" content="https://subgrids.com/">
+    <meta name="twitter:title" content="Subgrids | Exciting and Strategic Grid-Based Game">
+    <meta name="twitter:description" content="Subgrids is a dynamic strategy game with customizable gameplay, unique skins, and exciting game options. Jump into the action now!">
+    <meta name="twitter:image" content="https://subgrids.com/imgs/new_back5.png">
+    <link rel="icon" href="https://subgrids.com/imgs/favicon.png">
+
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1508710890146262" crossorigin="anonymous"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-11427279472"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'AW-11427279472');
+    </script>
+
+    <link href="https://api.fontshare.com/v2/css?f[]=clash-display@400,500,600,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <style>
+        /* ==========================================================================
+           VARIABLES & NEW GEN GAMING THEME (Vibrant, Bright)
+           ========================================================================== */
+        :root {
+            --brand-yellow: #ffdd00;
+            --brand-cyan: #00f0ff;
+            --brand-pink: #ff0055;
+            --text-dark: #0f0f13;
+            --text-light: #ffffff;
+            --glass-bg: rgba(255, 255, 255, 0.15);
+            --glass-border: rgba(255, 255, 255, 0.4);
+            --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+            --transition-smooth: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-dark);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            background-color: #e0e5ec;
+        }
+
+        /* Animated Mesh Gradient Background */
+        .mesh-bg {
+            position: fixed; inset: 0; z-index: -2;
+            background: linear-gradient(-45deg, #4158D0, #C850C0, #FFCC70, #00f0ff);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+        }
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Ambient Glass Overlay for readability */
+        .mesh-overlay {
+            position: fixed; inset: 0; z-index: -1;
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+        }
+
+        h1, h2, h3, .font-clash { font-family: 'Clash Display', sans-serif; }
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+        .container { max-width: 1400px; margin: 0 auto; padding: 0 4%; }
+
+        /* ==========================================================================
+           CUSTOM CURSOR & PRELOADER
+           ========================================================================== */
+        .loader {
+            position: fixed; inset: 0; background: var(--text-dark); z-index: 10000;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            transition: transform 1s cubic-bezier(0.76, 0, 0.24, 1);
+        }
+        .loader.hidden { transform: translateY(-100%); }
+        .loader-text {
+            font-family: 'Clash Display', sans-serif; font-size: 6vw; font-weight: 800;
+            color: transparent; -webkit-text-stroke: 2px rgba(255,255,255,0.2); position: relative;
+        }
+        .loader-text::before {
+            content: attr(data-text); position: absolute; left: 0; top: 0;
+            color: var(--brand-yellow); -webkit-text-stroke: 0px transparent;
+            width: 0%; overflow: hidden; transition: width 0.1s;
+        }
+
+        .cursor-dot {
+            position: fixed; width: 10px; height: 10px; background: var(--brand-pink);
+            border-radius: 50%; pointer-events: none; z-index: 9999;
+            transform: translate(-50%, -50%); transition: background 0.3s, transform 0.1s;
+        }
+        .cursor-outline {
+            position: fixed; width: 50px; height: 50px; border: 2px solid var(--brand-cyan);
+            border-radius: 50%; pointer-events: none; z-index: 9998;
+            transform: translate(-50%, -50%); transition: width 0.3s, height 0.3s, background 0.3s;
+            transition-timing-function: ease-out;
+        }
+        .cursor-hover .cursor-dot { background: var(--brand-yellow); transform: translate(-50%, -50%) scale(1.5); }
+        .cursor-hover .cursor-outline {
+            width: 80px; height: 80px; background: rgba(0, 240, 255, 0.2);
+            backdrop-filter: blur(4px); border-color: transparent;
+        }
+
+        /* ==========================================================================
+           MODAL (Preserved from Original)
+           ========================================================================== */
+        #alertModal {
+            display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 90%; max-width: 500px; background: var(--text-dark); color: #fff;
+            padding: 30px; border-radius: 20px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); z-index: 1050;
+            border: 2px solid var(--brand-yellow);
+        }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; font-family: 'Clash Display'; }
+        .close-btn { background: none; border: none; color: var(--brand-pink); font-size: 30px; cursor: pointer; }
+
+        /* ==========================================================================
+           NAVIGATION & BUTTONS
+           ========================================================================== */
+        nav { padding: 30px 0; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 20px; z-index: 10; position: relative; }
+        .logo { font-size: 2.2rem; font-weight: 800; letter-spacing: -1px; color: var(--text-dark); }
+        .logo span { color: var(--brand-pink); }
+        
+        .nav-links { display: flex; flex-wrap: wrap; gap: 15px; align-items: center; }
+        
+        .btn {
+            display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+            padding: 12px 24px; border-radius: 12px; font-weight: 700; font-size: 0.95rem;
+            transition: var(--transition-smooth); border: 2px solid transparent; position: relative; overflow: hidden;
+            background: rgba(255,255,255,0.5); backdrop-filter: blur(10px); color: var(--text-dark);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+        .btn:hover { background: #fff; transform: translateY(-3px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        
+        .btn-primary { background: var(--brand-yellow); border-color: var(--text-dark); box-shadow: 4px 4px 0 var(--text-dark); }
+        .btn-primary:hover { background: var(--brand-cyan); box-shadow: 6px 6px 0 var(--text-dark); transform: translate(-2px, -2px); }
+
+        .btn-play { background: var(--brand-pink); color: #fff; border-color: var(--text-dark); box-shadow: 4px 4px 0 var(--text-dark); }
+        .btn-play:hover { background: var(--brand-yellow); color: var(--text-dark); }
+
+        .magnetic-wrap { display: inline-block; padding: 10px; margin: -10px; }
+
+        /* ==========================================================================
+           HERO SECTION
+           ========================================================================== */
+        .hero { padding: 80px 0; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; min-height: 80vh; }
+        .hero-content h1 { font-size: clamp(3.5rem, 6vw, 5.5rem); line-height: 1; margin-bottom: 30px; color: var(--text-dark); text-transform: uppercase; }
+        .hero-content h1 span { color: var(--brand-pink); display: block; }
+        .hero-content p { font-size: clamp(1.1rem, 2vw, 1.3rem); color: #333; line-height: 1.6; margin-bottom: 40px; font-weight: 600; }
+        
+        .hero-image-wrap { position: relative; border-radius: 24px; overflow: hidden; box-shadow: 20px 20px 0 rgba(255,0,85,0.2); transform: rotate(2deg); transition: transform 0.5s; }
+        .hero-image-wrap:hover { transform: rotate(0deg) scale(1.02); }
+        .hero-image-wrap img { width: 100%; height: auto; display: block; }
+
+        /* ==========================================================================
+           3D TILT RECRUITER CARDS (Glassmorphism)
+           ========================================================================== */
+        .bento-section { padding: 100px 0; perspective: 1200px; }
+        .bento-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; }
+        
+        .tilt-card {
+            background: var(--glass-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border); border-radius: 24px; box-shadow: var(--glass-shadow);
+            padding: 40px 30px; text-align: center; transform-style: preserve-3d;
+            transition: transform 0.1s ease, box-shadow 0.4s; position: relative; overflow: hidden;
+        }
+        .tilt-card::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 6px;
+            background: var(--card-color, #fff);
+        }
+        
+        .card-gold { --card-color: var(--brand-yellow); }
+        .card-red { --card-color: var(--brand-pink); }
+        .card-green { --card-color: #00ff66; }
+
+        .tilt-content { transform: translateZ(40px); }
+        .badge { display: inline-block; background: var(--text-dark); color: #fff; padding: 6px 16px; border-radius: 50px; font-weight: 800; font-size: 0.85rem; text-transform: uppercase; margin-bottom: 20px; box-shadow: 3px 3px 0 var(--card-color); }
+        
+        .bento-title { font-size: 2rem; margin-bottom: 15px; color: var(--text-dark); }
+        .bento-desc { font-weight: 600; color: #444; margin-bottom: 25px; }
+        
+        .bento-code {
+            display: inline-block; background: #fff; color: var(--text-dark); padding: 15px 30px;
+            border-radius: 12px; font-family: monospace; font-size: 1.5rem; font-weight: 800;
+            border: 2px dashed var(--card-color); transition: all 0.3s;
+        }
+        .bento-code:hover { background: var(--card-color); border-style: solid; transform: scale(1.05); }
+
+        /* ==========================================================================
+           ARTICLES GRID
+           ========================================================================== */
+        .articles-section { padding: 100px 0 150px; }
+        .section-header { text-align: center; margin-bottom: 60px; }
+        .section-header h2 { font-size: 4rem; color: var(--text-dark); text-transform: uppercase; line-height: 1; }
+        .section-header p { font-size: 1.2rem; font-weight: 600; color: #444; max-width: 700px; margin: 20px auto 0; }
+
+        .articles-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; }
+        
+        .article-card {
+            background: rgba(255,255,255,0.7); backdrop-filter: blur(10px); border: 1px solid #fff;
+            border-radius: 20px; padding: 20px; transition: var(--transition-smooth);
+            display: flex; flex-direction: column; box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+        .article-card:hover { transform: translateY(-10px); background: #fff; box-shadow: 0 20px 40px rgba(0,0,0,0.1); border-color: var(--brand-cyan); }
+        
+        .article-img { width: 100%; aspect-ratio: 16/10; border-radius: 12px; overflow: hidden; margin-bottom: 20px; }
+        .article-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s; }
+        .article-card:hover .article-img img { transform: scale(1.1); }
+        
+        .article-date { font-weight: 800; color: var(--brand-pink); font-size: 0.85rem; text-transform: uppercase; margin-bottom: 10px; display: block; }
+        .article-title { font-size: 1.4rem; color: var(--text-dark); margin-bottom: 10px; line-height: 1.2; }
+        .article-desc { color: #555; font-size: 0.95rem; line-height: 1.5; font-weight: 500; }
+
+        /* ==========================================================================
+           FOOTER
+           ========================================================================== */
+        footer {
+            background: var(--text-dark); color: #fff; padding: 60px 0 40px; border-top-left-radius: 40px; border-top-right-radius: 40px;
+        }
+        .footer-content { display: flex; flex-direction: column; align-items: center; gap: 20px; text-align: center; }
+        .footer-links { display: flex; gap: 30px; flex-wrap: wrap; justify-content: center; margin-bottom: 20px; }
+        .footer-links a { font-weight: 600; transition: color 0.3s; }
+        .footer-links a:hover { color: var(--brand-yellow); }
+        .footer-stat { background: var(--brand-pink); color: #fff; padding: 8px 20px; border-radius: 50px; font-weight: 800; font-family: 'Clash Display'; font-size: 1.2rem; }
+        .copyright { color: #aaa; font-size: 0.9rem; margin-top: 20px; }
+
+        /* Reveal Animations */
+        .reveal { opacity: 0; transform: translateY(60px) scale(0.95); transition: 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0) scale(1); }
+
+        @media (max-width: 992px) {
+            .hero { grid-template-columns: 1fr; text-align: center; padding: 40px 0; }
+            .hero-content h1 span { display: inline; }
+            .nav-links { justify-content: center; width: 100%; }
+        }
+        @media (max-width: 768px) {
+            * { cursor: auto; }
+            .cursor-dot, .cursor-outline { display: none; }
+            .btn { padding: 10px 16px; font-size: 0.85rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="mesh-bg"></div>
+    <div class="mesh-overlay"></div>
+
+    <div class="loader" id="loader">
+        <div class="loader-text" data-text="SUBGRIDS" id="loader-text">SUBGRIDS</div>
+    </div>
+
+    <div class="cursor-dot" id="cursor-dot"></div>
+    <div class="cursor-outline" id="cursor-outline"></div>
+
+    <div id="alertModal">
+        <div class="modal-header">
+            <h3>Scheduled Maintenance</h3>
+            <button class="close-btn" onclick="closeModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <h4 style="margin-bottom: 10px;">At 2 AM, we will be having a 30-minute break for maintenance.</h4>
+            <p>Sorry for any inconvenience.</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <nav>
+            <div class="logo">SUB<span>GRIDS</span></div>
+            <div class="nav-links">
+                <div class="magnetic-wrap"><a href="/login" class="btn interactive magnetic">Log In</a></div>
+                <div class="magnetic-wrap"><a href="/signup" class="btn interactive magnetic">Sign Up</a></div>
+                <div class="magnetic-wrap"><a href="https://subgrids.com/plans" class="btn interactive magnetic">Plan</a></div>
+                <div class="magnetic-wrap"><a href="https://subgrids.com/posts" class="btn interactive magnetic">Blogs</a></div>
+                <div class="magnetic-wrap"><a href="/contact-us" class="btn interactive magnetic">Contact Us</a></div>
+            </div>
+        </nav>
+
+        <section class="hero reveal">
+            <div class="hero-content">
+                <h1>Dive into the <span>World of Gaming</span></h1>
+                <p>Explore a diverse collection of online games at SubGrids. Whether you're into classic grid strategy, puzzles, or multiplayer adventures, SubGrids offers an engaging gaming experience for players of all levels.</p>
+                
+                <div style="display: flex; gap: 15px; flex-wrap: wrap; justify-content: center;">
+                    <div class="magnetic-wrap">
+                        <a href="/playnow/v7/game" class="btn btn-play interactive magnetic" style="padding: 16px 32px; font-size: 1.1rem;">
+                            <i class="fa fa-play"></i> Play Now
+                        </a>
+                    </div>
+                    <div class="magnetic-wrap">
+                        <a href="/playnow/tutorial3/game" class="btn btn-primary interactive magnetic" style="padding: 16px 32px; font-size: 1.1rem;">
+                            <i class="fa fa-file-video-o"></i> Tutorial
+                        </a>
+                    </div>
+                    <div class="magnetic-wrap">
+                        <button onclick="window.open('https://youtu.be/9S5XIgD_OXA', '_blank')" class="btn interactive magnetic" style="padding: 16px 32px; font-size: 1.1rem;">
+                            <i class="fa fa-video-camera"></i> Trailer
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-image-wrap interactive">
+                <img src="https://blog.playstation.com/tachyon/2025/04/1bc4f574153897353b906f60de5f0a0a0f4556d2-scaled.jpg?resize=1088%2C612&crop_strategy=smart&zoom=1" alt="Gaming Abstract">
+            </div>
+        </section>
+
+        <section class="bento-section reveal">
+            <div class="bento-grid">
+                
+                <div class="tilt-card card-gold interactive">
+                    <div class="tilt-content">
+                        <div class="badge">Pea Wee Winner</div>
+                        <h3 class="bento-title">Congrats to Josh!</h3>
+                        <p class="bento-desc">Save $5 on a 1 Year membership!<br>USE RECRUITER CODE:</p>
+                        <div class="bento-code interactive" onclick="copyCode(this, 'JOSH5')">JOSH5</div>
+                    </div>
+                </div>
+
+                <div class="tilt-card card-red interactive">
+                    <div class="tilt-content">
+                        <div class="badge">Ironman Winner</div>
+                        <h3 class="bento-title">Congrats to _______!</h3>
+                        <p class="bento-desc">Save $5 on a 1 Year membership!<br>USE RECRUITER CODE:</p>
+                        <div class="bento-code">_______</div>
+                    </div>
+                </div>
+
+                <div class="tilt-card card-green interactive">
+                    <div class="tilt-content">
+                        <div class="badge">Hercules Winner</div>
+                        <h3 class="bento-title">Congrats to _______!</h3>
+                        <p class="bento-desc">Save $5 on a 1 Year membership!<br>USE RECRUITER CODE:</p>
+                        <div class="bento-code">_______</div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section class="articles-section reveal">
+            <div class="section-header">
+                <h2>Our Latest Articles</h2>
+                <p>Stay up to date with the latest gaming news, expert tips, game reviews, and hidden gems. Dive into fresh content crafted to level up your gaming knowledge.</p>
+            </div>
+            
+            <div class="articles-grid">
+                
+                <a href="https://subgrids.com/blog/people-want-to-have-fun-subgrids-delivers-just-this-P1d4n" class="article-card interactive">
+                    <div class="article-img"><img src="https://subgrids.com/blogs/83060113-265e-4b7b-af5b-eaf79d0b5a6d.jpg" alt="People want to have fun"></div>
+                    <span class="article-date">Apr-22-2025</span>
+                    <h3 class="article-title">People Want to Have Fun!</h3>
+                    <p class="article-desc">This blog contains information about subgrids.</p>
+                </a>
+
+                <a href="https://subgrids.com/blog/great-news-buckle-your-seatbelts-cNZ2Z" class="article-card interactive">
+                    <div class="article-img"><img src="https://subgrids.com/blogs/a1a93134-7709-410e-8c04-9f38cfb8af45.jpg" alt="Buckle seatbelts"></div>
+                    <span class="article-date">Apr-23-2025</span>
+                    <h3 class="article-title">Fasten your seatbelts! Events starting soon.</h3>
+                    <p class="article-desc">Practice up, our first event 'The Pee Wee Shoot-Out' starts soon!</p>
+                </a>
+
+                <a href="https://subgrids.com/blog/what-are-the-subgrids-game-options-Nsxlb" class="article-card interactive">
+                    <div class="article-img"><img src="https://subgrids.com/blogs/5d818923-c95b-474f-9ccf-e7ba79c3de6a.jfif" alt="Game Options"></div>
+                    <span class="article-date">Apr-23-2025</span>
+                    <h3 class="article-title">What are the Subgrids Game Options?</h3>
+                    <p class="article-desc">Information about setting up your customized game with Game Options.</p>
+                </a>
+
+                <a href="https://subgrids.com/blog/what-are-the-subgrids-skins-9d0iG" class="article-card interactive">
+                    <div class="article-img"><img src="https://subgrids.com/blogs/1ac4f16e-3b01-4bab-91cf-c81d3212f2db.png" alt="Skins"></div>
+                    <span class="article-date">Apr-23-2025</span>
+                    <h3 class="article-title">What are the Subgrids Skins?</h3>
+                    <p class="article-desc">Army designs in Subgrids are also known as Skins.</p>
+                </a>
+
+                <a href="https://subgrids.com/blog/why-is-the-game-now-called-subgrids-a93kF" class="article-card interactive">
+                    <div class="article-img"><img src="https://subgrids.com/blogs/478a596a-7c03-43ed-a052-67d2b8d0a507.jpg" alt="Why called Subgrids"></div>
+                    <span class="article-date">Apr-24-2025</span>
+                    <h3 class="article-title">Why is the game now called Subgrids?</h3>
+                    <p class="article-desc">Learn how the title Subgrids came about.</p>
+                </a>
+
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <div class="container footer-content">
+            <div class="footer-stat interactive">Active Players: 2177</div>
+            <div class="footer-links">
+                <a href="/privacy" class="interactive">Privacy Policy</a>
+                <a href="/terms" class="interactive">Terms & Conditions</a>
+                <a href="/contact-us" class="interactive">Contact Us</a>
+            </div>
+            <div class="copyright">
+                © 2026 Subgrids Entertainment, LLC. All Rights Reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Preloader Animation
+        window.addEventListener('load', () => {
+            const loader = document.getElementById('loader');
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += Math.floor(Math.random() * 15) + 5;
+                if(progress > 100) progress = 100;
+                
+                const style = document.createElement('style');
+                style.innerHTML = `.loader-text::before { width: ${progress}%; }`;
+                document.head.appendChild(style);
+
+                if(progress === 100) {
+                    clearInterval(interval);
+                    setTimeout(() => loader.classList.add('hidden'), 400);
+                }
+            }, 40);
+        });
+
+        // Custom Fluid Cursor
+        const cursorDot = document.getElementById('cursor-dot');
+        const cursorOutline = document.getElementById('cursor-outline');
+        let mouseX = window.innerWidth / 2;
+        let mouseY = window.innerHeight / 2;
+        let outlineX = mouseX;
+        let outlineY = mouseY;
+
+        window.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            cursorDot.style.transform = `translate(${mouseX}px, ${mouseY}px)`;
+        });
+
+        function animateCursor() {
+            outlineX += (mouseX - outlineX) * 0.2;
+            outlineY += (mouseY - outlineY) * 0.2;
+            cursorOutline.style.transform = `translate(${outlineX}px, ${outlineY}px)`;
+            requestAnimationFrame(animateCursor);
+        }
+        animateCursor();
+
+        // Cursor hover states
+        document.querySelectorAll('.interactive').forEach(el => {
+            el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+            el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+        });
+
+        // Magnetic Buttons Logic
+        document.querySelectorAll('.magnetic').forEach(btn => {
+            btn.addEventListener('mousemove', (e) => {
+                const rect = btn.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                btn.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px)`;
+            });
+            btn.addEventListener('mouseleave', () => {
+                btn.style.transform = `translate(0px, 0px)`;
+            });
+        });
+
+        // 3D Glassmorphism Card Tilt
+        document.querySelectorAll('.tilt-card').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                const rotateX = ((y - centerY) / centerY) * -12; 
+                const rotateY = ((x - centerX) / centerX) * 12;
+                
+                card.style.transform = `perspective(1200px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = `perspective(1200px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+            });
+        });
+
+        // Scroll Reveal
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if(entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
+        document.querySelectorAll('.reveal').forEach(reveal => observer.observe(reveal));
+
+        // Copy Code Logic (Preserved from original script logic)
+        function copyCode(el, code) {
+            navigator.clipboard.writeText(code).then(() => {
+                const orig = el.innerText;
+                el.innerText = "COPIED!";
+                el.style.backgroundColor = "var(--text-dark)";
+                el.style.color = "#fff";
+                setTimeout(() => {
+                    el.innerText = orig;
+                    el.style.backgroundColor = "";
+                    el.style.color = "";
+                }, 1500);
+            });
+        }
+
+        // Modal close logic
+        function closeModal() {
+            document.getElementById('alertModal').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
