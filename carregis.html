@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Fast and secure online vehicle deregistration service in Germany. Fully online in just a few minutes.">
+    <meta name="keywords" content="vehicle deregistration Germany, deregister car online, online car deregistration, vehicle deregistration service, German vehicle deregistration">
+    <title>Official Online Vehicle Deregistration | Germany</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* CSS Variables for Theme */
+        :root {
+            --primary-red: #D32F2F; /* Official looking red */
+            --dark-red: #B71C1C;
+            --white: #FFFFFF;
+            --light-bg: #F8F9FA;
+            --border-color: #E0E0E0;
+            --text-main: #333333;
+            --text-muted: #666666;
+            --success-green: #2E7D32;
+        }
+
+        /* Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--light-bg);
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        a {
+            text-decoration: none;
+            color: var(--primary-red);
+        }
+
+        /* Header */
+        header {
+            background-color: var(--white);
+            border-bottom: 2px solid var(--primary-red);
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo i {
+            color: var(--primary-red);
+        }
+
+        .header-price {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--primary-red);
+            background: #FFEBEE;
+            padding: 5px 15px;
+            border-radius: 4px;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--white) 0%, var(--light-bg) 100%);
+            padding: 80px 5%;
+            text-align: center;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            color: var(--text-main);
+            margin-bottom: 15px;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            margin-bottom: 30px;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--primary-red);
+            color: var(--white);
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            text-align: center;
+        }
+
+        .btn:hover {
+            background-color: var(--dark-red);
+        }
+
+        /* Benefits Section */
+        .benefits {
+            padding: 60px 5%;
+            background-color: var(--white);
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .benefit-item {
+            text-align: center;
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background-color: var(--light-bg);
+            transition: transform 0.3s ease;
+        }
+
+        .benefit-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .benefit-item i {
+            font-size: 2.5rem;
+            color: var(--primary-red);
+            margin-bottom: 15px;
+        }
+
+        .benefit-item h3 {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+
+        /* Pricing Section */
+        .pricing-banner {
+            background-color: var(--primary-red);
+            color: var(--white);
+            text-align: center;
+            padding: 40px 5%;
+        }
+
+        .pricing-banner h2 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .pricing-banner p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        /* Multi-Step Form Section */
+        .form-section {
+            padding: 60px 5%;
+            background-color: var(--light-bg);
+        }
+
+        .form-container {
+            max-width: 700px;
+            margin: 0 auto;
+            background-color: var(--white);
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            border-top: 4px solid var(--primary-red);
+        }
+
+        .step-indicator {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            font-weight: 600;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .step {
+            display: none;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+
+        .step.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 1rem;
+            background-color: var(--light-bg);
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary-red);
+            background-color: var(--white);
+        }
+
+        .form-navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--light-bg);
+        }
+
+        /* Summary Table */
+        .summary-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        .summary-table th, .summary-table td {
+            text-align: left;
+            padding: 12px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .summary-table th {
+            color: var(--text-muted);
+            font-weight: 600;
+            width: 40%;
+        }
+
+        /* Important Info & FAQ */
+        .info-section, .faq-section {
+            padding: 60px 5%;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 30px;
+            text-align: center;
+            color: var(--text-main);
+        }
+
+        .faq-item {
+            background: var(--white);
+            border: 1px solid var(--border-color);
+            margin-bottom: 10px;
+            border-radius: 4px;
+            padding: 20px;
+        }
+
+        .faq-item h4 {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            color: var(--primary-red);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--text-main);
+            color: var(--white);
+            padding: 40px 5% 20px;
+            text-align: center;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: var(--white);
+            opacity: 0.8;
+            font-size: 0.9rem;
+        }
+
+        .footer-links a:hover {
+            opacity: 1;
+            text-decoration: underline;
+        }
+
+        .copyright {
+            font-size: 0.8rem;
+            opacity: 0.6;
+            margin-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 20px;
+        }
+
+        /* WhatsApp FAB */
+        .whatsapp-fab {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: #25D366;
+            color: var(--white);
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            z-index: 1000;
+            transition: transform 0.3s;
+        }
+
+        .whatsapp-fab:hover {
+            transform: scale(1.1);
+            color: white;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2rem; }
+            .form-container { padding: 20px; }
+            .header-price { font-size: 1rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">
+            <i class="fa-solid fa-shield-halved"></i>
+            <span>Kfz-Abmeldung</span>
+        </div>
+        <div class="header-price">€29.95</div>
+    </header>
+
+    <section class="hero">
+        <h1>Deregister Your Vehicle Online</h1>
+        <p>Fast, simple, and available throughout Germany.</p>
+        <button class="btn" onclick="document.getElementById('form-section').scrollIntoView({behavior: 'smooth'})">
+            Start Vehicle Deregistration
+        </button>
+    </section>
+
+    <section class="benefits">
+        <div class="benefits-grid">
+            <div class="benefit-item">
+                <i class="fa-regular fa-calendar-xmark"></i>
+                <h3>No Appointment Required</h3>
+                <p>Skip the waiting times at the registration office.</p>
+            </div>
+            <div class="benefit-item">
+                <i class="fa-solid fa-earth-europe"></i>
+                <h3>Throughout Germany</h3>
+                <p>Valid for all German registration districts.</p>
+            </div>
+            <div class="benefit-item">
+                <i class="fa-solid fa-stopwatch"></i>
+                <h3>Fast & Simple</h3>
+                <p>Fully online in just a few minutes.</p>
+            </div>
+            <div class="benefit-item">
+                <i class="fa-solid fa-user-tie"></i>
+                <h3>Professional Handling</h3>
+                <p>Processed by official standards.</p>
+            </div>
+            <div class="benefit-item">
+                <i class="fa-solid fa-lock"></i>
+                <h3>Secure Data</h3>
+                <p>GDPR compliant & SSL encrypted.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="pricing-banner">
+        <h2>Vehicle Deregistration for only €29.95</h2>
+        <p>Includes processing | Transparent pricing | No hidden fees</p>
+    </section>
+
+    <section class="form-section" id="form-section">
+        <div class="form-container">
+            <div class="step-indicator" id="step-indicator">
+                Step 1 of 7
+            </div>
+
+            <form id="deregistrationForm" onsubmit="event.preventDefault();">
+                
+                <div class="step active" id="step-1">
+                    <h2>Step 1: Vehicle License Plate</h2>
+                    <p style="margin-bottom: 20px; color: var(--text-muted);">Please enter the license plate exactly as it appears on the vehicle.</p>
+                    <div class="form-group">
+                        <label for="license_plate">License Plate Number</label>
+                        <input type="text" id="license_plate" placeholder="e.g. B-AB 1234" required>
+                    </div>
+                    <div class="form-navigation" style="justify-content: flex-end;">
+                        <button type="button" class="btn" onclick="nextStep(1)">Next Step <i class="fa-solid fa-arrow-right"></i></button>
+                    </div>
+                </div>
+
+                <div class="step" id="step-2">
+                    <h2>Step 2: Vehicle Identification Number</h2>
+                    <p style="margin-bottom: 20px; color: var(--text-muted);">You can find the 17-character VIN in your registration certificate.</p>
+                    <div class="form-group">
+                        <label for="vin">VIN / Chassis Number</label>
+                        <input type="text" id="vin" placeholder="Enter 17-character VIN">
+                    </div>
+                    <div class="form-navigation">
+                        <button type="button" class="btn btn-outline" onclick="prevStep(2)"><i class="fa-solid fa-arrow-left"></i> Back</button>
+                        <button type="button" class="btn" onclick="nextStep(2)">Next Step <i class="fa-solid fa-arrow-right"></i></button>
+                    </div>
+                </div>
+
+                <div class="step" id="step-3">
+                    <h2>Step 3: Registration Certificate Code</h2>
+                    <p style="margin-bottom: 20px; color: var(--text-muted);">Enter the security code from the Vehicle Registration Certificate (Part I).</p>
+                    <div class="form-group">
+                        <label for="reg_code">Registration Certificate Security Code</label>
+                        <input type="text" id="reg_code" placeholder="e.g. AB12C34">
+                    </div>
+                    <div class="form-navigation">
+                        <button type="button" class="btn btn-outline" onclick="prevStep(3)"><i class="fa-solid fa-arrow-left"></i> Back</button>
+                        <button type="button" class="btn" onclick="nextStep(3)">Next Step <i class="fa-solid fa-arrow-right"></i></button>
+                    </div>
+                </div>
+
+                <div class="step" id="step-4">
+                    <h2>Step 4: License Plate Code 1</h2>
+                    <p style="margin-bottom: 20px; color: var(--text-muted);">Enter the scratched-off security code from the first license plate.</p>
+                    <div class="form-group">
+                        <label for="plate_code_1">License Plate Security Code 1</label>
+                        <input type="text" id="plate_code_1" placeholder="Enter security code">
+                    </div>
+                    <div class="form-navigation">
+                        <button type="button" class="btn btn-outline" onclick="prevStep(4)"><i class="fa-solid fa-arrow-left"></i> Back</button>
+                        <button type="button" class="btn" onclick="nextStep(4)">Next Step <i class="fa-solid fa-arrow-right"></i></button>
+                    </div>
+                </div>
+
+                <div class="step" id="step-5">
+                    <h2>Step 5: License Plate Code 2</h2>
+                    <p style="margin-bottom: 20px; color: var(--text-muted);">Enter the scratched-off security code from the second license plate.</p>
+                    <div class="form-group">
+                        <label for="plate_code_2">License Plate Security Code 2</label>
+                        <input type="text" id="plate_code_2" placeholder="Enter security code (if applicable)">
+                    </div>
+                    <div class="form-navigation">
+                        <button type="button" class="btn btn-outline" onclick="prevStep(5)"><i class="fa-solid fa-arrow-left"></i> Back</button>
+                        <button type="button" class="btn" onclick="nextStep(5)">Next Step <i class="fa-solid fa-arrow-right"></i></button>
+                    </div>
+                </div>
+
+                <div class="step" id="step-6">
+                    <h2>Step 6: Contact Details</h2>
+                    <p style="margin-bottom: 20px; color: var(--text-muted);">Where should we send the confirmation?</p>
+                    <div class="form-group">
+                        <label for="first_name">First Name</label>
+                        <input type="text" id="first_name">
+                    </div>
+                    <div class="form-group">
+                        <label for="last_name">Last Name</label>
+                        <input type="text" id="last_name">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email">
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" id="phone">
+                    </div>
+                    <div class="form-group">
+                        <label for="address">Address (Optional)</label>
+                        <input type="text" id="address">
+                    </div>
+                    <div class="form-navigation">
+                        <button type="button" class="btn btn-outline" onclick="prevStep(6)"><i class="fa-solid fa-arrow-left"></i> Back</button>
+                        <button type="button" class="btn" onclick="generateSummary()">Review Details <i class="fa-solid fa-arrow-right"></i></button>
+                    </div>
+                </div>
+
+                <div class="step" id="step-7">
+                    <h2>Step 7: Summary & Final Submission</h2>
+                    <p style="margin-bottom: 20px; color: var(--text-muted);">Please review your entries. By submitting, you agree to pay the fee of €29.95.</p>
+                    
+                    <table class="summary-table">
+                        <tr><th>License Plate</th><td id="sum_plate"></td></tr>
+                        <tr><th>VIN</th><td id="sum_vin"></td></tr>
+                        <tr><th>Reg. Cert. Code</th><td id="sum_reg"></td></tr>
+                        <tr><th>Plate Code 1</th><td id="sum_p1"></td></tr>
+                        <tr><th>Plate Code 2</th><td id="sum_p2"></td></tr>
+                        <tr><th>Name</th><td id="sum_name"></td></tr>
+                        <tr><th>Email</th><td id="sum_email"></td></tr>
+                        <tr><th>Total Price</th><td style="font-weight:bold; color:var(--primary-red);">€29.95</td></tr>
+                    </table>
+
+                    <div class="form-navigation">
+                        <button type="button" class="btn btn-outline" onclick="prevStep(7)"><i class="fa-solid fa-arrow-left"></i> Edit Details</button>
+                        <button type="submit" class="btn" style="background-color: var(--success-green);">Submit Vehicle Deregistration Request</button>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </section>
+
+    <section class="info-section">
+        <h2 class="section-title">Required Information</h2>
+        <p style="text-align: center; margin-bottom: 30px; color: var(--text-muted);">To successfully deregister your vehicle online, please have the following ready:</p>
+        <div class="benefits-grid">
+            <div class="benefit-item">
+                <i class="fa-solid fa-car-side"></i>
+                <h3>Vehicle License Plate</h3>
+            </div>
+            <div class="benefit-item">
+                <i class="fa-solid fa-barcode"></i>
+                <h3>VIN / Chassis Number</h3>
+            </div>
+            <div class="benefit-item">
+                <i class="fa-regular fa-id-card"></i>
+                <h3>Security Code from Registration Cert.</h3>
+            </div>
+            <div class="benefit-item">
+                <i class="fa-solid fa-mask"></i>
+                <h3>Security Codes from License Plates</h3>
+            </div>
+        </div>
+    </section>
+
+    <section class="faq-section">
+        <h2 class="section-title">Frequently Asked Questions</h2>
+        
+        <div class="faq-item">
+            <h4>How does online vehicle deregistration work?</h4>
+            <p>Simply enter your vehicle data and scratched-off security codes into our portal. We securely transmit this data to the central vehicle registry to complete the deregistration immediately.</p>
+        </div>
+        <div class="faq-item">
+            <h4>Which information is required?</h4>
+            <p>You need your license plate number, VIN, the hidden security code on your Registration Certificate (Part I), and the hidden codes under the seals of your license plates.</p>
+        </div>
+        <div class="faq-item">
+            <h4>How long does processing take?</h4>
+            <p>The online submission takes just a few minutes. Once submitted, the central registry usually processes the deregistration in real-time or within 24 hours.</p>
+        </div>
+        <div class="faq-item">
+            <h4>What does the service cost?</h4>
+            <p>Our comprehensive service, including data transmission and processing fees, costs a flat rate of €29.95.</p>
+        </div>
+        <div class="faq-item">
+            <h4>Is the service available throughout Germany?</h4>
+            <p>Yes, our portal is connected to the central systems and supports vehicles registered in any district across Germany.</p>
+        </div>
+        <div class="faq-item">
+            <h4>Is my data secure?</h4>
+            <p>Absolutely. We use SSL encryption and comply fully with German GDPR (DSGVO) regulations to ensure your data is safe and processed solely for deregistration.</p>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-links">
+            <a href="#">Home</a>
+            <a href="#">Contact</a>
+            <a href="#">FAQ</a>
+            <a href="#">Legal Notice (Imprint)</a>
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms & Conditions</a>
+        </div>
+        <p>100% Secure & GDPR Compliant | Fast Performance | 256-bit SSL Encryption</p>
+        <div class="copyright">
+            &copy; 2026 Kfz-Abmeldung Online Portal. All rights reserved.
+        </div>
+    </footer>
+
+    <a href="https://wa.me/" class="whatsapp-fab" target="_blank" title="Contact us on WhatsApp">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
+
+    <script>
+        function nextStep(currentStep) {
+            document.getElementById(`step-${currentStep}`).classList.remove('active');
+            document.getElementById(`step-${currentStep + 1}`).classList.add('active');
+            document.getElementById('step-indicator').innerText = `Step ${currentStep + 1} of 7`;
+        }
+
+        function prevStep(currentStep) {
+            document.getElementById(`step-${currentStep}`).classList.remove('active');
+            document.getElementById(`step-${currentStep - 1}`).classList.add('active');
+            document.getElementById('step-indicator').innerText = `Step ${currentStep - 1} of 7`;
+        }
+
+        function generateSummary() {
+            // Get values
+            const plate = document.getElementById('license_plate').value || 'Not provided';
+            const vin = document.getElementById('vin').value || 'Not provided';
+            const regCode = document.getElementById('reg_code').value || 'Not provided';
+            const p1 = document.getElementById('plate_code_1').value || 'Not provided';
+            const p2 = document.getElementById('plate_code_2').value || 'N/A';
+            const name = (document.getElementById('first_name').value + ' ' + document.getElementById('last_name').value).trim() || 'Not provided';
+            const email = document.getElementById('email').value || 'Not provided';
+
+            // Set summary table values
+            document.getElementById('sum_plate').innerText = plate;
+            document.getElementById('sum_vin').innerText = vin;
+            document.getElementById('sum_reg').innerText = regCode;
+            document.getElementById('sum_p1').innerText = p1;
+            document.getElementById('sum_p2').innerText = p2;
+            document.getElementById('sum_name').innerText = name;
+            document.getElementById('sum_email').innerText = email;
+
+            // Move to step 7
+            nextStep(6);
+        }
+    </script>
+</body>
+</html>

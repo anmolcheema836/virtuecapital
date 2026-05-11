@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subgrids | Exciting and Strategic Grid-Based Game</title>
+    <meta name="description" content="Subgrids is a dynamic, fast-paced strategy game combining elements of chess and modern warfare. Customize your experience with unique game options and skins. Play now and experience the thrill!">
+    <meta name="keywords" content="Subgrids, strategy game, chess-like game, board game, game options, grid-based game, game skins, custom gameplay, multiplayer strategy, Project UFO, tactical game">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="Subgrids Team">
+    <meta property="og:title" content="Subgrids | Exciting and Strategic Grid-Based Game">
+    <meta property="og:description" content="Subgrids is a fast-paced, customizable strategy game combining chess-like strategy with exciting game options. Play and enjoy unique skins, game modes, and immersive gameplay.">
+    <meta property="og:image" content="https://subgrids.com/imgs/new_back5.png">
+    <meta property="og:url" content="https://subgrids.com/">
+    <meta name="twitter:title" content="Subgrids | Exciting and Strategic Grid-Based Game">
+    <meta name="twitter:description" content="Subgrids is a dynamic strategy game with customizable gameplay, unique skins, and exciting game options. Jump into the action now!">
+    <meta name="twitter:image" content="https://subgrids.com/imgs/new_back5.png">
+    <link rel="icon" href="https://subgrids.com/imgs/favicon.png">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1508710890146262" crossorigin="anonymous"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-11427279472"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css?v=3">
+
+    <link href="https://api.fontshare.com/v2/css?f[]=clash-display@500,600,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'AW-11427279472');
+    </script>
+
+    <style>
+        /* =========================================================
+           CORE SYSTEM & BLUE GRID THEME (#78A1F8)
+           ========================================================= */
+        :root {
+            --bg-deep: #030611; /* Deep space midnight */
+            --accent: #78A1F8; /* Tactical Blue */
+            --accent-glow: rgba(120, 161, 248, 0.45);
+            --grid-line: rgba(120, 161, 248, 0.18);
+            
+            --glass-bg: rgba(120, 161, 248, 0.04);
+            --glass-border: rgba(120, 161, 248, 0.15);
+            --panel-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
+            
+            --text-main: #FFFFFF;
+            --text-muted: #8E9BB4; 
+            
+            --ease-cinematic: cubic-bezier(0.19, 1, 0.22, 1);
+            --transition-smooth: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
+
+        body {
+            background-color: var(--bg-deep);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        h1, h2, h3, h4, .font-clash { font-family: 'Clash Display', sans-serif; text-transform: uppercase; font-weight: 700; }
+        a { text-decoration: none; color: inherit; }
+        .container { max-width: 1500px; margin: 0 auto; padding: 0 5vw; position: relative; z-index: 2; }
+
+        /* =========================================================
+           CUSTOM INVERTING CURSOR
+           ========================================================= */
+        .custom-cursor {
+            position: fixed; top: 0; left: 0; width: 10px; height: 10px;
+            background-color: #fff; border-radius: 50%; pointer-events: none; z-index: 10000;
+            mix-blend-mode: difference; transform: translate(-50%, -50%);
+            transition: transform 0.1s, width 0.4s var(--ease-cinematic), height 0.4s var(--ease-cinematic);
+            will-change: transform, width, height;
+        }
+        .cursor-hover .custom-cursor { width: 80px; height: 80px; }
+
+        /* =========================================================
+           CINEMATIC PRELOADER
+           ========================================================= */
+        .cinematic-preloader {
+            position: fixed; inset: 0; background: var(--bg-deep); z-index: 10000;
+            display: flex; align-items: center; justify-content: center; flex-direction: column;
+            transition: transform 1.2s cubic-bezier(0.76, 0, 0.24, 1);
+        }
+        .cinematic-preloader.complete { transform: translateY(-100%); }
+        .boot-sequence-p { 
+            font-family: monospace; color: var(--accent); font-size: 1.2rem; letter-spacing: 0.2em; 
+            overflow: hidden; white-space: nowrap; border-right: 2px solid var(--accent); 
+            animation: pTyping 1.8s steps(30, end), pBlink 0.5s step-end infinite alternate; 
+            text-shadow: 0 0 10px var(--accent-glow);
+        }
+        @keyframes pTyping { from { width: 0 } to { width: 140px } }
+        @keyframes pBlink { 50% { border-color: transparent } }
+
+        /* =========================================================
+           IMMERSIVE BLUE GRID ENVIRONMENT
+           ========================================================= */
+        .immersive-environment { position: fixed; inset: -100px; z-index: 0; pointer-events: none; overflow: hidden; }
+        .grid-floor {
+            position: absolute; inset: 0;
+            background-image: linear-gradient(to right, var(--grid-line) 1px, transparent 1px), linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+            background-size: 80px 80px;
+            transform: perspective(1000px) rotateX(65deg) translateY(-100px) translateZ(-200px);
+            transform-origin: top center;
+            margin-left: calc(var(--mouse-x, 0) * -0.06px);
+            margin-top: calc(var(--mouse-y, 0) * -0.06px);
+            transition: margin 0.1s linear;
+        }
+        .immersive-environment::after {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 60%;
+            background: linear-gradient(to bottom, var(--bg-deep) 0%, transparent 100%);
+        }
+        .ambient-tactical-glow {
+            position: fixed; width: 900px; height: 900px; border-radius: 50%;
+            background: radial-gradient(circle, rgba(120, 161, 248, 0.08) 0%, transparent 70%);
+            left: var(--mouse-x, 50%); top: var(--mouse-y, 50%);
+            transform: translate(-50%, -50%); z-index: 1; pointer-events: none;
+            transition: left 0.1s, top 0.1s;
+        }
+
+        /* =========================================================
+           GLOBAL CUI ELEMENTS
+           ========================================================= */
+        .c-glass-panel {
+            background: var(--glass-bg); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
+            border: 1px solid var(--glass-border); border-radius: 20px; box-shadow: var(--panel-shadow);
+            transition: var(--transition-smooth);
+        }
+        
+        .g-button-p {
+            display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+            padding: 15px 30px; border-radius: 4px; font-weight: 700; font-size: 0.9rem;
+            transition: all 0.4s var(--ease-cinematic); text-transform: uppercase; letter-spacing: 0.1em;
+            border: 2px solid transparent; position: relative; overflow: hidden;
+            background: rgba(255, 255, 255, 0.04); backdrop-filter: blur(5px); color: var(--text-main);
+            border-color: rgba(255,255,255,0.08); box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        .g-button-p:hover { transform: translateY(-3px) scale(1.03); border-color: var(--accent); color: var(--accent); }
+        
+        .button-primary-p { background: var(--accent); color: var(--bg-deep); border-color: var(--accent); box-shadow: 0 8px 30px var(--accent-glow); }
+        .button-primary-p:hover { background: #fff; border-color: #fff; color: var(--bg-deep); box-shadow: 0 10px 40px rgba(255,255,255,0.4); transform: scale(1.05); }
+
+        .button-primary-play-p { background: rgba(255, 51, 102, 0.8); border-color: rgba(255, 51, 102, 0.8); box-shadow: 0 8px 30px rgba(255, 51, 102, 0.3); }
+        .button-primary-play-p:hover { background: var(--accent); color: var(--bg-deep); border-color: var(--accent); }
+        
+        .magnetic-wrapper-p { display: inline-block; padding: 10px; margin: -10px; }
+
+        /* =========================================================
+           MAINTENANCE MODAL (Original text preserved)
+           ========================================================= */
+        #alertModal {
+            display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 90%; max-width: 550px; background: rgba(4, 8, 18, 0.98); color: #fff;
+            padding: 40px; border-radius: 20px; box-shadow: 0 30px 80px rgba(0,0,0,0.8); z-index: 1050;
+            border: 2px solid var(--accent); backdrop-filter: blur(30px); text-align: center;
+        }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
+        .modal-title { font-size: 2.2rem; color: var(--accent); line-height: 1.1; }
+        .close-btn { background: none; border: none; color: var(--text-muted); font-size: 30px; cursor: pointer; transition: color 0.3s; }
+        .close-btn:hover { color: #fff; }
+        .modal-body h4 { font-weight: 600; font-size: 1.5rem; margin: 20px 0; color: #fff; line-height: 1.4; }
+        .modal-body p { color: var(--text-muted); margin-bottom: 25px; }
+        .modal-footer h4 { color: var(--text-muted); font-size: 1.1rem; text-transform: none; font-weight: 500; font-family: 'Inter'; }
+
+        /* =========================================================
+           NAVIGATION
+           ========================================================= */
+        nav { padding: 30px 0; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 20px; z-index: 10; position: relative; }
+        
+        .p-logo-mark {
+            width: 45px; height: 45px; display: grid; grid-template-columns: 1fr 1fr; gap: 4px;
+            transform: rotate(45deg); transition: transform 0.6s var(--ease-cinematic);
+        }
+        .p-logo-mark:hover { transform: rotate(135deg); }
+        .logo-box { background: var(--text-main); border-radius: 4px; }
+        .logo-box:nth-child(1) { background: var(--accent); box-shadow: 0 0 15px var(--accent); }
+        
+        .p-nav-links-p { display: flex; flex-wrap: wrap; gap: 15px; align-items: center; }
+        .p-nav-links-p a { text-transform: uppercase; font-weight: 700; font-size: 0.9rem; letter-spacing: 0.1em; color: var(--text-muted); position: relative; transition: color 0.3s; }
+        .p-nav-links-p a:hover { color: var(--text-main); }
+        .p-nav-links-p a::after { content: ''; position: absolute; bottom: -5px; left: 0; width: 0; height: 1px; background: var(--accent); transition: width 0.3s var(--ease-cinematic); }
+        .p-nav-links-p a:hover::after { width: 100%; box-shadow: 0 0 10px var(--accent); }
+
+        /* =========================================================
+           HERO SECTION (Original Text Preserved)
+           ========================================================= */
+        .p-command-hub-hero-p { padding: 80px 0; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; min-height: 80vh; position: relative; }
+        .hub-content-reveal-p { position: relative; z-index: 5; }
+        .hub-content-reveal-p h1 { font-size: clamp(3rem, 5.5vw, 6rem); line-height: 0.95; margin-bottom: 30px; text-transform: uppercase; letter-spacing: -2px; text-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .hub-content-reveal-p h1 span { color: var(--accent); text-shadow: 0 0 40px var(--accent-glow); display: block; }
+        .hub-content-reveal-p p { font-size: clamp(1.1rem, 1.8vw, 1.25rem); color: var(--text-muted); line-height: 1.6; margin-bottom: 50px; font-weight: 600; max-width: 650px; }
+        
+        .hero-actions-global-p { display: flex; gap: 18px; flex-wrap: wrap; }
+
+        .p-tactical-visualization-p { position: relative; overflow: hidden; transform: perspective(1500px) rotateY(-5deg); transition: transform 0.5s var(--ease-cinematic), box-shadow 0.5s; aspect-ratio: 16/10; border-radius: 24px; border: 4px solid #fff; box-shadow: 30px 30px 0 rgba(120, 161, 248, 0.1); }
+        .p-tactical-visualization-p:hover { transform: perspective(1500px) rotateY(0deg) scale(1.03); box-shadow: 20px 20px 0 rgba(120, 161, 248, 0.25); border-color: var(--accent); }
+        .p-tactical-visualization-p img { width: 100%; height: 100%; object-fit: cover; display: block; filter: brightness(0.9) contrast(1.1); transition: filter 0.5s; }
+        .p-tactical-visualization-p:hover img { filter: brightness(1); }
+        .p-tactical-visualization-p::after { content: 'LIVE_DATA_STREAM'; position: absolute; top: 20px; right: 20px; background: rgba(4,8,18,0.7); color: var(--accent); font-family: monospace; font-size: 0.7rem; padding: 6px 12px; border-radius: 4px; letter-spacing: 2px; }
+
+        /* =========================================================
+           HOLOGRAPHIC RECRUITER CARDS (Original Content Preserved)
+           ========================================================= */
+        .tactical-promos-section { padding: 120px 0; perspective: 1200px; }
+        .tactical-promos-bento-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; }
+        
+        .c-tilt-holographic-card-p {
+            text-align: center; padding: 50px 30px; border-radius: 24px; transform-style: preserve-3d;
+            transition: transform 0.1s ease, box-shadow 0.4s, border-color 0.4s; position: relative; overflow: hidden;
+            display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 380px;
+            background: rgba(120, 161, 248, 0.03); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(120, 161, 248, 0.1); box-shadow: var(--panel-shadow);
+        }
+        .c-tilt-holographic-card-p:hover { border-color: rgba(120, 161, 248, 0.4); box-shadow: 0 20px 60px rgba(120, 161, 248, 0.15); }
+        
+        .dispatch-glowing-effect { position: absolute; inset: -10px; border: 2px solid transparent; border-radius: 30px; pointer-events: none; opacity: 0; transition: opacity 0.3s; }
+        .c-tilt-holographic-card-p:hover .dispatch-glowing-effect { opacity: 0.8; }
+
+        .peawee-glow-p .dispatch-glowing-effect { border-color: #FFD700; filter: blur(8px); }
+        .peawee-glow-p .h-dispatch-badge { color: #FFD700; border-color: #FFD700; box-shadow: 0 0 10px rgba(255,215,0,0.3); }
+
+        .ironman-glow-p .dispatch-glowing-effect { border-color: #FF3366; filter: blur(8px); }
+        .ironman-glow-p .h-dispatch-badge { color: #FF3366; border-color: #FF3366; box-shadow: 0 0 10px rgba(255,51,102,0.3); }
+
+        .hercules-glow-p .dispatch-glowing-effect { border-color: #00FF99; filter: blur(8px); }
+        .hercules-glow-p .h-dispatch-badge { color: #00FF99; border-color: #00FF99; box-shadow: 0 0 10px rgba(0,255,153,0.3); }
+
+        .tilt-inner-p { transform: translateZ(60px); }
+        .h-dispatch-badge { display: inline-block; padding: 6px 16px; border-radius: 50px; border: 2px solid; font-weight: 800; font-size: 0.7rem; text-transform: uppercase; margin-bottom: 25px; letter-spacing: 0.15em; font-family: monospace; }
+        .h-dispatch-winner { font-size: 2rem; margin-bottom: 15px; text-transform: uppercase; font-weight: 800; line-height: 1.1; color: #fff; }
+        .h-dispatch-promo-reveal-p { font-weight: 600; color: var(--text-muted); margin-bottom: 30px; line-height: 1.6; font-size: 1rem; }
+        
+        .h-dispatch-code-interactive-p {
+            display: inline-block; background: rgba(0,0,0,0.5); border: 1px solid rgba(120, 161, 248, 0.1); color: var(--accent); padding: 15px 35px;
+            border-radius: 8px; font-family: monospace; font-size: 1.6rem; font-weight: 800;
+            transition: all 0.3s; letter-spacing: 0.15em; text-shadow: 0 0 10px var(--accent-glow);
+        }
+        .h-dispatch-code-interactive-p:hover { background: #fff; color: var(--bg-deep); border-color: #fff; transform: scale(1.05); box-shadow: 0 0 30px rgba(255,255,255,0.4); text-shadow: none; }
+
+        /* =========================================================
+           ARTICLES TERMINAL (Original Content Preserved)
+           ========================================================= */
+        .intel-terminal-feeds-section { padding: 100px 0 150px; }
+        .section-header-reveal-p { text-align: center; margin-bottom: 70px; position: relative; }
+        .section-header-reveal-p h2 { font-size: 4rem; color: var(--text-main); text-transform: uppercase; letter-spacing: -2px; line-height: 1; text-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .section-header-reveal-p p { font-size: 1.25rem; font-weight: 600; color: var(--text-muted); max-width: 800px; margin: 25px auto 0; line-height: 1.6; }
+
+        .intel-terminal-feeds-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 40px; }
+        
+        .intel-feed-dispatch-card {
+            display: flex; flex-direction: column; position: relative; 
+            border: 1px solid rgba(120, 161, 248, 0.1); border-radius: 20px; overflow: hidden; background: rgba(0,0,0,0.4); transition: var(--transition-smooth);
+        }
+        .intel-feed-dispatch-card:hover { border-color: rgba(120, 161, 248, 0.4); box-shadow: 0 15px 40px rgba(120, 161, 248, 0.1); transform: translateY(-3px); }
+        
+        .intel-card-image-visualization-p { width: 100%; aspect-ratio: 16/9; overflow: hidden; position: relative; z-index: 1; border-bottom: 1px solid rgba(120, 161, 248, 0.1); }
+        .intel-card-image-visualization-p img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1); filter: brightness(0.8) contrast(1.1); }
+        .intel-feed-dispatch-card:hover .intel-card-image-visualization-p img { transform: scale(1.08); filter: brightness(1) contrast(1.1); }
+        
+        .intel-card-image-visualization-p::before { content:''; position:absolute; inset:0; background: repeating-linear-gradient(rgba(120,161,248,0.02) 0px, rgba(120,161,248,0.02) 1px, transparent 1px, transparent 2px); z-index: 2; pointer-events: none; }
+
+        .intel-card-db-data-reveal-p { position: relative; z-index: 2; padding: 25px; flex-grow: 1; display: flex; flex-direction: column; }
+        .intel-card-meta-p { display: flex; gap: 15px; align-items: center; margin-bottom: 18px; font-family: monospace; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; }
+        .intel-date-p { font-weight: 800; color: var(--accent); }
+
+        .intel-title-p { font-size: 1.5rem; color: var(--text-main); margin-bottom: 15px; line-height: 1.2; text-transform: uppercase; transition: color 0.3s; text-shadow: 0 5px 15px rgba(0,0,0,0.5); flex-grow: 1; font-family: 'Clash Display'; }
+        .intel-feed-dispatch-card:hover .intel-title-p { color: var(--accent); }
+        .intel-desc-p { color: var(--text-muted); font-size: 1rem; line-height: 1.6; font-weight: 500; opacity: 0.9; }
+
+        /* =========================================================
+           FOOTER (Original Text & Numbers Preserved)
+           ========================================================= */
+        footer { padding: 60px 0 40px; border-top: 1px solid rgba(120, 161, 248, 0.1); text-align: center; color: var(--text-muted); font-size: 0.85rem; margin-top: 100px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .footer-hub { display: flex; flex-direction: column; align-items: center; gap: 20px; }
+        .footer-links-hub { display: flex; gap: 30px; flex-wrap: wrap; justify-content: center; text-transform: uppercase; font-weight: 700; margin-bottom: 20px; }
+        .footer-links-hub a:hover { color: var(--accent); }
+        .p-stat-panel-p { background: rgba(0,0,0,0.5); border: 1px solid rgba(120, 161, 248, 0.1); color: #fff; padding: 12px 30px; border-radius: 50px; font-weight: 800; font-family: 'Clash Display'; font-size: 1.3rem; box-shadow: 0 10px 30px rgba(0,0,0,0.1); margin-bottom: 20px; transition: transform 0.3s; }
+        .p-stat-panel-p:hover { transform: scale(1.05) translateY(-3px); border-color: var(--accent); }
+
+        /* Reveal Animations */
+        .p-view-reveal-p { opacity: 0; transform: translateY(70px) scale(0.97); transition: 0.9s cubic-bezier(0.16, 1, 0.3, 1); }
+        .p-view-reveal-p.active { opacity: 1; transform: translateY(0) scale(1); }
+
+        @media (max-width: 992px) {
+            .p-command-hub-hero-p { grid-template-columns: 1fr; text-align: center; padding: 50px 0; gap: 40px; }
+            .p-command-hub-hero-p .hub-content-reveal-p p { margin-left: auto; margin-right: auto; }
+            .p-tactical-visualization-p { transform: none; order: -1; aspect-ratio: 16/9; }
+            .p-nav-links-p { justify-content: center; width: 100%; }
+        }
+        @media (max-width: 768px) {
+            * { cursor: auto !important; }
+            .custom-cursor { display: none; }
+            .p-view-reveal-p { transform: translateY(40px) scale(1); }
+            .p-view-reveal-p.active { transform: translateY(0) scale(1); }
+            .section-header-reveal-p h2 { font-size: 3rem; }
+            .intel-title-p { font-size: 1.3rem; }
+            .h-dispatch-winner { font-size: 1.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="immersive-environment">
+        <div class="grid-floor"></div>
+    </div>
+    <div class="ambient-tactical-glow"></div>
+
+    <div class="cinematic-preloader" id="p-preloader">
+        <div class="boot-sequence-p" id="p-text-loader">INITIALIZING_GRID...</div>
+    </div>
+
+    <div class="custom-cursor" id="cursor-dot"></div>
+
+    <div id="alertModal">
+        <div class="modal-header">
+            <h3 class="modal-title font-clash">Scheduled Maintenance!</h3>
+            <button class="close-btn p-interactive-point" onclick="closeModal()">&times;</button>
+        </div>
+        <div class="modal-body p-3">
+            <img src="/imgs/1_small.png" style="max-width: 100px; display: block; margin: 0 auto 20px; border: none;" alt="Alert">
+            <h4>At 2 AM, we will be having a 30-minute break for maintenance.</h4>
+        </div>
+        <div class="modal-footer modal-footer-p justify-content-center">
+            <h4>Sorry for any inconvenience.</h4>
+        </div>
+    </div>
+
+    <div class="container">
+        <nav class="c-glass-panel">
+            <a href="/" class="p-interactive-point">
+                <div class="p-logo-mark">
+                    <div class="logo-box"></div>
+                    <div class="logo-box"></div>
+                    <div class="logo-box"></div>
+                    <div class="logo-box"></div>
+                </div>
+            </a>
+            <div class="p-nav-links-p">
+                <div class="magnetic-wrapper-p"><a href="javascript:void(0)" onclick="login()" class="g-button-p g-button-tactical-p p-interactive-point magnetic-target-p">Log In</a></div>
+                <div class="magnetic-wrapper-p"><a href="javascript:void(0)" onclick="signup()" class="g-button-p g-button-tactical-p p-interactive-point magnetic-target-p">Sign Up</a></div>
+                <div class="magnetic-wrapper-p"><a href="https://subgrids.com/plans" class="g-button-p p-interactive-point magnetic-target-p">Plan</a></div>
+                <div class="magnetic-wrapper-p"><a href="https://subgrids.com/posts" class="g-button-p p-interactive-point magnetic-target-p">Blogs</a></div>
+                <div class="magnetic-wrapper-p"><a href="/contact-us" class="g-button-p p-interactive-point magnetic-target-p">Contact Us</a></div>
+            </div>
+        </nav>
+
+        <section class="p-command-hub-hero-p p-view-reveal-p" id="hero">
+            <div class="hub-content-reveal-p">
+                <h1>Dive into the <br><span>World of Online Gaming</span></h1>
+                <p>Explore a diverse collection of online games at SubGrids. Whether you're into classic card games, puzzles, or the latest multiplayer adventures, SubGrids offers an engaging gaming experience for players of all levels. Join the fun and discover your next favorite game today!</p>
+                
+                <div class="hero-actions-global-p">
+                    <div class="magnetic-wrapper-p">
+                        <a href="javascript:void(0)" onclick="play_now()" class="g-button-p button-primary-play-p p-interactive-point magnetic-target-p">
+                            <span class="fa fa-play"></span> Play Now
+                        </a>
+                    </div>
+                    <div class="magnetic-wrapper-p">
+                        <a href="javascript:void(0)" onclick="tutorial()" class="g-button-p button-primary-p p-interactive-point magnetic-target-p">
+                            <span class="fa fa-file-video-o"></span> Tutorial
+                        </a>
+                    </div>
+                    <div class="magnetic-wrapper-p">
+                        <button onclick="trailer()" class="g-button-p g-button-tactical-p p-interactive-point magnetic-target-p">
+                            <span class="fa fa-video-camera"></span> Trailer
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="p-tactical-visualization-p p-interactive-point">
+                <img src="https://blog.playstation.com/tachyon/2025/04/1bc4f574153897353b906f60de5f0a0a0f4556d2-scaled.jpg?resize=1088%2C612&crop_strategy=smart&zoom=1" alt="Subgrids Display">
+            </div>
+        </section>
+
+        <section class="tactical-promos-section p-view-reveal-p">
+            <div class="tactical-promos-bento-grid">
+                
+                <div class="c-tilt-holographic-card-p peawee-glow-p p-interactive-point">
+                    <div class="card-shimmer"></div>
+                    <div class="dispatch-glowing-effect"></div>
+                    <div class="tilt-inner-p">
+                        <div class="h-dispatch-badge">Our New Pea Wee Winner!</div>
+                        <h3 class="h-dispatch-winner">Congrats to Josh!</h3>
+                        <p class="h-dispatch-promo-reveal-p">Save $5 on a 1 Year membership!<br>USE RECRUITER CODE:</p>
+                        <div class="h-dispatch-code-interactive-p p-interactive-point magnetic-target-p copy-hint" onclick="copyCode('JOSH5')">JOSH5</div>
+                    </div>
+                </div>
+
+                <div class="c-tilt-holographic-card-p ironman-glow-p p-interactive-point">
+                    <div class="card-shimmer"></div>
+                    <div class="dispatch-glowing-effect"></div>
+                    <div class="tilt-inner-p">
+                        <div class="h-dispatch-badge">Our New Ironman Winner!</div>
+                        <h3 class="h-dispatch-winner">Congrats to _______!</h3>
+                        <p class="h-dispatch-promo-reveal-p">Save $5 on a 1 Year membership!<br>USE RECRUITER CODE:</p>
+                        <div class="h-dispatch-code-interactive-p magnetic-target-p copy-hint" onclick="copyCode('_______')">_______</div>
+                    </div>
+                </div>
+
+                <div class="c-tilt-holographic-card-p hercules-glow-p p-interactive-point">
+                    <div class="card-shimmer"></div>
+                    <div class="dispatch-glowing-effect"></div>
+                    <div class="tilt-inner-p">
+                        <div class="h-dispatch-badge">Our New Hercules Winner!</div>
+                        <h3 class="h-dispatch-winner">Congrats to _______!</h3>
+                        <p class="h-dispatch-promo-reveal-p">Save $5 on a 1 Year membership!<br>USE RECRUITER CODE:</p>
+                        <div class="h-dispatch-code-interactive-p magnetic-target-p copy-hint" onclick="copyCode('_______')">_______</div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section class="intel-terminal-feeds-section p-view-reveal-p">
+            <div class="section-header-reveal-p">
+                <h2>Our Latest Articles</h2>
+                <p>Stay up to date with the latest gaming news, expert tips, game reviews, and hidden gems. Dive into fresh content crafted to level up your gaming knowledge and keep you ahead of the curve.</p>
+            </div>
+            
+            <div class="intel-terminal-feeds-grid">
+                
+                <a href="https://subgrids.com/blog/people-want-to-have-fun-subgrids-delivers-just-this-P1d4n" class="intel-feed-dispatch-card p-interactive-point">
+                    <div class="intel-card-image-visualization-p"><img src="https://subgrids.com/blogs/83060113-265e-4b7b-af5b-eaf79d0b5a6d.jpg" alt="Article 1"></div>
+                    <div class="intel-card-db-data-reveal-p">
+                        <div class="intel-card-meta-p"><span class="intel-date-p">Apr-22-2025</span></div>
+                        <h3 class="intel-title-p">People Want to Have Fun!</h3>
+                        <p class="intel-desc-p">This blog contains information about subgrids.</p>
+                    </div>
+                </a>
+
+                <a href="https://subgrids.com/blog/great-news-buckle-your-seatbelts-cNZ2Z" class="intel-feed-dispatch-card p-interactive-point">
+                    <div class="intel-card-image-visualization-p"><img src="https://subgrids.com/blogs/a1a93134-7709-410e-8c04-9f38cfb8af45.jpg" alt="Article 2"></div>
+                    <div class="intel-card-db-data-reveal-p">
+                        <div class="intel-card-meta-p"><span class="intel-date-p">Apr-23-2025</span></div>
+                        <h3 class="intel-title-p">Fasten your seatbelts! Events starting soon.</h3>
+                        <p class="intel-desc-p">Practice up, our first event 'The Pee Wee Shoot-Out' starts soon!</p>
+                    </div>
+                </a>
+
+                <a href="https://subgrids.com/blog/what-are-the-subgrids-game-options-Nsxlb" class="intel-feed-dispatch-card p-interactive-point">
+                    <div class="intel-card-image-visualization-p"><img src="https://subgrids.com/blogs/5d818923-c95b-474f-9ccf-e7ba79c3de6a.jfif" alt="Article 3"></div>
+                    <div class="intel-card-db-data-reveal-p">
+                        <div class="intel-card-meta-p"><span class="intel-date-p">Apr-23-2025</span></div>
+                        <h3 class="intel-title-p">What are the Subgrids Game Options?</h3>
+                        <p class="intel-desc-p">Information about setting up your customized game with Game Options.</p>
+                    </div>
+                </a>
+
+                <a href="https://subgrids.com/blog/what-are-the-subgrids-skins-9d0iG" class="intel-feed-dispatch-card p-interactive-point">
+                    <div class="intel-card-image-visualization-p"><img src="https://subgrids.com/blogs/1ac4f16e-3b01-4bab-91cf-c81d3212f2db.png" alt="Article 4"></div>
+                    <div class="intel-card-db-data-reveal-p">
+                        <div class="intel-card-meta-p"><span class="intel-date-p">Apr-23-2025</span></div>
+                        <h3 class="intel-title-p">What are the Subgrids Skins?</h3>
+                        <p class="intel-desc-p">Army designs in Subgrids are also known as Skins.</p>
+                    </div>
+                </a>
+
+                <a href="https://subgrids.com/blog/why-is-the-game-now-called-subgrids-a93kF" class="intel-feed-dispatch-card p-interactive-point">
+                    <div class="intel-card-image-visualization-p"><img src="https://subgrids.com/blogs/478a596a-7c03-43ed-a052-67d2b8d0a507.jpg" alt="Article 5"></div>
+                    <div class="intel-card-db-data-reveal-p">
+                        <div class="intel-card-meta-p"><span class="intel-date-p">Apr-24-2025</span></div>
+                        <h3 class="intel-title-p">Why is the game now called Subgrids?</h3>
+                        <p class="intel-desc-p">Learn how the title Subgrids came about.</p>
+                    </div>
+                </a>
+
+            </div>
+        </section>
+
+        <footer>
+            <div class="footer-hub">
+                <div class="p-stat-panel-p p-interactive-point">2177</div>
+                <div class="footer-links-hub">
+                    <a href="/privacy" class="p-interactive-point">Privacy Policy</a>
+                    <a href="/terms" class="p-interactive-point">Terms & Conditions</a>
+                </div>
+                <div>© 2026 Subgrids Entertainment, LLC. All Rights Reserved.</div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // --- 1. Interaction Engine ---
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('p-preloader').classList.add('complete');
+            }, 1800);
+        });
+
+        const cursorDot = document.getElementById('cursor-dot');
+        let mouseX = window.innerWidth / 2;
+        let mouseY = window.innerHeight / 2;
+
+        window.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            if(cursorDot) cursorDot.style.transform = `translate(${mouseX}px, ${mouseY}px)`;
+            
+            document.documentElement.style.setProperty('--mouse-x', `${mouseX}px`);
+            document.documentElement.style.setProperty('--mouse-y', `${mouseY}px`);
+        });
+
+        document.querySelectorAll('.p-interactive-point').forEach(el => {
+            el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+            el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+        });
+
+        document.querySelectorAll('.magnetic-target-p').forEach(btn => {
+            btn.addEventListener('mousemove', (e) => {
+                const rect = btn.getBoundingClientRect();
+                const x = (e.clientX - rect.left - rect.width / 2) * 0.3;
+                const y = (e.clientY - rect.top - rect.height / 2) * 0.3;
+                btn.style.transform = `translate(${x}px, ${y}px)`;
+            });
+            btn.addEventListener('mouseleave', () => btn.style.transform = `translate(0px, 0px)`);
+        });
+
+        document.querySelectorAll('.c-tilt-holographic-card-p').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const cx = rect.width / 2;
+                const cy = rect.height / 2;
+                
+                const rotX = ((y - cy) / cy) * -8;
+                const rotY = ((x - cx) / cx) * 8;
+                
+                card.style.transform = `perspective(1500px) rotateX(${rotX}deg) rotateY(${rotY}deg) scale3d(1.02, 1.02, 1.02)`;
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = `perspective(1500px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+            });
+        });
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
+        
+        document.querySelectorAll('.p-view-reveal-p').forEach(el => observer.observe(el));
+
+
+        // --- 2. Original User Scripts Preserved ---
+        function closeModal() {
+            document.getElementById('alertModal').style.display = 'none';
+        }
+        function tutorial() {
+            window.location = "/playnow/tutorial3/game";
+        }
+        function play_now() {
+            window.location = "/playnow/v7/game";
+        }
+        function trailer() {
+            window.open("https://youtu.be/9S5XIgD_OXA", "_blank");
+        }
+        function signup() {
+            window.location = "/signup";
+        }
+        function login() {
+            window.location = "/login";
+        }
+        function playvideo() {
+            window.location = '/playnow/v7/game';
+        }
+        function mylink() {
+            location.href = '/mylink';
+        }
+        
+        function copyCode(code) {
+            navigator.clipboard.writeText(code).then(() => {
+                // Find event target correctly to apply visual change
+                const target = event.currentTarget;
+                if(target) {
+                    const originalText = target.innerText;
+                    target.innerText = "COPIED!";
+                    target.style.background = "var(--accent)";
+                    target.style.color = "var(--bg-deep)";
+                    
+                    setTimeout(() => {
+                        target.innerText = originalText;
+                        target.style.background = "";
+                        target.style.color = "";
+                    }, 2000);
+                }
+            });
+        }
+
+        // Modal Auto Open Logic
+        document.addEventListener('DOMContentLoaded', function() {
+            const alertModal = document.getElementById('alertModal');
+            const isAlert = ""; // Original string condition
+            if (isAlert) {
+                alertModal.style.display = 'block';
+                setTimeout(() => {
+                    alertModal.style.display = 'none';
+                }, 5000);
+            }
+        });
+    </script>
+</body>
+</html>
