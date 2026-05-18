@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MMI Gems | Factory Direct Gemstones</title>
+
+    <!-- Premium Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+
+    <style>
+        /* CSS Reset & Variables */
+        :root {
+            --bg-base: #030303;
+            --bg-surface: #0a0a0a;
+            --bg-surface-light: #111111;
+            --text-primary: #fdfdfd;
+            --text-secondary: #a8a8a8;
+            --accent: #cfa858; /* Elegant Champagne Gold */
+            --accent-glow: rgba(207, 168, 88, 0.15);
+            --glass-bg: rgba(255, 255, 255, 0.015);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --font-serif: 'Playfair Display', serif;
+            --font-sans: 'Inter', sans-serif;
+            --transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg-base);
+            color: var(--text-primary);
+            font-family: var(--font-sans);
+            line-height: 1.7;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        a { text-decoration: none; color: inherit; transition: var(--transition); }
+        ul { list-style: none; }
+
+        /* Announcement Bar */
+        .top-bar {
+            background: var(--bg-surface);
+            color: var(--accent);
+            font-size: 0.7rem;
+            text-align: center;
+            padding: 0.8rem 2rem;
+            letter-spacing: 1.5px;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            border-bottom: 1px solid var(--glass-border);
+            text-transform: uppercase;
+        }
+
+        /* Navbar - Strict Single Line Desktop */
+        .navbar {
+            position: sticky;
+            top: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.2rem 4rem;
+            background: rgba(3, 3, 3, 0.9);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--glass-border);
+            z-index: 1000;
+        }
+
+        /* Minimalist Logo Masking */
+        .logo-wrapper {
+            width: 55px;
+            height: 55px;
+            background: var(--text-primary);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            flex-shrink: 0;
+            transition: var(--transition);
+        }
+        .logo-wrapper:hover { transform: scale(1.05); box-shadow: 0 0 20px var(--accent-glow); }
+        .logo-wrapper img { width: 100%; height: auto; }
+
+        /* Desktop Links - Forces one line */
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 2.2rem;
+            white-space: nowrap;
+        }
+
+        .nav-links a {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+        .nav-links a:hover { color: var(--accent); }
+
+        .basket-toggle {
+            background: transparent;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            padding: 0.6rem 1.5rem;
+            border-radius: 2px;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            cursor: pointer;
+            letter-spacing: 1.5px;
+            transition: var(--transition);
+            white-space: nowrap;
+        }
+        .basket-toggle:hover { background: var(--accent); color: var(--bg-base); }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 6px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            z-index: 1002;
+        }
+        .hamburger span {
+            width: 30px; height: 1px;
+            background: var(--text-primary);
+            transition: var(--transition);
+        }
+
+        /* Mobile Menu */
+        .mobile-menu {
+            position: fixed;
+            top: 0; right: -100%;
+            width: 100%; height: 100vh;
+            background: rgba(5, 5, 5, 0.98);
+            backdrop-filter: blur(20px);
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: var(--transition);
+        }
+        .mobile-menu.active { right: 0; }
+        .mobile-menu li { margin: 1.5rem 0; text-align: center; }
+        .mobile-menu a { font-family: var(--font-serif); font-size: 1.8rem; color: var(--text-secondary); }
+        .mobile-menu a:hover { color: var(--accent); }
+
+        /* Shopping Basket Offcanvas */
+        .basket-sidebar {
+            position: fixed;
+            top: 0; right: -450px;
+            width: 100%; max-width: 450px; height: 100vh;
+            background: var(--bg-surface-light);
+            border-left: 1px solid var(--glass-border);
+            z-index: 1001;
+            padding: 3rem;
+            transition: var(--transition);
+            box-shadow: -10px 0 30px rgba(0,0,0,0.5);
+        }
+        .basket-sidebar.active { right: 0; }
+        .close-basket {
+            background: none; border: none; color: var(--text-secondary);
+            font-size: 2.5rem; cursor: pointer; float: right; line-height: 0.5;
+            transition: var(--transition);
+        }
+        .close-basket:hover { color: var(--accent); transform: rotate(90deg); }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            padding: 12rem 2rem 8rem;
+            text-align: center;
+            background: linear-gradient(rgba(3,3,3,0.6), rgba(3,3,3,1)), url('https://mmigems.com/wp-content/uploads/2024/01/home-3.jpg') center/cover no-repeat;
+            border-bottom: 1px solid var(--glass-border);
+        }
+        .hero h1 {
+            font-family: var(--font-serif);
+            font-size: clamp(3rem, 6vw, 5.5rem);
+            font-weight: 400;
+            margin-bottom: 1.5rem;
+            letter-spacing: 1px;
+            background: linear-gradient(to right, #fff, var(--accent), #fff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .hero p { 
+            color: var(--text-secondary); 
+            max-width: 650px; 
+            margin: 0 auto; 
+            font-size: 1.1rem;
+            letter-spacing: 0.5px;
+        }
+
+        /* General Section Layout */
+        .section-container { padding: 8rem 4rem; max-width: 1600px; margin: 0 auto; }
+        .section-title { 
+            font-family: var(--font-serif); 
+            font-size: 3rem; 
+            text-align: center; 
+            margin-bottom: 5rem; 
+            font-weight: 400; 
+            position: relative;
+        }
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -1.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 1px;
+            background: var(--accent);
+        }
+
+        /* Neo-Bento Showcase Grid */
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+            grid-auto-rows: 380px;
+        }
+
+        .bento-card {
+            position: relative;
+            background: var(--bg-surface);
+            border: 1px solid var(--glass-border);
+            border-radius: 2px;
+            overflow: hidden;
+            display: flex;
+            align-items: flex-end;
+            padding: 2.5rem;
+            transition: var(--transition);
+        }
+        .bento-card:hover {
+            border-color: rgba(207, 168, 88, 0.4);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+            z-index: 2;
+        }
+        .bento-card img {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            object-fit: cover;
+            opacity: 0.3;
+            transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.5s ease, filter 0.5s ease;
+            filter: grayscale(80%) contrast(1.2);
+        }
+        .bento-card:hover img { 
+            opacity: 0.6; 
+            filter: grayscale(0%) contrast(1); 
+            transform: scale(1.05); 
+        }
+        
+        .bento-info { position: relative; z-index: 2; width: 100%; }
+        .bento-info h3 { 
+            font-family: var(--font-serif); 
+            font-size: 1.8rem; 
+            font-weight: 400; 
+            line-height: 1.2;
+            text-shadow: 0 4px 15px rgba(0,0,0,0.9);
+            color: var(--text-primary);
+            transition: color 0.4s ease;
+        }
+        .bento-card:hover .bento-info h3 { color: var(--accent); }
+
+        /* Large Feature Spans */
+        .span-2 { grid-column: span 2; }
+        .span-row-2 { grid-row: span 2; }
+
+        /* -------------------------------------------
+           THE M.M.I. STANDARD (Artisanal Redesign)
+           ------------------------------------------- */
+        .features-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); 
+            gap: 3rem; 
+        }
+        .feature-card {
+            position: relative;
+            background: linear-gradient(160deg, var(--bg-surface-light) 0%, var(--bg-base) 100%);
+            border: 1px solid var(--glass-border);
+            border-top: 2px solid var(--accent);
+            padding: 3.5rem 3rem;
+            border-radius: 2px; /* Sharp, precise like a gem cut */
+            transition: var(--transition);
+            overflow: hidden;
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255, 255, 255, 0.15);
+            border-top-color: #fff;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+        }
+        .feature-num {
+            position: absolute;
+            top: 1rem;
+            right: 1.5rem;
+            font-family: var(--font-serif);
+            font-size: 5rem;
+            color: var(--accent-glow);
+            line-height: 1;
+            font-weight: 600;
+            pointer-events: none;
+            transition: var(--transition);
+        }
+        .feature-card:hover .feature-num {
+            color: rgba(207, 168, 88, 0.25);
+            transform: scale(1.1);
+        }
+        .feature-card h3 { 
+            font-family: var(--font-serif); 
+            font-size: 1.5rem; 
+            color: var(--text-primary); 
+            margin-bottom: 1.2rem; 
+            font-weight: 400; 
+            letter-spacing: 0.5px;
+            position: relative;
+            z-index: 2;
+        }
+        .feature-card p { 
+            font-size: 0.95rem; 
+            color: var(--text-secondary); 
+            line-height: 1.8;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Stats Strip */
+        .stats-bar {
+            display: flex; justify-content: space-evenly; flex-wrap: wrap; gap: 3rem;
+            padding: 5rem 2rem; 
+            border-top: 1px solid var(--glass-border); 
+            border-bottom: 1px solid var(--glass-border);
+            text-align: center; 
+            background: linear-gradient(to right, var(--bg-base), var(--bg-surface), var(--bg-base));
+        }
+        .stat {
+            position: relative;
+            padding: 0 2rem;
+        }
+        .stat:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            right: -1.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 1px;
+            height: 40px;
+            background: var(--glass-border);
+        }
+        .stat h4 { font-family: var(--font-serif); font-size: 3rem; color: var(--accent); font-weight: 400; line-height: 1; }
+        .stat p { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px; color: var(--text-secondary); margin-top: 1rem; }
+
+        /* Glassmorphism Inquiry Form */
+        .form-wrapper {
+            max-width: 1000px; margin: 0 auto;
+            background: var(--bg-surface);
+            border: 1px solid var(--glass-border);
+            border-radius: 2px;
+            padding: 5rem;
+            position: relative;
+        }
+        /* Decorative corner accents */
+        .form-wrapper::before, .form-wrapper::after {
+            content: ''; position: absolute; width: 15px; height: 15px; border: 1px solid var(--accent);
+        }
+        .form-wrapper::before { top: 1.5rem; left: 1.5rem; border-right: none; border-bottom: none; }
+        .form-wrapper::after { bottom: 1.5rem; right: 1.5rem; border-left: none; border-top: none; }
+
+        .form-intro { text-align: center; margin-bottom: 4rem; }
+        .form-intro p { color: var(--text-secondary); font-size: 1rem; margin-bottom: 0.5rem; }
+        
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; }
+        .form-group.full { grid-column: 1 / -1; }
+        
+        .glass-input {
+            width: 100%;
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid var(--glass-border);
+            padding: 1rem 0;
+            color: var(--text-primary);
+            font-family: var(--font-sans);
+            font-size: 0.95rem;
+            transition: var(--transition);
+        }
+        .glass-input:focus { outline: none; border-bottom-color: var(--accent); box-shadow: 0 10px 10px -10px var(--accent-glow); }
+        .glass-input::placeholder { color: #555; }
+        
+        .btn-submit {
+            background: transparent;
+            color: var(--accent);
+            border: 1px solid var(--accent);
+            width: 100%;
+            padding: 1.2rem;
+            font-family: var(--font-sans);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            margin-top: 2rem;
+            border-radius: 2px;
+            transition: var(--transition);
+        }
+        .btn-submit:hover { background: var(--accent); color: var(--bg-base); }
+
+        /* Minimal FAQ */
+        .faq-wrap { max-width: 900px; margin: 0 auto; }
+        .faq-item { border-bottom: 1px solid var(--glass-border); }
+        .faq-btn {
+            width: 100%; text-align: left; background: none; border: none;
+            padding: 2.5rem 0; color: var(--text-primary); font-family: var(--font-serif);
+            font-size: 1.3rem; cursor: pointer; display: flex; justify-content: space-between;
+            align-items: center;
+            transition: var(--transition);
+        }
+        .faq-btn span { font-size: 1.8rem; font-weight: 300; color: var(--accent); transition: transform 0.4s ease; }
+        .faq-btn:hover { color: var(--accent); padding-left: 1rem; }
+        .faq-btn.active span { transform: rotate(45deg); }
+        .faq-content { max-height: 0; overflow: hidden; transition: max-height 0.5s cubic-bezier(0.25, 1, 0.5, 1); color: var(--text-secondary); }
+        .faq-content p { padding-bottom: 2.5rem; font-size: 1rem; line-height: 1.8; }
+
+        /* Footer */
+        footer { padding: 6rem 4rem 2rem; border-top: 1px solid var(--glass-border); background: var(--bg-surface-light); }
+        .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 4rem; margin-bottom: 5rem; }
+        .footer-col h5 { font-family: var(--font-serif); font-size: 1.3rem; margin-bottom: 2rem; font-weight: 400; color: var(--accent); }
+        .footer-col ul { display: flex; flex-direction: column; gap: 1rem; }
+        .footer-col a, .footer-col p { color: var(--text-secondary); font-size: 0.9rem; letter-spacing: 0.5px; transition: var(--transition); }
+        .footer-col a:hover { color: #fff; padding-left: 5px; }
+        .footer-bottom { text-align: center; padding-top: 2rem; border-top: 1px solid var(--glass-border); color: #555; font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase; }
+
+        /* Responsive Fixes */
+        @media (max-width: 1400px) {
+            .section-container { padding: 6rem 2rem; }
+            .navbar { padding: 1rem 2rem; }
+            .nav-links { gap: 1.5rem; }
+        }
+
+        @media (max-width: 1024px) {
+            .nav-links, .basket-toggle { display: none; }
+            .hamburger { display: flex; }
+            .bento-grid { grid-template-columns: repeat(2, 1fr); }
+            .span-2 { grid-column: span 1; }
+            .span-row-2 { grid-row: span 1; }
+            .stat:not(:last-child)::after { display: none; }
+            .stats-bar { padding: 3rem 1rem; }
+            .form-wrapper { padding: 3rem 2rem; }
+        }
+
+        @media (max-width: 768px) {
+            .top-bar { flex-direction: column; gap: 0.5rem; padding: 1rem; }
+            .bento-grid { grid-template-columns: 1fr; }
+            .form-grid { grid-template-columns: 1fr; }
+            .hero { padding: 8rem 1.5rem 5rem; }
+            .hero h1 { font-size: 2.5rem; }
+            .section-title { font-size: 2.2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="top-bar">
+        <span>Buy directly from Gem Cutting factory at factory price, High quality-Low Price.</span>
+        <span>Email: contact@mmigems.com</span>
+    </div>
+
+    <nav class="navbar">
+        <div class="logo-wrapper">
+            <img src="http://mmigems.com/wp-content/uploads/2023/12/MMI-GEM-LOGO-SVG.svg" alt="MMI Gems Logo">
+        </div>
+        
+        <ul class="nav-links">
+            <li><a href="#category">Category*</a></li>
+            <li><a href="#charts">Colors and Sizes Chart</a></li>
+            <li><a href="#shapes">270 Fancy & Special Shapes</a></li>
+            <li><a href="#custom">Custom Jewelry Making</a></li>
+            <li><a href="#about">About us</a></li>
+            <li><a href="#faq">FAQ</a></li>
+            <li><a href="#contact">Contact us</a></li>
+        </ul>
+
+        <button class="basket-toggle" onclick="toggleBasket()">Shopping Basket</button>
+
+        <button class="hamburger" onclick="toggleMobileMenu()">
+            <span></span><span></span><span></span>
+        </button>
+    </nav>
+
+    <!-- Mobile Fullscreen Navigation -->
+    <div class="mobile-menu" id="mobileNav">
+        <ul>
+            <li><a href="#category" onclick="toggleMobileMenu()">Category*</a></li>
+            <li><a href="#charts" onclick="toggleMobileMenu()">Colors & Sizes Chart</a></li>
+            <li><a href="#shapes" onclick="toggleMobileMenu()">270 Fancy & Special Shapes</a></li>
+            <li><a href="#custom" onclick="toggleMobileMenu()">Custom Jewelry Making</a></li>
+            <li><a href="#about" onclick="toggleMobileMenu()">About us</a></li>
+            <li><a href="#faq" onclick="toggleMobileMenu()">FAQ</a></li>
+            <li><a href="#contact" onclick="toggleMobileMenu()">Contact us</a></li>
+            <li style="margin-top: 3rem;"><a href="#" onclick="toggleBasket(); toggleMobileMenu();" style="color: var(--accent); font-size: 1.2rem; font-family: var(--font-sans); text-transform: uppercase; letter-spacing: 2px;">Shopping Basket</a></li>
+        </ul>
+    </div>
+
+    <!-- Offcanvas Shopping Basket -->
+    <div class="basket-sidebar" id="basketSidebar">
+        <button class="close-basket" onclick="toggleBasket()">&times;</button>
+        <h3 style="font-family: var(--font-serif); font-size: 2.2rem; margin: 2rem 0 1rem; font-weight: 400;">Shopping Basket</h3>
+        <p style="color: var(--text-secondary); font-size: 0.95rem;">Your cart is currently empty.</p>
+    </div>
+
+    <header class="hero">
+        <h1>MMI Gems Product Showcase</h1>
+        <p>Explore our exclusive collection of impeccably crafted gemstones, bridging the gap between natural brilliance and laboratory precision.</p>
+    </header>
+
+    <!-- Source Code Accurately Mapped Product Grid -->
+    <section id="category" class="section-container">
+        <div class="bento-grid">
+            
+            <a href="#" class="bento-card span-2 span-row-2">
+                <img src="https://mmigems.com/wp-content/uploads/2024/01/Beautiful_diamond_-6-removebg-preview.webp" alt="Cubic Zirconia">
+                <div class="bento-info"><h3>Cubic Zirconia<br>Gemstone</h3></div>
+            </a>
+            
+            <a href="#" class="bento-card">
+                <img src="https://mmigems.com/wp-content/uploads/2023/12/NANO-GEMS-EMERALD.png" alt="Nano Crystal Gemstone">
+                <div class="bento-info"><h3>Nano Crystal<br>Gemstone</h3></div>
+            </a>
+
+            <a href="#" class="bento-card">
+                <img src="https://mmigems.com/wp-content/uploads/2023/12/Mossanite-5-mm-lot.jpg" alt="Moissanite Diamond">
+                <div class="bento-info"><h3>Moissanite<br>Diamond</h3></div>
+            </a>
+
+            <a href="#" class="bento-card span-2">
+                <img src="https://mmigems.com/wp-content/uploads/2024/01/Beautiful_diamond_-6-removebg-preview.webp" alt="Lab Grown CVD-HPHT Diamond">
+                <div class="bento-info"><h3>Lab Grown CVD-HPHT<br>Diamond</h3></div>
+            </a>
+
+            <a href="#" class="bento-card">
+                <img src="https://mmigems.com/wp-content/uploads/2023/12/GENUINE-NATURAL-GEMSTONES.jpg" alt="Natural All Gemstone">
+                <div class="bento-info"><h3>Natural All<br>Gemstone</h3></div>
+            </a>
+
+            <a href="#" class="bento-card span-2">
+                <img src="https://mmigems.com/wp-content/uploads/2023/12/cultured-pearls.png" alt="Fresh water Cultured Pearls">
+                <div class="bento-info"><h3>Fresh water<br>Cultured Pearls</h3></div>
+            </a>
+
+            <a href="#" class="bento-card">
+                <img src="https://mmigems.com/wp-content/uploads/2023/12/synthetic-star-ruby.webp" alt="Lab Star Ruby Shapphire">
+                <div class="bento-info"><h3>Lab Star Ruby<br>Shapphire</h3></div>
+            </a>
+
+            <a href="#" class="bento-card">
+                <img src="https://mmigems.com/wp-content/uploads/2023/12/CZ-BIRTH-STONE-GEMSTONE.jpg" alt="BirthStones Gemstone">
+                <div class="bento-info"><h3>BirthStones<br>Gemstone</h3></div>
+            </a>
+
+            <a href="#" class="bento-card">
+                <img src="https://mmigems.com/wp-content/uploads/2023/12/diffusion-blue-sapphire.png" alt="Lab Diffusion Sapphire">
+                <div class="bento-info"><h3>Lab Diffusion<br>Sapphire</h3></div>
+            </a>
+
+            <a href="#" class="bento-card span-2">
+                <img src="https://mmigems.com/wp-content/uploads/2023/12/Synthetic-Gems-Red-Ruby-Round-Gemstone.jpg" alt="Lab Grown Ruby & Emerald Gems">
+                <div class="bento-info"><h3>Lab Grown Ruby<br>& Emerald Gems</h3></div>
+            </a>
+
+            <a href="#" class="bento-card">
+                <img src="https://mmigems.com/wp-content/uploads/2023/12/synthetic-rough-gemstone.jpg" alt="Synthetic Rough Gems">
+                <div class="bento-info"><h3>Synthetic<br>Rough Gems</h3></div>
+            </a>
+
+            <a href="#" class="bento-card">
+                <img src="https://mmigems.com/wp-content/uploads/2023/12/cz-rough-mmigems.jpg" alt="Cubic Zirconia Rough Gems">
+                <div class="bento-info"><h3>Cubic Zirconia<br>Rough Gems</h3></div>
+            </a>
+
+            <a href="#" class="bento-card span-2 span-row-2">
+                <img src="https://mmigems.com/wp-content/uploads/2023/12/harden-glass-gems.jpg" alt="Harden Glass Gemstones">
+                <div class="bento-info"><h3>Harden Glass<br>Gemstones</h3></div>
+            </a>
+
+            <a href="#" class="bento-card span-2">
+                <img src="https://mmigems.com/wp-content/uploads/2023/12/NANO-GEMS-ROUGH.jpg" alt="Nano Gems Rough Material">
+                <div class="bento-info"><h3>Nano Gems<br>Rough Material</h3></div>
+            </a>
+
+            <a href="#" class="bento-card">
+                <img src="https://mmigems.com/wp-content/uploads/2024/01/Hydrothermal-emerald-colombia-emerald-Rough-medium-color.webp1_.webp" alt="Hydro Thermal Emerald Rough">
+                <div class="bento-info"><h3>Hydro Thermal<br>Emerald Rough</h3></div>
+            </a>
+
+            <a href="#" class="bento-card">
+                <img src="https://mmigems.com/wp-content/uploads/2024/01/lab-grown-ruby.webp" alt="Lab Grown ruby Gems Rough">
+                <div class="bento-info"><h3>Lab Grown ruby<br>Gems Rough</h3></div>
+            </a>
+
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <div class="stats-bar">
+        <div class="stat">
+            <h4>4.9 / 5</h4>
+            <p>1000 Reviews</p>
+        </div>
+        <div class="stat">
+            <h4>15</h4>
+            <p>Year Experiences</p>
+        </div>
+        <div class="stat">
+            <h4>10M+</h4>
+            <p>Stones in stock</p>
+        </div>
+        <div class="stat">
+            <h4>40+</h4>
+            <p>Employees</p>
+        </div>
+    </div>
+
+    <!-- Guarantees & Info (Redesigned Editorial Layout) -->
+    <section id="about" class="section-container">
+        <h2 class="section-title">The M.M.I. Standard</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <span class="feature-num">I</span>
+                <h3>High Quality Guarantee</h3>
+                <p>One of the pitfalls to watch out for when dealing with overseas factories is when the samples get an “3A” grade but the actual products get an “A”. With M.M.I. GEMS, Our Experienced QC Check the Stones carefully and strictly for Every order before shipment to give you peace of mind that what you ordered is what you will receive.</p>
+            </div>
+            <div class="feature-card">
+                <span class="feature-num">II</span>
+                <h3>Service and Punctual Delivery</h3>
+                <p>What good are low prices if your orders are not good as expected, your shipment arrives late (or not at all), you have to chase your supplier for updates, or you’re hit with unexpected fees and charges? M.M.I. GEMS is unique because we bring Chinese/Thailand Factory Prices + Different Countries Service Culture under one roof.</p>
+            </div>
+            <div class="feature-card">
+                <span class="feature-num">III</span>
+                <h3>Extensive Experience</h3>
+                <p>We didn’t just “pop up on the Internet overnight”. We have many Years working in Loose Gemstones and Jewelry industry, both inside and outside China, exporting to a wide range of countries. We know what customers expect and how to consistently deliver it.</p>
+            </div>
+            <div class="feature-card">
+                <span class="feature-num">IV</span>
+                <h3>Low Direct Factory Prices</h3>
+                <p>We are the Real Factory and Manufacturer which located in Wuzhou City, Guangxi province of China---honor as the Capital of the biggest Synthetic gemstones manufacturing base in the World. we offer lowest Factory-direct prices on all types of standard quality to Top AAAAA quality Loose gemstones, without sacrificing service quality</p>
+            </div>
+            <div class="feature-card">
+                <span class="feature-num">V</span>
+                <h3>After-Sale Service</h3>
+                <p>We want and expect you to be thrilled with your purchase, but to provide you peace of mind, we offer a 30 days return policy for most of our products.</p>
+            </div>
+            <div class="feature-card">
+                <span class="feature-num">VI</span>
+                <h3>Large Stocks of Gemstones</h3>
+                <p>Sufficient Stock of various shapes; sizes; colors. Output: 200 million pieces monthly. Fast Shipping: 1-2 days (Stock).</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq" class="section-container">
+        <h2 class="section-title">Frequently Asked Questions</h2>
+        <div class="faq-wrap">
+            <div class="faq-item">
+                <button class="faq-btn" onclick="toggleAccordion(this)">How do I place an order? <span>+</span></button>
+                <div class="faq-content">
+                    <p>As we focus on the wholesale, we don’t list the pricing on the website, But You can send an email to mmigems23@gmail.com to get a Free Quote or Pricelist, and Any questions or requirement will be warmly welcomed ,and Our Sales representative will contact you via e-mail shortly. Or Feel free to contact us on WhatsApp: +66855551978</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-btn" onclick="toggleAccordion(this)">How do I contact customer support? <span>+</span></button>
+                <div class="faq-content">
+                    <p>Our Support teams answer you between 9:00 – 18:00 (GMT +8:00). You can send an email to mmigems23@gmail.com to get any questions, and Our Sales representative will contact you via e-mail shortly.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-btn" onclick="toggleAccordion(this)">Do you have a catalog and Pricelist? <span>+</span></button>
+                <div class="faq-content">
+                    <p>As you can see, we’re dealing many kinds of gemstones, There’re many difference shape/size/color of the stones,That’ll be thousands of pricing. and we focus on wholesale market, don’t list the price on the website, Please kindly spend some time to list the details (Sizes, colors,Shapes/Cuts and QTY for each) of the stones you're running out of stocks or the stones you're planning to purchase recently, then we’ll check whether they’re available or not & send you the quotation accordingly.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-btn" onclick="toggleAccordion(this)">How can I check the status of my order? <span>+</span></button>
+                <div class="faq-content">
+                    <p>Your Sales representative will be responsible to tell you the Every details and status of your order at 24 hours.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-btn" onclick="toggleAccordion(this)">What is the minimum quantity to order with you? <span>+</span></button>
+                <div class="faq-content">
+                    <p>The minimum order depends on your required sizes and items. Pls e-mail US your orders and Our Sales will inform you of the minimum quantity for each stones.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-btn" onclick="toggleAccordion(this)">What are your payment terms and payment receiving methods? <span>+</span></button>
+                <div class="faq-content">
+                    <p>Payment terms and instructions will be provided directly by your sales representative along with your invoice.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Inquiry Form -->
+    <section id="contact" class="section-container">
+        <div class="form-wrapper">
+            <div class="form-intro">
+                <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin-bottom: 1rem; font-weight: 400;">Fill it up the below inquiry form</h2>
+                <p>We would appreciate it if you would take a few minutes to fill out the form with the following information:</p>
+                <p>The more information you provide, the faster we will be able to respond with more details.</p>
+            </div>
+            <form action="#" method="POST" class="form-grid">
+                <div class="form-group"><input type="text" class="glass-input" placeholder="Name *" required></div>
+                <div class="form-group"><input type="email" class="glass-input" placeholder="Email *" required></div>
+                <div class="form-group"><input type="tel" class="glass-input" placeholder="Phone No. *" required></div>
+                <div class="form-group"><input type="text" class="glass-input" placeholder="Address *" required></div>
+                <div class="form-group"><input type="text" class="glass-input" placeholder="Gemstone Type"></div>
+                <div class="form-group"><input type="text" class="glass-input" placeholder="Color"></div>
+                <div class="form-group"><input type="text" class="glass-input" placeholder="Shape"></div>
+                <div class="form-group"><input type="text" class="glass-input" placeholder="Size"></div>
+                <div class="form-group full"><input type="text" class="glass-input" placeholder="Required Quantity"></div>
+                <div class="form-group full"><textarea class="glass-input" rows="3" placeholder="Description"></textarea></div>
+                <div class="form-group full"><button type="submit" class="btn-submit">Submit Inquiry</button></div>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-col">
+                <h5>Important links</h5>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#charts">Colors and Sizes Chart</a></li>
+                    <li><a href="#shapes">270 DIFFERENT CUT FANCY AND SPECIAL SHAPES</a></li>
+                    <li><a href="#faq">FAQ</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h5>Company</h5>
+                <ul>
+                    <li><a href="#about">About Us</a></li>
+                    <li><a href="#contact">Contact Us</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h5>Contact</h5>
+                <ul>
+                    <li><p>contact@mmigems.com</p></li>
+                    <li><a href="https://api.whatsapp.com/send?phone=66855551978">+66855551978</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© MMI GEMS</p>
+        </div>
+    </footer>
+
+    <!-- Interactive Scripts -->
+    <script>
+        // Toggle Mobile Navigation
+        function toggleMobileMenu() {
+            const nav = document.getElementById('mobileNav');
+            nav.classList.toggle('active');
+        }
+
+        // Toggle Shopping Basket Offcanvas
+        function toggleBasket() {
+            const basket = document.getElementById('basketSidebar');
+            basket.classList.toggle('active');
+        }
+
+        // Custom FAQ Accordion Logic
+        function toggleAccordion(button) {
+            const content = button.nextElementSibling;
+            
+            // Close other open accordions
+            document.querySelectorAll('.faq-content').forEach(el => {
+                if(el !== content) {
+                    el.style.maxHeight = null;
+                    el.previousElementSibling.classList.remove('active');
+                }
+            });
+
+            if (content.style.maxHeight) {
+                content.style.maxHeight = null;
+                button.classList.remove('active');
+            } else {
+                content.style.maxHeight = content.scrollHeight + "px";
+                button.classList.add('active');
+            }
+        }
+    </script>
+</body>
+</html>
