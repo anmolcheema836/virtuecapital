@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gwinnett Fellowship</title>
+    
+    <!-- High-End Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* CSS Variables for Bold, Colorful, Minimal Editorial Design */
+        :root {
+            --bg-primary: #FDFBF7;
+            --bg-secondary: #F4ECE4;
+            --text-main: #2C302E;
+            --accent-terracotta: #C15C3D;
+            --accent-mustard: #DE9E36;
+            --accent-olive: #5A6B46;
+            --accent-navy: #1E2D3B;
+            --white: #FFFFFF;
+            
+            --font-serif: 'Playfair Display', serif;
+            --font-sans: 'Inter', sans-serif;
+            
+            --transition-smooth: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            --bento-radius: 24px;
+        }
+
+        /* Reset & Base Styles */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--bg-primary);
+            color: var(--text-main);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        img { max-width: 100%; height: auto; display: block; }
+        a { text-decoration: none; color: inherit; transition: var(--transition-smooth); }
+        ul { list-style: none; }
+
+        /* Typography */
+        h1, h2, h3, h4, h5, h6 { font-family: var(--font-serif); font-weight: 700; line-height: 1.2; }
+        .text-editorial { font-size: clamp(2.5rem, 5vw, 4.5rem); letter-spacing: -0.02em; }
+        .text-subtitle { font-size: clamp(1.2rem, 2vw, 1.5rem); font-weight: 300; }
+        .highlight { color: var(--accent-terracotta); font-style: italic; }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px 32px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            border: none;
+            gap: 12px;
+        }
+        .btn-primary { background-color: var(--accent-terracotta); color: var(--white); }
+        .btn-primary:hover { background-color: var(--accent-navy); transform: translateY(-3px); }
+        .btn-secondary { background-color: transparent; border: 1px solid var(--accent-navy); color: var(--accent-navy); }
+        .btn-secondary:hover { background-color: var(--accent-navy); color: var(--white); }
+
+        /* Layout Utility */
+        .container { width: 100%; max-width: 1400px; margin: 0 auto; padding: 0 24px; }
+        .section-padding { padding: 120px 0; }
+
+        /* Navigation - Glassmorphism */
+        header.nav {
+            position: fixed;
+            top: 0; width: 100%; z-index: 100;
+            background: rgba(253, 251, 247, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            padding: 16px 0;
+        }
+        .nav-container { display: flex; justify-content: space-between; align-items: center; }
+        .logo img { height: 48px; filter: brightness(0);}
+        .nav-links { display: flex; gap: 32px; align-items: center; }
+        .nav-links a { font-weight: 500; font-size: 0.95rem; }
+        .nav-links a:hover { color: var(--accent-terracotta); }
+
+        /* Skip to content */
+        .skip-link { position: absolute; top: -40px; left: 0; background: var(--text-main); color: var(--white); padding: 8px; z-index: 101; }
+        .skip-link:focus { top: 0; }
+
+        /* Hero Section */
+        .hero {
+            padding-top: 160px;
+            padding-bottom: 80px;
+            display: flex;
+            align-items: center;
+            min-height: 80vh;
+        }
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+        .hero-content { max-width: 600px; }
+        .hero-icon { width: 64px; margin-bottom: 24px; }
+        .hero-title { margin-bottom: 24px; }
+        .hero-image-wrapper {
+            position: relative;
+            border-radius: var(--bento-radius);
+            overflow: hidden;
+            aspect-ratio: 4/5;
+        }
+        .hero-image-wrapper img { width: 100%; height: 100%; object-fit: cover; }
+
+        /* Who We Are (Editorial Layout) */
+        .editorial-split {
+            display: grid;
+            grid-template-columns: 5fr 7fr;
+            gap: 80px;
+            align-items: start;
+        }
+        .sticky-image { position: sticky; top: 120px; border-radius: var(--bento-radius); overflow: hidden; }
+        .editorial-content p { font-size: 1.2rem; margin-bottom: 24px; color: #4A4D4B; font-weight: 300; }
+        .editorial-content strong { font-weight: 600; color: var(--text-main); }
+
+        /* Our Identity (Neo-Bento Grid) */
+        .bento-section { background-color: var(--bg-secondary); border-radius: 40px; padding: 80px; margin: 60px 0; }
+        .bento-header { text-align: center; margin-bottom: 64px; }
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+        .bento-card {
+            background: var(--white);
+            padding: 40px;
+            border-radius: var(--bento-radius);
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            transition: var(--transition-smooth);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.02);
+        }
+        .bento-card:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(0,0,0,0.06); }
+        .bento-card h3 { font-size: 1.25rem; color: var(--accent-olive); }
+        .bento-card p { font-size: 2rem; font-family: var(--font-serif); font-weight: 700; color: var(--text-main); }
+        
+        .bento-footer { text-align: center; margin-top: 60px; max-width: 800px; margin-inline: auto; font-size: 1.3rem; }
+
+        /* Scripture Reality (Large Image Cards) */
+        .scripture-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+            margin-top: 60px;
+        }
+        .image-card {
+            border-radius: var(--bento-radius);
+            overflow: hidden;
+            background: var(--bg-secondary);
+            display: flex;
+            flex-direction: column;
+        }
+        .image-card-img {
+            width: 100%;
+            aspect-ratio: 4/3;
+            overflow: hidden;
+        }
+        .image-card-img img {
+            width: 100%; height: 100%; object-fit: cover;
+            transition: var(--transition-smooth);
+        }
+        .image-card:hover .image-card-img img { transform: scale(1.05); }
+        .image-card-content { padding: 40px; }
+        .image-card-content h3 { margin-bottom: 16px; font-size: 2rem; color: var(--accent-terracotta); }
+
+        /* What Went Wrong (Neo-Brutalism hybrid list) */
+        .wrong-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+            margin: 40px 0;
+        }
+        .wrong-item {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            background: var(--white);
+            padding: 24px;
+            border-radius: 16px;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+        .wrong-item img { width: 48px; height: 48px; }
+        .wrong-item h3 { font-family: var(--font-sans); font-size: 1.1rem; font-weight: 500; }
+
+        /* Article Grid */
+        .article-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+            margin-top: 40px;
+        }
+        .article-card {
+            position: relative;
+            border-radius: var(--bento-radius);
+            overflow: hidden;
+            aspect-ratio: 3/4;
+            color: var(--white);
+        }
+        .article-card img { width: 100%; height: 100%; object-fit: cover; transition: var(--transition-smooth); }
+        .article-card::after {
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%);
+        }
+        .article-card-content {
+            position: absolute; bottom: 0; left: 0; width: 100%;
+            padding: 32px; z-index: 2;
+            display: flex; flex-direction: column; gap: 12px;
+        }
+        .article-card:hover img { transform: scale(1.05); }
+        .article-card a {
+            display: inline-flex; align-items: center; gap: 8px; font-weight: 600; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px; color: var(--accent-mustard);
+        }
+
+        /* Bottom CTA */
+        .bottom-cta {
+            background-color: var(--accent-navy);
+            color: var(--white);
+            text-align: center;
+            border-radius: 40px;
+            padding: 100px 40px;
+            margin-bottom: 60px;
+        }
+        .bottom-cta h2 { font-size: clamp(2rem, 4vw, 3.5rem); max-width: 900px; margin: 0 auto 40px; }
+
+        /* Footer */
+        footer {
+            background-color: var(--bg-secondary);
+            padding: 80px 0 40px;
+        }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1.5fr;
+            gap: 60px;
+            margin-bottom: 60px;
+        }
+        .footer-logo img { height: 60px; margin-bottom: 24px; }
+        .footer-title { font-family: var(--font-serif); font-size: 1.2rem; margin-bottom: 24px; color: var(--accent-navy); }
+        .footer-links li { margin-bottom: 12px; }
+        .footer-links a { font-size: 0.95rem; color: #4A4D4B; }
+        .footer-links a:hover { color: var(--accent-terracotta); }
+        .social-icons { display: flex; gap: 16px; margin-top: 24px; }
+        .social-icons a { display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 50%; background: var(--white); color: var(--accent-navy); }
+        .footer-bottom { border-top: 1px solid rgba(0,0,0,0.1); padding-top: 24px; text-align: center; font-size: 0.85rem; color: #777; }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .hero-grid, .editorial-split { grid-template-columns: 1fr; gap: 40px; }
+            .bento-grid, .scripture-grid, .article-grid { grid-template-columns: repeat(2, 1fr); }
+            .footer-grid { grid-template-columns: 1fr 1fr; }
+        }
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .bento-grid, .scripture-grid, .article-grid, .wrong-grid, .footer-grid { grid-template-columns: 1fr; }
+            .bento-section { padding: 40px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <a class="skip-link" href="#content">Skip to content</a>
+
+    <!-- Navigation -->
+    <header class="nav">
+        <div class="container nav-container">
+            <a href="#" class="logo">
+                <img src="https://acts242now.org/wp-content/uploads/2026/03/image-15-6.png" alt="Gwinnett Fellowship Logo">
+            </a>
+            <nav class="nav-links">
+                <a href="#">Home</a>
+                <a href="#">About Us</a>
+                <a href="#">Our Mission</a>
+                <a href="#">DNA</a>
+                <a href="#">Gatherings</a>
+                <a href="#">Resources</a>
+                <a href="#">Donation</a>
+                <a href="#" class="btn btn-primary" style="padding: 10px 24px;">Contact Us</a>
+            </nav>
+        </div>
+    </header>
+
+    <main id="content">
+        <!-- Hero Section -->
+        <section class="hero container">
+            <div class="hero-grid">
+                <div class="hero-content">
+                    <img src="https://acts242now.org/wp-content/uploads/2026/03/pngegg-7-1.png" alt="Icon" class="hero-icon">
+                    <h1 class="text-editorial hero-title">Following Jesus <br><span class="highlight">Together</span></h1>
+                    <p class="text-subtitle" style="margin-bottom: 40px;">Not just believing in Him, but abiding in Him as the source of life—together.</p>
+                    <a href="#" class="btn btn-primary">Learn More <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="hero-image-wrapper">
+                    <img src="https://acts242now.org/wp-content/uploads/2026/05/Image-10.jpeg" alt="Community gathered">
+                </div>
+            </div>
+        </section>
+
+        <!-- Who We Are -->
+        <section class="section-padding container">
+            <div class="editorial-split">
+                <div class="sticky-image">
+                    <img src="https://acts242now.org/wp-content/uploads/2026/05/Image-10.jpeg" alt="Who We Are">
+                </div>
+                <div class="editorial-content">
+                    <h2 class="text-editorial" style="margin-bottom: 40px;">Who We Are</h2>
+                    <p>We are a people who have been brought back into a real relationship with God through Jesus Christ. Not just people who believe in Him, but people who are being restored to Him as our source of life.</p>
+                    <p>Jesus said, <strong>“I am the vine, you are the branches… apart from Me you can do nothing” (John 15:5, NASB 95).</strong> We believe that it is not just a spiritual idea—it is reality. Life does not come from trying harder, doing more, or organizing better from the outside in. Life comes from being connected to Him.</p>
+                    <p>We were created for this. From the beginning, humanity was designed to live from the inside out—spirit alive to God, soul shaped by that relationship, and life expressed outwardly through the body. But when that relationship was broken, everything reversed. Instead of living from God as our source, we began trying to build life from the outside in—through effort, environment, achievement, and control.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Our Identity (Neo-Bento) -->
+        <section class="container">
+            <div class="bento-section">
+                <div class="bento-header">
+                    <h2 class="text-editorial">Our <span class="highlight">IDENTITY</span></h2>
+                    <p class="text-subtitle" style="margin-top: 16px;">The simplest way to understand who we are is to ask three questions:</p>
+                </div>
+                
+                <div class="bento-grid">
+                    <div class="bento-card">
+                        <h3>What’s the most important thing for a baby?</h3>
+                        <p>A family.</p>
+                    </div>
+                    <div class="bento-card">
+                        <h3>What’s the most important thing for a soldier?</h3>
+                        <p>An army.</p>
+                    </div>
+                    <div class="bento-card">
+                        <h3>What’s the most important thing for a leg?</h3>
+                        <p>A body.</p>
+                    </div>
+                </div>
+
+                <div class="bento-footer">
+                    <p style="margin-bottom: 32px;">That’s how we understand the church—not as a place you attend, but as a people you belong to, fight with, and show Jesus to the world with.</p>
+                    <a href="#" class="btn btn-secondary">Learn More</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Scripture Reality -->
+        <section class="section-padding container">
+            <h2 class="text-editorial" style="text-align: center; max-width: 800px; margin: 0 auto;">Scripture describes this reality in simple, powerful ways:</h2>
+            
+            <div class="scripture-grid">
+                <div class="image-card">
+                    <div class="image-card-img">
+                        <img src="https://acts242now.org/wp-content/uploads/2026/05/Image-19.jpg" alt="Family">
+                    </div>
+                    <div class="image-card-content">
+                        <h3>Family</h3>
+                        <p>We are a family—the place where each one is nurtured, protected, and grown. Like good soil in the parable of the sower (Luke 8:4–15), this is where the life of God takes root and produces fruit. We walk with each other, care for each other, and grow together.</p>
+                    </div>
+                </div>
+                <div class="image-card">
+                    <div class="image-card-img">
+                        <img src="https://acts242now.org/wp-content/uploads/2026/05/Image-18.png" alt="Army">
+                    </div>
+                    <div class="image-card-content">
+                        <h3>Army</h3>
+                        <p>We are an army—not fighting for victory, but announcing the victory Jesus has already won over sin, death, and every power of darkness (Colossians 2:15). Together, we are being trained and strengthened to live as people who carry that reality into the world.</p>
+                    </div>
+                </div>
+                <div class="image-card">
+                    <div class="image-card-img">
+                        <img src="https://acts242now.org/wp-content/uploads/2026/05/Image-20.png" alt="Body">
+                    </div>
+                    <div class="image-card-content">
+                        <h3>Body</h3>
+                        <p>We are a body—with Jesus Himself as the Head (Ephesians 1:22–23). Each person matters. Each person has a role. And as every part receives life from Him and functions as designed, the whole body grows and reveals who He is.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- What That Looks Like -->
+        <section class="section-padding container">
+            <div class="editorial-split">
+                <div class="editorial-content">
+                    <h2 class="text-editorial" style="margin-bottom: 32px;">What That Looks Like</h2>
+                    <p>Because we believe life comes from real relationship with God, everything we do is shaped by that reality.<br>This is not about creating activity. It is about cultivating a shared life.<br>Scripture gives us a simple picture of what that life looks like:</p>
+                    <blockquote style="font-size: 1.5rem; font-family: var(--font-serif); font-style: italic; border-left: 4px solid var(--accent-terracotta); padding-left: 24px; margin: 32px 0; color: var(--accent-navy);">
+                        “They were continually devoting themselves to the apostles’ teaching and to fellowship, to the breaking of bread and to prayer” (Acts 2:42, NASB 95).
+                    </blockquote>
+                    <a href="#" class="btn btn-primary">Learn More</a>
+                </div>
+                <div class="sticky-image">
+                    <img src="https://acts242now.org/wp-content/uploads/2026/05/Image-2-1024x572.jpeg" alt="What That Looks Like">
+                </div>
+            </div>
+        </section>
+
+        <!-- What Went Wrong -->
+        <section class="section-padding container">
+            <div class="editorial-split" style="grid-template-columns: 7fr 5fr;">
+                <div class="editorial-content">
+                    <h2 class="text-editorial" style="margin-bottom: 24px;">WHAT WENT WRONG WITH THE CHURCH</h2>
+                    <p>A people living in real relationship with God through Jesus Christ— and that relationship was nurtured, strengthened, and lived out through their shared life together.</p>
+                    
+                    <div class="wrong-grid">
+                        <div class="wrong-item">
+                            <img src="https://acts242now.org/wp-content/uploads/2026/04/792694e78b98d2862285308c0ba3c36362af5c1e.png" alt="Icon">
+                            <h3>They gathered in homes.</h3>
+                        </div>
+                        <div class="wrong-item">
+                            <img src="https://acts242now.org/wp-content/uploads/2026/04/792694e78b98d2862285308c0ba3c36362af5c1e.png" alt="Icon">
+                            <h3>They shared their lives.</h3>
+                        </div>
+                        <div class="wrong-item">
+                            <img src="https://acts242now.org/wp-content/uploads/2026/04/792694e78b98d2862285308c0ba3c36362af5c1e.png" alt="Icon">
+                            <h3>They knew one another.</h3>
+                        </div>
+                        <div class="wrong-item">
+                            <img src="https://acts242now.org/wp-content/uploads/2026/04/792694e78b98d2862285308c0ba3c36362af5c1e.png" alt="Icon">
+                            <h3>They walked with God together.</h3>
+                        </div>
+                    </div>
+
+                    <p>Every person participated.<br>Every person mattered.</p>
+                    <h3 class="text-editorial" style="font-size: 2.5rem; margin: 40px 0 16px;">This was not a strategy.</h3>
+                    <p>It was the only environment where what Jesus commanded could actually take place.</p>
+                    <p style="font-weight: 600; font-size: 1.5rem;">This is what was.</p>
+                </div>
+                <div class="sticky-image">
+                    <img src="https://acts242now.org/wp-content/uploads/2026/05/Screenshot_20260427_140919_GroupMe.jpg" alt="GroupMe Snapshot">
+                </div>
+            </div>
+        </section>
+
+        <!-- Articles Grid -->
+        <section class="section-padding container">
+            <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 40px;">
+                <h2 class="text-editorial">Discover <span class="highlight">More</span></h2>
+                <a href="#" class="btn btn-secondary">View ALL</a>
+            </div>
+
+            <div class="article-grid">
+                <div class="article-card">
+                    <img src="https://acts242now.org/wp-content/uploads/2026/05/Image-12-765x1024.jpeg" alt="Article 1">
+                    <div class="article-card-content">
+                        <h3>A Battle Most Never See</h3>
+                        <p style="font-weight: 300; font-size: 0.95rem;">This is not just about preference, tradition, or style. There is a real battle.</p>
+                        <a href="#">View Detail <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                <div class="article-card">
+                    <img src="https://acts242now.org/wp-content/uploads/2026/05/Image-11-765x1024.jpeg" alt="Article 2">
+                    <div class="article-card-content">
+                        <h3>The Turning Point</h3>
+                        <p style="font-weight: 300; font-size: 0.95rem;">For the first centuries after the resurrection, the church multiplied rapidly—not through buildings or centralized syst</p>
+                        <a href="#">View Detail <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                <div class="article-card">
+                    <img src="https://acts242now.org/wp-content/uploads/2026/05/Image-5-765x1024.jpeg" alt="Article 3">
+                    <div class="article-card-content">
+                        <h3>Constantine: When Everything Shifted</h3>
+                        <p style="font-weight: 300; font-size: 0.95rem;">Constantine ruled over an empire that was struggling to remain united—fractured, unstable, and difficult to control.</p>
+                        <a href="#">View Detail <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                <div class="article-card">
+                    <img src="https://acts242now.org/wp-content/uploads/2026/05/Image-9-765x1024.jpeg" alt="Article 4">
+                    <div class="article-card-content">
+                        <h3>A Pattern We Have Seen Before</h3>
+                        <p style="font-weight: 300; font-size: 0.95rem;">This was not new. In 1 Samuel 8, God’s people made the same decision.</p>
+                        <a href="#">View Detail <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                <div class="article-card">
+                    <img src="https://acts242now.org/wp-content/uploads/2026/05/Image-8-765x1024.jpeg" alt="Article 5">
+                    <div class="article-card-content">
+                        <h3>A Replacement of Headship</h3>
+                        <p style="font-weight: 300; font-size: 0.95rem;">The New Testament is clear: Jesus is the Head of the body.</p>
+                        <a href="#">View Detail <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                <div class="article-card">
+                    <img src="https://acts242now.org/wp-content/uploads/2026/05/Image-7-765x1024.jpeg" alt="Article 6">
+                    <div class="article-card-content">
+                        <h3>The Responsibility of Leadership</h3>
+                        <p style="font-weight: 300; font-size: 0.95rem;">At this point, this can no longer be explained as ignorance. Those who lead have the Scriptures.</p>
+                        <a href="#">View Detail <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Final CTA -->
+        <section class="container">
+            <div class="bottom-cta">
+                <h2>You were not created to do life alone. <br><span class="highlight" style="color: var(--accent-mustard);">Come be part of a people learning to live from Jesus—together.</span></h2>
+                <a href="#" class="btn" style="background: var(--white); color: var(--accent-navy);">Join Now</a>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <a href="#" class="footer-logo">
+                        <img src="https://acts242now.org/wp-content/uploads/2026/03/image-12-11.png" alt="Footer Logo">
+                    </a>
+                    <p style="color: #4A4D4B; font-weight: 300;">Gwinnett Fellowship is a people learning to live in a real relationship with God through Jesus—not just believing in Him, but abiding in Him as the source of life (John 15:5).</p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="footer-title">Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Our Mission</a></li>
+                        <li><a href="#">DNA</a></li>
+                        <li><a href="#">Gatherings</a></li>
+                        <li><a href="#">Resources</a></li>
+                        <li><a href="#">The Gospel According to Jesus</a></li>
+                        <li><a href="#">What To Expect</a></li>
+                        <li><a href="#">What Went Wrong With Church</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="footer-title">Useful Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Terms and Conditions</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">Donation</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="footer-title">Contact Info</h4>
+                    <ul class="footer-links">
+                        <li><a href="mailto:vince@acts242now.org"><i class="fas fa-envelope"></i> vince@acts242now.org</a></li>
+                        <li><a href="tel:404-405-6358"><i class="fas fa-phone-alt"></i> 404-405-6358</a></li>
+                        <li><a href="#" style="line-height: 1.4; display: block; margin-top: 8px;"><i class="fas fa-map-marker-alt"></i> 1000 Peachtree Industrial Blvd, Suite 6-298, Suwanee, GA 30024</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>Copyright 2026 © All Rights Reserved By Gwinnett Fellowship</p>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

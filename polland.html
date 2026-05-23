@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reliable Delivery | Custom Software Development</title>
+    <meta name="description" content="We help businesses build scalable web, mobile & AI powered software solutions with transparent delivery.">
+    
+    <!-- Google Fonts: Inter for ultimate readability and SaaS feel -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ==========================================================================
+           CSS RESET & VARIABLES
+           ========================================================================== */
+        :root {
+            /* Color Palette (Strictly Light Blue, Sky Blue, Green, Blue, White base) */
+            --brand-blue: #2563eb;
+            --brand-sky: #38bdf8;
+            --brand-light: #e0f2fe;
+            --brand-green: #22c55e;
+            
+            --bg-base: #ffffff;
+            --bg-alt: #f8fafc;
+            
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            
+            --border-light: #e2e8f0;
+            --border-focus: #bae6fd;
+            
+            /* Typography (Small, readable, editorial) */
+            --font-family: 'Inter', sans-serif;
+            --text-xs: 0.75rem;
+            --text-sm: 0.875rem;
+            --text-base: 1rem;
+            --text-lg: 1.125rem;
+            --text-xl: 1.5rem;
+            --text-2xl: 2rem;
+            
+            /* Layout & Spacing */
+            --container-width: 1200px;
+            --spacing-sm: 8px;
+            --spacing-md: 16px;
+            --spacing-lg: 32px;
+            --spacing-xl: 64px;
+            --radius-md: 12px;
+            --radius-lg: 24px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background-color: var(--bg-base);
+            color: var(--text-main);
+            line-height: 1.6;
+            font-size: var(--text-base);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            border-radius: var(--radius-md);
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        /* ==========================================================================
+           LAYOUT UTILITIES
+           ========================================================================== */
+        .container {
+            max-width: var(--container-width);
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .section {
+            padding: var(--spacing-xl) 0;
+        }
+
+        .grid { display: grid; }
+        .flex { display: flex; }
+        
+        .grid-2 { grid-template-columns: 1fr 1fr; gap: var(--spacing-lg); }
+        .grid-3 { grid-template-columns: repeat(3, 1fr); gap: var(--spacing-lg); }
+        .grid-4 { grid-template-columns: repeat(4, 1fr); gap: var(--spacing-md); }
+
+        .align-center { align-items: center; }
+        .justify-between { justify-content: space-between; }
+        .text-center { text-align: center; }
+
+        @media (max-width: 992px) {
+            .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+        }
+
+        /* ==========================================================================
+           COMPONENTS (Awwwards Minimalist Style)
+           ========================================================================== */
+        /* Glassmorphism Nav */
+        .navbar {
+            position: fixed;
+            top: 0; width: 100%;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-light);
+            z-index: 100;
+            padding: 16px 0;
+        }
+
+        .logo {
+            font-size: var(--text-lg);
+            font-weight: 700;
+            color: var(--brand-blue);
+            letter-spacing: -0.5px;
+        }
+        .logo span { color: var(--text-main); }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 24px;
+            font-size: var(--text-sm);
+            font-weight: 500;
+            border-radius: 100px;
+            cursor: pointer;
+            transition: var(--transition);
+            border: 1px solid transparent;
+        }
+
+        .btn-primary {
+            background-color: var(--brand-blue);
+            color: #fff;
+        }
+        .btn-primary:hover {
+            background-color: #1d4ed8;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.2);
+        }
+
+        .btn-secondary {
+            background-color: var(--brand-light);
+            color: var(--brand-blue);
+        }
+        .btn-secondary:hover {
+            background-color: var(--border-focus);
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border-color: var(--border-light);
+            color: var(--text-main);
+        }
+        .btn-outline:hover {
+            border-color: var(--brand-blue);
+            color: var(--brand-blue);
+        }
+
+        /* Neo-Bento Cards */
+        .card {
+            background: var(--bg-base);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-lg);
+            transition: var(--transition);
+        }
+        .card:hover {
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.04);
+            border-color: var(--border-focus);
+        }
+        .card-alt {
+            background: var(--bg-alt);
+        }
+
+        /* Typography Tags */
+        .tag {
+            font-size: var(--text-xs);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+            color: var(--brand-blue);
+            margin-bottom: var(--spacing-md);
+            display: block;
+        }
+
+        h1 { font-size: var(--text-2xl); line-height: 1.2; font-weight: 700; letter-spacing: -1px; margin-bottom: 24px; }
+        h2 { font-size: var(--text-xl); line-height: 1.3; font-weight: 600; letter-spacing: -0.5px; margin-bottom: 16px; }
+        h3 { font-size: var(--text-lg); font-weight: 600; margin-bottom: 8px; }
+        p { color: var(--text-muted); font-size: var(--text-sm); margin-bottom: 16px; }
+        
+        .check-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: var(--text-sm);
+            color: var(--text-main);
+            margin-bottom: 12px;
+        }
+        .check-item.small { font-size: var(--text-xs); }
+        .icon-check { color: var(--brand-green); font-size: 1.1em; flex-shrink: 0; }
+        .icon-cross { color: #ef4444; font-size: 1.1em; flex-shrink: 0; }
+
+        /* Forms */
+        .form-group { margin-bottom: 16px; }
+        .form-label { display: block; font-size: var(--text-xs); font-weight: 600; margin-bottom: 6px; }
+        .form-input, .form-textarea {
+            width: 100%;
+            padding: 12px 16px;
+            font-family: var(--font-family);
+            font-size: var(--text-sm);
+            border: 1px solid var(--border-light);
+            border-radius: 8px;
+            background: var(--bg-alt);
+            transition: var(--transition);
+        }
+        .form-input:focus, .form-textarea:focus {
+            outline: none;
+            border-color: var(--brand-blue);
+            background: var(--bg-base);
+            box-shadow: 0 0 0 3px var(--brand-light);
+        }
+        
+        /* Checkbox Grid */
+        .checkbox-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: var(--text-xs);
+            padding: 10px;
+            border: 1px solid var(--border-light);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .checkbox-label:hover { background: var(--bg-alt); }
+        .checkbox-label input { accent-color: var(--brand-blue); }
+
+        /* Accordion / FAQ */
+        details {
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-md);
+            margin-bottom: 12px;
+            background: var(--bg-base);
+        }
+        summary {
+            padding: 16px;
+            font-weight: 500;
+            font-size: var(--text-sm);
+            cursor: pointer;
+            list-style: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        summary::-webkit-details-marker { display: none; }
+        summary::after { content: "+"; color: var(--brand-blue); font-size: 1.2rem; }
+        details[open] summary::after { content: "-"; }
+        details p { padding: 0 16px 16px; margin: 0; }
+
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container flex justify-between align-center">
+            <div class="logo">Reliable<span>Dev.</span></div>
+            <a href="#consultation" class="btn btn-primary">Book Consultation</a>
+        </div>
+    </nav>
+
+    <!-- 1. Hero Section -->
+    <section class="section" style="padding-top: 120px;">
+        <div class="container grid grid-2 align-center">
+            <div>
+                <h1>Your Business Doesn’t Need Another Software Agency.<br>
+                <span style="color: var(--brand-blue);">It Needs Reliable Delivery.</span></h1>
+                <p style="font-size: var(--text-base); margin-bottom: 32px; max-width: 90%;">Most software projects fail because of missed deadlines, poor communication, unclear scope, and systems that cannot scale. We help businesses in Poland build scalable web, mobile & AI powered software solutions with transparent delivery, fixed milestones, and longterm technical support.</p>
+                
+                <div class="flex" style="gap: 16px; margin-bottom: 40px;">
+                    <a href="#consultation" class="btn btn-primary">📞 Book Free Discovery Call</a>
+                    <a href="#consultation" class="btn btn-outline">📄 Get Project Roadmap</a>
+                </div>
+            </div>
+            <div>
+                <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80" alt="Team collaborating on software delivery">
+            </div>
+        </div>
+
+        <!-- Trust Badges (Hero Footer) -->
+        <div class="container">
+            <div class="flex" style="flex-wrap: wrap; gap: 24px; padding-top: 32px; border-top: 1px solid var(--border-light); margin-top: 32px;">
+                <div class="check-item small"><span class="icon-check">✅</span> 500+ Software Projects Delivered</div>
+                <div class="check-item small"><span class="icon-check">✅</span> 20+ Years of Industry Experience</div>
+                <div class="check-item small"><span class="icon-check">✅</span> 100+ Global Clients Served</div>
+                <div class="check-item small"><span class="icon-check">✅</span> 48 Hour Proposal Turnaround</div>
+                <div class="check-item small"><span class="icon-check">✅</span> Dedicated English-Speaking PM</div>
+                <div class="check-item small"><span class="icon-check">✅</span> Agile Sprint-Based Delivery</div>
+                <div class="check-item small"><span class="icon-check">✅</span> Fixed Scope & Transparent Pricing</div>
+                <div class="check-item small"><span class="icon-check">✅</span> GDPR-Aware Standards</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 2. Trusted By -->
+    <section class="section card-alt" style="padding: 40px 0; border-top: 1px solid var(--border-light); border-bottom: 1px solid var(--border-light);">
+        <div class="container text-center">
+            <span class="tag">Trusted by Startups & Enterprises</span>
+            <div class="flex justify-between align-center" style="opacity: 0.5; filter: grayscale(100%); margin: 20px 0;">
+                <div style="font-weight: 700; font-size: 1.2rem;">Acme Corp</div>
+                <div style="font-weight: 700; font-size: 1.2rem; font-family: serif;">GlobalTech</div>
+                <div style="font-weight: 700; font-size: 1.2rem; font-style: italic;">Nexus</div>
+                <div style="font-weight: 700; font-size: 1.2rem; letter-spacing: 2px;">AERIS</div>
+                <div style="font-weight: 700; font-size: 1.2rem;">Quantum.</div>
+            </div>
+            <p style="margin:0; font-weight: 500; color: var(--text-main);">"Reliable delivery. Transparent communication. Scalable software built for long term growth."</p>
+        </div>
+    </section>
+
+    <!-- 3. Pain Points -->
+    <section class="section">
+        <div class="container grid grid-2 align-center">
+            <div>
+                <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80" alt="Complex business growth data">
+            </div>
+            <div style="padding-left: 5%;">
+                <h2>What’s Slowing Business Growth?</h2>
+                <p>We help businesses build scalable software solutions focused on automation, efficiency, and long term performance.</p>
+                <div class="grid grid-2" style="gap: 0 20px; margin-top: 24px;">
+                    <div class="check-item"><span class="icon-cross">❌</span> Delayed software delivery</div>
+                    <div class="check-item"><span class="icon-cross">❌</span> Outdated legacy systems</div>
+                    <div class="check-item"><span class="icon-cross">❌</span> Manual workflows & inefficiency</div>
+                    <div class="check-item"><span class="icon-cross">❌</span> Poor system integrations</div>
+                    <div class="check-item"><span class="icon-cross">❌</span> Software that cannot scale</div>
+                    <div class="check-item"><span class="icon-cross">❌</span> Communication issues with vendors</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. Neo-Bento Grid: Why Us, GDPR, Outcomes -->
+    <section class="section card-alt">
+        <div class="container">
+            <h2 class="text-center" style="margin-bottom: 40px;">Built on Reliability & Security</h2>
+            
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;">
+                
+                <!-- Why Us (Spans 2 columns) -->
+                <div class="card" style="grid-column: span 2;">
+                    <h3>Why Clients Work With Us</h3>
+                    <div class="grid grid-2" style="margin-top: 20px;">
+                        <div class="check-item small"><span class="icon-check">✅</span> Fixed scope & transparent pricing</div>
+                        <div class="check-item small"><span class="icon-check">✅</span> Agile sprint-based delivery</div>
+                        <div class="check-item small"><span class="icon-check">✅</span> Weekly updates & clear communication</div>
+                        <div class="check-item small"><span class="icon-check">✅</span> Dedicated English-speaking project manager</div>
+                        <div class="check-item small"><span class="icon-check">✅</span> Scalable & secure software architecture</div>
+                        <div class="check-item small"><span class="icon-check">✅</span> AI & automation expertise</div>
+                        <div class="check-item small"><span class="icon-check">✅</span> Long-term technical support</div>
+                        <div class="check-item small"><span class="icon-check">✅</span> End-to-end software development</div>
+                    </div>
+                </div>
+
+                <!-- GDPR (Spans 1 column) -->
+                <div class="card" style="background: var(--brand-blue); color: white; border: none;">
+                    <h3 style="color: white;">GDPR-Aware & Security</h3>
+                    <div style="margin-top: 20px;">
+                        <div class="check-item small" style="color: white;"><span class="icon-check" style="color: var(--brand-sky);">✅</span> GDPR-aware architecture</div>
+                        <div class="check-item small" style="color: white;"><span class="icon-check" style="color: var(--brand-sky);">✅</span> Secure cloud infrastructure</div>
+                        <div class="check-item small" style="color: white;"><span class="icon-check" style="color: var(--brand-sky);">✅</span> Data encryption & secure auth</div>
+                        <div class="check-item small" style="color: white;"><span class="icon-check" style="color: var(--brand-sky);">✅</span> NDA & IP protection</div>
+                        <div class="check-item small" style="color: white;"><span class="icon-check" style="color: var(--brand-sky);">✅</span> Scalable backend architecture</div>
+                    </div>
+                </div>
+
+                <!-- Outcomes (Spans 3 columns) -->
+                <div class="card" style="grid-column: span 3; display: flex; flex-direction: column; align-items: center; text-align: center;">
+                    <h3>Real Business Outcomes We Deliver</h3>
+                    <div class="flex" style="flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 20px;">
+                        <span style="font-size: var(--text-xs); padding: 8px 16px; background: var(--bg-alt); border-radius: 100px; border: 1px solid var(--border-light);">📈 500+ Projects Delivered</span>
+                        <span style="font-size: var(--text-xs); padding: 8px 16px; background: var(--bg-alt); border-radius: 100px; border: 1px solid var(--border-light);">🌍 100+ Global Clients Served</span>
+                        <span style="font-size: var(--text-xs); padding: 8px 16px; background: var(--bg-alt); border-radius: 100px; border: 1px solid var(--border-light);">⚙️ Reduced manual operations</span>
+                        <span style="font-size: var(--text-xs); padding: 8px 16px; background: var(--bg-alt); border-radius: 100px; border: 1px solid var(--border-light);">🚀 Faster MVP & SaaS product launches</span>
+                        <span style="font-size: var(--text-xs); padding: 8px 16px; background: var(--bg-alt); border-radius: 100px; border: 1px solid var(--border-light);">☁️ Scalable platforms for growth</span>
+                        <span style="font-size: var(--text-xs); padding: 8px 16px; background: var(--bg-alt); border-radius: 100px; border: 1px solid var(--border-light);">🤖 AI-powered workflow automation</span>
+                        <span style="font-size: var(--text-xs); padding: 8px 16px; background: var(--bg-alt); border-radius: 100px; border: 1px solid var(--border-light);">🔗 Secure API integrations</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. Case Studies & Testimonials (Placeholders as requested) -->
+    <section class="section">
+        <div class="container text-center">
+            <span class="tag">Proven Success</span>
+            <h2>Client Case Studies & Testimonials</h2>
+            <div class="card card-alt" style="margin-top: 32px; padding: 64px 24px; border: 1px dashed var(--border-light);">
+                <p style="margin: 0; font-style: italic;">[ Interactive Case Study & Client Testimonial Component Goes Here ]</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. Our Software Services -->
+    <section class="section card-alt">
+        <div class="container">
+            <div class="text-center" style="margin-bottom: 48px;">
+                <h2>Our Software Development Services</h2>
+                <p>Engineered solutions for enterprises and ambitious startups.</p>
+            </div>
+
+            <!-- Custom 2-column alternating grid for services to fit all text and images -->
+            <div style="display: flex; flex-direction: column; gap: 24px;">
+                
+                <!-- Service A -->
+                <div class="card flex align-center justify-between" style="gap: 32px; flex-wrap: wrap;">
+                    <div style="flex: 1; min-width: 300px;">
+                        <h3>Web Platforms & SaaS Development</h3>
+                        <p style="font-weight: 500; color: var(--text-main); margin-bottom: 4px;">Still using slow or outdated systems?</p>
+                        <p>We build scalable web applications and SaaS platforms designed for business growth.</p>
+                        <a href="#consultation" class="btn btn-secondary" style="margin-top: 12px;">Get SaaS Development Proposal →</a>
+                    </div>
+                    <div style="flex: 0 0 250px;">
+                        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=400&q=80" alt="Web Development">
+                    </div>
+                </div>
+
+                <!-- Service B -->
+                <div class="card flex align-center justify-between" style="gap: 32px; flex-wrap: wrap;">
+                    <div style="flex: 1; min-width: 300px;">
+                        <h3>Mobile App Development</h3>
+                        <p style="font-weight: 500; color: var(--text-main); margin-bottom: 4px;">Losing customers because of poor mobile experience?</p>
+                        <p>We develop high performance Android & iOS applications focused on usability and engagement.</p>
+                        <a href="#consultation" class="btn btn-secondary" style="margin-top: 12px;">Discuss Your Mobile App Project →</a>
+                    </div>
+                    <div style="flex: 0 0 250px;">
+                        <img src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&w=400&q=80" alt="Mobile Development">
+                    </div>
+                </div>
+
+                <!-- Service C -->
+                <div class="card flex align-center justify-between" style="gap: 32px; flex-wrap: wrap;">
+                    <div style="flex: 1; min-width: 300px;">
+                        <h3>Enterprise Software Development</h3>
+                        <p style="font-weight: 500; color: var(--text-main); margin-bottom: 4px;">Disconnected systems slowing down operations?</p>
+                        <p>We build enterprise software that centralizes workflows and improves productivity.</p>
+                        <a href="#consultation" class="btn btn-secondary" style="margin-top: 12px;">Request Enterprise Consultation →</a>
+                    </div>
+                    <div style="flex: 0 0 250px;">
+                        <img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=400&q=80" alt="Enterprise Software">
+                    </div>
+                </div>
+
+                <!-- Service D & E (Side by side to save vertical space) -->
+                <div class="grid grid-2" style="gap: 24px;">
+                    <div class="card">
+                        <h3>AI & Business Automation</h3>
+                        <p style="font-weight: 500; color: var(--text-main); margin-bottom: 4px;">Too much time wasted on manual tasks?</p>
+                        <p>We integrate AI powered automation solutions to improve efficiency.</p>
+                        <a href="#consultation" class="btn btn-secondary" style="margin-top: 12px; width: 100%;">Automate Your Business →</a>
+                    </div>
+                    <div class="card">
+                        <h3>Legacy Software Modernization</h3>
+                        <p style="font-weight: 500; color: var(--text-main); margin-bottom: 4px;">Still relying on outdated software?</p>
+                        <p>We modernize legacy systems with scalable and secure architecture.</p>
+                        <a href="#consultation" class="btn btn-secondary" style="margin-top: 12px; width: 100%;">Modernize Existing Software →</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- 7. How We Work -->
+    <section class="section">
+        <div class="container text-center">
+            <h2 style="margin-bottom: 40px;">How We Work</h2>
+            <div class="grid grid-4 text-center">
+                <div class="card card-alt" style="border: none;">
+                    <div style="width: 40px; height: 40px; background: var(--brand-light); color: var(--brand-blue); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; margin: 0 auto 16px;">01</div>
+                    <h3 style="font-size: var(--text-sm);">Discovery Call</h3>
+                    <p style="font-size: var(--text-xs);">Understand business goals, technical challenges, and project requirements.</p>
+                </div>
+                <div class="card card-alt" style="border: none;">
+                    <div style="width: 40px; height: 40px; background: var(--bg-base); border: 1px solid var(--border-light); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; margin: 0 auto 16px;">02</div>
+                    <h3 style="font-size: var(--text-sm);">Scope & Proposal</h3>
+                    <p style="font-size: var(--text-xs);">Receive a clear roadmap, timeline, and fixed pricing proposal.</p>
+                </div>
+                <div class="card card-alt" style="border: none;">
+                    <div style="width: 40px; height: 40px; background: var(--bg-base); border: 1px solid var(--border-light); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; margin: 0 auto 16px;">03</div>
+                    <h3 style="font-size: var(--text-sm);">Agile Development</h3>
+                    <p style="font-size: var(--text-xs);">Sprint-based development with weekly demos and progress updates.</p>
+                </div>
+                <div class="card card-alt" style="border: none;">
+                    <div style="width: 40px; height: 40px; background: var(--bg-base); border: 1px solid var(--border-light); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; margin: 0 auto 16px;">04</div>
+                    <h3 style="font-size: var(--text-sm);">Launch & Support</h3>
+                    <p style="font-size: var(--text-xs);">Deployment, optimization, and long-term technical support.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 8. Consultation Section -->
+    <section id="consultation" class="section card-alt" style="border-top: 1px solid var(--border-light);">
+        <div class="container grid grid-2">
+            
+            <!-- Left Info -->
+            <div style="padding-right: 24px;">
+                <h2>Get a Free Software Development Consultation</h2>
+                <div style="margin: 24px 0;">
+                    <div class="check-item"><span class="icon-check">✅</span> Technical feasibility insights</div>
+                    <div class="check-item"><span class="icon-check">✅</span> Project roadmap & recommendations</div>
+                    <div class="check-item"><span class="icon-check">✅</span> Estimated timelines & development costs</div>
+                    <div class="check-item"><span class="icon-check">✅</span> Scalable technology strategy</div>
+                </div>
+
+                <div class="card" style="margin-top: 40px;">
+                    <span class="tag">Trust Elements</span>
+                    <div class="check-item small"><span class="icon-check">✅</span> 100% Confidential Discussion</div>
+                    <div class="check-item small"><span class="icon-check">✅</span> Transparent Pricing & Scope</div>
+                    <div class="check-item small"><span class="icon-check">✅</span> Dedicated Project Management</div>
+                    <div class="check-item small"><span class="icon-check">✅</span> Fast Response Within 24 Hours</div>
+                    <div class="check-item small"><span class="icon-check">✅</span> Long-Term Technical Support</div>
+                </div>
+            </div>
+
+            <!-- Right Form -->
+            <div class="card">
+                <form onsubmit="event.preventDefault();">
+                    <div class="grid grid-2" style="gap: 16px;">
+                        <div class="form-group">
+                            <label class="form-label">Full Name</label>
+                            <input type="text" class="form-input" placeholder="Your Name">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Company Name</label>
+                            <input type="text" class="form-input" placeholder="Your Company">
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-2" style="gap: 16px;">
+                        <div class="form-group">
+                            <label class="form-label">Business Email</label>
+                            <input type="email" class="form-input" placeholder="email@company.com">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">WhatsApp Number</label>
+                            <input type="tel" class="form-input" placeholder="+1 234 567 8900">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Services Required</label>
+                        <div class="checkbox-grid">
+                            <label class="checkbox-label"><input type="checkbox"> Web Application Development</label>
+                            <label class="checkbox-label"><input type="checkbox"> Mobile App Development</label>
+                            <label class="checkbox-label"><input type="checkbox"> SaaS Development</label>
+                            <label class="checkbox-label"><input type="checkbox"> Enterprise Software</label>
+                            <label class="checkbox-label"><input type="checkbox"> AI & Automation Solutions</label>
+                            <label class="checkbox-label"><input type="checkbox"> Legacy System Modernization</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Tell Us About Your Project</label>
+                        <textarea class="form-textarea" rows="3" placeholder="Briefly describe your project requirements or business goals."></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">Request Free Consultation</button>
+                </form>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- 9. FAQ Section -->
+    <section class="section">
+        <div class="container" style="max-width: 800px;">
+            <h2 class="text-center" style="margin-bottom: 40px;">Frequently Asked Questions</h2>
+            
+            <details>
+                <summary>How much does software development cost?</summary>
+                <p>Pricing depends on project complexity, features, integrations, and timelines. We provide custom estimates based on your requirements.</p>
+            </details>
+            <details>
+                <summary>How long does software development take?</summary>
+                <p>Most projects are completed within 8–30 weeks.</p>
+            </details>
+            <details>
+                <summary>Do you provide post-launch support?</summary>
+                <p>Yes. We provide ongoing maintenance and support.</p>
+            </details>
+            <details>
+                <summary>Do you sign NDA agreements?</summary>
+                <p>Yes. Client confidentiality is always protected.</p>
+            </details>
+            <details>
+                <summary>Can you modernize legacy systems?</summary>
+                <p>Yes. We specialize in scalable legacy modernization.</p>
+            </details>
+        </div>
+    </section>
+
+    <!-- 10. Bottom CTA -->
+    <section class="section" style="background-color: var(--brand-light); text-align: center;">
+        <div class="container" style="max-width: 800px;">
+            <h2>Ready to Build Software That Delivers Long Term Business Value?</h2>
+            <p style="color: var(--brand-blue); font-weight: 500; margin-bottom: 32px;">Partner with a software development company focused on reliable delivery, transparency, scalability, and operational efficiency.</p>
+            <div class="flex justify-center" style="gap: 16px;">
+                <a href="#consultation" class="btn btn-primary">📞 Book Free Strategy Call</a>
+                <a href="#consultation" class="btn btn-outline" style="background: white;">🚀 Get Project Roadmap</a>
+            </div>
+        </div>
+    </section>
+
+    <footer style="padding: 24px; text-align: center; font-size: var(--text-xs); color: var(--text-muted); border-top: 1px solid var(--border-light);">
+        <p>&copy; 2026 Reliable Delivery Custom Software. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>
