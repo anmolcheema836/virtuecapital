@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Principal Software Engineer Quiz</title>
+    <style>
+        /* ==================================================
+           CSS STYLES
+           ================================================== */
+        
+        /* Modern CSS Reset & Variables */
+        :root {
+            --bg-color: #0f172a;
+            --surface-color: #1e293b;
+            --primary: #3b82f6;
+            --primary-hover: #2563eb;
+            --text-main: #f8fafc;
+            --text-secondary: #cbd5e1;
+            --correct: #10b981;
+            --wrong: #ef4444;
+            --border-radius: 12px;
+            --transition: 0.3s ease;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 1100px;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        /* --- Camera Section --- */
+        .camera-section {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: var(--surface-color);
+            padding: 15px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+        }
+
+        .camera-section h2 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: var(--text-secondary);
+        }
+
+        #webcam {
+            width: 100%;
+            max-width: 400px;
+            border-radius: 8px;
+            background-color: #000;
+            aspect-ratio: 16/9;
+            object-fit: cover;
+        }
+
+        #cam-error {
+            color: var(--wrong);
+            font-size: 0.9rem;
+            margin-top: 10px;
+            display: none;
+        }
+
+        /* --- Quiz Section --- */
+        .quiz-section {
+            background: var(--surface-color);
+            padding: 30px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .progress-text {
+            font-weight: 600;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .progress-bar-bg {
+            width: 100%;
+            height: 10px;
+            background-color: #334155;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background-color: var(--primary);
+            width: 0%;
+            transition: width var(--transition);
+        }
+
+        /* Split Layout: Left (Question) & Right (Options) */
+        .quiz-split {
+            display: flex;
+            gap: 40px;
+            align-items: center;
+            min-height: 300px;
+        }
+
+        .quiz-left {
+            flex: 1;
+        }
+
+        .quiz-left h2 {
+            font-size: 1.4rem;
+            line-height: 1.6;
+        }
+
+        .quiz-right {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        /* Options Buttons */
+        .option-btn {
+            background: #334155;
+            color: var(--text-main);
+            border: 2px solid transparent;
+            padding: 15px 20px;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            cursor: pointer;
+            text-align: left;
+            transition: all var(--transition);
+            line-height: 1.5;
+        }
+
+        .option-btn:hover:not(:disabled) {
+            background: #475569;
+            transform: translateY(-2px);
+        }
+
+        .option-btn:disabled {
+            cursor: not-allowed;
+            opacity: 0.9;
+        }
+
+        /* Answer Highlights */
+        .option-btn.correct {
+            background: rgba(16, 185, 129, 0.2);
+            border-color: var(--correct);
+            color: var(--correct);
+        }
+
+        .option-btn.wrong {
+            background: rgba(239, 68, 68, 0.2);
+            border-color: var(--wrong);
+            color: var(--wrong);
+        }
+
+        /* Controls */
+        .controls {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 15px;
+        }
+
+        .primary-btn {
+            background-color: var(--primary);
+            color: #fff;
+            border: none;
+            padding: 12px 24px;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background var(--transition);
+        }
+
+        .primary-btn:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* --- Result Section --- */
+        .result-section {
+            background: var(--surface-color);
+            padding: 40px 20px;
+            border-radius: var(--border-radius);
+            text-align: center;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+        }
+
+        .result-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        .result-section p {
+            font-size: 1.5rem;
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+        }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 850px) {
+            .quiz-split {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 25px;
+            }
+            .quiz-left h2 {
+                font-size: 1.2rem;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        <!-- 1. Webcam Section (Top) -->
+        <div class="camera-section">
+            <h2>Live Supervisor Feed</h2>
+            <video id="webcam" autoplay playsinline muted></video>
+            <p id="cam-error">Camera access denied or unavailable.</p>
+        </div>
+
+        <!-- 2. Quiz Section -->
+        <div id="quiz-container" class="quiz-section">
+            
+            <!-- Progress Indicator -->
+            <div class="progress-container">
+                <span id="progress-text" class="progress-text">Question 1 of 10</span>
+                <div class="progress-bar-bg">
+                    <div id="progress-bar-fill" class="progress-bar-fill"></div>
+                </div>
+            </div>
+
+            <!-- Split Layout for Question and Options -->
+            <div class="quiz-split">
+                <!-- Left: Question -->
+                <div class="quiz-left">
+                    <h2 id="question-text">Loading question...</h2>
+                </div>
+                
+                <!-- Right: Options -->
+                <div class="quiz-right" id="options-container">
+                    <!-- Buttons injected via JS -->
+                </div>
+            </div>
+
+            <!-- Bottom Controls -->
+            <div class="controls">
+                <button id="next-btn" class="primary-btn hidden">Next Question</button>
+            </div>
+        </div>
+
+        <!-- 3. Result Section -->
+        <div id="result-container" class="result-section hidden">
+            <h2>Quiz Completed!</h2>
+            <p>You scored <strong id="score-display">0</strong> out of 10.</p>
+            <button id="restart-btn" class="primary-btn">Restart Quiz</button>
+        </div>
+    </div>
+
+    <!-- ==================================================
+         JAVASCRIPT LOGIC
+         ================================================== -->
+    <script>
+        // --- Webcam Initialization ---
+        const videoElement = document.getElementById('webcam');
+        const camErrorElement = document.getElementById('cam-error');
+
+        // Request access to the user's camera
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then((stream) => {
+                videoElement.srcObject = stream;
+            })
+            .catch((error) => {
+                console.error("Error accessing webcam:", error);
+                camErrorElement.style.display = "block";
+            });
+
+        // --- PRINCIPAL-LEVEL QUIZ DATA ---
+        const quizData = [
+            {
+                question: "In Log-Structured Merge-Trees (LSM-Trees), used by databases like RocksDB, what is the primary architectural advantage of 'Leveled Compaction' over 'Size-Tiered Compaction'?",
+                options: [
+                    "It optimizes exclusively for write-heavy workloads by entirely delaying merges until query time.", 
+                    "It drastically bounds worst-case read latency and minimizes space amplification by maintaining strictly disjoint sorted runs.", 
+                    "It replaces MemTables with a disk-based Hash Index, bypassing the need for an immutable SSTable.", 
+                    "It naturally implements Multi-Version Concurrency Control (MVCC) without requiring a Write-Ahead Log (WAL)."
+                ],
+                correctAnswer: 1 // Index 1
+            },
+            {
+                question: "How do advanced JavaScript engines (like V8 or SpiderMonkey) optimize the memory footprint of dynamically typed primitives without allocating external structs for type metadata?",
+                options: [
+                    "By strictly compressing all memory allocations to 32-bit addresses using 'Pointer Squeezing'.", 
+                    "By converting all primitives into objects and storing their type exclusively in the hidden class (__proto__).", 
+                    "By using techniques like Pointer Tagging or NaN Boxing, where type identifiers are encoded directly into the unused bits of a 64-bit pointer or float.", 
+                    "By maintaining a global, thread-safe Hash Map linking every memory address to a 1-byte type identifier."
+                ],
+                correctAnswer: 2
+            },
+            {
+                question: "The QUIC protocol (HTTP/3) operates over UDP and solves TCP's 'Head-of-Line Blocking'. How does QUIC natively handle 'Connection Migration' (e.g., a user switching from Wi-Fi to 5G)?",
+                options: [
+                    "By relying on IP Anycast to dynamically reroute the old IP address to the new network interface adapter.", 
+                    "By performing a rapid 0-RTT TLS session resumption using the previous session's MAC address.", 
+                    "By embedding an opaque, endpoint-generated 'Connection ID' in the packet header, independently of the client's IP and Port.", 
+                    "By utilizing the Border Gateway Protocol (BGP) to immediately broadcast the client's new IP to the edge proxy."
+                ],
+                correctAnswer: 2
+            },
+            {
+                question: "To mitigate side-channel vulnerability attacks like Spectre and Meltdown, modern web browsers introduced 'Site Isolation'. What fundamental OS-level change did this enforce?",
+                options: [
+                    "Disabling the SharedArrayBuffer API entirely and reducing the decimal precision of performance.now().", 
+                    "Enforcing that cross-domain documents are loaded into distinct OS-level processes, preventing an attacker from reading cross-origin memory.", 
+                    "Sandboxing all JavaScript execution inside a restricted WebAssembly Virtual Machine container.", 
+                    "Requiring all cross-origin HTTP requests to be routed through an intermediary proxy via the Cross-Origin-Opener header."
+                ],
+                correctAnswer: 1
+            },
+            {
+                question: "A 'Hash Length Extension Attack' allows an attacker to append data to a cryptographic hash and calculate a new valid hash without knowing the secret salt. Which algorithm design is inherently vulnerable to this?",
+                options: [
+                    "The Sponge Construction (e.g., Keccak / SHA-3)", 
+                    "The Merkle-Damgård Construction (e.g., SHA-256 / MD5)", 
+                    "The BLAKE2 family of algorithms", 
+                    "Hash-based Message Authentication Code (HMAC-SHA256)"
+                ],
+                correctAnswer: 1
+            },
+            {
+                question: "In Dynamo-style distributed systems (like Riak or DynamoDB), 'Vector Clocks' track causality. If Node A possesses vector clock [X:2, Y:1] and Node B possesses [X:1, Y:2], what exact state does this represent?",
+                options: [
+                    "Node A's dataset is strictly newer and should overwrite Node B's dataset.", 
+                    "The cluster has successfully achieved strong consistency via a two-phase commit protocol.", 
+                    "Node Y has encountered a Byzantine failure and requires gossip protocol synchronization.", 
+                    "A concurrent write conflict (divergence) has occurred, requiring application-level or last-write-wins resolution."
+                ],
+                correctAnswer: 3
+            },
+            {
+                question: "What is the core function of eBPF (Extended Berkeley Packet Filter) within modern Linux system engineering?",
+                options: [
+                    "It acts as a userspace orchestration layer designed to natively replace Docker namespaces and cgroups.", 
+                    "It is a specialized hardware instruction set baked into NICs to accelerate AES-GCM encryption natively.", 
+                    "It allows developers to safely run sandboxed, formally-verified programs directly inside the OS kernel without loading kernel modules.", 
+                    "It is a highly concurrent database file system designed to replace ext4 for log-structured appending."
+                ],
+                correctAnswer: 2
+            },
+            {
+                question: "To optimize repository footprint, Git periodically compresses objects into 'Packfiles'. Which specific delta-compression strategy does Git use to make retrieving historical file states highly efficient?",
+                options: [
+                    "Reverse Delta Compression: The newest version of a file is stored whole, and older versions are stored as diffs against newer ones.", 
+                    "Forward Delta Compression: The oldest commit is stored whole, and every subsequent commit is a rolling patch.", 
+                    "Semantic Diffing: Git parses the Abstract Syntax Tree (AST) of the code and only stores altered logic nodes.", 
+                    "Hash Collision Masking: Git hashes every blob with SHA-1 and only stores the binary XOR differences of colliding files."
+                ],
+                correctAnswer: 0
+            },
+            {
+                question: "When a frontend engineer applies the CSS property 'will-change: transform', what exact mechanical step does the browser rendering engine execute?",
+                options: [
+                    "It offloads the layout recalculation (Reflow) to an isolated background Web Worker thread.", 
+                    "It alters the Document Object Model (DOM) to permanently convert the node into an interactive <canvas> element.", 
+                    "It promotes the element to its own independent Compositor Layer, allowing the GPU to animate it without triggering Main Thread repaints.", 
+                    "It forces the browser to bypass GPU acceleration entirely to ensure sub-pixel font anti-aliasing remains crisp."
+                ],
+                correctAnswer: 2
+            },
+            {
+                question: "A 'Bloom Filter' is a highly efficient probabilistic data structure used to test set membership (e.g., checking if a URL is malicious). What is a strict mathematical guarantee of a standard Bloom Filter?",
+                options: [
+                    "False positives are mathematically impossible, but false negatives are entirely possible.", 
+                    "Both false positives and false negatives occur with equal probability depending on the hash seed.", 
+                    "Deleting an element from a standard Bloom Filter is guaranteed to execute in O(1) time.", 
+                    "False positives are possible, but false negatives are mathematically impossible."
+                ],
+                correctAnswer: 3
+            }
+        ];
+
+        // --- Quiz State Variables ---
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let hasAnswered = false;
+
+        // --- DOM Elements ---
+        const quizContainer = document.getElementById('quiz-container');
+        const resultContainer = document.getElementById('result-container');
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const nextBtn = document.getElementById('next-btn');
+        const progressText = document.getElementById('progress-text');
+        const progressBarFill = document.getElementById('progress-bar-fill');
+        const scoreDisplay = document.getElementById('score-display');
+        const restartBtn = document.getElementById('restart-btn');
+
+        // --- Functions ---
+
+        // Initialize / Restart the quiz
+        function startQuiz() {
+            currentQuestionIndex = 0;
+            score = 0;
+            quizContainer.classList.remove('hidden');
+            resultContainer.classList.add('hidden');
+            loadQuestion();
+        }
+
+        // Load the current question to the UI
+        function loadQuestion() {
+            hasAnswered = false;
+            nextBtn.classList.add('hidden');
+            
+            const currentQuestion = quizData[currentQuestionIndex];
+            
+            // Update Progress
+            progressText.innerText = `Question ${currentQuestionIndex + 1} of ${quizData.length}`;
+            const progressPercent = ((currentQuestionIndex) / quizData.length) * 100;
+            progressBarFill.style.width = `${progressPercent}%`;
+
+            // Display Question
+            questionText.innerText = currentQuestion.question;
+
+            // Generate Options
+            optionsContainer.innerHTML = ""; // Clear old options
+            currentQuestion.options.forEach((option, index) => {
+                const button = document.createElement('button');
+                button.innerText = option;
+                button.classList.add('option-btn');
+                
+                // Event listener for selecting an answer
+                button.addEventListener('click', () => selectAnswer(index, button));
+                
+                optionsContainer.appendChild(button);
+            });
+        }
+
+        // Handle answer selection
+        function selectAnswer(selectedIndex, selectedButton) {
+            // Prevent multiple clicks
+            if (hasAnswered) return;
+            hasAnswered = true;
+
+            const currentQuestion = quizData[currentQuestionIndex];
+            const correctIndex = currentQuestion.correctAnswer;
+            const buttons = optionsContainer.querySelectorAll('.option-btn');
+
+            // Disable all buttons to prevent changing answers
+            buttons.forEach(btn => btn.disabled = true);
+
+            // Check if correct or wrong
+            if (selectedIndex === correctIndex) {
+                selectedButton.classList.add('correct');
+                score++;
+            } else {
+                selectedButton.classList.add('wrong');
+                // Highlight the correct answer as well
+                buttons[correctIndex].classList.add('correct');
+            }
+
+            // Show "Next Question" button
+            nextBtn.classList.remove('hidden');
+            
+            // Change button text if it's the last question
+            if (currentQuestionIndex === quizData.length - 1) {
+                nextBtn.innerText = "Show Results";
+            } else {
+                nextBtn.innerText = "Next Question";
+            }
+        }
+
+        // Move to the next question or finish quiz
+        function handleNext() {
+            currentQuestionIndex++;
+            
+            if (currentQuestionIndex < quizData.length) {
+                loadQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+        // Display the final score screen
+        function showResults() {
+            quizContainer.classList.add('hidden');
+            resultContainer.classList.remove('hidden');
+            
+            // Ensure progress bar fills to 100% at the end
+            progressBarFill.style.width = `100%`;
+            
+            scoreDisplay.innerText = score;
+        }
+
+        // --- Event Listeners ---
+        nextBtn.addEventListener('click', handleNext);
+        restartBtn.addEventListener('click', startQuiz);
+
+        // Start the application
+        startQuiz();
+
+    </script>
+</body>
+</html>
