@@ -1,0 +1,1228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BULADEV | Building Success Together</title>
+    
+    <!-- Google Fonts: Inter for clean, modern readability -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ==========================================================================
+           CSS Variables & Theming
+           ========================================================================== */
+        :root {
+            --primary: #F26522; /* Vibrant Construction Orange */
+            --primary-hover: #D95316;
+            --dark-bg: #1A1A1A; /* Main dark background */
+            --darker-bg: #0A0A0A; /* Secondary dark background for contrast */
+            --light-bg: #F9F9F9;
+            --white: #FFFFFF;
+            --text-main: #222222;
+            --text-muted: #666666;
+            --text-light: #CCCCCC;
+            --border-color: #EAEAEA;
+            --font-main: 'Inter', sans-serif;
+            --container-width: 1280px;
+            --shadow-sm: 0 4px 6px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        /* ==========================================================================
+           Reset & Base Styles
+           ========================================================================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-main);
+            color: var(--text-main);
+            background-color: var(--white);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.3s ease;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        img {
+            max-width: 100%;
+            display: block;
+        }
+
+        .container {
+            max-width: var(--container-width);
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .section-padding {
+            padding: 7rem 0;
+        }
+
+        .text-primary {
+            color: var(--primary);
+        }
+
+        /* ==========================================================================
+           Typography
+           ========================================================================== */
+        h1, h2, h3, h4 {
+            font-weight: 700;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+        }
+
+        .section-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--primary);
+            font-weight: 700;
+            margin-bottom: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .section-label::before {
+            content: "";
+            display: block;
+            width: 40px;
+            height: 2px;
+            background-color: var(--primary);
+        }
+
+        /* ==========================================================================
+           Buttons
+           ========================================================================== */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem 2.5rem;
+            font-weight: 600;
+            font-size: 0.95rem;
+            border-radius: 4px;
+            transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(242, 101, 34, 0.3);
+        }
+
+        .btn-outline-light {
+            background-color: transparent;
+            border-color: var(--white);
+            color: var(--white);
+        }
+
+        .btn-outline-light:hover {
+            background-color: var(--white);
+            color: var(--dark-bg);
+        }
+
+        .btn-outline-dark {
+            background-color: transparent;
+            border-color: var(--dark-bg);
+            color: var(--dark-bg);
+        }
+
+        .btn-outline-dark:hover {
+            background-color: var(--dark-bg);
+            color: var(--white);
+        }
+
+        /* ==========================================================================
+           Top Bar & Navigation
+           ========================================================================== */
+        .top-bar {
+            background-color: #000;
+            color: #999;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            padding: 0.6rem 0;
+            text-transform: uppercase;
+        }
+
+        .top-bar .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .trust-markers {
+            display: flex;
+            gap: 2.5rem;
+        }
+
+        .trust-markers span {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .trust-markers span::before {
+            content: '◆';
+            color: var(--primary);
+            font-size: 0.7rem;
+        }
+
+        .navbar {
+            background-color: var(--white);
+            padding: 1.25rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .navbar .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-img {
+            height: 48px;
+            width: auto;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text-main);
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 0;
+            background-color: var(--primary);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after, .nav-links a.active::after {
+            width: 100%;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--primary);
+        }
+
+        /* ==========================================================================
+           Hero Section (FIXED & IMPROVED)
+           ========================================================================== */
+        .hero {
+            /* Clean diagonal split using linear-gradient */
+            background: linear-gradient(
+                105deg, 
+                var(--dark-bg) 0%, 
+                var(--dark-bg) 55%, 
+                var(--primary) 55%, 
+                var(--primary) 68%, 
+                var(--darker-bg) 68%, 
+                var(--darker-bg) 100%
+            );
+            color: var(--white);
+            min-height: 85vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            padding: 4rem 0;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            width: 100%;
+        }
+
+        .hero-content {
+            max-width: 600px;
+        }
+
+        .hero h1 {
+            font-size: clamp(3.5rem, 6vw, 5.5rem);
+            margin-bottom: 1.5rem;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            line-height: 1.05;
+        }
+
+        .hero-content p {
+            font-size: 1.15rem;
+            color: var(--text-light);
+            margin-bottom: 2.5rem;
+            max-width: 480px;
+            font-weight: 300;
+        }
+
+        .hero-btns {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .hero-card-container {
+            display: flex;
+            justify-content: flex-end;
+            align-items: flex-end;
+            height: 100%;
+            padding-top: 4rem;
+        }
+
+        .hero-card {
+            background-color: var(--white);
+            color: var(--text-main);
+            padding: 3rem;
+            border-radius: 8px;
+            max-width: 420px;
+            box-shadow: var(--shadow-lg);
+            position: relative;
+        }
+
+        .hero-card h3 {
+            font-size: 1.75rem;
+            margin-bottom: 1rem;
+            font-weight: 800;
+        }
+
+        .hero-card p {
+            color: var(--text-muted);
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        .hero-card .label {
+            color: var(--primary);
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        /* ==========================================================================
+           About Section
+           ========================================================================== */
+        .about-section {
+            background-color: var(--white);
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 5rem;
+            align-items: center;
+        }
+
+        .about-images {
+            position: relative;
+        }
+
+        .about-img-main {
+            border-radius: 6px;
+            width: 85%;
+            box-shadow: var(--shadow-md);
+        }
+
+        .about-img-secondary {
+            position: absolute;
+            bottom: -3rem;
+            right: 0;
+            width: 50%;
+            border: 10px solid var(--white);
+            border-radius: 6px;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .badge-20 {
+            position: absolute;
+            bottom: 3rem;
+            left: -2.5rem;
+            background-color: var(--primary);
+            color: var(--white);
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            border: 8px solid var(--white);
+            box-shadow: 0 15px 30px rgba(242, 101, 34, 0.2);
+        }
+
+        .badge-20 .num { font-size: 3rem; font-weight: 800; line-height: 1; margin-bottom: 0.2rem;}
+        .badge-20 .text { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+
+        .about-content h2 {
+            font-size: clamp(2.5rem, 4vw, 3.5rem);
+            margin-bottom: 1.5rem;
+        }
+
+        .about-content p {
+            color: var(--text-muted);
+            margin-bottom: 2.5rem;
+            font-size: 1.1rem;
+        }
+
+        .about-list {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.25rem;
+            margin-bottom: 3rem;
+        }
+
+        .about-list li {
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 0.95rem;
+            color: var(--text-main);
+        }
+
+        .about-list li::before {
+            content: '✓';
+            color: var(--primary);
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        /* ==========================================================================
+           Services Section
+           ========================================================================== */
+        .services-section {
+            background-color: var(--light-bg);
+            border-top: 1px solid var(--border-color);
+        }
+
+        .services-header {
+            margin-bottom: 4rem;
+        }
+
+        .services-header h2 {
+            font-size: clamp(2.5rem, 4vw, 3.25rem);
+            max-width: 650px;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2.5rem;
+        }
+
+        .service-card {
+            background-color: var(--white);
+            border-radius: 6px;
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.3s ease;
+            border: 1px solid var(--border-color);
+        }
+
+        .service-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-md);
+            border-color: transparent;
+        }
+
+        .service-img {
+            height: 240px;
+            width: 100%;
+            object-fit: cover;
+        }
+
+        .service-content {
+            padding: 2.5rem;
+            position: relative;
+        }
+
+        .service-num {
+            position: absolute;
+            top: -20px;
+            right: 2.5rem;
+            background-color: var(--primary);
+            color: var(--white);
+            width: 40px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: 800;
+            font-size: 1rem;
+            border-radius: 4px;
+            box-shadow: 0 4px 10px rgba(242, 101, 34, 0.4);
+        }
+
+        .service-card h3 {
+            font-size: 1.35rem;
+            margin-bottom: 1rem;
+        }
+
+        .service-card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .service-link {
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .service-link::after { 
+            content: '→'; 
+            transition: transform 0.3s;
+        }
+
+        .service-card:hover .service-link::after {
+            transform: translateX(5px);
+        }
+
+        /* ==========================================================================
+           Systems / Management Section
+           ========================================================================== */
+        .systems-section {
+            background-color: var(--dark-bg);
+            color: var(--white);
+            padding: 7rem 0;
+        }
+
+        .systems-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5rem;
+            align-items: center;
+        }
+
+        .systems-content h2 {
+            font-size: clamp(2.5rem, 4vw, 3.5rem);
+            margin-bottom: 1.5rem;
+        }
+
+        .systems-content p {
+            color: var(--text-light);
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+            font-weight: 300;
+        }
+
+        .systems-cards {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .sys-card {
+            background-color: var(--white);
+            color: var(--text-main);
+            padding: 2.5rem;
+            border-radius: 6px;
+            box-shadow: var(--shadow-md);
+        }
+
+        .sys-card h4 {
+            color: var(--primary);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 0.75rem;
+        }
+
+        .sys-card p {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        /* ==========================================================================
+           Process / Timeline Section
+           ========================================================================== */
+        .process-section {
+            background-color: var(--white);
+            text-align: center;
+        }
+
+        .process-section h2 {
+            font-size: clamp(2.5rem, 4vw, 3.25rem);
+            margin-bottom: 1rem;
+        }
+
+        .process-section > p {
+            color: var(--text-muted);
+            max-width: 650px;
+            margin: 0 auto 5rem;
+            font-size: 1.1rem;
+        }
+
+        .timeline {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        /* The connecting line */
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 40px;
+            left: 10%;
+            right: 10%;
+            height: 2px;
+            background-color: var(--border-color);
+            z-index: 0;
+        }
+
+        .timeline-step {
+            position: relative;
+            z-index: 1;
+            width: 25%;
+            padding: 0 1rem;
+        }
+
+        .step-circle {
+            width: 80px;
+            height: 80px;
+            background-color: var(--white);
+            border: 2px solid var(--border-color);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: var(--text-muted);
+            margin: 0 auto 1.5rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 0 10px var(--white); /* Clears the line behind it */
+        }
+
+        .timeline-step:hover .step-circle, 
+        .timeline-step.active .step-circle {
+            background-color: var(--primary);
+            border-color: var(--primary);
+            color: var(--white);
+            box-shadow: 0 0 0 10px var(--white), 0 10px 20px rgba(242, 101, 34, 0.2);
+        }
+
+        .timeline-step h4 {
+            font-size: 1.15rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-step p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        /* ==========================================================================
+           Projects Section
+           ========================================================================== */
+        .projects-section {
+            background-color: var(--light-bg);
+            border-top: 1px solid var(--border-color);
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2.5rem;
+            margin-top: 4rem;
+        }
+
+        .project-card {
+            position: relative;
+            border-radius: 6px;
+            overflow: hidden;
+            aspect-ratio: 16/9;
+            box-shadow: var(--shadow-md);
+            background-color: var(--dark-bg);
+        }
+
+        .project-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+            opacity: 0.9;
+        }
+
+        .project-card:hover img {
+            transform: scale(1.05);
+            opacity: 1;
+        }
+
+        .project-info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 2.5rem;
+            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+            color: var(--white);
+        }
+
+        .project-info h4 {
+            font-size: 1.35rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+
+        /* ==========================================================================
+           CTA / Contact Section
+           ========================================================================== */
+        .cta-section {
+            position: relative;
+            padding: 8rem 0;
+            background: url('https://images.unsplash.com/photo-1541888086425-d81bb19240f5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80') center/cover;
+            color: var(--white);
+        }
+
+        .cta-overlay {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(26, 26, 26, 0.9);
+        }
+
+        .cta-content {
+            position: relative;
+            z-index: 1;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5rem;
+            align-items: center;
+        }
+
+        .cta-content h2 {
+            font-size: clamp(3rem, 5vw, 4rem);
+            margin-bottom: 1.5rem;
+        }
+
+        .cta-content p {
+            font-size: 1.15rem;
+            color: var(--text-light);
+            font-weight: 300;
+            max-width: 500px;
+        }
+
+        .contact-box {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .contact-btn {
+            background-color: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: var(--white);
+            padding: 1.5rem 2rem;
+            border-radius: 6px;
+            font-size: 1.15rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.3s ease;
+        }
+
+        .contact-btn:hover {
+            background-color: var(--primary);
+            border-color: var(--primary);
+            transform: translateX(10px);
+        }
+        
+        .contact-btn.primary-btn {
+            background-color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .contact-btn.primary-btn:hover {
+            background-color: var(--primary-hover);
+        }
+
+        /* ==========================================================================
+           Footer
+           ========================================================================== */
+        .footer {
+            background-color: #111;
+            color: var(--text-light);
+            padding: 6rem 0 2rem;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1.5fr;
+            gap: 4rem;
+            margin-bottom: 4rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 4rem;
+        }
+
+        .footer-logo {
+            filter: brightness(0) invert(1);
+            height: 45px;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer p {
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+            max-width: 380px;
+            line-height: 1.6;
+        }
+
+        .footer h4 {
+            color: var(--white);
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .footer ul li {
+            margin-bottom: 0.85rem;
+        }
+
+        .footer ul a {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+        }
+
+        .footer ul a:hover {
+            color: var(--primary);
+        }
+
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* ==========================================================================
+           Responsive Design
+           ========================================================================== */
+        @media (max-width: 1024px) {
+            .hero {
+                background: linear-gradient(135deg, var(--dark-bg) 0%, var(--darker-bg) 100%);
+            }
+            .hero-grid, .about-grid, .systems-grid, .cta-content { grid-template-columns: 1fr; gap: 3rem;}
+            .hero-card-container { padding-top: 0; justify-content: flex-start; }
+            .services-grid { grid-template-columns: repeat(2, 1fr); }
+            .footer-grid { grid-template-columns: 1fr 1fr; }
+            .about-img-secondary { width: 40%; bottom: -1.5rem; }
+            .badge-20 { left: -1rem; width: 100px; height: 100px; }
+            .badge-20 .num { font-size: 2rem; }
+        }
+
+        @media (max-width: 768px) {
+            .trust-markers { display: none; }
+            .nav-links { display: none; } /* Burger menu required for production */
+            .section-padding { padding: 4rem 0; }
+            .services-grid, .projects-grid, .systems-cards, .footer-grid { grid-template-columns: 1fr; }
+            .hero-btns { flex-direction: column; }
+            .hero-btns .btn { width: 100%; }
+            .about-list { grid-template-columns: 1fr; }
+            
+            /* Vertical Timeline for Mobile */
+            .timeline { flex-direction: column; gap: 2rem; align-items: flex-start; padding-left: 10px; }
+            .timeline::before { left: 40px; top: 0; bottom: 0; height: auto; width: 2px; }
+            .timeline-step { width: 100%; display: flex; align-items: flex-start; gap: 1.5rem; text-align: left; padding: 0;}
+            .step-circle { margin: 0; flex-shrink: 0; width: 60px; height: 60px; }
+            .footer-bottom { flex-direction: column; gap: 1rem; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ==========================================
+         Top Bar
+         ========================================== -->
+    <div class="top-bar">
+        <div class="container">
+            <div class="trust-markers">
+                <span>20 YEARS EXPERIENCE</span>
+                <span>LICENSED & INSURED</span>
+                <span>LEAN SIX SIGMA</span>
+                <span>PROFESSIONAL PROJECT MANAGEMENT</span>
+            </div>
+            <div class="phone">(313) 444-9734</div>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         Navigation
+         ========================================== -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="#" class="logo">
+                <img src="buladevlogo.png" alt="BULADEV + ASA Construction Logo" class="logo-img">
+            </a>
+            <div class="nav-links">
+                <a href="#" class="active">Home</a>
+                <a href="#about">About</a>
+                <a href="#services">Services</a>
+                <a href="#projects">Projects</a>
+                <a href="#process">Process</a>
+            </div>
+            <a href="#contact" class="btn btn-primary">Request Consultation</a>
+        </div>
+    </nav>
+
+    <!-- ==========================================
+         Hero Section (Fixed Diagonal Layout)
+         ========================================== -->
+    <header class="hero">
+        <div class="container hero-grid">
+            
+            <!-- Left Side: Text Content -->
+            <div class="hero-content">
+                <span class="section-label" style="color: var(--primary);">RESIDENTIAL · COMMERCIAL · DEVELOPMENT</span>
+                <h1>Building <br>success.<br><span class="text-primary">Together.</span></h1>
+                <p>Construction and land development solutions backed by 20 years of experience, disciplined project leadership, and quality from concept through completion.</p>
+                <div class="hero-btns">
+                    <a href="#contact" class="btn btn-primary">Start Your Project &rarr;</a>
+                    <a href="#services" class="btn btn-outline-light">Explore Services</a>
+                </div>
+            </div>
+
+            <!-- Right Side: Floating White Card -->
+            <div class="hero-card-container">
+                <div class="hero-card">
+                    <span class="label">Built with precision</span>
+                    <h3>From vision to delivery</h3>
+                    <p>Clear scope, coordinated schedules, quality controls, and accountable project management to bring your property goals to life.</p>
+                </div>
+            </div>
+
+        </div>
+    </header>
+
+    <!-- ==========================================
+         About Section
+         ========================================== -->
+    <section id="about" class="section-padding about-section">
+        <div class="container about-grid">
+            <div class="about-images">
+                <img src="https://images.unsplash.com/photo-1487958449943-2429e8be8625?q=80&w=2070&auto=format&fit=crop" alt="Commercial Building" class="about-img-main">
+                <img src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Residential Home" class="about-img-secondary">
+                <div class="badge-20">
+                    <span class="num">20</span>
+                    <span class="text">Years<br>Experience</span>
+                </div>
+            </div>
+            <div class="about-content">
+                <span class="section-label">About BULADEV + ASA</span>
+                <h2>Built on experience. <br>Managed with precision.</h2>
+                <p>We bring development insight, construction expertise, Lean Six Sigma discipline, and professional project management together under one coordinated team. Our focus is transparent communication, practical solutions, efficient execution, and workmanship designed for long-term value.</p>
+                
+                <ul class="about-list">
+                    <li>Residential & commercial expertise</li>
+                    <li>Development-focused planning</li>
+                    <li>Lean, efficient delivery</li>
+                    <li>Professional project leadership</li>
+                </ul>
+                
+                <a href="#services" class="btn btn-outline-dark">Discover Our Capabilities &rarr;</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         Services Section
+         ========================================== -->
+    <section id="services" class="section-padding services-section">
+        <div class="container">
+            <div class="services-header">
+                <span class="section-label">What We Build</span>
+                <h2>Construction and development solutions.</h2>
+                <p style="color: var(--text-muted); margin-top: 1rem; font-size: 1.1rem;">One trusted relationship for planning, coordination, construction, and delivery.</p>
+            </div>
+
+            <div class="services-grid">
+                <!-- Service 1 -->
+                <div class="service-card">
+                    <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Residential Construction" class="service-img">
+                    <div class="service-content">
+                        <div class="service-num">01</div>
+                        <h3>Residential Construction</h3>
+                        <p>New homes, additions, renovations, multi-family improvements, custom interiors, and investment property upgrades.</p>
+                        <a href="#contact" class="service-link">Explore Service</a>
+                    </div>
+                </div>
+
+                <!-- Service 2 -->
+                <div class="service-card">
+                    <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Commercial Construction" class="service-img">
+                    <div class="service-content">
+                        <div class="service-num">02</div>
+                        <h3>Commercial Construction</h3>
+                        <p>Office and retail build-outs, tenant improvements, facility renovations, exterior upgrades, and property improvements.</p>
+                        <a href="#contact" class="service-link">Explore Service</a>
+                    </div>
+                </div>
+
+                <!-- Service 3 -->
+                <div class="service-card">
+                    <img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Land Development" class="service-img">
+                    <div class="service-content">
+                        <div class="service-num">03</div>
+                        <h3>Land Development</h3>
+                        <p>Site preparation, pre-construction planning, land improvement strategy, infrastructure coordination, and construction readiness.</p>
+                        <a href="#contact" class="service-link">Explore Service</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         Systems / Why Us Section
+         ========================================== -->
+    <section class="systems-section">
+        <div class="container systems-grid">
+            <div class="systems-content">
+                <span class="section-label">The BULADEV Advantage</span>
+                <h2>Better systems <br>create better builds.</h2>
+                <p>Lean Six Sigma certification and professional project management help reduce waste, improve coordination, control risk, and keep every project focused on the outcome that matters.</p>
+                
+                <div style="display: flex; align-items: center; gap: 1.25rem; margin-top: 2.5rem;">
+                    <div style="background-color: var(--primary); color: var(--white); border-radius: 50%; width: 70px; height: 70px; display: flex; justify-content: center; align-items: center; font-weight: 800; font-size: 1.5rem; flex-shrink: 0;">6σ</div>
+                    <div>
+                        <h4 style="margin: 0; font-size: 1.1rem;">Quality is managed—not left to chance.</h4>
+                        <p style="font-size: 0.9rem; margin: 0; color: var(--text-muted); margin-top: 0.25rem;">Defined standards. Measured progress. Continuous improvement.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="systems-cards">
+                <div class="sys-card">
+                    <h4>01. Define</h4>
+                    <p>Align priorities, deliverables, budget, and expectations.</p>
+                </div>
+                <div class="sys-card">
+                    <h4>02. Measure</h4>
+                    <p>Milestones and reporting keep teams accountable.</p>
+                </div>
+                <div class="sys-card">
+                    <h4>03. Improve</h4>
+                    <p>Solve bottlenecks and increase workflow speed.</p>
+                </div>
+                <div class="sys-card">
+                    <h4>04. Control</h4>
+                    <p>Quality and financial controls protect the result.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         Process Section
+         ========================================== -->
+    <section id="process" class="section-padding process-section">
+        <div class="container">
+            <span class="section-label" style="justify-content: center;">How We Work</span>
+            <h2>A clear path from concept to completion.</h2>
+            <p>Every successful project begins with clear expectations, disciplined planning, and consistent communication.</p>
+
+            <div class="timeline">
+                <div class="timeline-step">
+                    <div class="step-circle">01</div>
+                    <h4>Discover</h4>
+                    <p>Goals, site budget, priorities, and timeline.</p>
+                </div>
+                <div class="timeline-step">
+                    <div class="step-circle">02</div>
+                    <h4>Plan</h4>
+                    <p>Scope approach, resources, schedule, and milestones.</p>
+                </div>
+                <div class="timeline-step active">
+                    <div class="step-circle">03</div>
+                    <h4>Build</h4>
+                    <p>Labor, materials, communication, quality, and execution.</p>
+                </div>
+                <div class="timeline-step">
+                    <div class="step-circle">04</div>
+                    <h4>Deliver</h4>
+                    <p>Final review, closeout details, and lasting value.</p>
+                </div>
+            </div>
+            
+            <p style="margin-top: 5rem; font-size: 0.9rem; font-weight: 700; color: var(--primary); text-transform: uppercase; letter-spacing: 2px;">
+                Scope · Schedule · Cost · Quality · Safety · Closeout
+            </p>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         Projects Section
+         ========================================== -->
+    <section id="projects" class="section-padding projects-section">
+        <div class="container">
+            <span class="section-label">Featured Work</span>
+            <h2>Spaces built for purpose and performance.</h2>
+            <p style="color: var(--text-muted); font-size: 1.1rem;">Residential, commercial, and development projects delivered with attention to detail.</p>
+
+            <div class="projects-grid">
+                <div class="project-card">
+                    <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Modern business environments">
+                    <div class="project-info">
+                        <h4>Modern business environments</h4>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Homes designed for lasting value">
+                    <div class="project-info">
+                        <h4>Homes designed for lasting value</h4>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <img src="https://images.unsplash.com/photo-1541888086425-d81bb19240f5?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Coordinated from the ground up">
+                    <div class="project-info">
+                        <h4>Coordinated from the ground up</h4>
+                    </div>
+                </div>
+                <div class="project-card" style="background-color: var(--primary); display: flex; flex-direction: column; justify-content: center; align-items: center; color: white; padding: 3rem; text-align: center;">
+                    <h3 style="font-size: 2.25rem; margin-bottom: 1rem;">View All Projects</h3>
+                    <p style="margin-bottom: 2.5rem; font-size: 1.1rem; opacity: 0.9;">Explore our full portfolio of completed works.</p>
+                    <a href="#contact" class="btn btn-outline-light">View Portfolio</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         CTA / Contact Section
+         ========================================== -->
+    <section id="contact" class="cta-section">
+        <div class="cta-overlay"></div>
+        <div class="container cta-content">
+            <div>
+                <span class="section-label" style="color: var(--primary);">Start the Conversation</span>
+                <h2>Ready to build <br>something successful?</h2>
+                <p>Tell us about your residential, commercial, or land development project. We will help you understand the next step.</p>
+            </div>
+            
+            <div class="contact-box">
+                <a href="tel:3134449734" class="contact-btn primary-btn">
+                    <span>(313) 444-9734</span>
+                    <span>&rarr;</span>
+                </a>
+                <a href="mailto:bula@BULADEV.com" class="contact-btn">
+                    <span>bula@BULADEV.com</span>
+                    <span>&rarr;</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         Footer
+         ========================================== -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <img src="buladevlogo.png" alt="BULADEV Logo" class="footer-logo">
+                    <p>BULADEV Building & Land Development, together with ASA Construction LLC, provides licensed and insured residential, commercial, and development-focused construction services.</p>
+                    <p style="color: var(--primary); font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">Building Success Together</p>
+                </div>
+                
+                <div>
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#about">About Us</a></li>
+                        <li><a href="#projects">Portfolio</a></li>
+                        <li><a href="#process">Our Process</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4>Services</h4>
+                    <ul>
+                        <li><a href="#services">Residential Construction</a></li>
+                        <li><a href="#services">Commercial Construction</a></li>
+                        <li><a href="#services">Land Development</a></li>
+                        <li><a href="#services">Project Management</a></li>
+                        <li><a href="#services">All Services</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4>Contact Us</h4>
+                    <ul>
+                        <li style="color: var(--white); font-weight: 600;">(313) 444-9734</li>
+                        <li>bula@BULADEV.com</li>
+                        <li>www.BULADEV.com</li>
+                        <li style="margin-top: 1.5rem; color: var(--text-muted); font-size: 0.85rem;">Licensed & Insured<br>Certified Lean Six Sigma</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2026 BULADEV Building & Land Development and ASA Construction LLC. All rights reserved.</p>
+                <div style="display: flex; gap: 1rem;">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms & Conditions</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

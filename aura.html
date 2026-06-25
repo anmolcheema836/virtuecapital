@@ -3,738 +3,548 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AURA | Building, Land Development & Construction</title>
-    <meta name="description" content="Professional Building, Land Development, and Construction company.">
     
-    <!-- Google Fonts -->
+    <!-- SEO Titles and Meta Descriptions -->
+    <title>BULADEV Building & Land Development | Residential & Commercial Construction</title>
+    <meta name="description" content="BULADEV Building & Land Development and ASA Construction LLC provide licensed and insured residential construction, commercial construction, renovations, build-outs, and land development services backed by 20 years of experience.">
+    
+    <!-- High-end Typography -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
     <style>
-        /* CSS VARIABLES */
+        /* CSS Variables & Brand Palette */
         :root {
             --bg-color: #0a0a0a;
-            --text-color: #f4f4f0;
-            --accent-color: #c5a880;
-            --gray: #888888;
-            --font-display: 'Syne', sans-serif;
-            --font-body: 'Inter', sans-serif;
+            --text-primary: #ffffff;
+            --text-secondary: #a3a3a3;
+            --surface-color: #141414;
+            --surface-light: #1f1f1f;
+            --accent-orange: #E65C00;
+            --accent-bronze: #C28F27;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --glass-bg: rgba(20, 20, 20, 0.6);
         }
 
-        /* RESET & BASE */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            cursor: none; /* Custom cursor */
-        }
-        
-        html.lenis {
-            height: auto;
-        }
-        
-        .lenis.lenis-smooth {
-            scroll-behavior: auto;
-        }
-
+        /* Reset & Base */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; font-size: 16px; }
         body {
+            font-family: 'Inter', sans-serif;
             background-color: var(--bg-color);
-            color: var(--text-color);
-            font-family: var(--font-body);
+            color: var(--text-primary);
+            line-height: 1.6;
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
         }
 
-        a {
-            color: inherit;
-            text-decoration: none;
-        }
-
-        ul {
-            list-style: none;
-        }
-
-        img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-        }
-
-        /* CUSTOM CURSOR */
-        .cursor {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 20px;
-            height: 20px;
-            background-color: var(--accent-color);
-            border-radius: 50%;
-            pointer-events: none;
-            transform: translate(-50%, -50%);
-            z-index: 9999;
-            transition: width 0.3s, height 0.3s, background-color 0.3s;
-            mix-blend-mode: difference;
-        }
-        .cursor.hovered {
-            width: 80px;
-            height: 80px;
-            background-color: var(--text-color);
-        }
-
-        /* PRELOADER */
-        .preloader {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background-color: var(--bg-color);
-            z-index: 10000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-family: var(--font-display);
-            font-size: 3vw;
+        h1, h2, h3, h4, h5, h6, .brand-font {
+            font-family: 'Syne', sans-serif;
             font-weight: 700;
-            color: var(--accent-color);
         }
 
-        /* NAVIGATION */
-        nav {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            padding: 2rem 4rem;
-            display: flex;
-            justify-content: space-between;
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+        img { max-width: 100%; height: auto; display: block; }
+
+        /* Typography */
+        .text-accent { color: var(--accent-orange); }
+        .text-bronze { color: var(--accent-bronze); }
+        .section-title { font-size: clamp(2.5rem, 5vw, 4.5rem); line-height: 1.1; margin-bottom: 1.5rem; text-transform: uppercase; letter-spacing: -1px; }
+        .subtitle { font-size: 1.25rem; color: var(--text-secondary); font-weight: 300; max-width: 800px; }
+
+        /* Layout Utilities */
+        .container { max-width: 1440px; margin: 0 auto; padding: 0 5%; }
+        .section-padding { padding: 8rem 0; }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
             align-items: center;
-            z-index: 100;
-            mix-blend-mode: difference;
-        }
-        .logo {
-            font-family: var(--font-display);
-            font-size: 1.5rem;
-            font-weight: 800;
-            letter-spacing: 2px;
-        }
-        .nav-links {
-            display: flex;
-            gap: 3rem;
-            font-size: 0.9rem;
+            justify-content: center;
+            padding: 1rem 2.5rem;
+            font-family: 'Syne', sans-serif;
+            font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 1px;
-        }
-        .nav-links li a:hover {
-            color: var(--accent-color);
-        }
-        .btn {
-            border: 1px solid var(--text-color);
-            padding: 0.8rem 2rem;
-            border-radius: 50px;
-            text-transform: uppercase;
-            font-size: 0.8rem;
             transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
         }
-        .btn:hover {
-            background-color: var(--text-color);
-            color: var(--bg-color);
+        .btn-primary {
+            background-color: var(--accent-orange);
+            color: #fff;
         }
+        .btn-primary:hover { background-color: #ff6a00; transform: translateY(-3px); }
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--text-primary);
+            color: var(--text-primary);
+        }
+        .btn-outline:hover { background-color: var(--text-primary); color: var(--bg-color); }
 
-        /* SECTION UTILS */
-        section {
-            padding: 8rem 4rem;
-            position: relative;
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0; width: 100%;
+            padding: 1.5rem 5%;
+            display: flex; justify-content: space-between; align-items: center;
+            z-index: 100;
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border-color);
         }
-        .container {
-            max-width: 1600px;
-            margin: 0 auto;
-        }
-        .section-title {
-            font-family: var(--font-display);
-            font-size: 5vw;
-            font-weight: 700;
-            text-transform: uppercase;
-            line-height: 1;
-            margin-bottom: 4rem;
-        }
+        .brand-logo { font-size: 1.5rem; font-weight: 800; letter-spacing: 1px; display: flex; flex-direction: column; line-height: 1; }
+        .brand-logo span { font-size: 0.75rem; color: var(--accent-orange); letter-spacing: 2px; }
+        .nav-links { display: flex; gap: 2.5rem; }
+        .nav-links a { font-size: 0.85rem; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; transition: color 0.3s ease; }
+        .nav-links a:hover { color: var(--accent-orange); }
+        .nav-contact { font-family: 'Syne', sans-serif; font-weight: 700; color: var(--accent-bronze); }
 
-        /* HERO SECTION */
+        /* Hero Section */
         .hero {
-            height: 100vh;
-            padding: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            overflow: hidden;
+            height: 100vh; min-height: 800px;
+            display: flex; flex-direction: column; justify-content: flex-end;
+            padding-bottom: 6rem; position: relative;
         }
-        .hero-img {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 120%; /* For parallax */
-            z-index: 1;
-            opacity: 0.6;
+        .hero-bg {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            object-fit: cover; z-index: -2; filter: brightness(0.3) grayscale(0.2);
         }
-        .hero-content {
-            position: relative;
-            z-index: 2;
-            text-align: center;
-            width: 100%;
-            padding: 0 4rem;
+        .hero-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(180deg, rgba(10,10,10,0.2) 0%, rgba(10,10,10,1) 100%);
+            z-index: -1;
         }
-        .hero-title {
-            font-family: var(--font-display);
-            font-size: 8vw;
-            font-weight: 800;
-            line-height: 0.9;
-            text-transform: uppercase;
-            margin-bottom: 1.5rem;
+        .hero-content h1 {
+            font-size: clamp(3.5rem, 8vw, 7rem);
+            line-height: 0.95; margin-bottom: 1.5rem; text-transform: uppercase;
         }
-        .hero-subtitle {
-            font-size: 1.2rem;
-            font-weight: 300;
-            max-width: 600px;
-            margin: 0 auto;
-            color: #ccc;
+        .trust-bar {
+            display: flex; flex-wrap: wrap; gap: 2rem; margin-bottom: 3rem;
+            padding-top: 2rem; border-top: 1px solid var(--border-color);
         }
+        .trust-item {
+            font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; color: var(--accent-bronze);
+            display: flex; align-items: center; gap: 0.5rem; font-weight: 600;
+        }
+        .hero-btns { display: flex; gap: 1.5rem; margin-top: 2rem; }
 
-        /* MARQUEE */
-        .marquee {
-            background-color: var(--accent-color);
-            color: var(--bg-color);
-            padding: 1.5rem 0;
-            overflow: hidden;
-            display: flex;
-            white-space: nowrap;
-        }
-        .marquee-inner {
-            display: flex;
-            animation: marquee 20s linear infinite;
-        }
-        .marquee span {
-            font-family: var(--font-display);
-            font-size: 2rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            padding: 0 2rem;
-        }
-        @keyframes marquee {
-            0% { transform: translateX(0%); }
-            100% { transform: translateX(-50%); }
-        }
+        /* Intro / About */
+        .intro-section { background: var(--surface-color); }
+        .intro-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 6rem; align-items: center; }
+        .intro-text p { font-size: 1.25rem; color: var(--text-secondary); margin-bottom: 2rem; }
 
-        /* ABOUT / MISSION */
-        .about-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
-            align-items: center;
-        }
-        .about-text p {
-            font-size: 1.5rem;
-            line-height: 1.6;
-            margin-bottom: 2rem;
-            color: #ddd;
-        }
-        .about-text .mission {
-            font-size: 1.1rem;
-            color: var(--accent-color);
-            border-left: 2px solid var(--accent-color);
-            padding-left: 1.5rem;
-        }
-        .about-img {
-            height: 80vh;
-            overflow: hidden;
-            border-radius: 10px;
-        }
-
-        /* SERVICES */
-        .services-list {
-            border-top: 1px solid #333;
-        }
-        .service-item {
-            border-bottom: 1px solid #333;
-            padding: 3rem 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: padding 0.3s ease;
-        }
-        .service-item:hover {
-            padding: 4rem 0;
-        }
-        .service-name {
-            font-family: var(--font-display);
-            font-size: 4vw;
-            font-weight: 600;
-            color: var(--gray);
-            transition: color 0.3s ease;
-        }
-        .service-item:hover .service-name {
-            color: var(--text-color);
-        }
-        .service-desc {
-            max-width: 400px;
-            font-size: 1rem;
-            color: var(--gray);
-            opacity: 0;
-            transform: translateX(-20px);
-            transition: all 0.3s ease;
-        }
-        .service-item:hover .service-desc {
-            opacity: 1;
-            transform: translateX(0);
-        }
-
-        /* PROJECTS */
-        .projects-grid {
+        /* Services - Neo Bento */
+        .bento-grid {
             display: grid;
             grid-template-columns: repeat(12, 1fr);
-            gap: 2rem;
+            gap: 1.5rem;
+            margin-top: 4rem;
         }
-        .project-card {
-            position: relative;
-            overflow: hidden;
-            border-radius: 10px;
+        .bento-card {
+            background: var(--surface-light);
+            padding: 3rem;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            transition: all 0.4s ease;
+            display: flex; flex-direction: column; justify-content: space-between;
         }
-        .project-card:nth-child(1) { grid-column: 1 / 8; height: 70vh; }
-        .project-card:nth-child(2) { grid-column: 8 / 13; height: 50vh; margin-top: 10vh; }
-        .project-card:nth-child(3) { grid-column: 1 / 6; height: 60vh; }
-        .project-card:nth-child(4) { grid-column: 6 / 13; height: 80vh; margin-top: -10vh; }
+        .bento-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-orange);
+            background: rgba(230, 92, 0, 0.05);
+        }
+        .span-8 { grid-column: span 8; }
+        .span-4 { grid-column: span 4; }
+        .span-6 { grid-column: span 6; }
+        .bento-card h3 { font-size: 2rem; margin-bottom: 1rem; color: var(--text-primary); }
+        .bento-card p { color: var(--text-secondary); margin-bottom: 2rem; }
+        .bento-card .btn { align-self: flex-start; padding: 0.75rem 1.5rem; font-size: 0.8rem; }
+
+        /* Portfolio / Projects */
+        .portfolio-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem; margin-top: 4rem; }
+        .project-item {
+            position: relative; overflow: hidden; aspect-ratio: 4/3; border-radius: 4px;
+        }
+        .project-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.7s ease; }
+        .project-item:hover img { transform: scale(1.05); }
+        .project-overlay {
+            position: absolute; bottom: 0; left: 0; width: 100%; padding: 2rem;
+            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+            transform: translateY(20px); opacity: 0; transition: all 0.4s ease;
+        }
+        .project-item:hover .project-overlay { transform: translateY(0); opacity: 1; }
+        .project-overlay h4 { font-size: 1.5rem; margin-bottom: 0.5rem; }
+        .project-overlay p { color: var(--accent-bronze); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; }
+
+        /* Process Steps */
+        .process-section { background: var(--surface-color); }
+        .process-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; margin-top: 4rem; }
+        .process-step { padding: 2rem; border-top: 2px solid var(--border-color); transition: border-color 0.3s ease; }
+        .process-step:hover { border-top-color: var(--accent-orange); }
+        .step-num { font-family: 'Syne', sans-serif; font-size: 3rem; color: var(--border-color); font-weight: 800; line-height: 1; margin-bottom: 1rem; }
+        .process-step h4 { font-size: 1.25rem; margin-bottom: 1rem; }
+        .process-step p { color: var(--text-secondary); font-size: 0.9rem; }
+
+        /* FAQ */
+        .faq-container { max-width: 800px; margin: 4rem auto 0; }
+        details {
+            background: var(--surface-light); margin-bottom: 1rem; border: 1px solid var(--border-color);
+            border-radius: 4px; overflow: hidden;
+        }
+        summary {
+            padding: 1.5rem; font-family: 'Syne', sans-serif; font-weight: 600; font-size: 1.2rem;
+            cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center;
+        }
+        summary::-webkit-details-marker { display: none; }
+        summary::after { content: '+'; color: var(--accent-orange); font-size: 1.5rem; }
+        details[open] summary::after { content: '-'; }
+        .faq-content { padding: 0 1.5rem 1.5rem; color: var(--text-secondary); }
+
+        /* Contact & Footer */
+        .contact-section { background: var(--accent-orange); color: var(--bg-color); padding: 6rem 0; }
+        .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; }
+        .contact-info h2 { color: var(--bg-color); }
+        .contact-info p { color: rgba(10,10,10,0.8); font-size: 1.2rem; font-weight: 500; margin-bottom: 2rem; }
         
-        .project-info {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            padding: 2rem;
-            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
-            transform: translateY(100%);
-            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        .form-group { margin-bottom: 1.5rem; }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%; padding: 1rem; background: rgba(0,0,0,0.1); border: 1px solid rgba(0,0,0,0.2);
+            color: var(--bg-color); font-family: 'Inter', sans-serif; font-size: 1rem; border-radius: 2px;
         }
-        .project-card:hover .project-info {
-            transform: translateY(0);
-        }
-        .project-title {
-            font-family: var(--font-display);
-            font-size: 2rem;
-            margin-bottom: 0.5rem;
-        }
-        .project-card img {
-            transition: transform 0.8s ease;
-        }
-        .project-card:hover img {
-            transform: scale(1.05);
-        }
+        .form-group input::placeholder, .form-group textarea::placeholder { color: rgba(10,10,10,0.6); }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: var(--bg-color); }
+        .form-btn { background: var(--bg-color); color: var(--text-primary); cursor: pointer; width: 100%; }
+        .form-btn:hover { background: var(--surface-light); }
 
-        /* TESTIMONIALS & FAQ */
-        .dual-section {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 6rem;
-        }
-        .testimonial-quote {
-            font-family: var(--font-display);
-            font-size: 2.5rem;
-            line-height: 1.3;
-            margin-bottom: 2rem;
-        }
-        .testimonial-author {
-            color: var(--accent-color);
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-        
-        .faq-item {
-            margin-bottom: 2rem;
-            border-bottom: 1px solid #333;
-            padding-bottom: 1rem;
-        }
-        .faq-q {
-            font-family: var(--font-display);
-            font-size: 1.5rem;
-            margin-bottom: 0.5rem;
-        }
-        .faq-a {
-            color: var(--gray);
-            line-height: 1.6;
-        }
+        footer { background: var(--bg-color); padding: 4rem 0 2rem; border-top: 1px solid var(--border-color); }
+        .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 4rem; margin-bottom: 4rem; }
+        .footer-col h5 { font-size: 1.2rem; margin-bottom: 1.5rem; color: var(--text-primary); }
+        .footer-col p { color: var(--text-secondary); font-size: 0.9rem; max-width: 400px; margin-bottom: 1rem; }
+        .footer-links li { margin-bottom: 0.75rem; }
+        .footer-links a { color: var(--text-secondary); font-size: 0.9rem; transition: color 0.3s; }
+        .footer-links a:hover { color: var(--accent-orange); }
+        .footer-bottom { border-top: 1px solid var(--border-color); padding-top: 2rem; display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--text-secondary); }
 
-        /* CONTACT & FOOTER */
-        .contact-section {
-            background-color: #111;
-            border-top-left-radius: 40px;
-            border-top-right-radius: 40px;
-            padding-bottom: 2rem;
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .grid-2, .intro-grid, .contact-grid, .footer-grid { grid-template-columns: 1fr; }
+            .span-8, .span-4, .span-6 { grid-column: span 12; }
+            .process-grid { grid-template-columns: repeat(2, 1fr); }
+            .nav-links { display: none; } /* Mobile menu toggle needed in prod */
+            .hero-content h1 { font-size: 4rem; }
         }
-        .contact-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
-        }
-        .form-group {
-            margin-bottom: 2rem;
-        }
-        input, textarea {
-            width: 100%;
-            background: transparent;
-            border: none;
-            border-bottom: 1px solid #444;
-            padding: 1rem 0;
-            color: var(--text-color);
-            font-family: var(--font-body);
-            font-size: 1rem;
-            outline: none;
-            transition: border-color 0.3s;
-        }
-        input:focus, textarea:focus {
-            border-color: var(--accent-color);
-        }
-        .submit-btn {
-            background: var(--accent-color);
-            color: var(--bg-color);
-            border: none;
-            padding: 1.2rem 3rem;
-            font-family: var(--font-display);
-            font-size: 1.2rem;
-            font-weight: 700;
-            border-radius: 50px;
-            margin-top: 1rem;
-            transition: transform 0.3s;
-        }
-        .submit-btn:hover {
-            transform: scale(1.05);
-        }
-        footer {
-            margin-top: 8rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-top: 1px solid #333;
-            padding-top: 2rem;
-            font-size: 0.9rem;
-            color: var(--gray);
-        }
-        .footer-links a {
-            margin-left: 1.5rem;
-        }
-
-        /* REVEAL UTILS FOR GSAP */
-        .reveal-text {
-            clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
-        }
-
-        /* MEDIA QUERIES */
-        @media(max-width: 1024px) {
-            .nav-links { display: none; }
-            .hero-title { font-size: 10vw; }
-            .about-grid, .dual-section, .contact-grid { grid-template-columns: 1fr; }
-            .project-card:nth-child(n) { grid-column: 1 / -1; height: 50vh; margin-top: 0; margin-bottom: 2rem; }
-            section { padding: 5rem 2rem; }
+        @media (max-width: 768px) {
+            .portfolio-grid { grid-template-columns: 1fr; }
+            .process-grid { grid-template-columns: 1fr; }
+            .hero-content h1 { font-size: 3rem; }
+            .hero-btns { flex-direction: column; }
+            .btn { width: 100%; }
         }
     </style>
 </head>
 <body>
 
-    <!-- CUSTOM CURSOR -->
-    <div class="cursor"></div>
-
-    <!-- PRELOADER -->
-    <div class="preloader">AURA</div>
-
-    <!-- NAVIGATION -->
+    <!-- Navigation -->
     <nav>
-        <div class="logo">AURA</div>
-        <ul class="nav-links">
-            <li><a href="#about" class="hover-target">About</a></li>
-            <li><a href="#services" class="hover-target">Services</a></li>
-            <li><a href="#projects" class="hover-target">Projects</a></li>
-            <li><a href="#testimonials" class="hover-target">Clients</a></li>
-        </ul>
-        <a href="#contact" class="btn hover-target">Let's Talk</a>
+        <a href="#" class="brand-logo">
+            BULADEV
+            <span>+ ASA Construction</span>
+        </a>
+        <div class="nav-links">
+            <a href="#about">About Us</a>
+            <a href="#services">Services</a>
+            <a href="#projects">Projects</a>
+            <a href="#process">Process</a>
+            <a href="#contact">Contact</a>
+        </div>
+        <a href="tel:3134449734" class="nav-contact">(313) 444-9734</a>
     </nav>
 
-    <!-- HERO SECTION -->
-    <section class="hero" id="home">
-        <div class="hero-img">
-            <!-- High-end architectural skyscraper image -->
-            <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop" alt="Modern Architecture Background" class="parallax-bg">
-        </div>
-        <div class="hero-content">
-            <h1 class="hero-title reveal-text">Shaping<br>The Future</h1>
-            <p class="hero-subtitle reveal-text">Premier Building, Land Development & Construction.</p>
-        </div>
-    </section>
-
-    <!-- MARQUEE -->
-    <div class="marquee">
-        <div class="marquee-inner">
-            <span>Building</span> • <span>Land Development</span> • <span>Construction</span> • <span>Design</span> • <span>Project Management</span> • 
-            <span>Building</span> • <span>Land Development</span> • <span>Construction</span> • <span>Design</span> • <span>Project Management</span> • 
-        </div>
-    </div>
-
-    <!-- ABOUT & MISSION -->
-    <section id="about">
-        <div class="container about-grid">
-            <div class="about-text">
-                <h2 class="section-title gs_reveal">Who We Are</h2>
-                <p class="gs_reveal">We are a visionary construction and land development firm dedicated to creating architectural masterpieces. Our commitment to excellence, sustainability, and innovation drives every project from blueprint to reality.</p>
-                <div class="mission gs_reveal">
-                    <strong>Mission & Vision:</strong> To construct environments that inspire, while fostering sustainable development that enriches communities and stands the test of time.
-                </div>
-            </div>
-            <div class="about-img gs_reveal">
-                <!-- High-end structural/blueprint imagery -->
-                <img src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=2071&auto=format&fit=crop" alt="Architecture Blueprint Interior">
-            </div>
-        </div>
-    </section>
-
-    <!-- SERVICES -->
-    <section id="services">
-        <div class="container">
-            <h2 class="section-title gs_reveal">Expertise</h2>
-            <div class="services-list">
-                <div class="service-item gs_reveal hover-target">
-                    <div class="service-name">01. Land Development</div>
-                    <div class="service-desc">Strategic planning, zoning, and site preparation to unlock the full potential of your real estate investments.</div>
-                </div>
-                <div class="service-item gs_reveal hover-target">
-                    <div class="service-name">02. Construction</div>
-                    <div class="service-desc">World-class commercial and residential construction, executed with uncompromising safety and precision.</div>
-                </div>
-                <div class="service-item gs_reveal hover-target">
-                    <div class="service-name">03. Architectural Design</div>
-                    <div class="service-desc">Collaborating with elite architects to ensure aesthetics perfectly align with structural integrity.</div>
-                </div>
-                <div class="service-item gs_reveal hover-target">
-                    <div class="service-name">04. Project Management</div>
-                    <div class="service-desc">End-to-end oversight ensuring projects are delivered on time, within budget, and beyond expectations.</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- PROJECTS / PORTFOLIO -->
-    <section id="projects">
-        <div class="container">
-            <h2 class="section-title gs_reveal">Selected Works</h2>
-            <div class="projects-grid">
-                
-                <div class="project-card gs_reveal hover-target">
-                    <img src="https://images.unsplash.com/photo-1541881451970-13f51b476e1f?q=80&w=2070&auto=format&fit=crop" alt="The Zenith Tower">
-                    <div class="project-info">
-                        <div class="project-title">The Zenith Tower</div>
-                        <p>Commercial Construction • 2023</p>
-                    </div>
-                </div>
-                
-                <div class="project-card gs_reveal hover-target">
-                    <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2070&auto=format&fit=crop" alt="Lumina Estates">
-                    <div class="project-info">
-                        <div class="project-title">Lumina Estates</div>
-                        <p>Land Development • 2022</p>
-                    </div>
-                </div>
-
-                <div class="project-card gs_reveal hover-target">
-                    <img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?q=80&w=2070&auto=format&fit=crop" alt="Vertex Industrial">
-                    <div class="project-info">
-                        <div class="project-title">Vertex Industrial</div>
-                        <p>Project Management • 2023</p>
-                    </div>
-                </div>
-
-                <div class="project-card gs_reveal hover-target">
-                    <img src="https://images.unsplash.com/photo-1487958449943-2429e8be8625?q=80&w=2070&auto=format&fit=crop" alt="Echo Modern Art Gallery">
-                    <div class="project-info">
-                        <div class="project-title">Echo Gallery</div>
-                        <p>Architectural Design • 2024</p>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </section>
-
-    <!-- TESTIMONIALS & FAQ -->
-    <section id="testimonials">
-        <div class="container dual-section">
-            <div class="testimonials gs_reveal">
-                <h2 class="section-title" style="font-size: 3vw;">Client Voices</h2>
-                <div class="testimonial-quote">
-                    "AURA transformed our undeveloped land into a thriving commercial hub. Their attention to detail and professional integrity is unmatched in the construction industry."
-                </div>
-                <div class="testimonial-author">
-                    — Sarah Jenkins, CEO of Meridian Holdings
-                </div>
-            </div>
+    <!-- Hero Section -->
+    <header class="hero">
+        <img src="https://images.unsplash.com/photo-1541888086425-d81bb19240f5?auto=format&fit=crop&q=80&w=2000" alt="Commercial Construction Site" class="hero-bg">
+        <div class="hero-overlay"></div>
+        <div class="container hero-content">
+            <h1>Building<br><span class="text-accent">Success</span> Together</h1>
+            <p class="subtitle">Licensed and insured residential, commercial, and land development solutions backed by 20 years of experience.</p>
             
-            <div class="faq gs_reveal">
-                <h2 class="section-title" style="font-size: 3vw;">FAQ</h2>
-                <div class="faq-item">
-                    <div class="faq-q">Do you handle permits and zoning?</div>
-                    <div class="faq-a">Yes. Our land development team manages all regulatory approvals, zoning laws, and municipal permits to ensure a seamless start.</div>
+            <div class="hero-btns">
+                <a href="#contact" class="btn btn-primary">Request a Consultation</a>
+                <a href="#services" class="btn btn-outline">View Our Services</a>
+            </div>
+
+            <div class="trust-bar">
+                <div class="trust-item">✦ 20 Years Experience</div>
+                <div class="trust-item">✦ Licensed & Insured</div>
+                <div class="trust-item">✦ Certified Lean Six Sigma</div>
+                <div class="trust-item">✦ Professional PMs</div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Intro / About Section -->
+    <section id="about" class="section-padding intro-section">
+        <div class="container intro-grid">
+            <div class="intro-text">
+                <h2 class="section-title">Construction Built Around Your <span class="text-bronze">Goals</span></h2>
+                <p>Every successful project starts with the right team and the right plan. Whether you are improving a home, renovating a commercial property, preparing land for development, or coordinating a full construction project, our team helps make the process clear, organized, and results-driven.</p>
+                <p>BULADEV brings a development-minded approach to property improvement, while ASA Construction LLC supports construction execution with practical field experience. Together, we move from idea to completion focusing on communication, quality, and long-term value.</p>
+                <a href="#contact" class="btn btn-outline" style="margin-top: 1rem;">Contact Our Team</a>
+            </div>
+            <div class="intro-img">
+                <img src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&q=80&w=1000" alt="Modern Architecture Design" style="border-radius: 4px;">
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="section-padding">
+        <div class="container">
+            <h2 class="section-title">Our <span class="text-accent">Services</span></h2>
+            <p class="subtitle">Construction solutions backed by 20 years of experience, certified Lean Six Sigma thinking, and professional project management.</p>
+            
+            <div class="bento-grid">
+                <!-- Residential -->
+                <div class="bento-card span-8">
+                    <div>
+                        <h3>Residential Construction</h3>
+                        <p>Build, renovate, and improve residential properties with a licensed and insured team focused on craftsmanship, function, comfort, and lasting value. We support homeowners, investors, and landlords with new construction, additions, and full renovations.</p>
+                    </div>
+                    <a href="#contact" class="btn btn-outline">Schedule Consultation</a>
                 </div>
-                <div class="faq-item">
-                    <div class="faq-q">What is your typical project scale?</div>
-                    <div class="faq-a">We specialize in large-scale commercial developments, luxury residential complexes, and extensive land subdivisions.</div>
+                
+                <!-- Project Management -->
+                <div class="bento-card span-4" style="background-color: var(--accent-bronze); color: var(--bg-color);">
+                    <div>
+                        <h3 style="color: var(--bg-color);">Project Management</h3>
+                        <p style="color: rgba(0,0,0,0.8);">Professional project managers supporting clear scopes, schedules, budget tracking, communication, and delivery. We bring structure and accountability to each phase.</p>
+                    </div>
+                    <a href="#contact" class="btn btn-outline" style="border-color: var(--bg-color); color: var(--bg-color);">Learn More</a>
                 </div>
-                <div class="faq-item">
-                    <div class="faq-q">Can we integrate our own architects?</div>
-                    <div class="faq-a">Absolutely. While we offer in-house design services, we frequently collaborate with external architectural firms.</div>
+
+                <!-- Commercial -->
+                <div class="bento-card span-6">
+                    <div>
+                        <h3>Commercial Construction</h3>
+                        <p>Create commercial spaces that work for your business, tenants, customers, and employees. From office renovations and retail improvements to tenant build-outs and facility upgrades, we execute with professional coordination.</p>
+                    </div>
+                    <a href="#contact" class="btn btn-outline">Start Commercial Project</a>
+                </div>
+
+                <!-- Land Development -->
+                <div class="bento-card span-6">
+                    <div>
+                        <h3>Land Development</h3>
+                        <p>Turn property potential into buildable opportunity. BULADEV supports land development planning, site preparation coordination, pre-construction planning, and property improvement strategies to help you move forward with confidence.</p>
+                    </div>
+                    <a href="#contact" class="btn btn-outline">Discuss Development</a>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- CONTACT & FOOTER -->
+    <!-- Projects Portfolio Section -->
+    <section id="projects" class="section-padding intro-section">
+        <div class="container">
+            <h2 class="section-title">Selected <span class="text-bronze">Projects</span></h2>
+            <p class="subtitle">Residential and Commercial Work Built With Purpose.</p>
+
+            <div class="portfolio-grid">
+                <div class="project-item">
+                    <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=1200" alt="Commercial Build-Out">
+                    <div class="project-overlay">
+                        <p>Commercial Build-Out</p>
+                        <h4>Corporate Office Renovation</h4>
+                    </div>
+                </div>
+                <div class="project-item">
+                    <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&q=80&w=1200" alt="Residential New Construction">
+                    <div class="project-overlay">
+                        <p>New Construction</p>
+                        <h4>Custom Residential Build</h4>
+                    </div>
+                </div>
+                <div class="project-item">
+                    <img src="https://images.unsplash.com/photo-1517581177682-a085bb7ffb15?auto=format&fit=crop&q=80&w=1200" alt="Land Development Preparation">
+                    <div class="project-overlay">
+                        <p>Land Development Preparation</p>
+                        <h4>Site Improvement & Grading</h4>
+                    </div>
+                </div>
+                <div class="project-item">
+                    <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=1200" alt="Interior Remodel">
+                    <div class="project-overlay">
+                        <p>Tenant Improvement</p>
+                        <h4>Modern Retail Space</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Process Section -->
+    <section id="process" class="section-padding">
+        <div class="container">
+            <h2 class="section-title">A Smarter Way to <span class="text-accent">Build</span></h2>
+            <p class="subtitle">From Vision to Completion. Our professional process is designed to help projects move forward smoothly with clear steps and better communication.</p>
+            
+            <div class="process-grid">
+                <div class="process-step">
+                    <div class="step-num">01</div>
+                    <h4>Consultation & Review</h4>
+                    <p>We learn about your property, goals, budget, and timeline, then review the scope and conditions.</p>
+                </div>
+                <div class="process-step">
+                    <div class="step-num">02</div>
+                    <h4>Planning & Estimate</h4>
+                    <p>We define the work, timeline, materials, and cost expectations through clear proposals.</p>
+                </div>
+                <div class="process-step">
+                    <div class="step-num">03</div>
+                    <h4>Project Management</h4>
+                    <p>Coordination of details, schedules, and team communication before and during construction.</p>
+                </div>
+                <div class="process-step">
+                    <div class="step-num">04</div>
+                    <h4>Construction & Delivery</h4>
+                    <p>Execution with quality control checkpoints, leading to a final walkthrough and project handover.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="section-padding intro-section">
+        <div class="container">
+            <h2 class="section-title text-center" style="text-align: center;">Frequently Asked <span class="text-bronze">Questions</span></h2>
+            
+            <div class="faq-container">
+                <details>
+                    <summary>Are you licensed and insured?</summary>
+                    <div class="faq-content">Yes. We are fully licensed and insured. This gives clients added confidence that they are working with a professional construction and development team.</div>
+                </details>
+                <details>
+                    <summary>What does Certified Lean Six Sigma mean for my project?</summary>
+                    <div class="faq-content">Lean Six Sigma focuses on improving processes, reducing waste, and creating efficient workflows. In construction, this supports better planning, stronger coordination, clearer communication, and improved project control.</div>
+                </details>
+                <details>
+                    <summary>Do you handle both residential and commercial construction?</summary>
+                    <div class="faq-content">Yes. BULADEV and ASA Construction LLC support both residential and commercial construction projects, including new builds, renovations, tenant build-outs, and property upgrades.</div>
+                </details>
+                <details>
+                    <summary>Can you help with land development?</summary>
+                    <div class="faq-content">Yes. BULADEV provides land development support, including project planning, site preparation coordination, property improvement strategy, and construction-readiness support.</div>
+                </details>
+                <details>
+                    <summary>How do I start a project?</summary>
+                    <div class="faq-content">The first step is to contact us by phone, email, or website form. We will discuss your project goals, property details, timeline, and define the next steps.</div>
+                </details>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
     <section id="contact" class="contact-section">
-        <div class="container">
-            <h2 class="section-title gs_reveal" style="text-align: center;">Start A Project</h2>
-            <div class="contact-grid">
-                <div class="contact-form gs_reveal">
-                    <form action="#" method="POST">
-                        <div class="form-group">
-                            <input type="text" placeholder="Your Name" required class="hover-target">
-                        </div>
-                        <div class="form-group">
-                            <input type="email" placeholder="Email Address" required class="hover-target">
-                        </div>
-                        <div class="form-group">
-                            <textarea rows="4" placeholder="Tell us about your project..." required class="hover-target"></textarea>
-                        </div>
-                        <button type="submit" class="submit-btn hover-target">Send Inquiry</button>
-                    </form>
-                </div>
-                <div class="contact-map gs_reveal" style="height: 400px; border-radius: 10px; overflow:hidden;">
-                    <!-- Placeholder Map Image (in production replace with Google Maps iframe) -->
-                    <img src="https://images.unsplash.com/photo-1524661135-423995f22d0b?q=80&w=2074&auto=format&fit=crop" alt="Office Location Map">
+        <div class="container contact-grid">
+            <div class="contact-info">
+                <h2 class="section-title">Let's Talk About Your Next Project</h2>
+                <p>Ready to plan your next construction or development project? Contact us today to discuss your goals.</p>
+                
+                <div style="margin-top: 3rem;">
+                    <h4 style="font-size: 1.5rem; margin-bottom: 0.5rem; color: var(--bg-color);">Contact Details</h4>
+                    <p style="margin-bottom: 0.5rem;"><strong>Phone:</strong> (313) 444-9734</p>
+                    <p style="margin-bottom: 0.5rem;"><strong>Email:</strong> bula@BULADEV.com</p>
+                    <p><strong>Service Area:</strong> Serving local residential and commercial clients.</p>
                 </div>
             </div>
 
-            <footer>
-                <div class="footer-copy">
-                    &copy; 2024 AURA Construction & Development. All rights reserved. 
-                    <br><span style="font-size: 0.8rem; color:#555;">Hosted on GoDaddy</span>
-                </div>
-                <div class="footer-links">
-                    <a href="#" class="hover-target">Privacy Policy</a>
-                    <a href="#" class="hover-target">Terms & Conditions</a>
-                    <a href="#" class="hover-target">LinkedIn</a>
-                    <a href="#" class="hover-target">Instagram</a>
-                </div>
-            </footer>
+            <div class="contact-form-wrapper">
+                <form action="#" method="POST">
+                    <div class="grid-2" style="gap: 1.5rem; margin-bottom: 1.5rem;">
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <input type="text" placeholder="Full Name" required>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <input type="tel" placeholder="Phone Number" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" placeholder="Email Address" required>
+                    </div>
+                    <div class="grid-2" style="gap: 1.5rem; margin-bottom: 1.5rem;">
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <select required>
+                                <option value="" disabled selected>Project Type</option>
+                                <option>Residential Construction</option>
+                                <option>Commercial Construction</option>
+                                <option>Land Development</option>
+                                <option>Renovation</option>
+                                <option>New Construction</option>
+                                <option>Project Management</option>
+                                <option>General Inquiry</option>
+                            </select>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <input type="text" placeholder="Project Location" required>
+                        </div>
+                    </div>
+                    <div class="grid-2" style="gap: 1.5rem; margin-bottom: 1.5rem;">
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <input type="text" placeholder="Estimated Budget">
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <input type="text" placeholder="Desired Timeline">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <textarea rows="4" placeholder="Tell Us About Your Project" required></textarea>
+                    </div>
+                    <button type="submit" class="btn form-btn">Submit Request</button>
+                </form>
+            </div>
         </div>
     </section>
 
-    <!-- SCRIPTS -->
-    <!-- Lenis for Smooth Scrolling -->
-    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.19/bundled/lenis.min.js"></script>
-    <!-- GSAP for Animations -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h5 class="brand-font" style="font-size: 1.5rem;">BULADEV <span class="text-accent">+ ASA</span></h5>
+                    <p>Providing licensed and insured residential construction, commercial construction, renovation, build-out, project management, and land development support backed by 20 years of experience.</p>
+                    <p class="text-bronze" style="font-weight: 600; margin-top: 1rem;">Building Success Together.</p>
+                </div>
+                <div class="footer-col">
+                    <h5>Quick Links</h5>
+                    <ul class="footer-links">
+                        <li><a href="#about">About Us</a></li>
+                        <li><a href="#services">Services</a></li>
+                        <li><a href="#projects">Projects Portfolio</a></li>
+                        <li><a href="#process">Our Process</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h5>Services</h5>
+                    <ul class="footer-links">
+                        <li><a href="#services">Residential Construction</a></li>
+                        <li><a href="#services">Commercial Construction</a></li>
+                        <li><a href="#services">Land Development</a></li>
+                        <li><a href="#services">Project Management</a></li>
+                        <li><a href="#services">Tenant Build-Outs</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div>&copy; 2026 BULADEV Building & Land Development and ASA Construction LLC. All Rights Reserved.</div>
+                <div>Licensed & Insured | Certified Lean Six Sigma</div>
+            </div>
+        </div>
+    </footer>
 
-    <script>
-        // 1. SMOOTH SCROLLING (LENIS)
-        const lenis = new Lenis({
-            duration: 1.2,
-            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), 
-            direction: 'vertical',
-            gestureDirection: 'vertical',
-            smooth: true,
-            mouseMultiplier: 1,
-            smoothTouch: false,
-        });
-
-        function raf(time) {
-            lenis.raf(time);
-            requestAnimationFrame(raf);
-        }
-        requestAnimationFrame(raf);
-
-        // 2. CUSTOM CURSOR
-        const cursor = document.querySelector('.cursor');
-        const hoverTargets = document.querySelectorAll('.hover-target');
-
-        document.addEventListener('mousemove', (e) => {
-            cursor.style.left = e.clientX + 'px';
-            cursor.style.top = e.clientY + 'px';
-        });
-
-        hoverTargets.forEach(target => {
-            target.addEventListener('mouseenter', () => cursor.classList.add('hovered'));
-            target.addEventListener('mouseleave', () => cursor.classList.remove('hovered'));
-        });
-
-        // 3. PRELOADER & HERO ANIMATION
-        window.addEventListener('load', () => {
-            const tl = gsap.timeline();
-            
-            tl.to('.preloader', {
-                y: '-100%',
-                duration: 1,
-                delay: 0.5,
-                ease: 'power4.inOut'
-            })
-            .from('.hero-title', {
-                y: 100,
-                opacity: 0,
-                duration: 1,
-                ease: 'power4.out'
-            }, "-=0.3")
-            .from('.hero-subtitle', {
-                y: 50,
-                opacity: 0,
-                duration: 1,
-                ease: 'power4.out'
-            }, "-=0.6")
-            .from('nav', {
-                y: -50,
-                opacity: 0,
-                duration: 1,
-                ease: 'power4.out'
-            }, "-=0.8");
-        });
-
-        // 4. GSAP SCROLL ANIMATIONS
-        gsap.registerPlugin(ScrollTrigger);
-
-        // Parallax for Hero Image
-        gsap.to('.parallax-bg', {
-            yPercent: 20,
-            ease: "none",
-            scrollTrigger: {
-                trigger: ".hero",
-                start: "top top",
-                end: "bottom top",
-                scrub: true
-            }
-        });
-
-        // Reveal Elements on Scroll
-        const revealElements = document.querySelectorAll('.gs_reveal');
-        revealElements.forEach((elem) => {
-            gsap.fromTo(elem, {
-                y: 50,
-                opacity: 0
-            }, {
-                y: 0,
-                opacity: 1,
-                duration: 1,
-                ease: "power3.out",
-                scrollTrigger: {
-                    trigger: elem,
-                    start: "top 85%", 
-                    toggleActions: "play none none reverse"
-                }
-            });
-        });
-    </script>
 </body>
 </html>
