@@ -1,0 +1,1777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Temima Cabinets | Premium RTA Kitchen Cabinets</title>
+    <meta name="description" content="Transform Your Kitchen with Premium RTA Cabinets. Save 30-50% Today. Over 50,000 satisfied customers trust our premium cabinets.">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* ==========================================================================
+           CSS Variables & Reset
+           ========================================================================== */
+        :root {
+            --bg-color: #ffffff;
+            --bg-alt: #f8f9fa;
+            --text-main: #1a1a1a;
+            --text-light: #6b7280;
+            --accent: #B8894C;
+            --accent-hover: #9c733f;
+            --dark: #111827;
+            --radius-sm: 8px;
+            --radius-md: 16px;
+            --radius-lg: 24px;
+            --shadow-sm: 0 4px 6px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.08);
+            --shadow-hover: 0 20px 40px rgba(0, 0, 0, 0.12);
+            --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: var(--text-main);
+            background-color: var(--bg-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: var(--transition);
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* ==========================================================================
+           Typography & Utilities
+           ========================================================================== */
+        h1, h2, h3, h4, h5, h6 {
+            line-height: 1.2;
+            font-weight: 600;
+        }
+
+        h2 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            margin-bottom: 1rem;
+        }
+
+        .section-header {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 4rem auto;
+        }
+
+        .section-header p {
+            color: var(--text-light);
+            font-size: 1.125rem;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 5%;
+        }
+
+        .section {
+            padding: 6rem 0;
+        }
+
+        .bg-alt {
+            background-color: var(--bg-alt);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            gap: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background-color: var(--accent);
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--accent-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(184, 137, 76, 0.3);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            color: #fff;
+            border: 1px solid #fff;
+        }
+
+        .btn-outline:hover {
+            background-color: #fff;
+            color: var(--dark);
+        }
+
+        .btn-text {
+            color: var(--accent);
+            padding: 0;
+            font-weight: 600;
+            position: relative;
+        }
+
+        .btn-text::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--accent);
+            transition: var(--transition);
+        }
+
+        .btn-text:hover::after {
+            width: 100%;
+        }
+
+        /* ==========================================================================
+           Animations
+           ========================================================================== */
+        .animate-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .animate-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .delay-100 { transition-delay: 100ms; }
+        .delay-200 { transition-delay: 200ms; }
+        .delay-300 { transition-delay: 300ms; }
+
+        /* ==========================================================================
+           Header & Nav
+           ========================================================================== */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            transition: var(--transition);
+            padding: 1.5rem 0;
+            background: transparent;
+        }
+
+        .header.scrolled {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .header.scrolled .nav-link,
+        .header.scrolled .icon-link {
+            color: var(--text-main);
+        }
+
+        .header-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo img {
+            height: 50px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .header:not(.scrolled) .logo {
+            filter: brightness(0) invert(1);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: #fff;
+            font-weight: 500;
+            font-size: 0.95rem;
+            position: relative;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent);
+            transition: var(--transition);
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .icon-link {
+            color: #fff;
+            font-size: 1.25rem;
+            position: relative;
+        }
+
+        .icon-link:hover {
+            color: var(--accent);
+        }
+
+        .cart-badge {
+            position: absolute;
+            top: -8px;
+            right: -10px;
+            background: var(--accent);
+            color: #fff;
+            font-size: 0.7rem;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+
+        .mobile-toggle {
+            display: none;
+            color: #fff;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .header.scrolled .mobile-toggle {
+            color: var(--text-main);
+        }
+
+        /* ==========================================================================
+           Hero Section
+           ========================================================================== */
+        .hero {
+            height: 100vh;
+            min-height: 700px;
+            background: linear-gradient(rgba(17, 24, 39, 0.4), rgba(17, 24, 39, 0.7)), url('https://images.unsplash.com/photo-1556910103-1c02745aae4d?q=80&w=2070&auto=format&fit=crop') center/cover no-repeat fixed;
+            display: flex;
+            align-items: center;
+            position: relative;
+            color: #fff;
+        }
+
+        .hero-content {
+            max-width: 800px;
+        }
+
+        .hero-subtitle {
+            font-size: 1.125rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--accent);
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .hero-title {
+            font-size: clamp(3rem, 6vw, 5rem);
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+        }
+
+        .hero-desc {
+            font-size: 1.25rem;
+            opacity: 0.9;
+            margin-bottom: 2.5rem;
+            max-width: 600px;
+        }
+
+        .hero-btns {
+            display: flex;
+            gap: 1rem;
+        }
+
+        /* ==========================================================================
+           Trust Bar
+           ========================================================================== */
+        .trust-wrapper {
+            margin-top: -50px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .trust-bar {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(20px);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-md);
+            padding: 2rem 3rem;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            border: 1px solid rgba(255,255,255,0.5);
+        }
+
+        .trust-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .trust-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--bg-alt);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent);
+            font-size: 1.25rem;
+            flex-shrink: 0;
+            transition: var(--transition);
+        }
+
+        .trust-item:hover .trust-icon {
+            background: var(--accent);
+            color: #fff;
+        }
+
+        .trust-text h4 {
+            font-size: 1rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .trust-text p {
+            font-size: 0.875rem;
+            color: var(--text-light);
+        }
+
+        /* ==========================================================================
+           Categories
+           ========================================================================== */
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .category-card {
+            position: relative;
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            aspect-ratio: 4/5;
+            cursor: pointer;
+        }
+
+        .category-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .category-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.2) 50%, transparent 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 2.5rem;
+            color: #fff;
+            transition: var(--transition);
+        }
+
+        .category-card:hover .category-img {
+            transform: scale(1.08);
+        }
+
+        .category-card:hover .category-overlay {
+            background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0.1) 100%);
+        }
+
+        .category-title {
+            font-size: 1.75rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .category-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--accent);
+            font-weight: 500;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: var(--transition);
+        }
+
+        .category-card:hover .category-link {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ==========================================================================
+           Why Choose Us (Neo-Bento Style)
+           ========================================================================== */
+        .bento-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .bento-hero {
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            position: relative;
+            min-height: 500px;
+        }
+
+        .bento-hero img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            inset: 0;
+        }
+
+        .bento-hero-content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 3rem;
+            background: linear-gradient(transparent, rgba(0,0,0,0.8));
+            color: #fff;
+        }
+
+        .bento-features {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .bento-card {
+            background: #fff;
+            padding: 2rem;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid rgba(0,0,0,0.03);
+            transition: var(--transition);
+        }
+
+        .bento-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-5px);
+        }
+
+        .bento-card i {
+            font-size: 2rem;
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+        }
+
+        .bento-card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .bento-card p {
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+
+        .bento-stat {
+            grid-column: span 2;
+            background: var(--dark);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            padding: 2.5rem;
+        }
+
+        .stat-item text-center {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--accent);
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+
+        /* ==========================================================================
+           Best Sellers
+           ========================================================================== */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+        }
+
+        .product-card {
+            background: #fff;
+            border-radius: var(--radius-md);
+            padding: 1.5rem;
+            transition: var(--transition);
+            border: 1px solid rgba(0,0,0,0.03);
+            position: relative;
+        }
+
+        .product-card:hover {
+            box-shadow: var(--shadow-md);
+        }
+
+        .product-img-wrap {
+            position: relative;
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+            aspect-ratio: 1/1;
+            margin-bottom: 1.5rem;
+        }
+
+        .product-img-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .product-card:hover .product-img-wrap img {
+            transform: scale(1.05);
+        }
+
+        .product-actions {
+            position: absolute;
+            bottom: -50px;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 1rem;
+            background: linear-gradient(transparent, rgba(0,0,0,0.5));
+            transition: var(--transition);
+            opacity: 0;
+        }
+
+        .product-card:hover .product-actions {
+            bottom: 0;
+            opacity: 1;
+        }
+
+        .action-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #fff;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .action-btn:hover {
+            background: var(--accent);
+            color: #fff;
+        }
+
+        .product-info h3 {
+            font-size: 1.125rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .product-price {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .price-new {
+            font-weight: 700;
+            font-size: 1.25rem;
+            color: var(--dark);
+        }
+
+        .price-old {
+            text-decoration: line-through;
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+
+        .sale-badge {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            background: #ef4444;
+            color: #fff;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            z-index: 2;
+        }
+
+        /* ==========================================================================
+           Process Timeline
+           ========================================================================== */
+        .process-wrap {
+            position: relative;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .process-wrap::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            width: 2px;
+            background: rgba(184, 137, 76, 0.2);
+            transform: translateX(-50%);
+        }
+
+        .process-step {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 4rem;
+            position: relative;
+            width: 100%;
+        }
+
+        .process-step:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+
+        .process-content {
+            width: 45%;
+            background: #fff;
+            padding: 2.5rem;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-sm);
+            position: relative;
+        }
+
+        .step-number {
+            position: absolute;
+            top: -20px;
+            left: 2.5rem;
+            font-size: 4rem;
+            font-weight: 700;
+            color: rgba(184, 137, 76, 0.1);
+            line-height: 1;
+        }
+
+        .process-step:nth-child(even) .step-number {
+            left: auto;
+            right: 2.5rem;
+        }
+
+        .process-center {
+            width: 10%;
+            display: flex;
+            justify-content: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .process-icon {
+            width: 60px;
+            height: 60px;
+            background: #fff;
+            border: 2px solid var(--accent);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--accent);
+            box-shadow: 0 0 0 10px var(--bg-alt);
+        }
+
+        .process-img {
+            width: 45%;
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+        }
+
+        /* ==========================================================================
+           Inspiration Gallery (Masonry)
+           ========================================================================== */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-auto-rows: 250px;
+            gap: 1.5rem;
+        }
+
+        .gallery-item {
+            position: relative;
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .gallery-item.large {
+            grid-column: span 2;
+            grid-row: span 2;
+        }
+
+        .gallery-item.wide {
+            grid-column: span 2;
+        }
+
+        .gallery-item.tall {
+            grid-row: span 2;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.05);
+        }
+
+        .gallery-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(17, 24, 39, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: var(--transition);
+            backdrop-filter: blur(2px);
+        }
+
+        .gallery-item:hover .gallery-overlay {
+            opacity: 1;
+        }
+
+        /* ==========================================================================
+           Testimonials
+           ========================================================================== */
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2.5rem;
+        }
+
+        .testimonial-card {
+            background: #fff;
+            padding: 3rem 2rem;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-sm);
+            position: relative;
+            border: 1px solid rgba(0,0,0,0.03);
+            transition: var(--transition);
+        }
+
+        .testimonial-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-5px);
+        }
+
+        .quote-icon {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            font-size: 3rem;
+            color: rgba(184, 137, 76, 0.1);
+        }
+
+        .stars {
+            color: #fbbf24;
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+        }
+
+        .testimonial-text {
+            font-size: 1.05rem;
+            font-style: italic;
+            margin-bottom: 2rem;
+            color: var(--text-main);
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .author-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--bg-alt);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: var(--accent);
+            font-size: 1.25rem;
+        }
+
+        .author-info h4 {
+            font-size: 1rem;
+            margin: 0;
+        }
+
+        .author-info p {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin: 0;
+        }
+
+        .savings-tag {
+            display: inline-block;
+            margin-top: 1rem;
+            padding: 0.25rem 0.75rem;
+            background: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        /* ==========================================================================
+           CTA Banner
+           ========================================================================== */
+        .cta-banner {
+            background: linear-gradient(rgba(17,24,39,0.85), rgba(17,24,39,0.9)), url('https://images.unsplash.com/photo-1556911220-bff31c812dba?q=80&w=2168&auto=format&fit=crop') center/cover fixed;
+            padding: 8rem 0;
+            text-align: center;
+            color: #fff;
+            border-radius: var(--radius-lg);
+            margin: 0 5%;
+        }
+
+        .cta-banner h2 {
+            font-size: clamp(2.5rem, 4vw, 3.5rem);
+            margin-bottom: 1.5rem;
+        }
+
+        .cta-banner p {
+            font-size: 1.25rem;
+            max-width: 700px;
+            margin: 0 auto 3rem auto;
+            opacity: 0.9;
+        }
+
+        /* ==========================================================================
+           Blog Preview
+           ========================================================================== */
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .blog-card {
+            background: #fff;
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+        }
+
+        .blog-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-5px);
+        }
+
+        .blog-img {
+            height: 240px;
+            overflow: hidden;
+        }
+
+        .blog-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .blog-card:hover .blog-img img {
+            transform: scale(1.05);
+        }
+
+        .blog-content {
+            padding: 2rem;
+        }
+
+        .blog-meta {
+            font-size: 0.85rem;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .blog-title {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            line-height: 1.4;
+        }
+
+        /* ==========================================================================
+           Footer
+           ========================================================================== */
+        .footer {
+            background: var(--dark);
+            color: rgba(255,255,255,0.7);
+            padding: 6rem 0 2rem 0;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1.5fr;
+            gap: 4rem;
+            margin-bottom: 4rem;
+        }
+
+        .footer-logo {
+            margin-bottom: 1.5rem;
+            filter: brightness(0) invert(1);
+        }
+
+        .footer-desc {
+            margin-bottom: 2rem;
+            max-width: 350px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .social-link {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .social-link:hover {
+            background: var(--accent);
+            transform: translateY(-3px);
+        }
+
+        .footer h4 {
+            color: #fff;
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent);
+            padding-left: 5px;
+        }
+
+        .contact-list li {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            align-items: flex-start;
+        }
+
+        .contact-list i {
+            color: var(--accent);
+            margin-top: 5px;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+        }
+
+        /* ==========================================================================
+           Responsive Design
+           ========================================================================== */
+        @media (max-width: 1200px) {
+            .trust-bar {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .category-grid, .product-grid, .gallery-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 992px) {
+            .nav-links {
+                display: none; /* Add mobile menu logic if needed */
+            }
+            .mobile-toggle {
+                display: block;
+            }
+            .bento-grid {
+                grid-template-columns: 1fr;
+            }
+            .testimonial-grid, .blog-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .process-step, .process-step:nth-child(even) {
+                flex-direction: column;
+                gap: 2rem;
+            }
+            .process-center {
+                transform: rotate(90deg);
+                margin: 1rem 0;
+            }
+            .process-content, .process-img {
+                width: 100%;
+            }
+            .process-wrap::before {
+                display: none;
+            }
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .section { padding: 4rem 0; }
+            .hero-title { font-size: 2.5rem; }
+            .trust-bar {
+                grid-template-columns: 1fr;
+                padding: 2rem;
+            }
+            .category-grid, .product-grid, .gallery-grid, .testimonial-grid, .blog-grid {
+                grid-template-columns: 1fr;
+            }
+            .gallery-item.large, .gallery-item.wide, .gallery-item.tall {
+                grid-column: span 1;
+                grid-row: span 1;
+            }
+            .bento-features {
+                grid-template-columns: 1fr;
+            }
+            .bento-stat {
+                flex-direction: column;
+                gap: 2rem;
+            }
+            .hero-btns {
+                flex-direction: column;
+            }
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+            .footer-bottom {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+            .cta-banner {
+                margin: 0;
+                border-radius: 0;
+                padding: 5rem 5%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- =======================================================================
+         Header
+         ======================================================================= -->
+    <header class="header" id="header">
+        <div class="container header-container">
+            <a href="/" class="logo">
+                <img src="https://temimacabinets.com/wp-content/uploads/2025/08/Transparent.png" alt="Temima Cabinets">
+            </a>
+            
+            <nav class="nav-links">
+                <a href="/product-category/white" class="nav-link">Shop Cabinets</a>
+                <a href="#inspiration" class="nav-link">Inspiration</a>
+                <a href="#process" class="nav-link">How It Works</a>
+                <a href="/free-3d-kitchen-design/" class="nav-link">Free 3D Design</a>
+            </nav>
+
+            <div class="header-actions">
+                <a href="#" class="icon-link"><i class="fa-solid fa-search"></i></a>
+                <a href="/cart" class="icon-link">
+                    <i class="fa-solid fa-shopping-cart"></i>
+                    <span class="cart-badge">0</span>
+                </a>
+                <a href="/free-3d-kitchen-design/" class="btn btn-primary d-none d-lg-flex">Get Free Quote</a>
+                <i class="fa-solid fa-bars mobile-toggle"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- =======================================================================
+         Hero Section
+         ======================================================================= -->
+    <section class="hero" id="home">
+        <div class="container">
+            <div class="hero-content animate-up">
+                <span class="hero-subtitle">Premium RTA Kitchen Cabinets</span>
+                <h1 class="hero-title">Transform Your Kitchen With Premium Cabinets</h1>
+                <p class="hero-desc">Over 50,000 satisfied customers trust our solid wood construction, soft-close hardware, and lifetime warranty. Save 30-50% compared to big box stores.</p>
+                <div class="hero-btns">
+                    <a href="/free-3d-kitchen-design/" class="btn btn-primary">Free 3D Design & Quote <i class="fa-solid fa-arrow-right"></i></a>
+                    <a href="/product-category/white" class="btn btn-outline">Browse Collection</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- =======================================================================
+         Trust Bar
+         ======================================================================= -->
+    <div class="container trust-wrapper animate-up delay-200">
+        <div class="trust-bar">
+            <div class="trust-item">
+                <div class="trust-icon"><i class="fa-solid fa-shield-alt"></i></div>
+                <div class="trust-text">
+                    <h4>Lifetime Warranty</h4>
+                    <p>Quality guaranteed</p>
+                </div>
+            </div>
+            <div class="trust-item">
+                <div class="trust-icon"><i class="fa-solid fa-pen-ruler"></i></div>
+                <div class="trust-text">
+                    <h4>Free 3D Design</h4>
+                    <p>24hr turnaround</p>
+                </div>
+            </div>
+            <div class="trust-item">
+                <div class="trust-icon"><i class="fa-solid fa-dollar-sign"></i></div>
+                <div class="trust-text">
+                    <h4>Wholesale Pricing</h4>
+                    <p>Save 30-50% today</p>
+                </div>
+            </div>
+            <div class="trust-item">
+                <div class="trust-icon"><i class="fa-solid fa-truck"></i></div>
+                <div class="trust-text">
+                    <h4>Fast Delivery</h4>
+                    <p>Ships in 3-5 days</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- =======================================================================
+         Featured Categories
+         ======================================================================= -->
+    <section class="section" id="categories">
+        <div class="container">
+            <div class="section-header animate-up">
+                <h2>Explore Collections</h2>
+                <p>Discover our premium range of RTA cabinets tailored for modern, classic, and transitional kitchen spaces.</p>
+            </div>
+            
+            <div class="category-grid">
+                <!-- White Shaker (Main Focus) -->
+                <a href="/product-category/white" class="category-card animate-up">
+                    <img src="https://www.wellbornforest.com/wp-content/uploads/2018/02/Chiswick-Maple-Arctic-Kitchen-Islands-5.jpg.webp" alt="White Shaker Cabinets" class="category-img">
+                    <div class="category-overlay">
+                        <h3 class="category-title">White Shaker</h3>
+                        <span class="category-link">View Collection <i class="fa-solid fa-arrow-right"></i></span>
+                    </div>
+                </a>
+                
+                <!-- Placeholder Category 1 -->
+                <a href="#" class="category-card animate-up delay-100">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSsSYQbSveIZNBILM6pq7304QwNR7Lbpla3L6wG-1rGtq2khShdm_sK5PiN&s=10" alt="Modern Slab Cabinets" class="category-img">
+                    <div class="category-overlay">
+                        <h3 class="category-title">Modern Slab</h3>
+                        <span class="category-link">View Collection <i class="fa-solid fa-arrow-right"></i></span>
+                    </div>
+                </a>
+                
+                <!-- Placeholder Category 2 -->
+                <a href="#" class="category-card animate-up delay-200">
+                    <img src="https://i.pinimg.com/736x/90/8b/99/908b990a29cfc4fd6f1a9c769e5cdfc7.jpg" alt="Classic Wood Cabinets" class="category-img">
+                    <div class="category-overlay">
+                        <h3 class="category-title">Classic Wood</h3>
+                        <span class="category-link">View Collection <i class="fa-solid fa-arrow-right"></i></span>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- =======================================================================
+         Why Choose Us (Bento Style)
+         ======================================================================= -->
+    <section class="section bg-alt" id="why-us">
+        <div class="container">
+            <div class="section-header animate-up">
+                <h2>Why Choose Temima?</h2>
+                <p>Over 50,000 satisfied customers have transformed their kitchens with our premium cabinets. Here's why they chose us.</p>
+            </div>
+
+            <div class="bento-grid">
+                <div class="bento-hero animate-up">
+                    <img src="https://temimacabinets.com/wp-content/uploads/2025/08/manufacturing-CMxYsOx3.jpg" alt="Premium Manufacturing">
+                    <div class="bento-hero-content">
+                        <h3>Premium Manufacturing</h3>
+                        <p>Solid wood faces, plywood boxes, and CARB2 certified materials crafted in state-of-the-art facilities.</p>
+                    </div>
+                </div>
+
+                <div class="bento-features">
+                    <div class="bento-card animate-up delay-100">
+                        <i class="fa-solid fa-award"></i>
+                        <h3>Highest Quality</h3>
+                        <p>Soft-close hinges and full extension drawer glides come standard on every cabinet.</p>
+                    </div>
+                    <div class="bento-card animate-up delay-200">
+                        <i class="fa-solid fa-box-open"></i>
+                        <h3>Complete Packages</h3>
+                        <p>Everything included: doors, drawers, hardware, and simple installation guides.</p>
+                    </div>
+                    <div class="bento-card bento-stat animate-up delay-300">
+                        <div class="stat-item text-center">
+                            <div class="stat-number">50K+</div>
+                            <div class="stat-label">Happy Customers</div>
+                        </div>
+                        <div class="stat-item text-center">
+                            <div class="stat-number">15+</div>
+                            <div class="stat-label">Years Experience</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- =======================================================================
+         Best Selling Cabinets
+         ======================================================================= -->
+    <section class="section" id="best-selling">
+        <div class="container">
+            <div class="section-header animate-up">
+                <h2>Best Selling Cabinets</h2>
+                <p>Explore our most popular RTA kitchen cabinets, ready to ship nationwide.</p>
+            </div>
+
+            <div class="product-grid">
+                <!-- Product 1 -->
+                <div class="product-card animate-up">
+                    <div class="sale-badge">Save 40%</div>
+                    <div class="product-img-wrap">
+                        <img src="https://images.unsplash.com/photo-1588854337236-6889d631faa8?q=80&w=800&auto=format&fit=crop" alt="Base Cabinet">
+                        <div class="product-actions">
+                            <button class="action-btn" title="Add to Quote"><i class="fa-solid fa-plus"></i></button>
+                            <button class="action-btn" title="Quick View"><i class="fa-regular fa-eye"></i></button>
+                            <button class="action-btn" title="Wishlist"><i class="fa-regular fa-heart"></i></button>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <h3>White Shaker Base Cabinet</h3>
+                        <div class="stars" style="color: #fbbf24; font-size: 0.8rem; margin-bottom: 0.5rem;">
+                            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i>
+                        </div>
+                        <div class="product-price">
+                            <span class="price-new">$249.00</span>
+                            <span class="price-old">$415.00</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 2 -->
+                <div class="product-card animate-up delay-100">
+                    <div class="product-img-wrap">
+                        <img src="https://images.unsplash.com/photo-1556912172-45b7abe8b7e1?q=80&w=800&auto=format&fit=crop" alt="Wall Cabinet">
+                        <div class="product-actions">
+                            <button class="action-btn"><i class="fa-solid fa-plus"></i></button>
+                            <button class="action-btn"><i class="fa-regular fa-eye"></i></button>
+                            <button class="action-btn"><i class="fa-regular fa-heart"></i></button>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <h3>White Shaker Wall Cabinet</h3>
+                        <div class="stars" style="color: #fbbf24; font-size: 0.8rem; margin-bottom: 0.5rem;">
+                            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                        </div>
+                        <div class="product-price">
+                            <span class="price-new">$189.00</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 3 -->
+                <div class="product-card animate-up delay-200">
+                    <div class="sale-badge">Save 35%</div>
+                    <div class="product-img-wrap">
+                        <img src="https://images.unsplash.com/photo-1600489000022-c2086d79f9d4?q=80&w=800&auto=format&fit=crop" alt="Pantry Cabinet">
+                        <div class="product-actions">
+                            <button class="action-btn"><i class="fa-solid fa-plus"></i></button>
+                            <button class="action-btn"><i class="fa-regular fa-eye"></i></button>
+                            <button class="action-btn"><i class="fa-regular fa-heart"></i></button>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <h3>White Shaker Tall Pantry</h3>
+                        <div class="stars" style="color: #fbbf24; font-size: 0.8rem; margin-bottom: 0.5rem;">
+                            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                        </div>
+                        <div class="product-price">
+                            <span class="price-new">$599.00</span>
+                            <span class="price-old">$921.00</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 4 -->
+                <div class="product-card animate-up delay-300">
+                    <div class="product-img-wrap">
+                        <img src="https://images.unsplash.com/photo-1556911261-6bd341186b2f?q=80&w=800&auto=format&fit=crop" alt="Drawer Base">
+                        <div class="product-actions">
+                            <button class="action-btn"><i class="fa-solid fa-plus"></i></button>
+                            <button class="action-btn"><i class="fa-regular fa-eye"></i></button>
+                            <button class="action-btn"><i class="fa-regular fa-heart"></i></button>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <h3>White Shaker 3-Drawer Base</h3>
+                        <div class="stars" style="color: #fbbf24; font-size: 0.8rem; margin-bottom: 0.5rem;">
+                            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i>
+                        </div>
+                        <div class="product-price">
+                            <span class="price-new">$329.00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center" style="margin-top: 3rem;">
+                <a href="/product-category/white" class="btn btn-text">View All Cabinets</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- =======================================================================
+         Inspiration Gallery (Masonry)
+         ======================================================================= -->
+    <section class="section bg-alt" id="inspiration">
+        <div class="container">
+            <div class="section-header animate-up">
+                <h2>Kitchen Inspiration</h2>
+                <p>Browse real kitchens transformed with Temima Cabinets by our talented customers and certified designers.</p>
+            </div>
+
+            <div class="gallery-grid">
+                <div class="gallery-item large animate-up">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTosBQ_PJNCxg4H0gIyqPUo1YgI0qBlViScXawG1vS2VqNnrfEmfx3ZUpNs&s=10" alt="Kitchen Project">
+                    <div class="gallery-overlay">
+                        <a href="#" class="btn btn-outline">View Project</a>
+                    </div>
+                </div>
+                <div class="gallery-item animate-up delay-100">
+                    <img src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?q=80&w=800&auto=format&fit=crop" alt="Kitchen Detail">
+                    <div class="gallery-overlay">
+                        <a href="#" class="btn btn-outline">View Details</a>
+                    </div>
+                </div>
+                <div class="gallery-item animate-up delay-200">
+                    <img src="https://images.unsplash.com/photo-1556911220-bff31c812dba?q=80&w=800&auto=format&fit=crop" alt="Island Detail">
+                    <div class="gallery-overlay">
+                        <a href="#" class="btn btn-outline">View Details</a>
+                    </div>
+                </div>
+                <div class="gallery-item wide animate-up">
+                    <img src="https://images.unsplash.com/photo-1600566752355-35792bedcfea?q=80&w=1000&auto=format&fit=crop" alt="Modern Kitchen">
+                    <div class="gallery-overlay">
+                        <a href="#" class="btn btn-outline">View Project</a>
+                    </div>
+                </div>
+                <div class="gallery-item animate-up delay-100">
+                    <img src="https://images.unsplash.com/photo-1600607686527-6fb886090705?q=80&w=800&auto=format&fit=crop" alt="Cabinet Storage">
+                    <div class="gallery-overlay">
+                        <a href="#" class="btn btn-outline">View Details</a>
+                    </div>
+                </div>
+                <div class="gallery-item animate-up delay-200">
+                    <img src="https://images.unsplash.com/photo-1556909212-d5b604d0c90d?q=80&w=800&auto=format&fit=crop" alt="Kitchen Sink Area">
+                    <div class="gallery-overlay">
+                        <a href="#" class="btn btn-outline">View Details</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- =======================================================================
+         Process Timeline
+         ======================================================================= -->
+    <section class="section" id="process">
+        <div class="container">
+            <div class="section-header animate-up">
+                <h2>Our Proven <span style="color: var(--accent)">3-Step Process</span></h2>
+                <p>From initial consultation to final installation, we make getting your dream kitchen simple, stress-free, and backed by our lifetime warranty.</p>
+            </div>
+
+            <div class="process-wrap">
+                <!-- Step 1 -->
+                <div class="process-step animate-up">
+                    <div class="process-content">
+                        <div class="step-number">01</div>
+                        <h3>Free 3D Design Consultation</h3>
+                        <p style="color: var(--text-light); margin: 1rem 0;">Our certified kitchen designers create your dream kitchen in stunning 3D. Upload photos of your current space and get a personalized design within 24 hours.</p>
+                        <ul style="list-style: none;">
+                            <li style="margin-bottom: 0.5rem;"><i class="fa-solid fa-check-circle" style="color: var(--accent); margin-right: 10px;"></i> Professional 3D rendering</li>
+                            <li style="margin-bottom: 0.5rem;"><i class="fa-solid fa-check-circle" style="color: var(--accent); margin-right: 10px;"></i> Unlimited revisions</li>
+                            <li><i class="fa-solid fa-check-circle" style="color: var(--accent); margin-right: 10px;"></i> Certified designers</li>
+                        </ul>
+                    </div>
+                    <div class="process-center">
+                        <div class="process-icon"><i class="fa-solid fa-compass-drafting"></i></div>
+                    </div>
+                    <div class="process-img">
+                        <img src="https://temimacabinets.com/wp-content/uploads/2025/08/design-consultation-DOEyEb4K.jpg" alt="Free Consultation">
+                    </div>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="process-step animate-up">
+                    <div class="process-content">
+                        <div class="step-number">02</div>
+                        <h3>Premium Manufacturing</h3>
+                        <p style="color: var(--text-light); margin: 1rem 0;">Your cabinets are crafted in our state-of-the-art facilities using only premium materials. Every cabinet undergoes rigorous quality control before shipping.</p>
+                        <ul style="list-style: none;">
+                            <li style="margin-bottom: 0.5rem;"><i class="fa-solid fa-check-circle" style="color: var(--accent); margin-right: 10px;"></i> Premium solid wood</li>
+                            <li style="margin-bottom: 0.5rem;"><i class="fa-solid fa-check-circle" style="color: var(--accent); margin-right: 10px;"></i> CARB2 certified materials</li>
+                            <li><i class="fa-solid fa-check-circle" style="color: var(--accent); margin-right: 10px;"></i> Precision manufacturing</li>
+                        </ul>
+                    </div>
+                    <div class="process-center">
+                        <div class="process-icon"><i class="fa-solid fa-tools"></i></div>
+                    </div>
+                    <div class="process-img">
+                        <img src="https://temimacabinets.com/wp-content/uploads/2025/08/manufacturing-CMxYsOx3.jpg" alt="Manufacturing">
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="process-step animate-up">
+                    <div class="process-content">
+                        <div class="step-number">03</div>
+                        <h3>Expert Installation</h3>
+                        <p style="color: var(--text-light); margin: 1rem 0;">Our certified installers ensure perfect placement and finish. We handle everything from delivery to final touches, so you can enjoy your new kitchen worry-free.</p>
+                        <ul style="list-style: none;">
+                            <li style="margin-bottom: 0.5rem;"><i class="fa-solid fa-check-circle" style="color: var(--accent); margin-right: 10px;"></i> Certified installers</li>
+                            <li style="margin-bottom: 0.5rem;"><i class="fa-solid fa-check-circle" style="color: var(--accent); margin-right: 10px;"></i> Final quality check</li>
+                            <li><i class="fa-solid fa-check-circle" style="color: var(--accent); margin-right: 10px;"></i> Lifetime warranty</li>
+                        </ul>
+                    </div>
+                    <div class="process-center">
+                        <div class="process-icon"><i class="fa-solid fa-truck"></i></div>
+                    </div>
+                    <div class="process-img">
+                        <img src="https://temimacabinets.com/wp-content/uploads/2025/08/installation-process-i785A5Ll.jpg" alt="Installation">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center animate-up" style="margin-top: 3rem;">
+                <p style="color: var(--text-light); margin-bottom: 1.5rem;">Average project completion: 4-6 weeks</p>
+                <a href="/free-3d-kitchen-design/" class="btn btn-primary">Start Your Project</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- =======================================================================
+         Testimonials
+         ======================================================================= -->
+    <section class="section bg-alt" id="testimonials">
+        <div class="container">
+            <div class="section-header animate-up">
+                <h2>What Our Customers Say</h2>
+                <p>Over 50,000 successful kitchen transformations. Rated 4.9/5 from 2,847 reviews.</p>
+            </div>
+
+            <div class="testimonial-grid">
+                <!-- Testimonial 1 -->
+                <div class="testimonial-card animate-up">
+                    <i class="fa-solid fa-quote-right quote-icon"></i>
+                    <div class="stars">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="testimonial-text">"Absolutely amazing quality! We saved over $8,000 compared to local retailers and the cabinets are even better quality. Installation was straightforward and the customer service was fantastic."</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">SJ</div>
+                        <div class="author-info">
+                            <h4>Sarah Johnson</h4>
+                            <p>Austin, TX</p>
+                        </div>
+                    </div>
+                    <span class="savings-tag">Saved $8,200</span>
+                </div>
+
+                <!-- Testimonial 2 -->
+                <div class="testimonial-card animate-up delay-100">
+                    <i class="fa-solid fa-quote-right quote-icon"></i>
+                    <div class="stars">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="testimonial-text">"Temima made our dream kitchen affordable. The white shaker cabinets are gorgeous and the soft-close hardware is so smooth. Delivery was fast and everything was perfectly packaged."</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">MC</div>
+                        <div class="author-info">
+                            <h4>Mike Chen</h4>
+                            <p>San Diego, CA</p>
+                        </div>
+                    </div>
+                    <span class="savings-tag">Saved $6,500</span>
+                </div>
+
+                <!-- Testimonial 3 -->
+                <div class="testimonial-card animate-up delay-200">
+                    <i class="fa-solid fa-quote-right quote-icon"></i>
+                    <div class="stars">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="testimonial-text">"I was nervous ordering cabinets online, but Temima exceeded every expectation. The quality is restaurant-grade and my contractor was impressed. Will definitely use them for our bathroom next!"</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">JM</div>
+                        <div class="author-info">
+                            <h4>Jennifer Martinez</h4>
+                            <p>Denver, CO</p>
+                        </div>
+                    </div>
+                    <span class="savings-tag">Saved $12,300</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- =======================================================================
+         CTA Banner
+         ======================================================================= -->
+    <section class="section" id="quote-cta">
+        <div class="cta-banner animate-up">
+            <h2>Get Your Free 3D Design & Quote</h2>
+            <p>Transform your kitchen vision into reality with our advanced 3D design technology. Upload photos of your current kitchen and receive a stunning, personalized design within 24 hours.</p>
+            <a href="/free-3d-kitchen-design/" class="btn btn-primary" style="padding: 1.25rem 3rem; font-size: 1.125rem;">Schedule Free Consultation</a>
+        </div>
+    </section>
+
+    <!-- =======================================================================
+         Footer
+         ======================================================================= -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <!-- Brand -->
+                <div class="footer-col">
+                    <img src="https://temimacabinets.com/wp-content/uploads/2025/08/Transparent.png" alt="Temima Cabinets" class="footer-logo" style="height: 45px;">
+                    <p class="footer-desc">Premium RTA kitchen cabinets delivered directly to your door. Wholesale pricing, solid wood construction, and lifetime warranty.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fa-brands fa-facebook-f"></i></a>
+                        <a href="#" class="social-link"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#" class="social-link"><i class="fa-brands fa-pinterest-p"></i></a>
+                        <a href="#" class="social-link"><i class="fa-brands fa-houzz"></i></a>
+                    </div>
+                </div>
+
+                <!-- Links -->
+                <div class="footer-col">
+                    <h4>Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="/product-category/white">White Shaker Cabinets</a></li>
+                        <li><a href="/free-3d-kitchen-design/">Free 3D Design</a></li>
+                        <li><a href="/faq/">FAQ</a></li>
+                        <li><a href="/refund-and-return-policy/">Return Policy</a></li>
+                        <li><a href="/terms-and-conditions/">Terms & Conditions</a></li>
+                    </ul>
+                </div>
+
+                <!-- Resources -->
+                <div class="footer-col">
+                    <h4>Resources</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Assembly Instructions</a></li>
+                        <li><a href="#">Cabinet Care Guide</a></li>
+                        <li><a href="#">Measurement Guide</a></li>
+                        <li><a href="#">Design Blog</a></li>
+                        <li><a href="#">Warranty Info</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact -->
+                <div class="footer-col">
+                    <h4>Get In Touch</h4>
+                    <ul class="contact-list">
+                        <li>
+                            <i class="fa-solid fa-phone"></i>
+                            <div>
+                                <strong>Sales & Support</strong><br>
+                                <a href="tel:(469)209-6518">(469) 209-6518</a>
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fa-solid fa-envelope"></i>
+                            <div>
+                                <strong>Email Us</strong><br>
+                                <a href="mailto:info@temimacabinets.com">info@temimacabinets.com</a>
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fa-solid fa-clock"></i>
+                            <div>
+                                <strong>Business Hours</strong><br>
+                                Mon-Fri: 9:00 AM - 5:00 PM<br>
+                                Texas, USA
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; <script>document.write(new Date().getFullYear())</script> Temima Cabinets. All rights reserved.</p>
+                <div class="payment-methods" style="font-size: 1.5rem; display: flex; gap: 1rem; color: rgba(255,255,255,0.5);">
+                    <i class="fa-brands fa-cc-visa"></i>
+                    <i class="fa-brands fa-cc-mastercard"></i>
+                    <i class="fa-brands fa-cc-amex"></i>
+                    <i class="fa-brands fa-cc-discover"></i>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- =======================================================================
+         Scripts
+         ======================================================================= -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Sticky Header
+            const header = document.getElementById('header');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+            });
+
+            // Intersection Observer for Scroll Animations
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.15
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.animate-up').forEach(element => {
+                observer.observe(element);
+            });
+            
+            // Simple Mobile Menu Toggle
+            const mobileToggle = document.querySelector('.mobile-toggle');
+            const navLinks = document.querySelector('.nav-links');
+            
+            mobileToggle.addEventListener('click', () => {
+                if(navLinks.style.display === 'flex') {
+                    navLinks.style.display = 'none';
+                } else {
+                    navLinks.style.display = 'flex';
+                    navLinks.style.flexDirection = 'column';
+                    navLinks.style.position = 'absolute';
+                    navLinks.style.top = '100%';
+                    navLinks.style.left = '0';
+                    navLinks.style.width = '100%';
+                    navLinks.style.background = '#fff';
+                    navLinks.style.padding = '1rem 0';
+                    navLinks.style.boxShadow = '0 10px 15px -3px rgba(0, 0, 0, 0.1)';
+                    
+                    document.querySelectorAll('.nav-link').forEach(link => {
+                        link.style.color = '#1a1a1a';
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
