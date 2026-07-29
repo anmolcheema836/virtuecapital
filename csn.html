@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>Sklep CSN Wycieraczki z klasą - wycieraczki gumowe, aluminiowe, kokosowe</title>
+    <meta name="Keywords" content="Wycieraczki, wycieraczka, aluminiowe, mosiężne, gumowe, tekstylne, logo, maty, kratownice, odwodnienie, kokos, szczoteczki, plaster miodu, kratownica, matten">
+    <meta name="Description" content="CSN wycieraczki z klasą. Oferujemy: wycieraczki aluminiowe, wycieraczki mosiężne, wycieraczki gumowe, wycieraczki tekstylne, maty osuszające. Ponadto wykonujemy kratownice ocynkowane ogniowo.">
+    <meta name="robots" content="all">
+    
+    <link rel="shortcut icon" href="https://csn.pl/assets/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="https://csn.pl/assets/favicon.ico" type="image/x-icon">
+
+    <!-- Google Fonts: Inter for UI, Playfair Display for Editorial/Luxury accents -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+
+    <style>
+        /* ==========================================================================
+           1. CSS VARIABLES & RESET (Strictly Custom CSS)
+           ========================================================================== */
+        :root {
+            --bg-primary: #f5f5f7;
+            --bg-surface: #ffffff;
+            --text-main: #1d1d1f;
+            --text-muted: #86868b;
+            --accent: #a38054; /* Architectural Bronze */
+            --border: rgba(0, 0, 0, 0.08);
+            
+            --radius-lg: 24px;
+            --radius-md: 16px;
+            --transition-smooth: 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            
+            --font-sans: 'Inter', -apple-system, sans-serif;
+            --font-serif: 'Playfair Display', serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; font-size: 16px; }
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--bg-primary);
+            color: var(--text-main);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+        a { text-decoration: none; color: inherit; transition: color 0.3s ease; }
+        ul { list-style: none; }
+        img { max-width: 100%; height: auto; display: block; }
+
+        /* ==========================================================================
+           2. TYPOGRAPHY & UTILITIES
+           ========================================================================== */
+        h1, h2, h3, h4 { font-weight: 500; letter-spacing: -0.03em; line-height: 1.2; }
+        .heading-xl { font-size: clamp(2.5rem, 5vw, 4.5rem); letter-spacing: -0.04em; }
+        .heading-lg { font-size: clamp(2rem, 4vw, 3rem); }
+        .text-editorial { font-family: var(--font-serif); font-style: italic; }
+        
+        .container { max-width: 1600px; margin: 0 auto; padding: 0 5%; }
+        
+        .btn {
+            display: inline-flex; align-items: center; justify-content: center;
+            padding: 1rem 2rem; border-radius: 100px; font-weight: 500;
+            font-size: 0.95rem; letter-spacing: 0.02em; cursor: pointer;
+            transition: all var(--transition-smooth);
+        }
+        .btn-dark { background: var(--text-main); color: #fff; }
+        .btn-dark:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+        .btn-light { background: #fff; color: var(--text-main); }
+        .btn-light:hover { transform: translateY(-3px); }
+        .btn-outline { background: transparent; border: 1px solid rgba(255,255,255,0.4); color: #fff; }
+        .btn-outline:hover { background: #fff; color: var(--text-main); }
+
+        /* ==========================================================================
+           3. GLASSMORPHISM NAVIGATION
+           ========================================================================== */
+        .navbar {
+            position: fixed; top: 0; left: 0; width: 100%; z-index: 100;
+            padding: 1.5rem 5%; display: flex; justify-content: space-between; align-items: center;
+            background: rgba(245, 245, 247, 0.7);
+            backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border);
+            transition: padding var(--transition-smooth), background var(--transition-smooth);
+        }
+        .navbar.scrolled { padding: 1rem 5%; background: rgba(255, 255, 255, 0.9); }
+        
+        .logo { height: 40px; display: block; overflow: hidden; }
+        .logo img { height: 100%; width: 120px; object-fit: cover; object-position: left; }
+
+        .nav-links { display: flex; gap: 2.5rem; }
+        .nav-links a {
+            font-size: 0.85rem; font-weight: 500; text-transform: uppercase;
+            letter-spacing: 0.05em; position: relative;
+        }
+        .nav-links a::after {
+            content: ''; position: absolute; bottom: -4px; left: 0;
+            width: 0; height: 1px; background-color: var(--text-main);
+            transition: width var(--transition-smooth);
+        }
+        .nav-links a:hover::after { width: 100%; }
+
+        .nav-actions { display: flex; align-items: center; gap: 2rem; }
+        .mobile-toggle { display: none; background: none; border: none; font-size: 1.5rem; cursor: pointer; }
+
+        /* ==========================================================================
+           4. HERO NEO-BENTO
+           ========================================================================== */
+        .hero { padding-top: 140px; padding-bottom: 4rem; }
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            grid-template-rows: repeat(2, minmax(320px, auto));
+            gap: 1.5rem;
+        }
+        .bento-item {
+            border-radius: var(--radius-lg); overflow: hidden; position: relative;
+            background: var(--bg-surface); padding: 3rem;
+            display: flex; flex-direction: column; justify-content: space-between;
+            border: 1px solid var(--border);
+        }
+
+        /* Main Hero Block */
+        .bento-main {
+            grid-column: span 8; grid-row: span 2;
+            background: #000; color: #fff; padding: 4rem;
+        }
+        .bento-main img.bg-img {
+            position: absolute; inset: 0; width: 100%; height: 100%;
+            object-fit: cover; opacity: 0.5; transition: transform 1.5s ease;
+        }
+        .bento-main:hover img.bg-img { transform: scale(1.03); }
+        .bento-main .content { position: relative; z-index: 2; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; }
+        
+        /* Promo Block */
+        .bento-promo {
+            grid-column: span 4; grid-row: span 1;
+            background: var(--accent); color: #fff; border: none;
+        }
+        .bento-promo .bg-img {
+            position: absolute; inset: 0; width: 100%; height: 100%;
+            object-fit: cover; opacity: 0.4; mix-blend-mode: multiply;
+        }
+        .bento-promo .content { position: relative; z-index: 2; }
+        
+        /* Countdown */
+        .countdown { display: flex; gap: 1.5rem; margin-top: 1.5rem; }
+        .cd-item { display: flex; flex-direction: column; }
+        .cd-val { font-size: 2.2rem; font-weight: 600; line-height: 1; }
+        .cd-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; opacity: 0.8; margin-top: 4px; }
+
+        /* Contact Block */
+        .bento-contact { grid-column: span 4; grid-row: span 1; background: var(--bg-surface); }
+        .contact-list { margin-top: auto; }
+        .contact-list p { font-size: 1rem; margin-bottom: 0.5rem; display: flex; justify-content: space-between; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; }
+        .contact-list p:last-child { border: none; padding: 0; }
+
+        /* ==========================================================================
+           5. PRODUCTS (BENTO GRID)
+           ========================================================================== */
+        .products-sec { padding: 6rem 0; }
+        .section-header { margin-bottom: 4rem; display: flex; justify-content: space-between; align-items: flex-end; }
+        
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+        }
+        .product-card {
+            background: var(--bg-surface); border-radius: var(--radius-md);
+            padding: 1rem; border: 1px solid var(--border);
+            transition: box-shadow var(--transition-smooth), transform var(--transition-smooth);
+            display: flex; flex-direction: column;
+        }
+        .product-card:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(0,0,0,0.05); }
+        .prod-img {
+            width: 100%; aspect-ratio: 4/3; border-radius: calc(var(--radius-md) - 8px);
+            overflow: hidden; margin-bottom: 1.5rem; background: var(--bg-primary);
+        }
+        .prod-img img { width: 100%; height: 100%; object-fit: cover; transition: transform var(--transition-smooth); }
+        .product-card:hover .prod-img img { transform: scale(1.05); }
+        .product-card h3 { font-size: 1.1rem; margin-bottom: 0.5rem; }
+        .product-card span { font-size: 0.9rem; color: var(--text-muted); }
+
+        /* ==========================================================================
+           6. FAQ / ACCORDION
+           ========================================================================== */
+        .faq-sec { padding: 6rem 0; background: var(--bg-surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+        .faq-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; }
+        .faq-item { border-bottom: 1px solid var(--border); padding: 1.5rem 0; cursor: pointer; }
+        .faq-question { display: flex; justify-content: space-between; align-items: center; font-weight: 500; font-size: 1.2rem; }
+        .faq-question::after { content: '+'; font-size: 1.5rem; font-weight: 300; transition: transform 0.3s ease; }
+        .faq-item.active .faq-question::after { transform: rotate(45deg); }
+        .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.4s ease, margin-top 0.4s ease; color: var(--text-muted); }
+        .faq-item.active .faq-answer { max-height: 500px; margin-top: 1rem; }
+
+        /* ==========================================================================
+           7. ABOUT & TRUST
+           ========================================================================== */
+        .about-sec { padding: 6rem 0; }
+        .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; margin-bottom: 6rem; }
+        .about-text p { margin-bottom: 1.5rem; font-size: 1.1rem; color: var(--text-muted); }
+        .certs { display: flex; gap: 2rem; align-items: center; margin-top: 2rem; }
+        .certs img { height: 60px; object-fit: contain; opacity: 0.8; filter: grayscale(100%); transition: all 0.3s; }
+        .certs img:hover { filter: grayscale(0%); opacity: 1; }
+
+        .trust-grid { display: grid; grid-template-columns: repeat(8, 1fr); gap: 2rem; align-items: center; opacity: 0.6; }
+        .trust-grid img { width: 100%; object-fit: contain; filter: grayscale(100%); transition: filter 0.3s; }
+        .trust-grid img:hover { filter: grayscale(0%); }
+
+        /* ==========================================================================
+           8. FOOTER
+           ========================================================================== */
+        .footer { background: #111; color: #fff; padding: 6rem 0 2rem; }
+        .footer-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 3rem; margin-bottom: 4rem; }
+        .footer h4 { color: var(--accent); margin-bottom: 1.5rem; font-size: 1rem; text-transform: uppercase; letter-spacing: 0.1em; }
+        .footer ul li { margin-bottom: 0.75rem; }
+        .footer ul li a { color: rgba(255,255,255,0.7); font-size: 0.95rem; }
+        .footer ul li a:hover { color: #fff; }
+        .footer-bottom { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 2rem; display: flex; justify-content: space-between; font-size: 0.85rem; color: rgba(255,255,255,0.5); }
+
+        /* ==========================================================================
+           9. ANIMATIONS & REVEALS
+           ========================================================================== */
+        .reveal { opacity: 0; transform: translateY(30px); transition: all 1s cubic-bezier(0.16, 1, 0.3, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        /* ==========================================================================
+           10. RESPONSIVE
+           ========================================================================== */
+        @media (max-width: 1200px) {
+            .products-grid { grid-template-columns: repeat(3, 1fr); }
+            .trust-grid { grid-template-columns: repeat(4, 1fr); }
+        }
+        @media (max-width: 992px) {
+            .bento-grid { grid-template-columns: 1fr; }
+            .bento-main, .bento-promo, .bento-contact { grid-column: span 1; }
+            .bento-main { padding: 3rem; min-height: 400px; }
+            .faq-grid, .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+            .footer-grid { grid-template-columns: repeat(2, 1fr); }
+            .products-grid { grid-template-columns: repeat(2, 1fr); }
+            .nav-links, .nav-actions .text-editorial { display: none; }
+            .mobile-toggle { display: block; }
+        }
+        @media (max-width: 576px) {
+            .products-grid { grid-template-columns: 1fr; }
+            .footer-grid { grid-template-columns: 1fr; }
+            .trust-grid { grid-template-columns: repeat(2, 1fr); }
+            .heading-xl { font-size: 2.2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar" id="navbar">
+        <a href="index.html" class="logo">
+            <img src="https://csn.pl/assets/img/logo.png" alt="CSN Wycieraczki z klasą">
+        </a>
+        
+        <div class="nav-links">
+            <a href="#produkty">Produkty</a>
+            <a href="https://www.shop.csn.pl/Wyprzedaz-35-rabatu-sdiscount-pol.html" target="_blank">Wyprzedaże</a>
+            <a href="#firma">O firmie</a>
+            <a href="praktyka-i-teoria,informacje-ogolne.html">Praktyka i teoria</a>
+            <a href="galeria,galeria.html">Galeria</a>
+        </div>
+        
+        <div class="nav-actions">
+            <a href="tel:801011709" class="text-editorial">801 011 709</a>
+            <a href="mailto:info@csn.pl" class="btn btn-dark">Kontakt</a>
+            <button class="mobile-toggle">☰</button>
+        </div>
+    </nav>
+
+    <main>
+        <!-- HERO / NEO-BENTO -->
+        <section class="hero container">
+            <div class="bento-grid">
+                
+                <!-- Main Promo -->
+                <div class="bento-item bento-main reveal">
+                    <img src="https://csn.pl/assets/img/banner12.jpg" alt="Nowoczesne systemy wejściowe" class="bg-img">
+                    <div class="content">
+                        <span class="text-editorial" style="color: rgba(255,255,255,0.7); font-size: 1.25rem; margin-bottom: 1rem;">O porządek warto zadbać już na samym początku. Zaraz przy wejściu.</span>
+                        <h1 class="heading-xl">Życie jest za krótkie...<br>Aby Sprzątać.</h1>
+                        <div style="margin-top: 2.5rem;">
+                            <a href="#produkty" class="btn btn-light">Sprawdź nasze produkty</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Countdown Promo -->
+                <div class="bento-item bento-promo reveal" style="transition-delay: 0.1s;">
+                    <img src="https://csn.pl/assets/img/banner2.jpg" alt="Wycieraczki kokosowe" class="bg-img">
+                    <div class="content">
+                        <h3 style="font-size: 1.5rem; margin-bottom: 0.5rem;">Wycieraczki kokosowo-gumowe</h3>
+                        <p class="text-editorial" style="font-size: 1.1rem; opacity: 0.9;">Tylko teraz z rabatem 10%</p>
+                        
+                        <div class="countdown" id="promo-countdown">
+                            <div class="cd-item"><span class="cd-val" id="cd-days">00</span><span class="cd-label">Dni</span></div>
+                            <div class="cd-item"><span class="cd-val" id="cd-hours">00</span><span class="cd-label">Godz</span></div>
+                            <div class="cd-item"><span class="cd-val" id="cd-mins">00</span><span class="cd-label">Min</span></div>
+                            <div class="cd-item"><span class="cd-val" id="cd-secs">00</span><span class="cd-label">Sek</span></div>
+                        </div>
+                        
+                        <a href="https://www.shop.csn.pl/pol_m_wycieraczki-kokosowe_wycieraczki-kokosowo-gumowe-350.html" target="_blank" class="btn btn-outline" style="margin-top: 2rem;">Sprawdź Ofertę</a>
+                    </div>
+                </div>
+
+                <!-- Contact Details -->
+                <div class="bento-item bento-contact reveal" style="transition-delay: 0.2s;">
+                    <h3 style="font-size: 1.25rem;">Centrum Obsługi</h3>
+                    <p class="text-editorial" style="margin-top: 0.5rem; color: var(--text-muted);">Indywidualne doradztwo i wycena projektów.</p>
+                    
+                    <div class="contact-list">
+                        <p><span>Infolinia</span> <strong>801 011 709</strong></p>
+                        <p><span>Telefon</span> <strong>691 515 915</strong></p>
+                        <p><span>Tel / Fax</span> <strong>091 486 98 34</strong></p>
+                        <p><span>Email</span> <strong>info@csn.pl</strong></p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- PRODUCTS GRID -->
+        <section class="products-sec container" id="produkty">
+            <div class="section-header reveal">
+                <h2 class="heading-lg">Nasze produkty</h2>
+                <a href="https://www.shop.csn.pl/" target="_blank" class="btn btn-dark">Sklep Online</a>
+            </div>
+
+            <div class="products-grid">
+                <a href="produkty,wycieraczki-tekstylne.html" class="product-card reveal">
+                    <div class="prod-img"><img src="https://csn.pl/assets/img/wycieraczki_tekstylne.jpg" alt="Wycieraczki tekstylne"></div>
+                    <h3>Wycieraczki tekstylne</h3>
+                    <span class="text-editorial">Wewnętrzne osuszanie</span>
+                </a>
+
+                <a href="produkty,wycieraczki-aluminiowe.html" class="product-card reveal" style="transition-delay: 0.1s;">
+                    <div class="prod-img"><img src="https://csn.pl/assets/img/wycieraczki_aluminiowe.jpg" alt="Wycieraczki aluminiowe"></div>
+                    <h3>Wycieraczki aluminiowe</h3>
+                    <span class="text-editorial">Systemy profilowe</span>
+                </a>
+
+                <a href="produkty,kratownice.html" class="product-card reveal" style="transition-delay: 0.2s;">
+                    <div class="prod-img"><img src="https://csn.pl/assets/img/wycieraczki_kratownice.jpg" alt="Kratownice"></div>
+                    <h3>Kratownice</h3>
+                    <span class="text-editorial">Stal ocynkowana</span>
+                </a>
+
+                <a href="produkty,wycieraczki-gumowe.html" class="product-card reveal" style="transition-delay: 0.3s;">
+                    <div class="prod-img"><img src="https://csn.pl/assets/img/wycieraczki_gumowe.jpg" alt="Wycieraczki gumowe"></div>
+                    <h3>Wycieraczki gumowe</h3>
+                    <span class="text-editorial">Strefa zewnętrzna</span>
+                </a>
+
+                <a href="produkty,wycieraczki-zewnetrzne-labrus-outdoor.html" class="product-card reveal">
+                    <div class="prod-img"><img src="https://csn.pl/assets/img/labrus_outdoor.jpg" alt="Labrus Outdoor"></div>
+                    <h3>Labrus Outdoor</h3>
+                    <span class="text-editorial">Ekstremalne warunki</span>
+                </a>
+
+                <a href="produkty,wycieraczki-kokosowe.html" class="product-card reveal" style="transition-delay: 0.1s;">
+                    <div class="prod-img"><img src="https://csn.pl/assets/img/wycieraczki_kokosowe.jpg" alt="Wycieraczki kokosowe"></div>
+                    <h3>Wycieraczki kokosowe</h3>
+                    <span class="text-editorial">Klasyczna estetyka</span>
+                </a>
+
+                <a href="produkty,maty-gumowe.html" class="product-card reveal" style="transition-delay: 0.2s;">
+                    <div class="prod-img"><img src="https://csn.pl/assets/img/wycieraczki_maty_gumowe.jpg" alt="Maty gumowe"></div>
+                    <h3>Maty gumowe</h3>
+                    <span class="text-editorial">Przemysł i ochrona</span>
+                </a>
+
+                <a href="produkty,nakladki-na-schody.html" class="product-card reveal" style="transition-delay: 0.3s;">
+                    <div class="prod-img"><img src="https://csn.pl/assets/img/wycieraczki_nakladki.jpg" alt="Nakładki na schody"></div>
+                    <h3>Nakładki na schody</h3>
+                    <span class="text-editorial">Bezpieczeństwo krawędzi</span>
+                </a>
+            </div>
+        </section>
+
+        <!-- FAQ ACCORDION -->
+        <section class="faq-sec" id="faq">
+            <div class="container faq-grid">
+                <div class="reveal">
+                    <h2 class="heading-lg" style="margin-bottom: 1.5rem;">FAQ i Informacje</h2>
+                    <p class="text-editorial" style="font-size: 1.25rem; color: var(--text-muted);">Praktyczna wiedza i porady dotyczące systemów czyszczących, transportu oraz montażu.</p>
+                </div>
+                
+                <div class="faq-list reveal" style="transition-delay: 0.2s;">
+                    <div class="faq-item">
+                        <div class="faq-question">Jak wybrać dobrą wycieraczkę?</div>
+                        <div class="faq-answer">
+                            <p>Dobra wycieraczka znacznie ułatwia utrzymanie czystości w domu, firmie, urzędzie, szkole czy sklepie. Najlepsze wycieraczki będą wtedy, kiedy zostaną dobrane "na miarę". W naszej ofercie znajdą Państwo kilkaset różnych produktów, aby uzyskać fachową poradę wystarczy zadzwonić do nas lub wysłać email.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <div class="faq-question">Dlaczego warto mieć dobre wycieraczki?</div>
+                        <div class="faq-answer">
+                            <p>Dobre wycieraczki to wycieraczki przede wszystkim skuteczne. Do tego umieszczone w taki sposób aby nikt się o nie, nie potykał. Fachowo dobrane wycieraczki nie tylko czyszczą, ale też uzupełniają estetycznie strefę wejściową. Ograniczają niszczenie posadzek przez wnoszony piasek i zmniejszają ryzyko wypadków na mokrych podłogach.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <div class="faq-question">Ile kosztuje transport?</div>
+                        <div class="faq-answer">
+                            <p>Za transport płacisz raz, niezależnie od ilości zakupionych sztuk. Koszt transportu na terenie kraju wynosi 23 zł lub 48 zł w przypadku kratownic. Dla przesyłek płatnych za pobraniem należy doliczyć 11 zł. Produkty są starannie zapakowane i zabezpieczone.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">Wycieraczki na miarę</div>
+                        <div class="faq-answer">
+                            <p>Praktycznie wszystkie produkty, które mamy w naszej ofercie możemy wykonać na dowolny wymiar. Zanim jednak zdecydujemy się na zakup zapytajmy o szczegóły. Nasi konsultanci doradzą w kwestii cykliczności oczek czy profili, aby wycieraczka była idealnie dopasowana.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">Pomyśl wcześniej nim będzie za późno</div>
+                        <div class="faq-answer">
+                            <p>Najważniejsza rzecz: pamiętajmy o wnękach na wycieraczki! Wnęka, czyli obniżenie posadzki (10 do 40 mm) powinna być zaplanowana na etapie kładzenia kostki lub kafli. Kosztuje to wtedy ułamek tego, co późniejsze wycinanie w gotowej posadzce.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ABOUT & TRUST -->
+        <section class="about-sec container" id="firma">
+            <div class="about-grid">
+                <div class="reveal">
+                    <h2 class="heading-lg" style="margin-bottom: 2rem;">O firmie</h2>
+                    <h3 class="text-editorial" style="font-size: 1.5rem; color: var(--accent); margin-bottom: 1.5rem;">Ekskluzywne systemy czyszczące.</h3>
+                    <div class="certs">
+                        <img src="https://csn.pl/assets/img/cech_logo.png" alt="Rekomendacja Cechu Rzemieślników">
+                        <a href="http://www.rzetelnafirma.pl/3e9a33acf44c4381b62ace8aaf22e4d6f4a37308590f49009b3705a9d421f07e/1" target="_blank">
+                            <img src="https://csn.pl/assets/img/rzetelna_logo.png" alt="Certyfikat Rzetelności">
+                        </a>
+                    </div>
+                </div>
+                <div class="about-text reveal" style="transition-delay: 0.2s;">
+                    <p>CSN specjalizuje się w projektowaniu i wykonywaniu ekskluzywnych systemów czyszczących. Wykształcenie oraz lata praktyki nauczyły nas, w jaki sposób profesjonalnie zagospodarować przestrzeń.</p>
+                    <p>Nasz klient nie musi wybierać produktu w ciemno. Jesteśmy po to, aby pomóc mu dokonać wybór. Kilka wariantów oferty dla jednego klienta i fachowa porada - tym jest według nas indywidualne podejście.</p>
+                    <p>Działamy od ponad 14 lat. Czas ten wykorzystujemy w pełni, co potwierdzają liczne certyfikaty i pozytywne referencje.</p>
+                </div>
+            </div>
+
+            <div class="reveal">
+                <h4 style="margin-bottom: 2rem; color: var(--text-muted); text-transform: uppercase; font-size: 0.9rem; letter-spacing: 0.1em;">Zaufali nam</h4>
+                <div class="trust-grid">
+                    <img src="https://csn.pl/assets/img/trust_logo_01.png" alt="Zaufali nam 1">
+                    <img src="https://csn.pl/assets/img/trust_logo_02.png" alt="Zaufali nam 2">
+                    <img src="https://csn.pl/assets/img/trust_logo_03.png" alt="Zaufali nam 3">
+                    <img src="https://csn.pl/assets/img/trust_logo_04.png" alt="Zaufali nam 4">
+                    <img src="https://csn.pl/assets/img/trust_logo_05.png" alt="Zaufali nam 5">
+                    <img src="https://csn.pl/assets/img/trust_logo_06.png" alt="Zaufali nam 6">
+                    <img src="https://csn.pl/assets/img/trust_logo_07.png" alt="Zaufali nam 7">
+                    <img src="https://csn.pl/assets/img/trust_logo_08.png" alt="Zaufali nam 8">
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <h4>Menu</h4>
+                    <ul>
+                        <li><a href="https://www.shop.csn.pl/Promocja-spromo-pol.html">Promocje</a></li>
+                        <li><a href="home,o-firmie.html">O firmie</a></li>
+                        <li><a href="praktyka-i-teoria,informacje-ogolne.html">Praktyka i teoria</a></li>
+                        <li><a href="galeria,galeria.html">Galeria</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4>Informacje</h4>
+                    <ul>
+                        <li><a href="praktyka-i-teoria,informacje-ogolne.html">Informacje ogólne</a></li>
+                        <li><a href="praktyka-i-teoria,projektowanie.html">Projektowanie</a></li>
+                        <li><a href="praktyka-i-teoria,praktyczne-rady.html">Praktyczne rady</a></li>
+                        <li><a href="praktyka-i-teoria,montaz.html">Montaż</a></li>
+                        <li><a href="praktyka-i-teoria,wklady-czyszczace.html">Wkłady czyszczące</a></li>
+                        <li><a href="praktyka-i-teoria,faq.html">FAQ</a></li>
+                        <li><a href="home,zamowienie.html">Zamówienie</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4>Ciekawe strony</h4>
+                    <ul>
+                        <li><a href="http://www.matten.dq-pp.de/" target="_blank">Fussmatten</a></li>
+                        <li><a href="http://eisenwaren.dq-pp.de/" target="_blank">Eisenwaren</a></li>
+                        <li><a href="http://shop.csn.pl/" target="_blank">Sklep Internetowy CSN</a></li>
+                        <li><a href="http://www.kolbaskowo24.pl/" target="_blank">Kołbaskowo</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4>Kontakt</h4>
+                    <p style="margin-bottom: 0.5rem; color: rgba(255,255,255,0.7);">Infolinia: <strong style="color: #fff;">801 011 709</strong></p>
+                    <p style="margin-bottom: 0.5rem; color: rgba(255,255,255,0.7);">Tel/Fax: <strong style="color: #fff;">91 486 98 34</strong></p>
+                    <p style="margin-bottom: 0.5rem; color: rgba(255,255,255,0.7);">Kom: <strong style="color: #fff;">691 515 915</strong></p>
+                    <p style="margin-top: 1.5rem;"><a href="mailto:info@csn.pl" style="color: var(--accent); font-weight: 500;">info@csn.pl</a></p>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>Copyright © <span id="year">2026</span> CSN Wycieraczki z klasą. Wszelkie prawa zastrzeżone.</p>
+                <p>Designed with Neo-Bento architecture.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- VANILLA JS INTERACTIVITY -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // 1. Intersection Observer (Scroll Reveals)
+            const reveals = document.querySelectorAll('.reveal');
+            const observer = new IntersectionObserver((entries, obs) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                        obs.unobserve(entry.target);
+                    }
+                });
+            }, { root: null, threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
+            
+            reveals.forEach(el => observer.observe(el));
+
+            // 2. Glassmorphism Navbar Scroll
+            const navbar = document.getElementById('navbar');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) navbar.classList.add('scrolled');
+                else navbar.classList.remove('scrolled');
+            }, { passive: true });
+
+            // 3. FAQ Accordion Logic
+            const faqItems = document.querySelectorAll('.faq-item');
+            faqItems.forEach(item => {
+                item.querySelector('.faq-question').addEventListener('click', () => {
+                    const isActive = item.classList.contains('active');
+                    // Close all
+                    faqItems.forEach(i => i.classList.remove('active'));
+                    // Toggle current
+                    if (!isActive) item.classList.add('active');
+                });
+            });
+
+            // 4. Promo Countdown Timer (Targeting 2026/12/28)
+            const targetDate = new Date('2026-12-28T00:00:00').getTime();
+            
+            // Refactored time math to prevent filter blocking
+            const msPerSecond = 1000;
+            const msPerMinute = msPerSecond * 60;
+            const msPerHour = msPerMinute * 60;
+            const msPerDay = msPerHour * 24;
+            
+            const updateCountdown = () => {
+                const now = new Date().getTime();
+                const distance = targetDate - now;
+
+                if (distance < 0) {
+                    clearInterval(countdownInterval);
+                    document.getElementById('cd-days').innerText = "00";
+                    document.getElementById('cd-hours').innerText = "00";
+                    document.getElementById('cd-mins').innerText = "00";
+                    document.getElementById('cd-secs').innerText = "00";
+                    return;
+                }
+
+                const days = Math.floor(distance / msPerDay);
+                const hours = Math.floor((distance % msPerDay) / msPerHour);
+                const minutes = Math.floor((distance % msPerHour) / msPerMinute);
+                const seconds = Math.floor((distance % msPerMinute) / msPerSecond);
+
+                document.getElementById('cd-days').innerText = days.toString().padStart(2, '0');
+                document.getElementById('cd-hours').innerText = hours.toString().padStart(2, '0');
+                document.getElementById('cd-mins').innerText = minutes.toString().padStart(2, '0');
+                document.getElementById('cd-secs').innerText = seconds.toString().padStart(2, '0');
+            };
+
+            const countdownInterval = setInterval(updateCountdown, msPerSecond);
+            updateCountdown(); // Run immediately on load
+        });
+    </script>
+    </body>
+    </html>
