@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FleetSquad | Serenity & Precision in Fleet Maintenance</title>
+    <!-- Fonts: 'Plus Jakarta Sans' for premium geometry, 'Inter' for precise body copy -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            /* Foundational Brand Language */
+            --color-primary-blue: #1A2F4C;
+            --color-secondary-blue: #3E5C76;
+            --color-accent-blue: #748CAB;
+            
+            /* Japandi Warmth & Canvas */
+            --color-bg-canvas: #F7F6F2;     /* Warm off-white */
+            --color-bg-linen: #EAE6DF;      /* Soft natural linen/stone */
+            --color-accent-wood: #C89F70;   /* Warm oak/cedar tone */
+            
+            /* Typography Colors */
+            --color-text-dark: #1D1D1B;
+            --color-text-muted: #595959;
+            --color-white: #FFFFFF;
+
+            /* Spacing & Layout */
+            --space-xs: 0.5rem;
+            --space-sm: 1rem;
+            --space-md: 2.5rem;
+            --space-lg: 5rem;
+            --space-xl: 10rem;
+            --radius-soft: 8px;
+            
+            /* Transitions */
+            --transition-smooth: all 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+            --transition-fast: all 0.3s ease;
+        }
+
+        /* Reset & Base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--color-bg-canvas);
+            color: var(--color-text-dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        h1, h2, h3, h4, h5 {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-weight: 400;
+            line-height: 1.2;
+            letter-spacing: -0.02em;
+        }
+
+        p {
+            color: var(--color-text-muted);
+            font-weight: 300;
+            font-size: 1.125rem;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Utility & Animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: var(--transition-smooth);
+        }
+        
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: .75rem 0;
+            background: rgba(247, 246, 242, 0.9);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            z-index: 1000;
+            border-bottom: 1px solid rgba(0,0,0,0.03);
+            transition: var(--transition-fast);
+        }
+
+        .nav-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Logo Styling */
+        .nav-logo img {
+            height: 70px; /* Adjust based on your fleetlogo.png proportions */
+            width: auto;
+            object-fit: contain;
+        }
+
+        .footer-logo img {
+            height: 48px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .nav-menu {
+            display: flex;
+            align-items: center;
+            gap: 2.5rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            font-size: 0.95rem;
+            font-weight: 400;
+            color: var(--color-text-muted);
+            transition: var(--transition-fast);
+        }
+
+        .nav-links a:hover {
+            color: var(--color-primary-blue);
+        }
+
+        /* Mobile Menu Button */
+        .mobile-menu-btn {
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 30px;
+            height: 20px;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        .mobile-menu-btn span {
+            display: block;
+            height: 2px;
+            width: 100%;
+            background-color: var(--color-primary-blue);
+            transition: var(--transition-fast);
+            border-radius: 2px;
+        }
+
+        .mobile-menu-btn.active span:nth-child(1) {
+            transform: translateY(9px) rotate(45deg);
+        }
+        .mobile-menu-btn.active span:nth-child(2) {
+            opacity: 0;
+        }
+        .mobile-menu-btn.active span:nth-child(3) {
+            transform: translateY(-9px) rotate(-45deg);
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            padding: 1rem 2rem;
+            border-radius: 4px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-weight: 500;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: var(--transition-fast);
+            text-align: center;
+        }
+
+        .btn-primary {
+            background-color: var(--color-primary-blue);
+            color: var(--color-white);
+            border: 1px solid var(--color-primary-blue);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--color-secondary-blue);
+            border-color: var(--color-secondary-blue);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(26, 47, 76, 0.1);
+        }
+
+        .btn-ghost {
+            background-color: transparent;
+            color: var(--color-primary-blue);
+            border: 1px solid rgba(26, 47, 76, 0.2);
+        }
+
+        .btn-ghost:hover {
+            border-color: var(--color-primary-blue);
+            background-color: rgba(26, 47, 76, 0.03);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding-top: 10rem;
+            padding-bottom: var(--space-xl);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6rem;
+            align-items: center;
+        }
+
+        .hero-content h1 {
+            font-size: clamp(2.5rem, 5vw, 4.5rem);
+            color: var(--color-primary-blue);
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-content p {
+            font-size: clamp(1.125rem, 2vw, 1.25rem);
+            max-width: 480px;
+            margin-bottom: 3rem;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .hero-image-wrapper {
+            position: relative;
+            width: 100%;
+        }
+
+        .hero-image-bg {
+            position: absolute;
+            top: 2rem;
+            right: -2rem;
+            bottom: -2rem;
+            left: 2rem;
+            background-color: var(--color-bg-linen);
+            border-radius: var(--radius-soft);
+            z-index: 1;
+        }
+
+        .hero-image {
+            position: relative;
+            z-index: 2;
+            border-radius: var(--radius-soft);
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.06);
+            filter: sepia(0.05) contrast(0.98) brightness(1.02); 
+            width: 100%;
+        }
+
+        /* Empathy / Problem Narrative */
+        .narrative-section {
+            background-color: var(--color-white);
+            padding: var(--space-xl) 0;
+            text-align: center;
+        }
+
+        .narrative-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .section-label {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-size: 0.85rem;
+            color: var(--color-accent-wood);
+            margin-bottom: 1.5rem;
+            display: block;
+            font-weight: 600;
+        }
+
+        .narrative-content h2 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            color: var(--color-primary-blue);
+            margin-bottom: 2rem;
+        }
+
+        .narrative-content p {
+            font-size: clamp(1.125rem, 2.5vw, 1.35rem);
+            line-height: 1.8;
+            color: var(--color-text-muted);
+        }
+
+        /* Solution Section */
+        .solution-section {
+            padding: var(--space-xl) 0;
+            background-color: var(--color-bg-canvas);
+        }
+
+        .solution-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6rem;
+            align-items: center;
+        }
+
+        .solution-grid.reverse {
+            margin-top: var(--space-xl);
+            direction: rtl;
+        }
+
+        .solution-grid.reverse > * {
+            direction: ltr;
+        }
+
+        .solution-image {
+            border-radius: var(--radius-soft);
+            overflow: hidden;
+            position: relative;
+            width: 100%;
+        }
+        
+        .solution-image::after {
+            content: '';
+            position: absolute;
+            top: 0; bottom: 0; left: 0; right: 0;
+            border: 1px solid rgba(0,0,0,0.05);
+            border-radius: var(--radius-soft);
+            pointer-events: none;
+        }
+
+        .solution-text h3 {
+            font-size: clamp(2rem, 3.5vw, 2.5rem);
+            color: var(--color-primary-blue);
+            margin-bottom: 1.5rem;
+        }
+
+        .solution-text p {
+            margin-bottom: 1.5rem;
+        }
+
+        /* Capabilities / Fleet Types */
+        .capabilities-section {
+            padding: var(--space-xl) 0;
+            background-color: var(--color-bg-linen);
+        }
+
+        .capabilities-header {
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto var(--space-lg);
+        }
+
+        .capabilities-header h2 {
+            font-size: clamp(2rem, 3.5vw, 2.5rem);
+            color: var(--color-primary-blue);
+        }
+
+        .fleet-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .fleet-card {
+            background: var(--color-white);
+            padding: 2.5rem 2rem;
+            border-radius: var(--radius-soft);
+            transition: var(--transition-fast);
+            border-top: 3px solid transparent;
+            height: 100%;
+        }
+
+        .fleet-card:hover {
+            transform: translateY(-8px);
+            border-top: 3px solid var(--color-accent-wood);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.04);
+        }
+
+        .fleet-card-icon {
+            font-size: 2rem;
+            color: var(--color-accent-wood);
+            margin-bottom: 1.25rem;
+        }
+
+        .fleet-card h4 {
+            font-size: 1.25rem;
+            color: var(--color-primary-blue);
+            margin-bottom: 0.75rem;
+        }
+
+        .fleet-card p {
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        /* Services List Section */
+        .services-section {
+            padding: var(--space-xl) 0;
+            background-color: var(--color-white);
+        }
+
+        .services-container {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 6rem;
+        }
+
+        .services-title h2 {
+            font-size: clamp(2rem, 3.5vw, 2.5rem);
+            position: sticky;
+            top: 120px;
+            color: var(--color-primary-blue);
+        }
+
+        .service-item {
+            padding: 2.5rem 0;
+            border-bottom: 1px solid var(--color-bg-linen);
+        }
+
+        .service-item:first-child {
+            padding-top: 0;
+        }
+
+        .service-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .service-item h4 {
+            font-size: 1.5rem;
+            color: var(--color-primary-blue);
+            margin-bottom: 1rem;
+        }
+
+        /* Call To Action */
+        .cta-section {
+            padding: var(--space-xl) 0;
+            background-color: var(--color-primary-blue);
+            text-align: center;
+            color: var(--color-white);
+        }
+
+        .cta-content {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .cta-content h2 {
+            font-size: clamp(2rem, 4vw, 3.5rem);
+            margin-bottom: 1.5rem;
+            color: var(--color-white);
+        }
+
+        .cta-content p {
+            color: var(--color-accent-blue);
+            margin-bottom: 3rem;
+            font-size: clamp(1.125rem, 2vw, 1.25rem);
+        }
+
+        .btn-white {
+            background-color: var(--color-white);
+            color: var(--color-primary-blue);
+            border: 1px solid var(--color-white);
+        }
+
+        .btn-white:hover {
+            background-color: var(--color-bg-canvas);
+            transform: translateY(-2px);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--color-primary-blue);
+            padding: 4rem 0 2rem;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            color: var(--color-accent-blue);
+        }
+
+        .footer-grid {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 4rem;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .footer-links a:hover {
+            color: var(--color-white);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            font-size: 0.85rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+
+        /* =========================================
+           Responsive Design (Tablets & Mobile)
+           ========================================= */
+        
+        @media (max-width: 1024px) {
+            .hero-grid, .services-container {
+                grid-template-columns: 1fr;
+                gap: 4rem;
+            }
+            .hero {
+                padding-top: 8rem;
+                min-height: auto;
+            }
+            .services-title h2 {
+                position: relative;
+                top: 0;
+            }
+            .solution-grid {
+                gap: 4rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            :root {
+                --space-xl: 5rem;
+                --space-lg: 3rem;
+            }
+
+            /* Mobile Navigation */
+            .mobile-menu-btn {
+                display: flex;
+            }
+
+            .nav-menu {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background-color: var(--color-bg-canvas);
+                flex-direction: column;
+                padding: 0;
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+                border-bottom: 1px solid rgba(0,0,0,0.05);
+                box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            }
+
+            .nav-menu.active {
+                padding: 2rem 0;
+                max-height: 400px;
+            }
+
+            .nav-links {
+                flex-direction: column;
+                width: 100%;
+                gap: 1.5rem;
+            }
+
+            .nav-menu .btn {
+                margin-top: 1.5rem;
+                width: 80%;
+            }
+
+            /* Hero Layout */
+            .hero-actions {
+                flex-direction: column;
+                width: 100%;
+            }
+            .hero-actions .btn {
+                width: 100%;
+            }
+            .hero-image-bg {
+                top: 1rem; right: -1rem; bottom: -1rem; left: 1rem;
+            }
+
+            /* Solution Grids -> Stack images on top */
+            .solution-grid {
+                display: flex;
+                flex-direction: column;
+                gap: 3rem;
+            }
+            .solution-grid.reverse {
+                direction: ltr;
+                margin-top: var(--space-xl);
+            }
+            .solution-grid > .solution-image {
+                order: -1;
+            }
+
+            /* Fleet Grid */
+            .fleet-grid {
+                grid-template-columns: 1fr;
+            }
+
+            /* Footer */
+            .footer-grid {
+                flex-direction: column;
+                gap: 2rem;
+                text-align: center;
+            }
+            .footer-links {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav id="navbar">
+        <div class="container nav-inner">
+            <a href="#" class="nav-logo">
+                <!-- Replaced text with your specified logo image -->
+                <img src="fleetlogo.png" alt="FleetSquad Logo">
+            </a>
+            
+            <div class="mobile-menu-btn" id="mobileMenuBtn">
+                <span></span><span></span><span></span>
+            </div>
+
+            <div class="nav-menu" id="navMenu">
+                <div class="nav-links">
+                    <a href="#philosophy">Our Approach</a>
+                    <a href="#capabilities">Capabilities</a>
+                    <a href="#services">Services</a>
+                </div>
+                <a href="#contact" class="btn btn-primary" style="padding: 0.6rem 1.5rem; font-size: 0.9rem;">Book Service</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Chapter 1: Arrival (Hero) -->
+    <section class="hero">
+        <div class="container hero-grid">
+            <div class="hero-content reveal">
+                <span class="section-label">Premium Mobile Maintenance</span>
+                <h1>Mastery in motion.<br>Peace of mind at scale.</h1>
+                <p>Nationwide commercial fleet maintenance, delivered directly to your location with precision, deep expertise, and profound care.</p>
+                <div class="hero-actions">
+                    <a href="#contact" class="btn btn-primary">Schedule Service</a>
+                    <a href="#philosophy" class="btn btn-ghost">Explore our approach</a>
+                </div>
+            </div>
+            <div class="hero-image-wrapper reveal" style="transition-delay: 0.2s;">
+                <div class="hero-image-bg"></div>
+                <img src="https://heavydutyjournal.com/wp-content/uploads/2025/11/fleet-maintenance-shop-comparison.webp" alt="Professional mechanic performing careful diagnostics" class="hero-image" style="aspect-ratio: 4/5; object-fit: cover;">
+            </div>
+        </div>
+    </section>
+
+    <!-- Chapter 2: Empathy / The Problem -->
+    <section id="philosophy" class="narrative-section">
+        <div class="container narrative-content reveal">
+            <span class="section-label">The Friction</span>
+            <h2>Fleet maintenance can be remarkably complicated.</h2>
+            <p>Moving large commercial vehicles to distant repair shops disrupts logistics, strains schedules, and obscures visibility. Historically, fleet maintenance has been a loud, reactive, and fragmented process. We believe billions of dollars of transportation infrastructure deserve a quieter, more highly engineered approach.</p>
+        </div>
+    </section>
+
+    <!-- Chapter 3: The Solution -->
+    <section class="solution-section">
+        <div class="container">
+            <!-- Part A -->
+            <div class="solution-grid">
+                <div class="solution-image reveal">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQjWueuW37IWAAR0TdVENUpEdrLOD6-xXSuEorzI9IOfmzUAcLYfPxM56A&s=10" alt="Sleek semi-truck cab in soft natural light" style="aspect-ratio: 1/1; object-fit: cover;">
+                </div>
+                <div class="solution-text reveal">
+                    <span class="section-label">The FleetSquad Standard</span>
+                    <h3>We bring unmatched expertise directly to you.</h3>
+                    <p>Instead of moving your assets, we deploy ASE Master Technicians to your yard, distribution center, or depot. Our mobile infrastructure is designed to transform your location into a fully capable service environment.</p>
+                    <p>Every tool has a place. Every process is documented. We replace chaos with clarity, drastically reducing downtime while elevating the reliability of your entire fleet.</p>
+                </div>
+            </div>
+
+            <!-- Part B -->
+            <div class="solution-grid reverse">
+                <div class="solution-image reveal">
+                    <img src="https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Precision engineering tools laid out meticulously" style="aspect-ratio: 1/1; object-fit: cover;">
+                </div>
+                <div class="solution-text reveal">
+                    <span class="section-label">National Reliability</span>
+                    <h3>Cohesive service across the country.</h3>
+                    <p>Whether operating out of a single regional hub or coordinating a nationwide supply chain, fleet managers require absolute consistency. FleetSquad offers a single unified standard of excellence.</p>
+                    <p>From centralized reporting to preventative planning, we provide the enterprise-grade visibility needed to operate confidently at scale.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Chapter 4: Capabilities (Fleet Types) -->
+    <section id="capabilities" class="capabilities-section">
+        <div class="container">
+            <div class="capabilities-header reveal">
+                <span class="section-label">Supported Assets</span>
+                <h2>Engineered for every configuration.</h2>
+                <p>From heavy-duty logistics to last-mile delivery, our technicians are certified across a diverse spectrum of commercial vehicle architectures.</p>
+            </div>
+            
+            <div class="fleet-grid">
+                <div class="fleet-card reveal">
+                    <div class="fleet-card-icon">⛟</div>
+                    <h4>Heavy-Duty Semi-Trucks</h4>
+                    <p>Comprehensive powertrain diagnostics, air brake systems, and full DOT compliance inspections for Class 7 and 8 logistics assets.</p>
+                </div>
+                <div class="fleet-card reveal">
+                    <div class="fleet-card-icon">🚚</div>
+                    <h4>Box Trucks & Step Vans</h4>
+                    <p>Preventative maintenance and rapid repair deployment ensuring your last-mile and regional delivery schedules remain uninterrupted.</p>
+                </div>
+                <div class="fleet-card reveal">
+                    <div class="fleet-card-icon">🚐</div>
+                    <h4>Rental & Utility Fleets</h4>
+                    <p>Turn-key servicing for mixed rental fleets and municipal utility vehicles, standardizing maintenance across varied makes and models.</p>
+                </div>
+                <div class="fleet-card reveal">
+                    <div class="fleet-card-icon">🚙</div>
+                    <h4>Light-Duty & Cars</h4>
+                    <p>Routine oil changes, tire rotations, and advanced electrical diagnostics for corporate car fleets and light-duty pickup networks.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Chapter 5: Services -->
+    <section id="services" class="services-section">
+        <div class="container services-container">
+            <div class="services-title reveal">
+                <span class="section-label">Our Method</span>
+                <h2>Comprehensive operational support.</h2>
+            </div>
+            <div class="services-list">
+                <div class="service-item reveal">
+                    <h4>Preventative Maintenance</h4>
+                    <p>Proactive, precisely scheduled upkeep designed to identify wear before it compromises vehicle integrity. We focus on extending lifecycle and preserving operational readiness.</p>
+                </div>
+                <div class="service-item reveal">
+                    <h4>Advanced Diagnostics</h4>
+                    <p>Deploying OEM-level diagnostic software in the field to trace complex electrical, emissions, and drivetrain faults with exacting accuracy.</p>
+                </div>
+                <div class="service-item reveal">
+                    <h4>Major & Minor Repairs</h4>
+                    <p>From replacing critical suspension components to resolving intricate hydraulic issues, our mobile bays handle substantial mechanical workloads on-site.</p>
+                </div>
+                <div class="service-item reveal">
+                    <h4>DOT & Safety Inspections</h4>
+                    <p>Thorough, fully compliant state and federal inspections that protect your drivers, your cargo, and your organization's legal standing.</p>
+                </div>
+                <div class="service-item reveal">
+                    <h4>Emergency Response</h4>
+                    <p>Calm, capable intervention when unexpected breakdowns occur. We deploy rapidly to secure the vehicle, diagnose the issue, and initiate recovery.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Chapter 6: Action / Resolution -->
+    <section id="contact" class="cta-section">
+        <div class="container cta-content reveal">
+            <h2>A quieter, more reliable fleet awaits.</h2>
+            <p>Step away from the friction of traditional maintenance. Partner with FleetSquad to bring profound organization and top-tier expertise directly to your facility.</p>
+            <a href="#" class="btn btn-white">Initiate Consultation</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <a href="#" class="footer-logo">
+                    <!-- Replaced text with your specified logo image -->
+                    <img src="fleetlogo.png" alt="FleetSquad Logo">
+                </a>
+                <div class="footer-links">
+                    <a href="#">Privacy</a>
+                    <a href="#">Terms of Service</a>
+                    <a href="#">Enterprise Solutions</a>
+                    <a href="#">Careers</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                &copy; 2024 FleetSquad Maintenance. Designed with intent. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Interactive JavaScript -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            
+            // 1. Smooth Scroll Reveal Logic
+            const reveals = document.querySelectorAll(".reveal");
+            const revealOptions = {
+                threshold: 0.15,
+                rootMargin: "0px 0px -50px 0px"
+            };
+
+            const revealOnScroll = new IntersectionObserver(function(entries, observer) {
+                entries.forEach(entry => {
+                    if (!entry.isIntersecting) return;
+                    entry.target.classList.add("active");
+                    observer.unobserve(entry.target);
+                });
+            }, revealOptions);
+
+            reveals.forEach(reveal => {
+                revealOnScroll.observe(reveal);
+            });
+
+            // 2. Mobile Menu Toggle Logic
+            const mobileBtn = document.getElementById("mobileMenuBtn");
+            const navMenu = document.getElementById("navMenu");
+            const navLinks = document.querySelectorAll(".nav-menu a");
+
+            function toggleMenu() {
+                mobileBtn.classList.toggle("active");
+                navMenu.classList.toggle("active");
+            }
+
+            mobileBtn.addEventListener("click", toggleMenu);
+
+            // Close mobile menu when a link is clicked
+            navLinks.forEach(link => {
+                link.addEventListener("click", () => {
+                    if (navMenu.classList.contains("active")) {
+                        toggleMenu();
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

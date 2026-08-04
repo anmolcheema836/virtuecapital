@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tech.Care Patient Dashboard</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+    
+    <style>
+        :root {
+            --bg-color: #F6F7F8;
+            --white: #FFFFFF;
+            --text-main: #072635;
+            --text-secondary: #707070;
+            --active-bg: #D8FCF7;
+            --border-color: #F6F7F8;
+            
+            /* Vitals Colors */
+            --respiratory-bg: #E0F3FA;
+            --temp-bg: #FFE6E9;
+            --heart-bg: #FFE6F1;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Manrope', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            padding: 18px;
+        }
+
+        /* --- Global Icon Placeholders --- */
+        .icon-sm {
+            width: 16px;
+            height: 16px;
+            object-fit: contain;
+        }
+        
+        .icon-md {
+            width: 20px;
+            height: 20px;
+            object-fit: contain;
+        }
+
+        /* --- Navbar --- */
+        header {
+            background-color: var(--white);
+            border-radius: 70px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 32px;
+            margin-bottom: 32px;
+            box-shadow: 0px 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 16px;
+            list-style: none;
+        }
+
+        .nav-links li {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 16px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            border-radius: 41px;
+            color: var(--text-secondary);
+        }
+
+        .nav-links li.active {
+            background-color: #01F0D0;
+            color: var(--text-main);
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding-right: 24px;
+            border-right: 1px solid #EDEDED;
+        }
+
+        .user-profile img.avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+        }
+        
+        .user-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .user-info strong {
+            font-size: 14px;
+        }
+
+        .user-info span {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* --- Main Layout --- */
+        .dashboard-container {
+            display: grid;
+            grid-template-columns: 260px 1fr 300px;
+            gap: 32px;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        .panel {
+            background-color: var(--white);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0px 2px 4px rgba(0,0,0,0.02);
+        }
+
+        /* --- Left Sidebar (Patient List) --- */
+        .sidebar-left {
+            padding: 0;
+            max-height: 850px;
+            overflow-y: auto;
+        }
+
+        .sidebar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 24px 24px 12px 24px;
+        }
+
+        .sidebar-header h2 {
+            font-size: 20px;
+        }
+
+        .patient-list {
+            list-style: none;
+        }
+
+        .patient-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 24px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .patient-item.active {
+            background-color: var(--active-bg);
+        }
+
+        .patient-item-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .patient-item img.avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+        }
+
+        .patient-details h4 {
+            font-size: 14px;
+            margin-bottom: 2px;
+        }
+
+        .patient-details span {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        /* --- Main Content (Center) --- */
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .main-content h2 {
+            font-size: 24px;
+            margin-bottom: 24px;
+        }
+
+        .chart-container {
+            background: #F4F0FE;
+            border-radius: 12px;
+            padding: 24px;
+            display: flex;
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+
+        .chart-wrapper {
+            flex: 2;
+        }
+
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        
+        .chart-header .filter {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+        }
+
+        .canvas-container {
+            position: relative;
+            height: 250px; 
+            width: 100%;
+        }
+
+        .chart-stats {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .stat-block h4 {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .stat-block .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .stat-block .value {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .stat-block .status {
+            font-size: 13px;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .vitals-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 32px;
+        }
+
+        .vital-card {
+            padding: 20px;
+            border-radius: 12px;
+        }
+
+        .vital-card.resp { background-color: var(--respiratory-bg); }
+        .vital-card.temp { background-color: var(--temp-bg); }
+        .vital-card.heart { background-color: var(--heart-bg); }
+
+        .vital-card img.vital-icon {
+            width: 90px;
+            height: 90px;
+            object-fit: contain;
+            margin-bottom: 16px;
+        }
+
+        .vital-card h4 {
+            font-size: 15px;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+
+        .vital-card .val {
+            font-size: 26px;
+            font-weight: 800;
+            margin-bottom: 12px;
+        }
+
+        .vital-card .status {
+            font-size: 13px;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Diagnostic List Table */
+        .diagnostic-table-wrapper {
+            max-height: 250px;
+            overflow-y: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background-color: var(--bg-color);
+            padding: 16px;
+            text-align: left;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        th:first-child { border-radius: 24px 0 0 24px; }
+        th:last-child { border-radius: 0 24px 24px 0; }
+
+        td {
+            padding: 16px;
+            font-size: 14px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        /* --- Right Sidebar (Profile & Lab Results) --- */
+        .profile-header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .profile-header img.avatar {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            margin-bottom: 16px;
+        }
+
+        .profile-header h3 {
+            font-size: 22px;
+        }
+
+        .info-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-bottom: 32px;
+        }
+
+        .info-item {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .info-icon-bg {
+            width: 40px;
+            height: 40px;
+            background: var(--bg-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .info-text span {
+            display: block;
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .info-text strong {
+            font-size: 14px;
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 14px;
+            background-color: #01F0D0;
+            border: none;
+            border-radius: 41px;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            margin-bottom: 24px;
+        }
+
+        .lab-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            max-height: 250px;
+            overflow-y: auto;
+        }
+
+        .lab-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            font-size: 13px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        
+        .lab-item:hover {
+            background-color: var(--bg-color);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header>
+        <div class="logo">
+            <img src="image.png" alt="Logo" class="icon-md">
+            Tech.Care
+        </div>
+        <ul class="nav-links">
+            <li><img src="image.png" alt="icon" class="icon-sm"> Overview</li>
+            <li class="active"><img src="image.png" alt="icon" class="icon-sm"> Patients</li>
+            <li><img src="image.png" alt="icon" class="icon-sm"> Schedule</li>
+            <li><img src="image.png" alt="icon" class="icon-sm"> Message</li>
+            <li><img src="image.png" alt="icon" class="icon-sm"> Transactions</li>
+        </ul>
+        <div class="header-right">
+            <div class="user-profile">
+                <img src="https://fedskillstest.ct.digital/8.png" alt="Dr. Jose Simmons" class="avatar">
+                <div class="user-info">
+                    <strong>Dr. Jose Simmons</strong>
+                    <span>General Practitioner</span>
+                </div>
+            </div>
+            <div class="header-actions">
+                <img src="image.png" alt="Settings" class="icon-sm">
+                <img src="image.png" alt="More options" class="icon-sm">
+            </div>
+        </div>
+    </header>
+
+    <div class="dashboard-container">
+        <!-- Left Sidebar: Patients List -->
+        <aside class="panel sidebar-left">
+            <div class="sidebar-header">
+                <h2>Patients</h2>
+                <img src="image.png" alt="Search" class="icon-sm">
+            </div>
+            <ul class="patient-list" id="patientList">
+                <!-- Populated via JS -->
+            </ul>
+        </aside>
+
+        <!-- Main Content: Diagnosis History -->
+        <main class="main-content">
+            <section class="panel">
+                <h2>Diagnosis History</h2>
+                <div class="chart-container">
+                    <div class="chart-wrapper">
+                        <div class="chart-header">
+                            <h3>Blood Pressure</h3>
+                            <div class="filter">
+                                Last 6 months 
+                                <img src="image.png" alt="Expand" class="icon-sm">
+                            </div>
+                        </div>
+                        <div class="canvas-container">
+                            <canvas id="bpChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="chart-stats">
+                        <div class="stat-block">
+                            <h4><span class="dot" style="background: #E66FD2;"></span> Systolic</h4>
+                            <div class="value" id="systolicVal">--</div>
+                            <div class="status">
+                                <img src="image.png" alt="Arrow" class="icon-sm">
+                                <span id="systolicStatus">--</span>
+                            </div>
+                        </div>
+                        <hr style="border: 0; border-top: 1px solid #CBC8D4;">
+                        <div class="stat-block">
+                            <h4><span class="dot" style="background: #8C6FE6;"></span> Diastolic</h4>
+                            <div class="value" id="diastolicVal">--</div>
+                            <div class="status">
+                                <img src="image.png" alt="Arrow" class="icon-sm">
+                                <span id="diastolicStatus">--</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="vitals-grid">
+                    <div class="vital-card resp">
+                        <img src="image.png" alt="Respiratory Icon" class="vital-icon">
+                        <h4>Respiratory Rate</h4>
+                        <div class="val" id="respVal">--</div>
+                        <div class="status">
+                            <span id="respStatus">--</span>
+                        </div>
+                    </div>
+                    <div class="vital-card temp">
+                        <img src="image.png" alt="Temperature Icon" class="vital-icon">
+                        <h4>Temperature</h4>
+                        <div class="val" id="tempVal">--</div>
+                        <div class="status">
+                            <span id="tempStatus">--</span>
+                        </div>
+                    </div>
+                    <div class="vital-card heart">
+                        <img src="image.png" alt="Heart Rate Icon" class="vital-icon">
+                        <h4>Heart Rate</h4>
+                        <div class="val" id="heartVal">--</div>
+                        <div class="status">
+                            <img src="image.png" alt="Arrow" class="icon-sm">
+                            <span id="heartStatus">--</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Diagnostic List Table -->
+            <section class="panel">
+                <h2>Diagnostic List</h2>
+                <div class="diagnostic-table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Problem/Diagnosis</th>
+                                <th>Description</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="diagnosticList">
+                            <!-- Populated via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+
+        <!-- Right Sidebar: Patient Profile & Labs -->
+        <aside>
+            <div class="panel" style="margin-bottom: 24px;">
+                <div class="profile-header">
+                    <img id="profileImg" src="" alt="Profile" class="avatar">
+                    <h3 id="profileName">--</h3>
+                </div>
+                <ul class="info-list">
+                    <li class="info-item">
+                        <div class="info-icon-bg">
+                            <img src="image.png" alt="DOB Icon" class="icon-md">
+                        </div>
+                        <div class="info-text">
+                            <span>Date Of Birth</span>
+                            <strong id="profileDob">--</strong>
+                        </div>
+                    </li>
+                    <li class="info-item">
+                        <div class="info-icon-bg">
+                            <img src="image.png" alt="Gender Icon" class="icon-md">
+                        </div>
+                        <div class="info-text">
+                            <span>Gender</span>
+                            <strong id="profileGender">--</strong>
+                        </div>
+                    </li>
+                    <li class="info-item">
+                        <div class="info-icon-bg">
+                            <img src="image.png" alt="Phone Icon" class="icon-md">
+                        </div>
+                        <div class="info-text">
+                            <span>Contact Info.</span>
+                            <strong id="profilePhone">--</strong>
+                        </div>
+                    </li>
+                    <li class="info-item">
+                        <div class="info-icon-bg">
+                            <img src="image.png" alt="Emergency Icon" class="icon-md">
+                        </div>
+                        <div class="info-text">
+                            <span>Emergency Contacts</span>
+                            <strong id="profileEmergency">--</strong>
+                        </div>
+                    </li>
+                    <li class="info-item">
+                        <div class="info-icon-bg">
+                            <img src="image.png" alt="Insurance Icon" class="icon-md">
+                        </div>
+                        <div class="info-text">
+                            <span>Insurance Provider</span>
+                            <strong id="profileInsurance">--</strong>
+                        </div>
+                    </li>
+                </ul>
+                <button class="btn-primary">Show All Information</button>
+            </div>
+
+            <div class="panel">
+                <h2>Lab Results</h2>
+                <ul class="lab-list" id="labList">
+                    <!-- Populated via JS -->
+                </ul>
+            </div>
+        </aside>
+    </div>
+
+    <script>
+        const username = 'coalition';
+        const password = 'skills-test';
+        const encodedAuth = btoa(`${username}:${password}`);
+        const API_URL = 'https://fedskillstest.coalitiontechnologies.workers.dev';
+
+        // Fetch Data
+        async function fetchPatientData() {
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Basic ${encodedAuth}`
+                    }
+                });
+                
+                if (!response.ok) throw new Error('Network response was not ok');
+                const data = await response.json();
+                
+                const jessica = data.find(patient => patient.name === 'Jessica Taylor');
+                
+                if (jessica) {
+                    populateSidebar(data, jessica.name);
+                    populateDashboard(jessica);
+                }
+
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        }
+
+        // Populate Left Sidebar
+        function populateSidebar(patients, targetName) {
+            const list = document.getElementById('patientList');
+            list.innerHTML = '';
+
+            patients.forEach(patient => {
+                const li = document.createElement('li');
+                li.className = `patient-item ${patient.name === targetName ? 'active' : ''}`;
+                
+                li.innerHTML = `
+                    <div class="patient-item-left">
+                        <img src="${patient.profile_picture}" alt="${patient.name}" class="avatar">
+                        <div class="patient-details">
+                            <h4>${patient.name}</h4>
+                            <span>${patient.gender}, ${patient.age}</span>
+                        </div>
+                    </div>
+                    <img src="image.png" alt="More" class="icon-sm">
+                `;
+                list.appendChild(li);
+            });
+        }
+
+        // Populate Main Dashboard and Profile
+        function populateDashboard(patient) {
+            // Profile Info
+            document.getElementById('profileImg').src = patient.profile_picture;
+            document.getElementById('profileName').textContent = patient.name;
+            
+            const dob = new Date(patient.date_of_birth);
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('profileDob').textContent = dob.toLocaleDateString('en-US', options);
+            
+            document.getElementById('profileGender').textContent = patient.gender;
+            document.getElementById('profilePhone').textContent = patient.phone_number;
+            document.getElementById('profileEmergency').textContent = patient.emergency_contact;
+            document.getElementById('profileInsurance').textContent = patient.insurance_type;
+
+            // Vitals
+            const latestDiagnosis = patient.diagnosis_history[0];
+            
+            document.getElementById('systolicVal').textContent = latestDiagnosis.blood_pressure.systolic.value;
+            document.getElementById('systolicStatus').textContent = latestDiagnosis.blood_pressure.systolic.levels;
+            document.getElementById('diastolicVal').textContent = latestDiagnosis.blood_pressure.diastolic.value;
+            document.getElementById('diastolicStatus').textContent = latestDiagnosis.blood_pressure.diastolic.levels;
+
+            document.getElementById('respVal').textContent = `${latestDiagnosis.respiratory_rate.value} bpm`;
+            document.getElementById('respStatus').textContent = latestDiagnosis.respiratory_rate.levels;
+            
+            document.getElementById('tempVal').textContent = `${latestDiagnosis.temperature.value}°F`;
+            document.getElementById('tempStatus').textContent = latestDiagnosis.temperature.levels;
+            
+            document.getElementById('heartVal').textContent = `${latestDiagnosis.heart_rate.value} bpm`;
+            document.getElementById('heartStatus').textContent = latestDiagnosis.heart_rate.levels;
+
+            // Diagnostic List
+            const diagTbody = document.getElementById('diagnosticList');
+            diagTbody.innerHTML = '';
+            patient.diagnostic_list.forEach(diag => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${diag.name}</td>
+                    <td>${diag.description}</td>
+                    <td>${diag.status}</td>
+                `;
+                diagTbody.appendChild(tr);
+            });
+
+            // Lab Results
+            const labUl = document.getElementById('labList');
+            labUl.innerHTML = '';
+            patient.lab_results.forEach(lab => {
+                const li = document.createElement('li');
+                li.className = 'lab-item';
+                li.innerHTML = `
+                    <span>${lab}</span>
+                    <img src="image.png" alt="Download" class="icon-sm">
+                `;
+                labUl.appendChild(li);
+            });
+
+            // Chart
+            initChart(patient.diagnosis_history);
+        }
+
+        // Initialize Chart
+        function initChart(history) {
+            const chartData = history.slice(0, 6).reverse(); 
+
+            const labels = chartData.map(d => `${d.month.substring(0,3)}, ${d.year}`);
+            const systolicData = chartData.map(d => d.blood_pressure.systolic.value);
+            const diastolicData = chartData.map(d => d.blood_pressure.diastolic.value);
+
+            const ctx = document.getElementById('bpChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'Systolic',
+                            data: systolicData,
+                            borderColor: '#E66FD2',
+                            backgroundColor: '#E66FD2',
+                            pointBackgroundColor: '#E66FD2',
+                            pointBorderColor: '#FFFFFF',
+                            pointRadius: 6,
+                            pointBorderWidth: 1,
+                            tension: 0.4
+                        },
+                        {
+                            label: 'Diastolic',
+                            data: diastolicData,
+                            borderColor: '#8C6FE6',
+                            backgroundColor: '#8C6FE6',
+                            pointBackgroundColor: '#8C6FE6',
+                            pointBorderColor: '#FFFFFF',
+                            pointRadius: 6,
+                            pointBorderWidth: 1,
+                            tension: 0.4
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        y: {
+                            min: 60,
+                            max: 180,
+                            grid: {
+                                color: '#CBC8D4',
+                                drawBorder: false,
+                            }
+                        },
+                        x: {
+                            grid: { display: false }
+                        }
+                    }
+                }
+            });
+        }
+
+        window.addEventListener('DOMContentLoaded', fetchPatientData);
+    </script>
+</body>
+</html>

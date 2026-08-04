@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Private WebRTC Call</title>
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: Arial, sans-serif;
+        background: #101114;
+        color: white;
+        display: flex;
+        justify-content: center;
+    }
+
+    .app {
+        width: 100%;
+        max-width: 1000px;
+        padding: 25px;
+    }
+
+    h1 {
+        text-align: center;
+        margin: 5px 0;
+    }
+
+    .subtitle {
+        text-align: center;
+        color: #999;
+        margin-bottom: 25px;
+    }
+
+    .videos {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+    }
+
+    .video-box {
+        position: relative;
+        background: #1c1d21;
+        border-radius: 15px;
+        overflow: hidden;
+        min-height: 250px;
+    }
+
+    .video-box video {
+        width: 100%;
+        height: 100%;
+        min-height: 250px;
+        object-fit: cover;
+        display: block;
+        background: #000;
+    }
+
+    .label {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        z-index: 2;
+        background: rgba(0,0,0,.6);
+        padding: 6px 10px;
+        border-radius: 8px;
+        font-size: 13px;
+    }
+
+    .controls {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        justify-content: center;
+        margin: 20px 0;
+    }
+
+    button {
+        border: 0;
+        padding: 12px 17px;
+        border-radius: 9px;
+        background: #2563eb;
+        color: white;
+        font-size: 14px;
+        cursor: pointer;
+    }
+
+    button:hover {
+        opacity: .85;
+    }
+
+    button.danger {
+        background: #dc2626;
+    }
+
+    button.secondary {
+        background: #33363d;
+    }
+
+    .panel {
+        background: #1a1b1f;
+        border-radius: 14px;
+        padding: 18px;
+        margin-top: 15px;
+    }
+
+    .panel h3 {
+        margin-top: 0;
+    }
+
+    textarea {
+        width: 100%;
+        height: 170px;
+        resize: vertical;
+        background: #0c0d0f;
+        border: 1px solid #333;
+        border-radius: 10px;
+        padding: 12px;
+        color: #fff;
+        font-family: monospace;
+        font-size: 12px;
+    }
+
+    .status {
+        text-align: center;
+        margin: 20px 0;
+        color: #6ee7b7;
+        font-weight: bold;
+    }
+
+    .instructions {
+        color: #bbb;
+        line-height: 1.6;
+        font-size: 14px;
+    }
+
+    .security {
+        text-align: center;
+        color: #888;
+        font-size: 12px;
+        margin-top: 20px;
+    }
+
+    @media (max-width: 700px) {
+        .videos {
+            grid-template-columns: 1fr;
+        }
+
+        .app {
+            padding: 15px;
+        }
+    }
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+    <h1>🔐 Private Web Call</h1>
+
+    <div class="subtitle">
+        Serverless WebRTC video calling
+    </div>
+
+    <!-- VIDEOS -->
+
+    <div class="videos">
+
+        <div class="video-box">
+            <span class="label">You</span>
+            <video id="localVideo" autoplay muted playsinline></video>
+        </div>
+
+        <div class="video-box">
+            <span class="label">Friend</span>
+            <video id="remoteVideo" autoplay playsinline></video>
+        </div>
+
+    </div>
+
+    <!-- CONTROLS -->
+
+    <div class="controls">
+
+        <button onclick="startCamera()">
+            🎥 Start Camera
+        </button>
+
+        <button onclick="createOffer()">
+            📞 Create Call
+        </button>
+
+        <button onclick="createAnswer()">
+            ✅ Create Answer
+        </button>
+
+        <button onclick="connectCall()">
+            🔗 Connect
+        </button>
+
+        <button class="secondary" onclick="toggleMic()">
+            🎤 Mute
+        </button>
+
+        <button class="secondary" onclick="toggleCamera()">
+            📷 Camera
+        </button>
+
+        <button class="danger" onclick="hangUp()">
+            ☎ Hang Up
+        </button>
+
+    </div>
+
+    <div id="status" class="status">
+        Ready
+    </div>
+
+    <!-- SIGNALING -->
+
+    <div class="panel">
+
+        <h3>Connection Code</h3>
+
+        <div class="instructions">
+
+            <b>Caller:</b>
+            Click "Create Call", then copy the generated text
+            and send it to your friend.
+
+            <br><br>
+
+            <b>Friend:</b>
+            Paste the caller's text here and click
+            "Create Answer". Send the generated answer back.
+
+            <br><br>
+
+            <b>Caller:</b>
+            Paste the friend's answer here and click
+            "Connect".
+
+        </div>
+
+        <br>
+
+        <textarea
+            id="signalBox"
+            placeholder="Connection information appears here..."
+        ></textarea>
+
+        <div class="controls">
+
+            <button onclick="copySignal()">
+                📋 Copy
+            </button>
+
+            <button class="secondary" onclick="clearSignal()">
+                Clear
+            </button>
+
+        </div>
+
+    </div>
+
+    <div class="security">
+        🔒 WebRTC media uses encrypted transport.
+        This page contains no application backend.
+    </div>
+
+</div>
+
+
+<script>
+
+let localStream = null;
+let peerConnection = null;
+
+let microphoneEnabled = true;
+let cameraEnabled = true;
+
+
+/*
+    STUN SERVER
+
+    This helps browsers discover a network path
+    when they are behind normal NAT routers.
+*/
+
+const configuration = {
+
+    iceServers: [
+
+        {
+            urls: "stun:stun.l.google.com:19302"
+        }
+
+    ]
+
+};
+
+
+/*
+    UI
+*/
+
+function setStatus(message) {
+
+    document.getElementById("status").textContent = message;
+
+}
+
+
+/*
+    START CAMERA
+*/
+
+async function startCamera() {
+
+    try {
+
+        if (localStream) {
+            return;
+        }
+
+        setStatus("Requesting camera and microphone...");
+
+        localStream =
+            await navigator.mediaDevices.getUserMedia({
+
+                video: true,
+                audio: true
+
+            });
+
+        document.getElementById("localVideo").srcObject =
+            localStream;
+
+        createPeerConnection();
+
+        setStatus("Camera ready");
+
+    }
+
+    catch (error) {
+
+        console.error(error);
+
+        setStatus("Camera/microphone permission failed");
+
+        alert(
+            "Could not access camera or microphone.\n\n" +
+            error.message
+        );
+
+    }
+
+}
+
+
+/*
+    CREATE PEER CONNECTION
+*/
+
+function createPeerConnection() {
+
+    if (peerConnection) {
+        return;
+    }
+
+    peerConnection =
+        new RTCPeerConnection(configuration);
+
+
+    /*
+        Add microphone + camera
+    */
+
+    localStream.getTracks().forEach(track => {
+
+        peerConnection.addTrack(
+            track,
+            localStream
+        );
+
+    });
+
+
+    /*
+        Receive friend's video/audio
+    */
+
+    peerConnection.ontrack = event => {
+
+        if (event.streams && event.streams[0]) {
+
+            document.getElementById("remoteVideo")
+                .srcObject = event.streams[0];
+
+        }
+
+    };
+
+
+    /*
+        ICE candidates
+
+        When null is received, ICE gathering is complete.
+        We then put the complete offer/answer into textarea.
+    */
+
+    peerConnection.onicecandidate = event => {
+
+        if (event.candidate === null) {
+
+            const description =
+                peerConnection.localDescription;
+
+            if (description) {
+
+                document.getElementById("signalBox")
+                    .value =
+                    JSON.stringify(description);
+
+            }
+
+        }
+
+    };
+
+
+    /*
+        Connection status
+    */
+
+    peerConnection.onconnectionstatechange = () => {
+
+        const state =
+            peerConnection.connectionState;
+
+        console.log("Connection:", state);
+
+        if (state === "connected") {
+
+            setStatus("🟢 Connected");
+
+        }
+
+        else if (state === "connecting") {
+
+            setStatus("🟡 Connecting...");
+
+        }
+
+        else if (state === "disconnected") {
+
+            setStatus("🟠 Disconnected");
+
+        }
+
+        else if (state === "failed") {
+
+            setStatus(
+                "🔴 Connection failed"
+            );
+
+        }
+
+        else if (state === "closed") {
+
+            setStatus("Call ended");
+
+        }
+
+    };
+
+}
+
+
+/*
+    CREATE CALL / OFFER
+
+    Caller performs this.
+*/
+
+async function createOffer() {
+
+    try {
+
+        if (!localStream) {
+            await startCamera();
+        }
+
+        if (!peerConnection) {
+            createPeerConnection();
+        }
+
+        setStatus("Creating call...");
+
+        const offer =
+            await peerConnection.createOffer({
+
+                offerToReceiveAudio: true,
+                offerToReceiveVideo: true
+
+            });
+
+        await peerConnection.setLocalDescription(
+            offer
+        );
+
+        /*
+            ICE gathering happens automatically.
+
+            onicecandidate will update the textarea
+            once gathering finishes.
+        */
+
+        setStatus(
+            "Gathering connection information..."
+        );
+
+    }
+
+    catch (error) {
+
+        console.error(error);
+
+        setStatus("Could not create call");
+
+    }
+
+}
+
+
+/*
+    CREATE ANSWER
+
+    Friend performs this after receiving
+    the caller's offer.
+*/
+
+async function createAnswer() {
+
+    try {
+
+        const box =
+            document.getElementById("signalBox");
+
+        const offerText =
+            box.value.trim();
+
+        if (!offerText) {
+
+            alert(
+                "Paste the caller's connection information first."
+            );
+
+            return;
+
+        }
+
+
+        const offer =
+            JSON.parse(offerText);
+
+
+        if (!localStream) {
+            await startCamera();
+        }
+
+        if (!peerConnection) {
+            createPeerConnection();
+        }
+
+
+        await peerConnection.setRemoteDescription(
+
+            new RTCSessionDescription(offer)
+
+        );
+
+
+        setStatus("Creating answer...");
+
+
+        const answer =
+            await peerConnection.createAnswer({
+
+                offerToReceiveAudio: true,
+                offerToReceiveVideo: true
+
+            });
+
+
+        await peerConnection.setLocalDescription(
+            answer
+        );
+
+
+        setStatus(
+            "Gathering answer information..."
+        );
+
+    }
+
+    catch (error) {
+
+        console.error(error);
+
+        alert(
+            "Could not create answer.\n\n" +
+            error.message
+        );
+
+    }
+
+}
+
+
+/*
+    CONNECT CALL
+
+    Caller performs this after receiving
+    the friend's answer.
+*/
+
+async function connectCall() {
+
+    try {
+
+        if (!peerConnection) {
+
+            alert(
+                "Create a call first."
+            );
+
+            return;
+
+        }
+
+
+        const box =
+            document.getElementById("signalBox");
+
+        const answerText =
+            box.value.trim();
+
+        if (!answerText) {
+
+            alert(
+                "Paste your friend's answer first."
+            );
+
+            return;
+
+        }
+
+
+        const answer =
+            JSON.parse(answerText);
+
+
+        await peerConnection.setRemoteDescription(
+
+            new RTCSessionDescription(answer)
+
+        );
+
+
+        setStatus("Connecting...");
+
+    }
+
+    catch (error) {
+
+        console.error(error);
+
+        alert(
+            "Could not connect.\n\n" +
+            error.message
+        );
+
+    }
+
+}
+
+
+/*
+    MICROPHONE
+*/
+
+function toggleMic() {
+
+    if (!localStream) {
+        return;
+    }
+
+    microphoneEnabled =
+        !microphoneEnabled;
+
+
+    localStream.getAudioTracks()
+        .forEach(track => {
+
+            track.enabled =
+                microphoneEnabled;
+
+        });
+
+
+    setStatus(
+        microphoneEnabled
+            ? "Microphone ON"
+            : "Microphone OFF"
+    );
+
+}
+
+
+/*
+    CAMERA
+*/
+
+function toggleCamera() {
+
+    if (!localStream) {
+        return;
+    }
+
+    cameraEnabled =
+        !cameraEnabled;
+
+
+    localStream.getVideoTracks()
+        .forEach(track => {
+
+            track.enabled =
+                cameraEnabled;
+
+        });
+
+
+    setStatus(
+        cameraEnabled
+            ? "Camera ON"
+            : "Camera OFF"
+    );
+
+}
+
+
+/*
+    HANG UP
+*/
+
+function hangUp() {
+
+    if (peerConnection) {
+
+        peerConnection.close();
+
+        peerConnection = null;
+
+    }
+
+
+    if (localStream) {
+
+        localStream.getTracks()
+            .forEach(track => track.stop());
+
+        localStream = null;
+
+    }
+
+
+    document.getElementById("localVideo")
+        .srcObject = null;
+
+    document.getElementById("remoteVideo")
+        .srcObject = null;
+
+
+    setStatus("Call ended");
+
+}
+
+
+/*
+    COPY CONNECTION INFORMATION
+*/
+
+async function copySignal() {
+
+    const box =
+        document.getElementById("signalBox");
+
+    if (!box.value) {
+
+        alert("Nothing to copy.");
+
+        return;
+
+    }
+
+
+    try {
+
+        await navigator.clipboard.writeText(
+            box.value
+        );
+
+        setStatus("Connection information copied");
+
+    }
+
+    catch {
+
+        box.select();
+
+        document.execCommand("copy");
+
+        setStatus("Copied");
+
+    }
+
+}
+
+
+/*
+    CLEAR
+*/
+
+function clearSignal() {
+
+    document.getElementById("signalBox")
+        .value = "";
+
+}
+
+</script>
+
+</body>
+</html>
