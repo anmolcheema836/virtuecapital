@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atelier | Bespoke Architectural Millwork & Carpentry</title>
+    <meta name="description" content="Master craftsmanship and bespoke carpentry for luxury interiors.">
+    
+    <!-- Google Fonts as Required -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS (via CDN for single-file delivery) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            bg: '#F7F6F2', // Warm alabaster/off-white
+                            dark: '#1A1A18', // Rich charcoal/black
+                            accent: '#968371', // Muted timber/taupe
+                            border: '#E2DFD8' // Subtle line color
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Awwwards Style Custom CSS & Animation Utilities */
+        body {
+            background-color: #F7F6F2;
+            color: #1A1A18;
+            overflow-x: hidden;
+        }
+
+        ::selection {
+            background-color: #1A1A18;
+            color: #F7F6F2;
+        }
+
+        /* Minimalist Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #F7F6F2;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #C4C0B6;
+            border-radius: 10px;
+        }
+
+        /* Scroll Reveal Animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .reveal-delay-1 { transition-delay: 0.15s; }
+        .reveal-delay-2 { transition-delay: 0.3s; }
+
+        /* Image Parallax & Scale Container */
+        .img-container {
+            overflow: hidden;
+            position: relative;
+        }
+        .img-container img {
+            transition: transform 1.8s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: transform;
+        }
+        .img-container:hover img {
+            transform: scale(1.06);
+        }
+
+        /* Custom Form Inputs */
+        .input-line {
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid rgba(26, 26, 24, 0.3);
+            border-radius: 0;
+            padding: 1rem 0;
+            transition: border-color 0.4s ease;
+        }
+        .input-line:focus {
+            outline: none;
+            border-bottom-color: #1A1A18;
+        }
+
+        /* Accordion Custom Styles */
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .faq-item.open .faq-answer {
+            max-height: 400px; 
+        }
+        .faq-icon {
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .faq-item.open .faq-icon {
+            transform: rotate(45deg);
+        }
+    </style>
+</head>
+<body class="font-sans antialiased text-brand-dark">
+
+    <!-- UNIVERSAL HEADER -->
+    <header class="fixed top-0 left-0 w-full z-50 mix-blend-difference text-[#F7F6F2] px-6 md:px-12 py-8 flex justify-between items-center transition-all duration-700" id="header">
+        <a href="#" class="font-serif text-2xl tracking-wide uppercase">
+            Atelier.
+        </a>
+        <nav class="hidden md:flex gap-10 text-xs uppercase tracking-widest font-medium">
+            <a href="#home" class="hover:text-[#968371] transition-colors">Home</a>
+            <a href="#about" class="hover:text-[#968371] transition-colors">About Us</a>
+            <a href="#gallery" class="hover:text-[#968371] transition-colors">Gallery</a>
+            <a href="#process" class="hover:text-[#968371] transition-colors">Process</a>
+            <a href="#contact" class="hover:text-[#968371] transition-colors">Contact</a>
+        </nav>
+        <button class="md:hidden text-xs uppercase tracking-widest font-medium">Menu</button>
+    </header>
+
+    <main>
+        <!-- ==========================================
+             PAGE: HOME 
+             ========================================== -->
+        <section id="home" class="relative h-screen w-full flex items-end pb-24 px-6 md:px-12">
+            <div class="absolute inset-0 w-full h-full z-0 img-container bg-brand-dark">
+                <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80" alt="High-end carpentry interior" class="w-full h-full object-cover object-center opacity-80">
+            </div>
+            
+            <div class="relative z-10 w-full flex flex-col md:flex-row justify-between items-end text-[#F7F6F2] gap-8">
+                <h1 class="font-serif text-6xl md:text-8xl lg:text-[10rem] leading-[0.85] reveal">
+                    Crafting <br> <span class="italic text-brand-accent">Legacies.</span>
+                </h1>
+                <div class="max-w-sm reveal reveal-delay-1 pb-4 md:pb-8">
+                    <p class="text-sm md:text-base font-light leading-relaxed">
+                        Master artisans specializing in high-end architectural millwork and bespoke cabinetry for the world's most exclusive interiors.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             PAGE: ABOUT US 
+             ========================================== -->
+        <section id="about" class="py-32 md:py-48 px-6 md:px-12 max-w-screen-2xl mx-auto">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
+                <div class="lg:col-span-4 uppercase tracking-widest text-xs font-medium pt-3 reveal">
+                    ( About The Studio )
+                </div>
+                <div class="lg:col-span-8 reveal reveal-delay-1">
+                    <h2 class="font-serif text-4xl md:text-5xl lg:text-6xl leading-tight mb-16">
+                        We elevate the essence of interior architecture through uncompromising bespoke millwork and timeless craftsmanship.
+                    </h2>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-12 text-sm leading-loose opacity-80 mb-24">
+                        <p>
+                            Founded on the principle that true luxury lies in the details unseen, Atelier has been the silent partner behind award-winning residences and commercial spaces for over two decades. Our workshop bridges the gap between old-world joinery techniques and cutting-edge precision engineering.
+                        </p>
+                        <p>
+                            Every piece of timber that enters our studio is hand-selected. We believe that wood is a living medium, and our craft is simply to guide it into its most beautiful, functional form. From sweeping paneled libraries to minimalist kitchen architecture, our work stands as a testament to patience and skill.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- About Us Image Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-12 mt-12">
+                <div class="md:col-span-7 h-96 md:h-[700px] img-container reveal">
+                    <img src="https://images.unsplash.com/photo-1589939705384-5185137a7f0f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1400&q=80" alt="Master carpenter working on bespoke furniture" class="w-full h-full object-cover">
+                </div>
+                <div class="md:col-span-5 flex flex-col justify-between mt-12 md:mt-0 reveal reveal-delay-1">
+                    <div class="mb-12">
+                        <blockquote class="font-serif text-2xl md:text-3xl italic leading-relaxed text-brand-dark mb-6">
+                            "Woodworking is not merely about shaping timber; it is the profound art of shaping the atmosphere of a room."
+                        </blockquote>
+                        <p class="text-xs uppercase tracking-widest font-medium opacity-60">&mdash; Julian Vance, Master Carpenter</p>
+                    </div>
+                    <div class="h-64 md:h-[400px] w-full img-container">
+                        <img src="https://images.unsplash.com/photo-1533090161767-e6ffed986c88?ixlib=rb-4.0.3&auto=format&fit=crop&w=1400&q=80" alt="Detail woodwork textures" class="w-full h-full object-cover">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             PAGE: PROJECT GALLERY
+             ========================================== -->
+        <section id="gallery" class="py-32 md:py-48 bg-[#1A1A18] text-[#F7F6F2] px-6 md:px-12">
+            <div class="max-w-screen-2xl mx-auto">
+                <div class="flex justify-between items-end mb-20 reveal">
+                    <h2 class="font-serif text-5xl md:text-7xl">Selected Works</h2>
+                    <a href="#" class="hidden md:inline-flex items-center gap-4 text-xs uppercase tracking-widest font-medium hover:text-brand-accent transition-colors">
+                        View Complete Archive 
+                        <span class="w-8 h-[1px] bg-current"></span>
+                    </a>
+                </div>
+
+                <!-- Asymmetrical Awwwards Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12">
+                    
+                    <!-- Project 1 -->
+                    <a href="#" class="group md:col-span-8 reveal block">
+                        <div class="img-container h-[50vh] md:h-[80vh] w-full mb-6">
+                            <img src="https://images.unsplash.com/photo-1513694203232-719a280e022f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1400&q=80" alt="Minimalist staircase and paneling" class="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity">
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <h3 class="font-serif text-2xl md:text-3xl group-hover:text-brand-accent transition-colors">The Oak House</h3>
+                            <span class="text-xs uppercase tracking-widest opacity-60">Residential</span>
+                        </div>
+                    </a>
+
+                    <!-- Project 2 -->
+                    <a href="#" class="group md:col-span-4 reveal reveal-delay-1 block mt-0 md:mt-48">
+                        <div class="img-container h-[50vh] md:h-[60vh] w-full mb-6">
+                            <img src="https://images.unsplash.com/photo-1556912172-45b7abe8b7e1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1400&q=80" alt="Bespoke kitchen cabinetry" class="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity">
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <h3 class="font-serif text-2xl md:text-3xl group-hover:text-brand-accent transition-colors">Lumina Penthouse</h3>
+                            <span class="text-xs uppercase tracking-widest opacity-60">Kitchen</span>
+                        </div>
+                    </a>
+
+                    <!-- Project 3 -->
+                    <a href="#" class="group md:col-span-5 reveal block mt-12 md:mt-24">
+                        <div class="img-container h-[50vh] md:h-[70vh] w-full mb-6">
+                            <img src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?ixlib=rb-4.0.3&auto=format&fit=crop&w=1400&q=80" alt="Luxury walk in wardrobe" class="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity">
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <h3 class="font-serif text-2xl md:text-3xl group-hover:text-brand-accent transition-colors">Aria Boutique</h3>
+                            <span class="text-xs uppercase tracking-widest opacity-60">Commercial</span>
+                        </div>
+                    </a>
+
+                    <!-- Project 4 -->
+                    <a href="#" class="group md:col-span-7 reveal reveal-delay-1 block mt-12 md:-mt-12">
+                        <div class="img-container h-[50vh] md:h-[80vh] w-full mb-6">
+                            <img src="https://images.unsplash.com/photo-1505069970929-c831c2619cd0?ixlib=rb-4.0.3&auto=format&fit=crop&w=1400&q=80" alt="Wooden slatted wall detail" class="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity">
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <h3 class="font-serif text-2xl md:text-3xl group-hover:text-brand-accent transition-colors">Vela Pavilion</h3>
+                            <span class="text-xs uppercase tracking-widest opacity-60">Architectural</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             PAGE/SECTION: OUR PROCESS
+             ========================================== -->
+        <section id="process" class="py-32 md:py-48 px-6 md:px-12 max-w-screen-2xl mx-auto">
+            <div class="flex justify-between items-end border-b border-brand-border pb-12 mb-16 reveal">
+                <h2 class="font-serif text-5xl md:text-7xl">Our Process</h2>
+                <span class="hidden md:block uppercase tracking-widest text-xs opacity-60">01 &mdash; 04</span>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8">
+                <!-- Step 1 -->
+                <div class="reveal">
+                    <div class="text-3xl font-serif italic text-brand-accent mb-6">01.</div>
+                    <h3 class="text-xl font-medium uppercase tracking-wide mb-4">Vision & Consultation</h3>
+                    <p class="text-sm font-light leading-relaxed opacity-70">
+                        We collaborate closely with architects, designers, and private clients to understand the spatial requirements, aesthetic goals, and functional demands of the interior.
+                    </p>
+                </div>
+                <!-- Step 2 -->
+                <div class="reveal reveal-delay-1">
+                    <div class="text-3xl font-serif italic text-brand-accent mb-6">02.</div>
+                    <h3 class="text-xl font-medium uppercase tracking-wide mb-4">Design & Engineering</h3>
+                    <p class="text-sm font-light leading-relaxed opacity-70">
+                        Our technical drafting team translates concepts into exact shop drawings. We source rare veneers and solid timbers, mapping out grain matching and structural integrity.
+                    </p>
+                </div>
+                <!-- Step 3 -->
+                <div class="reveal reveal-delay-2">
+                    <div class="text-3xl font-serif italic text-brand-accent mb-6">03.</div>
+                    <h3 class="text-xl font-medium uppercase tracking-wide mb-4">Master Craftsmanship</h3>
+                    <p class="text-sm font-light leading-relaxed opacity-70">
+                        Fabrication takes place in our state-of-the-art facility. Here, traditional joinery meets modern machinery, ensuring every joint, edge, and finish is executed flawlessly.
+                    </p>
+                </div>
+                <!-- Step 4 -->
+                <div class="reveal reveal-delay-2">
+                    <div class="text-3xl font-serif italic text-brand-accent mb-6">04.</div>
+                    <h3 class="text-xl font-medium uppercase tracking-wide mb-4">Flawless Installation</h3>
+                    <p class="text-sm font-light leading-relaxed opacity-70">
+                        Our dedicated installation team ensures that the transition from workshop to site is seamless, handling the final fitting with white-glove precision and care.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             SECTION: FAQ 
+             ========================================== -->
+        <section class="pb-32 md:pb-48 px-6 md:px-12 max-w-screen-xl mx-auto">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
+                <div class="lg:col-span-4 reveal">
+                    <h2 class="font-serif text-5xl mb-6">F.A.Q.</h2>
+                    <p class="text-sm opacity-70 font-light leading-relaxed max-w-xs">
+                        Answers to the most common questions regarding our bespoke carpentry services, materials, and operations.
+                    </p>
+                </div>
+                <div class="lg:col-span-8 flex flex-col gap-6 reveal reveal-delay-1">
+                    
+                    <!-- Accordion Item 1 -->
+                    <div class="faq-item border-b border-brand-border pb-6 cursor-pointer group">
+                        <div class="faq-header flex justify-between items-center">
+                            <h3 class="text-xl font-serif group-hover:text-brand-accent transition-colors">Do you work internationally?</h3>
+                            <div class="faq-icon text-2xl font-light">+</div>
+                        </div>
+                        <div class="faq-answer">
+                            <p class="pt-6 text-sm leading-loose opacity-70 font-light pr-8">
+                                Yes. While our workshop is based domestically, we regularly engineer, crate, and ship bespoke millwork for luxury residences and boutiques worldwide. Our installation masters travel globally to ensure our standards are met on site.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Accordion Item 2 -->
+                    <div class="faq-item border-b border-brand-border pb-6 cursor-pointer group">
+                        <div class="faq-header flex justify-between items-center">
+                            <h3 class="text-xl font-serif group-hover:text-brand-accent transition-colors">What is the typical timeline for a custom project?</h3>
+                            <div class="faq-icon text-2xl font-light">+</div>
+                        </div>
+                        <div class="faq-answer">
+                            <p class="pt-6 text-sm leading-loose opacity-70 font-light pr-8">
+                                Timelines vary significantly based on scale and material rarity. A single bespoke piece may take 6-8 weeks, whereas a full architectural millwork package for a residence generally requires 4-6 months from final shop drawing approval to installation.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Accordion Item 3 -->
+                    <div class="faq-item border-b border-brand-border pb-6 cursor-pointer group">
+                        <div class="faq-header flex justify-between items-center">
+                            <h3 class="text-xl font-serif group-hover:text-brand-accent transition-colors">Do you collaborate directly with interior designers?</h3>
+                            <div class="faq-icon text-2xl font-light">+</div>
+                        </div>
+                        <div class="faq-answer">
+                            <p class="pt-6 text-sm leading-loose opacity-70 font-light pr-8">
+                                Absolutely. The majority of our work is done in close partnership with high-end interior design firms and architects. We act as their technical arm, translating their aesthetic vision into engineered, buildable reality.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Accordion Item 4 -->
+                    <div class="faq-item border-b border-brand-border pb-6 cursor-pointer group">
+                        <div class="faq-header flex justify-between items-center">
+                            <h3 class="text-xl font-serif group-hover:text-brand-accent transition-colors">What sustainably sourced materials do you use?</h3>
+                            <div class="faq-icon text-2xl font-light">+</div>
+                        </div>
+                        <div class="faq-answer">
+                            <p class="pt-6 text-sm leading-loose opacity-70 font-light pr-8">
+                                We prioritize FSC-certified lumbers and ethical veneers. Our network of suppliers allows us to trace the origin of our hardwoods, ensuring environmental responsibility without compromising on the luxurious finishes our clients expect.
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- ==========================================
+         PAGE: CONTACT US & UNIVERSAL FOOTER
+         ========================================== -->
+    <footer id="contact" class="bg-[#1A1A18] text-[#F7F6F2] pt-32 pb-12 px-6 md:px-12 flex flex-col justify-between">
+        <div class="max-w-screen-2xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-24 mb-32">
+            
+            <!-- Contact Form Area -->
+            <div class="reveal">
+                <h2 class="font-serif text-5xl md:text-7xl mb-6 leading-tight">Let's discuss <br><span class="italic text-brand-accent">your vision.</span></h2>
+                <p class="text-sm font-light opacity-70 mb-12 max-w-md">
+                    Submit an inquiry regarding an upcoming project. Our studio director will respond within 48 hours to schedule a private consultation.
+                </p>
+                
+                <form class="flex flex-col gap-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <input type="text" placeholder="Full Name *" required class="input-line text-[#F7F6F2] placeholder-[#F7F6F2]/50 font-light text-sm">
+                        <input type="email" placeholder="Email Address *" required class="input-line text-[#F7F6F2] placeholder-[#F7F6F2]/50 font-light text-sm">
+                    </div>
+                    <input type="text" placeholder="Company / Studio (Optional)" class="input-line text-[#F7F6F2] placeholder-[#F7F6F2]/50 font-light text-sm">
+                    <textarea placeholder="Project Details *" rows="3" required class="input-line text-[#F7F6F2] placeholder-[#F7F6F2]/50 font-light text-sm resize-none"></textarea>
+                    
+                    <button type="submit" class="mt-8 text-sm uppercase tracking-widest font-medium border border-[#F7F6F2]/30 py-4 px-8 hover:bg-[#F7F6F2] hover:text-[#1A1A18] transition-colors w-fit">
+                        Submit Inquiry
+                    </button>
+                </form>
+            </div>
+
+            <!-- Contact Info Area -->
+            <div class="flex flex-col justify-between reveal reveal-delay-1">
+                <div class="space-y-12">
+                    <div>
+                        <h4 class="text-xs uppercase tracking-widest text-brand-accent mb-4">Direct Email</h4>
+                        <a href="mailto:hello@atelier.com" class="text-2xl font-serif hover:text-brand-accent transition-colors">inquiries@atelier-millwork.com</a>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div>
+                            <h4 class="text-xs uppercase tracking-widest text-brand-accent mb-4">New York Studio</h4>
+                            <div class="text-sm font-light leading-loose opacity-80">
+                                <p>123 Architectural Way</p>
+                                <p>Design District, NY 10001</p>
+                                <p class="mt-2">+1 (212) 555-0198</p>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 class="text-xs uppercase tracking-widest text-brand-accent mb-4">London Workshop</h4>
+                            <div class="text-sm font-light leading-loose opacity-80">
+                                <p>45 Timber Yard Lane</p>
+                                <p>Hackney, LDN E2 8JB</p>
+                                <p class="mt-2">+44 (0) 20 7946 0112</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Universal Footer Bottom -->
+        <div class="max-w-screen-2xl mx-auto w-full flex flex-col md:flex-row justify-between items-center border-t border-[#F7F6F2]/20 pt-8 text-xs uppercase tracking-widest font-medium opacity-60 reveal">
+            <p>&copy; 2026 Atelier Bespoke Carpentry</p>
+            
+            <!-- Universal Social Icons Requirement -->
+            <div class="flex gap-8 mt-6 md:mt-0">
+                <!-- Instagram SVG -->
+                <a href="#" aria-label="Instagram" class="hover:text-brand-accent hover:opacity-100 transition-all">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                    </svg>
+                </a>
+                <!-- Facebook SVG -->
+                <a href="#" aria-label="Facebook" class="hover:text-brand-accent hover:opacity-100 transition-all">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- INTERACTION SCRIPTS -->
+    <script>
+        // 1. Reveal Elements on Scroll
+        document.addEventListener('DOMContentLoaded', () => {
+            const reveals = document.querySelectorAll('.reveal');
+            
+            const revealOnScroll = () => {
+                const windowHeight = window.innerHeight;
+                const elementVisible = 100;
+
+                reveals.forEach(reveal => {
+                    const elementTop = reveal.getBoundingClientRect().top;
+                    if (elementTop < windowHeight - elementVisible) {
+                        reveal.classList.add('active');
+                    }
+                });
+            };
+
+            window.addEventListener('scroll', revealOnScroll);
+            revealOnScroll(); // Trigger on load
+
+            // 2. FAQ Accordion Logic
+            const faqItems = document.querySelectorAll('.faq-item');
+            faqItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    // Close others
+                    faqItems.forEach(otherItem => {
+                        if (otherItem !== item) {
+                            otherItem.classList.remove('open');
+                        }
+                    });
+                    // Toggle current
+                    item.classList.toggle('open');
+                });
+            });
+
+            // 3. Header Color Blending Logic
+            const header = document.getElementById('header');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > window.innerHeight - 80) {
+                    header.classList.remove('mix-blend-difference', 'text-[#F7F6F2]');
+                    header.classList.add('bg-[#F7F6F2]/95', 'backdrop-blur-md', 'text-[#1A1A18]', 'border-b', 'border-[#E2DFD8]');
+                    header.style.paddingTop = '1.2rem';
+                    header.style.paddingBottom = '1.2rem';
+                } else {
+                    header.classList.add('mix-blend-difference', 'text-[#F7F6F2]');
+                    header.classList.remove('bg-[#F7F6F2]/95', 'backdrop-blur-md', 'text-[#1A1A18]', 'border-b', 'border-[#E2DFD8]');
+                    header.style.paddingTop = '2rem';
+                    header.style.paddingBottom = '2rem';
+                }
+            });
+        });
+    </script>
+
+    <!-- 
+    ========================================================================
+    ENVATO ELEMENTS IMAGE PURCHASE LINKS (AS REQUIRED BY CONTEST BRIEF)
+    
+    The images used in the live preview above are from Unsplash to ensure 
+    they load perfectly in your browser. Below are the corresponding 
+    Envato Elements links for you to purchase the final high-res images:
+
+    1. Hero Background (Modern wood kitchen/interior):
+       https://elements.envato.com/modern-kitchen-interior-PVG8L7R
+    
+    2. About Us 1 (Carpenter working):
+       https://elements.envato.com/carpenter-working-with-wood-P4H8XQE
+    
+    3. About Us 2 (Wood texture/detail):
+       https://elements.envato.com/wooden-texture-background-P9Q74MZ
+    
+    4. Gallery 1 (Minimalist stairs/paneling):
+       https://elements.envato.com/wooden-stairs-in-modern-home-P623W9X
+    
+    5. Gallery 2 (Minimalist kitchen):
+       https://elements.envato.com/beautiful-kitchen-interior-with-wooden-cabinets-PZTD29B
+
+    6. Gallery 3 (Luxury wardrobe/closet):
+       https://elements.envato.com/luxury-walk-in-closet-PMQ578J
+    
+    7. Gallery 4 (Wooden slatted wall detail):
+       https://elements.envato.com/modern-wooden-wall-paneling-PFN3A9Y
+    ======================================================================== 
+    -->
+</body>
+</html>
