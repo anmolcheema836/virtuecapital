@@ -3,502 +3,397 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Harkirat Singh - Resume</title>
     
-    <title>Belle's Pantry | Southern Culinary Items and Gifts</title>
-    <meta name="description" content="Discover premium Southern culinary items and unique gifts at Belle's Pantry, based in Lafayette, Louisiana.">
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
-    
-    <style>
-        :root {
-            --bg-color: #f6f5f0; 
-            --text-dark: #2c2925;
-            --brand-green: #4a5c3b; 
-            --brand-brown: #8b7355; 
-            --white: #ffffff;
-            
-            --font-serif: 'Playfair Display', serif;
-            --font-sans: 'Inter', sans-serif;
-            
-            --spacing-sm: 1rem;
-            --spacing-md: 2rem;
-            --spacing-lg: 5rem;
-            --spacing-xl: 8rem;
-            
-            --radius-md: 12px;
-        }
+    <!-- html2pdf.js for client-side PDF generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+    <style>
+        /* --- GLOBAL & UI STYLES --- */
+        :root {
+            --bg-color: #f4f6f8;
+            --text-main: #222222;
+            --text-muted: #555555;
+            --accent-color: #1a4f76; /* Professional Navy Blue */
+            --page-width: 210mm;
+            --page-height: 297mm;
         }
 
         body {
+            font-family: Arial, Helvetica, sans-serif;
             background-color: var(--bg-color);
-            color: var(--text-dark);
-            font-family: var(--font-sans);
-            line-height: 1.6;
-            -webkit-font-smoothing: antialiased;
-            overflow-x: hidden;
-        }
-
-        h1, h2, h3, h4 {
-            font-family: var(--font-serif);
-            font-weight: 400;
-            color: var(--brand-green);
-        }
-
-        a {
-            text-decoration: none;
-            color: inherit;
-            transition: color 0.3s ease;
-        }
-
-        img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-        }
-
-        /* 1. Navigation */
-        nav {
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
             align-items: center;
-            padding: 1rem 5%;
-            position: fixed;
+        }
+
+        /* --- TOOLBAR UI --- */
+        .toolbar {
             width: 100%;
-            top: 0;
-            background: rgba(246, 245, 240, 0.9);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            z-index: 100;
-            border-bottom: 1px solid rgba(74, 92, 59, 0.05);
-        }
-
-        .logo img {
-            height: 100px;
-            width: auto;
-            object-fit: contain;
-        }
-
-        .nav-links {
+            background-color: #333;
+            padding: 15px 20px;
             display: flex;
-            gap: var(--spacing-md);
+            justify-content: center;
+            gap: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
-        .nav-links a {
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-weight: 500;
-        }
-
-        /* Button Component */
         .btn {
-            display: inline-block;
-            padding: 0.8rem 2rem;
-            border: 1px solid var(--brand-green);
-            color: var(--brand-green);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-size: 0.85rem;
-            transition: all 0.3s ease;
+            background-color: #ffffff;
+            color: #333;
+            border: none;
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: bold;
             cursor: pointer;
+            border-radius: 4px;
+            transition: background 0.2s;
         }
 
         .btn:hover {
-            background: var(--brand-green);
-            color: var(--white);
+            background-color: #e0e0e0;
         }
 
-        .btn-solid {
-            background: var(--brand-green);
-            color: var(--white);
+        .btn-primary {
+            background-color: var(--accent-color);
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background-color: #133c5a;
+        }
+
+        /* --- RESUME PAGE CONTAINER --- */
+        .resume-wrapper {
+            padding: 40px 20px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            box-sizing: border-box;
+        }
+
+        .resume-page {
+            background-color: #ffffff;
+            width: 100%;
+            max-width: var(--page-width);
+            min-height: var(--page-height); /* Flexible on mobile, strict on print */
+            padding: 15mm 15mm;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            box-sizing: border-box;
+            position: relative;
+            line-height: 1.4;
+            font-size: 11pt;
+        }
+
+        /* --- RESUME CONTENT TYPOGRAPHY --- */
+        h1, h2, h3, h4, p, ul {
+            margin: 0;
+            padding: 0;
+        }
+
+        .header-section {
+            text-align: center;
+            margin-bottom: 12px;
+        }
+
+        .header-section h1 {
+            font-size: 24pt;
+            font-weight: bold;
+            color: var(--accent-color);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+        }
+
+        .header-section h2 {
+            font-size: 12pt;
+            font-weight: normal;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        .contact-info {
+            font-size: 10pt;
+            color: var(--text-main);
+        }
+
+        .contact-info a {
+            color: var(--text-main);
+            text-decoration: none;
+        }
+
+        .section {
+            margin-bottom: 12px;
+        }
+
+        .section-title {
+            font-size: 12pt;
+            font-weight: bold;
+            color: var(--accent-color);
+            text-transform: uppercase;
+            border-bottom: 1px solid var(--accent-color);
+            padding-bottom: 3px;
+            margin-bottom: 8px;
+        }
+
+        .summary-text {
+            text-align: justify;
+            font-size: 10.5pt;
+        }
+
+        /* Experience */
+        .job {
+            margin-bottom: 10px;
+        }
+
+        .job-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 2px;
+        }
+
+        .job-company {
+            font-weight: bold;
+            font-size: 11pt;
+        }
+
+        .job-date {
+            font-size: 10pt;
+            color: var(--text-muted);
+            font-weight: bold;
+        }
+
+        .job-title {
+            font-style: italic;
+            font-size: 10.5pt;
+            margin-bottom: 4px;
+        }
+
+        .job-bullets {
+            padding-left: 18px;
+            font-size: 10.5pt;
+        }
+
+        .job-bullets li {
+            margin-bottom: 3px;
+        }
+
+        /* Skills */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            row-gap: 4px;
+            column-gap: 15px;
+            font-size: 10.5pt;
         }
         
-        .btn-solid:hover {
-            background: transparent;
-            color: var(--brand-green);
-        }
-
-        /* Main Wrapper */
-        main {
-            padding: 0 5%;
-            max-width: 1600px;
-            margin: 0 auto;
-            margin-top: 140px; /* To account for fixed nav */
-        }
-
-        /* Global Grid Layout for Sections */
-        .section-padding {
-            padding: 3rem 0;
-        }
-
-        .bento-grid {
-            display: grid;
-            grid-template-columns: repeat(12, 1fr);
-            gap: 1.5rem;
-        }
-
-        .bento-card {
-            background: var(--white);
-            border-radius: var(--radius-md);
-            overflow: hidden;
-            border: 1px solid rgba(74, 92, 59, 0.05);
-            transition: transform 0.4s ease;
-            position: relative;
-        }
-
-        .bento-card:hover {
-            transform: translateY(-4px);
-        }
-
-        .card-content {
-            padding: 3rem;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            height: 100%;
-        }
-
-        h2 { font-size: 2.5rem; margin-bottom: 1rem; }
-        h3 { font-size: 1.8rem; margin-bottom: 0.5rem; }
-        .subtitle { font-size: 1.1rem; color: var(--brand-brown); margin-bottom: 2rem; }
-
-        /* 2. Hero Section */
-        .hero {
-            height: 90vh;
+        .skills-grid span {
             display: flex;
             align-items: center;
-            justify-content: center;
-            text-align: center;
-            margin-top: 80px;
-            margin-bottom: 2rem;
-            position: relative;
-            border-radius: var(--radius-md);
-            overflow: hidden;
         }
-
-        .hero-bg {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 1;
-        }
-
-        .hero-content {
-            position: relative;
-            z-index: 2;
-            padding: 3rem;
-            background: rgba(246, 245, 240, 0.92);
-            backdrop-filter: blur(8px);
-            border-radius: var(--radius-md);
-            max-width: 800px;
-        }
-
-        .hero h1 {
-            font-size: clamp(3rem, 6vw, 5.5rem);
-            line-height: 1.1;
-            margin-bottom: var(--spacing-sm);
-        }
-
-        .hero p {
-            font-size: 1.2rem;
-            color: var(--brand-brown);
-            margin-bottom: var(--spacing-md);
-        }
-
-        /* 3 & 4. About & Services (Original Content) */
-        .about-card { grid-column: 1 / 8; }
-        .services-card { grid-column: 8 / 13; background: var(--brand-green); color: var(--bg-color); }
-        .services-card h2, .services-card .subtitle { color: var(--bg-color); }
-        .services-card .btn { border-color: var(--bg-color); color: var(--bg-color); }
-        .services-card .btn:hover { background: var(--bg-color); color: var(--brand-green); }
-
-        /* 5. Our Journey (New) */
-        .journey-img { grid-column: 1 / 6; min-height: 400px; }
-        .journey-text { grid-column: 6 / 13; }
-
-        /* 6. Gourmet Provisions Grid (New) */
-        .provision-full { grid-column: 1 / -1; text-align: center; background: transparent; border: none; padding-bottom: 0; box-shadow: none; }
-        .provision-full:hover { transform: none; }
-        .prov-card { grid-column: span 4; height: 350px; }
         
-        .category-overlay {
-            position: absolute;
-            bottom: 0; left: 0; right: 0;
-            padding: 2rem;
-            background: linear-gradient(transparent, rgba(44, 41, 37, 0.85));
-            color: var(--white);
-        }
-        .category-overlay h3 { color: var(--white); }
-
-        /* 7. Featured Categories (Original Content) */
-        .feat-img-1 { grid-column: 1 / 5; height: 400px; }
-        .feat-img-2 { grid-column: 5 / 9; height: 400px; }
-        .feat-img-3 { grid-column: 9 / 13; height: 400px; }
-
-        /* 8. Gifting Excellence & Corporate (New) */
-        .gift-text { grid-column: 1 / 7; background: var(--brand-brown); color: var(--white); }
-        .gift-text h2, .gift-text .subtitle { color: var(--white); }
-        .gift-text .btn { border-color: var(--white); color: var(--white); }
-        .gift-text .btn:hover { background: var(--white); color: var(--brand-brown); }
-        .gift-img { grid-column: 7 / 13; min-height: 450px; }
-
-        /* 9. Local Sourcing (Original Content) */
-        .source-text { grid-column: 1 / 7; }
-        .source-img { grid-column: 7 / 13; min-height: 450px; }
-
-        /* 10. Southern Journal & Social (New) */
-        .journal-header { grid-column: 1 / -1; text-align: center; margin-top: 3rem; margin-bottom: -1rem; }
-        .journal-card { grid-column: span 6; display: flex; flex-direction: row; height: 250px; }
-        .journal-card img { width: 40%; }
-        .journal-card .card-content { width: 60%; padding: 2rem; }
-        .journal-card h3 { font-size: 1.4rem; }
-
-        /* 11. Testimonials (Original Content) */
-        .testimonial-card {
-            grid-column: 1 / -1;
-            background: var(--brand-green);
-            color: var(--bg-color);
-            text-align: center;
-            padding: 5rem 2rem;
-            margin-top: 2rem;
-        }
-        .testimonial-card h2 { color: var(--bg-color); margin-bottom: 2rem; }
-        .quote { font-size: 1.5rem; font-style: italic; max-width: 800px; margin: 0 auto; color: var(--white); }
-
-        /* 12. Footer & Contact (Original Content Retained & Expanded) */
-        footer {
-            grid-column: 1 / -1;
-            text-align: center;
-            padding: var(--spacing-lg) 0 2rem 0;
-            border-top: 1px solid rgba(74, 92, 59, 0.1);
-        }
-        .footer-links {
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-            margin: 2rem 0;
-            font-size: 0.9rem;
+        .skills-grid span::before {
+            content: "•";
+            color: var(--text-main);
+            margin-right: 6px;
         }
 
-        @media (max-width: 1024px) {
-            .prov-card { grid-column: span 6; }
-            .journal-card { grid-column: 1 / -1; }
+        /* Education */
+        .edu-item {
+            margin-bottom: 6px;
+            font-size: 10.5pt;
         }
 
-        @media (max-width: 900px) {
-            .about-card, .services-card, .feat-img-1, .feat-img-2, .feat-img-3, 
-            .source-text, .source-img, .journey-img, .journey-text, 
-            .gift-text, .gift-img, .prov-card, .journal-card {
-                grid-column: 1 / -1;
+        .edu-degree {
+            font-weight: bold;
+        }
+
+        /* --- PRINT & PDF EXPORT STYLES --- */
+        @media print {
+            @page {
+                size: A4 portrait;
+                margin: 0;
             }
-            .nav-links { display: none; }
-            .journal-card { flex-direction: column; height: auto; }
-            .journal-card img, .journal-card .card-content { width: 100%; }
-            .journal-card img { height: 250px; }
+            body {
+                background: white;
+                margin: 0;
+                padding: 0;
+            }
+            .no-print, .toolbar, .resume-wrapper {
+                display: none !important;
+                padding: 0;
+            }
+            .resume-wrapper {
+                display: block !important;
+            }
+            .resume-page {
+                width: var(--page-width);
+                height: var(--page-height);
+                max-width: none;
+                min-height: auto;
+                box-shadow: none;
+                margin: 0;
+                padding: 15mm; 
+                page-break-after: avoid;
+                page-break-before: avoid;
+                page-break-inside: avoid;
+            }
         }
     </style>
 </head>
 <body>
 
-    <!-- 1. Navigation -->
-    <nav>
-        <div class="logo">
-            <img src="bellelogo.png" alt="Belle's Pantry">
-        </div>
-        <div class="nav-links">
-            <a href="index.html">Home</a>
-            <a href="about.html">About Us</a>
-            <a href="services.html">Services</a>
-            <a href="contact.html">Contact Us</a>
-        </div>
-    </nav>
+    <!-- UI Toolbar -->
+    <div class="toolbar no-print">
+        <button class="btn btn-primary" onclick="downloadPDF()">Download PDF</button>
+        <button class="btn" onclick="window.print()">Print Resume</button>
+    </div>
 
-    <main>
-        <!-- 2. Hero Section (Expanded) -->
-        <section class="hero">
-            <div class="hero-bg">
-                <img src="https://images.unsplash.com/photo-1556910103-1c02745aae4d?q=80&w=2070&auto=format&fit=crop" alt="Rustic Southern Kitchen">
-            </div>
-            <div class="hero-content">
-                <h1>Authentic Southern <br>Taste & Tradition</h1>
-                <p>Curated flavors, gourmet provisions, and thoughtful gifts from the heart of Lafayette, Louisiana.</p>
-                <div style="display: flex; gap: 1rem; justify-content: center;">
-                    <a href="#shop" class="btn btn-solid">Explore Pantry</a>
-                    <a href="contact.html" class="btn">Contact Us</a>
+    <!-- Resume Container -->
+    <div class="resume-wrapper">
+        <div class="resume-page" id="resume">
+            
+            <!-- Header -->
+            <header class="header-section section">
+                <h1>Harkirat Singh</h1>
+                <h2>Professional Content Writer | SEO Content Specialist</h2>
+                <div class="contact-info">
+                    <a href="mailto:harrykirat20@gmail.com">harrykirat20@gmail.com</a> &nbsp;|&nbsp; 
+                    6284958537 &nbsp;|&nbsp; 
+                    <a href="https://www.linkedin.com/in/harkirat-singh-3411813b0" target="_blank">LinkedIn</a>
                 </div>
-            </div>
-        </section>
+            </header>
 
-        <section class="section-padding bento-grid">
-            <!-- 3. About Section (Original) -->
-            <div class="bento-card about-card">
-                <div class="card-content">
-                    <h2>Our Roots</h2>
-                    <p class="subtitle">Founded in Lafayette, we believe that the best stories are shared over a good meal. Belle's Pantry brings the warmth and authentic flavors of Southern living directly to your kitchen.</p>
-                    <div><a href="about.html" class="btn">Discover Our Story</a></div>
-                </div>
-            </div>
+            <!-- Summary -->
+            <section class="section">
+                <h3 class="section-title">Professional Summary</h3>
+                <p class="summary-text">
+                    Professional Content Writer with 3+ years of industry experience creating engaging, search-optimized and audience-focused content. Experienced in SEO content writing, creative writing, copywriting, content strategy, research, fact-checking, editing and proofreading. Skilled in applying AI and LLM-driven SEO practices to improve content quality, relevance and search visibility.
+                </p>
+            </section>
 
-            <!-- 4. Services Section (Original) -->
-            <div class="bento-card services-card">
-                <div class="card-content">
-                    <h2>Provisions</h2>
-                    <p class="subtitle">From handcrafted gourmet goods to thoughtful culinary gifts, explore our curated selection designed to elevate your everyday cooking.</p>
-                    <div><a href="services.html" class="btn">View Services</a></div>
-                </div>
-            </div>
-        </section>
-
-        <!-- 5. Our Journey (New Section) -->
-        <section class="section-padding bento-grid">
-            <div class="bento-card journey-img">
-                <img src="kitchen.png" alt="Storefront or Kitchen">
-            </div>
-            <div class="bento-card journey-text">
-                <div class="card-content">
-                    <h2>The Belle's Pantry Journey</h2>
-                    <p class="subtitle">What started as a small collection of family recipes has blossomed into a full culinary destination. We travel across Louisiana to find the finest ingredients, ensuring every jar, spice blend, and preserve holds true to our heritage. Our mission is to make gourmet Southern cooking accessible to everyone, whether you're a seasoned chef or a home cook looking for a touch of inspiration.</p>
-                    <div><a href="about.html" class="btn">Read the Full Timeline</a></div>
-                </div>
-            </div>
-        </section>
-
-        <!-- 6. Gourmet Provisions Grid (New Section) -->
-        <section class="section-padding bento-grid">
-            <div class="bento-card provision-full">
-                <h2>Explore Our Pantry</h2>
-                <p class="subtitle" style="max-width: 600px; margin: 0 auto 2rem auto;">Browse our carefully curated categories to find the perfect addition to your next meal.</p>
-            </div>
-            <div class="bento-card prov-card">
-                <img src="https://images.unsplash.com/photo-1596040033229-a9821ebd058d?q=80&w=2070&auto=format&fit=crop" alt="Spices">
-                <div class="category-overlay">
-                    <h3>Signature Spices</h3>
-                    <p>Authentic Cajun & Creole blends.</p>
-                </div>
-            </div>
-            <div class="bento-card prov-card">
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQegyfS_j7mpIR62pEzMZlL61bXCEeTHz8Qo0UgS_Yt2tmy9G7Cz7wnIWPF&s=10" alt="Sauces">
-                <div class="category-overlay">
-                    <h3>Sauces & Marinades</h3>
-                    <p>Bold flavors for any dish.</p>
-                </div>
-            </div>
-            <div class="bento-card prov-card">
-                <img src="https://images.unsplash.com/photo-1605807646983-377bc5a76493?q=80&w=1924&auto=format&fit=crop" alt="Preserves">
-                <div class="category-overlay">
-                    <h3>Jams & Preserves</h3>
-                    <p>Sweet and savory local fruits.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- 7. Featured Collections (Original 3 Image Blocks) -->
-        <section class="section-padding bento-grid">
-            <div class="bento-card category-card feat-img-1">
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTbBqsJoSF1yo-4wfjGYD3xpAzZobnihHapUggD-G6iN93RARBrmtHlO-0&s=10" alt="Artisan Goods">
-                <div class="category-overlay">
-                    <h3>Artisan Spices</h3>
-                </div>
-            </div>
-            <div class="bento-card category-card feat-img-2">
-                <img src="https://images.unsplash.com/photo-1506084868230-bb9d95c24759?q=80&w=1974&auto=format&fit=crop" alt="Local Harvest">
-                <div class="category-overlay">
-                    <h3>Local Preserves</h3>
-                </div>
-            </div>
-            <div class="bento-card category-card feat-img-3">
-                <img src="https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?q=80&w=1976&auto=format&fit=crop" alt="Gift Basket">
-                <div class="category-overlay">
-                    <h3>Gift Baskets</h3>
-                </div>
-            </div>
-        </section>
-
-        <!-- 8. Gifting Excellence & Corporate (New Section) -->
-        <section class="section-padding bento-grid">
-            <div class="bento-card gift-text">
-                <div class="card-content">
-                    <h2>Gifting & Corporate</h2>
-                    <p class="subtitle">Looking for the perfect way to show appreciation? We offer customized gift baskets and bespoke corporate packages that showcase the best of Louisiana. Perfect for holidays, client appreciation, or wedding favors.</p>
-                    <div><a href="contact.html" class="btn">Inquire About Bulk Orders</a></div>
-                </div>
-            </div>
-            <div class="bento-card gift-img">
-                <img src="https://images.unsplash.com/photo-1607344645866-009c320b63e0?q=80&w=2080&auto=format&fit=crop" alt="Beautifully wrapped gifts">
-            </div>
-        </section>
-
-        <!-- 9. Local Sourcing (Original Content) -->
-        <section class="section-padding bento-grid">
-            <div class="bento-card source-text">
-                <div class="card-content">
-                    <h2>Sourced with Intention</h2>
-                    <p class="subtitle">We partner directly with regional artisans and farmers across Louisiana to ensure every item in our pantry meets the highest standard of quality and authenticity. It's about preserving tradition while supporting our local community.</p>
-                    <div><a href="about.html" class="btn">Meet Our Partners</a></div>
-                </div>
-            </div>
-            <div class="bento-card source-img">
-                <img src="https://images.unsplash.com/photo-1464226184884-fa280b87c399?q=80&w=2070&auto=format&fit=crop" alt="Fresh ingredients">
-            </div>
-        </section>
-
-        <!-- 10. Southern Journal & Social (New Section) -->
-        <section class="section-padding bento-grid">
-            <div class="journal-header">
-                <h2>The Southern Journal</h2>
-            </div>
-            <div class="bento-card journal-card">
-                <img src="https://images.unsplash.com/photo-1473093295043-cdd812d0e601?q=80&w=2070&auto=format&fit=crop" alt="Recipe">
-                <div class="card-content">
-                    <h3>Classic Gumbo Base</h3>
-                    <p class="subtitle" style="margin-bottom: 1rem;">Master the art of the perfect roux with our step-by-step guide.</p>
-                    <a href="#" style="color: var(--brand-green); font-weight: 500; font-size: 0.9rem; text-transform: uppercase;">Read Article →</a>
-                </div>
-            </div>
-            <div class="bento-card journal-card">
-                <img src="https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?q=80&w=1913&auto=format&fit=crop" alt="Farm">
-                <div class="card-content">
-                    <h3>Meet the Makers</h3>
-                    <p class="subtitle" style="margin-bottom: 1rem;">An interview with our favorite local hot sauce brewers.</p>
-                    <a href="#" style="color: var(--brand-green); font-weight: 500; font-size: 0.9rem; text-transform: uppercase;">Read Article →</a>
-                </div>
-            </div>
-        </section>
-
-        <!-- 11. Testimonials (Original Content) -->
-        <section class="section-padding bento-grid">
-            <div class="bento-card testimonial-card">
-                <h2>Word of Mouth</h2>
-                <p class="quote">"Belle's Pantry completely transformed my holiday cooking. Their spice blends are incredibly authentic, and the gift baskets were a massive hit with my family."</p>
-                <p style="margin-top: 2rem; font-family: var(--font-serif); color: var(--bg-color);">- Sarah T., Lafayette</p>
-            </div>
-        </section>
-
-        <!-- 12. Footer & Contact (Original Content Expanded) -->
-        <footer class="bento-grid">
-            <div style="grid-column: 1 / -1;">
-                <h2>Let's Talk Provisions</h2>
-                <p style="margin-bottom: 2rem; color: var(--brand-brown);">Have a question or looking for a specific item? We'd love to hear from you.</p>
-                <a href="contact.html" class="btn">Get in Touch</a>
+            <!-- Experience -->
+            <section class="section">
+                <h3 class="section-title">Professional Experience</h3>
                 
-                <div class="footer-links">
-                    <a href="#">Instagram</a>
-                    <a href="#">Facebook</a>
-                    <a href="#">Shipping Policy</a>
-                    <a href="#">Privacy</a>
+                <div class="job">
+                    <div class="job-header">
+                        <span class="job-company">OMC</span>
+                        <span class="job-date">October 2024 – Present</span>
+                    </div>
+                    <div class="job-title">Content Writer</div>
+                    <ul class="job-bullets">
+                        <li>Produce SEO-focused website content, blogs, articles and marketing copy tailored to target audiences.</li>
+                        <li>Conduct comprehensive keyword research and analyze search intent to drive organic traffic.</li>
+                        <li>Enhance content structure and optimization to deliver engaging, conversion-oriented copy.</li>
+                        <li>Leverage AI and LLM tools to streamline research, ideation, optimization and content workflows.</li>
+                    </ul>
                 </div>
-                
-                <p style="margin-top: 2rem; font-size: 0.8rem; color: var(--brand-brown);">© 2026 Belle's Pantry. All rights reserved.</p>
-            </div>
-        </footer>
-    </main>
+
+                <div class="job">
+                    <div class="job-header">
+                        <span class="job-company">Deftsoft</span>
+                        <span class="job-date">February 2023 – October 2024</span>
+                    </div>
+                    <div class="job-title">Content Writer</div>
+                    <ul class="job-bullets">
+                        <li>Developed high-quality SEO content for websites, blogs, articles and digital marketing campaigns.</li>
+                        <li>Performed deep topic research and rigorous fact-checking to ensure content accuracy and authority.</li>
+                        <li>Executed thorough editing and proofreading processes to maintain brand voice and grammatical excellence.</li>
+                        <li>Collaborated on content planning and strategy to successfully meet core SEO and marketing objectives.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Core Skills -->
+            <section class="section">
+                <h3 class="section-title">Core Skills</h3>
+                <div class="skills-grid">
+                    <span>SEO Content Writing</span>
+                    <span>Creative Writing</span>
+                    <span>Content Strategy</span>
+                    <span>Copywriting</span>
+                    <span>Research & Fact-Checking</span>
+                    <span>Editing & Proofreading</span>
+                    <span>AI & LLM SEO</span>
+                    <span>Keyword Research</span>
+                    <span>Search Intent Analysis</span>
+                    <span>On-Page SEO</span>
+                    <span>Content Optimization</span>
+                    <span>Digital Content Writing</span>
+                    <span>Web Content Writing</span>
+                    <span>Blog Writing</span>
+                    <span>Article Writing</span>
+                    <span>Content Editing</span>
+                    <span>SEO Copywriting</span>
+                </div>
+            </section>
+
+            <!-- Education -->
+            <section class="section">
+                <h3 class="section-title">Education</h3>
+                <div class="edu-item">
+                    <span class="edu-degree">Bachelor of Arts (B.A.)</span>, Panjab University
+                </div>
+                <div class="edu-item">
+                    <span class="edu-degree">12th Class</span>, Saffron City School, Sirhind
+                </div>
+                <div class="edu-item">
+                    <span class="edu-degree">10th Class</span>, Saffron City School, Sirhind
+                </div>
+            </section>
+            
+        </div>
+    </div>
+
+    <!-- PDF Generation Logic -->
+    <script>
+        function downloadPDF() {
+            const element = document.getElementById('resume');
+            
+            // Adjust styling temporarily to guarantee perfect A4 render in html2pdf
+            element.style.width = '210mm';
+            element.style.height = '297mm';
+            element.style.maxWidth = 'none';
+            element.style.boxShadow = 'none';
+
+            const options = {
+                margin: 0,
+                filename: 'Harkirat_Singh_Resume.pdf',
+                image: { type: 'jpeg', quality: 1 }, // High quality
+                html2canvas: { 
+                    scale: 2, 
+                    useCORS: true,
+                    letterRendering: true,
+                    scrollY: 0
+                },
+                jsPDF: { 
+                    unit: 'mm', 
+                    format: 'a4', 
+                    orientation: 'portrait' 
+                },
+                pagebreak: { 
+                    mode: ['avoid-all'] 
+                }
+            };
+
+            // Generate and save the PDF
+            html2pdf().set(options).from(element).save().then(() => {
+                // Restore responsive styles after download
+                element.style.width = '100%';
+                element.style.height = '';
+                element.style.maxWidth = '210mm';
+                element.style.boxShadow = '0 10px 25px rgba(0,0,0,0.15)';
+            });
+        }
+    </script>
 
 </body>
 </html>

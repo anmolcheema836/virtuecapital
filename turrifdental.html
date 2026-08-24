@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dental Implants Aberdeenshire | Turriff Dental Care</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Caveat:wght@700&display=swap" rel="stylesheet">
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary-blue: #184b9d;
+            --light-blue: #eef4fa;
+            --text-dark: #19193c;
+            --text-muted: #474763;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: var(--text-dark);
+            background-color: #fff;
+            overflow-x: hidden;
+        }
+
+        a { text-decoration: none; }
+        
+        .btn-primary-custom {
+            background-color: var(--primary-blue);
+            color: #fff;
+            padding: 12px 24px;
+            font-weight: 500;
+            border-radius: 4px;
+            transition: all 0.3s;
+            border: 1px solid var(--primary-blue);
+            text-transform: capitalize;
+        }
+        .btn-primary-custom:hover {
+            background-color: #fff;
+            color: var(--primary-blue);
+        }
+
+        /* Top Bar */
+        .top-bar {
+            background: #f8f9fa;
+            padding: 8px 0;
+            font-size: 13px;
+            color: #555;
+            border-bottom: 1px solid #eaeaea;
+        }
+
+        /* Header */
+        .main-header {
+            padding: 15px 0;
+            background: #fff;
+            position: sticky;
+            top: 0;
+            z-index: 999;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        .logo-img { max-height: 50px; }
+        .header-phone {
+            color: #d32f2f;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            background: url('https://images.unsplash.com/photo-1606811841689-23dfddce3e95?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
+            position: relative;
+            padding: 80px 0;
+        }
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(90deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.8) 50%, rgba(255,255,255,0.2) 100%);
+        }
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            color: var(--primary-blue);
+            line-height: 1.1;
+            text-transform: uppercase;
+        }
+        .hero-cursive {
+            font-family: 'Caveat', cursive;
+            font-size: 3.5rem;
+            color: var(--primary-blue);
+            display: block;
+            margin-top: -10px;
+            margin-bottom: 20px;
+        }
+        .hero-subtitle-box {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .hero-subtitle-box i {
+            font-size: 3rem;
+            color: #f9b932;
+            margin-right: 15px;
+        }
+        .hero-subtitle-box h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin: 0;
+        }
+        .hero-subtitle-box h3 span { color: #f9b932; }
+        
+        .hero-icons {
+            display: flex;
+            gap: 20px;
+            margin-top: 30px;
+        }
+        .hero-icon-item {
+            text-align: center;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .hero-icon-item .icon-circle {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 2px solid var(--primary-blue);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 10px;
+            font-size: 20px;
+            color: var(--primary-blue);
+        }
+
+        /* Hero Form */
+        .hero-form-card {
+            background: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            position: relative;
+            z-index: 2;
+        }
+        .form-progress {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: #888;
+            margin-bottom: 20px;
+        }
+        .form-progress span.active { color: var(--primary-blue); font-weight: bold; }
+
+        /* Section Titles */
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 3rem;
+        }
+
+        /* Process Walkthrough (Video/Calendar) */
+        .walkthrough-section { padding: 80px 0; }
+        .walkthrough-box {
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+        .walkthrough-box img { width: 100%; height: 100%; object-fit: cover; }
+
+        /* 4 Cards Section */
+        .four-cards-section { padding: 60px 0; background: #fdfdfd; }
+        .card-custom {
+            text-align: center;
+            border: none;
+            background: transparent;
+        }
+        .card-custom img {
+            border-radius: 10px;
+            margin-bottom: 20px;
+            height: 180px;
+            object-fit: cover;
+        }
+        .card-custom h4 { font-size: 1.2rem; font-weight: 700; }
+        .card-custom p { font-size: 14px; color: var(--text-muted); }
+
+        /* Alternating Content */
+        .alternating-section { padding: 60px 0; }
+        .alt-row { margin-bottom: 60px; align-items: center; }
+        .alt-img { border-radius: 10px; width: 100%; }
+        .alt-text h2 { font-size: 2.2rem; font-weight: 700; color: var(--text-dark); margin-bottom: 20px;}
+        .alt-text p, .alt-text ul { font-size: 1rem; color: var(--text-muted); margin-bottom: 20px;}
+
+        /* Dashed Pricing Box */
+        .pricing-section { padding: 80px 0; }
+        .dashed-wrapper {
+            border: 2px dashed var(--primary-blue);
+            border-radius: 20px;
+            padding: 40px;
+            display: flex;
+            align-items: stretch;
+            gap: 30px;
+        }
+        .pricing-col { flex: 1; }
+        .pricing-mid {
+            background: var(--light-blue);
+            border-radius: 15px;
+            padding: 40px 20px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .pricing-icon {
+            width: 50px; height: 50px;
+            background: var(--light-blue);
+            border: 2px solid var(--primary-blue);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 20px; color: var(--primary-blue);
+            margin-bottom: 10px;
+        }
+        .pricing-feature { display: flex; flex-direction: column; align-items: center; text-align: center; font-size: 13px; font-weight: 600;}
+        .step-circle {
+            width: 40px; height: 40px;
+            background: var(--primary-blue); color: #fff;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-weight: bold; margin: 0 auto 10px;
+        }
+
+        /* 3 Steps Icons */
+        .steps-section { padding: 60px 0; }
+        .step-card {
+            background: var(--light-blue);
+            padding: 40px 20px;
+            border-radius: 10px;
+            text-align: center;
+            height: 100%;
+        }
+        .step-card i { font-size: 2.5rem; color: var(--primary-blue); margin-bottom: 20px; }
+        .step-card h4 { font-size: 1.1rem; font-weight: 700; color: var(--primary-blue); }
+        .step-card p { font-size: 14px; color: var(--text-muted); }
+
+        /* Testimonials */
+        .testimonials-section {
+            background: var(--primary-blue);
+            padding: 80px 0;
+            color: #fff;
+        }
+        .testi-card {
+            background: #fff;
+            color: var(--text-dark);
+            padding: 30px;
+            border-radius: 10px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .testi-card p { font-size: 15px; font-style: italic; }
+        .testi-card .author { font-weight: 700; margin-top: 15px; font-style: normal;}
+
+        /* FAQ */
+        .faq-section { padding: 80px 0; }
+        .accordion-button:not(.collapsed) {
+            background-color: var(--light-blue);
+            color: var(--primary-blue);
+            font-weight: 600;
+        }
+        .accordion-button { font-weight: 500; }
+
+        /* Footer */
+        footer {
+            background: var(--text-dark);
+            color: #fff;
+            padding: 60px 0 20px;
+        }
+        footer h5 { font-size: 18px; margin-bottom: 20px; }
+        footer a { color: #ccc; transition: 0.3s; }
+        footer a:hover { color: #fff; }
+        footer ul { list-style: none; padding: 0; }
+        footer ul li { margin-bottom: 10px; }
+
+        @media (max-width: 991px) {
+            .dashed-wrapper { flex-direction: column; }
+            .hero-title { font-size: 2.5rem; }
+            .hero-cursive { font-size: 2.5rem; }
+            .alt-row { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Top Bar -->
+    <div class="top-bar d-none d-lg-block">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <i class="fas fa-map-marker-alt me-2"></i> 6 High Street, Turriff, AB53 4DS
+                </div>
+                <div class="col-md-6 text-end">
+                    <a href="#" class="text-dark fw-bold me-3">New Patient Enquiries</a>
+                    <a href="#" class="text-danger fw-bold">Emergencies</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="main-header">
+        <div class="container d-flex justify-content-between align-items-center">
+            <a href="#">
+                <img src="https://www.turriffdentalcare.co.uk/desktop/themes/frontend/turriffdental/images/logo.png" alt="Turriff Dental Care Logo" class="logo-img">
+            </a>
+            <div class="d-none d-lg-flex align-items-center gap-4">
+                <a href="#" class="btn-primary-custom">Book A Free Consultation Today</a>
+                <a href="tel:01888562440" class="header-phone"><i class="fas fa-phone-alt me-2"></i>(01888) 562440</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <!-- Left Content -->
+                <div class="col-lg-7 hero-content mb-5 mb-lg-0">
+                    <h1 class="hero-title">Dental Implants<br>Aberdeenshire</h1>
+                    <span class="hero-cursive">Restore your smile.</span>
+                    
+                    <div class="hero-subtitle-box mt-4">
+                        <i class="fas fa-sun"></i>
+                        <h3>MAKE YOUR NEW SMILE<br><span>LAST A LIFETIME</span></h3>
+                    </div>
+                    
+                    <p class="fw-medium text-dark w-75">
+                        Dental implants are one of the most reliable and effective ways to replace missing teeth. We provide advanced dental implant treatment in Aberdeenshire, helping you regain a confident smile with strong, natural-looking replacement teeth you can depend on.
+                    </p>
+
+                    <div class="hero-icons">
+                        <div class="hero-icon-item">
+                            <div class="icon-circle"><i class="fas fa-tooth"></i></div>
+                            Natural<br>Look
+                        </div>
+                        <div class="hero-icon-item">
+                            <div class="icon-circle"><i class="fas fa-shield-alt"></i></div>
+                            Long<br>Lasting
+                        </div>
+                        <div class="hero-icon-item">
+                            <div class="icon-circle"><i class="fas fa-lock"></i></div>
+                            Secure<br>Fit
+                        </div>
+                        <div class="hero-icon-item">
+                            <div class="icon-circle"><i class="fas fa-smile"></i></div>
+                            Restore<br>Confidence
+                        </div>
+                    </div>
+
+                    <a href="#" class="btn-primary-custom mt-5 d-inline-flex align-items-center gap-2">
+                        <i class="far fa-calendar-alt fs-5"></i> BOOK YOUR CONSULTATION TODAY. <i class="fas fa-chevron-right ms-2"></i>
+                    </a>
+                </div>
+
+                <!-- Right Form -->
+                <div class="col-lg-5">
+                    <div class="hero-form-card">
+                        <div class="form-progress">
+                            <span class="active"><i class="fas fa-circle text-primary"></i> Step 1</span>
+                            <span><i class="far fa-circle"></i> Step 2</span>
+                        </div>
+                        <h5 class="fw-bold mb-3" style="color: var(--primary-blue);">How many missing teeth are you looking to replace? <span class="text-danger">*</span></h5>
+                        <p class="text-muted" style="font-size: 13px;">We'll help ease the transition with compassion, flexibility, and comfort.</p>
+                        
+                        <form>
+                            <div class="mb-3">
+                                <select class="form-select">
+                                    <option>Single tooth</option>
+                                    <option>Multiple teeth</option>
+                                    <option>Full arch / All teeth</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <input type="text" class="form-control" placeholder="Your Name">
+                            </div>
+                            <div class="mb-3">
+                                <input type="email" class="form-control" placeholder="Email Address">
+                            </div>
+                            <button type="button" class="btn btn-primary w-100" style="background-color: var(--primary-blue); border:none;">Next</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Walkthrough Part 1 -->
+    <section class="walkthrough-section">
+        <div class="container">
+            <h2 class="section-title">Process Walkthrough</h2>
+            <div class="row g-4 justify-content-center">
+                <div class="col-lg-5">
+                    <div class="walkthrough-box position-relative" style="height: 400px;">
+                        <img src="https://images.unsplash.com/photo-1600170311833-c2cf5280ce49?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Dentist working">
+                        <div class="position-absolute bottom-0 start-0 w-100 p-3 text-center" style="background: rgba(0,0,0,0.6);">
+                            <h5 class="text-white fw-bold mb-0">HOW DENTAL IMPLANTS WORK</h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-5">
+                    <div class="walkthrough-box border" style="height: 400px; padding: 20px;">
+                        <!-- Calendly Placeholder Graphic -->
+                        <div class="text-center">
+                            <h5 class="fw-bold">Book Your Consultation</h5>
+                            <p class="text-muted small"><i class="far fa-clock"></i> 20 min &nbsp;&nbsp; <i class="fas fa-phone-alt"></i> Phone call / In-person</p>
+                            <div class="d-flex justify-content-center align-items-center mt-4">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Google_Calendar_icon_%282020%29.svg/1024px-Google_Calendar_icon_%282020%29.svg.png" alt="Calendar" width="100">
+                            </div>
+                            <h6 class="mt-4">Select a Day and Time</h6>
+                            <button class="btn btn-outline-primary mt-3 px-4">View Availability</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center mt-5">
+                <a href="#" class="btn-primary-custom">Book Your Private Consultation Today</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Our Process (4 Cards) -->
+    <section class="four-cards-section">
+        <div class="container">
+            <h2 class="section-title mb-2">Types of Implants</h2>
+            <p class="text-center text-muted mb-5 mx-auto" style="max-width: 800px;">
+                Depending on your needs, we offer several types of dental implants & cost options. At Turriff Dental Care, we use Straumann dental implants - renowned worldwide for precision, reliability, and long-term success.
+            </p>
+            <div class="row g-4">
+                <div class="col-md-3">
+                    <div class="card card-custom">
+                        <img src="https://www.turriffdentalcare.co.uk/desktop/web/ckfinder/userfiles/images/dental%20implant%20example.png" alt="Single tooth">
+                        <h4>Single-Tooth</h4>
+                        <p>Perfect for replacing one missing tooth without affecting adjacent natural teeth.</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card card-custom">
+                        <img src="https://images.unsplash.com/photo-1609840114035-3c981b782dfe?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Multiple teeth">
+                        <h4>Multiple Teeth</h4>
+                        <p>Implants can support a bridge to replace several missing teeth securely.</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card card-custom">
+                        <img src="https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Full Arch">
+                        <h4>Full Arch</h4>
+                        <p>A complete set of fixed, natural-looking teeth supported by strategic implants.</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card card-custom">
+                        <img src="https://images.unsplash.com/photo-1579684385127-1ef15d508118?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Overdenture">
+                        <h4>Overdenture</h4>
+                        <p>Implant-retained dentures that clip securely into place, eliminating slipping.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center mt-5">
+                <a href="#" class="btn-primary-custom">Book Your Private Consultation Today</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Alternating Section -->
+    <section class="alternating-section">
+        <div class="container">
+            <h2 class="section-title">What You Need To Know</h2>
+
+            <!-- Row 1 -->
+            <div class="row alt-row">
+                <div class="col-lg-6 mb-4 mb-lg-0">
+                    <img src="https://www.turriffdentalcare.co.uk/desktop/web/ckfinder/userfiles/images/teeth%20whitening.jpg" alt="Consultation" class="alt-img shadow">
+                </div>
+                <div class="col-lg-6 alt-text ps-lg-5">
+                    <h2>What is a Dental Implant?</h2>
+                    <p>Unlike traditional removable dentures, dental implants provide a permanent and secure alternative for tooth replacement. An implant itself is a titanium screw that’s carefully placed into your jawbone. Over time, your bone fuses with the implant, creating a strong foundation that acts just like a natural tooth root.</p>
+                    <p>Once healed, the implants can support teeth. Multiple implants would be required for a full bridge. Many of our patients in Aberdeenshire and surrounding areas have regained their smiles through our expertly carried out dental implant treatment right here in Turriff.</p>
+                    <a href="#" class="btn-primary-custom mt-3">Learn More</a>
+                </div>
+            </div>
+
+            <!-- Row 2 -->
+            <div class="row alt-row flex-lg-row-reverse">
+                <div class="col-lg-6 mb-4 mb-lg-0">
+                    <img src="https://www.turriffdentalcare.co.uk/desktop/web/ckfinder/userfiles/images/Untitled%20design%20(80).png" alt="Happy Patient" class="alt-img shadow">
+                </div>
+                <div class="col-lg-6 alt-text pe-lg-5">
+                    <h2>Benefits of Dental Implants</h2>
+                    <p>Dental implants are the closest thing to having your own natural teeth again. They stay fixed in place, so you can eat, speak, and smile freely - without worrying about slipping dentures.</p>
+                    <ul class="list-unstyled">
+                        <li><i class="fas fa-check text-primary me-2"></i> A natural look and feel that matches your real teeth</li>
+                        <li><i class="fas fa-check text-primary me-2"></i> Long-lasting results that can last decades</li>
+                        <li><i class="fas fa-check text-primary me-2"></i> Easy daily maintenance, just like regular teeth</li>
+                        <li><i class="fas fa-check text-primary me-2"></i> Protection for your bone health and facial structure</li>
+                        <li><i class="fas fa-check text-primary me-2"></i> Improved confidence and a beautifully natural smile</li>
+                    </ul>
+                    <a href="#" class="btn-primary-custom mt-3">Learn More</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section (Dashed Border) -->
+    <section class="pricing-section">
+        <div class="container">
+            <div class="dashed-wrapper">
+                
+                <!-- Left -->
+                <div class="pricing-col pe-lg-4">
+                    <span class="badge bg-primary rounded-pill px-3 py-2 mb-3">Treatment Pricing</span>
+                    <h2 class="fw-bold mb-3" style="color: var(--primary-blue);">Dental Implant Costs in Aberdeenshire</h2>
+                    <p class="text-muted">Get a confidential in-person appointment with us where professional healthcare providers offer personalized assistance and relief for missing teeth.</p>
+                    
+                    <div class="d-flex justify-content-between mt-5">
+                        <div class="pricing-feature">
+                            <div class="pricing-icon"><i class="fas fa-file-invoice"></i></div>
+                            Personalized<br>plans
+                        </div>
+                        <div class="pricing-feature">
+                            <div class="pricing-icon"><i class="fas fa-user-md"></i></div>
+                            Private<br>Consultation
+                        </div>
+                        <div class="pricing-feature">
+                            <div class="pricing-icon"><i class="fas fa-pound-sign"></i></div>
+                            Transparent<br>Pricing
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Middle -->
+                <div class="pricing-col pricing-mid">
+                    <div class="pricing-icon mx-auto mb-3" style="background:#fff;"><i class="far fa-file-alt"></i></div>
+                    <h3 class="fw-bold" style="color: var(--primary-blue);">Implant Treatment<br>in Turriff</h3>
+                    <p class="text-muted small">We believe in transparent pricing and great value. The replacement teeth cost starts from approximately <strong>£2500 per implant</strong>. Prices vary depending on your individual plan.</p>
+                    <p class="fw-bold mt-2" style="color: var(--primary-blue);">It takes seconds!</p>
+                </div>
+
+                <!-- Right -->
+                <div class="pricing-col d-flex flex-column justify-content-center align-items-center text-center ps-lg-4">
+                    <p class="text-primary fw-bold mb-2 text-uppercase" style="font-size: 13px;">Ready to view pricing?</p>
+                    <h3 class="fw-bold mb-4" style="color: var(--primary-blue);">See Treatment Pricing</h3>
+                    
+                    <div class="d-flex w-100 justify-content-center align-items-start mb-4 position-relative">
+                        <div class="text-center z-1 bg-white px-2">
+                            <div class="step-circle">1</div>
+                            <span class="fw-bold" style="font-size: 12px; color: var(--text-dark);">Tell Us About<br>You</span>
+                        </div>
+                        <div style="height: 2px; background: #cce0f5; flex-grow: 1; margin-top: 20px; z-index: 0; position: absolute; width: 40%; left: 30%;"></div>
+                        <div class="text-center z-1 bg-white px-2">
+                            <div class="step-circle">2</div>
+                            <span class="fw-bold" style="font-size: 12px; color: var(--text-dark);">View pricing<br>details</span>
+                        </div>
+                    </div>
+
+                    <a href="#" class="btn-primary-custom w-100 py-3 fs-5">Get Pricing</a>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Process Walkthrough (3 steps) -->
+    <section class="steps-section">
+        <div class="container">
+            <h2 class="section-title">Process Walkthrough</h2>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="step-card shadow-sm">
+                        <i class="fas fa-search"></i>
+                        <h4>1. The Consultation</h4>
+                        <p>We’ll arrange your consultation, walk you through the various types of dental implants & cost options, and choose the right plan.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="step-card shadow-sm">
+                        <i class="fas fa-handshake"></i>
+                        <h4>2. The Placement</h4>
+                        <p>A small titanium screw is placed into the bone. The gum is secured, allowing the bone to integrate with the implant (3–6 months).</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="step-card shadow-sm">
+                        <i class="fas fa-heartbeat"></i>
+                        <h4>3. Attaching the Crown</h4>
+                        <p>A beautiful custom-made replacement tooth is attached. This crown completes your smile with a natural look and feel.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center mt-5">
+                <a href="#" class="btn-primary-custom">Book Your Free Phone Consultation Today</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="testimonials-section">
+        <div class="container">
+            <h2 class="section-title text-white mb-3">Client Testimonials</h2>
+            <p class="text-center mx-auto mb-5" style="max-width: 800px; color: rgba(255,255,255,0.9);">
+                Your wellbeing is our priority. With a team focused entirely on oral health, we develop personalized care plans that support dental implant treatment and overall wellness. Our goal is to provide a comfortable, supportive environment.
+            </p>
+            
+            <div class="row g-4 justify-content-center">
+                <!-- Testimonial 1 -->
+                <div class="col-md-4">
+                    <div class="testi-card">
+                        <p>"It has been a really good experience they really helped me. All the staff are really a professional team! My new implant feels just like a real tooth."</p>
+                        <div class="author">John K.</div>
+                    </div>
+                </div>
+                <!-- Testimonial 2 -->
+                <div class="col-md-4">
+                    <div class="testi-card">
+                        <p>"I appreciate how the entire staff made me feel comfortable and really at ease for each appointment. The feeling of knowing I am in good hands caused me to look forward to each visit."</p>
+                        <div class="author">B.W.</div>
+                    </div>
+                </div>
+                <!-- Testimonial 3 -->
+                <div class="col-md-4">
+                    <div class="testi-card">
+                        <p>"I have to be honest that even after my first few visits, although cautiously optimistic, I was by nature still a bit skeptical. The results completely exceeded my high expectations."</p>
+                        <div class="author">K.A.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq-section">
+        <div class="container" style="max-width: 800px;">
+            <h2 class="section-title">Frequently Asked Questions</h2>
+            
+            <div class="accordion" id="faqAccordion">
+                
+                <!-- FAQ 1 -->
+                <div class="accordion-item mb-3 border-0 shadow-sm rounded">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button rounded" type="button" data-bs-toggle="collapse" data-bs-target="#faq1" aria-expanded="true">
+                            What is a Dental Implant?
+                        </button>
+                    </h2>
+                    <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body text-muted">
+                            Unlike traditional removable dentures, dental implants provide a permanent and secure alternative for tooth replacement. An implant itself is a titanium screw implant that’s carefully placed into your jawbone. Over time, your bone fuses with the implant, creating a strong foundation that acts just like a natural tooth root.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FAQ 2 -->
+                <div class="accordion-item mb-3 border-0 shadow-sm rounded">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed rounded" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                            How do Dental Implants Work?
+                        </button>
+                    </h2>
+                    <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body text-muted">
+                            A small titanium screw implant is placed into the bone beneath your missing tooth. The gum is gently secured over it, allowing the bone to integrate with the implant. Finally, a beautiful custom-made replacement tooth is attached.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FAQ 3 -->
+                <div class="accordion-item mb-3 border-0 shadow-sm rounded">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed rounded" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                            What Types of Implants Are There?
+                        </button>
+                    </h2>
+                    <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body text-muted">
+                            Depending on your needs, we offer implants for single-tooth replacement, replacing multiple teeth, Full Arch dental implants, and Overdenture implants. We use Straumann dental implants, renowned worldwide.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FAQ 4 -->
+                <div class="accordion-item mb-3 border-0 shadow-sm rounded">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed rounded" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">
+                            Dental Implant Costs in Aberdeenshire?
+                        </button>
+                    </h2>
+                    <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body text-muted">
+                            At Turriff Dental Care, the replacement teeth cost starts from approximately £2500 per implant. Prices may vary depending on your individual treatment plan and whether additional work - like bone grafting - is needed.
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row mb-5">
+                <!-- Footer Logo & About -->
+                <div class="col-lg-4 mb-4 mb-lg-0">
+                    <img src="https://www.turriffdentalcare.co.uk/desktop/themes/frontend/turriffdental/images/logo.png" alt="Logo" class="mb-4 bg-white p-2 rounded" style="max-height: 50px;">
+                    <p style="color: #bbb;">Turriff Dental Care is a premier dental clinic in Aberdeenshire, providing advanced dental implant treatments to help you regain a confident smile.</p>
+                </div>
+                
+                <!-- Quick Links -->
+                <div class="col-lg-4 mb-4 mb-lg-0">
+                    <h5>Quick Links</h5>
+                    <div class="row">
+                        <div class="col-6">
+                            <ul>
+                                <li><a href="#">Home</a></li>
+                                <li><a href="#">Team</a></li>
+                                <li><a href="#">Dental Implants</a></li>
+                                <li><a href="#">Invisalign</a></li>
+                                <li><a href="#">Register</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-6">
+                            <ul>
+                                <li><a href="#">Fees</a></li>
+                                <li><a href="#">Plans</a></li>
+                                <li><a href="#">Contact Us</a></li>
+                                <li><a href="#">Privacy Policy</a></li>
+                                <li><a href="#">FAQ</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact -->
+                <div class="col-lg-4">
+                    <h5>Contact</h5>
+                    <p style="color: #bbb;">
+                        Coronation Medical Centre,<br>
+                        6 High Street,<br>
+                        Turriff, AB53 4DS
+                    </p>
+                    <ul class="mb-4">
+                        <li><a href="tel:01888562440"><i class="fas fa-phone-alt me-2"></i> (01888) 562440</a></li>
+                        <li><span style="color:#ccc;"><i class="fas fa-clock me-2"></i> Mon-Fri 08:30 - 17:00</span></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-center border-top pt-4" style="border-color: rgba(255,255,255,0.1)!important;">
+                <p class="mb-0" style="color: #888;">&copy; 2024 Turriff Dental Care. All Rights Reserved.</p>
+                <div class="d-flex gap-3 mt-3 mt-md-0">
+                    <a href="#"><i class="fab fa-facebook fs-4"></i></a>
+                    <a href="#"><i class="fab fa-twitter fs-4"></i></a>
+                    <a href="#"><i class="fab fa-linkedin fs-4"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
