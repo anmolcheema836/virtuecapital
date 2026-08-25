@@ -18,8 +18,10 @@
 
     <style>
         :root {
-            --primary-blue: #184b9d;
-            --light-blue: #eef4fa;
+            /* Updated primary color to #08B5F0 */
+            --primary-blue: #08B5F0;
+            /* Adjusted light blue to match the new cyan/blue theme */
+            --light-blue: #e0f6fe; 
             --text-dark: #19193c;
             --text-muted: #474763;
         }
@@ -33,11 +35,15 @@
 
         a { text-decoration: none; }
         
+        /* Overriding Bootstrap primary utility classes to match the new color */
+        .bg-primary { background-color: var(--primary-blue) !important; }
+        .text-primary { color: var(--primary-blue) !important; }
+
         .btn-primary-custom {
             background-color: var(--primary-blue);
             color: #fff;
             padding: 12px 24px;
-            font-weight: 500;
+            font-weight: 600;
             border-radius: 4px;
             transition: all 0.3s;
             border: 1px solid var(--primary-blue);
@@ -171,15 +177,6 @@
             margin-bottom: 3rem;
         }
 
-        /* Process Walkthrough (Video/Calendar) */
-        .walkthrough-section { padding: 80px 0; }
-        .walkthrough-box {
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
-        }
-        .walkthrough-box img { width: 100%; height: 100%; object-fit: cover; }
-
         /* 4 Cards Section */
         .four-cards-section { padding: 60px 0; background: #fdfdfd; }
         .card-custom {
@@ -240,19 +237,6 @@
             font-weight: bold; margin: 0 auto 10px;
         }
 
-        /* 3 Steps Icons */
-        .steps-section { padding: 60px 0; }
-        .step-card {
-            background: var(--light-blue);
-            padding: 40px 20px;
-            border-radius: 10px;
-            text-align: center;
-            height: 100%;
-        }
-        .step-card i { font-size: 2.5rem; color: var(--primary-blue); margin-bottom: 20px; }
-        .step-card h4 { font-size: 1.1rem; font-weight: 700; color: var(--primary-blue); }
-        .step-card p { font-size: 14px; color: var(--text-muted); }
-
         /* Testimonials */
         .testimonials-section {
             background: var(--primary-blue);
@@ -280,15 +264,16 @@
             font-weight: 600;
         }
         .accordion-button { font-weight: 500; }
+        .accordion-button:focus { box-shadow: 0 0 0 0.25rem rgba(8, 181, 240, 0.25); }
 
         /* Footer */
         footer {
-            background: var(--text-dark);
+            background: var(--primary-blue);
             color: #fff;
             padding: 60px 0 20px;
         }
         footer h5 { font-size: 18px; margin-bottom: 20px; }
-        footer a { color: #ccc; transition: 0.3s; }
+        footer a { color: #ffffff; transition: 0.3s; }
         footer a:hover { color: #fff; }
         footer ul { list-style: none; padding: 0; }
         footer ul li { margin-bottom: 10px; }
@@ -311,8 +296,7 @@
                     <i class="fas fa-map-marker-alt me-2"></i> 6 High Street, Turriff, AB53 4DS
                 </div>
                 <div class="col-md-6 text-end">
-                    <a href="#" class="text-dark fw-bold me-3">New Patient Enquiries</a>
-                    <a href="#" class="text-danger fw-bold">Emergencies</a>
+                    <!-- Links removed here -->
                 </div>
             </div>
         </div>
@@ -401,40 +385,6 @@
                         </form>
                     </div>
                 </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Walkthrough Part 1 -->
-    <section class="walkthrough-section">
-        <div class="container">
-            <h2 class="section-title">Process Walkthrough</h2>
-            <div class="row g-4 justify-content-center">
-                <div class="col-lg-5">
-                    <div class="walkthrough-box position-relative" style="height: 400px;">
-                        <img src="https://images.unsplash.com/photo-1600170311833-c2cf5280ce49?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Dentist working">
-                        <div class="position-absolute bottom-0 start-0 w-100 p-3 text-center" style="background: rgba(0,0,0,0.6);">
-                            <h5 class="text-white fw-bold mb-0">HOW DENTAL IMPLANTS WORK</h5>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-5">
-                    <div class="walkthrough-box border" style="height: 400px; padding: 20px;">
-                        <!-- Calendly Placeholder Graphic -->
-                        <div class="text-center">
-                            <h5 class="fw-bold">Book Your Consultation</h5>
-                            <p class="text-muted small"><i class="far fa-clock"></i> 20 min &nbsp;&nbsp; <i class="fas fa-phone-alt"></i> Phone call / In-person</p>
-                            <div class="d-flex justify-content-center align-items-center mt-4">
-                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Google_Calendar_icon_%282020%29.svg/1024px-Google_Calendar_icon_%282020%29.svg.png" alt="Calendar" width="100">
-                            </div>
-                            <h6 class="mt-4">Select a Day and Time</h6>
-                            <button class="btn btn-outline-primary mt-3 px-4">View Availability</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="text-center mt-5">
-                <a href="#" class="btn-primary-custom">Book Your Private Consultation Today</a>
             </div>
         </div>
     </section>
@@ -580,73 +530,7 @@
         </div>
     </section>
 
-    <!-- Process Walkthrough (3 steps) -->
-    <section class="steps-section">
-        <div class="container">
-            <h2 class="section-title">Process Walkthrough</h2>
-            <div class="row g-4">
-                <div class="col-md-4">
-                    <div class="step-card shadow-sm">
-                        <i class="fas fa-search"></i>
-                        <h4>1. The Consultation</h4>
-                        <p>We’ll arrange your consultation, walk you through the various types of dental implants & cost options, and choose the right plan.</p>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="step-card shadow-sm">
-                        <i class="fas fa-handshake"></i>
-                        <h4>2. The Placement</h4>
-                        <p>A small titanium screw is placed into the bone. The gum is secured, allowing the bone to integrate with the implant (3–6 months).</p>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="step-card shadow-sm">
-                        <i class="fas fa-heartbeat"></i>
-                        <h4>3. Attaching the Crown</h4>
-                        <p>A beautiful custom-made replacement tooth is attached. This crown completes your smile with a natural look and feel.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="text-center mt-5">
-                <a href="#" class="btn-primary-custom">Book Your Free Phone Consultation Today</a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Testimonials -->
-    <section class="testimonials-section">
-        <div class="container">
-            <h2 class="section-title text-white mb-3">Client Testimonials</h2>
-            <p class="text-center mx-auto mb-5" style="max-width: 800px; color: rgba(255,255,255,0.9);">
-                Your wellbeing is our priority. With a team focused entirely on oral health, we develop personalized care plans that support dental implant treatment and overall wellness. Our goal is to provide a comfortable, supportive environment.
-            </p>
-            
-            <div class="row g-4 justify-content-center">
-                <!-- Testimonial 1 -->
-                <div class="col-md-4">
-                    <div class="testi-card">
-                        <p>"It has been a really good experience they really helped me. All the staff are really a professional team! My new implant feels just like a real tooth."</p>
-                        <div class="author">John K.</div>
-                    </div>
-                </div>
-                <!-- Testimonial 2 -->
-                <div class="col-md-4">
-                    <div class="testi-card">
-                        <p>"I appreciate how the entire staff made me feel comfortable and really at ease for each appointment. The feeling of knowing I am in good hands caused me to look forward to each visit."</p>
-                        <div class="author">B.W.</div>
-                    </div>
-                </div>
-                <!-- Testimonial 3 -->
-                <div class="col-md-4">
-                    <div class="testi-card">
-                        <p>"I have to be honest that even after my first few visits, although cautiously optimistic, I was by nature still a bit skeptical. The results completely exceeded my high expectations."</p>
-                        <div class="author">K.A.</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
+    
     <!-- FAQ Section -->
     <section class="faq-section">
         <div class="container" style="max-width: 800px;">
@@ -721,51 +605,37 @@
                 <!-- Footer Logo & About -->
                 <div class="col-lg-4 mb-4 mb-lg-0">
                     <img src="https://www.turriffdentalcare.co.uk/desktop/themes/frontend/turriffdental/images/logo.png" alt="Logo" class="mb-4 bg-white p-2 rounded" style="max-height: 50px;">
-                    <p style="color: #bbb;">Turriff Dental Care is a premier dental clinic in Aberdeenshire, providing advanced dental implant treatments to help you regain a confident smile.</p>
+                    <p style="color: #fff;">Turriff Dental Care is a premier dental clinic in Aberdeenshire, providing advanced dental implant treatments to help you regain a confident smile.</p>
                 </div>
                 
-                <!-- Quick Links -->
+                <!-- NEW Call To Action Section (Replaces Quick Links) -->
                 <div class="col-lg-4 mb-4 mb-lg-0">
-                    <h5>Quick Links</h5>
-                    <div class="row">
-                        <div class="col-6">
-                            <ul>
-                                <li><a href="#">Home</a></li>
-                                <li><a href="#">Team</a></li>
-                                <li><a href="#">Dental Implants</a></li>
-                                <li><a href="#">Invisalign</a></li>
-                                <li><a href="#">Register</a></li>
-                            </ul>
-                        </div>
-                        <div class="col-6">
-                            <ul>
-                                <li><a href="#">Fees</a></li>
-                                <li><a href="#">Plans</a></li>
-                                <li><a href="#">Contact Us</a></li>
-                                <li><a href="#">Privacy Policy</a></li>
-                                <li><a href="#">FAQ</a></li>
-                            </ul>
-                        </div>
-                    </div>
+                    <h5>Ready for a New Smile?</h5>
+                    <p style="color: rgba(255,255,255,0.9); font-size: 14px; margin-bottom: 20px;">
+                        Take the first step towards feeling confident again. Schedule your personalized consultation with our expert team today.
+                    </p>
+                    <a href="#" class="btn" style="background-color: #fff; color: var(--primary-blue); font-weight: 600; padding: 10px 24px; border-radius: 4px; transition: all 0.3s ease;">
+                        Book Your Consultation
+                    </a>
                 </div>
 
                 <!-- Contact -->
                 <div class="col-lg-4">
                     <h5>Contact</h5>
-                    <p style="color: #bbb;">
+                    <p style="color: #fff;">
                         Coronation Medical Centre,<br>
                         6 High Street,<br>
                         Turriff, AB53 4DS
                     </p>
                     <ul class="mb-4">
                         <li><a href="tel:01888562440"><i class="fas fa-phone-alt me-2"></i> (01888) 562440</a></li>
-                        <li><span style="color:#ccc;"><i class="fas fa-clock me-2"></i> Mon-Fri 08:30 - 17:00</span></li>
+                        <li><span style="color: #fff;"><i class="fas fa-clock me-2"></i> Mon-Fri 08:30 - 17:00</span></li>
                     </ul>
                 </div>
             </div>
             
             <div class="d-flex flex-column flex-md-row justify-content-between align-items-center border-top pt-4" style="border-color: rgba(255,255,255,0.1)!important;">
-                <p class="mb-0" style="color: #888;">&copy; 2024 Turriff Dental Care. All Rights Reserved.</p>
+                <p class="mb-0" style="color: #fff;">&copy; 2024 Turriff Dental Care. All Rights Reserved.</p>
                 <div class="d-flex gap-3 mt-3 mt-md-0">
                     <a href="#"><i class="fab fa-facebook fs-4"></i></a>
                     <a href="#"><i class="fab fa-twitter fs-4"></i></a>

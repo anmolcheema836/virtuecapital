@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Marketing Champ | Global Digital Agency</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        heading: ['Poppins', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: '#0B5ADB', 
+                        primaryHover: '#0948B2', 
+                        navy: {
+                            900: '#0B1120',
+                            800: '#1E293B',
+                            700: '#334155',
+                        },
+                        lightBg: '#F8FAFC'
+                    },
+                    boxShadow: {
+                        'soft': '0 10px 40px -10px rgba(0,0,0,0.08)',
+                        'floating': '0 25px 50px -12px rgba(0, 0, 0, 0.15)',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        /* Smooth Scrolling Setup for Lenis */
+        html.lenis, html.lenis body {
+            height: auto;
+            width: 100vw;
+            overflow-x: hidden;
+        }
+        .lenis.lenis-smooth {
+            scroll-behavior: auto !important;
+        }
+        .lenis.lenis-smooth [data-lenis-prevent] {
+            overscroll-behavior: contain;
+        }
+        .lenis.lenis-stopped {
+            overflow: hidden;
+        }
+        .lenis.lenis-scrolling iframe {
+            pointer-events: none;
+        }
+
+        body { -webkit-font-smoothing: antialiased; }
+        
+        .hero-gradient {
+            background: linear-gradient(135deg, #F8FAFC 0%, #E2E8F0 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-bg-shape {
+            position: absolute;
+            top: -20%;
+            right: -10%;
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(11, 90, 219, 0.08) 0%, rgba(11, 90, 219, 0) 70%);
+            border-radius: 50%;
+            z-index: 0;
+        }
+
+        .dashboard-mockup {
+            background: #0B1120;
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 30px 60px -15px rgba(0,0,0,0.3);
+            border-radius: 1.5rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        .nav-link {
+            position: relative;
+            transition: color 0.3s ease;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 0;
+            background-color: #0B5ADB;
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .service-card {
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .service-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 50px -12px rgba(11, 90, 219, 0.15);
+        }
+
+        .form-input {
+            width: 100%;
+            border-bottom: 2px solid #E2E8F0;
+            background: transparent;
+            padding: 0.75rem 0;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+        .form-input:focus {
+            border-color: #0B5ADB;
+        }
+
+        .line { overflow: hidden; }
+        
+        .visibility-hidden { visibility: hidden; }
+    </style>
+</head>
+<body class="text-gray-600 bg-white selection:bg-primary selection:text-white">
+
+    <!-- Top Bar -->
+    <div class="bg-navy-900 text-gray-300 text-xs py-2 px-4 sm:px-8 flex justify-between items-center hidden md:flex font-sans">
+        <div class="flex space-x-6">
+            <span>Drive business success worldwide with OMC!</span>
+        </div>
+        <div class="flex items-center space-x-6">
+            <a href="mailto:contact@onlinemarketingchamp.com" class="hover:text-white transition flex items-center gap-2"><i class="fa-solid fa-envelope text-primary"></i> contact@onlinemarketingchamp.com</a>
+            <a href="tel:+919805697004" class="hover:text-white transition flex items-center gap-2"><i class="fa-solid fa-phone text-primary"></i> +91-9805697004</a>
+            <a href="#contact" class="bg-primary hover:bg-primaryHover text-white px-4 py-1.5 rounded text-xs font-semibold transition">Get Free Quote <i class="fa-solid fa-arrow-right ml-1"></i></a>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="bg-white/90 backdrop-blur-md sticky top-0 z-50 border-b border-gray-100 px-4 sm:px-8 py-4 flex justify-between items-center w-full" id="main-nav">
+        <a href="#" class="flex-shrink-0">
+            <img src="https://onlinemarketingchamp.com/wp-content/uploads/2025/10/WhatsApp-Image-2025-10-13-at-11.44.40-PM-1.jpeg" alt="Online Marketing Champ Logo" class="h-10 md:h-12 object-contain">
+        </a>
+        
+        <div class="hidden lg:flex items-center space-x-8 font-heading text-sm font-medium text-navy-800">
+            <a href="#" class="nav-link text-primary">Home</a>
+            <a href="#about" class="nav-link hover:text-primary">About Us</a>
+            <a href="#services" class="nav-link hover:text-primary">Services</a>
+            <a href="#workflow" class="nav-link hover:text-primary">Work Flow</a>
+            <a href="#pricing" class="nav-link hover:text-primary">Pricing</a>
+            <a href="#blog" class="nav-link hover:text-primary">Blog</a>
+        </div>
+        
+        <div class="hidden lg:block">
+            <a href="#contact" class="text-navy-800 hover:text-primary font-medium text-sm transition flex items-center gap-2">Contact Us</a>
+        </div>
+
+        <button class="lg:hidden text-navy-800 text-2xl">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-gradient pt-20 pb-24 px-4 sm:px-8 lg:px-16 overflow-hidden relative">
+        <div class="hero-bg-shape" data-speed="0.8"></div>
+        <div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 items-center relative z-10">
+            
+            <!-- Left Content -->
+            <div class="max-w-2xl hero-content-left">
+                <div class="hero-badge visibility-hidden inline-flex items-center space-x-2 bg-white rounded-full px-4 py-1.5 shadow-sm text-xs font-semibold tracking-wide text-gray-500 mb-6 border border-gray-100">
+                    <span class="w-2 h-2 rounded-full bg-primary"></span>
+                    <span>RELIABLE GLOBAL DIGITAL AGENCY</span>
+                </div>
+                
+                <!-- Fixed Headline: Manually wrapped for animation to prevent SplitType bugs with nested SVGs -->
+                <h1 class="font-heading text-4xl sm:text-5xl lg:text-6xl font-bold text-navy-900 leading-tight mb-6 tracking-tight visibility-hidden">
+                    <span class="block overflow-hidden pb-2">
+                        <span class="block hero-title-line">
+                            The Way People Search Has <span class="text-primary relative inline-block">Changed.<svg class="absolute w-full h-3 -bottom-1 left-0 text-primary opacity-30" viewBox="0 0 100 10" preserveAspectRatio="none"><path class="gsap-svg-line" d="M0,5 Q50,10 100,5" stroke="currentColor" stroke-width="4" fill="none"/></svg></span>
+                        </span>
+                    </span>
+                    <span class="block overflow-hidden pt-1 pb-2">
+                        <span class="block hero-title-line">
+                            Is Your Brand Keeping Up <span class="text-primary">Everywhere?</span>
+                        </span>
+                    </span>
+                </h1>
+                
+                <p class="hero-text text-lg text-gray-600 mb-8 leading-relaxed font-sans visibility-hidden">
+                    Today’s customers do not rely on one platform. They discover brands across Google, TikTok, Amazon, and LinkedIn, moving between channels before buying. We build strategies for this modern discovery journey to ensure you are chosen wherever audiences search, scroll, and shop.
+                </p>
+                
+                <div class="hero-buttons flex flex-wrap gap-4 items-center mb-10 visibility-hidden">
+                    <a href="#contact" class="bg-primary hover:bg-primaryHover text-white font-medium py-3.5 px-8 rounded-full transition shadow-lg shadow-blue-500/30 flex items-center gap-2">
+                        Get your free quote <i class="fa-solid fa-arrow-right text-sm"></i>
+                    </a>
+                    <a href="#services" class="bg-white hover:bg-gray-50 text-navy-800 border border-gray-200 font-medium py-3.5 px-8 rounded-full transition flex items-center gap-2">
+                        Explore Services
+                    </a>
+                </div>
+
+                <!-- Trust Badges -->
+                <div class="hero-trust flex items-center gap-6 pt-6 border-t border-gray-200/60 visibility-hidden">
+                    <div class="flex -space-x-3">
+                        <img class="w-10 h-10 rounded-full border-2 border-white" src="https://i.pravatar.cc/100?img=1" alt="Client">
+                        <img class="w-10 h-10 rounded-full border-2 border-white" src="https://i.pravatar.cc/100?img=2" alt="Client">
+                        <img class="w-10 h-10 rounded-full border-2 border-white" src="https://i.pravatar.cc/100?img=3" alt="Client">
+                    </div>
+                    <div>
+                        <div class="flex text-yellow-400 text-sm">
+                            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-1 font-medium">Trusted by global clients worldwide</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Visual -->
+            <div class="relative hidden lg:block perspective-1000 hero-content-right visibility-hidden">
+                <div class="dashboard-mockup p-6 transform rotate-y-[-10deg] rotate-x-[5deg]" data-speed="1.1">
+                    <div class="flex justify-between items-center mb-6 border-b border-gray-700 pb-4">
+                        <div class="flex space-x-2">
+                            <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                            <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                            <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                        </div>
+                        <div class="text-gray-400 text-xs font-semibold">Global Performance Overview</div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4 mb-4">
+                        <div class="bg-navy-800 rounded-lg p-4">
+                            <p class="text-gray-400 text-xs mb-1">Total Traffic</p>
+                            <p class="text-white text-2xl font-bold mb-3">+84.5% <span class="text-green-400 text-sm"><i class="fa-solid fa-arrow-up"></i></span></p>
+                            <div class="flex items-end space-x-1 h-12">
+                                <div class="w-full bg-primary/20 rounded-t h-1/4"></div>
+                                <div class="w-full bg-primary/40 rounded-t h-2/4"></div>
+                                <div class="w-full bg-primary/60 rounded-t h-3/4"></div>
+                                <div class="w-full bg-primary rounded-t h-full"></div>
+                                <div class="w-full bg-primary/80 rounded-t h-4/5"></div>
+                            </div>
+                        </div>
+                        <div class="bg-navy-800 rounded-lg p-4">
+                            <p class="text-gray-400 text-xs mb-1">Conversion Rate</p>
+                            <p class="text-white text-2xl font-bold mb-3">12.4% <span class="text-green-400 text-sm"><i class="fa-solid fa-arrow-up"></i></span></p>
+                            <div class="w-12 h-12 rounded-full border-4 border-primary border-t-gray-700 mt-2"></div>
+                        </div>
+                    </div>
+                    <div class="bg-navy-800 rounded-lg p-4">
+                         <div class="h-2 bg-gray-700 rounded-full w-3/4 mb-3"></div>
+                         <div class="h-2 bg-gray-700 rounded-full w-1/2 mb-3"></div>
+                         <div class="h-2 bg-gray-700 rounded-full w-5/6"></div>
+                    </div>
+                    
+                    <div class="absolute -right-8 -bottom-8 bg-white p-4 rounded-xl shadow-xl border border-gray-100 flex items-center gap-4 hero-floating-box">
+                        <div class="w-12 h-12 bg-blue-50 rounded-full flex items-center justify-center text-primary text-xl">
+                            <i class="fa-solid fa-rocket"></i>
+                        </div>
+                        <div>
+                            <p class="text-navy-900 font-bold text-lg leading-tight">Gen Z Driven</p>
+                            <p class="text-xs text-gray-500">Modern Strategies</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="py-12 -mt-16 relative z-20 px-4 sm:px-8 lg:px-16 max-w-7xl mx-auto">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 text-center gsap-stagger-container">
+            <div class="gsap-stagger-item bg-white rounded-2xl p-6 shadow-soft border border-gray-50 visibility-hidden">
+                <div class="w-10 h-10 mx-auto bg-blue-50 rounded-full flex items-center justify-center text-primary mb-3"><i class="fa-regular fa-calendar-check"></i></div>
+                <h3 class="font-heading text-3xl font-bold text-navy-900"><span class="counter" data-target="4">0</span>+</h3>
+                <p class="text-xs font-semibold tracking-wide text-gray-500 uppercase mt-1">Years Operating</p>
+            </div>
+            <div class="gsap-stagger-item bg-white rounded-2xl p-6 shadow-soft border border-gray-50 visibility-hidden">
+                <div class="w-10 h-10 mx-auto bg-blue-50 rounded-full flex items-center justify-center text-primary mb-3"><i class="fa-solid fa-users"></i></div>
+                <h3 class="font-heading text-3xl font-bold text-navy-900"><span class="counter" data-target="100">0</span>+</h3>
+                <p class="text-xs font-semibold tracking-wide text-gray-500 uppercase mt-1">Global Clients</p>
+            </div>
+            <div class="gsap-stagger-item bg-white rounded-2xl p-6 shadow-soft border border-gray-50 visibility-hidden">
+                <div class="w-10 h-10 mx-auto bg-blue-50 rounded-full flex items-center justify-center text-primary mb-3"><i class="fa-regular fa-star"></i></div>
+                <h3 class="font-heading text-3xl font-bold text-navy-900"><span class="counter" data-target="100">0</span>%</h3>
+                <p class="text-xs font-semibold tracking-wide text-gray-500 uppercase mt-1">Dedicated Support</p>
+            </div>
+            <div class="gsap-stagger-item bg-white rounded-2xl p-6 shadow-soft border border-gray-50 visibility-hidden">
+                <div class="w-10 h-10 mx-auto bg-blue-50 rounded-full flex items-center justify-center text-primary mb-3"><i class="fa-solid fa-arrow-trend-up"></i></div>
+                <h3 class="font-heading text-3xl font-bold text-navy-900">ROI</h3>
+                <p class="text-xs font-semibold tracking-wide text-gray-500 uppercase mt-1">Driven Strategy</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Search/Platform Pills Section -->
+    <section class="py-20 px-4 sm:px-8 text-center bg-white overflow-hidden" id="about">
+        <div class="max-w-3xl mx-auto">
+            <div class="gsap-fade-up inline-block text-xs font-semibold tracking-widest text-primary uppercase mb-3 visibility-hidden"><i class="fa-solid fa-globe mr-2"></i> MODERN DISCOVERY</div>
+            <h2 class="gsap-split-text font-heading text-3xl md:text-4xl font-bold text-navy-900 mb-6 visibility-hidden">Visibility Today is About Presence <span class="text-primary">Everywhere.</span></h2>
+            <p class="gsap-fade-up text-gray-600 mb-10 font-sans visibility-hidden" style="transition-delay: 0.2s">
+                Over 70% of consumers use three or more platforms during their purchase journey. We don't just optimize for search; we optimize for the entire customer journey across the platforms where they actually spend time.
+            </p>
+            
+            <div class="flex flex-wrap justify-center gap-4 max-w-4xl mx-auto gsap-stagger-container">
+                <div class="gsap-stagger-item visibility-hidden bg-white border border-gray-200 shadow-sm rounded-full py-3 px-8 text-sm font-semibold text-navy-800 flex items-center gap-2 hover:border-primary hover:text-primary hover:-translate-y-1 transition duration-300 cursor-pointer"><i class="fa-brands fa-google text-lg"></i> Google Search</div>
+                <div class="gsap-stagger-item visibility-hidden bg-white border border-gray-200 shadow-sm rounded-full py-3 px-8 text-sm font-semibold text-navy-800 flex items-center gap-2 hover:border-primary hover:text-primary hover:-translate-y-1 transition duration-300 cursor-pointer"><i class="fa-brands fa-instagram text-lg text-pink-600"></i> Instagram</div>
+                <div class="gsap-stagger-item visibility-hidden bg-white border border-gray-200 shadow-sm rounded-full py-3 px-8 text-sm font-semibold text-navy-800 flex items-center gap-2 hover:border-primary hover:text-primary hover:-translate-y-1 transition duration-300 cursor-pointer"><i class="fa-brands fa-tiktok text-lg"></i> TikTok</div>
+                <div class="gsap-stagger-item visibility-hidden bg-white border border-gray-200 shadow-sm rounded-full py-3 px-8 text-sm font-semibold text-navy-800 flex items-center gap-2 hover:border-primary hover:text-primary hover:-translate-y-1 transition duration-300 cursor-pointer"><i class="fa-brands fa-youtube text-lg text-red-600"></i> YouTube</div>
+                <div class="gsap-stagger-item visibility-hidden bg-white border border-gray-200 shadow-sm rounded-full py-3 px-8 text-sm font-semibold text-navy-800 flex items-center gap-2 hover:border-primary hover:text-primary hover:-translate-y-1 transition duration-300 cursor-pointer"><i class="fa-brands fa-amazon text-lg text-orange-400"></i> Amazon</div>
+                <div class="gsap-stagger-item visibility-hidden bg-white border border-gray-200 shadow-sm rounded-full py-3 px-8 text-sm font-semibold text-navy-800 flex items-center gap-2 hover:border-primary hover:text-primary hover:-translate-y-1 transition duration-300 cursor-pointer"><i class="fa-brands fa-linkedin text-lg text-blue-600"></i> LinkedIn</div>
+            </div>
+            
+            <p class="gsap-fade-up text-xs text-gray-400 mt-10 visibility-hidden">Our Gen Z team is fluent in the trends, algorithms, and audience behaviors across all these channels.</p>
+        </div>
+    </section>
+
+    <!-- Workflow / Framework Section -->
+    <section class="py-24 bg-lightBg relative overflow-hidden" id="workflow">
+        <div class="max-w-6xl mx-auto px-4 sm:px-8 text-center relative z-10">
+            <div class="gsap-fade-up inline-block text-xs font-semibold tracking-widest text-primary uppercase mb-3 visibility-hidden"><i class="fa-solid fa-gears mr-2"></i> OUR METHODOLOGY</div>
+            <h2 class="gsap-split-text font-heading text-3xl md:text-4xl font-bold text-navy-900 mb-6 visibility-hidden">Our Unified <span class="text-primary">Growth System</span></h2>
+            <p class="gsap-fade-up text-gray-600 mb-20 max-w-2xl mx-auto visibility-hidden">
+                We combine SEO, PPC, web development, and content creation into one cohesive workflow. We start with a clear strategy to build effective campaigns.
+            </p>
+
+            <div class="relative w-full max-w-4xl mx-auto hidden md:block workflow-diagram" style="height: 500px;">
+                <div class="workflow-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-navy-900 rounded-full flex flex-col items-center justify-center text-white z-20 shadow-xl border-4 border-white visibility-hidden">
+                    <i class="fa-solid fa-bullseye text-3xl text-primary mb-2"></i>
+                    <span class="font-heading font-bold text-lg leading-tight text-center">OMC Growth<br>Engine</span>
+                </div>
+                
+                <svg class="absolute inset-0 w-full h-full z-0 pointer-events-none" style="stroke: #cbd5e1; stroke-width: 2; stroke-dasharray: 6 6;">
+                    <line class="workflow-line" x1="25%" y1="25%" x2="50%" y2="50%" stroke-dashoffset="1000" stroke-dasharray="1000" />
+                    <line class="workflow-line" x1="75%" y1="25%" x2="50%" y2="50%" stroke-dashoffset="1000" stroke-dasharray="1000"/>
+                    <line class="workflow-line" x1="25%" y1="75%" x2="50%" y2="50%" stroke-dashoffset="1000" stroke-dasharray="1000"/>
+                    <line class="workflow-line" x1="75%" y1="75%" x2="50%" y2="50%" stroke-dashoffset="1000" stroke-dasharray="1000"/>
+                </svg>
+
+                <div class="workflow-node absolute top-0 left-0 w-64 bg-white p-6 rounded-2xl shadow-soft text-left border border-gray-100 z-10 visibility-hidden">
+                    <div class="w-8 h-8 bg-navy-900 text-white rounded-full flex items-center justify-center text-sm font-bold mb-4">01</div>
+                    <h3 class="font-heading font-bold text-navy-900 mb-2">Planning</h3>
+                    <p class="text-sm text-gray-500">We start by understanding your goals, audience, and market to craft a tailored blueprint.</p>
+                </div>
+
+                <div class="workflow-node absolute top-0 right-0 w-64 bg-white p-6 rounded-2xl shadow-soft text-left border border-gray-100 z-10 visibility-hidden">
+                    <div class="w-8 h-8 bg-navy-900 text-white rounded-full flex items-center justify-center text-sm font-bold mb-4">02</div>
+                    <h3 class="font-heading font-bold text-navy-900 mb-2">Research</h3>
+                    <p class="text-sm text-gray-500">Deep dive into competitors, keywords, and trends to find untapped opportunities.</p>
+                </div>
+
+                <div class="workflow-node absolute bottom-0 left-0 w-64 bg-white p-6 rounded-2xl shadow-soft text-left border border-gray-100 z-10 visibility-hidden">
+                    <div class="w-8 h-8 bg-navy-900 text-white rounded-full flex items-center justify-center text-sm font-bold mb-4">03</div>
+                    <h3 class="font-heading font-bold text-navy-900 mb-2">Optimizing</h3>
+                    <p class="text-sm text-gray-500">Execution of technical, on-page, and campaign adjustments for maximum visibility.</p>
+                </div>
+
+                <div class="workflow-node absolute bottom-0 right-0 w-64 bg-white p-6 rounded-2xl shadow-soft text-left border border-gray-100 z-10 visibility-hidden">
+                    <div class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center text-sm font-bold mb-4">04</div>
+                    <h3 class="font-heading font-bold text-navy-900 mb-2">Results</h3>
+                    <p class="text-sm text-gray-500">Continuous monitoring and scaling to deliver measurable, revenue-driving success.</p>
+                </div>
+            </div>
+
+            <div class="md:hidden flex flex-col space-y-6 gsap-stagger-container">
+                 <div class="gsap-stagger-item visibility-hidden bg-white p-6 rounded-2xl shadow-soft text-left border border-gray-100">
+                    <div class="w-8 h-8 bg-navy-900 text-white rounded-full flex items-center justify-center text-sm font-bold mb-4">01</div>
+                    <h3 class="font-heading font-bold text-navy-900 mb-2">Planning</h3>
+                    <p class="text-sm text-gray-500">We start by understanding your goals, audience, and market to craft a tailored blueprint.</p>
+                </div>
+                <div class="gsap-stagger-item visibility-hidden bg-white p-6 rounded-2xl shadow-soft text-left border border-gray-100">
+                    <div class="w-8 h-8 bg-navy-900 text-white rounded-full flex items-center justify-center text-sm font-bold mb-4">02</div>
+                    <h3 class="font-heading font-bold text-navy-900 mb-2">Research</h3>
+                    <p class="text-sm text-gray-500">Deep dive into competitors, keywords, and trends to find untapped opportunities.</p>
+                </div>
+                <div class="gsap-stagger-item visibility-hidden bg-white p-6 rounded-2xl shadow-soft text-left border border-gray-100">
+                    <div class="w-8 h-8 bg-navy-900 text-white rounded-full flex items-center justify-center text-sm font-bold mb-4">03</div>
+                    <h3 class="font-heading font-bold text-navy-900 mb-2">Optimizing</h3>
+                    <p class="text-sm text-gray-500">Execution of technical, on-page, and campaign adjustments for maximum visibility.</p>
+                </div>
+                <div class="gsap-stagger-item visibility-hidden bg-white p-6 rounded-2xl shadow-soft text-left border border-gray-100">
+                    <div class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center text-sm font-bold mb-4">04</div>
+                    <h3 class="font-heading font-bold text-navy-900 mb-2">Results</h3>
+                    <p class="text-sm text-gray-500">Continuous monitoring and scaling to deliver measurable, revenue-driving success.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Grid -->
+    <section class="py-24 px-4 sm:px-8 bg-white overflow-hidden" id="services">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col md:flex-row md:justify-between md:items-end mb-16 gap-6">
+                <div class="max-w-2xl">
+                    <div class="gsap-fade-up inline-block text-xs font-semibold tracking-widest text-primary uppercase mb-3 visibility-hidden"><i class="fa-solid fa-briefcase mr-2"></i> WHAT WE DO</div>
+                    <h2 class="gsap-split-text font-heading text-3xl md:text-4xl font-bold text-navy-900 visibility-hidden">Advanced Digital Solutions For <span class="text-primary">Modern Businesses</span></h2>
+                </div>
+                <p class="gsap-fade-up text-gray-500 max-w-md text-sm leading-relaxed visibility-hidden">
+                    We craft tailored digital marketing solutions to boost visibility, engagement, and revenue. Trusted globally, our results-driven approach ensures maximum growth.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 gsap-stagger-container">
+                <div class="gsap-stagger-item visibility-hidden service-card bg-white p-8 rounded-3xl border border-gray-100 shadow-sm flex flex-col h-full">
+                    <div class="w-12 h-12 rounded-full bg-navy-900 text-white flex items-center justify-center mb-6">
+                        <i class="fa-solid fa-magnifying-glass-chart"></i>
+                    </div>
+                    <h3 class="font-heading text-xl font-bold text-navy-900 mb-3">SEO Services</h3>
+                    <p class="text-gray-500 text-sm mb-8 flex-grow leading-relaxed">
+                        Drive organic growth through powerful keyword research, on-page optimization, link building, and technical audits to rank higher and attract qualified traffic.
+                    </p>
+                    <a href="#" class="text-primary font-medium text-sm hover:text-primaryHover inline-flex items-center group">Learn more <i class="fa-solid fa-arrow-right ml-2 transform group-hover:translate-x-1 transition"></i></a>
+                </div>
+
+                <div class="gsap-stagger-item visibility-hidden service-card bg-white p-8 rounded-3xl border border-gray-100 shadow-sm flex flex-col h-full">
+                    <div class="w-12 h-12 rounded-full bg-navy-900 text-white flex items-center justify-center mb-6">
+                        <i class="fa-solid fa-hand-pointer"></i>
+                    </div>
+                    <h3 class="font-heading text-xl font-bold text-navy-900 mb-3">PPC Advertising</h3>
+                    <p class="text-gray-500 text-sm mb-8 flex-grow leading-relaxed">
+                        Data-driven pay-per-click campaigns designed to maximize ROI. We focus on quality leads and lower acquisition costs across Google Ads and Social platforms.
+                    </p>
+                    <a href="#" class="text-primary font-medium text-sm hover:text-primaryHover inline-flex items-center group">Learn more <i class="fa-solid fa-arrow-right ml-2 transform group-hover:translate-x-1 transition"></i></a>
+                </div>
+
+                <div class="gsap-stagger-item visibility-hidden service-card bg-white p-8 rounded-3xl border border-gray-100 shadow-sm flex flex-col h-full">
+                    <div class="w-12 h-12 rounded-full bg-navy-900 text-white flex items-center justify-center mb-6">
+                        <i class="fa-solid fa-laptop-code"></i>
+                    </div>
+                    <h3 class="font-heading text-xl font-bold text-navy-900 mb-3">Web Development</h3>
+                    <p class="text-gray-500 text-sm mb-8 flex-grow leading-relaxed">
+                        Build fast, professional, and mobile-responsive websites that act as your digital storefront, optimized for user experience and higher conversion rates.
+                    </p>
+                    <a href="#" class="text-primary font-medium text-sm hover:text-primaryHover inline-flex items-center group">Learn more <i class="fa-solid fa-arrow-right ml-2 transform group-hover:translate-x-1 transition"></i></a>
+                </div>
+
+                <div class="gsap-stagger-item visibility-hidden service-card bg-white p-8 rounded-3xl border border-gray-100 shadow-sm flex flex-col h-full">
+                    <div class="w-12 h-12 rounded-full bg-navy-900 text-white flex items-center justify-center mb-6">
+                        <i class="fa-solid fa-hashtag"></i>
+                    </div>
+                    <h3 class="font-heading text-xl font-bold text-navy-900 mb-3">Social Media (SMM)</h3>
+                    <p class="text-gray-500 text-sm mb-8 flex-grow leading-relaxed">
+                        Stay relevant where audiences scroll. We create consistent, engaging content plans and posting schedules to build community and brand loyalty.
+                    </p>
+                    <a href="#" class="text-primary font-medium text-sm hover:text-primaryHover inline-flex items-center group">Learn more <i class="fa-solid fa-arrow-right ml-2 transform group-hover:translate-x-1 transition"></i></a>
+                </div>
+
+                <div class="gsap-stagger-item visibility-hidden service-card bg-white p-8 rounded-3xl border border-gray-100 shadow-sm flex flex-col h-full">
+                    <div class="w-12 h-12 rounded-full bg-navy-900 text-white flex items-center justify-center mb-6">
+                        <i class="fa-solid fa-pen-nib"></i>
+                    </div>
+                    <h3 class="font-heading text-xl font-bold text-navy-900 mb-3">Content Marketing</h3>
+                    <p class="text-gray-500 text-sm mb-8 flex-grow leading-relaxed">
+                        Human-sounding, well-researched content that captures your brand voice. From blogs to website copy, we build trust and support your SEO efforts.
+                    </p>
+                    <a href="#" class="text-primary font-medium text-sm hover:text-primaryHover inline-flex items-center group">Learn more <i class="fa-solid fa-arrow-right ml-2 transform group-hover:translate-x-1 transition"></i></a>
+                </div>
+
+                 <div class="gsap-stagger-item visibility-hidden service-card bg-white p-8 rounded-3xl border border-gray-100 shadow-sm flex flex-col h-full">
+                    <div class="w-12 h-12 rounded-full bg-navy-900 text-white flex items-center justify-center mb-6">
+                        <i class="fa-solid fa-globe"></i>
+                    </div>
+                    <h3 class="font-heading text-xl font-bold text-navy-900 mb-3">Global Strategy</h3>
+                    <p class="text-gray-500 text-sm mb-8 flex-grow leading-relaxed">
+                        Expand across international markets with personalized guidance. As an India-based global agency, we optimize campaigns to elevate your business worldwide.
+                    </p>
+                    <a href="#" class="text-primary font-medium text-sm hover:text-primaryHover inline-flex items-center group">Learn more <i class="fa-solid fa-arrow-right ml-2 transform group-hover:translate-x-1 transition"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Dark CTA Block -->
+    <section class="py-10 px-4 sm:px-8 max-w-7xl mx-auto cta-section">
+        <div class="bg-navy-900 rounded-[2rem] p-10 md:p-16 flex flex-col md:flex-row items-center justify-between shadow-floating relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-64 h-64 bg-primary/30 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
+            
+            <div class="max-w-2xl relative z-10 mb-8 md:mb-0 text-center md:text-left">
+                <div class="cta-badge inline-block bg-white/10 text-primary text-xs font-bold px-3 py-1 rounded-full mb-4 border border-primary/30 uppercase tracking-wide visibility-hidden">Ready to Grow</div>
+                <h2 class="cta-title gsap-split-text font-heading text-3xl md:text-5xl font-bold text-white mb-4 leading-tight visibility-hidden">
+                    Partner with us today to revolutionize your digital presence.
+                </h2>
+                <p class="cta-desc text-gray-300 text-lg visibility-hidden">Discover what's stopping your website from ranking and converting.</p>
+            </div>
+            
+            <div class="relative z-10 flex-shrink-0 cta-button visibility-hidden">
+                <a href="#contact" class="bg-primary hover:bg-primaryHover text-white font-bold py-4 px-8 rounded-full transition shadow-lg shadow-blue-500/40 text-lg flex items-center gap-2 hover:-translate-y-1">
+                    Get My Free Quote <i class="fa-solid fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section class="py-24 px-4 sm:px-8 bg-lightBg" id="pricing">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <div class="gsap-fade-up inline-block text-xs font-semibold tracking-widest text-primary uppercase mb-3 visibility-hidden">BEST PRICING</div>
+                <h2 class="gsap-split-text font-heading text-3xl md:text-4xl font-bold text-navy-900 visibility-hidden">Our Pricing <span class="text-primary">Plans</span></h2>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto gsap-stagger-container">
+                <div class="gsap-stagger-item visibility-hidden bg-white rounded-3xl p-8 border border-gray-100 shadow-sm flex flex-col transition hover:shadow-lg hover:-translate-y-2 duration-300">
+                    <h3 class="font-heading text-2xl font-bold text-navy-900 mb-2">Silver</h3>
+                    <p class="text-gray-500 text-sm mb-6 pb-6 border-b border-gray-100">Essential growth features.</p>
+                    <ul class="space-y-4 text-sm text-gray-600 mb-8 flex-grow">
+                        <li class="flex items-start"><i class="fa-solid fa-check text-green-500 mt-1 mr-3"></i> SEO: Up to 10 pages, 25 keywords</li>
+                        <li class="flex items-start"><i class="fa-solid fa-check text-green-500 mt-1 mr-3"></i> PPC Setup: 1 platform</li>
+                        <li class="flex items-start"><i class="fa-solid fa-check text-green-500 mt-1 mr-3"></i> Ad Budget: Up to $500/mo</li>
+                        <li class="flex items-start"><i class="fa-solid fa-check text-green-500 mt-1 mr-3"></i> Content: 2 blog posts/mo</li>
+                        <li class="flex items-start"><i class="fa-solid fa-check text-green-500 mt-1 mr-3"></i> Social Media Reviews: 5/mo</li>
+                        <li class="flex items-start"><i class="fa-solid fa-check text-green-500 mt-1 mr-3"></i> Email Support + Quarterly Report</li>
+                    </ul>
+                    <a href="#contact" class="w-full block text-center bg-gray-50 hover:bg-gray-100 text-navy-800 font-semibold py-3 rounded-full transition border border-gray-200">Choose Silver</a>
+                </div>
+
+                <div class="gsap-stagger-item visibility-hidden bg-navy-900 rounded-3xl p-8 shadow-floating flex flex-col transform md:-translate-y-4 relative overflow-hidden text-white transition hover:-translate-y-6 duration-300 hover:shadow-2xl hover:shadow-blue-900/50">
+                    <div class="absolute top-0 right-0 bg-primary text-white text-xs font-bold px-3 py-1 rounded-bl-lg">POPULAR</div>
+                    <h3 class="font-heading text-2xl font-bold mb-2">Gold</h3>
+                    <p class="text-gray-400 text-sm mb-6 pb-6 border-b border-gray-700">Comprehensive digital strategy.</p>
+                    <ul class="space-y-4 text-sm text-gray-300 mb-8 flex-grow">
+                        <li class="flex items-start"><i class="fa-solid fa-check text-primary mt-1 mr-3"></i> SEO: Up to 30 pages, 70 keywords</li>
+                        <li class="flex items-start"><i class="fa-solid fa-check text-primary mt-1 mr-3"></i> PPC: Google Ads + Meta Ads</li>
+                        <li class="flex items-start"><i class="fa-solid fa-check text-primary mt-1 mr-3"></i> Ad Budget: Up to $2,000/mo</li>
+                        <li class="flex items-start"><i class="fa-solid fa-check text-primary mt-1 mr-3"></i> Content: 4 blogs + 5 social posts/mo</li>
+                        <li class="flex items-start"><i class="fa-solid fa-check text-primary mt-1 mr-3"></i> Conversion Tracking Setup</li>
+                        <li class="flex items-start"><i class="fa-solid fa-check text-primary mt-1 mr-3"></i> 24/7 Chat/Email + Monthly ROI Report</li>
+                    </ul>
+                    <a href="#contact" class="w-full block text-center bg-primary hover:bg-primaryHover text-white font-semibold py-3 rounded-full transition">Choose Gold</a>
+                </div>
+
+                <div class="gsap-stagger-item visibility-hidden bg-white rounded-3xl p-8 border border-gray-100 shadow-sm flex flex-col transition hover:shadow-lg hover:-translate-y-2 duration-300">
+                    <h3 class="font-heading text-2xl font-bold text-navy-900 mb-2">Platinum</h3>
+                    <p class="text-gray-500 text-sm mb-6 pb-6 border-b border-gray-100">Full suite enterprise scaling.</p>
+                    <ul class="space-y-4 text-sm text-gray-600 mb-8 flex-grow">
+                        <li class="flex items-start"><i class="fa-solid fa-check text-green-500 mt-1 mr-3"></i> SEO: Unlimited pages, 500+ keywords</li>
+                        <li class="flex items-start"><i class="fa-solid fa-check text-green-500 mt-1 mr-3"></i> PPC: Google, Meta, LinkedIn, YouTube</li>
+                        <li class="flex items-start"><i class="fa-solid fa-check text-green-500 mt-1 mr-3"></i> Ad Budget: Up to $10,000/mo</li>
+                        <li class="flex items-start"><i class="fa-solid fa-check text-green-500 mt-1 mr-3"></i> Content: 8 blogs, 10 social, 2 emails/mo</li>
+                        <li class="flex items-start"><i class="fa-solid fa-check text-green-500 mt-1 mr-3"></i> Dedicated Account Manager</li>
+                        <li class="flex items-start"><i class="fa-solid fa-check text-green-500 mt-1 mr-3"></i> 24/7 VIP Support + Custom Dashboard</li>
+                    </ul>
+                    <a href="#contact" class="w-full block text-center bg-gray-50 hover:bg-gray-100 text-navy-800 font-semibold py-3 rounded-full transition border border-gray-200">Choose Platinum</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="py-24 px-4 sm:px-8 bg-white">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <div class="gsap-fade-up inline-block text-xs font-semibold tracking-widest text-primary uppercase mb-3 visibility-hidden"><i class="fa-solid fa-heart text-red-500 mr-2"></i> CLIENT'S LOVE</div>
+                <h2 class="gsap-split-text font-heading text-3xl md:text-4xl font-bold text-navy-900 visibility-hidden">What Our <span class="text-primary">Clients Say</span></h2>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 gsap-stagger-container">
+                
+                <div class="gsap-stagger-item visibility-hidden bg-lightBg p-8 rounded-2xl border border-gray-100 transition hover:-translate-y-2 hover:shadow-md duration-300">
+                    <div class="flex text-yellow-400 mb-4 text-sm"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                    <p class="text-gray-600 text-sm mb-6 italic">"Honestly, working with Online Marketing Champ for SEO has been a really good decision. They explained things in simple terms and focused on realistic goals. Within a few months, we started seeing steady improvements. They genuinely cared about long-term growth."</p>
+                    <div class="font-bold text-navy-900">- David</div>
+                </div>
+
+                <div class="gsap-stagger-item visibility-hidden bg-lightBg p-8 rounded-2xl border border-gray-100 transition hover:-translate-y-2 hover:shadow-md duration-300">
+                    <div class="flex text-yellow-400 mb-4 text-sm"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                    <p class="text-gray-600 text-sm mb-6 italic">"We hired them for PPC because our previous ads were burning money. They were transparent, optimized properly, and focused on quality leads. We noticed better conversions and lower costs pretty quickly. Felt like they managed our ads like their own."</p>
+                    <div class="font-bold text-navy-900">- Matt</div>
+                </div>
+
+                <div class="gsap-stagger-item visibility-hidden bg-lightBg p-8 rounded-2xl border border-gray-100 transition hover:-translate-y-2 hover:shadow-md duration-300">
+                    <div class="flex text-yellow-400 mb-4 text-sm"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                    <p class="text-gray-600 text-sm mb-6 italic">"Our website needed a complete refresh. The final website looks clean, professional, and works great on mobile. More importantly, it loads fast, and users are staying longer. Communication was easy and handled without frustration."</p>
+                    <div class="font-bold text-navy-900">- Jeki</div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Form Section -->
+    <section class="py-24 px-4 sm:px-8 bg-lightBg border-t border-gray-200 overflow-hidden" id="contact">
+        <div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-16 items-center">
+            
+            <div class="contact-left">
+                <h2 class="gsap-split-text font-heading text-3xl md:text-5xl font-bold text-navy-900 mb-6 leading-tight visibility-hidden">
+                    We help your brand <span class="text-primary">stand out effortlessly</span>, leaving competitors behind.
+                </h2>
+                <p class="gsap-fade-up text-gray-600 mb-8 text-lg visibility-hidden">
+                    Have questions? Connect with the OMC team and see what happens when strategy, creativity, and performance work as one. We’re here to listen, work with you, and help your brand shine brighter for longer.
+                </p>
+                <div class="space-y-4 gsap-stagger-container">
+                    <div class="gsap-stagger-item visibility-hidden flex items-center gap-4 text-navy-900">
+                        <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-sm text-primary transition hover:scale-110"><i class="fa-solid fa-envelope"></i></div>
+                        <div>
+                            <p class="text-xs text-gray-500 uppercase font-semibold">Email Us</p>
+                            <p class="font-medium">contact@onlinemarketingchamp.com</p>
+                        </div>
+                    </div>
+                    <div class="gsap-stagger-item visibility-hidden flex items-center gap-4 text-navy-900">
+                        <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-sm text-primary transition hover:scale-110"><i class="fa-solid fa-phone"></i></div>
+                        <div>
+                            <p class="text-xs text-gray-500 uppercase font-semibold">Call Us</p>
+                            <p class="font-medium">+91-9805697004</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="contact-form bg-white p-8 md:p-10 rounded-3xl shadow-soft border border-gray-100 visibility-hidden">
+                <form class="space-y-6">
+                    <div class="grid grid-cols-2 gap-6">
+                        <div>
+                            <label class="text-xs font-semibold text-gray-500 uppercase">Full Name *</label>
+                            <input type="text" class="form-input text-navy-900" placeholder="John Doe" required>
+                        </div>
+                        <div>
+                            <label class="text-xs font-semibold text-gray-500 uppercase">Email *</label>
+                            <input type="email" class="form-input text-navy-900" placeholder="john@example.com" required>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-6">
+                        <div>
+                            <label class="text-xs font-semibold text-gray-500 uppercase">Phone Number *</label>
+                            <input type="tel" class="form-input text-navy-900" placeholder="+1 234 567 890" required>
+                        </div>
+                        <div>
+                            <label class="text-xs font-semibold text-gray-500 uppercase">Website URL</label>
+                            <input type="url" class="form-input text-navy-900" placeholder="https://yourwebsite.com">
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-6">
+                         <div>
+                            <label class="text-xs font-semibold text-gray-500 uppercase">Looking for *</label>
+                            <select class="form-input text-navy-900 bg-white" required>
+                                <option>SEO Services</option>
+                                <option>PPC Campaigns</option>
+                                <option>Web Development</option>
+                                <option>Social Media</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="text-xs font-semibold text-gray-500 uppercase">Budget</label>
+                            <input type="text" class="form-input text-navy-900" placeholder="e.g. $1,000/mo">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="text-xs font-semibold text-gray-500 uppercase">How we can help? *</label>
+                        <textarea class="form-input text-navy-900 resize-none h-24" placeholder="Tell us about your project..." required></textarea>
+                    </div>
+                    <button type="submit" class="w-full bg-navy-900 hover:bg-navy-800 text-white font-bold py-4 rounded-xl transition shadow-lg mt-4 hover:shadow-blue-500/20 hover:-translate-y-1">
+                        Send Message
+                    </button>
+                </form>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-navy-900 text-gray-300 py-16 px-4 sm:px-8 border-t border-gray-800 relative z-20">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
+            
+            <div class="lg:col-span-1">
+                <img src="https://onlinemarketingchamp.com/wp-content/uploads/2025/10/imggg.png" alt="Logo" class="h-10 mb-6 brightness-0 invert">
+                <p class="text-sm text-gray-400 leading-relaxed mb-6">
+                    We work systematically to integrate corporate responsibility in our core business and make our expertise available for the benefit of the societies where we operate. Headquartered in Palampur, Himachal Pradesh.
+                </p>
+                <div class="flex space-x-4">
+                    <a href="#" class="w-8 h-8 rounded-full bg-gray-800 flex items-center justify-center hover:bg-primary transition hover:-translate-y-1 text-white"><i class="fa-brands fa-linkedin-in"></i></a>
+                    <a href="#" class="w-8 h-8 rounded-full bg-gray-800 flex items-center justify-center hover:bg-primary transition hover:-translate-y-1 text-white"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#" class="w-8 h-8 rounded-full bg-gray-800 flex items-center justify-center hover:bg-primary transition hover:-translate-y-1 text-white"><i class="fa-brands fa-facebook-f"></i></a>
+                </div>
+            </div>
+
+            <div>
+                <h4 class="text-white font-heading font-bold mb-6 uppercase text-sm tracking-wider">Important Links</h4>
+                <ul class="space-y-3 text-sm">
+                    <li><a href="#" class="hover:text-primary transition">Home</a></li>
+                    <li><a href="#about" class="hover:text-primary transition">About Us</a></li>
+                    <li><a href="#services" class="hover:text-primary transition">Services</a></li>
+                    <li><a href="#blog" class="hover:text-primary transition">Blog</a></li>
+                    <li><a href="#contact" class="hover:text-primary transition">Contact Us</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 class="text-white font-heading font-bold mb-6 uppercase text-sm tracking-wider">Services</h4>
+                <ul class="space-y-3 text-sm">
+                    <li><a href="#" class="hover:text-primary transition">Search Engine Optimization</a></li>
+                    <li><a href="#" class="hover:text-primary transition">Pay Per Click</a></li>
+                    <li><a href="#" class="hover:text-primary transition">Website Development</a></li>
+                    <li><a href="#" class="hover:text-primary transition">Content Writing</a></li>
+                    <li><a href="#" class="hover:text-primary transition text-primary font-medium">Internship Programs</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 class="text-white font-heading font-bold mb-6 uppercase text-sm tracking-wider">Get in Touch</h4>
+                <ul class="space-y-4 text-sm">
+                    <li class="flex items-start gap-3">
+                        <i class="fa-solid fa-envelope mt-1 text-primary"></i>
+                        <a href="mailto:contact@onlinemarketingchamp.com" class="hover:text-white transition">contact@onlinemarketingchamp.com</a>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <i class="fa-solid fa-phone mt-1 text-primary"></i>
+                        <a href="tel:+919805697004" class="hover:text-white transition">+91-9805697004</a>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <i class="fa-solid fa-location-dot mt-1 text-primary"></i>
+                        <span>Palampur, Himachal Pradesh, India</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="max-w-7xl mx-auto pt-8 border-t border-gray-800 text-center text-sm text-gray-500">
+            © 2025 OnlineMarketingChamp. All rights reserved.
+        </div>
+    </footer>
+
+    <!-- GSAP & Lenis Setup -->
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.39/dist/lenis.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/split-type"></script>
+
+    <script>
+        // 1. Initialize Lenis
+        const lenis = new Lenis({
+            duration: 1.2,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            direction: 'vertical',
+            gestureDirection: 'vertical',
+            smooth: true,
+            mouseMultiplier: 1,
+            smoothTouch: false,
+        });
+
+        function raf(time) {
+            lenis.raf(time);
+            requestAnimationFrame(raf);
+        }
+        requestAnimationFrame(raf);
+
+        // 2. Integrate GSAP with Lenis
+        gsap.registerPlugin(ScrollTrigger);
+        lenis.on('scroll', ScrollTrigger.update);
+        gsap.ticker.add((time) => { lenis.raf(time * 1000) });
+        gsap.ticker.lagSmoothing(0);
+
+        // 3. Typography Split (SplitType)
+        const splitTexts = new SplitType('.gsap-split-text', { types: 'lines, words' });
+        
+        splitTexts.lines.forEach(line => {
+            const wrapper = document.createElement('div');
+            wrapper.classList.add('line-wrapper');
+            wrapper.style.overflow = 'hidden';
+            line.parentNode.insertBefore(wrapper, line);
+            wrapper.appendChild(line);
+        });
+
+        // 4. Hero Animation Master Timeline
+        const tl = gsap.timeline({ defaults: { ease: "power4.out" } });
+        
+        gsap.set('.visibility-hidden', { autoAlpha: 1 });
+
+        tl.fromTo('.hero-badge', 
+            { y: 30, opacity: 0 }, 
+            { y: 0, opacity: 1, duration: 0.8, delay: 0.2 }
+        )
+        // Corrected Hero H1 manual wrapper animation
+        .fromTo('.hero-title-line', 
+            { y: 100, rotationZ: 2, opacity: 0 }, 
+            { y: 0, rotationZ: 0, opacity: 1, duration: 1.2, stagger: 0.15 },
+            "-=0.5"
+        )
+        .fromTo('.hero-text', 
+            { y: 30, opacity: 0 }, 
+            { y: 0, opacity: 1, duration: 1 },
+            "-=0.6"
+        )
+        .fromTo('.hero-buttons a', 
+            { y: 20, opacity: 0 }, 
+            { y: 0, opacity: 1, duration: 0.8, stagger: 0.1 },
+            "-=0.8"
+        )
+        .fromTo('.hero-trust', 
+            { y: 20, opacity: 0 }, 
+            { y: 0, opacity: 1, duration: 0.8 },
+            "-=0.6"
+        )
+        .fromTo('.dashboard-mockup', 
+            { y: 150, rotationX: 25, rotationY: -15, opacity: 0 },
+            { y: 0, rotationX: 5, rotationY: -10, opacity: 1, duration: 1.5, ease: "power3.out" },
+            "-=1.2"
+        )
+        .fromTo('.hero-floating-box', 
+            { y: 50, scale: 0.8, opacity: 0 },
+            { y: 0, scale: 1, opacity: 1, duration: 1, ease: "back.out(1.5)" },
+            "-=0.8"
+        );
+
+        // 5. Scroll Animations
+        
+        gsap.utils.toArray('.gsap-split-text').forEach((text) => {
+            gsap.fromTo(text.querySelectorAll('.word'), 
+                { y: 100, opacity: 0, rotationZ: 3 },
+                { 
+                    scrollTrigger: { trigger: text, start: "top 85%" },
+                    y: 0, opacity: 1, rotationZ: 0, duration: 0.8, stagger: 0.03, ease: "power3.out"
+                }
+            );
+        });
+
+        gsap.utils.toArray('.gsap-fade-up').forEach(element => {
+            gsap.fromTo(element, 
+                { y: 40, opacity: 0 },
+                {
+                    scrollTrigger: { trigger: element, start: "top 85%" },
+                    y: 0, opacity: 1, duration: 0.8, ease: "power3.out"
+                }
+            );
+        });
+
+        gsap.utils.toArray('.gsap-stagger-container').forEach(container => {
+            const items = container.querySelectorAll('.gsap-stagger-item');
+            gsap.fromTo(items, 
+                { y: 50, opacity: 0 },
+                {
+                    scrollTrigger: { trigger: container, start: "top 85%" },
+                    y: 0, opacity: 1, duration: 0.8, stagger: 0.1, ease: "back.out(1.2)"
+                }
+            );
+        });
+
+        const counters = document.querySelectorAll('.counter');
+        counters.forEach(counter => {
+            ScrollTrigger.create({
+                trigger: counter,
+                start: "top 90%",
+                once: true,
+                onEnter: () => {
+                    const target = +counter.getAttribute('data-target');
+                    gsap.to(counter, {
+                        innerHTML: target,
+                        duration: 2,
+                        snap: { innerHTML: 1 },
+                        ease: "power2.out"
+                    });
+                }
+            });
+        });
+
+        ScrollTrigger.create({
+            trigger: ".workflow-diagram",
+            start: "top 70%",
+            onEnter: () => {
+                const tlWorkflow = gsap.timeline();
+                tlWorkflow.fromTo(".workflow-center", 
+                    { scale: 0, opacity: 0 }, 
+                    { scale: 1, opacity: 1, duration: 0.8, ease: "back.out(1.5)" }
+                )
+                .to(".workflow-line", { strokeDashoffset: 0, duration: 1.5, ease: "power2.inOut" }, "-=0.2")
+                .fromTo(".workflow-node", 
+                    { y: 30, opacity: 0 }, 
+                    { y: 0, opacity: 1, duration: 0.6, stagger: 0.15, ease: "power2.out" }, 
+                    "-=1"
+                );
+            }
+        });
+
+        const ctaTl = gsap.timeline({
+            scrollTrigger: { trigger: ".cta-section", start: "top 75%" }
+        });
+        ctaTl.fromTo(".cta-badge", { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6 })
+             .fromTo(".cta-title .word", { y: 50, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, stagger: 0.03, ease: "power3.out" }, "-=0.4")
+             .fromTo(".cta-desc", { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6 }, "-=0.3")
+             .fromTo(".cta-button", { scale: 0.9, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.8, ease: "back.out(1.5)" }, "-=0.2");
+
+        gsap.fromTo(".contact-form", 
+            { x: 50, opacity: 0 }, 
+            {
+                scrollTrigger: { trigger: ".contact-left", start: "top 70%" },
+                x: 0, opacity: 1, duration: 1, ease: "power3.out"
+            }
+        );
+
+        gsap.to(".hero-bg-shape", {
+            yPercent: 30,
+            ease: "none",
+            scrollTrigger: {
+                trigger: ".hero-gradient",
+                start: "top top",
+                end: "bottom top",
+                scrub: true
+            }
+        });
+    </script>
+</body>
+</html>
