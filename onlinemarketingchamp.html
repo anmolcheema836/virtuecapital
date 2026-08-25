@@ -133,6 +133,10 @@
         .line { overflow: hidden; }
         
         .visibility-hidden { visibility: hidden; }
+
+        /* Hide scrollbar for team section if needed on fallback */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
 </head>
 <body class="text-gray-600 bg-white selection:bg-primary selection:text-white">
@@ -185,7 +189,6 @@
                     <span>RELIABLE GLOBAL DIGITAL AGENCY</span>
                 </div>
                 
-                <!-- Fixed Headline: Manually wrapped for animation to prevent SplitType bugs with nested SVGs -->
                 <h1 class="font-heading text-4xl sm:text-5xl lg:text-6xl font-bold text-navy-900 leading-tight mb-6 tracking-tight visibility-hidden">
                     <span class="block overflow-hidden pb-2">
                         <span class="block hero-title-line">
@@ -212,7 +215,6 @@
                     </a>
                 </div>
 
-                <!-- Trust Badges -->
                 <div class="hero-trust flex items-center gap-6 pt-6 border-t border-gray-200/60 visibility-hidden">
                     <div class="flex -space-x-3">
                         <img class="w-10 h-10 rounded-full border-2 border-white" src="https://i.pravatar.cc/100?img=1" alt="Client">
@@ -589,8 +591,98 @@
         </div>
     </section>
 
+    <!-- NEW: Meet The Team Horizontal Scroll Section -->
+    <section class="h-screen bg-navy-900 text-white overflow-hidden relative flex items-center team-pin-section" id="team">
+        
+        <!-- The track that will slide left -->
+        <div class="team-track flex items-center h-full px-4 sm:px-8 lg:px-16 gap-8 md:gap-16 w-[max-content] no-scrollbar">
+            
+            <!-- Section Header (First item in track) -->
+            <div class="w-[300px] md:w-[450px] flex-shrink-0 mr-8">
+                <div class="inline-block bg-primary/20 text-primary text-xs font-bold px-3 py-1 rounded-full mb-4 border border-primary/30 uppercase tracking-wide">The Experts</div>
+                <h2 class="font-heading text-4xl md:text-6xl font-bold mb-6 leading-tight text-white">
+                    Meet The <br><span class="text-primary">Minds.</span>
+                </h2>
+                <p class="text-gray-400 text-lg mb-8">We are a globally distributed team of passionate creators, data strategists, and tech geeks driving digital success.</p>
+                
+                <div class="flex items-center gap-4 text-sm font-semibold text-gray-500 uppercase tracking-wider">
+                    <div class="w-12 h-1 bg-primary rounded-full"></div> Scroll to explore
+                </div>
+            </div>
+
+            <!-- Team Member 1 -->
+            <div class="group relative w-[280px] md:w-[350px] aspect-[3/4] rounded-3xl overflow-hidden flex-shrink-0 cursor-pointer shadow-2xl">
+                <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=800&auto=format&fit=crop" class="absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-110" alt="Alex Carter">
+                <div class="absolute inset-0 bg-gradient-to-t from-navy-900 via-navy-900/40 to-transparent opacity-90 transition-opacity duration-500 group-hover:opacity-70"></div>
+                <div class="absolute bottom-0 left-0 p-8 transform translate-y-6 group-hover:translate-y-0 transition-transform duration-500 w-full">
+                    <h3 class="font-heading text-2xl font-bold text-white mb-1">Alex Carter</h3>
+                    <p class="text-primary text-sm font-medium mb-4">Chief Strategy Officer</p>
+                    <div class="flex gap-3 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
+                        <a href="#" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary transition text-white backdrop-blur-sm"><i class="fa-brands fa-linkedin-in text-sm"></i></a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary transition text-white backdrop-blur-sm"><i class="fa-brands fa-twitter text-sm"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Team Member 2 -->
+            <div class="group relative w-[280px] md:w-[350px] aspect-[3/4] rounded-3xl overflow-hidden flex-shrink-0 cursor-pointer shadow-2xl mt-12">
+                <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=800&auto=format&fit=crop" class="absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-110" alt="Sarah Jenkins">
+                <div class="absolute inset-0 bg-gradient-to-t from-navy-900 via-navy-900/40 to-transparent opacity-90 transition-opacity duration-500 group-hover:opacity-70"></div>
+                <div class="absolute bottom-0 left-0 p-8 transform translate-y-6 group-hover:translate-y-0 transition-transform duration-500 w-full">
+                    <h3 class="font-heading text-2xl font-bold text-white mb-1">Sarah Jenkins</h3>
+                    <p class="text-primary text-sm font-medium mb-4">Head of Digital Marketing</p>
+                    <div class="flex gap-3 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
+                        <a href="#" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary transition text-white backdrop-blur-sm"><i class="fa-brands fa-linkedin-in text-sm"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Team Member 3 -->
+            <div class="group relative w-[280px] md:w-[350px] aspect-[3/4] rounded-3xl overflow-hidden flex-shrink-0 cursor-pointer shadow-2xl mb-12">
+                <img src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=80&w=800&auto=format&fit=crop" class="absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-110" alt="Marcus Chen">
+                <div class="absolute inset-0 bg-gradient-to-t from-navy-900 via-navy-900/40 to-transparent opacity-90 transition-opacity duration-500 group-hover:opacity-70"></div>
+                <div class="absolute bottom-0 left-0 p-8 transform translate-y-6 group-hover:translate-y-0 transition-transform duration-500 w-full">
+                    <h3 class="font-heading text-2xl font-bold text-white mb-1">Marcus Chen</h3>
+                    <p class="text-primary text-sm font-medium mb-4">Lead Full-Stack Developer</p>
+                    <div class="flex gap-3 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
+                        <a href="#" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary transition text-white backdrop-blur-sm"><i class="fa-brands fa-linkedin-in text-sm"></i></a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary transition text-white backdrop-blur-sm"><i class="fa-brands fa-github text-sm"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Team Member 4 -->
+            <div class="group relative w-[280px] md:w-[350px] aspect-[3/4] rounded-3xl overflow-hidden flex-shrink-0 cursor-pointer shadow-2xl mt-12">
+                <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=800&auto=format&fit=crop" class="absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-110" alt="Elena Rodriguez">
+                <div class="absolute inset-0 bg-gradient-to-t from-navy-900 via-navy-900/40 to-transparent opacity-90 transition-opacity duration-500 group-hover:opacity-70"></div>
+                <div class="absolute bottom-0 left-0 p-8 transform translate-y-6 group-hover:translate-y-0 transition-transform duration-500 w-full">
+                    <h3 class="font-heading text-2xl font-bold text-white mb-1">Elena Rodriguez</h3>
+                    <p class="text-primary text-sm font-medium mb-4">UI/UX Design Lead</p>
+                    <div class="flex gap-3 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
+                        <a href="#" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary transition text-white backdrop-blur-sm"><i class="fa-brands fa-linkedin-in text-sm"></i></a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary transition text-white backdrop-blur-sm"><i class="fa-brands fa-dribbble text-sm"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Team Member 5 -->
+            <div class="group relative w-[280px] md:w-[350px] aspect-[3/4] rounded-3xl overflow-hidden flex-shrink-0 cursor-pointer shadow-2xl mb-12 mr-16">
+                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=800&auto=format&fit=crop" class="absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-110" alt="David Kim">
+                <div class="absolute inset-0 bg-gradient-to-t from-navy-900 via-navy-900/40 to-transparent opacity-90 transition-opacity duration-500 group-hover:opacity-70"></div>
+                <div class="absolute bottom-0 left-0 p-8 transform translate-y-6 group-hover:translate-y-0 transition-transform duration-500 w-full">
+                    <h3 class="font-heading text-2xl font-bold text-white mb-1">David Kim</h3>
+                    <p class="text-primary text-sm font-medium mb-4">Global Campaign Manager</p>
+                    <div class="flex gap-3 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
+                        <a href="#" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary transition text-white backdrop-blur-sm"><i class="fa-brands fa-linkedin-in text-sm"></i></a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
     <!-- Contact Form Section -->
-    <section class="py-24 px-4 sm:px-8 bg-lightBg border-t border-gray-200 overflow-hidden" id="contact">
+    <section class="py-24 px-4 sm:px-8 bg-lightBg overflow-hidden relative z-10" id="contact">
         <div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-16 items-center">
             
             <div class="contact-left">
@@ -780,7 +872,6 @@
             { y: 30, opacity: 0 }, 
             { y: 0, opacity: 1, duration: 0.8, delay: 0.2 }
         )
-        // Corrected Hero H1 manual wrapper animation
         .fromTo('.hero-title-line', 
             { y: 100, rotationZ: 2, opacity: 0 }, 
             { y: 0, rotationZ: 0, opacity: 1, duration: 1.2, stagger: 0.15 },
@@ -813,7 +904,6 @@
         );
 
         // 5. Scroll Animations
-        
         gsap.utils.toArray('.gsap-split-text').forEach((text) => {
             gsap.fromTo(text.querySelectorAll('.word'), 
                 { y: 100, opacity: 0, rotationZ: 3 },
@@ -880,6 +970,31 @@
                 );
             }
         });
+
+        // --- NEW: Horizontal Scroll for Meet the Team ---
+        const teamPinSection = document.querySelector('.team-pin-section');
+        const teamTrack = document.querySelector('.team-track');
+        
+        function getScrollAmount() {
+            let trackWidth = teamTrack.scrollWidth;
+            return -(trackWidth - window.innerWidth);
+        }
+
+        const horizontalTween = gsap.to(teamTrack, {
+            x: getScrollAmount,
+            ease: "none"
+        });
+
+        ScrollTrigger.create({
+            trigger: teamPinSection,
+            start: "top top",
+            end: () => `+=${getScrollAmount() * -1}`,
+            pin: true,
+            animation: horizontalTween,
+            scrub: 1,
+            invalidateOnRefresh: true
+        });
+        // ------------------------------------------------
 
         const ctaTl = gsap.timeline({
             scrollTrigger: { trigger: ".cta-section", start: "top 75%" }
