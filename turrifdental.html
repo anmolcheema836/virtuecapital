@@ -20,7 +20,7 @@
         :root {
             /* Updated primary color to #08B5F0 */
             --primary-blue: #08B5F0;
-            /* Adjusted light blue to match the new cyan/blue theme */
+            /* Adjusted light blue to match the cyan/blue theme */
             --light-blue: #e0f6fe; 
             --text-dark: #19193c;
             --text-muted: #474763;
@@ -35,7 +35,7 @@
 
         a { text-decoration: none; }
         
-        /* Overriding Bootstrap primary utility classes to match the new color */
+        /* Overriding Bootstrap primary utility classes */
         .bg-primary { background-color: var(--primary-blue) !important; }
         .text-primary { color: var(--primary-blue) !important; }
 
@@ -159,14 +159,6 @@
             position: relative;
             z-index: 2;
         }
-        .form-progress {
-            display: flex;
-            justify-content: space-between;
-            font-size: 12px;
-            color: #888;
-            margin-bottom: 20px;
-        }
-        .form-progress span.active { color: var(--primary-blue); font-weight: bold; }
 
         /* Section Titles */
         .section-title {
@@ -188,6 +180,7 @@
             border-radius: 10px;
             margin-bottom: 20px;
             height: 180px;
+            width: 100%;
             object-fit: cover;
         }
         .card-custom h4 { font-size: 1.2rem; font-weight: 700; }
@@ -237,25 +230,6 @@
             font-weight: bold; margin: 0 auto 10px;
         }
 
-        /* Testimonials */
-        .testimonials-section {
-            background: var(--primary-blue);
-            padding: 80px 0;
-            color: #fff;
-        }
-        .testi-card {
-            background: #fff;
-            color: var(--text-dark);
-            padding: 30px;
-            border-radius: 10px;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-        .testi-card p { font-size: 15px; font-style: italic; }
-        .testi-card .author { font-weight: 700; margin-top: 15px; font-style: normal;}
-
         /* FAQ */
         .faq-section { padding: 80px 0; }
         .accordion-button:not(.collapsed) {
@@ -293,10 +267,9 @@
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-md-6">
-                    <i class="fas fa-map-marker-alt me-2"></i> 6 High Street, Turriff, AB53 4DS
+                    <i class="fas fa-map-marker-alt me-2"></i> Turriff Dental Care, 6 High Street, Turriff, AB53 4DS
                 </div>
                 <div class="col-md-6 text-end">
-                    <!-- Links removed here -->
                 </div>
             </div>
         </div>
@@ -309,14 +282,14 @@
                 <img src="https://www.turriffdentalcare.co.uk/desktop/themes/frontend/turriffdental/images/logo.png" alt="Turriff Dental Care Logo" class="logo-img">
             </a>
             <div class="d-none d-lg-flex align-items-center gap-4">
-                <a href="#" class="btn-primary-custom">Book A Free Consultation Today</a>
+                <a href="#book-appointment" class="btn-primary-custom">Book A Consultation Today</a>
                 <a href="tel:01888562440" class="header-phone"><i class="fas fa-phone-alt me-2"></i>(01888) 562440</a>
             </div>
         </div>
     </header>
 
     <!-- Hero Section -->
-    <section class="hero-section">
+    <section class="hero-section" id="book-appointment">
         <div class="container">
             <div class="row align-items-center">
                 <!-- Left Content -->
@@ -352,36 +325,61 @@
                         </div>
                     </div>
 
-                    <a href="#" class="btn-primary-custom mt-5 d-inline-flex align-items-center gap-2">
-                        <i class="far fa-calendar-alt fs-5"></i> BOOK YOUR CONSULTATION TODAY. <i class="fas fa-chevron-right ms-2"></i>
+                    <a href="#book-form" class="btn-primary-custom mt-5 d-inline-flex align-items-center gap-2">
+                        <i class="far fa-calendar-alt fs-5"></i> BOOK YOUR CONSULTATION TODAY <i class="fas fa-chevron-right ms-2"></i>
                     </a>
                 </div>
 
                 <!-- Right Form -->
-                <div class="col-lg-5">
+                <div class="col-lg-5" id="book-form">
                     <div class="hero-form-card">
-                        <div class="form-progress">
-                            <span class="active"><i class="fas fa-circle text-primary"></i> Step 1</span>
-                            <span><i class="far fa-circle"></i> Step 2</span>
-                        </div>
-                        <h5 class="fw-bold mb-3" style="color: var(--primary-blue);">How many missing teeth are you looking to replace? <span class="text-danger">*</span></h5>
-                        <p class="text-muted" style="font-size: 13px;">We'll help ease the transition with compassion, flexibility, and comfort.</p>
+                        <h4 class="fw-bold mb-2" style="color: var(--primary-blue);">Book an Appointment</h4>
+                        <p class="text-muted small mb-4">Fill out your details below and our friendly team will get back to you promptly.</p>
                         
-                        <form>
+                        <form action="#" method="POST">
+                            <!-- Practice Location Dropdown -->
                             <div class="mb-3">
-                                <select class="form-select">
-                                    <option>Single tooth</option>
-                                    <option>Multiple teeth</option>
-                                    <option>Full arch / All teeth</option>
+                                <label class="form-label fw-semibold text-dark fs-6 mb-1">Practice Location <span class="text-danger">*</span></label>
+                                <select class="form-select" required>
+                                    <option value="" disabled selected>Select Location</option>
+                                    <option value="Turriff">Turriff</option>
+                                    <option value="Macduff">Macduff</option>
+                                    <option value="Buckie">Buckie</option>
                                 </select>
                             </div>
+
+                            <!-- Missing Teeth Dropdown -->
                             <div class="mb-3">
-                                <input type="text" class="form-control" placeholder="Your Name">
+                                <label class="form-label fw-semibold text-dark fs-6 mb-1">Missing Teeth to Replace <span class="text-danger">*</span></label>
+                                <select class="form-select" required>
+                                    <option value="" disabled selected>Select Option</option>
+                                    <option value="Single tooth">Single tooth</option>
+                                    <option value="Multiple teeth">Multiple teeth</option>
+                                    <option value="Full arch / All teeth">Full arch / All teeth</option>
+                                </select>
                             </div>
+
+                            <!-- Full Name -->
                             <div class="mb-3">
-                                <input type="email" class="form-control" placeholder="Email Address">
+                                <input type="text" class="form-control" placeholder="Full Name *" required>
                             </div>
-                            <button type="button" class="btn btn-primary w-100" style="background-color: var(--primary-blue); border:none;">Next</button>
+
+                            <!-- Phone Number -->
+                            <div class="mb-3">
+                                <input type="tel" class="form-control" placeholder="Phone Number *" required>
+                            </div>
+
+                            <!-- Email Address -->
+                            <div class="mb-3">
+                                <input type="email" class="form-control" placeholder="Email Address *" required>
+                            </div>
+
+                            <!-- Message Section (Optional) -->
+                            <div class="mb-3">
+                                <textarea class="form-control" rows="3" placeholder="Message / Additional details (Optional)"></textarea>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary w-100 py-2 fw-bold fs-6" style="background-color: var(--primary-blue); border:none;">Send Enquiry</button>
                         </form>
                     </div>
                 </div>
@@ -406,28 +404,28 @@
                 </div>
                 <div class="col-md-3">
                     <div class="card card-custom">
-                        <img src="https://images.unsplash.com/photo-1609840114035-3c981b782dfe?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Multiple teeth">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTPHgP54sPh6OikJKsI1XMF4jxx8-5QyevuSOmZjwUFvw&s=10" alt="Multiple teeth implant bridge model">
                         <h4>Multiple Teeth</h4>
                         <p>Implants can support a bridge to replace several missing teeth securely.</p>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="card card-custom">
-                        <img src="https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Full Arch">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS3k-6_jQ8kAZdYZopn5AUmLiQUW-rT7yuy5Tgr40RTpl5UNsB1Z7-kmsc&s=10" alt="Full arch smile restoration">
                         <h4>Full Arch</h4>
                         <p>A complete set of fixed, natural-looking teeth supported by strategic implants.</p>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="card card-custom">
-                        <img src="https://images.unsplash.com/photo-1579684385127-1ef15d508118?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Overdenture">
+                        <img src="https://excelentis.org/wp-content/uploads/2024/10/8d5c61b7-ff80-4002-ab8d-e1c07661a46e-jpeg.webp" alt="Overdenture confident healthy smile">
                         <h4>Overdenture</h4>
                         <p>Implant-retained dentures that clip securely into place, eliminating slipping.</p>
                     </div>
                 </div>
             </div>
             <div class="text-center mt-5">
-                <a href="#" class="btn-primary-custom">Book Your Private Consultation Today</a>
+                <a href="#book-form" class="btn-primary-custom">Book Your Private Consultation Today</a>
             </div>
         </div>
     </section>
@@ -446,7 +444,7 @@
                     <h2>What is a Dental Implant?</h2>
                     <p>Unlike traditional removable dentures, dental implants provide a permanent and secure alternative for tooth replacement. An implant itself is a titanium screw that’s carefully placed into your jawbone. Over time, your bone fuses with the implant, creating a strong foundation that acts just like a natural tooth root.</p>
                     <p>Once healed, the implants can support teeth. Multiple implants would be required for a full bridge. Many of our patients in Aberdeenshire and surrounding areas have regained their smiles through our expertly carried out dental implant treatment right here in Turriff.</p>
-                    <a href="#" class="btn-primary-custom mt-3">Learn More</a>
+                    <a href="#book-form" class="btn-primary-custom mt-3">Learn More</a>
                 </div>
             </div>
 
@@ -465,7 +463,7 @@
                         <li><i class="fas fa-check text-primary me-2"></i> Protection for your bone health and facial structure</li>
                         <li><i class="fas fa-check text-primary me-2"></i> Improved confidence and a beautifully natural smile</li>
                     </ul>
-                    <a href="#" class="btn-primary-custom mt-3">Learn More</a>
+                    <a href="#book-form" class="btn-primary-custom mt-3">Learn More</a>
                 </div>
             </div>
         </div>
@@ -523,14 +521,13 @@
                         </div>
                     </div>
 
-                    <a href="#" class="btn-primary-custom w-100 py-3 fs-5">Get Pricing</a>
+                    <a href="#book-form" class="btn-primary-custom w-100 py-3 fs-5">Get Pricing</a>
                 </div>
 
             </div>
         </div>
     </section>
 
-    
     <!-- FAQ Section -->
     <section class="faq-section">
         <div class="container" style="max-width: 800px;">
@@ -608,13 +605,13 @@
                     <p style="color: #fff;">Turriff Dental Care is a premier dental clinic in Aberdeenshire, providing advanced dental implant treatments to help you regain a confident smile.</p>
                 </div>
                 
-                <!-- NEW Call To Action Section (Replaces Quick Links) -->
+                <!-- NEW Call To Action Section -->
                 <div class="col-lg-4 mb-4 mb-lg-0">
                     <h5>Ready for a New Smile?</h5>
                     <p style="color: rgba(255,255,255,0.9); font-size: 14px; margin-bottom: 20px;">
                         Take the first step towards feeling confident again. Schedule your personalized consultation with our expert team today.
                     </p>
-                    <a href="#" class="btn" style="background-color: #fff; color: var(--primary-blue); font-weight: 600; padding: 10px 24px; border-radius: 4px; transition: all 0.3s ease;">
+                    <a href="#book-form" class="btn" style="background-color: #fff; color: var(--primary-blue); font-weight: 600; padding: 10px 24px; border-radius: 4px; transition: all 0.3s ease;">
                         Book Your Consultation
                     </a>
                 </div>
@@ -623,7 +620,7 @@
                 <div class="col-lg-4">
                     <h5>Contact</h5>
                     <p style="color: #fff;">
-                        Coronation Medical Centre,<br>
+                        Turriff Dental Care,<br>
                         6 High Street,<br>
                         Turriff, AB53 4DS
                     </p>
