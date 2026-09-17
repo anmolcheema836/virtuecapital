@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth scroll-pt-24">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lightforce | Premium Solar Buyers Guide</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            DEFAULT: '#F59E0B', // Logo Yellow/Amber
+                            hover: '#D97706',
+                        },
+                        earth: {
+                            bg: '#F9F8F6',      // Sand/Alabaster background
+                            surface: '#F1EFEA', // Slightly darker sand
+                            sage: '#7C8A79',    // Muted Sage green
+                            olive: '#5A6354',   // Darker Olive green
+                            charcoal: '#242422', // Deep earthy black for text
+                            stone: '#8B8A87',   // Muted gray/brown for secondary text
+                        }
+                    },
+                    letterSpacing: {
+                        tighter: '-.04em',
+                        tight: '-.02em',
+                        widest: '.2em',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #F9F8F6;
+            color: #242422;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden;
+        }
+        
+        /* Custom delicate input styling for premium feel */
+        input, select {
+            background-color: transparent;
+            border: none;
+            border-bottom: 1px solid #D6D4CD;
+            border-radius: 0;
+            padding: 12px 0;
+            transition: border-color 0.3s ease;
+        }
+        input:focus, select:focus {
+            outline: none;
+            border-bottom-color: #5A6354;
+            box-shadow: none;
+        }
+        input::placeholder {
+            color: #A3A19A;
+            font-weight: 300;
+        }
+        
+        /* Fine hairline dividers */
+        .hairline-b { border-bottom: 1px solid #EBE9E1; }
+        .hairline-t { border-top: 1px solid #EBE9E1; }
+        .hairline-l { border-left: 1px solid #EBE9E1; }
+
+        /* Subtle image reveal effect */
+        .image-container { overflow: hidden; background: #EBE9E1; }
+        .image-container img { 
+            transition: transform 1.5s ease;
+            mix-blend-mode: multiply;
+            opacity: 0.85;
+            filter: grayscale(20%) contrast(110%);
+        }
+        .image-container:hover img { transform: scale(1.05); }
+
+        /* FAQ Accordion Styling */
+        details > summary { list-style: none; }
+        details > summary::-webkit-details-marker { display: none; }
+        details[open] summary ~ * { animation: sweep .5s ease-in-out; }
+        @keyframes sweep {
+            0%    {opacity: 0; transform: translateY(-10px)}
+            100%  {opacity: 1; transform: translateY(0)}
+        }
+
+        /* --- Scroll Reveal Animations --- */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .reveal-scale {
+            opacity: 0;
+            transform: scale(0.95);
+            transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal-scale.active {
+            opacity: 1;
+            transform: scale(1);
+        }
+        
+        /* Delays for staggered animations */
+        .delay-100 { transition-delay: 100ms; }
+        .delay-200 { transition-delay: 200ms; }
+        .delay-300 { transition-delay: 300ms; }
+        .delay-400 { transition-delay: 400ms; }
+    </style>
+</head>
+<body class="font-sans selection:bg-earth-olive selection:text-white">
+
+    <!-- Premium Minimal Header -->
+    <header class="fixed w-full z-50 mix-blend-multiply bg-earth-bg/95 backdrop-blur-md hairline-b transition-all duration-500 py-3 md:py-4">
+        <div class="max-w-[1400px] mx-auto px-6 md:px-12 flex justify-between items-center">
+            <!-- Large Logo -->
+            <a href="#" class="relative z-20 flex-shrink-0">
+                <img class="h-12 md:h-16 w-auto object-contain" 
+                     src="solartechlogo.png" 
+                     alt="Lightforce Solar Logo">
+            </a>
+            
+            <!-- Desktop Navigation -->
+            <nav class="hidden lg:flex items-center gap-10">
+                <a href="#how-it-works" class="text-sm font-medium tracking-wide text-earth-charcoal hover:text-earth-sage transition-colors">How it Works</a>
+                <a href="#solutions" class="text-sm font-medium tracking-wide text-earth-charcoal hover:text-earth-sage transition-colors">Solutions</a>
+                <a href="#impact" class="text-sm font-medium tracking-wide text-earth-charcoal hover:text-earth-sage transition-colors">Impact</a>
+                <a href="#faq" class="text-sm font-medium tracking-wide text-earth-charcoal hover:text-earth-sage transition-colors">FAQ</a>
+                <a href="#quote" class="text-xs uppercase tracking-widest font-semibold bg-brand hover:bg-brand-hover text-white px-8 py-4 transition-colors">
+                    Get an Estimate
+                </a>
+            </nav>
+
+            <!-- Mobile Menu Button -->
+            <button id="mobile-menu-btn" class="lg:hidden relative z-20 p-2 text-earth-charcoal focus:outline-none">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="square" stroke-linejoin="miter" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+            </button>
+        </div>
+
+        <!-- Mobile Navigation Overlay -->
+        <div id="mobile-menu" class="fixed inset-0 bg-earth-bg z-10 hidden flex-col items-center justify-center space-y-8 h-screen w-screen px-6">
+            <a href="#how-it-works" class="mobile-link text-3xl font-light tracking-tight text-earth-charcoal">How it Works</a>
+            <a href="#solutions" class="mobile-link text-3xl font-light tracking-tight text-earth-charcoal">Solutions</a>
+            <a href="#impact" class="mobile-link text-3xl font-light tracking-tight text-earth-charcoal">Impact</a>
+            <a href="#faq" class="mobile-link text-3xl font-light tracking-tight text-earth-charcoal">FAQ</a>
+            <a href="#quote" class="mobile-link mt-8 text-sm uppercase tracking-widest font-semibold bg-brand text-white px-10 py-5 w-full text-center">Get an Estimate</a>
+        </div>
+    </header>
+
+    <!-- Editorial Hero Section -->
+    <section class="relative pt-32 pb-20 md:pt-56 md:pb-32 px-6 md:px-12 max-w-[1400px] mx-auto hairline-b">
+        <div class="grid lg:grid-cols-12 gap-16 lg:gap-8 items-start">
+            
+            <!-- Massive Typography Column -->
+            <div class="lg:col-span-7 relative z-10">
+                <span class="reveal block text-xs font-semibold uppercase tracking-widest text-earth-sage mb-6">Your Solar Buyers Guide</span>
+                <h1 class="reveal delay-100 text-[3rem] md:text-[5.5rem] leading-[0.95] font-light tracking-tighter text-earth-charcoal mb-8">
+                    Powering <br>
+                    your home <br>
+                    <span class="font-medium text-earth-olive">with the sun.</span>
+                </h1>
+                <p class="reveal delay-200 text-lg md:text-xl text-earth-stone font-light max-w-lg leading-relaxed mb-10 md:mb-12">
+                    Understand how solar works and the key benefits of choosing the right partner on your journey to energy independence.
+                </p>
+                
+                <div class="reveal delay-300 flex flex-col sm:flex-row gap-6 sm:gap-8 text-sm uppercase tracking-widest text-earth-stone font-medium">
+                    <div class="flex items-center gap-3">
+                        <svg class="w-5 h-5 text-earth-sage" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="square" stroke-linejoin="miter" stroke-width="1.5" d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                        100% NZ Owned
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <svg class="w-5 h-5 text-earth-sage" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="square" stroke-linejoin="miter" stroke-width="1.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        Over 6,000 Installs
+                    </div>
+                </div>
+            </div>
+
+            <!-- Integrated, Lean Lead Capture Form -->
+            <div class="reveal-scale delay-400 lg:col-span-5 w-full max-w-md mx-auto lg:mx-0 lg:ml-auto mt-12 lg:mt-0">
+                <div id="quote" class="bg-earth-surface p-8 md:p-12 relative border border-stone-200/50">
+                    <h3 class="text-2xl font-light tracking-tight text-earth-charcoal mb-2">Request an Estimate</h3>
+                    <p class="text-sm text-earth-stone font-light mb-10">See how much you could save over the next 10 years.</p>
+                    
+                    <form action="#" method="POST" class="space-y-6">
+                        <div>
+                            <input type="text" placeholder="Full Name" required class="w-full text-earth-charcoal">
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            <div>
+                                <input type="tel" placeholder="Phone Number" required class="w-full text-earth-charcoal">
+                            </div>
+                            <div>
+                                <input type="email" placeholder="Email Address" required class="w-full text-earth-charcoal">
+                            </div>
+                        </div>
+                        <div class="pt-2">
+                            <label class="block text-xs uppercase tracking-widest text-earth-stone mb-2">Monthly Power Bill</label>
+                            <select class="w-full text-earth-charcoal" required>
+                                <option disabled selected>Select average</option>
+                                <option>Under $150</option>
+                                <option>$150 - $250</option>
+                                <option>$250 - $400</option>
+                                <option>Over $400</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="w-full bg-brand hover:bg-brand-hover text-white text-xs uppercase tracking-widest font-semibold py-5 mt-8 transition-colors flex justify-between items-center px-6">
+                            Calculate Savings
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="square" stroke-linejoin="miter" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How Solar Works (Icon Grid) -->
+    <section id="how-it-works" class="py-20 md:py-32 hairline-b bg-earth-bg">
+        <div class="max-w-[1400px] mx-auto px-6 md:px-12">
+            <div class="mb-16 md:mb-20 max-w-3xl">
+                <span class="reveal block text-xs font-semibold uppercase tracking-widest text-earth-sage mb-4">The Process</span>
+                <h2 class="reveal delay-100 text-4xl md:text-5xl font-light tracking-tight text-earth-charcoal mb-6">How solar works.</h2>
+                <p class="reveal delay-200 text-lg text-earth-stone font-light leading-relaxed">When the sun shines, an abundance of energy is available. Here is the exact journey of that energy into your home.</p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-y-12 gap-x-12">
+                <!-- Step 1 -->
+                <div class="reveal delay-100">
+                    <svg class="w-10 h-10 text-brand mb-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                    <div class="text-xs uppercase tracking-widest font-semibold text-earth-stone mb-2">01. The Sun</div>
+                    <p class="font-light text-earth-charcoal leading-relaxed">When the sun is up, there’s an abundance of free energy available to power your entire home.</p>
+                </div>
+                <!-- Step 2 -->
+                <div class="reveal delay-200">
+                    <svg class="w-10 h-10 text-earth-olive mb-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="square" stroke-linejoin="miter" stroke-width="1.5" d="M4 6a2 2 0 012-2h12a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V6z M4 10h16 M10 4v16"></path></svg>
+                    <div class="text-xs uppercase tracking-widest font-semibold text-earth-stone mb-2">02. Solar Panels</div>
+                    <p class="font-light text-earth-charcoal leading-relaxed">PV (photovoltaic) cells in the panels convert this brilliant sunlight directly into DC electricity.</p>
+                </div>
+                <!-- Step 3 -->
+                <div class="reveal delay-300">
+                    <svg class="w-10 h-10 text-earth-olive mb-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="square" stroke-linejoin="miter" stroke-width="1.5" d="M8 7h8 M8 17h8 M12 7v10 M5 3h14v18H5z"></path></svg>
+                    <div class="text-xs uppercase tracking-widest font-semibold text-earth-stone mb-2">03. Inverter</div>
+                    <p class="font-light text-earth-charcoal leading-relaxed">Converts the DC electricity into usable 240V AC electricity to safely power your appliances.</p>
+                </div>
+                <!-- Step 4 -->
+                <div class="reveal delay-100">
+                    <svg class="w-10 h-10 text-earth-olive mb-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="square" stroke-linejoin="miter" stroke-width="1.5" d="M3 4h18v16H3z M8 4v16 M16 4v16"></path></svg>
+                    <div class="text-xs uppercase tracking-widest font-semibold text-earth-stone mb-2">04. Switchboard</div>
+                    <p class="font-light text-earth-charcoal leading-relaxed">Power enters your switchboard, which seamlessly directs the electricity to different circuits.</p>
+                </div>
+                <!-- Step 5 -->
+                <div class="reveal delay-200">
+                    <svg class="w-10 h-10 text-brand mb-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="square" stroke-linejoin="miter" stroke-width="1.5" d="M20 12V8H6a2 2 0 01-2-2c0-1.1.9-2 2-2h12v4"></path><path stroke-linecap="square" stroke-linejoin="miter" stroke-width="1.5" d="M4 6v12c0 1.1.9 2 2 2h14v-4H6a2 2 0 01-2-2V6z"></path><path stroke-linecap="square" stroke-linejoin="miter" stroke-width="1.5" d="M16 12h-4v4h4v-4z"></path></svg>
+                    <div class="text-xs uppercase tracking-widest font-semibold text-earth-stone mb-2">05. Battery Storage</div>
+                    <p class="font-light text-earth-charcoal leading-relaxed">Adding a battery stores your excess energy to be used exactly when you need it—like after sunset.</p>
+                </div>
+                <!-- Step 6 -->
+                <div class="reveal delay-300">
+                    <svg class="w-10 h-10 text-earth-olive mb-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="square" stroke-linejoin="miter" stroke-width="1.5" d="M12 22V8 M8 12l4-4 4 4 M4 22h16"></path></svg>
+                    <div class="text-xs uppercase tracking-widest font-semibold text-earth-stone mb-2">06. The Grid Meter</div>
+                    <p class="font-light text-earth-charcoal leading-relaxed">An import/export meter measures excess energy fed back to the grid, and what you draw when needed.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Energy Trends & Economics -->
+    <section class="py-20 md:py-32 bg-earth-olive text-earth-bg hairline-b">
+        <div class="max-w-[1400px] mx-auto px-6 md:px-12 grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+            
+            <!-- Left Data -->
+            <div>
+                <span class="reveal block text-xs font-semibold uppercase tracking-widest text-brand mb-6">Energy Trends</span>
+                <h2 class="reveal delay-100 text-[2.5rem] md:text-[4rem] font-light tracking-tight leading-[1.1] mb-8">
+                    The cost of power has doubled in 10 years.
+                </h2>
+                <div class="grid grid-cols-2 gap-8 border-t border-earth-bg/20 pt-8 mt-8 md:mt-12">
+                    <div class="reveal delay-200">
+                        <div class="text-4xl md:text-5xl font-light text-brand mb-2">75%</div>
+                        <p class="text-sm font-light leading-relaxed text-earth-bg/80">Forecast demand increase on the national grid over the next decade.</p>
+                    </div>
+                    <div class="reveal delay-300">
+                        <div class="text-4xl md:text-5xl font-light text-brand mb-2">6x</div>
+                        <p class="text-sm font-light leading-relaxed text-earth-bg/80">Return on investment compared to leaving your money in the bank.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Text -->
+            <div class="reveal-scale delay-200 bg-earth-bg text-earth-charcoal p-8 md:p-16">
+                <h3 class="text-2xl font-medium tracking-tight mb-6">Investing vs the bank</h3>
+                <div class="space-y-6 font-light text-earth-stone leading-relaxed">
+                    <p>The economics of installing your own solar system now makes sense. Payback on a solar system can be as quick as 5 years, depending on your energy demands and usage profile.</p>
+                    <p>If you put the upfront cost onto your mortgage, you save money from day 1 (if your bill is over $180/mo). With an 8kWh system + battery reducing your bill by 80%, each month you gain money you otherwise would have spent.</p>
+                    <p>As an asset, studies show installing a solar PV system adds immediate value to your property price while appealing to potential buyers.</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Lean Solutions Listing -->
+    <section id="solutions" class="py-20 md:py-32 hairline-b">
+        <div class="max-w-[1400px] mx-auto px-6 md:px-12">
+            <div class="mb-16 md:mb-20">
+                <span class="reveal block text-xs font-semibold uppercase tracking-widest text-earth-sage mb-4">System Basics</span>
+                <h2 class="reveal delay-100 text-4xl md:text-5xl font-light tracking-tight text-earth-charcoal">No one-size-fits-all.</h2>
+            </div>
+
+            <!-- List Layout -->
+            <div class="space-y-0 border-t border-stone-200">
+                <!-- Solution 01 -->
+                <div class="reveal delay-100 group flex flex-col md:flex-row md:items-center py-8 md:py-16 border-b border-stone-200 hover:bg-earth-surface transition-colors duration-500 md:px-4 md:-mx-4 cursor-default">
+                    <div class="md:w-1/4 text-3xl md:text-4xl font-light text-earth-stone mb-2 md:mb-0">01.</div>
+                    <div class="md:w-1/3 md:pr-8">
+                        <h3 class="text-xl md:text-2xl font-medium tracking-tight text-earth-charcoal">Solar Panels Only</h3>
+                        <p class="text-xs uppercase tracking-widest text-earth-sage mt-2">Grid-Tied System</p>
+                    </div>
+                    <div class="md:w-5/12 mt-4 md:mt-0">
+                        <p class="text-sm md:text-base text-earth-stone font-light leading-relaxed">
+                            PV cells convert sunlight into DC electricity. Your home uses this power first. Any excess energy is seamlessly exported back to the grid. Ideal if you are home during daylight hours.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Solution 02 -->
+                <div class="reveal delay-200 group flex flex-col md:flex-row md:items-center py-8 md:py-16 border-b border-stone-200 hover:bg-earth-surface transition-colors duration-500 md:px-4 md:-mx-4 cursor-default relative">
+                    <div class="absolute right-4 md:right-8 top-8 md:top-1/2 md:-translate-y-1/2 block opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                        <span class="text-[10px] uppercase tracking-widest bg-earth-olive text-white px-3 py-1">Most Common</span>
+                    </div>
+                    <div class="md:w-1/4 text-3xl md:text-4xl font-light text-earth-stone mb-2 md:mb-0 mt-6 md:mt-0">02.</div>
+                    <div class="md:w-1/3 md:pr-8">
+                        <h3 class="text-xl md:text-2xl font-medium tracking-tight text-earth-charcoal">Solar + Battery</h3>
+                        <p class="text-xs uppercase tracking-widest text-earth-sage mt-2">Energy Storage</p>
+                    </div>
+                    <div class="md:w-5/12 mt-4 md:mt-0">
+                        <p class="text-sm md:text-base text-earth-stone font-light leading-relaxed">
+                            A battery is a great way to maximise the potential of your panels. Utilise the electricity generated when it suits your energy needs, not simply when it is generated.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Solution 03 -->
+                <div class="reveal delay-300 group flex flex-col md:flex-row md:items-center py-8 md:py-16 border-b border-stone-200 hover:bg-earth-surface transition-colors duration-500 md:px-4 md:-mx-4 cursor-default">
+                    <div class="md:w-1/4 text-3xl md:text-4xl font-light text-earth-stone mb-2 md:mb-0">03.</div>
+                    <div class="md:w-1/3 md:pr-8">
+                        <h3 class="text-xl md:text-2xl font-medium tracking-tight text-earth-charcoal">Off-Grid Systems</h3>
+                        <p class="text-xs uppercase tracking-widest text-earth-sage mt-2">Total Independence</p>
+                    </div>
+                    <div class="md:w-5/12 mt-4 md:mt-0">
+                        <p class="text-sm md:text-base text-earth-stone font-light leading-relaxed">
+                            Disconnected from the grid entirely. Ideal for remote locations. Requires larger panel arrays, substantial battery storage, and often a backup generator. Much larger investment.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Editorial "Your Home" Section (Image + Text) -->
+    <section class="py-20 md:py-32 hairline-b bg-earth-surface">
+        <div class="max-w-[1400px] mx-auto px-6 md:px-12">
+            <div class="grid lg:grid-cols-2 gap-12 lg:gap-24 items-stretch">
+                <!-- Large Image Overlap -->
+                <div class="reveal-scale relative min-h-[400px] md:min-h-[500px] w-full image-container">
+                    <img src="https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="Roof assessment" class="absolute inset-0 w-full h-full object-cover">
+                    <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+                        <svg class="w-24 md:w-32 h-24 md:h-32 text-white/30" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="square" stroke-linejoin="miter" stroke-width="0.5" d="M3 12l9-9 9 9 M3 12h18 M12 3v18"></path></svg>
+                    </div>
+                </div>
+                
+                <!-- Text Content -->
+                <div class="flex flex-col justify-center mt-8 lg:mt-0">
+                    <span class="reveal block text-xs font-semibold uppercase tracking-widest text-brand mb-4 md:mb-6">Your Home</span>
+                    <h2 class="reveal delay-100 text-4xl md:text-5xl font-light tracking-tight mb-6 md:mb-8 text-earth-charcoal">
+                        Getting to know <br>your roof.
+                    </h2>
+                    <p class="reveal delay-200 text-base md:text-lg font-light text-earth-stone leading-relaxed mb-8 md:mb-10">
+                        Understanding the physical aspects of your home is a major part of designing a solar system that will work for you.
+                    </p>
+                    
+                    <div class="space-y-8">
+                        <div class="reveal delay-100">
+                            <h4 class="text-sm font-semibold uppercase tracking-widest text-earth-charcoal mb-2 flex items-center">
+                                <svg class="w-4 h-4 mr-2 text-earth-sage" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="square" stroke-linejoin="miter" stroke-width="2" d="M12 3v18M3 12h18"></path></svg>
+                                Which way is the sun?
+                            </h4>
+                            <p class="text-sm font-light text-earth-stone leading-relaxed">Different roof orientations require different solutions. We use LiDAR software to analyse the sun’s intensity on your roof throughout the year.</p>
+                        </div>
+                        <div class="reveal delay-200">
+                            <h4 class="text-sm font-semibold uppercase tracking-widest text-earth-charcoal mb-2 flex items-center">
+                                <svg class="w-4 h-4 mr-2 text-earth-sage" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="square" stroke-linejoin="miter" stroke-width="2" d="M12 3v18M3 12h18"></path></svg>
+                                The pitch angle
+                            </h4>
+                            <p class="text-sm font-light text-earth-stone leading-relaxed">Decisions are made on mounting flat or on raised stands (tilts), ensuring a minimum 10 degrees for water run-off and optimal angle capture.</p>
+                        </div>
+                        <div class="reveal delay-300">
+                            <h4 class="text-sm font-semibold uppercase tracking-widest text-earth-charcoal mb-2 flex items-center">
+                                <svg class="w-4 h-4 mr-2 text-earth-sage" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="square" stroke-linejoin="miter" stroke-width="2" d="M12 3v18M3 12h18"></path></svg>
+                                Minimising shading
+                            </h4>
+                            <p class="text-sm font-light text-earth-stone leading-relaxed">Nearby trees, buildings, and chimneys need to be strictly factored into the system design and component selection to maximise energy.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Environmental Impact / Steps to Start -->
+    <section id="impact" class="py-20 md:py-32 hairline-b bg-earth-bg">
+        <div class="max-w-[1400px] mx-auto px-6 md:px-12">
+            
+            <div class="text-center mb-16 md:mb-20 max-w-3xl mx-auto">
+                <span class="reveal block text-xs font-semibold uppercase tracking-widest text-earth-sage mb-4">A Lighter Future</span>
+                <h2 class="reveal delay-100 text-4xl md:text-5xl font-light tracking-tight text-earth-charcoal mb-6">Environmental Impact</h2>
+                <p class="reveal delay-200 text-base md:text-lg text-earth-stone font-light leading-relaxed">It’s an incredible feeling to have your home running on sunlight. A typical family can be proud to see the equivalent environmental impact of:</p>
+            </div>
+
+            <!-- Impact Data Grid -->
+            <div class="grid sm:grid-cols-3 gap-8 text-center border-b border-stone-200 pb-16 md:pb-24 mb-16 md:mb-24">
+                <div class="reveal delay-100">
+                    <svg class="w-10 md:w-12 h-10 md:h-12 text-earth-sage mx-auto mb-4 md:mb-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="square" stroke-linejoin="miter" stroke-width="1" d="M3 15C3 8 8 3 15 3c0 7-5 12-12 12z M15 3c4 0 6 2 6 6-2 0-4-1-6-6z M3 21l6-6"></path></svg>
+                    <div class="text-3xl md:text-4xl font-light text-earth-charcoal mb-2">900<span class="text-lg">kg</span></div>
+                    <div class="text-[10px] md:text-xs uppercase tracking-widest text-earth-stone">Carbon reduction yearly</div>
+                </div>
+                <div class="reveal delay-200 sm:border-l sm:border-r border-stone-200 px-4 border-t border-b sm:border-t-0 sm:border-b-0 py-8 sm:py-0">
+                    <svg class="w-10 md:w-12 h-10 md:h-12 text-earth-sage mx-auto mb-4 md:mb-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="square" stroke-linejoin="miter" stroke-width="1" d="M19 17h2v3H3v-3h2 M5 12l2-7h10l2 7 M3 12h18v5H3z M7 14h2 M15 14h2"></path></svg>
+                    <div class="text-3xl md:text-4xl font-light text-earth-charcoal mb-2">4,000<span class="text-lg">km</span></div>
+                    <div class="text-[10px] md:text-xs uppercase tracking-widest text-earth-stone">Less driving per year</div>
+                </div>
+                <div class="reveal delay-300">
+                    <svg class="w-10 md:w-12 h-10 md:h-12 text-earth-sage mx-auto mb-4 md:mb-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="square" stroke-linejoin="miter" stroke-width="1" d="M12 22V12 M8 12c0-4 4-8 4-8s4 4 4 8H8z M12 16l3-3 M12 18l-2-2"></path></svg>
+                    <div class="text-3xl md:text-4xl font-light text-earth-charcoal mb-2">40</div>
+                    <div class="text-[10px] md:text-xs uppercase tracking-widest text-earth-stone">Trees planted yearly</div>
+                </div>
+            </div>
+
+            <!-- Lightforce Differences -->
+            <div class="grid lg:grid-cols-4 gap-12">
+                <div class="reveal">
+                    <h4 class="text-xl font-medium text-earth-charcoal mb-4">The Next Steps</h4>
+                    <p class="text-sm font-light text-earth-stone leading-relaxed">We want to ensure you end up with the system that is exactly right for your family now and into the future.</p>
+                </div>
+                <div class="lg:col-span-3 grid sm:grid-cols-3 gap-8">
+                    <div class="reveal delay-100">
+                        <div class="text-[10px] md:text-xs uppercase tracking-widest font-semibold text-brand mb-2">Step 01</div>
+                        <h5 class="font-medium text-earth-charcoal mb-2">Talk through options</h5>
+                        <p class="text-sm font-light text-earth-stone leading-relaxed">A consultant talks to you to understand your energy needs and answer any questions.</p>
+                    </div>
+                    <div class="reveal delay-200">
+                        <div class="text-[10px] md:text-xs uppercase tracking-widest font-semibold text-brand mb-2">Step 02</div>
+                        <h5 class="font-medium text-earth-charcoal mb-2">Review eligibility</h5>
+                        <p class="text-sm font-light text-earth-stone leading-relaxed">Using LiDAR software we check roof pitch, sun intensity, and shading constraints.</p>
+                    </div>
+                    <div class="reveal delay-300">
+                        <div class="text-[10px] md:text-xs uppercase tracking-widest font-semibold text-brand mb-2">Step 03</div>
+                        <h5 class="font-medium text-earth-charcoal mb-2">Design your system</h5>
+                        <p class="text-sm font-light text-earth-stone leading-relaxed">We present a final design that delivers maximum savings with minimum effort on your part.</p>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </section>
+
+    <!-- Massive Typography Testimonial -->
+    <section class="py-24 md:py-48 hairline-b bg-earth-olive text-earth-bg">
+        <div class="max-w-[1200px] mx-auto px-6 md:px-12 text-center">
+            
+            <svg class="reveal w-8 h-8 text-brand mx-auto mb-8 md:mb-12" fill="currentColor" viewBox="0 0 32 32"><path d="M9.352 4C4.456 7.456 1 13.12 1 19.36c0 5.088 3.072 8.064 6.624 8.064 3.36 0 5.856-2.688 5.856-5.856 0-3.168-2.208-5.472-5.088-5.472-.576 0-1.344.096-1.536.192.48-3.264 3.552-7.104 6.624-9.024L9.352 4zm16.512 0c-4.896 3.456-8.352 9.12-8.352 15.36 0 5.088 3.072 8.064 6.624 8.064 3.264 0 5.856-2.688 5.856-5.856 0-3.168-2.304-5.472-5.184-5.472-.576 0-1.248.096-1.44.192.48-3.264 3.456-7.104 6.528-9.024L25.864 4z"></path></svg>
+            
+            <h3 class="reveal delay-100 text-2xl md:text-5xl lg:text-6xl font-light tracking-tight leading-[1.2] md:leading-[1.1] mb-10 md:mb-12 max-w-4xl mx-auto">
+                "I wanted to get solar to help with the environmental effects of producing electricity. My kids are solar kids, they love it. Our home is powered by the sun."
+            </h3>
+            
+            <div class="reveal delay-200">
+                <div class="text-[10px] md:text-sm font-semibold uppercase tracking-widest mb-1 text-earth-bg">Elke Chillwell</div>
+                <div class="text-[10px] md:text-sm font-light text-earth-bg/70 mb-4">Grey Lynn, Auckland</div>
+                <div class="text-[10px] md:text-xs uppercase tracking-widest text-brand font-medium">
+                    21 panels (6.3kW) / 2 batteries (16.4kWh)
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQs & Checklist -->
+    <section id="faq" class="py-20 md:py-32 hairline-b bg-earth-surface">
+        <div class="max-w-[1400px] mx-auto px-6 md:px-12">
+            <div class="grid lg:grid-cols-12 gap-16 md:gap-24 items-start">
+                
+                <!-- FAQs List -->
+                <div class="lg:col-span-7">
+                    <span class="reveal block text-xs font-semibold uppercase tracking-widest text-earth-sage mb-4">Knowledge Base</span>
+                    <h2 class="reveal delay-100 text-4xl md:text-5xl font-light tracking-tight text-earth-charcoal mb-10 md:mb-12">Common FAQ's</h2>
+
+                    <div class="border-t border-stone-300">
+                        <!-- Q1 -->
+                        <details class="reveal delay-100 group py-6 border-b border-stone-300 cursor-pointer">
+                            <summary class="flex justify-between items-center font-medium text-base md:text-lg text-earth-charcoal focus:outline-none">
+                                What happens when it's not sunny?
+                                <span class="text-earth-stone group-open:rotate-45 transition-transform duration-300 text-2xl font-light">+</span>
+                            </summary>
+                            <p class="text-sm md:text-base text-earth-stone font-light leading-relaxed mt-4">
+                                In bad weather or winter, solar output reduces 25-50%. At night, panels stop producing. If you have a battery, excess energy stored during the day covers your night usage, effectively giving 24hr solar access.
+                            </p>
+                        </details>
+                        <!-- Q2 -->
+                        <details class="reveal delay-200 group py-6 border-b border-stone-300 cursor-pointer">
+                            <summary class="flex justify-between items-center font-medium text-base md:text-lg text-earth-charcoal focus:outline-none">
+                                What happens in a blackout?
+                                <span class="text-earth-stone group-open:rotate-45 transition-transform duration-300 text-2xl font-light">+</span>
+                            </summary>
+                            <p class="text-sm md:text-base text-earth-stone font-light leading-relaxed mt-4">
+                                This is where batteries shine. The battery supplies stored energy. Whether it continues charging from panels during an outage depends on having a specific Emergency Power Supply (EPS) setup.
+                            </p>
+                        </details>
+                        <!-- Q3 -->
+                        <details class="reveal delay-300 group py-6 border-b border-stone-300 cursor-pointer">
+                            <summary class="flex justify-between items-center font-medium text-base md:text-lg text-earth-charcoal focus:outline-none">
+                                How long does the system last?
+                                <span class="text-earth-stone group-open:rotate-45 transition-transform duration-300 text-2xl font-light">+</span>
+                            </summary>
+                            <p class="text-sm md:text-base text-earth-stone font-light leading-relaxed mt-4">
+                                Designed to last over 25 years. We provide 10-year workmanship warranties, 30-year panel warranties, and 10-year battery warranties. Quality solutions lose very little efficiency over time.
+                            </p>
+                        </details>
+                        <!-- Q4 -->
+                        <details class="reveal delay-400 group py-6 border-b border-stone-300 cursor-pointer">
+                            <summary class="flex justify-between items-center font-medium text-base md:text-lg text-earth-charcoal focus:outline-none">
+                                Are there government subsidies?
+                                <span class="text-earth-stone group-open:rotate-45 transition-transform duration-300 text-2xl font-light">+</span>
+                            </summary>
+                            <p class="text-sm md:text-base text-earth-stone font-light leading-relaxed mt-4">
+                                No, there are currently no government subsidies or incentives for residential solar in New Zealand. The ROI makes sense natively.
+                            </p>
+                        </details>
+                    </div>
+                </div>
+
+                <!-- Installer Checklist Sidebar -->
+                <div class="reveal-scale delay-200 lg:col-span-5 bg-earth-bg p-8 md:p-12 border border-stone-200">
+                    <h3 class="text-xl font-medium tracking-tight text-earth-charcoal mb-4">Installer Checklist</h3>
+                    <p class="text-sm font-light text-earth-stone mb-8 leading-relaxed">Ensure you ask these questions before choosing your solar partner:</p>
+                    
+                    <ul class="space-y-4 text-sm font-light text-earth-charcoal">
+                        <li class="flex items-start">
+                            <svg class="w-4 h-4 text-brand mt-0.5 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="square" stroke-linejoin="miter" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            Do they specialise specifically in solar?
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-4 h-4 text-brand mt-0.5 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="square" stroke-linejoin="miter" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            Do they offer real-time monitoring?
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-4 h-4 text-brand mt-0.5 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="square" stroke-linejoin="miter" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            Do you own the system fully?
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-4 h-4 text-brand mt-0.5 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="square" stroke-linejoin="miter" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            Is service fully in-house or subcontracted?
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-4 h-4 text-brand mt-0.5 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="square" stroke-linejoin="miter" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            Are their batteries cobalt-free?
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-4 h-4 text-brand mt-0.5 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="square" stroke-linejoin="miter" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            Do they have in-house engineers?
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-4 h-4 text-brand mt-0.5 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="square" stroke-linejoin="miter" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            Do they have ongoing customer support?
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Minimal Footer -->
+    <footer class="bg-earth-bg pt-20 md:pt-24 pb-12">
+        <div class="max-w-[1400px] mx-auto px-6 md:px-12">
+            
+            <div class="flex flex-col md:flex-row justify-between items-start border-b border-stone-200 pb-16 md:pb-20 mb-8 md:mb-12">
+                <!-- Large Logo Footer -->
+                <div class="mb-12 md:mb-0 max-w-md">
+                    <img class="h-16 md:h-24 w-auto object-contain mb-8 mix-blend-multiply" 
+                         src="solartechlogo.png" 
+                         alt="Lightforce Solar Logo">
+                    <p class="text-base md:text-lg font-light text-earth-stone leading-relaxed">
+                        Making the most of the sun to lighten your power bill and your footprint.
+                    </p>
+                </div>
+
+                <!-- Lean Contact Details -->
+                <div class="text-left md:text-right flex flex-col md:items-end">
+                    <h4 class="text-[10px] md:text-xs font-semibold uppercase tracking-widest text-earth-sage mb-4 md:mb-6">Let the sun in</h4>
+                    <a href="tel:08005376527" class="text-3xl md:text-4xl font-light tracking-tight text-earth-charcoal hover:text-brand transition-colors mb-2 md:mb-4 block">0800 537 6527</a>
+                    <a href="mailto:info@lightforce.co.nz" class="text-base md:text-lg font-light text-earth-stone hover:text-earth-charcoal transition-colors mb-8 block">info@lightforce.co.nz</a>
+                    <a href="#quote" class="inline-block border border-earth-charcoal text-earth-charcoal text-[10px] md:text-xs uppercase tracking-widest font-semibold px-8 py-4 hover:bg-earth-charcoal hover:text-white transition-colors">
+                        Calculate Savings
+                    </a>
+                </div>
+            </div>
+
+            <!-- Bottom Links -->
+            <div class="flex flex-col md:flex-row justify-between items-center text-[10px] md:text-xs font-medium uppercase tracking-widest text-earth-stone">
+                <p>&copy; 2024 Lightforce Solar. All rights reserved.</p>
+                <div class="flex space-x-6 md:space-x-8 mt-6 md:mt-0">
+                    <a href="#" class="hover:text-earth-charcoal transition-colors">Instagram</a>
+                    <a href="#" class="hover:text-earth-charcoal transition-colors">Facebook</a>
+                    <a href="#" class="hover:text-earth-charcoal transition-colors">LinkedIn</a>
+                </div>
+            </div>
+            
+        </div>
+    </footer>
+
+    <!-- Interactive Scripts (Animations & Mobile Menu) -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // Intersection Observer for Scroll Reveals
+            const revealElements = document.querySelectorAll('.reveal, .reveal-scale');
+            
+            const revealOptions = {
+                threshold: 0.1,
+                rootMargin: "0px 0px -50px 0px"
+            };
+
+            const revealOnScroll = new IntersectionObserver(function(entries, observer) {
+                entries.forEach(entry => {
+                    if (!entry.isIntersecting) {
+                        return;
+                    } else {
+                        entry.target.classList.add('active');
+                        observer.unobserve(entry.target); // Run once
+                    }
+                });
+            }, revealOptions);
+
+            revealElements.forEach(el => {
+                revealOnScroll.observe(el);
+            });
+
+            // Mobile Menu Toggle Logic
+            const mobileBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const mobileLinks = document.querySelectorAll('.mobile-link');
+            const menuIcon = mobileBtn.querySelector('svg');
+
+            function toggleMenu() {
+                const isHidden = mobileMenu.classList.contains('hidden');
+                
+                if (isHidden) {
+                    mobileMenu.classList.remove('hidden');
+                    mobileMenu.classList.add('flex');
+                    document.body.style.overflow = 'hidden'; // Prevent scrolling
+                    // Change to Close (X) icon
+                    menuIcon.innerHTML = '<path stroke-linecap="square" stroke-linejoin="miter" stroke-width="1.5" d="M6 18L18 6M6 6l12 12"></path>';
+                } else {
+                    mobileMenu.classList.add('hidden');
+                    mobileMenu.classList.remove('flex');
+                    document.body.style.overflow = ''; // Restore scrolling
+                    // Change back to Hamburger icon
+                    menuIcon.innerHTML = '<path stroke-linecap="square" stroke-linejoin="miter" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16"></path>';
+                }
+            }
+
+            mobileBtn.addEventListener('click', toggleMenu);
+
+            // Close menu when a link is clicked
+            mobileLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (!mobileMenu.classList.contains('hidden')) {
+                        toggleMenu();
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
