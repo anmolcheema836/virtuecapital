@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Espresso Bib Apron - Wearo</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Added a lighter weight for a more premium, modern feel -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            /* Extracted from your new logo */
+            --brand-dark: #111111;       /* Deep matte black from logo background */
+            --brand-dark-2: #1e1e1e;     /* Slightly lighter for contrast */
+            --brand-copper: #C27C59;     /* The bronze/copper text color */
+            --brand-copper-hover: #a36546;
+            --brand-grey: #6b6b6b;
+            --bg-light: #fafafa;         /* Off-white for the main body */
+            --border-color: #e5e7eb;
+            --font-main: 'Poppins', sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-main);
+            color: var(--brand-dark);
+            line-height: 1.6;
+            background-color: var(--bg-light);
+        }
+
+        a { text-decoration: none; color: inherit; transition: color 0.2s ease; }
+        ul { list-style: none; }
+
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* --- Promo Banner --- */
+        .promo-banner {
+            background-color: var(--brand-copper);
+            color: #fff;
+            text-align: center;
+            padding: 10px 0;
+            font-size: 13px;
+            letter-spacing: 0.5px;
+        }
+        .promo-banner a {
+            color: #fff;
+            text-decoration: underline;
+            font-weight: 600;
+        }
+
+        /* --- Header (Dark Theme to match logo) --- */
+        header {
+            background-color: var(--brand-dark);
+            color: white;
+            padding: 15px 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        /* Adjusted for the square format of your logo */
+        .logo img { 
+            height: 90px; 
+            object-fit: contain;
+        }
+
+        .search-container {
+            flex-grow: 1;
+            max-width: 500px;
+            position: relative;
+            margin: 0 40px;
+        }
+        .search-container input {
+            width: 100%;
+            padding: 12px 20px;
+            border-radius: 4px;
+            border: 1px solid #333;
+            background-color: var(--brand-dark-2);
+            color: white;
+            font-family: var(--font-main);
+            font-size: 14px;
+            outline: none;
+            transition: border 0.3s;
+        }
+        .search-container input:focus {
+            border-color: var(--brand-copper);
+        }
+        .search-container input::placeholder {
+            color: #888;
+        }
+        .search-container button {
+            position: absolute;
+            right: 5px;
+            top: 5px;
+            bottom: 5px;
+            width: 40px;
+            border-radius: 4px;
+            background-color: transparent;
+            border: none;
+            color: var(--brand-copper);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+        .search-container button:hover {
+            background-color: rgba(194, 124, 89, 0.1);
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            font-weight: 500;
+            font-size: 14px;
+            letter-spacing: 0.5px;
+        }
+        .header-actions > span { cursor: pointer; transition: color 0.2s; }
+        .header-actions > span:hover { color: var(--brand-copper); }
+        
+        .header-icons {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+        .icon-btn { cursor: pointer; display: flex; align-items: center; color: white; transition: color 0.2s; }
+        .icon-btn:hover { color: var(--brand-copper); }
+
+        /* --- Navigation --- */
+        nav {
+            background-color: var(--brand-dark-2);
+            border-bottom: 1px solid #333;
+        }
+        nav ul {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            padding: 15px 0;
+        }
+        nav a {
+            color: white;
+            font-weight: 400;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px; /* Matches the "WEARO" typography feel */
+        }
+        nav a:hover { color: var(--brand-copper); }
+
+        /* --- Breadcrumbs --- */
+        .breadcrumbs {
+            padding: 25px 0;
+            font-size: 13px;
+            color: var(--brand-grey);
+        }
+        .breadcrumbs a { transition: color 0.2s; }
+        .breadcrumbs a:hover { color: var(--brand-copper); }
+
+        /* --- Product Layout --- */
+        .product-main {
+            display: grid;
+            grid-template-columns: 450px 1fr;
+            gap: 60px;
+            margin-bottom: 80px;
+        }
+
+        @media (max-width: 900px) {
+            .product-main { grid-template-columns: 1fr; gap: 40px;}
+        }
+
+        /* Left Col: Images */
+        .image-gallery {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .main-image-container {
+            width: 100%;
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+            margin-bottom: 20px;
+            cursor: zoom-in;
+            background-color: #fff;
+            display: flex;
+            justify-content: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05); /* Premium shadow */
+            border: 1px solid var(--border-color);
+        }
+        .main-image-container img {
+            width: 100%;
+            max-width: 380px;
+            display: block;
+            transition: transform 0.1s, opacity 0.2s;
+            transform-origin: center center;
+        }
+        
+        .main-image-container:hover img { transform: scale(2); }
+        .main-image-container:hover .hover-hint { display: none; }
+
+        .hover-hint {
+            position: absolute;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(17, 17, 17, 0.7);
+            backdrop-filter: blur(4px);
+            color: white;
+            padding: 6px 18px;
+            border-radius: 30px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            pointer-events: none;
+            letter-spacing: 0.5px;
+        }
+        
+        .thumbnails {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        .thumbnails img {
+            width: 70px;
+            height: 90px;
+            object-fit: cover;
+            border: 2px solid transparent;
+            cursor: pointer;
+            border-radius: 6px;
+            opacity: 0.7;
+            transition: all 0.2s;
+        }
+        .thumbnails img:hover { opacity: 1; }
+        .thumbnails img.active {
+            border-color: var(--brand-copper);
+            opacity: 1;
+        }
+        
+        .spec-link {
+            text-decoration: none;
+            color: var(--brand-copper);
+            font-weight: 500;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .spec-link:hover { text-decoration: underline; }
+
+        /* Right Col: Details */
+        .brand-name {
+            color: var(--brand-grey);
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+            display: inline-block;
+        }
+        .product-title {
+            font-size: 34px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            line-height: 1.2;
+            letter-spacing: -0.5px;
+        }
+        
+        .top-info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 30px;
+            padding-bottom: 25px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .price-info { font-size: 24px; font-weight: 400;}
+        .price-info span { font-weight: 600; display: block; margin-bottom: 5px;}
+        .price-info .size-text { font-size: 14px; color: var(--brand-grey); font-weight: 400;}
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            width: 280px;
+        }
+        .btn {
+            width: 100%;
+            padding: 14px 20px;
+            border-radius: 4px; /* Squarer buttons match modern luxury UI */
+            font-family: var(--font-main);
+            font-weight: 600;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s;
+        }
+        .btn-primary {
+            background-color: var(--brand-copper);
+            color: white;
+            border: 1px solid var(--brand-copper);
+        }
+        .btn-primary:hover { background-color: var(--brand-copper-hover); border-color: var(--brand-copper-hover);}
+        
+        .btn-outline {
+            background-color: transparent;
+            color: var(--brand-dark);
+            border: 1px solid var(--brand-dark);
+        }
+        .btn-outline:hover { background-color: var(--brand-dark); color: white; }
+
+        /* Swatches */
+        .color-section { margin-bottom: 35px; }
+        .color-title { font-size: 14px; font-weight: 400; margin-bottom: 15px; color: var(--brand-grey);}
+        .color-title strong { font-weight: 600; color: var(--brand-dark);}
+        
+        .swatch-container {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .color-swatch {
+            width: 55px;
+            height: 40px;
+            border: 2px solid #fff;
+            box-shadow: 0 0 0 1px var(--border-color);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 9px;
+            color: white;
+            font-weight: 500;
+            line-height: 1.2;
+            text-align: center;
+            border-radius: 4px;
+            background-size: cover;
+            transition: all 0.2s;
+        }
+        .color-swatch.active { 
+            box-shadow: 0 0 0 2px var(--brand-copper); 
+            transform: translateY(-2px);
+        }
+        
+        .swatch-bb { background: #111; }
+        .swatch-br { background: linear-gradient(135deg, #111 50%, #5c4033 50%); }
+        .swatch-kb { background: linear-gradient(135deg, #c3b091 50%, #5c4033 50%); }
+        .swatch-nb { background: linear-gradient(135deg, #1c2b4b 50%, #5c4033 50%); }
+
+        /* Order Grid */
+        .order-grid-section { margin-bottom: 40px; background: white; padding: 25px; border-radius: 8px; border: 1px solid var(--border-color);}
+        .grid-title { font-weight: 600; margin-bottom: 15px; font-size: 15px;}
+        
+        .order-table {
+            width: 100%;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            align-items: center;
+            font-size: 14px;
+        }
+        .grid-header { font-weight: 600; padding-bottom: 15px; border-bottom: 1px solid var(--border-color); color: var(--brand-grey);}
+        .grid-header.center, .grid-cell.center { text-align: center; }
+        .grid-cell { padding-top: 15px; }
+        
+        .grid-cell.color-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-weight: 500;
+        }
+        .grid-cell.color-info .tiny-swatch {
+            width: 35px; height: 35px; background: #111; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .qty-input {
+            width: 70px;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            text-align: center;
+            font-family: var(--font-main);
+            margin: 0 auto;
+            display: block;
+            outline: none;
+            transition: border 0.3s;
+        }
+        .qty-input:focus { border-color: var(--brand-copper); }
+
+        /* Tabs & Content */
+        .tab-buttons {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .tab-btn {
+            padding: 10px 0;
+            background: none;
+            border: none;
+            border-bottom: 2px solid transparent;
+            cursor: pointer;
+            font-family: var(--font-main);
+            font-weight: 500;
+            font-size: 15px;
+            color: var(--brand-grey);
+            transition: all 0.2s;
+        }
+        .tab-btn:hover { color: var(--brand-dark); }
+        .tab-btn.active {
+            border-bottom-color: var(--brand-copper);
+            color: var(--brand-dark);
+            font-weight: 600;
+        }
+        
+        .tab-content-box {
+            font-size: 14px;
+            color: #444;
+        }
+        .tab-pane { display: none; animation: fadeIn 0.3s ease;}
+        .tab-pane.active { display: block; }
+        .tab-pane ul { margin: 15px 0 15px 20px; list-style-type: square;}
+        .tab-pane li { margin-bottom: 10px; }
+        
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px);} to { opacity: 1; transform: translateY(0);} }
+
+        /* --- Footer --- */
+        footer {
+            background-color: var(--brand-dark);
+            color: #e0e0e0;
+            padding: 70px 0 30px 0;
+            font-size: 13px;
+        }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 40px;
+            margin-bottom: 50px;
+            border-bottom: 1px solid #333;
+            padding-bottom: 50px;
+        }
+        .footer-col h4 { 
+            font-size: 15px; 
+            font-weight: 600; 
+            margin-bottom: 20px; 
+            color: white;
+            letter-spacing: 0.5px;
+        }
+        .footer-col ul li { margin-bottom: 12px; }
+        .footer-col ul li a:hover { color: var(--brand-copper); }
+
+        /* Newsletter Area */
+        .newsletter-title { font-size: 18px; font-weight: 600; margin-bottom: 10px; color: white;}
+        .newsletter-desc { margin-bottom: 20px; color: #aaa;}
+        .newsletter-form {
+            display: flex; background: var(--brand-dark-2); border-radius: 4px; border: 1px solid #333; overflow: hidden; margin-bottom: 30px;
+        }
+        .newsletter-form input {
+            flex-grow: 1; border: none; padding: 14px 20px; outline: none; font-family: var(--font-main);
+            background: transparent; color: white;
+        }
+        .newsletter-form button {
+            background: var(--brand-copper); border: none; padding: 0 20px; cursor: pointer; color: white; font-weight: bold; transition: background 0.2s;
+        }
+        .newsletter-form button:hover { background: var(--brand-copper-hover); }
+        
+        .footer-bottom-actions { display: flex; justify-content: space-between; align-items: center; }
+        .lang-select {
+            background: transparent; color: white; border: 1px solid #555; padding: 8px 15px; border-radius: 4px; font-family: var(--font-main); outline: none;
+        }
+        .social-icons { display: flex; gap: 12px; }
+        .social-circle {
+            width: 36px; height: 36px; background: #222; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            color: white; font-weight: bold; font-size: 14px; transition: all 0.2s;
+        }
+        .social-circle:hover { background: var(--brand-copper); transform: translateY(-3px); }
+
+        .legal-links {
+            display: flex; flex-wrap: wrap; gap: 20px; justify-content: center;
+            font-size: 12px; color: #888;
+        }
+        .legal-links a:hover { color: white; }
+
+        /* --- Modal --- */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(17, 17, 17, 0.8); display: flex; justify-content: center; align-items: center;
+            opacity: 0; pointer-events: none; transition: 0.3s; z-index: 999; backdrop-filter: blur(5px);
+        }
+        .modal-overlay.active { opacity: 1; pointer-events: auto; }
+        .modal-box { background: white; padding: 40px; border-radius: 8px; width: 400px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.2);}
+        .modal-box h3 { color: var(--brand-dark); margin-bottom: 15px; font-weight: 600;}
+        .close-modal { margin-top: 20px; display: inline-block; cursor: pointer; color: var(--brand-grey); font-size: 13px;}
+        .close-modal:hover { color: var(--brand-dark); text-decoration: underline;}
+
+        .svg-icon { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+    </style>
+</head>
+<body>
+
+    <!-- Promo Banner -->
+    <div class="promo-banner">
+        Gildan brands are now exclusively available at Wearo Canada! <a href="#">Shop now.</a>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <div class="container" style="display:flex; align-items:center; justify-content:space-between; width:100%;">
+            <a href="#" class="logo">
+                <!-- IMPORTANT: Make sure 'wearo-logo.jpg' is in your folder to see the actual logo -->
+                <img src="wearo.png" alt="Wearo Logo" onerror="this.outerHTML='<h2 style=\'color:var(--brand-copper); font-weight:300; letter-spacing:3px;\'>WEARO</h2>'"> 
+            </a>
+
+            <div class="search-container">
+                <input type="text" placeholder="Style # or Keyword">
+                <button>
+                    <svg class="svg-icon" style="width:18px; height:18px;" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                </button>
+            </div>
+
+            <div class="header-actions">
+                <span>Log In / Register</span>
+                <div class="header-icons">
+                    <div class="icon-btn"><svg class="svg-icon" viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg></div>
+                    <div class="icon-btn"><svg class="svg-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg></div>
+                    <div class="icon-btn"><svg class="svg-icon" viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg></div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav>
+        <ul>
+            <li><a href="#">Shop</a></li>
+            <li><a href="#">Brands</a></li>
+            <li><a href="#">Sale</a></li>
+            <li><a href="#">Explore</a></li>
+            <li><a href="#">Resources</a></li>
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container">
+        <div class="breadcrumbs">
+            <a href="#">Home</a> / <a href="#">Brands</a> / <a href="#">Artisan Collection By Reprime</a> / Espresso Bib Apron
+        </div>
+
+        <div class="product-main">
+            <!-- Left: Images -->
+            <div class="image-gallery">
+                <div class="main-image-container" id="zoom-container">
+                    <img id="main-img" src="https://cdn.ssactivewear.com/Images/ModelColor/118502_omf_fm.jpg" alt="Apron Main">
+                    <div class="hover-hint">
+                        <svg class="svg-icon" style="width:14px;height:14px;" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg> Hover To zoom
+                    </div>
+                </div>
+                
+                <div class="thumbnails" id="thumb-container">
+                    <!-- Default thumbnails -->
+                    <img src="https://cdn.ssactivewear.com/Images/ModelColor/118502_omf_fs.jpg" class="active" onclick="swapImage(this, 'https://cdn.ssactivewear.com/Images/ModelColor/118502_omf_fm.jpg')">
+                    <img src="https://cdn.ssactivewear.com/Images/ModelColor/118502_oms_fs.jpg" onclick="swapImage(this, 'https://cdn.ssactivewear.com/Images/ModelColor/118502_oms_fm.jpg')">
+                    <img src="https://cdn.ssactivewear.com/Images/ModelColor/118502_omb_fs.jpg" onclick="swapImage(this, 'https://cdn.ssactivewear.com/Images/ModelColor/118502_omb_fm.jpg')">
+                    <img src="https://cdn.ssactivewear.com/Images/Color/118502_f_fs.jpg" onclick="swapImage(this, 'https://cdn.ssactivewear.com/Images/Color/118502_f_fm.jpg')">
+                </div>
+            </div>
+
+            <!-- Right: Details -->
+            <div class="product-details">
+                <a href="#" class="brand-name">Artisan Collection by Reprime</a>
+                <h1 class="product-title">RP123 Espresso Bib Apron</h1>
+                
+                <div class="top-info-row">
+                    <div class="price-info">
+                        <span>From $31.50</span>
+                        <div class="size-text">Size: One Size</div>
+                    </div>
+                    
+                    <div class="action-buttons">
+                        <button class="btn btn-primary">Log In for Wholesale</button>
+                        <button class="btn btn-outline" onclick="triggerAddToCart()">Add to Cart</button>
+                    </div>
+                </div>
+
+                <!-- Swatches -->
+                <div class="color-section">
+                    <div class="color-title">4 Colors — Selected: <strong id="selected-color-text">Black/ Black (PMS: Black C)</strong></div>
+                    <div class="swatch-container">
+                        <div class="color-swatch swatch-bb active" onclick="selectColor(this, '118502', 'Black/ Black', 'PMS: Black C', '#111')">BLK/<br>BLK</div>
+                        <div class="color-swatch swatch-br" onclick="selectColor(this, '118503', 'Black/ Brown', 'PMS: BlackC/476C', 'linear-gradient(135deg, #111 50%, #5c4033 50%)')">BLK/<br>BRN</div>
+                        <div class="color-swatch swatch-kb" onclick="selectColor(this, '118504', 'Khaki/ Brown', 'PMS: 7536C/4975C', 'linear-gradient(135deg, #c3b091 50%, #5c4033 50%)')">KHK/<br>BRN</div>
+                        <div class="color-swatch swatch-nb" onclick="selectColor(this, '118505', 'Navy/ Brown', 'PMS: 533C/476C', 'linear-gradient(135deg, #1c2b4b 50%, #5c4033 50%)')">NVY/<br>BRN</div>
+                    </div>
+                </div>
+
+                <!-- Refine By Grid -->
+                <div class="order-grid-section">
+                    <div class="grid-title">Order Quantity</div>
+                    <div class="order-table">
+                        <div class="grid-header">Color</div>
+                        <div class="grid-header center">Price</div>
+                        <div class="grid-header center">One Size</div>
+                        
+                        <!-- Row -->
+                        <div class="grid-cell color-info">
+                            <div id="row-swatch" class="tiny-swatch"></div>
+                            <span id="row-color-name">Black/ Black</span>
+                        </div>
+                        <div class="grid-cell center">$31.50</div>
+                        <div class="grid-cell center">
+                            <input type="number" id="order-qty" class="qty-input" min="0" placeholder="0">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tabs -->
+                <div class="tabs-section">
+                    <div class="tab-buttons">
+                        <button class="tab-btn active" onclick="openTab('desc', this)">Description</button>
+                        <button class="tab-btn" onclick="openTab('specs', this)">Specifications</button>
+                    </div>
+                    
+                    <div class="tab-content-box">
+                        <div id="tab-desc" class="tab-pane active">
+                            <p style="margin-bottom:15px; color:var(--brand-dark);"><strong>Wearo Style #: RP123</strong> &nbsp;|&nbsp; Item #: 381A1</p>
+                            <ul>
+                                <li>6 oz. (US), 10 oz./L yd (CA), 65/35 recycled polyester/cotton</li>
+                                <li>100% polyurethane trim</li>
+                                <li>Faux leather top trim and neckband</li>
+                                <li>Adjustable neck strap with stud buttons</li>
+                                <li>Two pleat pockets</li>
+                            </ul>
+                            <p style="margin-top:20px;"><u><strong>Responsible Materials:</strong></u> contains 65% recycled polyester</p>
+                            <p><u><strong>Responsible Manufacturing:</strong></u> Meets OEKO-TEX® Standard 100 requirements.</p>
+                        </div>
+                        
+                        <div id="tab-specs" class="tab-pane">
+                            <table style="width: 100%; max-width: 300px; margin-top: 10px; border-collapse: collapse;">
+                                <tr>
+                                    <th style="text-align: left; padding: 10px 0; border-bottom:1px solid #ddd;">Measurement</th>
+                                    <th style="text-align: right; padding: 10px 0; border-bottom:1px solid #ddd;">One Size</th>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 10px 0; border-bottom:1px solid #eee;">Length</td>
+                                    <td style="text-align: right; padding: 10px 0; border-bottom:1px solid #eee;">32"</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 10px 0; border-bottom:1px solid #eee;">Width</td>
+                                    <td style="text-align: right; padding: 10px 0; border-bottom:1px solid #eee;">28"</td>
+                                </tr>
+                            </table>
+                            <br>
+                            <a href="#" class="spec-link">
+                                <svg class="svg-icon" style="width:16px;height:16px;" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg> Download Full Spec Sheet
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="#">Marketing Tools</a></li>
+                        <li><a href="#">Image Library</a></li>
+                        <li><a href="#">Catalogues</a></li>
+                        <li><a href="#">Customer Integrations</a></li>
+                        <li><a href="#">Get Started Hub</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">FAQs</a></li>
+                        <li><a href="#">Apply For Credit</a></li>
+                        <li><a href="#">Return Policy</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h4>This is Wearo</h4>
+                    <ul>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Sustainability</a></li>
+                        <li><a href="#">Tradeshows</a></li>
+                        <li><a href="#">Press Room</a></li>
+                        <li><a href="#">Accessibility Statement</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <div class="newsletter-title">Join The Club.</div>
+                    <div class="newsletter-desc">Sign up to receive Wearo inspiration and industry insights right in your inbox.</div>
+                    <div class="newsletter-form">
+                        <input type="email" placeholder="Email Address">
+                        <button>&rarr;</button>
+                    </div>
+                    
+                    <div class="footer-bottom-actions">
+                        <select class="lang-select">
+                            <option>EN</option>
+                            <option>FR</option>
+                        </select>
+                        <div class="social-icons">
+                            <a href="#" class="social-circle">in</a>
+                            <a href="#" class="social-circle">f</a>
+                            <a href="#" class="social-circle">ig</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="legal-links">
+                <span>©2026 Wearo Activewear Canada Inc.</span>
+                <a href="#">Privacy</a>
+                <a href="#">Terms of Use</a>
+                <a href="#">Supply Chain Disclosure</a>
+                <a href="#">Site Map</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Cart Modal -->
+    <div class="modal-overlay" id="cart-modal">
+        <div class="modal-box">
+            <h3>Added to Cart</h3>
+            <p style="margin-bottom: 15px; color:#555;">You have added <strong id="modal-qty-text" style="color:var(--brand-dark);">0</strong> item(s) to your cart.</p>
+            <p style="background:var(--bg-light); padding:10px; border-radius:4px; font-weight:500;">RP123 - <span id="modal-color-text">Black/ Black</span></p>
+            <button class="btn btn-primary" style="margin-top: 25px;" onclick="closeModal()">Continue Shopping</button>
+            <div class="close-modal" onclick="closeModal()">Close</div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        const imageDB = {
+            '118502': { // Black/Black
+                main: 'https://cdn.ssactivewear.com/Images/ModelColor/118502_omf_fm.jpg',
+                thumbs: [
+                    { t: 'https://cdn.ssactivewear.com/Images/ModelColor/118502_omf_fs.jpg', m: 'https://cdn.ssactivewear.com/Images/ModelColor/118502_omf_fm.jpg' },
+                    { t: 'https://cdn.ssactivewear.com/Images/ModelColor/118502_oms_fs.jpg', m: 'https://cdn.ssactivewear.com/Images/ModelColor/118502_oms_fm.jpg' },
+                    { t: 'https://cdn.ssactivewear.com/Images/ModelColor/118502_omb_fs.jpg', m: 'https://cdn.ssactivewear.com/Images/ModelColor/118502_omb_fm.jpg' },
+                    { t: 'https://cdn.ssactivewear.com/Images/Color/118502_f_fs.jpg', m: 'https://cdn.ssactivewear.com/Images/Color/118502_f_fm.jpg' }
+                ]
+            },
+            '118503': { // Black/Brown
+                main: 'https://cdn.ssactivewear.com/Images/ModelColor/118503_omf_fm.jpg',
+                thumbs: [
+                    { t: 'https://cdn.ssactivewear.com/Images/ModelColor/118503_omf_fs.jpg', m: 'https://cdn.ssactivewear.com/Images/ModelColor/118503_omf_fm.jpg' },
+                    { t: 'https://cdn.ssactivewear.com/Images/ModelColor/118503_oms_fs.jpg', m: 'https://cdn.ssactivewear.com/Images/ModelColor/118503_oms_fm.jpg' },
+                    { t: 'https://cdn.ssactivewear.com/Images/ModelColor/118503_omb_fs.jpg', m: 'https://cdn.ssactivewear.com/Images/ModelColor/118503_omb_fm.jpg' },
+                    { t: 'https://cdn.ssactivewear.com/Images/Color/118503_f_fs.jpg', m: 'https://cdn.ssactivewear.com/Images/Color/118503_f_fm.jpg' }
+                ]
+            },
+            '118504': { // Khaki/Brown
+                main: 'https://cdn.ssactivewear.com/Images/ModelColor/118504_omf_fm.jpg',
+                thumbs: [
+                    { t: 'https://cdn.ssactivewear.com/Images/ModelColor/118504_omf_fs.jpg', m: 'https://cdn.ssactivewear.com/Images/ModelColor/118504_omf_fm.jpg' },
+                    { t: 'https://cdn.ssactivewear.com/Images/ModelColor/118504_oms_fs.jpg', m: 'https://cdn.ssactivewear.com/Images/ModelColor/118504_oms_fm.jpg' },
+                    { t: 'https://cdn.ssactivewear.com/Images/ModelColor/118504_omb_fs.jpg', m: 'https://cdn.ssactivewear.com/Images/ModelColor/118504_omb_fm.jpg' },
+                    { t: 'https://cdn.ssactivewear.com/Images/Color/118504_f_fs.jpg', m: 'https://cdn.ssactivewear.com/Images/Color/118504_f_fm.jpg' }
+                ]
+            },
+            '118505': { // Navy/Brown
+                main: 'https://cdn.ssactivewear.com/Images/ModelColor/118505_omf_fm.jpg',
+                thumbs: [
+                    { t: 'https://cdn.ssactivewear.com/Images/ModelColor/118505_omf_fs.jpg', m: 'https://cdn.ssactivewear.com/Images/ModelColor/118505_omf_fm.jpg' },
+                    { t: 'https://cdn.ssactivewear.com/Images/ModelColor/118505_oms_fs.jpg', m: 'https://cdn.ssactivewear.com/Images/ModelColor/118505_oms_fm.jpg' },
+                    { t: 'https://cdn.ssactivewear.com/Images/ModelColor/118505_omb_fs.jpg', m: 'https://cdn.ssactivewear.com/Images/ModelColor/118505_omb_fm.jpg' },
+                    { t: 'https://cdn.ssactivewear.com/Images/Color/118505_f_fs.jpg', m: 'https://cdn.ssactivewear.com/Images/Color/118505_f_fm.jpg' }
+                ]
+            }
+        };
+
+        // Interactive Image Zoom
+        const imgContainer = document.getElementById('zoom-container');
+        const mainImg = document.getElementById('main-img');
+        
+        imgContainer.addEventListener('mousemove', function(e) {
+            const rect = imgContainer.getBoundingClientRect();
+            const x = ((e.clientX - rect.left) / rect.width) * 100;
+            const y = ((e.clientY - rect.top) / rect.height) * 100;
+            mainImg.style.transformOrigin = `${x}% ${y}%`;
+        });
+        
+        imgContainer.addEventListener('mouseleave', function() {
+            mainImg.style.transformOrigin = 'center center';
+        });
+
+        // Swap Main Image on Thumbnail Click
+        function swapImage(thumbnailElement, src) {
+            document.querySelectorAll('.thumbnails img').forEach(img => img.classList.remove('active'));
+            thumbnailElement.classList.add('active');
+            
+            mainImg.style.opacity = '0';
+            setTimeout(() => {
+                mainImg.src = src;
+                mainImg.style.opacity = '1';
+            }, 150);
+        }
+
+        // Color Selection Logic
+        function selectColor(swatchElement, colorId, colorName, pmsCode, backgroundStyle) {
+            document.querySelectorAll('.color-swatch').forEach(el => el.classList.remove('active'));
+            swatchElement.classList.add('active');
+
+            document.getElementById('selected-color-text').innerText = `${colorName} (${pmsCode})`;
+            document.getElementById('row-color-name').innerText = colorName;
+            document.getElementById('row-swatch').style.background = backgroundStyle;
+
+            const images = imageDB[colorId];
+            
+            mainImg.style.opacity = '0';
+            setTimeout(() => {
+                mainImg.src = images.main;
+                mainImg.style.opacity = '1';
+            }, 150);
+            
+            const thumbContainer = document.getElementById('thumb-container');
+            let thumbHTML = '';
+            images.thumbs.forEach((thumb, idx) => {
+                thumbHTML += `<img src="${thumb.t}" class="${idx === 0 ? 'active' : ''}" onclick="swapImage(this, '${thumb.m}')">`;
+            });
+            thumbContainer.innerHTML = thumbHTML;
+        }
+
+        // Tab Logic
+        function openTab(tabId, btnElement) {
+            document.querySelectorAll('.tab-pane').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            
+            document.getElementById('tab-' + tabId).classList.add('active');
+            btnElement.classList.add('active');
+        }
+
+        // Add to Cart Logic
+        function triggerAddToCart() {
+            const qtyInput = document.getElementById('order-qty').value;
+            const qty = parseInt(qtyInput);
+
+            if (isNaN(qty) || qty <= 0) {
+                alert('Please enter a quantity in the Order Quantity grid below.');
+                return;
+            }
+
+            const currentColor = document.getElementById('row-color-name').innerText;
+            
+            document.getElementById('modal-qty-text').innerText = qty;
+            document.getElementById('modal-color-text').innerText = currentColor;
+            
+            document.getElementById('cart-modal').classList.add('active');
+            document.getElementById('order-qty').value = '';
+        }
+
+        function closeModal() {
+            document.getElementById('cart-modal').classList.remove('active');
+        }
+    </script>
+</body>
+</html>
