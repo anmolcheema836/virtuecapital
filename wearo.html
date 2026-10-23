@@ -7,27 +7,22 @@
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <!-- Added a lighter weight for a more premium, modern feel -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
         :root {
-            /* Extracted from your new logo */
-            --brand-dark: #111111;       /* Deep matte black from logo background */
-            --brand-dark-2: #1e1e1e;     /* Slightly lighter for contrast */
-            --brand-copper: #C27C59;     /* The bronze/copper text color */
+            /* Branding colors extracted from logo */
+            --brand-dark: #111111;       
+            --brand-dark-2: #1e1e1e;     
+            --brand-copper: #C27C59;     
             --brand-copper-hover: #a36546;
             --brand-grey: #6b6b6b;
-            --bg-light: #fafafa;         /* Off-white for the main body */
+            --bg-light: #fafafa;         
             --border-color: #e5e7eb;
             --font-main: 'Poppins', sans-serif;
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
             font-family: var(--font-main);
@@ -39,471 +34,215 @@
         a { text-decoration: none; color: inherit; transition: color 0.2s ease; }
         ul { list-style: none; }
 
-        .container {
-            max-width: 1300px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
+        .container { max-width: 1300px; margin: 0 auto; padding: 0 20px; }
 
         /* --- Promo Banner --- */
         .promo-banner {
             background-color: var(--brand-copper);
-            color: #fff;
-            text-align: center;
-            padding: 10px 0;
-            font-size: 13px;
-            letter-spacing: 0.5px;
+            color: #fff; text-align: center; padding: 10px 0;
+            font-size: 13px; letter-spacing: 0.5px;
         }
-        .promo-banner a {
-            color: #fff;
-            text-decoration: underline;
-            font-weight: 600;
-        }
+        .promo-banner a { color: #fff; text-decoration: underline; font-weight: 600; }
 
-        /* --- Header (Dark Theme to match logo) --- */
+        /* --- Header --- */
         header {
             background-color: var(--brand-dark);
-            color: white;
-            padding: 15px 0;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+            color: white; padding: 15px 0;
+            display: flex; align-items: center; justify-content: space-between;
         }
 
-        .logo {
-            display: flex;
-            align-items: center;
-        }
-        /* Adjusted for the square format of your logo */
-        .logo img { 
-            height: 90px; 
-            object-fit: contain;
-        }
+        .logo { display: flex; align-items: center; }
+        .logo img { height: 90px; object-fit: contain; }
 
         .search-container {
-            flex-grow: 1;
-            max-width: 500px;
-            position: relative;
-            margin: 0 40px;
+            flex-grow: 1; max-width: 500px; position: relative; margin: 0 40px;
         }
         .search-container input {
-            width: 100%;
-            padding: 12px 20px;
-            border-radius: 4px;
-            border: 1px solid #333;
-            background-color: var(--brand-dark-2);
-            color: white;
-            font-family: var(--font-main);
-            font-size: 14px;
-            outline: none;
-            transition: border 0.3s;
+            width: 100%; padding: 12px 20px; border-radius: 4px;
+            border: 1px solid #333; background-color: var(--brand-dark-2);
+            color: white; font-family: var(--font-main); font-size: 14px;
+            outline: none; transition: border 0.3s;
         }
-        .search-container input:focus {
-            border-color: var(--brand-copper);
-        }
-        .search-container input::placeholder {
-            color: #888;
-        }
+        .search-container input:focus { border-color: var(--brand-copper); }
+        .search-container input::placeholder { color: #888; }
         .search-container button {
-            position: absolute;
-            right: 5px;
-            top: 5px;
-            bottom: 5px;
-            width: 40px;
-            border-radius: 4px;
-            background-color: transparent;
-            border: none;
-            color: var(--brand-copper);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background 0.2s;
+            position: absolute; right: 5px; top: 5px; bottom: 5px; width: 40px;
+            border-radius: 4px; background-color: transparent; border: none;
+            color: var(--brand-copper); cursor: pointer; display: flex;
+            align-items: center; justify-content: center; transition: background 0.2s;
         }
-        .search-container button:hover {
-            background-color: rgba(194, 124, 89, 0.1);
-        }
+        .search-container button:hover { background-color: rgba(194, 124, 89, 0.1); }
 
-        .header-actions {
-            display: flex;
-            align-items: center;
-            gap: 25px;
-            font-weight: 500;
-            font-size: 14px;
-            letter-spacing: 0.5px;
-        }
+        .header-actions { display: flex; align-items: center; gap: 25px; font-weight: 500; font-size: 14px; letter-spacing: 0.5px; }
         .header-actions > span { cursor: pointer; transition: color 0.2s; }
         .header-actions > span:hover { color: var(--brand-copper); }
         
-        .header-icons {
-            display: flex;
-            gap: 15px;
-            align-items: center;
-        }
+        .header-icons { display: flex; gap: 15px; align-items: center; }
         .icon-btn { cursor: pointer; display: flex; align-items: center; color: white; transition: color 0.2s; }
         .icon-btn:hover { color: var(--brand-copper); }
 
         /* --- Navigation --- */
-        nav {
-            background-color: var(--brand-dark-2);
-            border-bottom: 1px solid #333;
-        }
-        nav ul {
-            display: flex;
-            justify-content: center;
-            gap: 40px;
-            padding: 15px 0;
-        }
-        nav a {
-            color: white;
-            font-weight: 400;
-            font-size: 14px;
-            text-transform: uppercase;
-            letter-spacing: 1.5px; /* Matches the "WEARO" typography feel */
-        }
+        nav { background-color: var(--brand-dark-2); border-bottom: 1px solid #333; }
+        nav ul { display: flex; justify-content: center; gap: 40px; padding: 15px 0; }
+        nav a { color: white; font-weight: 400; font-size: 14px; text-transform: uppercase; letter-spacing: 1.5px; }
         nav a:hover { color: var(--brand-copper); }
 
         /* --- Breadcrumbs --- */
-        .breadcrumbs {
-            padding: 25px 0;
-            font-size: 13px;
-            color: var(--brand-grey);
-        }
+        .breadcrumbs { padding: 25px 0; font-size: 13px; color: var(--brand-grey); }
         .breadcrumbs a { transition: color 0.2s; }
         .breadcrumbs a:hover { color: var(--brand-copper); }
 
         /* --- Product Layout --- */
-        .product-main {
-            display: grid;
-            grid-template-columns: 450px 1fr;
-            gap: 60px;
-            margin-bottom: 80px;
-        }
-
-        @media (max-width: 900px) {
-            .product-main { grid-template-columns: 1fr; gap: 40px;}
-        }
+        .product-main { display: grid; grid-template-columns: 450px 1fr; gap: 60px; margin-bottom: 80px; }
+        @media (max-width: 900px) { .product-main { grid-template-columns: 1fr; gap: 40px;} }
 
         /* Left Col: Images */
-        .image-gallery {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        
+        .image-gallery { display: flex; flex-direction: column; align-items: center; }
         .main-image-container {
-            width: 100%;
-            border-radius: 12px;
-            overflow: hidden;
-            position: relative;
-            margin-bottom: 20px;
-            cursor: zoom-in;
-            background-color: #fff;
-            display: flex;
-            justify-content: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05); /* Premium shadow */
+            width: 100%; border-radius: 12px; overflow: hidden; position: relative;
+            margin-bottom: 20px; cursor: zoom-in; background-color: #fff;
+            display: flex; justify-content: center; box-shadow: 0 10px 30px rgba(0,0,0,0.05); 
             border: 1px solid var(--border-color);
         }
-        .main-image-container img {
-            width: 100%;
-            max-width: 380px;
-            display: block;
-            transition: transform 0.1s, opacity 0.2s;
-            transform-origin: center center;
-        }
-        
+        .main-image-container img { width: 100%; max-width: 380px; display: block; transition: transform 0.1s, opacity 0.2s; transform-origin: center center; }
         .main-image-container:hover img { transform: scale(2); }
         .main-image-container:hover .hover-hint { display: none; }
-
         .hover-hint {
-            position: absolute;
-            bottom: 15px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(17, 17, 17, 0.7);
-            backdrop-filter: blur(4px);
-            color: white;
-            padding: 6px 18px;
-            border-radius: 30px;
-            font-size: 12px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            pointer-events: none;
-            letter-spacing: 0.5px;
+            position: absolute; bottom: 15px; left: 50%; transform: translateX(-50%);
+            background: rgba(17, 17, 17, 0.7); backdrop-filter: blur(4px); color: white;
+            padding: 6px 18px; border-radius: 30px; font-size: 12px; display: flex; align-items: center; gap: 6px; pointer-events: none; letter-spacing: 0.5px;
         }
-        
-        .thumbnails {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 20px;
-        }
+        .thumbnails { display: flex; gap: 12px; margin-bottom: 20px; }
         .thumbnails img {
-            width: 70px;
-            height: 90px;
-            object-fit: cover;
-            border: 2px solid transparent;
-            cursor: pointer;
-            border-radius: 6px;
-            opacity: 0.7;
-            transition: all 0.2s;
+            width: 70px; height: 90px; object-fit: cover; border: 2px solid transparent;
+            cursor: pointer; border-radius: 6px; opacity: 0.7; transition: all 0.2s;
         }
         .thumbnails img:hover { opacity: 1; }
-        .thumbnails img.active {
-            border-color: var(--brand-copper);
-            opacity: 1;
-        }
-        
+        .thumbnails img.active { border-color: var(--brand-copper); opacity: 1; }
         .spec-link {
-            text-decoration: none;
-            color: var(--brand-copper);
-            font-weight: 500;
-            font-size: 14px;
-            display: flex;
-            align-items: center;
-            gap: 5px;
+            text-decoration: none; color: var(--brand-copper); font-weight: 500; font-size: 14px; display: flex; align-items: center; gap: 5px;
         }
         .spec-link:hover { text-decoration: underline; }
 
         /* Right Col: Details */
-        .brand-name {
-            color: var(--brand-grey);
-            font-size: 13px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 5px;
-            display: inline-block;
-        }
-        .product-title {
-            font-size: 34px;
-            font-weight: 600;
-            margin-bottom: 20px;
-            line-height: 1.2;
-            letter-spacing: -0.5px;
-        }
+        .brand-name { color: var(--brand-grey); font-size: 13px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; display: inline-block; }
+        .product-title { font-size: 34px; font-weight: 600; margin-bottom: 20px; line-height: 1.2; letter-spacing: -0.5px; }
         
-        .top-info-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-            margin-bottom: 30px;
-            padding-bottom: 25px;
-            border-bottom: 1px solid var(--border-color);
-        }
-        
+        .top-info-row { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 30px; padding-bottom: 25px; border-bottom: 1px solid var(--border-color); }
         .price-info { font-size: 24px; font-weight: 400;}
         .price-info span { font-weight: 600; display: block; margin-bottom: 5px;}
         .price-info .size-text { font-size: 14px; color: var(--brand-grey); font-weight: 400;}
 
         /* Action Buttons */
-        .action-buttons {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            width: 280px;
-        }
+        .action-buttons { display: flex; flex-direction: column; gap: 12px; width: 280px; }
         .btn {
-            width: 100%;
-            padding: 14px 20px;
-            border-radius: 4px; /* Squarer buttons match modern luxury UI */
-            font-family: var(--font-main);
-            font-weight: 600;
-            font-size: 14px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            cursor: pointer;
-            text-align: center;
-            transition: all 0.3s;
+            width: 100%; padding: 14px 20px; border-radius: 4px; font-family: var(--font-main);
+            font-weight: 600; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;
+            cursor: pointer; text-align: center; transition: all 0.3s;
         }
-        .btn-primary {
-            background-color: var(--brand-copper);
-            color: white;
-            border: 1px solid var(--brand-copper);
-        }
+        .btn-primary { background-color: var(--brand-copper); color: white; border: 1px solid var(--brand-copper); }
         .btn-primary:hover { background-color: var(--brand-copper-hover); border-color: var(--brand-copper-hover);}
-        
-        .btn-outline {
-            background-color: transparent;
-            color: var(--brand-dark);
-            border: 1px solid var(--brand-dark);
-        }
+        .btn-outline { background-color: transparent; color: var(--brand-dark); border: 1px solid var(--brand-dark); }
         .btn-outline:hover { background-color: var(--brand-dark); color: white; }
 
         /* Swatches */
-        .color-section { margin-bottom: 35px; }
+        .color-section { margin-bottom: 25px; }
         .color-title { font-size: 14px; font-weight: 400; margin-bottom: 15px; color: var(--brand-grey);}
         .color-title strong { font-weight: 600; color: var(--brand-dark);}
-        
-        .swatch-container {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
+        .swatch-container { display: flex; gap: 12px; flex-wrap: wrap; }
         .color-swatch {
-            width: 55px;
-            height: 40px;
-            border: 2px solid #fff;
-            box-shadow: 0 0 0 1px var(--border-color);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 9px;
-            color: white;
-            font-weight: 500;
-            line-height: 1.2;
-            text-align: center;
-            border-radius: 4px;
-            background-size: cover;
-            transition: all 0.2s;
+            width: 55px; height: 40px; border: 2px solid #fff; box-shadow: 0 0 0 1px var(--border-color);
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+            font-size: 9px; color: white; font-weight: 500; line-height: 1.2; text-align: center;
+            border-radius: 4px; background-size: cover; transition: all 0.2s;
         }
-        .color-swatch.active { 
-            box-shadow: 0 0 0 2px var(--brand-copper); 
-            transform: translateY(-2px);
-        }
-        
+        .color-swatch.active { box-shadow: 0 0 0 2px var(--brand-copper); transform: translateY(-2px); }
         .swatch-bb { background: #111; }
         .swatch-br { background: linear-gradient(135deg, #111 50%, #5c4033 50%); }
         .swatch-kb { background: linear-gradient(135deg, #c3b091 50%, #5c4033 50%); }
         .swatch-nb { background: linear-gradient(135deg, #1c2b4b 50%, #5c4033 50%); }
 
+        /* Size Selector UI */
+        .size-section { margin-bottom: 35px; }
+        .size-title { font-size: 14px; font-weight: 400; margin-bottom: 15px; color: var(--brand-grey);}
+        .size-title strong { font-weight: 600; color: var(--brand-dark);}
+        .size-container { display: flex; gap: 12px; flex-wrap: wrap; }
+        .size-btn {
+            min-width: 50px; height: 50px; padding: 0 15px;
+            border: 1px solid var(--border-color); background: white;
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+            font-size: 14px; color: var(--brand-dark); font-weight: 500;
+            border-radius: 4px; transition: all 0.2s; font-family: var(--font-main);
+        }
+        .size-btn:hover { border-color: var(--brand-copper); color: var(--brand-copper); }
+        .size-btn.active { 
+            border-color: var(--brand-copper); background-color: var(--brand-copper);
+            color: white; box-shadow: 0 4px 10px rgba(194, 124, 89, 0.25);
+        }
+
         /* Order Grid */
         .order-grid-section { margin-bottom: 40px; background: white; padding: 25px; border-radius: 8px; border: 1px solid var(--border-color);}
         .grid-title { font-weight: 600; margin-bottom: 15px; font-size: 15px;}
         
-        .order-table {
-            width: 100%;
-            display: grid;
-            grid-template-columns: 2fr 1fr 1fr;
-            align-items: center;
-            font-size: 14px;
-        }
+        .order-table { width: 100%; display: grid; grid-template-columns: 2fr 1fr 1fr; align-items: center; font-size: 14px; }
         .grid-header { font-weight: 600; padding-bottom: 15px; border-bottom: 1px solid var(--border-color); color: var(--brand-grey);}
         .grid-header.center, .grid-cell.center { text-align: center; }
         .grid-cell { padding-top: 15px; }
         
-        .grid-cell.color-info {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            font-weight: 500;
-        }
-        .grid-cell.color-info .tiny-swatch {
-            width: 35px; height: 35px; background: #111; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
+        .grid-cell.color-info { display: flex; align-items: center; gap: 15px; font-weight: 500; }
+        .grid-cell.color-info .tiny-swatch { width: 35px; height: 35px; background: #111; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
         .qty-input {
-            width: 70px;
-            padding: 10px;
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
-            text-align: center;
-            font-family: var(--font-main);
-            margin: 0 auto;
-            display: block;
-            outline: none;
-            transition: border 0.3s;
+            width: 70px; padding: 10px; border: 1px solid var(--border-color); border-radius: 4px;
+            text-align: center; font-family: var(--font-main); margin: 0 auto; display: block;
+            outline: none; transition: border 0.3s;
         }
         .qty-input:focus { border-color: var(--brand-copper); }
 
         /* Tabs & Content */
-        .tab-buttons {
-            display: flex;
-            gap: 30px;
-            margin-bottom: 20px;
-            border-bottom: 1px solid var(--border-color);
-        }
+        .tab-buttons { display: flex; gap: 30px; margin-bottom: 20px; border-bottom: 1px solid var(--border-color); }
         .tab-btn {
-            padding: 10px 0;
-            background: none;
-            border: none;
-            border-bottom: 2px solid transparent;
-            cursor: pointer;
-            font-family: var(--font-main);
-            font-weight: 500;
-            font-size: 15px;
-            color: var(--brand-grey);
-            transition: all 0.2s;
+            padding: 10px 0; background: none; border: none; border-bottom: 2px solid transparent;
+            cursor: pointer; font-family: var(--font-main); font-weight: 500; font-size: 15px;
+            color: var(--brand-grey); transition: all 0.2s;
         }
         .tab-btn:hover { color: var(--brand-dark); }
-        .tab-btn.active {
-            border-bottom-color: var(--brand-copper);
-            color: var(--brand-dark);
-            font-weight: 600;
-        }
-        
-        .tab-content-box {
-            font-size: 14px;
-            color: #444;
-        }
+        .tab-btn.active { border-bottom-color: var(--brand-copper); color: var(--brand-dark); font-weight: 600; }
+        .tab-content-box { font-size: 14px; color: #444; }
         .tab-pane { display: none; animation: fadeIn 0.3s ease;}
         .tab-pane.active { display: block; }
         .tab-pane ul { margin: 15px 0 15px 20px; list-style-type: square;}
         .tab-pane li { margin-bottom: 10px; }
-        
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px);} to { opacity: 1; transform: translateY(0);} }
 
         /* --- Footer --- */
-        footer {
-            background-color: var(--brand-dark);
-            color: #e0e0e0;
-            padding: 70px 0 30px 0;
-            font-size: 13px;
-        }
-        .footer-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 40px;
-            margin-bottom: 50px;
-            border-bottom: 1px solid #333;
-            padding-bottom: 50px;
-        }
-        .footer-col h4 { 
-            font-size: 15px; 
-            font-weight: 600; 
-            margin-bottom: 20px; 
-            color: white;
-            letter-spacing: 0.5px;
-        }
+        footer { background-color: var(--brand-dark); color: #e0e0e0; padding: 70px 0 30px 0; font-size: 13px; }
+        .footer-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px; margin-bottom: 50px; border-bottom: 1px solid #333; padding-bottom: 50px; }
+        .footer-col h4 { font-size: 15px; font-weight: 600; margin-bottom: 20px; color: white; letter-spacing: 0.5px; }
         .footer-col ul li { margin-bottom: 12px; }
         .footer-col ul li a:hover { color: var(--brand-copper); }
 
-        /* Newsletter Area */
         .newsletter-title { font-size: 18px; font-weight: 600; margin-bottom: 10px; color: white;}
         .newsletter-desc { margin-bottom: 20px; color: #aaa;}
-        .newsletter-form {
-            display: flex; background: var(--brand-dark-2); border-radius: 4px; border: 1px solid #333; overflow: hidden; margin-bottom: 30px;
-        }
-        .newsletter-form input {
-            flex-grow: 1; border: none; padding: 14px 20px; outline: none; font-family: var(--font-main);
-            background: transparent; color: white;
-        }
-        .newsletter-form button {
-            background: var(--brand-copper); border: none; padding: 0 20px; cursor: pointer; color: white; font-weight: bold; transition: background 0.2s;
-        }
+        .newsletter-form { display: flex; background: var(--brand-dark-2); border-radius: 4px; border: 1px solid #333; overflow: hidden; margin-bottom: 30px; }
+        .newsletter-form input { flex-grow: 1; border: none; padding: 14px 20px; outline: none; font-family: var(--font-main); background: transparent; color: white; }
+        .newsletter-form button { background: var(--brand-copper); border: none; padding: 0 20px; cursor: pointer; color: white; font-weight: bold; transition: background 0.2s; }
         .newsletter-form button:hover { background: var(--brand-copper-hover); }
         
         .footer-bottom-actions { display: flex; justify-content: space-between; align-items: center; }
-        .lang-select {
-            background: transparent; color: white; border: 1px solid #555; padding: 8px 15px; border-radius: 4px; font-family: var(--font-main); outline: none;
-        }
+        .lang-select { background: transparent; color: white; border: 1px solid #555; padding: 8px 15px; border-radius: 4px; font-family: var(--font-main); outline: none; }
         .social-icons { display: flex; gap: 12px; }
         .social-circle {
-            width: 36px; height: 36px; background: #222; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
+            width: 36px; height: 36px; background: #222; border-radius: 50%; display: flex; align-items: center; justify-content: center;
             color: white; font-weight: bold; font-size: 14px; transition: all 0.2s;
         }
         .social-circle:hover { background: var(--brand-copper); transform: translateY(-3px); }
 
-        .legal-links {
-            display: flex; flex-wrap: wrap; gap: 20px; justify-content: center;
-            font-size: 12px; color: #888;
-        }
+        .legal-links { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; font-size: 12px; color: #888; }
         .legal-links a:hover { color: white; }
 
         /* --- Modal --- */
         .modal-overlay {
-            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(17, 17, 17, 0.8); display: flex; justify-content: center; align-items: center;
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(17, 17, 17, 0.8); display: flex; justify-content: center; align-items: center;
             opacity: 0; pointer-events: none; transition: 0.3s; z-index: 999; backdrop-filter: blur(5px);
         }
         .modal-overlay.active { opacity: 1; pointer-events: auto; }
@@ -526,7 +265,6 @@
     <header>
         <div class="container" style="display:flex; align-items:center; justify-content:space-between; width:100%;">
             <a href="#" class="logo">
-                <!-- IMPORTANT: Make sure 'wearo-logo.jpg' is in your folder to see the actual logo -->
                 <img src="wearo.png" alt="Wearo Logo" onerror="this.outerHTML='<h2 style=\'color:var(--brand-copper); font-weight:300; letter-spacing:3px;\'>WEARO</h2>'"> 
             </a>
 
@@ -576,7 +314,6 @@
                 </div>
                 
                 <div class="thumbnails" id="thumb-container">
-                    <!-- Default thumbnails -->
                     <img src="https://cdn.ssactivewear.com/Images/ModelColor/118502_omf_fs.jpg" class="active" onclick="swapImage(this, 'https://cdn.ssactivewear.com/Images/ModelColor/118502_omf_fm.jpg')">
                     <img src="https://cdn.ssactivewear.com/Images/ModelColor/118502_oms_fs.jpg" onclick="swapImage(this, 'https://cdn.ssactivewear.com/Images/ModelColor/118502_oms_fm.jpg')">
                     <img src="https://cdn.ssactivewear.com/Images/ModelColor/118502_omb_fs.jpg" onclick="swapImage(this, 'https://cdn.ssactivewear.com/Images/ModelColor/118502_omb_fm.jpg')">
@@ -592,7 +329,7 @@
                 <div class="top-info-row">
                     <div class="price-info">
                         <span>From $31.50</span>
-                        <div class="size-text">Size: One Size</div>
+                        <div class="size-text">Size: <span id="top-size-text" style="color:var(--brand-dark); font-weight:500;">Medium</span></div>
                     </div>
                     
                     <div class="action-buttons">
@@ -601,7 +338,7 @@
                     </div>
                 </div>
 
-                <!-- Swatches -->
+                <!-- Swatches Section -->
                 <div class="color-section">
                     <div class="color-title">4 Colors — Selected: <strong id="selected-color-text">Black/ Black (PMS: Black C)</strong></div>
                     <div class="swatch-container">
@@ -612,13 +349,25 @@
                     </div>
                 </div>
 
+                <!-- Sizes Section -->
+                <div class="size-section">
+                    <div class="size-title">Sizes — Selected: <strong id="selected-size-text">Medium</strong></div>
+                    <div class="size-container">
+                        <button class="size-btn" onclick="selectSize(this, 'Small')">S</button>
+                        <button class="size-btn active" onclick="selectSize(this, 'Medium')">M</button>
+                        <button class="size-btn" onclick="selectSize(this, 'Large')">L</button>
+                        <button class="size-btn" onclick="selectSize(this, 'X-Large')">XL</button>
+                        <button class="size-btn" onclick="selectSize(this, '2X-Large')">2XL</button>
+                    </div>
+                </div>
+
                 <!-- Refine By Grid -->
                 <div class="order-grid-section">
                     <div class="grid-title">Order Quantity</div>
                     <div class="order-table">
                         <div class="grid-header">Color</div>
                         <div class="grid-header center">Price</div>
-                        <div class="grid-header center">One Size</div>
+                        <div class="grid-header center" id="grid-size-header">Medium</div>
                         
                         <!-- Row -->
                         <div class="grid-cell color-info">
@@ -657,7 +406,7 @@
                             <table style="width: 100%; max-width: 300px; margin-top: 10px; border-collapse: collapse;">
                                 <tr>
                                     <th style="text-align: left; padding: 10px 0; border-bottom:1px solid #ddd;">Measurement</th>
-                                    <th style="text-align: right; padding: 10px 0; border-bottom:1px solid #ddd;">One Size</th>
+                                    <th style="text-align: right; padding: 10px 0; border-bottom:1px solid #ddd;">Medium</th>
                                 </tr>
                                 <tr>
                                     <td style="padding: 10px 0; border-bottom:1px solid #eee;">Length</td>
@@ -754,7 +503,10 @@
         <div class="modal-box">
             <h3>Added to Cart</h3>
             <p style="margin-bottom: 15px; color:#555;">You have added <strong id="modal-qty-text" style="color:var(--brand-dark);">0</strong> item(s) to your cart.</p>
-            <p style="background:var(--bg-light); padding:10px; border-radius:4px; font-weight:500;">RP123 - <span id="modal-color-text">Black/ Black</span></p>
+            <p style="background:var(--bg-light); padding:10px; border-radius:4px; font-weight:500;">
+                RP123 <br> 
+                <span id="modal-color-text" style="color:var(--brand-copper);">Black/ Black</span> &nbsp;|&nbsp; Size: <span id="modal-size-text">Medium</span>
+            </p>
             <button class="btn btn-primary" style="margin-top: 25px;" onclick="closeModal()">Continue Shopping</button>
             <div class="close-modal" onclick="closeModal()">Close</div>
         </div>
@@ -853,6 +605,18 @@
             thumbContainer.innerHTML = thumbHTML;
         }
 
+        // Size Selection Logic
+        function selectSize(btnElement, sizeName) {
+            // Update Active State on Buttons
+            document.querySelectorAll('.size-btn').forEach(el => el.classList.remove('active'));
+            btnElement.classList.add('active');
+
+            // Update Text Elements
+            document.getElementById('top-size-text').innerText = sizeName;
+            document.getElementById('selected-size-text').innerText = sizeName;
+            document.getElementById('grid-size-header').innerText = sizeName;
+        }
+
         // Tab Logic
         function openTab(tabId, btnElement) {
             document.querySelectorAll('.tab-pane').forEach(el => el.classList.remove('active'));
@@ -873,9 +637,11 @@
             }
 
             const currentColor = document.getElementById('row-color-name').innerText;
+            const currentSize = document.getElementById('selected-size-text').innerText;
             
             document.getElementById('modal-qty-text').innerText = qty;
             document.getElementById('modal-color-text').innerText = currentColor;
+            document.getElementById('modal-size-text').innerText = currentSize;
             
             document.getElementById('cart-modal').classList.add('active');
             document.getElementById('order-qty').value = '';
