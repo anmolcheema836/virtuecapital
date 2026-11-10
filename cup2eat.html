@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CUP2EAT | Eat Your Drink</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons (Trusted Vector Library) -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        choc: '#3E2117',
+                        cocoa: '#1D100C',
+                        cream: '#F7F2EB',
+                        vanilla: '#EBE0D0',
+                        caramel: '#B87D4B',
+                        nature: '#4E6844',
+                    },
+                    fontFamily: {
+                        serif: ['"Playfair Display"', 'serif'],
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: #F7F2EB; 
+            color: #1D100C; 
+            overflow-x: hidden; 
+        }
+        h1, h2, h3, h4, .font-serif { 
+            font-family: 'Playfair Display', serif; 
+        }
+
+        /* Editorial Subtle Grain Overlay */
+        .bg-noise {
+            background-image: radial-gradient(rgba(29, 16, 12, 0.04) 1px, transparent 0);
+            background-size: 24px 24px;
+        }
+        
+        /* Smooth Reveal Animation */
+        .reveal { 
+            opacity: 0; 
+            transform: translateY(28px); 
+            transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), transform 0.9s cubic-bezier(0.16, 1, 0.3, 1); 
+        }
+        .reveal.active { 
+            opacity: 1; 
+            transform: translateY(0); 
+        }
+        .delay-100 { transition-delay: 100ms; }
+        .delay-200 { transition-delay: 200ms; }
+        .delay-300 { transition-delay: 300ms; }
+        
+        /* Editorial Image Hover */
+        .img-editorial { overflow: hidden; }
+        .img-editorial img { transition: transform 1.1s cubic-bezier(0.16, 1, 0.3, 1); }
+        .img-editorial:hover img { transform: scale(1.04); }
+
+        /* Marquee Animation */
+        @keyframes marquee {
+            0% { transform: translateX(0%); }
+            100% { transform: translateX(-50%); }
+        }
+        .animate-marquee {
+            display: flex;
+            width: max-content;
+            animation: marquee 28s linear infinite;
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #F7F2EB; }
+        ::-webkit-scrollbar-thumb { background: #3E2117; }
+    </style>
+</head>
+<body class="antialiased selection:bg-caramel selection:text-white bg-noise">
+
+    <!-- Top Announcement Bar -->
+    <div id="top-bar" class="bg-cocoa text-vanilla text-[11px] md:text-xs font-medium py-2.5 px-4 tracking-widest uppercase z-50 relative border-b border-white/10">
+        <div class="max-w-7xl mx-auto flex items-center justify-center gap-2.5">
+            <i data-lucide="Flame" class="w-3.5 h-3.5 text-caramel shrink-0"></i>
+            <span>Limited-Time Wholesale Allocation</span>
+            <span class="opacity-30">|</span>
+            <i data-lucide="Truck" class="w-3.5 h-3.5 text-caramel shrink-0"></i>
+            <span>Complimentary Pan-India Delivery</span>
+        </div>
+    </div>
+
+    <!-- Sticky Editorial Header -->
+    <header id="header" class="fixed w-full top-[37px] z-40 transition-all duration-500 bg-cream/85 backdrop-blur-md border-b border-cocoa/10">
+        <div class="max-w-7xl mx-auto px-6 py-3.5 flex justify-between items-center">
+            <!-- Brand Logo -->
+            <a href="#" class="flex items-center gap-3 group">
+                <img src="https://instagram.fluh1-2.fna.fbcdn.net/v/t51.2885-19/487214331_639080325575362_5737635668254151880_n.jpg?_nc_cat=111&_nc_map=urlgen_bucketless&ig_cache_key=GPtMCh3C8sl7PUUCAMhU5rA9LaBPbkULAAAB0j-ccb7-5&ccb=7-5&_nc_sid=669407&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLnd3dy4xMDgwLkMzIn0%3D&_nc_ohc=CQYUMeGbtUoQ7kNvwEbzfUx&_nc_oc=AdoYtcq7YRUmVkLHQT6tBakCQuy1yEsrpmbFXiYIoGyQDxYq0UN3KgIllFonSqi7Gt3xSi0EkNu69r6oP9W4nOj4&_nc_zt=24&_nc_ht=instagram.fluh1-2.fna&_nc_ss=7b6a8&oh=00_AQQ2X8KRmaxL2qLtdZtFuNXluDc--m3Tu3Lb-I2Zf7SZgg&oe=6AF8ABBF" 
+                     alt="CUP2EAT Logo" 
+                     class="w-12 h-12 md:w-14 md:h-14 rounded-full object-cover border border-cocoa/20 group-hover:border-choc transition-all">
+ 
+            </a>
+
+            <!-- Desktop Navigation -->
+            <nav class="hidden md:flex gap-10 items-center text-xs uppercase tracking-[0.18em] font-medium text-cocoa/70">
+                <a href="#story" class="hover:text-cocoa transition-colors">The Ritual</a>
+                <a href="#shop" class="hover:text-cocoa transition-colors">Catalog</a>
+                <a href="#wholesale" class="hover:text-cocoa transition-colors">B2B & Wholesale</a>
+            </nav>
+
+            <!-- Header Actions -->
+            <div class="flex items-center gap-5">
+                <button id="cart-btn" class="relative p-2 text-cocoa hover:text-caramel transition-colors" aria-label="Cart">
+                    <i data-lucide="shopping-bag" class="w-5 h-5"></i>
+                    <span id="cart-count" class="absolute top-0.5 right-0.5 bg-choc text-cream text-[10px] font-semibold w-4 h-4 rounded-full flex items-center justify-center">0</span>
+                </button>
+                <a href="#shop" class="hidden sm:inline-flex items-center gap-2 bg-cocoa text-cream px-5 py-2.5 rounded-full text-xs uppercase tracking-widest font-medium hover:bg-choc transition-colors">
+                    <span>Order Direct</span>
+                    <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="pt-36 pb-16 md:pt-44 md:pb-28 px-6 border-b border-cocoa/10">
+        <div class="max-w-7xl mx-auto grid lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+            <!-- Left Column: Editorial Typography -->
+            <div class="lg:col-span-7 reveal">
+                <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-cocoa/15 bg-vanilla/40 mb-8">
+                    <i data-lucide="leaf" class="w-3.5 h-3.5 text-nature"></i>
+                    <span class="text-[11px] uppercase tracking-[0.2em] font-semibold text-cocoa">Zero-Waste Culinary Vessel</span>
+                </div>
+                
+                <h1 class="text-5xl sm:text-6xl lg:text-[76px] font-serif font-normal leading-[1.03] tracking-tight mb-8 text-cocoa">
+                    Why discard the vessel when you can <span class="italic font-normal text-choc">savor it?</span>
+                </h1>
+                
+                <p class="text-base md:text-lg text-cocoa/75 mb-10 max-w-xl font-normal leading-relaxed">
+                    Engineered from crisp, slow-baked wafer grain to hold piping hot chai, artisanal espresso, and chilled desserts without leaking—then eaten down to the final crumb.
+                </p>
+                
+                <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
+                    <a href="#shop" class="bg-cocoa text-cream px-8 py-4 rounded-full text-xs uppercase tracking-[0.18em] font-semibold hover:bg-choc transition-all flex items-center justify-center gap-3 group">
+                        <span>Explore Collection</span>
+                        <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                    </a>
+                    <a href="#wholesale" class="border border-cocoa/25 text-cocoa px-8 py-4 rounded-full text-xs uppercase tracking-[0.18em] font-semibold hover:border-cocoa hover:bg-vanilla/40 transition-all text-center">
+                        Request Wholesale Quote
+                    </a>
+                </div>
+
+                <!-- Micro Specs Bar -->
+                <div class="grid grid-cols-3 gap-6 pt-12 mt-12 border-t border-cocoa/10 max-w-lg">
+                    <div>
+                        <p class="font-serif text-2xl md:text-3xl text-cocoa">45+ min</p>
+                        <p class="text-[11px] uppercase tracking-wider text-cocoa/60 mt-1">Thermal Hold</p>
+                    </div>
+                    <div>
+                        <p class="font-serif text-2xl md:text-3xl text-cocoa">100%</p>
+                        <p class="text-[11px] uppercase tracking-wider text-cocoa/60 mt-1">Pure Vegetarian</p>
+                    </div>
+                    <div>
+                        <p class="font-serif text-2xl md:text-3xl text-cocoa">0%</p>
+                        <p class="text-[11px] uppercase tracking-wider text-cocoa/60 mt-1">Plastic or Wax</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Right Column: Architectural Framing -->
+            <div class="lg:col-span-5 reveal delay-200">
+                <div class="relative p-3 border border-cocoa/15 rounded-[2rem] bg-vanilla/30">
+                    <div class="aspect-[4/5] rounded-[1.5rem] bg-vanilla relative overflow-hidden img-editorial">
+                        <img src="herocup.png" 
+                             alt="CUP2EAT Edible Wafer Cup" 
+                             class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-cocoa/80 via-cocoa/10 to-transparent"></div>
+                        
+                        <!-- Floating Badge Inside Image -->
+                        <div class="absolute top-5 right-5 bg-cream/95 backdrop-blur-md text-cocoa px-3.5 py-2 rounded-full flex items-center gap-2 border border-cocoa/10">
+                            <i data-lucide="shield-check" class="w-4 h-4 text-nature"></i>
+                            <span class="text-[11px] font-semibold uppercase tracking-wider">Leak-Proof Certified</span>
+                        </div>
+
+                        <div class="absolute bottom-6 left-6 right-6 text-cream flex items-end justify-between border-t border-cream/20 pt-4">
+                            <div>
+                                <p class="text-[10px] uppercase tracking-[0.2em] text-vanilla/70 mb-1">Signature Series</p>
+                                <p class="font-serif text-xl md:text-2xl">Dark Cocoa & Cardamom</p>
+                            </div>
+                            <span class="text-xs font-mono opacity-80">100ML / 150ML</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Editorial Marquee Strip -->
+    <div class="bg-vanilla/50 border-b border-cocoa/10 py-3.5 overflow-hidden">
+        <div class="animate-marquee flex items-center gap-12 text-xs uppercase tracking-[0.22em] font-medium text-cocoa/80">
+            <span class="flex items-center gap-3"><i data-lucide="check-circle-2" class="w-4 h-4 text-nature"></i> 100% Edible Biscuit Structure</span>
+            <span class="flex items-center gap-3"><i data-lucide="flame" class="w-4 h-4 text-caramel"></i> Holds Piping Hot Chai & Espresso</span>
+            <span class="flex items-center gap-3"><i data-lucide="sparkles" class="w-4 h-4 text-choc"></i> Zero Soggy Aftertaste</span>
+            <span class="flex items-center gap-3"><i data-lucide="package-check" class="w-4 h-4 text-nature"></i> Free Pan-India B2B Dispatch</span>
+            <!-- Duplicate for seamless loop -->
+            <span class="flex items-center gap-3"><i data-lucide="check-circle-2" class="w-4 h-4 text-nature"></i> 100% Edible Biscuit Structure</span>
+            <span class="flex items-center gap-3"><i data-lucide="flame" class="w-4 h-4 text-caramel"></i> Holds Piping Hot Chai & Espresso</span>
+            <span class="flex items-center gap-3"><i data-lucide="sparkles" class="w-4 h-4 text-choc"></i> Zero Soggy Aftertaste</span>
+            <span class="flex items-center gap-3"><i data-lucide="package-check" class="w-4 h-4 text-nature"></i> Free Pan-India B2B Dispatch</span>
+        </div>
+    </div>
+
+    <!-- The Ritual (3-Column Architectural Grid) -->
+    <section id="story" class="py-24 md:py-32 px-6 border-b border-cocoa/10">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 reveal">
+                <div>
+                    <p class="text-xs uppercase tracking-[0.2em] text-caramel font-semibold mb-3">01 / The Process</p>
+                    <h2 class="text-4xl md:text-5xl font-serif text-cocoa leading-tight">
+                        Designed for the pour.<br><span class="italic text-choc">Baked for the bite.</span>
+                    </h2>
+                </div>
+                <p class="text-sm text-cocoa/70 max-w-sm mt-4 md:mt-0 leading-relaxed">
+                    Every cup undergoes high-density thermal baking so your beverage stays hot while the biscuit wall stays crisp.
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 border-t border-l border-cocoa/15">
+                <!-- Step 01 -->
+                <div class="reveal delay-100 p-8 md:p-12 border-r border-b border-cocoa/15 bg-cream/60 hover:bg-vanilla/30 transition-colors">
+                    <div class="flex justify-between items-center mb-10">
+                        <span class="font-mono text-xs tracking-widest uppercase text-cocoa/50">Step 01</span>
+                        <div class="w-10 h-10 rounded-full border border-cocoa/15 flex items-center justify-center text-choc">
+                            <i data-lucide="coffee" class="w-5 h-5"></i>
+                        </div>
+                    </div>
+                    <h3 class="text-2xl font-serif mb-3 text-cocoa">Pour</h3>
+                    <p class="text-cocoa/70 text-sm leading-relaxed">
+                        Fill your CUP2EAT vessel with freshly brewed masala chai, espresso, affogato, or chilled mousse up to 85°C.
+                    </p>
+                </div>
+
+                <!-- Step 02 -->
+                <div class="reveal delay-200 p-8 md:p-12 border-r border-b border-cocoa/15 bg-cream/60 hover:bg-vanilla/30 transition-colors">
+                    <div class="flex justify-between items-center mb-10">
+                        <span class="font-mono text-xs tracking-widest uppercase text-cocoa/50">Step 02</span>
+                        <div class="w-10 h-10 rounded-full border border-cocoa/15 flex items-center justify-center text-choc">
+                            <i data-lucide="droplets" class="w-5 h-5"></i>
+                        </div>
+                    </div>
+                    <h3 class="text-2xl font-serif mb-3 text-cocoa">Sip</h3>
+                    <p class="text-cocoa/70 text-sm leading-relaxed">
+                        Savor your drink without rush. Our natural interior bake locks out moisture and prevents structural softening.
+                    </p>
+                </div>
+
+                <!-- Step 03 -->
+                <div class="reveal delay-300 p-8 md:p-12 border-r border-b border-cocoa/15 bg-cream/60 hover:bg-vanilla/30 transition-colors">
+                    <div class="flex justify-between items-center mb-10">
+                        <span class="font-mono text-xs tracking-widest uppercase text-cocoa/50">Step 03</span>
+                        <div class="w-10 h-10 rounded-full border border-cocoa/15 flex items-center justify-center text-choc">
+                            <i data-lucide="cookie" class="w-5 h-5"></i>
+                        </div>
+                    </div>
+                    <h3 class="text-2xl font-serif mb-3 text-cocoa">Crunch</h3>
+                    <p class="text-cocoa/70 text-sm leading-relaxed">
+                        Finish your beverage and eat the roasted biscuit cup. Zero landfill waste, zero dishwashing overhead.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Shop Catalog -->
+    <section id="shop" class="py-24 md:py-32 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 reveal">
+                <div>
+                    <p class="text-xs uppercase tracking-[0.2em] text-caramel font-semibold mb-3">02 / Commercial Packs</p>
+                    <h2 class="text-4xl md:text-5xl font-serif text-cocoa">Curated Wholesale Cases</h2>
+                </div>
+                <div class="mt-4 md:mt-0 inline-flex items-center gap-2 text-xs uppercase tracking-widest font-medium text-nature bg-nature/10 px-4 py-2 rounded-full">
+                    <i data-lucide="truck" class="w-4 h-4"></i>
+                    <span>Complimentary Shipping Across India</span>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Product 1 -->
+                <div class="bg-cream rounded-2xl p-6 border border-cocoa/15 reveal delay-100 flex flex-col justify-between hover:border-cocoa/40 transition-all duration-300 group">
+                    <div>
+                        <div class="aspect-square rounded-xl bg-vanilla/60 mb-6 overflow-hidden relative img-editorial">
+                            <span class="absolute top-3 left-3 bg-cocoa text-cream text-[10px] uppercase tracking-widest px-3 py-1.5 rounded-full font-medium z-10">Most Popular</span>
+                            <span class="absolute top-3 right-3 bg-cream/90 backdrop-blur-sm text-cocoa text-[11px] font-mono px-2.5 py-1 rounded-md z-10">₹10 / cup</span>
+                            <img src="herocup.png" alt="100ml Edible Cups" class="w-full h-full object-cover">
+                        </div>
+                        
+                        <div class="flex justify-between items-baseline mb-1">
+                            <h3 class="text-xl font-serif font-semibold text-cocoa">100 ML Classic Case</h3>
+                            <span class="text-xl font-serif font-bold text-choc">₹3,960</span>
+                        </div>
+                        <p class="text-xs text-cocoa/60 mb-6 font-mono uppercase tracking-wider">396 Units • Ideal for Chai & Espresso</p>
+                        
+                        <div class="mb-6">
+                            <p class="text-[11px] font-semibold text-cocoa/70 mb-2.5 uppercase tracking-wider">Select Flavour Profile:</p>
+                            <div class="flex gap-2 flex-wrap" data-flavour-group>
+                                <button type="button" onclick="selectFlavour(this)" class="px-3.5 py-1.5 text-xs border border-cocoa rounded-full bg-cocoa text-cream transition-all">Chocolate</button>
+                                <button type="button" onclick="selectFlavour(this)" class="px-3.5 py-1.5 text-xs border border-cocoa/20 rounded-full text-cocoa hover:border-cocoa transition-all">Vanilla</button>
+                                <button type="button" onclick="selectFlavour(this)" class="px-3.5 py-1.5 text-xs border border-cocoa/20 rounded-full text-cocoa hover:border-cocoa transition-all">Elaichi</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button type="button" onclick="addToCart(this)" class="w-full bg-cocoa text-cream text-xs uppercase tracking-[0.18em] font-semibold py-4 rounded-xl hover:bg-choc transition-colors flex items-center justify-center gap-2">
+                        <i data-lucide="plus" class="w-4 h-4"></i>
+                        <span>Add Case to Order</span>
+                    </button>
+                </div>
+
+                <!-- Product 2 -->
+                <div class="bg-cream rounded-2xl p-6 border border-cocoa/15 reveal delay-200 flex flex-col justify-between hover:border-cocoa/40 transition-all duration-300 group">
+                    <div>
+                        <div class="aspect-square rounded-xl bg-vanilla/60 mb-6 overflow-hidden relative img-editorial">
+                            <span class="absolute top-3 right-3 bg-cream/90 backdrop-blur-sm text-cocoa text-[11px] font-mono px-2.5 py-1 rounded-md z-10">Single Pouch</span>
+                            <img src="cup.png" alt="100ml Cups Pouch" class="w-full h-full object-cover">
+                        </div>
+                        
+                        <div class="flex justify-between items-baseline mb-1">
+                            <h3 class="text-xl font-serif font-semibold text-cocoa">100 ML Retail Pouches</h3>
+                            <span class="text-xl font-serif font-bold text-choc">₹4,499</span>
+                        </div>
+                        <p class="text-xs text-cocoa/60 mb-6 font-mono uppercase tracking-wider">200 Units • Individually Sealed</p>
+                        
+                        <div class="mb-6">
+                            <p class="text-[11px] font-semibold text-cocoa/70 mb-2.5 uppercase tracking-wider">Select Flavour Profile:</p>
+                            <div class="flex gap-2 flex-wrap" data-flavour-group>
+                                <button type="button" onclick="selectFlavour(this)" class="px-3.5 py-1.5 text-xs border border-cocoa rounded-full bg-cocoa text-cream transition-all">Chocolate</button>
+                                <button type="button" onclick="selectFlavour(this)" class="px-3.5 py-1.5 text-xs border border-cocoa/20 rounded-full text-cocoa hover:border-cocoa transition-all">Vanilla</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button type="button" onclick="addToCart(this)" class="w-full bg-cocoa text-cream text-xs uppercase tracking-[0.18em] font-semibold py-4 rounded-xl hover:bg-choc transition-colors flex items-center justify-center gap-2">
+                        <i data-lucide="plus" class="w-4 h-4"></i>
+                        <span>Add Case to Order</span>
+                    </button>
+                </div>
+
+                <!-- Product 3 -->
+                <div class="bg-cream rounded-2xl p-6 border border-cocoa/15 reveal delay-300 flex flex-col justify-between hover:border-cocoa/40 transition-all duration-300 group">
+                    <div>
+                        <div class="aspect-square rounded-xl bg-vanilla/60 mb-6 overflow-hidden relative img-editorial">
+                            <span class="absolute top-3 left-3 bg-nature text-cream text-[10px] uppercase tracking-widest px-3 py-1.5 rounded-full font-medium z-10">Large Format</span>
+                            <span class="absolute top-3 right-3 bg-cream/90 backdrop-blur-sm text-cocoa text-[11px] font-mono px-2.5 py-1 rounded-md z-10">₹15 / cup</span>
+                            <img src="cupp.png" alt="150ml Edible Cups" class="w-full h-full object-cover mix-blend-multiply">
+                        </div>
+                        
+                        <div class="flex justify-between items-baseline mb-1">
+                            <h3 class="text-xl font-serif font-semibold text-cocoa">150 ML Café Case</h3>
+                            <span class="text-xl font-serif font-bold text-choc">₹6,500</span>
+                        </div>
+                        <p class="text-xs text-cocoa/60 mb-6 font-mono uppercase tracking-wider">432 Units • For Cappuccino & Desserts</p>
+                        
+                        <div class="mb-6 pt-2 border-t border-cocoa/10">
+                            <div class="flex items-center gap-2 text-xs text-nature font-medium py-2">
+                                <i data-lucide="sprout" class="w-4 h-4 shrink-0"></i>
+                                <span>Thick-wall bake for extended cold & hot holds</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button type="button" onclick="addToCart(this)" class="w-full bg-cocoa text-cream text-xs uppercase tracking-[0.18em] font-semibold py-4 rounded-xl hover:bg-choc transition-colors flex items-center justify-center gap-2">
+                        <i data-lucide="plus" class="w-4 h-4"></i>
+                        <span>Add Case to Order</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Wholesale / B2B Hospitality Section -->
+    <section id="wholesale" class="py-24 md:py-32 bg-cocoa text-cream px-6 relative overflow-hidden">
+        <div class="max-w-7xl mx-auto relative z-10">
+            <div class="grid lg:grid-cols-12 gap-12 items-end mb-16 reveal">
+                <div class="lg:col-span-7">
+                    <p class="text-xs uppercase tracking-[0.2em] text-caramel font-semibold mb-3">03 / Hospitality Partners</p>
+                    <h2 class="text-4xl md:text-6xl font-serif leading-[1.08]">
+                        Turn your beverage service into <span class="italic text-caramel">organic media.</span>
+                    </h2>
+                </div>
+                <p class="lg:col-span-5 text-sm md:text-base text-vanilla/70 leading-relaxed">
+                    Every CUP2EAT serve invites customers to film, share, and talk about your venue—eliminating single-use paper cup waste while elevating perceived ticket value.
+                </p>
+            </div>
+
+            <!-- 4 Hospitality Pillars (Clean Vector Icons, Zero Emojis) -->
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 reveal delay-100 mb-16">
+                <div class="border border-cream/15 rounded-2xl p-6 bg-white/[0.02] hover:bg-white/[0.05] transition-colors">
+                    <div class="w-11 h-11 rounded-xl bg-caramel/15 border border-caramel/30 flex items-center justify-center text-caramel mb-5">
+                        <i data-lucide="coffee" class="w-5 h-5"></i>
+                    </div>
+                    <h4 class="font-serif text-lg mb-1">Specialty Cafés</h4>
+                    <p class="text-xs text-vanilla/60 leading-relaxed">Signature espresso shots, macchiatos, and affogatos.</p>
+                </div>
+
+                <div class="border border-cream/15 rounded-2xl p-6 bg-white/[0.02] hover:bg-white/[0.05] transition-colors">
+                    <div class="w-11 h-11 rounded-xl bg-caramel/15 border border-caramel/30 flex items-center justify-center text-caramel mb-5">
+                        <i data-lucide="cup-soda" class="w-5 h-5"></i>
+                    </div>
+                    <h4 class="font-serif text-lg mb-1">Chai Lounges</h4>
+                    <p class="text-xs text-vanilla/60 leading-relaxed">High-margin kulhad alternative with zero breakage.</p>
+                </div>
+
+                <div class="border border-cream/15 rounded-2xl p-6 bg-white/[0.02] hover:bg-white/[0.05] transition-colors">
+                    <div class="w-11 h-11 rounded-xl bg-caramel/15 border border-caramel/30 flex items-center justify-center text-caramel mb-5">
+                        <i data-lucide="utensils-crossed" class="w-5 h-5"></i>
+                    </div>
+                    <h4 class="font-serif text-lg mb-1">Hotels & Resorts</h4>
+                    <p class="text-xs text-vanilla/60 leading-relaxed">Welcome drinks, tasting menus, and sustainable banquets.</p>
+                </div>
+
+                <div class="border border-cream/15 rounded-2xl p-6 bg-white/[0.02] hover:bg-white/[0.05] transition-colors">
+                    <div class="w-11 h-11 rounded-xl bg-caramel/15 border border-caramel/30 flex items-center justify-center text-caramel mb-5">
+                        <i data-lucide="sparkles" class="w-5 h-5"></i>
+                    </div>
+                    <h4 class="font-serif text-lg mb-1">Luxury Weddings</h4>
+                    <p class="text-xs text-vanilla/60 leading-relaxed">Interactive dessert bars & late-night coffee counters.</p>
+                </div>
+            </div>
+
+            <!-- Wholesale Offer Card (Fixed Proportioned WhatsApp Vector) -->
+            <div class="bg-cream text-cocoa rounded-3xl p-8 md:p-12 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8 reveal delay-200 border border-vanilla">
+                <div class="space-y-3">
+                    <div class="inline-flex items-center gap-2 bg-choc text-cream text-[10px] font-semibold px-3 py-1 rounded-full uppercase tracking-widest">
+                        <i data-lucide="badge-percent" class="w-3.5 h-3.5 text-caramel"></i>
+                        <span>Direct Factory Dispatch</span>
+                    </div>
+                    <h3 class="text-3xl md:text-4xl font-serif text-cocoa">Starter Commercial Carton — ₹3,960</h3>
+                    <p class="text-sm md:text-base text-cocoa/75">
+                        Includes <strong class="text-cocoa font-semibold">396 Edible Cups (100 ML)</strong> at ₹10/unit with complimentary insured shipping across India.
+                    </p>
+                </div>
+                
+                <a href="https://wa.me/919818192575?text=Hello%20CUP2EAT!%20I%20want%20to%20place%20a%20bulk%20order%20for%20396%20Cups%20(100ML)." 
+                   target="_blank" 
+                   rel="noopener noreferrer"
+                   class="w-full lg:w-auto bg-[#25D366] text-white px-7 py-4 rounded-full text-xs uppercase tracking-[0.16em] font-semibold hover:bg-[#1ebe5d] transition-all flex items-center justify-center gap-3 shadow-md shrink-0">
+                    <!-- Full-Bleed Crisp WhatsApp SVG -->
+                    <svg class="w-5 h-5 fill-current shrink-0" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M12.012 2c-5.506 0-9.989 4.478-9.99 9.984a9.964 9.964 0 001.333 4.993L2 22l5.233-1.237a9.994 9.994 0 004.779 1.217h.004c5.505 0 9.988-4.478 9.989-9.984 0-2.669-1.037-5.176-2.922-7.062A9.935 9.935 0 0012.012 2zm5.827 14.121c-.246.693-1.434 1.326-2.005 1.411-.512.077-1.16.108-1.871-.118-.432-.137-.985-.32-1.693-.625-2.98-1.287-4.925-4.287-5.074-4.485-.149-.199-1.213-1.611-1.213-3.073 0-1.462.768-2.181 1.04-2.478.273-.297.594-.372.792-.372.198 0 .396.002.569.01.182.009.427-.069.669.511.247.595.842 2.056.916 2.205.074.149.124.322.025.52-.099.198-.149.322-.297.496-.149.173-.312.387-.446.52-.149.148-.303.309-.13.606.173.297.769 1.269 1.651 2.056 1.135 1.012 2.092 1.326 2.389 1.474.297.149.47.124.644-.074.173-.198.743-.867.941-1.164.198-.297.396-.248.669-.149.273.099 1.733.817 2.03.966.297.149.495.223.569.347.074.124.074.718-.172 1.411z"/>
+                    </svg>
+                    <span>Order via WhatsApp</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Pre-CTA -->
+    <section class="py-20 md:py-28 px-6 bg-choc text-cream text-center border-b border-white/10">
+        <div class="max-w-2xl mx-auto reveal">
+            <p class="text-xs uppercase tracking-[0.2em] text-caramel font-semibold mb-4">Zero Waste. Full Taste.</p>
+            <h2 class="text-4xl md:text-6xl font-serif mb-8">Ready to eat your drink?</h2>
+            <a href="#shop" class="inline-flex items-center gap-3 bg-cream text-cocoa px-9 py-4 rounded-full text-xs uppercase tracking-[0.18em] font-semibold hover:bg-vanilla transition-colors">
+                <span>View Wholesale Catalog</span>
+                <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+            </a>
+        </div>
+    </section>
+
+    <!-- Sleek Floating WhatsApp Button (Refined Outer Layer & Proportioned Icon) -->
+    <a href="https://wa.me/919818192575?text=Hello%20CUP2EAT!%20I%20am%20interested%20in%20your%20edible%20cups." 
+       target="_blank" 
+       rel="noopener noreferrer"
+       aria-label="Chat on WhatsApp"
+       class="fixed bottom-5 right-5 md:bottom-7 md:right-7 w-12 h-12 md:w-14 md:h-14 bg-[#25D366] text-white rounded-full shadow-[0_8px_20px_rgba(37,211,102,0.35)] hover:scale-105 hover:bg-[#1ebe5d] transition-all z-50 flex items-center justify-center">
+        <svg class="w-6 h-6 md:w-7 md:h-7 fill-current" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12.012 2c-5.506 0-9.989 4.478-9.99 9.984a9.964 9.964 0 001.333 4.993L2 22l5.233-1.237a9.994 9.994 0 004.779 1.217h.004c5.505 0 9.988-4.478 9.989-9.984 0-2.669-1.037-5.176-2.922-7.062A9.935 9.935 0 0012.012 2zm5.827 14.121c-.246.693-1.434 1.326-2.005 1.411-.512.077-1.16.108-1.871-.118-.432-.137-.985-.32-1.693-.625-2.98-1.287-4.925-4.287-5.074-4.485-.149-.199-1.213-1.611-1.213-3.073 0-1.462.768-2.181 1.04-2.478.273-.297.594-.372.792-.372.198 0 .396.002.569.01.182.009.427-.069.669.511.247.595.842 2.056.916 2.205.074.149.124.322.025.52-.099.198-.149.322-.297.496-.149.173-.312.387-.446.52-.149.148-.303.309-.13.606.173.297.769 1.269 1.651 2.056 1.135 1.012 2.092 1.326 2.389 1.474.297.149.47.124.644-.074.173-.198.743-.867.941-1.164.198-.297.396-.248.669-.149.273.099 1.733.817 2.03.966.297.149.495.223.569.347.074.124.074.718-.172 1.411z"/>
+        </svg>
+    </a>
+
+    <!-- Footer -->
+    <footer class="bg-cocoa text-vanilla py-12 px-6">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="flex items-center gap-3">
+                <img src="https://instagram.fluh1-2.fna.fbcdn.net/v/t51.2885-19/487214331_639080325575362_5737635668254151880_n.jpg?_nc_cat=111&_nc_map=urlgen_bucketless&ig_cache_key=GPtMCh3C8sl7PUUCAMhU5rA9LaBPbkULAAAB0j-ccb7-5&ccb=7-5&_nc_sid=669407&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLnd3dy4xMDgwLkMzIn0%3D&_nc_ohc=CQYUMeGbtUoQ7kNvwEbzfUx&_nc_oc=AdoYtcq7YRUmVkLHQT6tBakCQuy1yEsrpmbFXiYIoGyQDxYq0UN3KgIllFonSqi7Gt3xSi0EkNu69r6oP9W4nOj4&_nc_zt=24&_nc_ht=instagram.fluh1-2.fna&_nc_ss=7b6a8&oh=00_AQQ2X8KRmaxL2qLtdZtFuNXluDc--m3Tu3Lb-I2Zf7SZgg&oe=6AF8ABBF" 
+                     alt="CUP2EAT Logo" 
+                     class="w-11 h-11 rounded-full object-cover border border-vanilla/20">
+                <span class="font-serif font-bold tracking-tight text-base text-cream">CUP2EAT</span>
+            </div>
+            
+            <p class="text-xs text-vanilla/50 text-center">
+                © 2026 CUP2EAT by Varun Khera. Crafted in India.
+            </p>
+            
+            <div class="flex items-center gap-6 text-xs uppercase tracking-widest">
+                <a href="https://www.instagram.com/cup2eat/" target="_blank" rel="noopener noreferrer" class="hover:text-caramel transition-colors flex items-center gap-1.5">
+                    <i data-lucide="instagram" class="w-4 h-4"></i>
+                    <span>Instagram</span>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // Initialize Lucide vector icons
+        lucide.createIcons();
+
+        // Sticky Header Transition
+        const header = document.getElementById('header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 36) {
+                header.classList.add('top-0', 'shadow-sm');
+                header.classList.remove('top-[37px]');
+            } else {
+                header.classList.remove('top-0', 'shadow-sm');
+                header.classList.add('top-[37px]');
+            }
+        });
+
+        // Interactive Flavour Pill Selection
+        function selectFlavour(btn) {
+            const group = btn.closest('[data-flavour-group]');
+            group.querySelectorAll('button').forEach(b => {
+                b.className = 'px-3.5 py-1.5 text-xs border border-cocoa/20 rounded-full text-cocoa hover:border-cocoa transition-all';
+            });
+            btn.className = 'px-3.5 py-1.5 text-xs border border-cocoa rounded-full bg-cocoa text-cream transition-all';
+        }
+
+        // Interactive Cart Counter Feedback (Replaces browser alert)
+        let cartTotal = 0;
+        function addToCart(btn) {
+            cartTotal++;
+            document.getElementById('cart-count').textContent = cartTotal;
+            
+            const originalHTML = btn.innerHTML;
+            btn.innerHTML = '<span>Added to Order</span>';
+            btn.classList.replace('bg-cocoa', 'bg-nature');
+            
+            setTimeout(() => {
+                btn.innerHTML = originalHTML;
+                btn.classList.replace('bg-nature', 'bg-cocoa');
+                lucide.createIcons();
+            }, 1200);
+        }
+
+        // IntersectionObserver Reveal
+        const revealElements = document.querySelectorAll('.reveal');
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, { threshold: 0.1, rootMargin: "0px 0px -40px 0px" });
+
+        revealElements.forEach(el => revealObserver.observe(el));
+    </script>
+</body>
+</html>
