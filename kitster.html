@@ -1,0 +1,2116 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KITSTER | Premium Corporate Gifting Reimagined</title>
+    <meta name="description" content="Thoughtfully curated corporate gift kits, employee welcome kits, and client appreciation gifts.">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- GSAP for Animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <style>
+        /* ==========================================================================
+           CSS VARIABLES & RESET
+           ========================================================================== */
+        :root {
+            /* Colors */
+            --bg-primary: #F7F6F2;
+            --bg-secondary: #FFFFFF;
+            --text-primary: #171717;
+            --text-secondary: #777777;
+            --accent: #FF5A36;
+            --border: #E5E3DE;
+            
+            /* Typography */
+            --font-head: 'Space Grotesk', sans-serif;
+            --font-accent: 'Playfair Display', serif;
+            --font-body: 'Inter', sans-serif;
+            
+            /* Sizing & Spacing */
+            --container-width: 1600px;
+            --container-padding: 5vw;
+            --section-padding: clamp(6rem, 10vw, 12rem);
+            
+            /* Animations */
+            --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
+            --transition-smooth: all 0.6s var(--ease-out-expo);
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: initial;
+            font-size: 16px;
+        }
+        
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.5;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: color 0.3s ease;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        button {
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-family: inherit;
+            color: inherit;
+        }
+
+        /* ==========================================================================
+           TYPOGRAPHY
+           ========================================================================== */
+        h1, h2, h3, h4, h5, h6, .font-head {
+            font-family: var(--font-head);
+            font-weight: 500;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+        }
+
+        .font-accent {
+            font-family: var(--font-accent);
+            font-weight: 400;
+            font-style: italic;
+            letter-spacing: 0;
+        }
+
+        .text-accent-color {
+            color: var(--accent);
+        }
+
+        .h-hero {
+            font-size: clamp(3.5rem, 8vw, 9rem);
+            line-height: 1;
+            letter-spacing: -0.04em;
+            text-transform: uppercase;
+        }
+
+        .h-section {
+            font-size: clamp(2.5rem, 5vw, 5.5rem);
+            letter-spacing: -0.03em;
+        }
+
+        .h-item {
+            font-size: clamp(1.25rem, 2vw, 1.75rem);
+        }
+
+        .label-sm {
+            font-family: var(--font-head);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-weight: 600;
+            color: var(--text-secondary);
+            display: block;
+            margin-bottom: 1rem;
+        }
+
+        p.large {
+            font-size: clamp(1.125rem, 1.5vw, 1.5rem);
+            line-height: 1.6;
+            color: var(--text-secondary);
+        }
+
+        p.medium {
+            font-size: 1.125rem;
+            line-height: 1.6;
+            color: var(--text-secondary);
+        }
+
+        /* ==========================================================================
+           LAYOUT & UTILITIES
+           ========================================================================== */
+        .container {
+            width: 100%;
+            max-width: var(--container-width);
+            margin: 0 auto;
+            padding: 0 var(--container-padding);
+        }
+
+        .section {
+            padding: var(--section-padding) 0;
+        }
+
+        .grid {
+            display: grid;
+        }
+
+        .flex {
+            display: flex;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem 2rem;
+            font-family: var(--font-head);
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 500;
+            border-radius: 4px;
+            transition: var(--transition-smooth);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary {
+            background-color: var(--text-primary);
+            color: var(--bg-secondary);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--accent);
+            color: var(--bg-secondary);
+        }
+
+        .btn-outline {
+            border: 1px solid var(--border);
+            background-color: transparent;
+            color: var(--text-primary);
+        }
+
+        .btn-outline:hover {
+            border-color: var(--text-primary);
+            background-color: var(--text-primary);
+            color: var(--bg-secondary);
+        }
+
+        /* ==========================================================================
+           HEADER & NAVIGATION
+           ========================================================================== */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 100;
+            transition: background-color 0.4s ease, border-bottom 0.4s ease, padding 0.4s ease;
+            padding: 1.5rem 0;
+            border-bottom: 1px solid transparent;
+        }
+
+        header.scrolled {
+            background-color: rgba(247, 246, 242, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex: 1;
+        }
+
+        .logo {
+            font-family: var(--font-head);
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: -0.05em;
+            text-transform: uppercase;
+        }
+
+        .brand-symbol {
+            width: 12px;
+            height: 12px;
+            background-color: var(--accent);
+            border-radius: 2px;
+            display: inline-block;
+        }
+
+        .nav-center {
+            display: none;
+            flex: 2;
+            justify-content: center;
+        }
+
+        @media (min-width: 1024px) {
+            .nav-center {
+                display: flex;
+            }
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+        }
+
+        .nav-links a {
+            font-family: var(--font-head);
+            font-size: 0.875rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background-color: var(--text-primary);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 1.5rem;
+            flex: 1;
+        }
+
+        .icon-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+            position: relative;
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -5px;
+            right: -8px;
+            background-color: var(--accent);
+            color: #fff;
+            font-size: 0.65rem;
+            font-weight: 600;
+            width: 16px;
+            height: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+
+        .mobile-menu-btn {
+            display: block;
+        }
+
+        @media (min-width: 1024px) {
+            .mobile-menu-btn {
+                display: none;
+            }
+        }
+
+        /* Mobile Menu */
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background-color: var(--bg-primary);
+            z-index: 99;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease;
+        }
+
+        .mobile-menu.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .mobile-nav-links {
+            text-align: center;
+        }
+
+        .mobile-nav-links a {
+            display: block;
+            font-family: var(--font-head);
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+        }
+
+        /* ==========================================================================
+           HERO SECTION
+           ========================================================================== */
+        .hero {
+            min-height: 100vh;
+            padding-top: 120px;
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+
+        .hero-grid {
+            grid-template-columns: 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        @media (min-width: 1024px) {
+            .hero-grid {
+                grid-template-columns: 1.2fr 1fr;
+            }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            margin-bottom: 2rem;
+        }
+
+        .hero-desc {
+            max-width: 500px;
+            margin-bottom: 3rem;
+        }
+
+        .hero-ctas {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .hero-visual {
+            position: relative;
+            width: 100%;
+            height: 60vh;
+            min-height: 500px;
+        }
+
+        @media (min-width: 1024px) {
+            .hero-visual {
+                height: 80vh;
+            }
+        }
+
+        .hero-img-wrap {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            border-radius: 4px;
+        }
+
+        .hero-img-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transform: scale(1.05);
+        }
+
+        .floating-label {
+            position: absolute;
+            background: var(--bg-secondary);
+            padding: 0.75rem 1.5rem;
+            border-radius: 40px;
+            font-family: var(--font-head);
+            font-size: 0.75rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            z-index: 3;
+        }
+
+        .fl-1 {
+            bottom: 10%;
+            left: -10%;
+        }
+
+        .fl-2 {
+            top: 20%;
+            right: -5%;
+        }
+
+        @media (max-width: 1023px) {
+            .fl-1, .fl-2 { display: none; }
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 2rem;
+            left: var(--container-padding);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-family: var(--font-head);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .scroll-line {
+            width: 40px;
+            height: 1px;
+            background-color: var(--text-primary);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .scroll-line::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background-color: var(--accent);
+            animation: scrollLine 2s infinite ease-in-out;
+        }
+
+        @keyframes scrollLine {
+            0% { left: -100%; }
+            50% { left: 0%; }
+            100% { left: 100%; }
+        }
+
+        /* ==========================================================================
+           BRAND INTRODUCTION
+           ========================================================================== */
+        .intro-grid {
+            grid-template-columns: 1fr;
+            gap: 4rem;
+        }
+
+        @media (min-width: 1024px) {
+            .intro-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 8rem;
+                align-items: center;
+            }
+        }
+
+        .intro-text h2 {
+            margin-bottom: 2rem;
+        }
+
+        .intro-visual {
+            position: relative;
+        }
+
+        .intro-visual img {
+            width: 100%;
+            aspect-ratio: 4/5;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+
+        .orange-accent-dot {
+            width: 80px;
+            height: 80px;
+            background-color: var(--accent);
+            border-radius: 50%;
+            position: absolute;
+            bottom: -40px;
+            right: -40px;
+            z-index: -1;
+        }
+
+        /* ==========================================================================
+           Awwwards Style: HORIZONTAL SCROLL COLLECTIONS
+           ========================================================================== */
+        .collections-awwwards {
+            background-color: var(--text-primary);
+            color: var(--bg-primary);
+            overflow: hidden;
+            position: relative;
+            padding-top: var(--section-padding);
+        }
+
+        .coll-header-wrap {
+            padding: 0 var(--container-padding) 4rem;
+        }
+        
+        .coll-header-wrap .label-sm {
+            color: #A0A0A0;
+        }
+        #collections{
+            padding-top: 35px;
+        }
+
+        .coll-track-container {
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .coll-track {
+            display: flex;
+            gap: 2rem;
+            padding: 0 var(--container-padding) var(--section-padding);
+            width: max-content;
+        }
+
+        .coll-card {
+            flex: 0 0 85vw;
+            height: 60vh;
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        @media (min-width: 768px) {
+            .coll-card {
+                flex: 0 0 45vw;
+                height: 70vh;
+            }
+        }
+
+        @media (min-width: 1200px) {
+            .coll-card {
+                flex: 0 0 35vw;
+            }
+        }
+
+        .coll-card-img {
+            position: absolute;
+            top: 0;
+            left: -10%;
+            width: 120%;
+            height: 100%;
+            object-fit: cover;
+            transform: scale(1.05);
+            transition: transform 0.8s var(--ease-out-expo);
+        }
+
+        .coll-card-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.1) 60%, transparent 100%);
+            z-index: 1;
+            transition: background 0.5s ease;
+        }
+
+        .coll-card-content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 2.5rem;
+            z-index: 2;
+            color: #fff;
+            transform: translateY(1rem);
+            transition: transform 0.6s var(--ease-out-expo);
+        }
+
+        .coll-card:hover .coll-card-img {
+            transform: scale(1.1);
+        }
+
+        .coll-card:hover .coll-card-content {
+            transform: translateY(0);
+        }
+
+        .coll-card-num {
+            font-family: var(--font-head);
+            font-size: 1.25rem;
+            font-weight: 300;
+            color: var(--accent);
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .coll-card-content h3 {
+            font-size: clamp(1.75rem, 3vw, 2.5rem);
+            margin-bottom: 0.5rem;
+            line-height: 1.1;
+        }
+
+        .coll-card-content p {
+            font-size: 1rem;
+            opacity: 0.8;
+            margin-bottom: 1.5rem;
+            max-width: 80%;
+        }
+        
+        .coll-link {
+            font-family: var(--font-head);
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 500;
+        }
+
+        .coll-link svg {
+            transition: transform 0.3s ease;
+        }
+
+        .coll-card:hover .coll-link svg {
+            transform: translateX(8px);
+        }
+
+        /* Mobile Snap Scrolling Fallback */
+        @media (max-width: 1023px) {
+            .coll-track-container {
+                overflow-x: auto;
+                scroll-snap-type: x mandatory;
+                scrollbar-width: none; /* Firefox */
+                -webkit-overflow-scrolling: touch;
+            }
+            .coll-track-container::-webkit-scrollbar { 
+                display: none; /* Safari and Chrome */
+            }
+            .coll-card {
+                scroll-snap-align: center;
+            }
+        }
+
+        /* ==========================================================================
+           FEATURED PRODUCTS
+           ========================================================================== */
+        .product-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+
+        @media (min-width: 768px) {
+            .product-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .product-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 3rem 2rem;
+            }
+        }
+
+        .product-card {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .prod-img-wrap {
+            position: relative;
+            aspect-ratio: 4/5;
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+        }
+
+        .prod-img-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s var(--ease-out-expo);
+        }
+
+        .product-card:hover .prod-img-wrap img {
+            transform: scale(1.03);
+        }
+
+        .prod-badge {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            background: var(--bg-secondary);
+            padding: 0.25rem 0.75rem;
+            font-family: var(--font-head);
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-radius: 20px;
+            z-index: 2;
+        }
+
+        .prod-info {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .prod-title {
+            font-family: var(--font-head);
+            font-size: 1.25rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .prod-desc {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            flex-grow: 1;
+        }
+
+        .prod-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto;
+            border-top: 1px solid var(--border);
+            padding-top: 1rem;
+        }
+
+        .prod-price {
+            font-weight: 500;
+        }
+
+        .btn-add {
+            font-family: var(--font-head);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 600;
+            color: var(--text-primary);
+            position: relative;
+        }
+
+        .btn-add::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background-color: var(--text-primary);
+        }
+        
+        .btn-add:hover {
+            color: var(--accent);
+        }
+        .btn-add:hover::after {
+            background-color: var(--accent);
+        }
+
+        /* ==========================================================================
+           WHY KITSTER
+           ========================================================================== */
+        .why-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 3rem;
+            margin-top: 4rem;
+        }
+
+        @media (min-width: 768px) {
+            .why-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .why-grid {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 2rem;
+            }
+        }
+
+        .why-item {
+            border-top: 1px solid var(--border);
+            padding-top: 2rem;
+        }
+
+        .why-num {
+            font-family: var(--font-head);
+            font-size: 3rem;
+            font-weight: 300;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+
+        .why-item h3 {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+        }
+
+        .why-item p {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        /* ==========================================================================
+           PROCESS TIMELINE
+           ========================================================================== */
+        .process {
+            background-color: var(--bg-secondary);
+        }
+
+        .timeline {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 3rem;
+            margin-top: 5rem;
+            position: relative;
+        }
+
+        @media (min-width: 1024px) {
+            .timeline {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 2rem;
+            }
+            .timeline::before {
+                content: '';
+                position: absolute;
+                top: 24px;
+                left: 0;
+                width: 100%;
+                height: 1px;
+                background-color: var(--border);
+                z-index: 1;
+            }
+        }
+
+        .step {
+            position: relative;
+            z-index: 2;
+        }
+
+        .step-dot {
+            width: 48px;
+            height: 48px;
+            background-color: var(--text-primary);
+            color: var(--bg-secondary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-head);
+            font-weight: 600;
+            margin-bottom: 2rem;
+        }
+
+        .step h3 {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+        }
+
+        .step p {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .process-cta {
+            margin-top: 5rem;
+            text-align: center;
+        }
+
+        /* ==========================================================================
+           GALLERY
+           ========================================================================== */
+        .gallery-wrap {
+            margin-top: 4rem;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        @media (min-width: 768px) {
+            .gallery-wrap {
+                grid-template-columns: repeat(4, 1fr);
+                grid-auto-rows: 300px;
+            }
+            .g1 { grid-column: span 2; grid-row: span 2; }
+            .g2 { grid-column: span 1; grid-row: span 1; }
+            .g3 { grid-column: span 1; grid-row: span 2; }
+            .g4 { grid-column: span 1; grid-row: span 1; }
+            .g5 { grid-column: span 2; grid-row: span 1; }
+        }
+
+        .gal-item {
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .gal-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        .gal-item:hover img {
+            transform: scale(1.05);
+        }
+
+        .gallery-header h2 {
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        /* ==========================================================================
+           TESTIMONIALS
+           ========================================================================== */
+        .test-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 3rem;
+            margin-top: 4rem;
+        }
+
+        @media (min-width: 1024px) {
+            .test-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 4rem;
+            }
+        }
+
+        .testimonial {
+            border-left: 2px solid var(--accent);
+            padding-left: 2rem;
+        }
+
+        .test-quote {
+            font-family: var(--font-accent);
+            font-size: 1.5rem;
+            line-height: 1.4;
+            margin-bottom: 2rem;
+        }
+
+        .test-author {
+            font-family: var(--font-head);
+            font-weight: 500;
+            font-size: 1rem;
+        }
+
+        .test-title {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-top: 0.25rem;
+        }
+
+        /* ==========================================================================
+           FAQ ACCORDION
+           ========================================================================== */
+        .faq {
+            background-color: var(--bg-secondary);
+        }
+
+        .faq-container {
+            max-width: 800px;
+            margin: 4rem auto 0;
+        }
+
+        .faq-item {
+            border-bottom: 1px solid var(--border);
+        }
+
+        .faq-question {
+            width: 100%;
+            text-align: left;
+            padding: 2rem 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: var(--font-head);
+            font-size: 1.25rem;
+            font-weight: 500;
+        }
+
+        .faq-icon {
+            width: 24px;
+            height: 24px;
+            position: relative;
+        }
+
+        .faq-icon::before, .faq-icon::after {
+            content: '';
+            position: absolute;
+            background-color: var(--text-primary);
+            transition: transform 0.3s ease;
+        }
+
+        .faq-icon::before {
+            top: 11px; left: 0; width: 24px; height: 2px;
+        }
+
+        .faq-icon::after {
+            top: 0; left: 11px; width: 2px; height: 24px;
+        }
+
+        .faq-item.active .faq-icon::after {
+            transform: rotate(90deg);
+            opacity: 0;
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease;
+        }
+
+        .faq-answer-inner {
+            padding-bottom: 2rem;
+            color: var(--text-secondary);
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        /* ==========================================================================
+           FINAL CTA
+           ========================================================================== */
+        .cta-final {
+            position: relative;
+            min-height: 80vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: var(--bg-secondary);
+            overflow: hidden;
+        }
+
+        .cta-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .cta-bg img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .cta-bg::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(23, 23, 23, 0.6);
+        }
+
+        .cta-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            padding: 2rem;
+        }
+
+        .cta-content h2 {
+            font-size: clamp(3rem, 6vw, 6rem);
+            margin-bottom: 1.5rem;
+            color: #fff;
+        }
+
+        .cta-content p {
+            font-size: clamp(1.125rem, 1.5vw, 1.5rem);
+            margin-bottom: 3rem;
+            opacity: 0.9;
+            color: #fff;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .cta-final .btn-primary {
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+
+        .cta-final .btn-primary:hover {
+            background-color: var(--accent);
+            color: var(--bg-secondary);
+        }
+
+        .cta-final .btn-outline {
+            border-color: rgba(255,255,255,0.4);
+            color: var(--bg-secondary);
+        }
+
+        .cta-final .btn-outline:hover {
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+
+        /* ==========================================================================
+           FOOTER
+           ========================================================================== */
+        footer {
+            background-color: var(--text-primary);
+            color: var(--bg-secondary);
+            padding: 6rem 0 2rem;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 4rem;
+            margin-bottom: 6rem;
+        }
+
+        @media (min-width: 768px) {
+            .footer-grid {
+                grid-template-columns: 1.5fr 1fr 1fr 1fr;
+            }
+        }
+
+        .footer-brand p {
+            color: #A0A0A0;
+            margin-top: 1.5rem;
+            max-width: 300px;
+        }
+
+        .footer-col h4 {
+            font-family: var(--font-head);
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 2rem;
+            color: #fff;
+        }
+
+        .footer-col ul li {
+            margin-bottom: 1rem;
+        }
+
+        .footer-col ul li a {
+            color: #A0A0A0;
+            font-size: 0.875rem;
+        }
+
+        .footer-col ul li a:hover {
+            color: var(--accent);
+        }
+
+        .newsletter-form {
+            display: flex;
+            margin-top: 1.5rem;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+            padding-bottom: 0.5rem;
+        }
+
+        .newsletter-form input {
+            background: none;
+            border: none;
+            color: #fff;
+            flex-grow: 1;
+            font-family: var(--font-body);
+            font-size: 0.875rem;
+            outline: none;
+        }
+
+        .newsletter-form input::placeholder {
+            color: #A0A0A0;
+        }
+
+        .newsletter-form button {
+            color: #fff;
+            font-family: var(--font-head);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .newsletter-msg {
+            font-size: 0.75rem;
+            margin-top: 0.5rem;
+            color: var(--accent);
+            display: none;
+        }
+
+        .footer-bottom {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 4rem;
+        }
+
+        .footer-statement {
+            font-family: var(--font-accent);
+            font-size: clamp(2rem, 4vw, 4rem);
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+
+        .footer-legal {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+            width: 100%;
+            font-size: 0.75rem;
+            color: #A0A0A0;
+        }
+
+        @media (min-width: 768px) {
+            .footer-legal {
+                justify-content: space-between;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- SVG Sprites / Icons inline -->
+    <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+        <symbol id="icon-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </symbol>
+        <symbol id="icon-bag" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path>
+        </symbol>
+        <symbol id="icon-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line>
+        </symbol>
+        <symbol id="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line>
+        </symbol>
+        <symbol id="icon-arrow-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline>
+        </symbol>
+    </svg>
+
+    <!-- HEADER -->
+    <header id="site-header">
+        <div class="container nav-container">
+            <div class="nav-left">
+                <a href="#" class="logo">KITSTER</a>
+                <span class="brand-symbol"></span>
+            </div>
+            
+            <nav class="nav-center">
+                <ul class="nav-links">
+                    <li><a href="#collections">Collections</a></li>
+                    <li><a href="#products">Corporate Gifting</a></li>
+                    <li><a href="#process">How It Works</a></li>
+                    <li><a href="#about">About</a></li>
+                </ul>
+            </nav>
+            
+            <div class="nav-right">
+                <button class="icon-btn" aria-label="Search">
+                    <svg width="20" height="20"><use href="#icon-search"></use></svg>
+                </button>
+                <button class="icon-btn" aria-label="Shopping Bag">
+                    <svg width="20" height="20"><use href="#icon-bag"></use></svg>
+                    <span class="cart-count" id="cart-counter">0</span>
+                </button>
+                <button class="icon-btn mobile-menu-btn" id="menu-toggle" aria-label="Toggle Menu">
+                    <svg width="24" height="24" id="menu-icon"><use href="#icon-menu"></use></svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- MOBILE MENU -->
+    <div class="mobile-menu" id="mobile-menu">
+        <nav class="mobile-nav-links">
+            <a href="#collections" class="menu-link">Collections</a>
+            <a href="#products" class="menu-link">Corporate Gifting</a>
+            <a href="#process" class="menu-link">How It Works</a>
+            <a href="#about" class="menu-link">About</a>
+        </nav>
+    </div>
+
+    <main>
+        <!-- HERO SECTION -->
+        <section class="hero">
+            <div class="container grid hero-grid">
+                <div class="hero-content reveal-up">
+                    <span class="label-sm">Corporate Gifting, Reimagined.</span>
+                    <h1 class="h-hero">
+                        Make every <br>
+                        <span class="font-accent text-accent-color">connection</span><br>
+                        count.
+                    </h1>
+                    <p class="large hero-desc">
+                        Thoughtfully curated gifting experiences that turn everyday business relationships into lasting impressions.
+                    </p>
+                    <div class="hero-ctas">
+                        <a href="#collections" class="btn btn-primary">Explore Gift Kits</a>
+                        <a href="#process" class="btn btn-outline">Create a Custom Kit</a>
+                    </div>
+                </div>
+                
+                <div class="hero-visual reveal-up">
+                    <div class="hero-img-wrap">
+                        <!-- Robust Premium Image -->
+                        <img src="https://images.unsplash.com/photo-1549465220-1a8b9238cd48?q=80&w=2000&auto=format&fit=crop" alt="Premium corporate black gift boxes arranged artistically">
+                    </div>
+                    <div class="floating-label fl-1">Made to be remembered</div>
+                    <div class="floating-label fl-2">Thoughtfully curated</div>
+                </div>
+            </div>
+            
+            <div class="scroll-indicator">
+                <span>Scroll</span>
+                <div class="scroll-line"></div>
+            </div>
+        </section>
+
+        <!-- BRAND INTRO -->
+        <section id="about" class="section intro">
+            <div class="container grid intro-grid">
+                <div class="intro-text reveal-up">
+                    <span class="label-sm">More than just a gift.</span>
+                    <h2 class="h-section">
+                        Good gifts don't just arrive. <br>
+                        <span class="font-accent">They make an impression.</span>
+                    </h2>
+                    <p class="large" style="margin-top: 2rem;">
+                        We bring together thoughtful products, considered details, and beautiful packaging to create gifting experiences people genuinely remember.
+                    </p>
+                </div>
+                <div class="intro-visual reveal-up">
+                    <!-- Robust Premium Image -->
+                    <img src="https://www.thedecorcircle.com/cdn/shop/files/C1C97FE6-7131-4E05-9E26-B67DADDEE461.jpg?v=1739682435" alt="Hands carefully holding a premium wrapped gift">
+                    <div class="orange-accent-dot"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- AWWWARDS STYLE: HORIZONTAL SCROLL COLLECTIONS -->
+        <section id="collections" class="collections-awwwards">
+            <div class="container coll-header-wrap reveal-up">
+                <span class="label-sm">The Collections</span>
+                <h2 class="h-section">Find your kind of <span class="font-accent">thoughtful.</span></h2>
+            </div>
+            
+            <div class="coll-track-container">
+                <div class="coll-track">
+                    
+                    <!-- Collection Card 1 -->
+                    <a href="#" class="coll-card">
+                        <img src="https://www.thedecorcircle.com/cdn/shop/files/007E2B55-D5F8-4BCF-9F47-9E4F55ECA055.jpg?v=1739681992" alt="Employee Welcome Kits" class="coll-card-img">
+                        <div class="coll-card-overlay"></div>
+                        <div class="coll-card-content">
+                            <span class="coll-card-num">01</span>
+                            <h3>Employee Welcome Kits</h3>
+                            <p>Welcome new team members with thoughtfully curated essentials they will actually use.</p>
+                            <span class="coll-link">Explore Collection <svg width="16" height="16"><use href="#icon-arrow-right"></use></svg></span>
+                        </div>
+                    </a>
+
+                    <!-- Collection Card 2 -->
+                    <a href="#" class="coll-card">
+                        <img src="https://www.thedecorcircle.com/cdn/shop/files/glass_gift_set.jpg?v=1765531828&width=713" alt="Client Appreciation" class="coll-card-img">
+                        <div class="coll-card-overlay"></div>
+                        <div class="coll-card-content">
+                            <span class="coll-card-num">02</span>
+                            <h3>Client Appreciation</h3>
+                            <p>Make every client relationship feel valued with premium, executive-level products.</p>
+                            <span class="coll-link">Explore Collection <svg width="16" height="16"><use href="#icon-arrow-right"></use></svg></span>
+                        </div>
+                    </a>
+
+                    <!-- Collection Card 3 -->
+                    <a href="#" class="coll-card">
+                        <img src="https://www.thedecorcircle.com/cdn/shop/files/RGV07189.jpg?v=1711881503&width=713" alt="Corporate Event Kits" class="coll-card-img">
+                        <div class="coll-card-overlay"></div>
+                        <div class="coll-card-content">
+                            <span class="coll-card-num">03</span>
+                            <h3>Event Merchandise</h3>
+                            <p>Create memorable experiences for global events and VIP corporate conferences.</p>
+                            <span class="coll-link">Explore Collection <svg width="16" height="16"><use href="#icon-arrow-right"></use></svg></span>
+                        </div>
+                    </a>
+
+                    <!-- Collection Card 4 -->
+                    <a href="#" class="coll-card">
+                        <img src="https://www.thedecorcircle.com/cdn/shop/files/RGV00340_38fd371e-a9e2-413f-bf78-5601e34e07f5.jpg?v=1730891744&width=713" alt="Custom Brand Kits" class="coll-card-img">
+                        <div class="coll-card-overlay"></div>
+                        <div class="coll-card-content">
+                            <span class="coll-card-num">04</span>
+                            <h3>Custom Brand Kits</h3>
+                            <p>Your brand, your products, your way. End-to-end bespoke packaging solutions.</p>
+                            <span class="coll-link">Explore Collection <svg width="16" height="16"><use href="#icon-arrow-right"></use></svg></span>
+                        </div>
+                    </a>
+
+                    <!-- Collection Card 5 -->
+                    <a href="#" class="coll-card">
+                        <img src="https://www.thedecorcircle.com/cdn/shop/files/54911F5F-3123-4430-8382-1FD95D36D2CB.jpg?v=1747279403&width=713" alt="Executive Gift Boxes" class="coll-card-img">
+                        <div class="coll-card-overlay"></div>
+                        <div class="coll-card-content">
+                            <span class="coll-card-num">05</span>
+                            <h3>Executive Boxes</h3>
+                            <p>Ultra-premium selections for the most important relationships in your network.</p>
+                            <span class="coll-link">Explore Collection <svg width="16" height="16"><use href="#icon-arrow-right"></use></svg></span>
+                        </div>
+                    </a>
+
+                    <!-- Collection Card 6 -->
+                    <a href="#" class="coll-card">
+                        <img src="https://www.thedecorcircle.com/cdn/shop/products/IMG_7945_a0bd029f-6524-48d1-a97f-8aa8b519f9ba.jpg?v=1681716672&width=713" alt="Festive Hampers" class="coll-card-img">
+                        <div class="coll-card-overlay"></div>
+                        <div class="coll-card-content">
+                            <span class="coll-card-num">06</span>
+                            <h3>Festive Hampers</h3>
+                            <p>Celebrate holiday milestones with beautifully curated, seasonally appropriate gifts.</p>
+                            <span class="coll-link">Explore Collection <svg width="16" height="16"><use href="#icon-arrow-right"></use></svg></span>
+                        </div>
+                    </a>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- FEATURED PRODUCTS -->
+        <section id="products" class="section">
+            <div class="container">
+                <div class="section-header reveal-up text-center" style="margin: 0 auto; text-align: center;">
+                    <span class="label-sm" style="margin-left: auto; margin-right: auto;">Curated for connection.</span>
+                    <h2 class="h-section">Gifts worth <span class="font-accent">opening.</span></h2>
+                </div>
+                
+                <div class="product-grid">
+                    <!-- Product 1 -->
+                    <div class="product-card reveal-up">
+                        <div class="prod-img-wrap">
+                            <span class="prod-badge">Bestseller</span>
+                            <img src="https://www.thedecorcircle.com/cdn/shop/files/RGV00326_2024-05-28T09_00_37.422Z.png?v=1716886891&width=713" alt="The Welcome Edit kit">
+                        </div>
+                        <div class="prod-info">
+                            <h3 class="prod-title">The Welcome Edit</h3>
+                            <p class="prod-desc">The perfect introduction to your company culture featuring a premium notebook, ceramic mug, and artisan coffee.</p>
+                            <div class="prod-footer">
+                                <span class="prod-price">CAD $45</span>
+                                <button class="btn-add add-to-bag" data-name="The Welcome Edit">Add to Bag</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Product 2 -->
+                    <div class="product-card reveal-up">
+                        <div class="prod-img-wrap">
+                            <img src="https://www.thedecorcircle.com/cdn/shop/products/IMG_20221112_103228.jpg?v=1671200216&width=713" alt="The Everyday Essentials Kit">
+                        </div>
+                        <div class="prod-info">
+                            <h3 class="prod-title">The Everyday Essentials</h3>
+                            <p class="prod-desc">Practical, high-quality items designed for daily use. Includes an insulated bottle, tech pouch, and premium pen.</p>
+                            <div class="prod-footer">
+                                <span class="prod-price">CAD $65</span>
+                                <button class="btn-add add-to-bag" data-name="Everyday Essentials">Add to Bag</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Product 3 -->
+                    <div class="product-card reveal-up">
+                        <div class="prod-img-wrap">
+                            <span class="prod-badge">New</span>
+                            <img src="https://www.thedecorcircle.com/cdn/shop/products/stellaus-vintage-gold-candle-stands-set-of-2-the-decor-circle-30192511779005_42a1f30b-8ea7-4a38-b45f-b9f6ab145e09.jpg?v=1716445440&width=713" alt="The Creative Workspace Kit">
+                        </div>
+                        <div class="prod-info">
+                            <h3 class="prod-title">The Creative Workspace</h3>
+                            <p class="prod-desc">Inspire creativity with an elegant desk mat, wireless charger, and a set of brainstorming notebooks.</p>
+                            <div class="prod-footer">
+                                <span class="prod-price">CAD $85</span>
+                                <button class="btn-add add-to-bag" data-name="Creative Workspace">Add to Bag</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Product 4 -->
+                    <div class="product-card reveal-up">
+                        <div class="prod-img-wrap">
+                            <img src="https://www.thedecorcircle.com/cdn/shop/files/CEBB8865-CA34-4585-90A7-D655F1115D2F.jpg?v=1728116608&width=713" alt="The Executive Collection">
+                        </div>
+                        <div class="prod-info">
+                            <h3 class="prod-title">The Executive Collection</h3>
+                            <p class="prod-desc">Sophistication in a box. Featuring a leather folio, premium brass pen, and smart temperature control mug.</p>
+                            <div class="prod-footer">
+                                <span class="prod-price">CAD $150</span>
+                                <button class="btn-add add-to-bag" data-name="Executive Collection">Add to Bag</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Product 5 -->
+                    <div class="product-card reveal-up">
+                        <div class="prod-img-wrap">
+                            <img src="https://www.thedecorcircle.com/cdn/shop/files/IMG-0706.heic?v=1769521305&width=713" alt="The Appreciation Box">
+                        </div>
+                        <div class="prod-info">
+                            <h3 class="prod-title">The Appreciation Box</h3>
+                            <p class="prod-desc">A thoughtful gesture to say thank you. Gourmet treats, a scented candle, and a handwritten-style note.</p>
+                            <div class="prod-footer">
+                                <span class="prod-price">CAD $35</span>
+                                <button class="btn-add add-to-bag" data-name="Appreciation Box">Add to Bag</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Product 6 -->
+                    <div class="product-card reveal-up">
+                        <div class="prod-img-wrap">
+                            <img src="https://www.thedecorcircle.com/cdn/shop/files/WhatsAppImage2026-07-30at1.51.45PM.jpg?v=1785417997&width=713" alt="The Weekend Reset Kit">
+                        </div>
+                        <div class="prod-info">
+                            <h3 class="prod-title">The Weekend Reset</h3>
+                            <p class="prod-desc">Encourage downtime with a wellness journal, artisanal tea blend, and a cozy organic cotton throw.</p>
+                            <div class="prod-footer">
+                                <span class="prod-price">CAD $75</span>
+                                <button class="btn-add add-to-bag" data-name="Weekend Reset">Add to Bag</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- WHY KITSTER -->
+        <section class="section" style="background-color: var(--bg-primary); border-top: 1px solid var(--border);">
+            <div class="container">
+                <div class="reveal-up">
+                    <h2 class="h-section">Small details.<br><span class="font-accent">Big impressions.</span></h2>
+                </div>
+                
+                <div class="why-grid">
+                    <div class="why-item reveal-up">
+                        <span class="why-num font-accent">01</span>
+                        <h3>Thoughtfully Curated</h3>
+                        <p>Every product has a purpose. We source high-quality items people actually want to keep. No random fillers.</p>
+                    </div>
+                    <div class="why-item reveal-up">
+                        <span class="why-num font-accent">02</span>
+                        <h3>Made for Your Brand</h3>
+                        <p>From subtle debossing to custom packaging and specific brand colors, we ensure your identity shines through elegantly.</p>
+                    </div>
+                    <div class="why-item reveal-up">
+                        <span class="why-num font-accent">03</span>
+                        <h3>Gifting at Scale</h3>
+                        <p>Whether you need 10 exclusive executive gifts or 10,000 welcome kits globally, we make bulk gifting simple.</p>
+                    </div>
+                    <div class="why-item reveal-up">
+                        <span class="why-num font-accent">04</span>
+                        <h3>Seamless Experience</h3>
+                        <p>From the initial concept design to final doorstep delivery, our team handles every single logistical detail.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- HOW IT WORKS (PROCESS) -->
+        <section id="process" class="section process">
+            <div class="container">
+                <div class="section-header reveal-up">
+                    <span class="label-sm text-secondary">How it works</span>
+                    <h2 class="h-section">Your idea. <span class="font-accent">Our little obsession.</span></h2>
+                </div>
+                
+                <div class="timeline">
+                    <div class="step reveal-up">
+                        <div class="step-dot">01</div>
+                        <h3>Tell Us What You Need</h3>
+                        <p>Share your audience, occasion, budget, and specific brand requirements with our concierge team.</p>
+                    </div>
+                    <div class="step reveal-up">
+                        <div class="step-dot">02</div>
+                        <h3>We Curate</h3>
+                        <p>Our design team creates a personalized gifting concept tailored exactly to your brief and brand values.</p>
+                    </div>
+                    <div class="step reveal-up">
+                        <div class="step-dot">03</div>
+                        <h3>Make It Yours</h3>
+                        <p>You review and select specific products, approve custom packaging, colors, and branding applications.</p>
+                    </div>
+                    <div class="step reveal-up">
+                        <div class="step-dot">04</div>
+                        <h3>Delivered With Care</h3>
+                        <p>We assemble, pack, and securely deliver your kits to the right people, whether to one office or 1,000 homes.</p>
+                    </div>
+                </div>
+
+                <div class="process-cta reveal-up">
+                    <a href="#contact" class="btn btn-primary" style="background-color: var(--bg-secondary); color: var(--text-primary);">Start Your Project</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- LIFESTYLE GALLERY -->
+        <section class="section pb-0">
+            <div class="container gallery-header reveal-up">
+                <h2 class="h-section text-center" style="margin: 0 auto;">Made to be opened.<br><span class="font-accent">Designed to be remembered.</span></h2>
+            </div>
+            
+            <div class="container">
+                <div class="gallery-wrap">
+                    <div class="gal-item g1 reveal-up">
+                        <img src="https://www.thedecorcircle.com/cdn/shop/files/CEBB8865-CA34-4585-90A7-D655F1115D2F.jpg?v=1728116608&width=713" alt="Premium beautifully tied gift box">
+                    </div>
+                    <div class="gal-item g2 reveal-up">
+                        <img src="https://www.thedecorcircle.com/cdn/shop/files/WhatsAppImage2026-07-30at1.07.08PM.png?v=1786301025&width=713" alt="Premium branded notebook">
+                    </div>
+                    <div class="gal-item g3 reveal-up">
+                        <img src="https://www.thedecorcircle.com/cdn/shop/files/WhatsAppImage2026-06-24at2.21.43PM.jpg?v=1782291255&width=713" alt="Reusable high-end drinkware">
+                    </div>
+                    <div class="gal-item g4 reveal-up">
+                        <img src="https://www.thedecorcircle.com/cdn/shop/files/DC827A8E-CD9E-4619-A6F1-9FD7616C46C5.jpg?v=1790139808&width=713" alt="Minimalist workspace essentials">
+                    </div>
+                    <div class="gal-item g5 reveal-up">
+                        <img src="https://www.thedecorcircle.com/cdn/shop/files/WhatsApp_Image_2026-07-07_at_3.30.38_PM.jpg?v=1783511778&width=713" alt="Corporate event merchandise flatlay">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TESTIMONIALS -->
+        <section class="section">
+            <div class="container">
+                <div class="reveal-up">
+                    <h2 class="h-section">Kind words.<br><span class="font-accent">Lasting impressions.</span></h2>
+                </div>
+                
+                <div class="test-grid">
+                    <div class="testimonial reveal-up">
+                        <p class="test-quote">"KITSTER transformed our mundane onboarding swag into a premium welcome experience. Our new hires constantly post about their unboxing."</p>
+                        <div>
+                            <div class="test-author">Sarah Jenkins</div>
+                            <div class="test-title">VP of People, TechFlow</div>
+                        </div>
+                    </div>
+                    <div class="testimonial reveal-up">
+                        <p class="test-quote">"The level of customization and attention to detail they provided for our annual client retreat gifts was absolutely unparalleled. Truly exceptional service."</p>
+                        <div>
+                            <div class="test-author">David Chen</div>
+                            <div class="test-title">Managing Partner, Elevate Capital</div>
+                        </div>
+                    </div>
+                    <div class="testimonial reveal-up">
+                        <p class="test-quote">"We needed 500 bespoke kits shipped to remote employees across 12 countries. KITSTER handled the logistics flawlessly. Everything arrived perfect."</p>
+                        <div>
+                            <div class="test-author">Elena Rodriguez</div>
+                            <div class="test-title">Events Director, GlobalSync</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ -->
+        <section class="section faq">
+            <div class="container">
+                <div class="text-center reveal-up">
+                    <h2 class="h-section">Common <span class="font-accent">Questions</span></h2>
+                </div>
+                
+                <div class="faq-container">
+                    <div class="faq-item reveal-up">
+                        <button class="faq-question">
+                            What is the minimum order quantity?
+                            <span class="faq-icon"></span>
+                        </button>
+                        <div class="faq-answer">
+                            <div class="faq-answer-inner">
+                                For our pre-curated collections, the minimum order quantity is typically 10 kits. For completely custom builds with bespoke packaging, the minimum is 50 kits to ensure we can provide the best pricing and customization options.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="faq-item reveal-up">
+                        <button class="faq-question">
+                            Can we customize products with our company logo?
+                            <span class="faq-icon"></span>
+                        </button>
+                        <div class="faq-answer">
+                            <div class="faq-answer-inner">
+                                Absolutely. We offer various branding options including debossing, engraving, screen printing, and custom embroidery depending on the product. We focus on elegant, subtle branding that keeps the items looking premium.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="faq-item reveal-up">
+                        <button class="faq-question">
+                            Can we create completely custom gift kits?
+                            <span class="faq-icon"></span>
+                        </button>
+                        <div class="faq-answer">
+                            <div class="faq-answer-inner">
+                                Yes. Our curation team will work with you to source specific items, design custom packaging, and build a kit from scratch that perfectly aligns with your brand's vision and budget.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="faq-item reveal-up">
+                        <button class="faq-question">
+                            Can you ship gifts to multiple addresses?
+                            <span class="faq-icon"></span>
+                        </button>
+                        <div class="faq-answer">
+                            <div class="faq-answer-inner">
+                                Yes, we specialize in decentralized shipping. You provide a list of addresses, and we handle the individual fulfillment, tracking, and delivery directly to your recipients' homes or offices globally.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="faq-item reveal-up">
+                        <button class="faq-question">
+                            How long does an order take?
+                            <span class="faq-icon"></span>
+                        </button>
+                        <div class="faq-answer">
+                            <div class="faq-answer-inner">
+                                Standard curated kits typically take 2-3 weeks from artwork approval to delivery. Fully custom projects generally require 4-6 weeks to account for specialized sourcing and bespoke packaging production.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FINAL CTA -->
+        <section id="contact" class="cta-final">
+            <div class="cta-bg">
+                <img src="https://www.thedecorcircle.com/cdn/shop/files/WhatsApp_Image_2026-07-09_at_3.29.00_PM.jpg?v=1783591845&width=713" alt="Elegant abstract background">
+            </div>
+            <div class="cta-content reveal-up">
+                <h2>Let's make <br><span class="font-accent">someone's day.</span></h2>
+                <p>Tell us who you're celebrating. We'll take care of the thoughtful part.</p>
+                <div class="cta-buttons">
+                    <a href="#" class="btn btn-primary">Start a Gifting Project</a>
+                    <a href="#" class="btn btn-outline">Talk to Our Team</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <div class="logo" style="color: #fff;">KITSTER</div>
+                    <p>Thoughtfully curated gifting experiences that turn everyday business relationships into lasting impressions.</p>
+                </div>
+                
+                <div class="footer-col">
+                    <h4>Navigation</h4>
+                    <ul>
+                        <li><a href="#collections">Collections</a></li>
+                        <li><a href="#products">Corporate Gifting</a></li>
+                        <li><a href="#process">How It Works</a></li>
+                        <li><a href="#about">About Us</a></li>
+                        <li><a href="#">Journal</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h4>Collections</h4>
+                    <ul>
+                        <li><a href="#">Welcome Kits</a></li>
+                        <li><a href="#">Client Appreciation</a></li>
+                        <li><a href="#">Event Merchandise</a></li>
+                        <li><a href="#">Executive Boxes</a></li>
+                        <li><a href="#">Custom Projects</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h4>Connect</h4>
+                    <ul>
+                        <li><a href="mailto:hello@kitster.com">hello@kitster.com</a></li>
+                        <li><a href="#">+1 (800) 123-4567</a></li>
+                        <li><a href="#">Instagram</a></li>
+                        <li><a href="#">LinkedIn</a></li>
+                    </ul>
+                    
+                    <div style="margin-top: 2rem;">
+                        <h4 style="margin-bottom: 0.5rem;">Newsletter</h4>
+                        <form id="newsletter-form" class="newsletter-form">
+                            <input type="email" id="email-input" placeholder="Your email address" required>
+                            <button type="submit">Subscribe</button>
+                        </form>
+                        <div id="newsletter-msg" class="newsletter-msg">Subscribed successfully.</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <h3 class="footer-statement">Thoughtful gifting, <span class="font-accent" style="color: var(--accent);">thoughtfully done.</span></h3>
+                
+                <div class="footer-legal">
+                    <span>&copy; 2024 KITSTER. All rights reserved.</span>
+                    <div style="display: flex; gap: 1.5rem;">
+                        <a href="#">Privacy Policy</a>
+                        <a href="#">Terms & Conditions</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // --- 1. Sticky Navigation ---
+            const header = document.getElementById('site-header');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+            });
+
+            // --- 2. Mobile Menu Toggle ---
+            const menuBtn = document.getElementById('menu-toggle');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const menuIcon = document.getElementById('menu-icon');
+            const menuLinks = document.querySelectorAll('.menu-link');
+            let menuOpen = false;
+
+            menuBtn.addEventListener('click', () => {
+                menuOpen = !menuOpen;
+                if (menuOpen) {
+                    mobileMenu.classList.add('active');
+                    menuIcon.innerHTML = '<use href="#icon-close"></use>';
+                    document.body.style.overflow = 'hidden'; // Prevent scrolling
+                } else {
+                    mobileMenu.classList.remove('active');
+                    menuIcon.innerHTML = '<use href="#icon-menu"></use>';
+                    document.body.style.overflow = '';
+                }
+            });
+
+            menuLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.remove('active');
+                    menuIcon.innerHTML = '<use href="#icon-menu"></use>';
+                    document.body.style.overflow = '';
+                    menuOpen = false;
+                });
+            });
+
+            // --- 3. Shopping Bag Counter Interaction ---
+            const cartCounter = document.getElementById('cart-counter');
+            const addButtons = document.querySelectorAll('.add-to-bag');
+            let count = 0;
+
+            addButtons.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    count++;
+                    cartCounter.textContent = count;
+                    
+                    // Simple visual feedback
+                    const originalText = btn.textContent;
+                    btn.textContent = 'Added';
+                    btn.style.color = 'var(--accent)';
+                    
+                    // Small animation on cart icon
+                    gsap.fromTo(cartCounter, 
+                        { scale: 1.5 }, 
+                        { scale: 1, duration: 0.3, ease: "back.out(1.7)" }
+                    );
+
+                    setTimeout(() => {
+                        btn.textContent = originalText;
+                        btn.style.color = '';
+                    }, 2000);
+                });
+            });
+
+            // --- 4. FAQ Accordion ---
+            const faqItems = document.querySelectorAll('.faq-item');
+            
+            faqItems.forEach(item => {
+                const button = item.querySelector('.faq-question');
+                const answer = item.querySelector('.faq-answer');
+                
+                button.addEventListener('click', () => {
+                    const isOpen = item.classList.contains('active');
+                    
+                    // Close all
+                    faqItems.forEach(faq => {
+                        faq.classList.remove('active');
+                        faq.querySelector('.faq-answer').style.maxHeight = null;
+                    });
+
+                    // Open clicked if was closed
+                    if (!isOpen) {
+                        item.classList.add('active');
+                        answer.style.maxHeight = answer.scrollHeight + "px";
+                    }
+                });
+            });
+
+            // --- 5. Newsletter Validation ---
+            const form = document.getElementById('newsletter-form');
+            const msg = document.getElementById('newsletter-msg');
+            const input = document.getElementById('email-input');
+
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                if (input.value) {
+                    msg.style.display = 'block';
+                    input.value = '';
+                    setTimeout(() => {
+                        msg.style.display = 'none';
+                    }, 3000);
+                }
+            });
+
+            // --- 6. GSAP Animations ---
+            if (typeof gsap !== 'undefined') {
+                gsap.registerPlugin(ScrollTrigger);
+
+                const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+                if (!prefersReducedMotion) {
+                    
+                    // Hero Animation
+                    const tl = gsap.timeline();
+                    tl.to(document.body, {opacity: 1, duration: 0.1})
+                      .from('.hero .label-sm', {y: 20, opacity: 0, duration: 0.8, ease: 'power3.out'}, 0.2)
+                      .from('.h-hero', {y: 40, opacity: 0, duration: 1, ease: 'power3.out'}, 0.4)
+                      .from('.hero-desc', {y: 20, opacity: 0, duration: 0.8, ease: 'power3.out'}, 0.6)
+                      .from('.hero-ctas', {y: 20, opacity: 0, duration: 0.8, ease: 'power3.out'}, 0.8)
+                      .from('.hero-visual', {x: 40, opacity: 0, duration: 1.2, ease: 'power3.out'}, 0.5)
+                      .from('.floating-label', {scale: 0.8, opacity: 0, duration: 0.6, stagger: 0.2, ease: 'back.out(1.7)'}, 1.2);
+
+                    // Reveal Elements on Scroll
+                    const revealElements = document.querySelectorAll('.reveal-up');
+                    
+                    revealElements.forEach((el) => {
+                        if(!el.closest('.hero')) {
+                            gsap.fromTo(el, 
+                                { y: 60, autoAlpha: 0 },
+                                {
+                                    y: 0,
+                                    autoAlpha: 1,
+                                    duration: 1,
+                                    ease: "power3.out",
+                                    scrollTrigger: {
+                                        trigger: el,
+                                        start: "top 85%",
+                                        toggleActions: "play none none none"
+                                    }
+                                }
+                            );
+                        } else {
+                            gsap.set(el, { autoAlpha: 1 });
+                        }
+                    });
+
+                    // --- AWWWARDS STYLE HORIZONTAL SCROLL FOR COLLECTIONS ---
+                    let mm = gsap.matchMedia();
+                    
+                    // Desktop Only
+                    mm.add("(min-width: 1024px)", () => {
+                        const track = document.querySelector(".coll-track");
+                        const cards = gsap.utils.toArray(".coll-card");
+                        
+                        // Main Horizontal Scroll
+                        let scrollTween = gsap.to(track, {
+                            // Exact math to align right edge of track with right edge of window
+                            x: () => -(track.scrollWidth - window.innerWidth),
+                            ease: "none",
+                            scrollTrigger: {
+                                trigger: ".collections-awwwards",
+                                pin: true,
+                                scrub: 1,
+                                invalidateOnRefresh: true, // Forces recalculation on resize/load
+                                end: () => "+=" + (track.scrollWidth - window.innerWidth)
+                            }
+                        });
+
+                        // Inner Image Parallax 
+                        cards.forEach(card => {
+                            let img = card.querySelector(".coll-card-img");
+                            gsap.to(img, {
+                                xPercent: 15,
+                                ease: "none",
+                                scrollTrigger: {
+                                    trigger: ".collections-awwwards",
+                                    start: "top top",
+                                    end: () => "+=" + (track.scrollWidth - window.innerWidth),
+                                    scrub: true,
+                                    invalidateOnRefresh: true // Keeps parallax synced
+                                }
+                            });
+                        });
+                    });
+
+                    // Subtle Parallax on general intro image
+                    gsap.utils.toArray('.intro-visual img').forEach(img => {
+                        gsap.to(img, {
+                            yPercent: 10,
+                            ease: "none",
+                            scrollTrigger: {
+                                trigger: img.parentElement,
+                                start: "top bottom",
+                                end: "bottom top",
+                                scrub: true
+                            }
+                        });
+                    });
+                } else {
+                    // For reduced motion
+                    document.querySelectorAll('.reveal-up').forEach(el => {
+                        el.style.opacity = '1';
+                        el.style.visibility = 'visible';
+                    });
+                }
+            } else {
+                // Fallback if GSAP fails
+                document.querySelectorAll('.reveal-up').forEach(el => {
+                    el.style.opacity = '1';
+                    el.style.visibility = 'visible';
+                });
+            }
+        });
+    </script>
+</body>
+</html>
