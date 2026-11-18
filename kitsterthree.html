@@ -1,0 +1,1378 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>kitster. — Custom Swag Kits for Canadian Teams</title>
+
+    <!-- Google Fonts: Inter & JetBrains Mono for clinical apothecary typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- GSAP & ScrollTrigger CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        ink: '#111111',
+                        paper: '#FFFFFF',
+                        well: '#F4F4F4',
+                        muted: '#6E6E6E',
+                        borderlight: '#E5E5E5',
+                    },
+                    fontFamily: {
+                        sans: ['"Inter"', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+                        mono: ['"JetBrains Mono"', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        html {
+            overflow-x: clip;
+        }
+
+        body {
+            background-color: #FFFFFF;
+            color: #111111;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            overflow-x: clip;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* Clinical Range Slider */
+        input[type="range"].clinical-slider {
+            -webkit-appearance: none;
+            appearance: none;
+            background: #E5E5E5;
+            height: 2px;
+            outline: none;
+        }
+
+        input[type="range"].clinical-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: #111111;
+            cursor: pointer;
+            transition: transform 0.15s ease;
+        }
+
+        input[type="range"].clinical-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+        }
+
+        input[type="range"].clinical-slider::-moz-range-thumb {
+            width: 14px;
+            height: 14px;
+            border: none;
+            border-radius: 50%;
+            background: #111111;
+            cursor: pointer;
+        }
+
+        /* Hide scrollbars on horizontal strips */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* Hero Slide Fade */
+        .hero-slide {
+            transition: opacity 0.6s ease;
+        }
+    </style>
+</head>
+<body class="bg-paper text-ink selection:bg-ink selection:text-paper">
+
+    <!-- ==========================================
+         1. TOP BLACK UTILITY BAR
+    =========================================== -->
+    <div class="bg-ink text-paper text-[11px] tracking-wide">
+        <div class="max-w-[1400px] mx-auto px-4 sm:px-8 h-9 flex items-center justify-between">
+            <div class="hidden sm:block w-24 text-white/60 text-[10px]">CA · CAD $</div>
+            <p class="text-center flex-1 truncate px-2">
+                Complimentary digital proofs in 24h on all Canadian orders. <a href="#builder" class="underline underline-offset-2 ml-1 hover:text-white/80">Build your kit</a>
+            </p>
+            <div class="flex items-center justify-end gap-4 w-24">
+                <a href="#builder" aria-label="Search catalog" class="hover:opacity-70 transition-opacity">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M21 21l-4.35-4.35M17 11A6 6 0 115 11a6 6 0 0112 0z"/></svg>
+                </a>
+                <button id="openCartBtnTop" type="button" aria-label="Open Bag" class="relative hover:opacity-70 transition-opacity cursor-pointer flex items-center gap-1">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M6 7h12l-1 13H7L6 7zm3 0V5a3 3 0 016 0v2"/></svg>
+                    <span id="navCartCount" class="text-[10px] font-mono">1</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         2. STICKY CLINICAL WHITE NAVIGATION
+    =========================================== -->
+    <header class="sticky top-0 z-40 bg-paper/95 backdrop-blur-md border-b border-borderlight">
+        <div class="max-w-[1400px] mx-auto px-4 sm:px-8 h-16 flex items-center justify-between gap-4">
+            <!-- Brand Wordmark -->
+            <a href="#" class="text-xl font-bold tracking-tight text-ink shrink-0">
+                kitster.
+            </a>
+
+            <!-- Center Links -->
+            <nav class="hidden lg:flex items-center gap-7 text-[12px] font-medium text-ink/80">
+                <a href="#bestsellers" class="hover:text-ink transition-colors">Bestsellers</a>
+                <a href="#occasions" class="hover:text-ink transition-colors">Occasions</a>
+                <a href="#builder" class="hover:text-ink transition-colors">Apparel</a>
+                <a href="#builder" class="hover:text-ink transition-colors">Drinkware</a>
+                <a href="#builder" class="hover:text-ink transition-colors">Desk</a>
+                <a href="#craft" class="hover:text-ink transition-colors">Our Craft</a>
+            </nav>
+
+            <!-- Right Pill CTA & Mobile Toggle -->
+            <div class="flex items-center gap-3">
+                <a href="#builder" class="inline-flex items-center justify-center border border-ink rounded-full px-4 py-1.5 text-[11px] font-medium text-ink hover:bg-ink hover:text-paper transition-colors">
+                    Build My Kit
+                </a>
+
+                <button id="mobileMenuBtn" type="button" aria-label="Toggle Menu" aria-expanded="false" class="lg:hidden p-2 text-ink hover:bg-well rounded-md cursor-pointer">
+                    <svg id="menuIconOpen" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" d="M4 7h16M4 12h16M4 17h16"/></svg>
+                    <svg id="menuIconClose" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" d="M6 6l12 12M18 6L6 18"/></svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Dropdown -->
+        <div id="mobileMenu" class="hidden lg:hidden border-t border-borderlight bg-paper px-6 py-4">
+            <div class="flex flex-col divide-y divide-borderlight text-sm font-medium">
+                <a href="#bestsellers" class="mobile-nav-link py-3">Bestsellers</a>
+                <a href="#occasions" class="mobile-nav-link py-3">Common Occasions</a>
+                <a href="#builder" class="mobile-nav-link py-3">Build Your Own</a>
+                <a href="#benefits" class="mobile-nav-link py-3">Benefits</a>
+                <a href="#craft" class="mobile-nav-link py-3">Our Craft</a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- ==========================================
+             3. FULL-BLEED EDITORIAL HERO SLIDER
+        =========================================== -->
+        <section class="relative w-full h-[500px] sm:h-[580px] lg:h-[640px] bg-well overflow-hidden border-b border-borderlight">
+            <!-- Hero Background Image -->
+            <img
+                id="heroBgImg"
+                src="kitsterimages/welcomekit.webp"
+                alt="Curated corporate welcome kit"
+                class="w-full h-full object-cover object-center transition-all duration-700"
+            />
+            <!-- Soft clinical left-side gradient for crisp dark text legibility -->
+            <div class="absolute inset-0 bg-gradient-to-r from-[#F4F4F2]/95 via-[#F4F4F2]/75 to-transparent sm:via-[#F4F4F2]/55"></div>
+
+            <!-- Hero Content Container -->
+            <div class="absolute inset-0 max-w-[1400px] mx-auto px-5 sm:px-8 flex flex-col justify-center">
+                <div class="max-w-md hero-content">
+                    <div class="mb-6">
+                        <span class="text-xs font-medium tracking-tight text-ink/70 block">The</span>
+                        <span class="text-2xl sm:text-3xl font-bold tracking-tight text-ink leading-none">Kitster.</span>
+                    </div>
+
+                    <h1 id="heroTitle" class="text-3xl sm:text-4xl lg:text-[2.65rem] font-semibold tracking-tight text-ink leading-[1.12] mb-4">
+                        Start Here with Better Swag.
+                    </h1>
+
+                    <p id="heroSub" class="text-sm sm:text-[15px] text-ink/75 leading-relaxed mb-7">
+                        Curated, retail-grade onboarding and event kits—designed, branded, and fulfilled across Canada with 24h digital proofs.
+                    </p>
+
+                    <div class="flex flex-wrap items-center gap-3">
+                        <a href="#bestsellers" class="inline-flex items-center justify-center border border-ink rounded-full px-6 py-2.5 text-xs font-medium text-ink hover:bg-ink hover:text-paper transition-colors">
+                            Explore Kits
+                        </a>
+                        <a href="#builder" class="inline-flex items-center justify-center bg-ink text-paper rounded-full px-6 py-2.5 text-xs font-medium hover:bg-neutral-800 transition-colors">
+                            Build Your Own
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Carousel Next Arrow -->
+            <button id="heroNextBtn" type="button" aria-label="Next slide" class="hidden sm:flex absolute right-6 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-paper/90 border border-borderlight items-center justify-center text-ink hover:bg-ink hover:text-paper transition-colors cursor-pointer shadow-xs">
+                →
+            </button>
+
+            <!-- Bottom Center Pagination Dots -->
+            <div id="heroDots" class="absolute bottom-5 left-1/2 -translate-x-1/2 flex items-center gap-2">
+                <button type="button" data-slide="0" aria-label="Slide 1" class="hero-dot w-2 h-2 rounded-full bg-ink cursor-pointer transition-all"></button>
+                <button type="button" data-slide="1" aria-label="Slide 2" class="hero-dot w-2 h-2 rounded-full bg-ink/25 cursor-pointer transition-all"></button>
+                <button type="button" data-slide="2" aria-label="Slide 3" class="hero-dot w-2 h-2 rounded-full bg-ink/25 cursor-pointer transition-all"></button>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             4. BESTSELLERS (CURATED KITS ROW)
+        =========================================== -->
+        <section id="bestsellers" class="py-16 sm:py-20 bg-paper">
+            <div class="max-w-[1400px] mx-auto px-5 sm:px-8">
+                <div class="flex items-center justify-between mb-8">
+                    <h2 class="text-xl sm:text-2xl font-semibold tracking-tight text-ink">Bestsellers</h2>
+                    <a href="#builder" class="text-xs font-medium text-ink hover:opacity-60 transition-opacity flex items-center gap-1">
+                        <span>View All</span>
+                        <span>→</span>
+                    </a>
+                </div>
+
+                <!-- 5-Column Clinical Product Cards -->
+                <div id="kitsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5">
+                    <!-- Populated via JS -->
+                </div>
+
+                <!-- Minimalist Progress Line (matching reference) -->
+                <div class="mt-8 w-full h-[1.5px] bg-borderlight relative">
+                    <div class="w-1/3 h-full bg-ink"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             5. COMMON OCCASIONS (MIRRORING COMMON CONCERNS)
+        =========================================== -->
+        <section id="occasions" class="py-12 sm:py-16 bg-paper border-t border-borderlight">
+            <div class="max-w-[1400px] mx-auto px-5 sm:px-8">
+                <h2 class="text-xl sm:text-2xl font-semibold tracking-tight text-ink mb-7">Common Occasions</h2>
+
+                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+                    <button type="button" onclick="openKitModal('welcome')" class="group text-left cursor-pointer">
+                        <div class="aspect-square bg-well overflow-hidden mb-2.5">
+                            <img src="kitsterimages/welcomekit.webp" alt="Team Onboarding" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                        </div>
+                        <span class="text-xs sm:text-[13px] font-medium text-ink flex items-center gap-1 group-hover:underline underline-offset-4">
+                            Onboarding <span class="text-muted">→</span>
+                        </span>
+                    </button>
+
+                    <button type="button" onclick="openKitModal('event')" class="group text-left cursor-pointer">
+                        <div class="aspect-square bg-well overflow-hidden mb-2.5">
+                            <img src="kitsterimages/eventkit.webp" alt="Events & Conferences" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                        </div>
+                        <span class="text-xs sm:text-[13px] font-medium text-ink flex items-center gap-1 group-hover:underline underline-offset-4">
+                            Conferences <span class="text-muted">→</span>
+                        </span>
+                    </button>
+
+                    <button type="button" onclick="openKitModal('tech')" class="group text-left cursor-pointer">
+                        <div class="aspect-square bg-well overflow-hidden mb-2.5">
+                            <img src="kitsterimages/techkit.webp" alt="Product Launches" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                        </div>
+                        <span class="text-xs sm:text-[13px] font-medium text-ink flex items-center gap-1 group-hover:underline underline-offset-4">
+                            Product Launches <span class="text-muted">→</span>
+                        </span>
+                    </button>
+
+                    <button type="button" onclick="openKitModal('wellness')" class="group text-left cursor-pointer">
+                        <div class="aspect-square bg-well overflow-hidden mb-2.5">
+                            <img src="kitsterimages/wellnesskit.webp" alt="Team Wellness" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                        </div>
+                        <span class="text-xs sm:text-[13px] font-medium text-ink flex items-center gap-1 group-hover:underline underline-offset-4">
+                            Wellness &amp; Offsites <span class="text-muted">→</span>
+                        </span>
+                    </button>
+
+                    <button type="button" onclick="openKitModal('client')" class="group text-left cursor-pointer col-span-2 sm:col-span-1">
+                        <div class="aspect-square bg-well overflow-hidden mb-2.5">
+                            <img src="kitsterimages/clientkit.webp" alt="Client Gifting" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                        </div>
+                        <span class="text-xs sm:text-[13px] font-medium text-ink flex items-center gap-1 group-hover:underline underline-offset-4">
+                            Client Gifting <span class="text-muted">→</span>
+                        </span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             6. BUILD YOUR OWN STUDIO (CLINICAL CONFIGURATOR)
+        =========================================== -->
+        <section id="builder" class="py-16 sm:py-20 bg-[#FAFAFA] border-y border-borderlight">
+            <div class="max-w-[1400px] mx-auto px-5 sm:px-8">
+                <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-8">
+                    <div>
+                        <h2 class="text-xl sm:text-2xl font-semibold tracking-tight text-ink">Build Your Own Kit</h2>
+                        <p class="text-xs sm:text-sm text-muted mt-1">Select individual goods below to calculate live CAD volume pricing.</p>
+                    </div>
+
+                    <!-- Clean Filter Tabs -->
+                    <div id="builderFilters" class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
+                        <button type="button" data-filter="All" class="filter-pill shrink-0 px-4 py-1.5 rounded-full text-xs font-medium bg-ink text-paper border border-ink cursor-pointer transition-colors">All (9)</button>
+                        <button type="button" data-filter="Apparel" class="filter-pill shrink-0 px-4 py-1.5 rounded-full text-xs font-medium bg-paper text-ink border border-borderlight hover:border-ink cursor-pointer transition-colors">Apparel</button>
+                        <button type="button" data-filter="Drinkware" class="filter-pill shrink-0 px-4 py-1.5 rounded-full text-xs font-medium bg-paper text-ink border border-borderlight hover:border-ink cursor-pointer transition-colors">Drinkware</button>
+                        <button type="button" data-filter="Desk" class="filter-pill shrink-0 px-4 py-1.5 rounded-full text-xs font-medium bg-paper text-ink border border-borderlight hover:border-ink cursor-pointer transition-colors">Desk</button>
+                        <button type="button" data-filter="Packaging & Events" class="filter-pill shrink-0 px-4 py-1.5 rounded-full text-xs font-medium bg-paper text-ink border border-borderlight hover:border-ink cursor-pointer transition-colors">Packaging &amp; Events</button>
+                    </div>
+                </div>
+
+                <!-- 12-Col Grid: 9 Products + Sticky Summary -->
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                    <div id="builderGrid" class="lg:col-span-8 grid grid-cols-2 sm:grid-cols-3 gap-4 sm:gap-5">
+                        <!-- Rendered dynamically via JS -->
+                    </div>
+
+                    <!-- Sticky Clinical Estimate Card -->
+                    <aside id="builderSummaryPanel" class="lg:col-span-4 lg:sticky lg:top-24">
+                        <div id="builderSummaryCard" class="bg-paper border border-borderlight p-6 will-change-transform">
+                            <div class="flex items-center justify-between pb-4 border-b border-borderlight">
+                                <div>
+                                    <span class="text-[10px] uppercase tracking-wider text-muted block">Live Estimate</span>
+                                    <h3 class="text-lg font-semibold text-ink">Your Custom Kit</h3>
+                                </div>
+                                <span id="selectedCountBadge" class="text-[11px] font-mono bg-well px-2.5 py-1 text-ink will-change-transform">0 items</span>
+                            </div>
+
+                            <!-- Selected Items List -->
+                            <div id="sidebarSelectedList" class="py-4 space-y-2.5 max-h-52 overflow-y-auto border-b border-borderlight">
+                                <p class="text-xs text-muted py-2">Add items from the left to build your kit.</p>
+                            </div>
+
+                            <!-- Headcount Control -->
+                            <div class="py-4 border-b border-borderlight">
+                                <div class="flex items-center justify-between mb-2.5">
+                                    <label for="headcountInput" class="text-xs font-medium text-ink">Quantity (Kits)</label>
+                                    <input
+                                        id="headcountInput"
+                                        type="number"
+                                        min="15"
+                                        max="300"
+                                        value="50"
+                                        class="w-18 border border-borderlight px-2 py-1 text-xs font-mono text-right focus:outline-none focus:border-ink"
+                                    />
+                                </div>
+                                <input
+                                    id="headcountSlider"
+                                    type="range"
+                                    min="15"
+                                    max="300"
+                                    step="5"
+                                    value="50"
+                                    class="clinical-slider w-full"
+                                />
+                                <div class="flex justify-between text-[10px] text-muted mt-1.5">
+                                    <span>15 min</span>
+                                    <span>50+ (10% off)</span>
+                                    <span>150+ (15% off)</span>
+                                </div>
+                            </div>
+
+                            <!-- Pricing Breakdown -->
+                            <div class="py-4 space-y-2 text-xs">
+                                <div class="flex justify-between">
+                                    <span class="text-muted">Volume Tier</span>
+                                    <span id="discountTierLabel" class="font-medium text-ink">10% Savings</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-muted">Per Kit</span>
+                                    <span id="perKitPrice" class="font-mono text-ink">$0.00 CAD</span>
+                                </div>
+                                <div class="flex justify-between items-baseline pt-3 border-t border-borderlight">
+                                    <span class="font-semibold text-sm text-ink">Estimated Total</span>
+                                    <span id="totalEstimatePrice" class="font-mono text-lg font-semibold text-ink">$0 CAD</span>
+                                </div>
+                            </div>
+
+                            <button
+                                id="addCustomKitBtn"
+                                type="button"
+                                disabled
+                                class="w-full bg-ink text-paper hover:bg-neutral-800 disabled:opacity-30 disabled:cursor-not-allowed py-3 text-xs font-medium tracking-wider uppercase transition-colors cursor-pointer"
+                            >
+                                Add Custom Kit to Bag
+                            </button>
+                            <p class="text-[11px] text-muted text-center mt-2.5">
+                                Includes complimentary 24h digital mockups.
+                            </p>
+                        </div>
+                    </aside>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             7. BENEFITS STRIP (MIRRORING MEMBER BENEFITS)
+        =========================================== -->
+        <section id="benefits" class="py-16 sm:py-20 bg-paper">
+            <div class="max-w-[1400px] mx-auto px-5 sm:px-8">
+                <div class="mb-8">
+                    <h2 class="text-xl sm:text-2xl font-semibold tracking-tight text-ink">The Many Benefits of Ordering with Kitster</h2>
+                    <p class="text-xs sm:text-sm text-muted mt-1">Simple, transparent custom gifting built for Canadian teams.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <!-- Benefit 1 -->
+                    <div class="border border-borderlight p-5 flex items-center gap-4 bg-paper">
+                        <div class="w-11 h-11 bg-well flex items-center justify-center shrink-0">
+                            <svg class="w-5 h-5 text-ink" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        </div>
+                        <p class="text-xs sm:text-[13px] font-medium text-ink leading-snug">
+                            Complimentary digital proofs delivered within 24 hours.
+                        </p>
+                    </div>
+
+                    <!-- Benefit 2 -->
+                    <div class="border border-borderlight p-5 flex items-center gap-4 bg-paper">
+                        <div class="w-11 h-11 bg-well flex items-center justify-center shrink-0">
+                            <svg class="w-5 h-5 text-ink" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+                        </div>
+                        <p class="text-xs sm:text-[13px] font-medium text-ink leading-snug">
+                            Low 15-kit minimums with automatic volume savings at 50+ kits.
+                        </p>
+                    </div>
+
+                    <!-- Benefit 3 -->
+                    <div class="border border-borderlight p-5 flex items-center gap-4 bg-paper">
+                        <div class="w-11 h-11 bg-well flex items-center justify-center shrink-0">
+                            <svg class="w-5 h-5 text-ink" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
+                        </div>
+                        <p class="text-xs sm:text-[13px] font-medium text-ink leading-snug">
+                            Priced in CAD with direct-to-door Canadian fulfillment &amp; zero duties.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="mt-8 text-center">
+                    <button id="benefitsOpenCartBtn" type="button" class="inline-flex items-center justify-center border border-ink rounded-full px-7 py-2.5 text-xs font-medium text-ink hover:bg-ink hover:text-paper transition-colors cursor-pointer">
+                        Start Your Kit Brief
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             8. CRAFT & PROCESS (MIRRORING "MEET OUR SCIENTISTS")
+        =========================================== -->
+        <section id="craft" class="py-16 sm:py-20 bg-paper border-t border-borderlight">
+            <div class="max-w-[1400px] mx-auto px-5 sm:px-8">
+                <div class="max-w-xl mb-10">
+                    <h2 class="text-2xl sm:text-3xl font-semibold tracking-tight text-ink leading-snug">
+                        Built Like Retail.<br>
+                        Grounded in Craft. Driven by Detail.
+                    </h2>
+                    <p class="text-xs sm:text-sm text-muted mt-3 leading-relaxed">
+                        Every blank is selected for heavyweight construction and daily utility—from 400GSM organic cotton to double-wall matte drinkware—decorated with understated precision.
+                    </p>
+                    <a href="#builder" class="inline-flex items-center justify-center border border-ink rounded-full px-6 py-2 text-xs font-medium text-ink hover:bg-ink hover:text-paper transition-colors mt-5">
+                        Configure Your Kit
+                    </a>
+                </div>
+
+                <!-- 4-Column Portrait/Editorial Cards with Bottom Text Overlay -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div class="craft-card relative aspect-[3/4] bg-well overflow-hidden group">
+                        <img src="kitsterimages/pulloverhoodie.webp" alt="Heavyweight Apparel" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/75 via-black/15 to-transparent"></div>
+                        <div class="absolute bottom-4 left-4 right-4 text-paper">
+                            <p class="text-sm font-semibold">01 · Heavyweight Blanks</p>
+                            <p class="text-[11px] text-white/80 mt-0.5">400GSM Organic Cotton &amp; 14oz Canvas</p>
+                        </div>
+                    </div>
+
+                    <div class="craft-card relative aspect-[3/4] bg-well overflow-hidden group">
+                        <img src="kitsterimages/hardcovernotebook.webp" alt="Precision Branding" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/75 via-black/15 to-transparent"></div>
+                        <div class="absolute bottom-4 left-4 right-4 text-paper">
+                            <p class="text-sm font-semibold">02 · Tactile Branding</p>
+                            <p class="text-[11px] text-white/80 mt-0.5">Blind Debossing &amp; Tonal Embroidery</p>
+                        </div>
+                    </div>
+
+                    <div class="craft-card relative aspect-[3/4] bg-well overflow-hidden group">
+                        <img src="kitsterimages/insulatedtumbler.webp" alt="Matte Drinkware" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/75 via-black/15 to-transparent"></div>
+                        <div class="absolute bottom-4 left-4 right-4 text-paper">
+                            <p class="text-sm font-semibold">03 · Laser Precision</p>
+                            <p class="text-[11px] text-white/80 mt-0.5">Powder-Coated Double-Wall Drinkware</p>
+                        </div>
+                    </div>
+
+                    <div class="craft-card relative aspect-[3/4] bg-well overflow-hidden group">
+                        <img src="kitsterimages/mailerboxandinsert.webp" alt="Canadian Fulfillment" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/75 via-black/15 to-transparent"></div>
+                        <div class="absolute bottom-4 left-4 right-4 text-paper">
+                            <p class="text-sm font-semibold">04 · Direct Fulfillment</p>
+                            <p class="text-[11px] text-white/80 mt-0.5">Toronto, Vancouver &amp; Montreal Hubs</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- ==========================================
+         9. CLINICAL MINIMALIST FOOTER
+    =========================================== -->
+    <footer class="bg-[#FAFAFA] border-t border-borderlight pt-14 pb-20 lg:pb-12">
+        <div class="max-w-[1400px] mx-auto px-5 sm:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-10 pb-12 border-b border-borderlight">
+                <!-- Col 1: Editions -->
+                <div class="md:col-span-3 space-y-2.5 text-xs">
+                    <p class="font-semibold text-ink mb-3">Editions</p>
+                    <button type="button" onclick="openKitModal('welcome')" class="block text-muted hover:text-ink cursor-pointer">Welcome Kit</button>
+                    <button type="button" onclick="openKitModal('event')" class="block text-muted hover:text-ink cursor-pointer">Event Kit</button>
+                    <button type="button" onclick="openKitModal('tech')" class="block text-muted hover:text-ink cursor-pointer">Tech Kit</button>
+                    <button type="button" onclick="openKitModal('wellness')" class="block text-muted hover:text-ink cursor-pointer">Wellness Kit</button>
+                    <button type="button" onclick="openKitModal('client')" class="block text-muted hover:text-ink cursor-pointer">Client Appreciation</button>
+                </div>
+
+                <!-- Col 2: Customer Care -->
+                <div class="md:col-span-3 space-y-2.5 text-xs">
+                    <p class="font-semibold text-ink mb-3">Customer Care</p>
+                    <a href="#builder" class="block text-muted hover:text-ink">Build Your Own Studio</a>
+                    <a href="#benefits" class="block text-muted hover:text-ink">24h Digital Proofs</a>
+                    <a href="#craft" class="block text-muted hover:text-ink">Branding &amp; Materials</a>
+                    <button type="button" onclick="openCartDrawer()" class="block text-muted hover:text-ink cursor-pointer">Track / Review Brief</button>
+                </div>
+
+                <!-- Col 3: Fulfillment -->
+                <div class="md:col-span-2 space-y-2.5 text-xs">
+                    <p class="font-semibold text-ink mb-3">Canadian Hubs</p>
+                    <p class="text-muted">Toronto, ON</p>
+                    <p class="text-muted">Vancouver, BC</p>
+                    <p class="text-muted">Montreal, QC</p>
+                    <p class="text-ink font-medium pt-1">hello@kitster.ca</p>
+                </div>
+
+                <!-- Col 4: Stay in Touch -->
+                <div class="md:col-span-4 space-y-3">
+                    <p class="text-xs font-semibold text-ink">Stay in Touch</p>
+                    <p class="text-xs text-muted leading-relaxed">
+                        Receive our 2026 Canadian swag lookbook and seasonal blank releases.
+                    </p>
+                    <form id="newsletterForm" class="flex items-center border-b border-ink pb-1.5">
+                        <input
+                            id="newsletterEmail"
+                            type="email"
+                            required
+                            placeholder="Email Address"
+                            class="flex-1 bg-transparent text-xs text-ink placeholder:text-muted focus:outline-none"
+                        />
+                        <button type="submit" aria-label="Subscribe" class="text-sm text-ink hover:opacity-60 px-1 cursor-pointer">→</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] text-muted">
+                <span>© 2026 kitster. Canada Inc. All rights reserved.</span>
+                <span>Priced in CAD · Built for Canadian Teams</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ==========================================
+         MOBILE FLOATING STUDIO BAR
+    =========================================== -->
+    <div id="mobileBuilderBar" class="lg:hidden fixed bottom-4 inset-x-4 z-30 bg-ink text-paper px-4 py-3 shadow-xl flex items-center justify-between gap-3 transition-all duration-300 translate-y-24 opacity-0 pointer-events-none">
+        <div>
+            <span id="mobileBarCount" class="text-[10px] font-mono uppercase text-white/65 block">3 items · 50 kits</span>
+            <span id="mobileBarTotal" class="text-xs font-mono font-semibold text-paper">$1,575 CAD</span>
+        </div>
+        <a href="#builderSummaryPanel" class="bg-paper text-ink px-4 py-1.5 rounded-full text-[11px] font-medium shrink-0">
+            Review Kit ↓
+        </a>
+    </div>
+
+    <!-- ==========================================
+         QUICK-VIEW MODAL
+    =========================================== -->
+    <div id="kitModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 sm:p-6">
+        <div id="kitModalBackdrop" class="absolute inset-0 bg-black/50 backdrop-blur-xs opacity-0 transition-opacity duration-300"></div>
+
+        <div id="kitModalPanel" class="relative z-10 bg-paper border border-borderlight max-w-3xl w-full overflow-hidden shadow-2xl grid grid-cols-1 md:grid-cols-12 max-h-[90vh] overflow-y-auto opacity-0 scale-95 transition-all duration-300">
+            <div class="md:col-span-5 bg-well relative min-h-[240px]">
+                <img id="modalKitImage" src="" alt="" class="w-full h-full object-cover" />
+                <span id="modalKitBadge" class="hidden absolute top-3 left-3 bg-paper text-ink text-[10px] font-medium px-2.5 py-1 border border-borderlight"></span>
+            </div>
+
+            <div class="md:col-span-7 p-6 sm:p-8 flex flex-col justify-between">
+                <div>
+                    <div class="flex items-start justify-between gap-4 mb-3">
+                        <div>
+                            <span id="modalKitIndex" class="text-[10px] font-mono uppercase text-muted">EDITION 01</span>
+                            <h3 id="modalKitTitle" class="text-2xl font-semibold text-ink tracking-tight mt-0.5"></h3>
+                        </div>
+                        <button id="closeKitModalBtn" type="button" aria-label="Close modal" class="w-8 h-8 flex items-center justify-center text-ink hover:bg-well transition-colors cursor-pointer">✕</button>
+                    </div>
+
+                    <p id="modalKitDesc" class="text-xs sm:text-sm text-muted leading-relaxed mb-5"></p>
+
+                    <div class="mb-6">
+                        <span class="text-[11px] font-semibold uppercase tracking-wider text-ink block mb-2.5">What's Inside</span>
+                        <ul id="modalKitItems" class="space-y-2 border-t border-borderlight pt-3"></ul>
+                    </div>
+                </div>
+
+                <div class="pt-4 border-t border-borderlight flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div>
+                        <span class="text-[10px] uppercase text-muted block">Starting at (25 kits)</span>
+                        <span id="modalKitPrice" class="font-mono text-base font-semibold text-ink"></span>
+                    </div>
+                    <button id="modalAddToCartBtn" type="button" class="bg-ink text-paper hover:bg-neutral-800 px-6 py-3 text-xs font-medium uppercase tracking-wider transition-colors cursor-pointer">
+                        Add 25 Kits to Bag
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         SLIDE-OVER BAG DRAWER
+    =========================================== -->
+    <div id="cartDrawer" class="fixed inset-0 z-50 hidden">
+        <div id="cartBackdrop" class="absolute inset-0 bg-black/45 backdrop-blur-xs opacity-0 transition-opacity duration-300"></div>
+
+        <div id="cartPanel" class="absolute top-0 right-0 h-full w-full max-w-md bg-paper border-l border-borderlight shadow-2xl flex flex-col transform translate-x-full transition-transform duration-300 ease-out">
+            <div class="px-6 py-5 border-b border-borderlight flex items-center justify-between">
+                <div>
+                    <span class="text-[10px] uppercase tracking-wider text-muted">Kit Brief</span>
+                    <h3 class="text-lg font-semibold text-ink">Your Bag</h3>
+                </div>
+                <button id="closeCartBtn" type="button" aria-label="Close bag" class="w-8 h-8 flex items-center justify-center text-ink hover:bg-well cursor-pointer">✕</button>
+            </div>
+
+            <div id="cartItemsContainer" class="flex-1 overflow-y-auto px-6 py-5 space-y-4"></div>
+
+            <div class="p-6 border-t border-borderlight bg-[#FAFAFA] space-y-4">
+                <div class="space-y-1.5 text-xs">
+                    <div class="flex justify-between text-muted">
+                        <span>24h Digital Proofs</span>
+                        <span class="text-ink font-medium">Complimentary</span>
+                    </div>
+                    <div class="flex justify-between items-baseline pt-2">
+                        <span class="font-semibold text-sm text-ink">Estimated Subtotal</span>
+                        <span id="cartSubtotal" class="font-mono text-lg font-semibold text-ink">$0 CAD</span>
+                    </div>
+                </div>
+
+                <button id="submitBriefBtn" type="button" class="w-full bg-ink text-paper hover:bg-neutral-800 py-3.5 text-xs font-medium uppercase tracking-wider transition-colors cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed">
+                    Submit Brief for 24h Proofs
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST -->
+    <div id="toastContainer" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-[60] pointer-events-none flex flex-col items-center gap-2 w-[90%] max-w-md"></div>
+
+    <!-- ==========================================
+         INTERACTIVE LOGIC + GSAP
+    =========================================== -->
+    <script>
+        /* ==========================================
+           HERO SLIDES
+        ========================================== */
+        const HERO_SLIDES = [
+            {
+                title: 'Start Here with Better Swag.',
+                sub: 'Curated, retail-grade onboarding and event kits—designed, branded, and fulfilled across Canada with 24h digital proofs.',
+                image: 'kitsterimages/welcomekit.webp'
+            },
+            {
+                title: 'Conference Kits People Keep.',
+                sub: 'Heavyweight 14oz organic canvas totes, woven lanyards, and lay-flat field notebooks delivered direct to your venue.',
+                image: 'kitsterimages/eventkit.webp'
+            },
+            {
+                title: 'Built for Remote Canadian Teams.',
+                sub: 'Ship individually to home offices across every province with zero cross-border duties or customs delays.',
+                image: 'kitsterimages/techkit.webp'
+            }
+        ];
+
+        let currentSlide = 0;
+
+        function setHeroSlide(index) {
+            currentSlide = (index + HERO_SLIDES.length) % HERO_SLIDES.length;
+            const slide = HERO_SLIDES[currentSlide];
+            document.getElementById('heroBgImg').src = slide.image;
+            document.getElementById('heroTitle').textContent = slide.title;
+            document.getElementById('heroSub').textContent = slide.sub;
+
+            document.querySelectorAll('.hero-dot').forEach((dot, i) => {
+                dot.className = `hero-dot w-2 h-2 rounded-full cursor-pointer transition-all ${i === currentSlide ? 'bg-ink w-5' : 'bg-ink/25'}`;
+            });
+        }
+
+        document.getElementById('heroNextBtn').addEventListener('click', () => setHeroSlide(currentSlide + 1));
+        document.querySelectorAll('.hero-dot').forEach(dot => {
+            dot.addEventListener('click', () => setHeroSlide(parseInt(dot.dataset.slide, 10)));
+        });
+
+        /* ==========================================
+           DATA CATALOGS (100% LOCAL KITSTER ASSETS)
+        ========================================== */
+        const CURATED_KITS = [
+            {
+                id: 'welcome',
+                index: '01',
+                name: 'The Welcome Kit',
+                subtitle: 'Day-one onboarding essentials',
+                price: 35,
+                badge: 'Bestseller',
+                image: 'kitsterimages/welcomekit.webp',
+                description: 'Day-one onboarding essentials designed to feel like a retail unboxing—shipped direct or in bulk across Canada.',
+                items: [
+                    'Hardcover Linen Lay-Flat Notebook',
+                    'Matte Insulated Tumbler 16oz',
+                    'Weighted Matte Pen Set',
+                    '14oz Organic Canvas Tote',
+                    'Custom Printed Mailer Box & Insert'
+                ]
+            },
+            {
+                id: 'event',
+                index: '02',
+                name: 'The Event Kit',
+                subtitle: 'Lightweight conference carry',
+                price: 25,
+                badge: 'Popular',
+                image: 'kitsterimages/eventkit.webp',
+                description: 'Lightweight, tactile conference essentials guests actually keep after the keynote.',
+                items: [
+                    '14oz Organic Canvas Tote',
+                    'Woven Conference Lanyard',
+                    'Hardcover Field Notebook',
+                    'Matte Pen Set'
+                ]
+            },
+            {
+                id: 'tech',
+                index: '03',
+                name: 'The Tech Kit',
+                subtitle: 'Launch & offsite hardware',
+                price: 80,
+                badge: 'New',
+                image: 'kitsterimages/techkit.webp',
+                description: 'Engineered for product launches, engineering offsites, and distributed teams.',
+                items: [
+                    'Matte Insulated Tumbler 16oz',
+                    'Hardcover Notebook & Pen Set',
+                    '400GSM Organic Pullover Hoodie',
+                    'Custom Printed Mailer Box & Insert'
+                ]
+            },
+            {
+                id: 'wellness',
+                index: '04',
+                name: 'The Wellness Kit',
+                subtitle: 'Everyday recharge essentials',
+                price: 50,
+                badge: null,
+                image: 'kitsterimages/wellnesskit.webp',
+                description: 'Restorative everyday pieces crafted for offsites and milestone anniversaries.',
+                items: [
+                    'Double-Wall Matte Water Bottle 22oz',
+                    '14oz Organic Canvas Tote',
+                    'Brushed Twill Embroidered Cap',
+                    'Custom Printed Mailer Box & Insert'
+                ]
+            },
+            {
+                id: 'client',
+                index: '05',
+                name: 'Client Appreciation Kit',
+                subtitle: 'Executive & VIP gifting',
+                price: 100,
+                badge: 'Executive',
+                image: 'kitsterimages/clientkit.webp',
+                description: 'An elevated gifting suite for key renewals, VIP partners, and executive retreats.',
+                items: [
+                    '400GSM Organic Pullover Hoodie',
+                    'Matte Insulated Tumbler 16oz',
+                    'Hardcover Notebook & Pen Set',
+                    'Brushed Twill Embroidered Cap',
+                    'Custom Rigid Mailer Box & Insert'
+                ]
+            }
+        ];
+
+        const BUILDER_ITEMS = [
+            { id: 'tote', name: 'Canvas Tote', category: 'Apparel', price: 9, spec: '14oz Organic Cotton', image: 'kitsterimages/canvastote.webp' },
+            { id: 'cap', name: 'Embroidered Cap', category: 'Apparel', price: 16, spec: 'Brushed Twill · Tonal', image: 'kitsterimages/embroidedcap.webp' },
+            { id: 'hoodie', name: 'Pullover Hoodie', category: 'Apparel', price: 35, spec: '400GSM French Terry', image: 'kitsterimages/pulloverhoodie.webp' },
+            { id: 'tumbler', name: 'Insulated Tumbler', category: 'Drinkware', price: 19, spec: '16oz Matte Powder-Coat', image: 'kitsterimages/insulatedtumbler.webp' },
+            { id: 'bottle', name: 'Water Bottle', category: 'Drinkware', price: 18, spec: '22oz Laser Engraved', image: 'kitsterimages/waterbottle.webp' },
+            { id: 'notebook', name: 'Hardcover Notebook', category: 'Desk', price: 7, spec: '120gsm · Blind Deboss', image: 'kitsterimages/hardcovernotebook.webp' },
+            { id: 'penset', name: 'Pen Set', category: 'Desk', price: 6, spec: 'Weighted Matte Barrel', image: 'kitsterimages/penset.webp' },
+            { id: 'lanyard', name: 'Conference Lanyard', category: 'Packaging & Events', price: 4, spec: 'Woven · Matte Clasp', image: 'kitsterimages/conferencelanyard.webp' },
+            { id: 'mailerbox', name: 'Mailer Box & Insert', category: 'Packaging & Events', price: 8, spec: 'FSC Kraft · Custom Print', image: 'kitsterimages/mailerboxandinsert.webp' }
+        ];
+
+        const state = {
+            activeFilter: 'All',
+            selectedBuilderIds: new Set(['tote', 'tumbler', 'notebook']),
+            headcount: 50,
+            activeModalKitId: null,
+            cart: [
+                {
+                    uid: 'welcome-sample',
+                    name: 'The Welcome Kit',
+                    subtitle: 'Curated Edition · 5 items',
+                    unitPrice: 35,
+                    quantity: 25,
+                    image: 'kitsterimages/welcomekit.webp'
+                }
+            ]
+        };
+
+        function formatCAD(amount, showDecimals = false) {
+            return new Intl.NumberFormat('en-CA', {
+                style: 'currency',
+                currency: 'CAD',
+                minimumFractionDigits: showDecimals ? 2 : 0,
+                maximumFractionDigits: showDecimals ? 2 : 0
+            }).format(amount).replace('CA$', '$') + ' CAD';
+        }
+
+        function getDiscountRate(qty) {
+            if (qty >= 150) return 0.15;
+            if (qty >= 50) return 0.10;
+            return 0;
+        }
+
+        function showToast(message) {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = 'pointer-events-auto bg-ink text-paper px-5 py-3 shadow-xl flex items-center gap-3 text-xs font-medium transform translate-y-4 opacity-0 transition-all duration-300';
+            toast.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-paper shrink-0"></span><span>${message}</span>`;
+            container.appendChild(toast);
+            requestAnimationFrame(() => toast.classList.remove('translate-y-4', 'opacity-0'));
+            setTimeout(() => {
+                toast.classList.add('translate-y-4', 'opacity-0');
+                setTimeout(() => toast.remove(), 300);
+            }, 3200);
+        }
+
+        /* ==========================================
+           RENDER BESTSELLERS (CLINICAL PRODUCT CARDS)
+        ========================================== */
+        function renderKitsGrid() {
+            const grid = document.getElementById('kitsGrid');
+            grid.innerHTML = CURATED_KITS.map((kit) => `
+                <article class="flex flex-col justify-between group">
+                    <div>
+                        <div onclick="openKitModal('${kit.id}')" class="relative bg-well aspect-[4/5] mb-3.5 overflow-hidden cursor-pointer">
+                            ${kit.badge ? `<span class="absolute top-2.5 left-2.5 z-10 bg-paper text-ink text-[10px] font-medium px-2 py-0.5 border border-borderlight">${kit.badge}</span>` : ''}
+                            <img src="${kit.image}" alt="${kit.name}" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                        </div>
+
+                        <h3 onclick="openKitModal('${kit.id}')" class="text-sm font-semibold text-ink cursor-pointer hover:underline underline-offset-2">${kit.name}</h3>
+                        <p class="text-[11px] text-muted mt-0.5">${kit.subtitle}</p>
+                        <div class="flex items-center justify-between mt-3 pt-2.5 border-t border-borderlight text-xs">
+                            <span class="text-muted">Min. 15 kits</span>
+                            <span class="font-mono font-medium text-ink">$${kit.price} CAD</span>
+                        </div>
+                    </div>
+
+                    <button
+                        type="button"
+                        onclick="quickAddKit('${kit.id}')"
+                        class="mt-3 w-full border border-ink bg-paper text-ink hover:bg-ink hover:text-paper py-2.5 text-[11px] font-medium uppercase tracking-wider transition-colors cursor-pointer"
+                    >
+                        Add to Bag
+                    </button>
+                </article>
+            `).join('');
+        }
+
+        function quickAddKit(kitId) {
+            const kit = CURATED_KITS.find(k => k.id === kitId);
+            if (!kit) return;
+            const existing = state.cart.find(c => c.uid === `kit-${kit.id}`);
+            if (existing) {
+                existing.quantity += 25;
+            } else {
+                state.cart.push({
+                    uid: `kit-${kit.id}`,
+                    name: kit.name,
+                    subtitle: `Curated Edition · ${kit.items.length} items`,
+                    unitPrice: kit.price,
+                    quantity: 25,
+                    image: kit.image
+                });
+            }
+            renderCart();
+            openCartDrawer();
+            showToast(`Added 25 × ${kit.name} to your bag.`);
+        }
+
+        /* ==========================================
+           PARABOLIC FLY-TO-KIT ANIMATION
+        ========================================== */
+        function animateFlyToKit(cardEl, itemImageSrc, itemId) {
+            if (!window.gsap || !cardEl) return;
+            const imgEl = cardEl.querySelector('img');
+            if (!imgEl) return;
+
+            const startRect = imgEl.getBoundingClientRect();
+            const isDesktop = window.innerWidth >= 1024;
+            const mobileBar = document.getElementById('mobileBuilderBar');
+            const targetEl = isDesktop
+                ? document.getElementById('sidebarSelectedList')
+                : (!mobileBar.classList.contains('pointer-events-none') ? mobileBar : document.getElementById('builderSummaryCard'));
+
+            if (!targetEl) return;
+            const targetRect = targetEl.getBoundingClientRect();
+
+            const flyer = document.createElement('img');
+            flyer.src = itemImageSrc;
+            flyer.alt = '';
+            flyer.style.position = 'fixed';
+            flyer.style.left = `${startRect.left}px`;
+            flyer.style.top = `${startRect.top}px`;
+            flyer.style.width = `${startRect.width}px`;
+            flyer.style.height = `${startRect.height}px`;
+            flyer.style.objectFit = 'cover';
+            flyer.style.zIndex = '9997';
+            flyer.style.pointerEvents = 'none';
+            flyer.style.boxShadow = '0 20px 40px -12px rgba(0, 0, 0, 0.3)';
+            flyer.style.border = '1px solid #111111';
+            document.body.appendChild(flyer);
+
+            const targetCenterX = targetRect.left + targetRect.width * 0.5 - startRect.width * 0.5;
+            const targetCenterY = targetRect.top + Math.min(targetRect.height * 0.35, 60) - startRect.height * 0.5;
+            const dx = targetCenterX - startRect.left;
+            const dy = targetCenterY - startRect.top;
+
+            const tl = gsap.timeline({
+                onComplete: () => {
+                    flyer.remove();
+                    const impactTarget = isDesktop ? '#builderSummaryCard' : '#mobileBuilderBar';
+                    gsap.fromTo(impactTarget, { scale: 1 }, { scale: 1.018, duration: 0.14, yoyo: true, repeat: 1, ease: 'power2.out', clearProps: 'transform' });
+                    gsap.fromTo('#selectedCountBadge', { scale: 1 }, { scale: 1.2, duration: 0.16, yoyo: true, repeat: 1, ease: 'back.out(3)', clearProps: 'transform' });
+
+                    const addedRow = document.querySelector(`[data-sidebar-item="${itemId}"]`);
+                    if (addedRow) {
+                        gsap.fromTo(addedRow, { opacity: 0, y: -8, backgroundColor: '#EAEAEA' }, { opacity: 1, y: 0, backgroundColor: '#F4F4F4', duration: 0.4, ease: 'power3.out' });
+                    }
+                }
+            });
+
+            tl.to(flyer, {
+                x: dx * 0.35,
+                y: Math.min(dy * 0.2, -50) - 40,
+                scale: 0.6,
+                rotation: dx >= 0 ? -6 : 6,
+                duration: 0.24,
+                ease: 'power2.out'
+            })
+            .to(flyer, {
+                x: dx,
+                y: dy,
+                scale: 0.15,
+                rotation: dx >= 0 ? 10 : -10,
+                opacity: 0.15,
+                duration: 0.38,
+                ease: 'power3.in'
+            });
+        }
+
+        /* ==========================================
+           BUILD YOUR OWN STUDIO
+        ========================================== */
+        function renderBuilderGrid(animateFilter = false) {
+            const grid = document.getElementById('builderGrid');
+            const filtered = state.activeFilter === 'All'
+                ? BUILDER_ITEMS
+                : BUILDER_ITEMS.filter(item => item.category === state.activeFilter);
+
+            grid.innerHTML = filtered.map(item => {
+                const isSelected = state.selectedBuilderIds.has(item.id);
+                return `
+                    <div
+                        onclick="toggleBuilderItem('${item.id}', this)"
+                        role="checkbox"
+                        aria-checked="${isSelected}"
+                        tabindex="0"
+                        onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleBuilderItem('${item.id}', this);}"
+                        class="builder-card bg-paper border p-3 flex flex-col justify-between transition-colors cursor-pointer select-none ${isSelected ? 'border-ink' : 'border-borderlight hover:border-ink/40'}"
+                    >
+                        <div>
+                            <div class="relative bg-well aspect-square mb-3 overflow-hidden">
+                                <span class="absolute top-2 left-2 z-10 bg-paper/90 text-ink text-[9px] uppercase tracking-wider px-1.5 py-0.5">${item.category}</span>
+                                <img src="${item.image}" alt="${item.name}" loading="lazy" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
+                            </div>
+                            <div class="flex items-baseline justify-between gap-2">
+                                <h4 class="text-xs sm:text-[13px] font-semibold text-ink truncate">${item.name}</h4>
+                                <span class="font-mono text-xs text-ink shrink-0">$${item.price}</span>
+                            </div>
+                            <p class="text-[11px] text-muted mt-0.5 truncate">${item.spec}</p>
+                        </div>
+
+                        <div class="mt-3 pt-2 border-t border-borderlight">
+                            <span class="block w-full text-center py-1.5 text-[10px] font-medium uppercase tracking-wider transition-colors ${isSelected ? 'bg-ink text-paper' : 'border border-ink text-ink'}">
+                                ${isSelected ? 'Added ✓' : '+ Add to Kit'}
+                            </span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            if (animateFilter && window.gsap) {
+                gsap.fromTo('#builderGrid .builder-card', { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.35, stagger: 0.03, ease: 'power2.out', clearProps: 'transform,opacity' });
+            }
+        }
+
+        function toggleBuilderItem(id, cardEl = null) {
+            const wasSelected = state.selectedBuilderIds.has(id);
+            const itemObj = BUILDER_ITEMS.find(i => i.id === id);
+
+            if (wasSelected) {
+                state.selectedBuilderIds.delete(id);
+            } else {
+                state.selectedBuilderIds.add(id);
+                if (cardEl && itemObj) animateFlyToKit(cardEl, itemObj.image, id);
+            }
+
+            renderBuilderGrid(false);
+            updateBuilderSidebar();
+        }
+
+        function updateBuilderSidebar() {
+            const selectedItems = BUILDER_ITEMS.filter(item => state.selectedBuilderIds.has(item.id));
+            const countBadge = document.getElementById('selectedCountBadge');
+            const listEl = document.getElementById('sidebarSelectedList');
+            const discountLabel = document.getElementById('discountTierLabel');
+            const perKitEl = document.getElementById('perKitPrice');
+            const totalEl = document.getElementById('totalEstimatePrice');
+            const addBtn = document.getElementById('addCustomKitBtn');
+
+            const mobileBarCount = document.getElementById('mobileBarCount');
+            const mobileBarTotal = document.getElementById('mobileBarTotal');
+
+            countBadge.textContent = `${selectedItems.length} ${selectedItems.length === 1 ? 'item' : 'items'}`;
+
+            if (selectedItems.length === 0) {
+                listEl.innerHTML = `<p class="text-xs text-muted py-2">Add items from the left to build your kit.</p>`;
+                addBtn.disabled = true;
+            } else {
+                listEl.innerHTML = selectedItems.map(item => `
+                    <div data-sidebar-item="${item.id}" class="flex items-center justify-between gap-2.5 bg-well px-2.5 py-2">
+                        <div class="flex items-center gap-2.5 min-w-0">
+                            <img src="${item.image}" alt="" class="w-8 h-8 object-cover bg-paper shrink-0" />
+                            <div class="min-w-0">
+                                <p class="text-xs font-medium text-ink truncate">${item.name}</p>
+                                <p class="font-mono text-[10px] text-muted">$${item.price} CAD</p>
+                            </div>
+                        </div>
+                        <button type="button" onclick="toggleBuilderItem('${item.id}')" aria-label="Remove ${item.name}" class="text-xs text-muted hover:text-ink px-1 cursor-pointer shrink-0">✕</button>
+                    </div>
+                `).join('');
+                addBtn.disabled = false;
+            }
+
+            const basePerKit = selectedItems.reduce((sum, item) => sum + item.price, 0);
+            const discountRate = getDiscountRate(state.headcount);
+            const discountedPerKit = basePerKit * (1 - discountRate);
+            const estimatedTotal = Math.round(discountedPerKit * state.headcount);
+
+            discountLabel.textContent = discountRate === 0.15 ? '15% Savings (150+)' : discountRate === 0.10 ? '10% Savings (50+)' : 'Standard (50+ for 10% off)';
+            perKitEl.textContent = formatCAD(discountedPerKit, true);
+            totalEl.textContent = formatCAD(estimatedTotal, false);
+
+            mobileBarCount.textContent = `${selectedItems.length} ${selectedItems.length === 1 ? 'item' : 'items'} · ${state.headcount} kits`;
+            mobileBarTotal.textContent = formatCAD(estimatedTotal, false);
+        }
+
+        document.querySelectorAll('#builderFilters .filter-pill').forEach(btn => {
+            btn.addEventListener('click', () => {
+                state.activeFilter = btn.dataset.filter;
+                document.querySelectorAll('#builderFilters .filter-pill').forEach(b => {
+                    const active = b.dataset.filter === state.activeFilter;
+                    b.className = `filter-pill shrink-0 px-4 py-1.5 rounded-full text-xs font-medium border cursor-pointer transition-colors ${active ? 'bg-ink text-paper border-ink' : 'bg-paper text-ink border-borderlight hover:border-ink'}`;
+                });
+                renderBuilderGrid(true);
+            });
+        });
+
+        const headcountSlider = document.getElementById('headcountSlider');
+        const headcountInput = document.getElementById('headcountInput');
+
+        headcountSlider.addEventListener('input', (e) => {
+            state.headcount = parseInt(e.target.value, 10);
+            headcountInput.value = state.headcount;
+            updateBuilderSidebar();
+        });
+
+        headcountInput.addEventListener('input', (e) => {
+            let val = parseInt(e.target.value, 10);
+            if (isNaN(val)) return;
+            val = Math.max(15, Math.min(300, val));
+            state.headcount = val;
+            headcountSlider.value = val;
+            updateBuilderSidebar();
+        });
+
+        headcountInput.addEventListener('blur', () => { headcountInput.value = state.headcount; });
+
+        document.getElementById('addCustomKitBtn').addEventListener('click', () => {
+            const selectedItems = BUILDER_ITEMS.filter(item => state.selectedBuilderIds.has(item.id));
+            if (selectedItems.length === 0) return;
+
+            const basePerKit = selectedItems.reduce((sum, item) => sum + item.price, 0);
+            const discountRate = getDiscountRate(state.headcount);
+            const finalUnitPrice = Number((basePerKit * (1 - discountRate)).toFixed(2));
+            const namesSummary = selectedItems.map(i => i.name).join(', ');
+
+            state.cart.push({
+                uid: `custom-${Date.now()}`,
+                name: `Custom Studio Kit (${selectedItems.length} items)`,
+                subtitle: namesSummary.length > 52 ? namesSummary.slice(0, 52) + '…' : namesSummary,
+                unitPrice: finalUnitPrice,
+                quantity: state.headcount,
+                image: selectedItems[0].image
+            });
+
+            renderCart();
+            openCartDrawer();
+            showToast(`Added ${state.headcount} custom kits to your bag.`);
+        });
+
+        /* ==========================================
+           QUICK-VIEW MODAL & BAG DRAWER
+        ========================================== */
+        const kitModal = document.getElementById('kitModal');
+        const kitModalBackdrop = document.getElementById('kitModalBackdrop');
+        const kitModalPanel = document.getElementById('kitModalPanel');
+
+        function openKitModal(kitId) {
+            const kit = CURATED_KITS.find(k => k.id === kitId);
+            if (!kit) return;
+
+            state.activeModalKitId = kit.id;
+            document.getElementById('modalKitIndex').textContent = `EDITION ${kit.index}`;
+            document.getElementById('modalKitTitle').textContent = kit.name;
+            document.getElementById('modalKitDesc').textContent = kit.description;
+            document.getElementById('modalKitPrice').textContent = `$${kit.price} CAD / kit`;
+
+            const imgEl = document.getElementById('modalKitImage');
+            imgEl.src = kit.image;
+            imgEl.alt = kit.name;
+
+            const badgeEl = document.getElementById('modalKitBadge');
+            if (kit.badge) {
+                badgeEl.textContent = kit.badge;
+                badgeEl.classList.remove('hidden');
+            } else {
+                badgeEl.classList.add('hidden');
+            }
+
+            document.getElementById('modalKitItems').innerHTML = kit.items.map((item, i) => `
+                <li class="flex items-start gap-2.5 text-xs sm:text-sm text-ink">
+                    <span class="font-mono text-[10px] text-muted mt-0.5">0${i + 1}</span>
+                    <span>${item}</span>
+                </li>
+            `).join('');
+
+            kitModal.classList.remove('hidden');
+            kitModal.classList.add('flex');
+            document.body.style.overflow = 'hidden';
+
+            requestAnimationFrame(() => {
+                kitModalBackdrop.classList.remove('opacity-0');
+                kitModalPanel.classList.remove('opacity-0', 'scale-95');
+            });
+        }
+
+        function closeKitModal() {
+            kitModalBackdrop.classList.add('opacity-0');
+            kitModalPanel.classList.add('opacity-0', 'scale-95');
+            document.body.style.overflow = '';
+            setTimeout(() => {
+                kitModal.classList.add('hidden');
+                kitModal.classList.remove('flex');
+            }, 260);
+        }
+
+        document.getElementById('closeKitModalBtn').addEventListener('click', closeKitModal);
+        kitModalBackdrop.addEventListener('click', closeKitModal);
+        document.getElementById('modalAddToCartBtn').addEventListener('click', () => {
+            if (!state.activeModalKitId) return;
+            closeKitModal();
+            quickAddKit(state.activeModalKitId);
+        });
+
+        const cartDrawer = document.getElementById('cartDrawer');
+        const cartBackdrop = document.getElementById('cartBackdrop');
+        const cartPanel = document.getElementById('cartPanel');
+
+        function openCartDrawer() {
+            cartDrawer.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+            requestAnimationFrame(() => {
+                cartBackdrop.classList.remove('opacity-0');
+                cartPanel.classList.remove('translate-x-full');
+            });
+        }
+
+        function closeCartDrawer() {
+            cartBackdrop.classList.add('opacity-0');
+            cartPanel.classList.add('translate-x-full');
+            document.body.style.overflow = '';
+            setTimeout(() => cartDrawer.classList.add('hidden'), 300);
+        }
+
+        function updateCartQty(uid, delta) {
+            const item = state.cart.find(c => c.uid === uid);
+            if (!item) return;
+            item.quantity = Math.max(15, item.quantity + delta);
+            renderCart();
+        }
+
+        function removeCartItem(uid) {
+            state.cart = state.cart.filter(c => c.uid !== uid);
+            renderCart();
+        }
+
+        function renderCart() {
+            const container = document.getElementById('cartItemsContainer');
+            const navBadge = document.getElementById('navCartCount');
+            const subtotalEl = document.getElementById('cartSubtotal');
+            const submitBtn = document.getElementById('submitBriefBtn');
+
+            navBadge.textContent = state.cart.length;
+
+            if (state.cart.length === 0) {
+                container.innerHTML = `<div class="py-16 text-center text-xs text-muted">Your bag is currently empty.</div>`;
+                subtotalEl.textContent = '$0 CAD';
+                submitBtn.disabled = true;
+                return;
+            }
+
+            submitBtn.disabled = false;
+            let subtotal = 0;
+
+            container.innerHTML = state.cart.map(item => {
+                const lineTotal = Math.round(item.unitPrice * item.quantity);
+                subtotal += lineTotal;
+                return `
+                    <div class="flex gap-3.5 p-3.5 border border-borderlight bg-paper">
+                        <img src="${item.image}" alt="${item.name}" class="w-14 h-18 object-cover bg-well shrink-0" />
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-start justify-between gap-2">
+                                <h4 class="font-semibold text-xs text-ink truncate">${item.name}</h4>
+                                <button type="button" onclick="removeCartItem('${item.uid}')" aria-label="Remove" class="text-xs text-muted hover:text-ink cursor-pointer">✕</button>
+                            </div>
+                            <p class="text-[11px] text-muted mt-0.5 line-clamp-2">${item.subtitle}</p>
+                            <div class="flex items-center justify-between mt-3">
+                                <div class="inline-flex items-center border border-borderlight">
+                                    <button type="button" onclick="updateCartQty('${item.uid}', -5)" class="px-2 py-0.5 text-xs hover:bg-well cursor-pointer">−</button>
+                                    <span class="px-2 text-[11px] font-mono">${item.quantity}</span>
+                                    <button type="button" onclick="updateCartQty('${item.uid}', 5)" class="px-2 py-0.5 text-xs hover:bg-well cursor-pointer">+</button>
+                                </div>
+                                <span class="font-mono text-xs font-medium">${formatCAD(lineTotal)}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            subtotalEl.textContent = formatCAD(subtotal);
+        }
+
+        document.getElementById('openCartBtnTop').addEventListener('click', openCartDrawer);
+        document.getElementById('benefitsOpenCartBtn').addEventListener('click', openCartDrawer);
+        document.getElementById('closeCartBtn').addEventListener('click', closeCartDrawer);
+        cartBackdrop.addEventListener('click', closeCartDrawer);
+
+        document.getElementById('submitBriefBtn').addEventListener('click', () => {
+            if (state.cart.length === 0) return;
+            closeCartDrawer();
+            showToast('Brief received — digital proofs will arrive within 24h.');
+        });
+
+        /* ==========================================
+           NEWSLETTER & MOBILE MENU
+        ========================================== */
+        document.getElementById('newsletterForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const input = document.getElementById('newsletterEmail');
+            const email = input.value.trim();
+            if (!email) return;
+            input.value = '';
+            showToast(`2026 Lookbook sent to ${email}.`);
+        });
+
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const menuIconOpen = document.getElementById('menuIconOpen');
+        const menuIconClose = document.getElementById('menuIconClose');
+
+        function setMobileMenu(open) {
+            mobileMenu.classList.toggle('hidden', !open);
+            menuIconOpen.classList.toggle('hidden', open);
+            menuIconClose.classList.toggle('hidden', !open);
+            mobileMenuBtn.setAttribute('aria-expanded', String(open));
+        }
+
+        mobileMenuBtn.addEventListener('click', () => setMobileMenu(mobileMenu.classList.contains('hidden')));
+        document.querySelectorAll('.mobile-nav-link').forEach(l => l.addEventListener('click', () => setMobileMenu(false)));
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeKitModal();
+                closeCartDrawer();
+                setMobileMenu(false);
+            }
+        });
+
+        /* ==========================================
+           GSAP SUBTLE EDITORIAL REVEALS
+        ========================================== */
+        function initGSAP() {
+            if (!window.gsap || !window.ScrollTrigger) return;
+            gsap.registerPlugin(ScrollTrigger);
+
+            gsap.from('.hero-content > *', {
+                opacity: 0, y: 18, duration: 0.75, stagger: 0.08, ease: 'power3.out'
+            });
+
+            gsap.from('.craft-card', {
+                opacity: 0, y: 24, duration: 0.75, stagger: 0.08, ease: 'power3.out',
+                scrollTrigger: { trigger: '#craft', start: 'top 80%', once: true }
+            });
+
+            const mobileBar = document.getElementById('mobileBuilderBar');
+            ScrollTrigger.create({
+                trigger: '#builderGrid',
+                start: 'top 75%',
+                end: 'bottom 35%',
+                onEnter: () => toggleMobileBar(true),
+                onEnterBack: () => toggleMobileBar(true),
+                onLeave: () => toggleMobileBar(false),
+                onLeaveBack: () => toggleMobileBar(false)
+            });
+
+            function toggleMobileBar(show) {
+                if (show && state.selectedBuilderIds.size > 0) {
+                    mobileBar.classList.remove('translate-y-24', 'opacity-0', 'pointer-events-none');
+                } else {
+                    mobileBar.classList.add('translate-y-24', 'opacity-0', 'pointer-events-none');
+                }
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderKitsGrid();
+            renderBuilderGrid(false);
+            updateBuilderSidebar();
+            renderCart();
+            initGSAP();
+        });
+    </script>
+</body>
+</html>
