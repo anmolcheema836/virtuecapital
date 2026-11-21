@@ -1,0 +1,1999 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JLR Contractors — Architectural Construction &amp; Millwork | Est. 1912</title>
+  <meta name="description" content="JLR Contractors — Over 100 years of custom residential, commercial, public works, and in-house architectural woodworking in Utah Valley. Est. 1912." />
+
+  <!-- Google Fonts: Instrument Serif, Plus Jakarta Sans, JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Tailwind Custom Architectural Design System -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            obsidian: {
+              DEFAULT: '#0B0E0C',
+              elevated: '#121614',
+              card: '#161B18',
+            },
+            alabaster: {
+              DEFAULT: '#F3F0E9',
+              pure: '#FAF8F4',
+            },
+            forest: {
+              DEFAULT: '#123B2B',
+              light: '#1B523C',
+              dark: '#0B271C',
+            },
+            sage: {
+              DEFAULT: '#C5CEC3',
+              muted: '#9AA698',
+            },
+            bronze: {
+              DEFAULT: '#B08D66',
+              light: '#C8A883',
+              dark: '#8C6D4B',
+            },
+          },
+          fontFamily: {
+            serif: ['"Instrument Serif"', 'Georgia', 'serif'],
+            sans: ['"Plus Jakarta Sans"', 'system-ui', '-apple-system', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+        },
+      },
+    };
+  </script>
+
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- GSAP & ScrollTrigger CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+  <!-- Lenis Smooth Scrolling CDN -->
+  <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
+
+  <!-- Custom Architectural CSS, Grain, Grid, Marquee, Accordion & Scrollbars -->
+  <style>
+    :root {
+      --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+      --border-dark: rgba(243, 240, 233, 0.12);
+      --border-light: rgba(11, 14, 12, 0.14);
+    }
+
+    html {
+      background-color: #0B0E0C;
+      color: #F3F0E9;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* Lenis Recommended Base Rules */
+    html.lenis, html.lenis body {
+      height: auto;
+    }
+    .lenis.lenis-smooth {
+      scroll-behavior: auto !important;
+    }
+
+    /* Subtle Global Film Grain Overlay */
+    .film-grain {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 60;
+      opacity: 0.032;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+
+    /* Subtle Architectural Blueprint Grid Background */
+    .blueprint-grid-dark {
+      background-image:
+        linear-gradient(to right, rgba(243, 240, 233, 0.04) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(243, 240, 233, 0.04) 1px, transparent 1px);
+      background-size: 88px 88px;
+    }
+    .blueprint-grid-light {
+      background-image:
+        linear-gradient(to right, rgba(11, 14, 12, 0.045) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(11, 14, 12, 0.045) 1px, transparent 1px);
+      background-size: 88px 88px;
+    }
+
+    /* Nav Link Dot Indicator */
+    .nav-dot-link {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .nav-dot-link::before {
+      content: "";
+      width: 4px;
+      height: 4px;
+      border-radius: 9999px;
+      background-color: #B08D66;
+      transform: scale(0);
+      opacity: 0;
+      transition: transform 0.35s var(--ease-expo), opacity 0.35s var(--ease-expo);
+    }
+    .nav-dot-link:hover::before,
+    .nav-dot-link.active::before {
+      transform: scale(1);
+      opacity: 1;
+    }
+
+    /* Adaptive Navbar Scrolled State */
+    .nav-scrolled {
+      background-color: rgba(11, 14, 12, 0.86) !important;
+      border-color: rgba(243, 240, 233, 0.12) !important;
+      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.35);
+    }
+
+    /* Line Mask Reveal for Hero Display Typography (Extra padding prevents descender/italic clipping) */
+    .line-mask {
+      overflow: hidden;
+      display: block;
+      padding-top: 0.05em;
+      padding-bottom: 0.2em;
+      margin-bottom: -0.2em;
+      padding-right: 0.12em;
+    }
+
+    /* Clean Custom Scrollbar for Drawers & Modals */
+    .custom-scroll {
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior: contain;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(176, 141, 102, 0.45) rgba(243, 240, 233, 0.05);
+    }
+    .custom-scroll::-webkit-scrollbar {
+      width: 6px;
+    }
+    .custom-scroll::-webkit-scrollbar-track {
+      background: rgba(243, 240, 233, 0.04);
+    }
+    .custom-scroll::-webkit-scrollbar-thumb {
+      background-color: rgba(176, 141, 102, 0.45);
+      border-radius: 9999px;
+    }
+    .custom-scroll::-webkit-scrollbar-thumb:hover {
+      background-color: rgba(176, 141, 102, 0.75);
+    }
+
+    /* Horizontal Expanding Architectural Accordion (Desktop) */
+    @media (min-width: 1024px) {
+      .specialty-panel {
+        flex: 1 1 0%;
+        transition: flex-grow 0.8s var(--ease-expo), background-color 0.5s ease;
+      }
+      .specialty-panel.is-expanded {
+        flex: 2.85 1 0%;
+      }
+      .specialty-panel .specialty-details {
+        opacity: 0;
+        transform: translateY(18px);
+        transition: opacity 0.45s ease, transform 0.6s var(--ease-expo);
+        pointer-events: none;
+      }
+      .specialty-panel.is-expanded .specialty-details {
+        opacity: 1;
+        transform: translateY(0);
+        transition-delay: 0.18s;
+        pointer-events: auto;
+      }
+      .specialty-panel .specialty-vertical-title {
+        opacity: 0.9;
+        transition: opacity 0.3s ease;
+      }
+      .specialty-panel.is-expanded .specialty-vertical-title {
+        opacity: 0;
+        pointer-events: none;
+      }
+      .specialty-panel img {
+        transition: transform 1.1s var(--ease-expo), filter 0.7s ease;
+      }
+      .specialty-panel.is-expanded img {
+        transform: scale(1.04);
+      }
+    }
+
+    /* Infinite Architectural Marquee Ticker */
+    @keyframes marqueeScroll {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    .marquee-track {
+      display: flex;
+      width: max-content;
+      animation: marqueeScroll 32s linear infinite;
+    }
+    .marquee-track:hover {
+      animation-play-state: paused;
+    }
+
+    /* Minimal Bottom-Border Architectural Studio Inputs */
+    .studio-input {
+      background: transparent;
+      border: 0;
+      border-bottom: 1px solid rgba(11, 14, 12, 0.24);
+      border-radius: 0;
+      transition: border-color 0.35s ease;
+    }
+    .studio-input:focus {
+      outline: none;
+      border-bottom-color: #123B2B;
+    }
+    .studio-input.has-error {
+      border-bottom-color: #B91C1C;
+    }
+
+    /* Drawer & Modal Transitions */
+    .overlay-shell {
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s var(--ease-expo);
+    }
+    .overlay-shell.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .slide-drawer {
+      transform: translateX(100%);
+      transition: transform 0.6s var(--ease-expo);
+    }
+    .overlay-shell.open .slide-drawer {
+      transform: translateX(0);
+    }
+    .scale-modal {
+      transform: translateY(24px) scale(0.97);
+      opacity: 0;
+      transition: transform 0.55s var(--ease-expo), opacity 0.45s ease;
+    }
+    .overlay-shell.open .scale-modal {
+      transform: translateY(0) scale(1);
+      opacity: 1;
+    }
+
+    /* Editorial Selection Color */
+    ::selection {
+      background-color: #B08D66;
+      color: #0B0E0C;
+    }
+  </style>
+</head>
+
+<body class="bg-obsidian text-alabaster selection:bg-bronze selection:text-obsidian">
+
+  <!-- Global Film Grain Overlay -->
+  <div class="film-grain" aria-hidden="true"></div>
+
+  <!-- Toast Feedback Banner (for Click-to-Copy Address) -->
+  <div id="toast-banner" role="status" aria-live="polite" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-[90] px-5 py-3 rounded-full bg-alabaster text-obsidian border border-obsidian/15 shadow-2xl flex items-center gap-2.5 text-xs font-mono tracking-wider uppercase opacity-0 pointer-events-none translate-y-4 transition-all duration-500">
+    <i data-lucide="check" stroke-width="1.75" class="w-4 h-4 text-forest"></i>
+    <span id="toast-text">Copied to clipboard</span>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- 1. FLOATING GLASSMORPHIC HEADER                                       -->
+  <!-- ===================================================================== -->
+  <header class="fixed top-0 left-0 right-0 z-50 px-4 sm:px-6 lg:px-10 pt-4 pointer-events-none">
+    <div id="floating-nav" class="pointer-events-auto max-w-[1440px] mx-auto px-4 sm:px-6 h-[70px] rounded-full bg-obsidian/65 backdrop-blur-xl border border-alabaster/10 flex items-center justify-between gap-4 transition-all duration-500">
+
+      <!-- Official JLR Logo in Crisp Light Architectural Pill for 100% Legibility -->
+      <a href="#hero" class="flex items-center gap-3 group focus:outline-none">
+        <span class="px-3 py-1.5 rounded-full bg-alabaster border border-alabaster/40 flex items-center justify-center shadow-sm transition-transform duration-300 ease-out group-hover:scale-[1.03]">
+          <img
+            src="https://static.wixstatic.com/media/bcc74e_ddc9dbf3dbfc466aa624a750fc4365ac~mv2.png"
+            alt="JLR Contractors Official Logo"
+            onerror="this.onerror=null;this.src='https://placehold.co/160x48/F3F0E9/0B0E0C?text=JLR+CONTRACTORS';"
+            class="h-7 sm:h-8 w-auto object-contain" />
+        </span>
+      </a>
+
+      <!-- Desktop Navigation Links -->
+      <nav aria-label="Primary Navigation" class="hidden xl:flex items-center gap-7">
+        <a href="#hero" class="nav-dot-link active font-sans text-[11px] font-medium uppercase tracking-[0.18em] text-alabaster/90 hover:text-alabaster transition-colors">Home</a>
+        <a href="#story" class="nav-dot-link font-sans text-[11px] font-medium uppercase tracking-[0.18em] text-alabaster/70 hover:text-alabaster transition-colors">Our Story</a>
+        <a href="#specialties" class="nav-dot-link font-sans text-[11px] font-medium uppercase tracking-[0.18em] text-alabaster/70 hover:text-alabaster transition-colors">What We Do</a>
+        <a href="#story" data-open-portfolio class="nav-dot-link font-sans text-[11px] font-medium uppercase tracking-[0.18em] text-alabaster/70 hover:text-alabaster transition-colors">Portfolio</a>
+        <a href="#story" class="nav-dot-link font-sans text-[11px] font-medium uppercase tracking-[0.18em] text-alabaster/70 hover:text-alabaster transition-colors">Our Team</a>
+        <a href="#awards" class="nav-dot-link font-sans text-[11px] font-medium uppercase tracking-[0.18em] text-alabaster/70 hover:text-alabaster transition-colors">Awards</a>
+        <a href="#contact" class="nav-dot-link font-sans text-[11px] font-medium uppercase tracking-[0.18em] text-alabaster/70 hover:text-alabaster transition-colors">Careers</a>
+      </nav>
+
+      <!-- Right Pill CTA & Mobile Trigger -->
+      <div class="flex items-center gap-2.5">
+        <a href="#contact" class="hidden sm:inline-flex items-center gap-2.5 pl-5 pr-4 py-2.5 rounded-full bg-alabaster text-obsidian text-[11px] font-semibold uppercase tracking-[0.16em] hover:bg-bronze hover:text-obsidian hover:-translate-y-0.5 active:scale-[0.98] transition-all duration-300 ease-out group">
+          <span>Contact Us</span>
+          <span class="w-6 h-6 rounded-full bg-obsidian text-alabaster flex items-center justify-center group-hover:bg-obsidian/90 transition-transform duration-300 ease-out group-hover:translate-x-0.5">
+            <i data-lucide="arrow-up-right" stroke-width="1.75" class="w-3.5 h-3.5"></i>
+          </span>
+        </a>
+
+        <button id="mobile-menu-open" type="button" aria-label="Open menu" aria-expanded="false" class="xl:hidden w-11 h-11 rounded-full border border-alabaster/20 bg-obsidian-elevated/80 text-alabaster flex items-center justify-center hover:border-bronze hover:text-bronze active:scale-[0.96] transition-all duration-300 ease-out">
+          <i data-lucide="menu" stroke-width="1.5" class="w-5 h-5"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Full-Screen Editorial Mobile Menu Drawer (Strict Flexbox Containment + Lenis Prevent) -->
+  <div id="mobile-menu-overlay" data-lenis-prevent data-lenis-prevent-wheel data-lenis-prevent-touch class="overlay-shell fixed inset-0 z-[70] bg-obsidian/70 backdrop-blur-md xl:hidden" aria-hidden="true">
+    <div data-lenis-prevent data-lenis-prevent-wheel data-lenis-prevent-touch class="slide-drawer absolute inset-y-0 right-0 w-full sm:max-w-md h-[100dvh] max-h-[100dvh] bg-obsidian border-l border-alabaster/10 flex flex-col overflow-hidden">
+      <!-- Sticky Drawer Header -->
+      <div class="shrink-0 flex items-center justify-between px-6 sm:px-10 py-6 border-b border-alabaster/10">
+        <span class="px-3 py-1.5 rounded-full bg-alabaster inline-flex items-center">
+          <img
+            src="https://static.wixstatic.com/media/bcc74e_ddc9dbf3dbfc466aa624a750fc4365ac~mv2.png"
+            alt="JLR Contractors"
+            onerror="this.onerror=null;this.src='https://placehold.co/150x42/F3F0E9/0B0E0C?text=JLR';"
+            class="h-7 w-auto object-contain" />
+        </span>
+        <button id="mobile-menu-close" type="button" aria-label="Close menu" class="w-11 h-11 rounded-full border border-alabaster/20 text-alabaster flex items-center justify-center hover:border-bronze hover:text-bronze active:scale-[0.96] transition-all duration-300 ease-out">
+          <i data-lucide="x" stroke-width="1.5" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <!-- Scrollable Drawer Nav Body -->
+      <nav data-lenis-prevent data-lenis-prevent-wheel data-lenis-prevent-touch class="flex-1 min-h-0 overflow-y-auto custom-scroll flex flex-col gap-4 px-6 sm:px-10 py-8">
+        <a href="#hero" class="mobile-link font-serif text-4xl leading-[1.18] text-alabaster hover:text-bronze hover:italic transition-all">Home</a>
+        <a href="#story" class="mobile-link font-serif text-4xl leading-[1.18] text-alabaster hover:text-bronze hover:italic transition-all">Our Story</a>
+        <a href="#specialties" class="mobile-link font-serif text-4xl leading-[1.18] text-alabaster hover:text-bronze hover:italic transition-all">What We Do</a>
+        <a href="#story" data-open-portfolio class="mobile-link font-serif text-4xl leading-[1.18] text-alabaster hover:text-bronze hover:italic transition-all">Portfolio</a>
+        <a href="#story" class="mobile-link font-serif text-4xl leading-[1.18] text-alabaster hover:text-bronze hover:italic transition-all">Our Team</a>
+        <a href="#awards" class="mobile-link font-serif text-4xl leading-[1.18] text-alabaster hover:text-bronze hover:italic transition-all">Awards</a>
+        <a href="#contact" class="mobile-link font-serif text-4xl leading-[1.18] text-alabaster hover:text-bronze hover:italic transition-all">Careers</a>
+      </nav>
+
+      <!-- Fixed Drawer Footer -->
+      <div class="shrink-0 px-6 sm:px-10 py-6 border-t border-alabaster/10 space-y-4 bg-obsidian">
+        <div class="font-mono text-[11px] uppercase tracking-[0.18em] text-alabaster/60 space-y-1">
+          <p>790 S 1350 East, Provo, UT 84606</p>
+          <p><a href="tel:+18013736230" class="text-alabaster hover:text-bronze transition-colors">(801) 373-6230</a></p>
+        </div>
+        <a href="#contact" class="mobile-link w-full inline-flex items-center justify-center gap-2.5 py-3.5 px-6 rounded-full bg-alabaster text-obsidian text-xs font-semibold uppercase tracking-[0.18em] hover:bg-bronze hover:-translate-y-0.5 active:scale-[0.98] transition-all duration-300 ease-out group">
+          <span>Contact Us</span>
+          <i data-lucide="arrow-up-right" stroke-width="1.75" class="w-4 h-4 transition-transform duration-300 group-hover:translate-x-0.5"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- 2. FULL-VIEWPORT CINEMATIC ARCHITECTURAL HERO (DEEP OBSIDIAN #0B0E0C) -->
+  <!-- ===================================================================== -->
+  <main>
+    <section id="hero" class="relative min-h-screen bg-obsidian blueprint-grid-dark pt-28 sm:pt-32 pb-8 flex flex-col justify-between overflow-hidden border-b border-alabaster/10">
+
+      <!-- Ambient Architectural Glow -->
+      <div class="pointer-events-none absolute -top-40 -left-40 w-[520px] h-[520px] rounded-full bg-forest/25 blur-[130px]" aria-hidden="true"></div>
+      <div class="pointer-events-none absolute bottom-0 right-0 w-[440px] h-[440px] rounded-full bg-bronze/10 blur-[130px]" aria-hidden="true"></div>
+
+      <!-- Main Asymmetric Hero Composition -->
+      <div class="relative z-10 max-w-[1440px] w-full mx-auto px-5 sm:px-8 lg:px-12 my-auto py-8 lg:py-12">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+
+          <!-- Left Column: Monumental Display Typography & Architectural Subcopy -->
+          <div class="lg:col-span-7 flex flex-col justify-between">
+            <!-- Mono Metadata Eyebrow -->
+            <div class="hero-stagger flex flex-wrap items-center gap-3 mb-7">
+              <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-alabaster/15 bg-obsidian-elevated/80 font-mono text-[10px] uppercase tracking-[0.22em] text-bronze">
+                <span class="w-1.5 h-1.5 rounded-full bg-bronze"></span>
+                EST. 1912 &bull; UTAH VALLEY
+              </span>
+              <span class="font-mono text-[10px] uppercase tracking-[0.22em] text-alabaster/45">
+                40.2146&deg; N, 111.6494&deg; W
+              </span>
+            </div>
+
+            <!-- Monumental Serif Headline -->
+            <h1 class="font-serif font-normal text-[56px] sm:text-[80px] lg:text-[94px] xl:text-[110px] leading-[1.15] tracking-[-0.025em] text-alabaster mb-8">
+              <span class="line-mask"><span class="hero-line block">One Company,</span></span>
+              <span class="line-mask"><span class="hero-line block italic text-bronze">Four Specialties</span></span>
+            </h1>
+
+            <!-- Subcopy + Primary Actions -->
+            <div class="hero-stagger max-w-xl">
+              <p class="font-sans text-sm sm:text-base leading-[1.8] text-alabaster/70 mb-9">
+                From custom luxury homes to community spaces, we bring precision, craft, and commitment to every project we build.
+              </p>
+
+              <div class="flex flex-wrap items-center gap-4">
+                <a href="#specialties" class="inline-flex items-center gap-3 px-7 py-4 rounded-full bg-forest text-alabaster font-sans text-xs font-semibold uppercase tracking-[0.18em] border border-alabaster/10 hover:bg-bronze hover:text-obsidian hover:-translate-y-0.5 active:scale-[0.98] transition-all duration-300 ease-out group">
+                  <span>Explore Disciplines</span>
+                  <i data-lucide="arrow-down-right" stroke-width="1.5" class="w-4 h-4 transition-transform duration-300 ease-out group-hover:translate-x-1"></i>
+                </a>
+
+                <button type="button" data-open-portfolio class="inline-flex items-center gap-2.5 px-6 py-4 rounded-full border border-alabaster/20 text-alabaster font-sans text-xs font-medium uppercase tracking-[0.18em] hover:border-bronze hover:text-bronze hover:-translate-y-0.5 active:scale-[0.98] transition-all duration-300 ease-out">
+                  <i data-lucide="layers" stroke-width="1.5" class="w-4 h-4"></i>
+                  <span>Selected Works</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Column: Cinematic Framed Architectural Showcase + Heritage Spec Card -->
+          <div class="lg:col-span-5 hero-frame-wrap">
+            <div class="relative rounded-2xl overflow-hidden border border-alabaster/15 bg-obsidian-elevated aspect-[4/5] sm:aspect-[4/4.6] shadow-2xl">
+              <img
+                id="hero-parallax-img"
+                src="https://static.wixstatic.com/media/bcc74e_f9722c7247f849ce8135025271365a7c~mv2.jpg/v1/crop/x_964,y_94,w_2756,h_3854/fill/w_779,h_1094,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/J%20Lyne%20Roberts-1.jpg"
+                alt="Architectural custom home built by JLR Contractors against mountain backdrop"
+                loading="eager"
+                onerror="this.onerror=null;this.src='https://placehold.co/800x1000/123B2B/F3F0E9?text=JLR+Architecture';"
+                class="w-full h-[114%] -top-[7%] relative object-cover will-change-transform" />
+
+              <!-- Subtle Vignette Gradient -->
+              <div class="absolute inset-0 bg-gradient-to-t from-obsidian/85 via-obsidian/20 to-transparent"></div>
+
+              <!-- Top Right Blueprint Index Tag -->
+              <div class="absolute top-4 right-4 px-3 py-1.5 rounded-full bg-obsidian/70 backdrop-blur-md border border-alabaster/15 font-mono text-[10px] uppercase tracking-[0.2em] text-alabaster/80">
+                FIG. 01 &mdash; RESIDENCE
+              </div>
+
+              <!-- Glassmorphic Heritage Spec Card -->
+              <div class="absolute bottom-4 left-4 right-4 p-5 rounded-xl bg-obsidian/70 backdrop-blur-xl border border-alabaster/15 flex items-center justify-between gap-4">
+                <div>
+                  <p class="font-mono text-[10px] uppercase tracking-[0.22em] text-bronze mb-1">
+                    OVER 100 YEARS OF EXPERIENCE &bull; EST. 1912
+                  </p>
+                  <p class="font-serif italic text-xl sm:text-2xl leading-[1.2] text-alabaster">
+                    Architectural Craftsmanship Built for Generations.
+                  </p>
+                </div>
+                <span class="w-10 h-10 rounded-full border border-bronze/40 bg-bronze/15 text-bronze flex items-center justify-center shrink-0">
+                  <i data-lucide="compass" stroke-width="1.5" class="w-4 h-4"></i>
+                </span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Bottom Hero Architectural Index Bar -->
+      <div class="relative z-10 max-w-[1440px] w-full mx-auto px-5 sm:px-8 lg:px-12 pt-6 border-t border-alabaster/10">
+        <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+          <!-- Quick Anchor Pills to the 4 Specialties -->
+          <div class="flex flex-wrap items-center gap-2">
+            <a href="#specialties" data-jump-pillar="0" class="px-3.5 py-1.5 rounded-full border border-alabaster/15 bg-obsidian-elevated/70 font-mono text-[10px] uppercase tracking-[0.16em] text-alabaster/80 hover:border-bronze hover:text-bronze hover:-translate-y-0.5 active:scale-[0.98] transition-all duration-300 ease-out">01 Residential</a>
+            <a href="#specialties" data-jump-pillar="1" class="px-3.5 py-1.5 rounded-full border border-alabaster/15 bg-obsidian-elevated/70 font-mono text-[10px] uppercase tracking-[0.16em] text-alabaster/80 hover:border-bronze hover:text-bronze hover:-translate-y-0.5 active:scale-[0.98] transition-all duration-300 ease-out">02 Commercial</a>
+            <a href="#specialties" data-jump-pillar="2" class="px-3.5 py-1.5 rounded-full border border-alabaster/15 bg-obsidian-elevated/70 font-mono text-[10px] uppercase tracking-[0.16em] text-alabaster/80 hover:border-bronze hover:text-bronze hover:-translate-y-0.5 active:scale-[0.98] transition-all duration-300 ease-out">03 Public Works</a>
+            <a href="#specialties" data-jump-pillar="3" class="px-3.5 py-1.5 rounded-full border border-alabaster/15 bg-obsidian-elevated/70 font-mono text-[10px] uppercase tracking-[0.16em] text-alabaster/80 hover:border-bronze hover:text-bronze hover:-translate-y-0.5 active:scale-[0.98] transition-all duration-300 ease-out">04 Woodworking</a>
+          </div>
+
+          <!-- Scroll Indicator -->
+          <a href="#specialties" class="inline-flex items-center gap-2.5 font-mono text-[10px] uppercase tracking-[0.22em] text-alabaster/60 hover:text-bronze transition-colors">
+            <span>Scroll to Discover</span>
+            <i data-lucide="arrow-down" stroke-width="1.5" class="w-3.5 h-3.5 animate-bounce"></i>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- 3. INTERACTIVE EXPANDING SHOWCASE — "THE FOUR SPECIALTIES"            -->
+    <!-- ===================================================================== -->
+    <section id="specialties" class="relative bg-alabaster text-obsidian blueprint-grid-light py-20 sm:py-28 lg:py-32 border-b border-obsidian/10">
+      <div class="max-w-[1440px] mx-auto px-5 sm:px-8 lg:px-12">
+
+        <!-- Section Header -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-end mb-12 lg:mb-16 gsap-reveal">
+          <div class="lg:col-span-7">
+            <p class="font-mono text-[11px] uppercase tracking-[0.24em] text-forest mb-4">
+              [ 01 &mdash; 04 ] &nbsp; CORE DISCIPLINES
+            </p>
+            <h2 class="font-serif font-normal text-5xl sm:text-6xl lg:text-[74px] leading-[1.15] tracking-[-0.02em] text-obsidian pb-1">
+              The Four <span class="italic text-forest">Specialties</span>
+            </h2>
+          </div>
+          <div class="lg:col-span-5 lg:text-right">
+            <p class="font-sans text-sm sm:text-[15px] leading-relaxed text-obsidian/70 max-w-md lg:ml-auto">
+              Hover or select any architectural discipline below to expand its capabilities and inspect our full specification dossier.
+            </p>
+          </div>
+        </div>
+
+        <!-- Horizontal Expanding Architectural Accordion (Desktop) / Editorial Stack (Mobile) -->
+        <div id="specialty-accordion" class="flex flex-col lg:flex-row gap-4 lg:h-[620px]">
+
+          <!-- Pillar 01: Residential -->
+          <article
+            data-panel-index="0"
+            data-pillar-key="residential"
+            class="specialty-panel is-expanded relative rounded-2xl overflow-hidden border border-obsidian/15 bg-obsidian min-h-[450px] lg:min-h-0 flex flex-col justify-between group cursor-pointer">
+            <img
+              src="https://static.wixstatic.com/media/bcc74e_e7bedcbef85644e180836b15e428b42c~mv2.jpg/v1/crop/x_27,y_268,w_1120,h_1825/fill/w_348,h_566,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/09%20J%20Lyne%20Roberts%20and%20Sons-1_JPG.jpg"
+              alt="Custom residential architecture by JLR Contractors"
+              loading="lazy"
+              onerror="this.onerror=null;this.src='https://placehold.co/600x900/123B2B/F3F0E9?text=Residential';"
+              class="absolute inset-0 w-full h-full object-cover" />
+            <div class="absolute inset-0 bg-gradient-to-t from-obsidian/92 via-obsidian/45 to-obsidian/20"></div>
+
+            <!-- Top Bar -->
+            <div class="relative z-10 p-6 flex items-center justify-between shrink-0">
+              <span class="px-3 py-1 rounded-full bg-obsidian/65 backdrop-blur-md border border-alabaster/20 font-mono text-[10px] uppercase tracking-[0.2em] text-bronze">
+                Pillar 01
+              </span>
+              <span class="w-9 h-9 rounded-full bg-alabaster/10 backdrop-blur-md border border-alabaster/20 text-alabaster flex items-center justify-center">
+                <i data-lucide="home" stroke-width="1.5" class="w-4 h-4"></i>
+              </span>
+            </div>
+
+            <!-- Collapsed Vertical Label (Desktop Only) -->
+            <div class="specialty-vertical-title hidden lg:flex absolute inset-x-0 bottom-10 py-2 justify-center pointer-events-none">
+              <span class="font-serif italic text-3xl leading-[1.2] text-alabaster tracking-wide [writing-mode:vertical-rl] rotate-180 px-1">
+                Residential
+              </span>
+            </div>
+
+            <!-- Expanded Editorial Details -->
+            <div class="specialty-details relative z-10 px-6 sm:px-8 pt-6 pb-8 sm:pb-10 mt-auto">
+              <h3 class="font-serif italic text-4xl sm:text-5xl leading-[1.18] text-alabaster mb-3 pb-0.5">Residential</h3>
+              <p class="font-sans text-sm leading-relaxed text-alabaster/80 max-w-md mb-6">
+                Custom homes, remodels, and timeless living spaces built to last.
+              </p>
+              <div class="flex flex-wrap items-center gap-3">
+                <button
+                  type="button"
+                  data-open-drawer="residential"
+                  class="inline-flex items-center gap-2.5 px-5 py-3 rounded-full bg-alabaster text-obsidian font-sans text-[11px] font-semibold uppercase tracking-[0.16em] hover:bg-bronze hover:-translate-y-0.5 active:scale-[0.98] transition-all duration-300 ease-out group/btn">
+                  <span>Explore Discipline</span>
+                  <i data-lucide="arrow-up-right" stroke-width="1.75" class="w-3.5 h-3.5 transition-transform duration-300 group-hover/btn:translate-x-0.5"></i>
+                </button>
+              </div>
+            </div>
+          </article>
+
+          <!-- Pillar 02: Commercial -->
+          <article
+            data-panel-index="1"
+            data-pillar-key="commercial"
+            class="specialty-panel relative rounded-2xl overflow-hidden border border-obsidian/15 bg-obsidian min-h-[450px] lg:min-h-0 flex flex-col justify-between group cursor-pointer">
+            <img
+              src="https://static.wixstatic.com/media/bcc74e_0e395fe755e048c487eec6ccd3e66ef1~mv2.webp/v1/fill/w_345,h_565,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/ai-generated-IMAGE.webp"
+              alt="Commercial building construction by JLR Contractors"
+              loading="lazy"
+              onerror="this.onerror=null;this.src='https://placehold.co/600x900/123B2B/F3F0E9?text=Commercial';"
+              class="absolute inset-0 w-full h-full object-cover" />
+            <div class="absolute inset-0 bg-gradient-to-t from-obsidian/92 via-obsidian/45 to-obsidian/20"></div>
+
+            <div class="relative z-10 p-6 flex items-center justify-between shrink-0">
+              <span class="px-3 py-1 rounded-full bg-obsidian/65 backdrop-blur-md border border-alabaster/20 font-mono text-[10px] uppercase tracking-[0.2em] text-bronze">
+                Pillar 02
+              </span>
+              <span class="w-9 h-9 rounded-full bg-alabaster/10 backdrop-blur-md border border-alabaster/20 text-alabaster flex items-center justify-center">
+                <i data-lucide="building-2" stroke-width="1.5" class="w-4 h-4"></i>
+              </span>
+            </div>
+
+            <div class="specialty-vertical-title hidden lg:flex absolute inset-x-0 bottom-10 py-2 justify-center pointer-events-none">
+              <span class="font-serif italic text-3xl leading-[1.2] text-alabaster tracking-wide [writing-mode:vertical-rl] rotate-180 px-1">
+                Commercial
+              </span>
+            </div>
+
+            <div class="specialty-details relative z-10 px-6 sm:px-8 pt-6 pb-8 sm:pb-10 mt-auto">
+              <h3 class="font-serif italic text-4xl sm:text-5xl leading-[1.18] text-alabaster mb-3 pb-0.5">Commercial</h3>
+              <p class="font-sans text-sm leading-relaxed text-alabaster/80 max-w-md mb-6">
+                Ground-up builds, tenant improvements, and tailored business spaces.
+              </p>
+              <div class="flex flex-wrap items-center gap-3">
+                <button
+                  type="button"
+                  data-open-drawer="commercial"
+                  class="inline-flex items-center gap-2.5 px-5 py-3 rounded-full bg-alabaster text-obsidian font-sans text-[11px] font-semibold uppercase tracking-[0.16em] hover:bg-bronze hover:-translate-y-0.5 active:scale-[0.98] transition-all duration-300 ease-out group/btn">
+                  <span>Explore Discipline</span>
+                  <i data-lucide="arrow-up-right" stroke-width="1.75" class="w-3.5 h-3.5 transition-transform duration-300 group-hover/btn:translate-x-0.5"></i>
+                </button>
+              </div>
+            </div>
+          </article>
+
+          <!-- Pillar 03: Public Works -->
+          <article
+            data-panel-index="2"
+            data-pillar-key="public-works"
+            class="specialty-panel relative rounded-2xl overflow-hidden border border-obsidian/15 bg-obsidian min-h-[450px] lg:min-h-0 flex flex-col justify-between group cursor-pointer">
+            <img
+              src="https://static.wixstatic.com/media/bcc74e_9972d6583d844776b8c357b0372e57ac~mv2.jpg/v1/fill/w_344,h_565,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/tank-arial-5_JPG.jpg"
+              alt="Public works infrastructure aerial view by JLR Contractors"
+              loading="lazy"
+              onerror="this.onerror=null;this.src='https://placehold.co/600x900/123B2B/F3F0E9?text=Public+Works';"
+              class="absolute inset-0 w-full h-full object-cover" />
+            <div class="absolute inset-0 bg-gradient-to-t from-obsidian/92 via-obsidian/45 to-obsidian/20"></div>
+
+            <div class="relative z-10 p-6 flex items-center justify-between shrink-0">
+              <span class="px-3 py-1 rounded-full bg-obsidian/65 backdrop-blur-md border border-alabaster/20 font-mono text-[10px] uppercase tracking-[0.2em] text-bronze">
+                Pillar 03
+              </span>
+              <span class="w-9 h-9 rounded-full bg-alabaster/10 backdrop-blur-md border border-alabaster/20 text-alabaster flex items-center justify-center">
+                <i data-lucide="landmark" stroke-width="1.5" class="w-4 h-4"></i>
+              </span>
+            </div>
+
+            <div class="specialty-vertical-title hidden lg:flex absolute inset-x-0 bottom-10 py-2 justify-center pointer-events-none">
+              <span class="font-serif italic text-3xl leading-[1.2] text-alabaster tracking-wide [writing-mode:vertical-rl] rotate-180 px-1">
+                Public Works
+              </span>
+            </div>
+
+            <div class="specialty-details relative z-10 px-6 sm:px-8 pt-6 pb-8 sm:pb-10 mt-auto">
+              <h3 class="font-serif italic text-4xl sm:text-5xl leading-[1.18] text-alabaster mb-3 pb-0.5">Public Works</h3>
+              <p class="font-sans text-sm leading-relaxed text-alabaster/80 max-w-md mb-6">
+                Municipal, water, and infrastructure projects serving our communities.
+              </p>
+              <div class="flex flex-wrap items-center gap-3">
+                <button
+                  type="button"
+                  data-open-drawer="public-works"
+                  class="inline-flex items-center gap-2.5 px-5 py-3 rounded-full bg-alabaster text-obsidian font-sans text-[11px] font-semibold uppercase tracking-[0.16em] hover:bg-bronze hover:-translate-y-0.5 active:scale-[0.98] transition-all duration-300 ease-out group/btn">
+                  <span>Explore Discipline</span>
+                  <i data-lucide="arrow-up-right" stroke-width="1.75" class="w-3.5 h-3.5 transition-transform duration-300 group-hover/btn:translate-x-0.5"></i>
+                </button>
+              </div>
+            </div>
+          </article>
+
+          <!-- Pillar 04: Woodworking -->
+          <article
+            data-panel-index="3"
+            data-pillar-key="woodworking"
+            class="specialty-panel relative rounded-2xl overflow-hidden border border-obsidian/15 bg-obsidian min-h-[450px] lg:min-h-0 flex flex-col justify-between group cursor-pointer">
+            <img
+              src="https://static.wixstatic.com/media/bcc74e_2b46ae3932c9457da925c439e159ca7c~mv2.webp/v1/fill/w_345,h_566,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/ai-generated-IMAGE.webp"
+              alt="Custom architectural millwork and cabinetry by JLR Woodwork"
+              loading="lazy"
+              onerror="this.onerror=null;this.src='https://placehold.co/600x900/123B2B/F3F0E9?text=Woodworking';"
+              class="absolute inset-0 w-full h-full object-cover" />
+            <div class="absolute inset-0 bg-gradient-to-t from-obsidian/92 via-obsidian/45 to-obsidian/20"></div>
+
+            <div class="relative z-10 p-6 flex items-center justify-between shrink-0">
+              <span class="px-3 py-1 rounded-full bg-obsidian/65 backdrop-blur-md border border-alabaster/20 font-mono text-[10px] uppercase tracking-[0.2em] text-bronze">
+                Pillar 04
+              </span>
+              <span class="w-9 h-9 rounded-full bg-alabaster/10 backdrop-blur-md border border-alabaster/20 text-alabaster flex items-center justify-center">
+                <i data-lucide="hammer" stroke-width="1.5" class="w-4 h-4"></i>
+              </span>
+            </div>
+
+            <div class="specialty-vertical-title hidden lg:flex absolute inset-x-0 bottom-10 py-2 justify-center pointer-events-none">
+              <span class="font-serif italic text-3xl leading-[1.2] text-alabaster tracking-wide [writing-mode:vertical-rl] rotate-180 px-1">
+                Woodworking
+              </span>
+            </div>
+
+            <div class="specialty-details relative z-10 px-6 sm:px-8 pt-6 pb-8 sm:pb-10 mt-auto">
+              <h3 class="font-serif italic text-4xl sm:text-5xl leading-[1.18] text-alabaster mb-3 pb-0.5">Woodworking</h3>
+              <p class="font-sans text-sm leading-relaxed text-alabaster/80 max-w-md mb-6">
+                Custom cabinetry, millwork, and architectural woodwork crafted in-house.
+              </p>
+              <div class="flex flex-wrap items-center gap-3">
+                <button
+                  type="button"
+                  data-open-drawer="woodworking"
+                  class="inline-flex items-center gap-2.5 px-5 py-3 rounded-full bg-alabaster text-obsidian font-sans text-[11px] font-semibold uppercase tracking-[0.16em] hover:bg-bronze hover:-translate-y-0.5 active:scale-[0.98] transition-all duration-300 ease-out group/btn">
+                  <span>Explore Discipline</span>
+                  <i data-lucide="arrow-up-right" stroke-width="1.75" class="w-3.5 h-3.5 transition-transform duration-300 group-hover/btn:translate-x-0.5"></i>
+                </button>
+              </div>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- 4. ASYMMETRIC EDITORIAL STORY — "YOUR DREAM HOME, EXPERTLY BUILT."    -->
+    <!-- ===================================================================== -->
+    <section id="story" class="relative bg-obsidian text-alabaster py-24 sm:py-32 lg:py-36 border-b border-alabaster/10">
+      <div class="max-w-[1440px] mx-auto px-5 sm:px-8 lg:px-12">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+
+          <!-- Sticky Editorial Left Column -->
+          <div class="lg:col-span-5 lg:sticky lg:top-32 gsap-reveal">
+            <div class="inline-flex items-center gap-3 mb-7">
+              <span class="w-10 h-px bg-bronze" aria-hidden="true"></span>
+              <span class="font-mono text-[11px] uppercase tracking-[0.26em] text-bronze">EST. 1912</span>
+            </div>
+
+            <h2 class="font-serif font-normal text-5xl sm:text-6xl xl:text-[74px] leading-[1.15] tracking-[-0.02em] text-alabaster mb-8">
+              <span class="block">Your Dream Home,</span>
+              <span class="block italic text-bronze">Expertly Built.</span>
+            </h2>
+
+            <blockquote class="font-serif italic text-2xl sm:text-3xl leading-[1.25] text-sage pl-5 border-l border-bronze/60 mb-7">
+              "Our Commitment Is Excellence."
+            </blockquote>
+
+            <p class="font-sans text-sm sm:text-base leading-[1.85] text-alabaster/70 mb-10">
+              For over a century, JLR Contractors has been crafting quality homes that stand the test of time. Our team combines traditional craftsmanship with modern innovation to bring your vision to life.
+            </p>
+
+            <button
+              type="button"
+              data-open-portfolio
+              class="inline-flex items-center gap-3 px-8 py-4 rounded-full bg-bronze text-obsidian font-sans text-xs font-semibold uppercase tracking-[0.18em] hover:bg-alabaster hover:-translate-y-0.5 active:scale-[0.98] transition-all duration-300 ease-out group">
+              <span>View Our Work</span>
+              <i data-lucide="arrow-up-right" stroke-width="1.75" class="w-4 h-4 transition-transform duration-300 ease-out group-hover:translate-x-1"></i>
+            </button>
+          </div>
+
+          <!-- Right Column: Architectural Parallax Frame + Neo-Bento Stat Strip -->
+          <div class="lg:col-span-7 space-y-6">
+            <!-- Large Parallax Frame -->
+            <div class="gsap-reveal relative rounded-2xl overflow-hidden border border-alabaster/12 bg-obsidian-elevated aspect-[4/4.6] sm:aspect-[16/13]">
+              <img
+                id="story-parallax-img"
+                src="https://static.wixstatic.com/media/bcc74e_f9722c7247f849ce8135025271365a7c~mv2.jpg/v1/crop/x_964,y_94,w_2756,h_3854/fill/w_779,h_1094,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/J%20Lyne%20Roberts-1.jpg"
+                alt="Luxury custom residence by JLR Contractors"
+                loading="lazy"
+                onerror="this.onerror=null;this.src='https://placehold.co/900x800/123B2B/F3F0E9?text=Dream+Home';"
+                class="w-full h-[116%] -top-[8%] relative object-cover will-change-transform" />
+              <div class="absolute inset-0 bg-gradient-to-t from-obsidian/70 via-transparent to-transparent"></div>
+              <div class="absolute bottom-5 left-5 right-5 flex items-center justify-between gap-4">
+                <span class="font-mono text-[10px] uppercase tracking-[0.2em] text-alabaster/80 bg-obsidian/65 backdrop-blur-md border border-alabaster/15 px-3.5 py-1.5 rounded-full">
+                  CUSTOM RESIDENTIAL &bull; UTAH VALLEY
+                </span>
+                <button type="button" data-open-portfolio class="w-11 h-11 rounded-full bg-alabaster text-obsidian flex items-center justify-center hover:bg-bronze hover:-translate-y-0.5 active:scale-[0.96] transition-all duration-300 ease-out" aria-label="Open portfolio gallery">
+                  <i data-lucide="maximize-2" stroke-width="1.5" class="w-4 h-4"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- Neo-Bento Stat Strip -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 gsap-reveal">
+              <div class="p-6 rounded-2xl bg-obsidian-card border border-alabaster/10 flex flex-col justify-between gap-5">
+                <div class="flex items-center justify-between">
+                  <span class="font-mono text-[10px] uppercase tracking-[0.2em] text-alabaster/50">01 / LEGACY</span>
+                  <i data-lucide="clock" stroke-width="1.5" class="w-4 h-4 text-bronze"></i>
+                </div>
+                <div>
+                  <p class="font-serif text-4xl sm:text-5xl text-alabaster">110+</p>
+                  <p class="font-sans text-xs text-alabaster/65 mt-1">Years Heritage</p>
+                </div>
+              </div>
+
+              <div class="p-6 rounded-2xl bg-obsidian-card border border-alabaster/10 flex flex-col justify-between gap-5">
+                <div class="flex items-center justify-between">
+                  <span class="font-mono text-[10px] uppercase tracking-[0.2em] text-alabaster/50">02 / SCOPE</span>
+                  <i data-lucide="grid" stroke-width="1.5" class="w-4 h-4 text-bronze"></i>
+                </div>
+                <div>
+                  <p class="font-serif text-4xl sm:text-5xl text-alabaster">4</p>
+                  <p class="font-sans text-xs text-alabaster/65 mt-1">Core Disciplines</p>
+                </div>
+              </div>
+
+              <div class="p-6 rounded-2xl bg-forest border border-alabaster/15 flex flex-col justify-between gap-5">
+                <div class="flex items-center justify-between">
+                  <span class="font-mono text-[10px] uppercase tracking-[0.2em] text-alabaster/70">03 / STANDARD</span>
+                  <i data-lucide="shield-check" stroke-width="1.5" class="w-4 h-4 text-bronze-light"></i>
+                </div>
+                <div>
+                  <p class="font-serif text-4xl sm:text-5xl text-alabaster">100%</p>
+                  <p class="font-sans text-xs text-alabaster/80 mt-1">Craftsmanship Focus</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- 5. KINETIC RECOGNITION & AWARDS SHOWCASE (SAGE / OBSIDIAN NEO-BENTO)  -->
+    <!-- ===================================================================== -->
+    <section id="awards" class="relative bg-sage text-obsidian border-b border-obsidian/15 overflow-hidden">
+
+      <!-- Infinite Architectural Marquee Ticker -->
+      <div class="bg-obsidian text-alabaster py-4 border-b border-alabaster/10 overflow-hidden">
+        <div class="marquee-track font-mono text-[11px] uppercase tracking-[0.28em]">
+          <span class="mx-6">RECOGNITION &amp; AWARDS</span><span class="text-bronze">&bull;</span>
+          <span class="mx-6">EST. 1912</span><span class="text-bronze">&bull;</span>
+          <span class="mx-6">UTAH VALLEY</span><span class="text-bronze">&bull;</span>
+          <span class="mx-6">CRAFT &amp; PRECISION</span><span class="text-bronze">&bull;</span>
+          <span class="mx-6">RECOGNITION &amp; AWARDS</span><span class="text-bronze">&bull;</span>
+          <span class="mx-6">EST. 1912</span><span class="text-bronze">&bull;</span>
+          <span class="mx-6">UTAH VALLEY</span><span class="text-bronze">&bull;</span>
+          <span class="mx-6">CRAFT &amp; PRECISION</span><span class="text-bronze">&bull;</span>
+          <span class="mx-6">RECOGNITION &amp; AWARDS</span><span class="text-bronze">&bull;</span>
+          <span class="mx-6">EST. 1912</span><span class="text-bronze">&bull;</span>
+          <span class="mx-6">UTAH VALLEY</span><span class="text-bronze">&bull;</span>
+          <span class="mx-6">CRAFT &amp; PRECISION</span><span class="text-bronze">&bull;</span>
+        </div>
+      </div>
+
+      <!-- High-Contrast 3-Column Bento Grid -->
+      <div class="max-w-[1440px] mx-auto px-5 sm:px-8 lg:px-12 py-20 sm:py-24">
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 gsap-reveal">
+          <div>
+            <p class="font-mono text-[11px] uppercase tracking-[0.24em] text-forest mb-3">ACCOLADES &amp; HONORS</p>
+            <h2 class="font-serif text-4xl sm:text-5xl lg:text-6xl leading-[1.15] text-obsidian pb-1">
+              Recognized for <span class="italic text-forest">Enduring Excellence</span>
+            </h2>
+          </div>
+
+          <button
+            type="button"
+            data-open-awards
+            class="self-start md:self-auto inline-flex items-center gap-3 px-6 py-3.5 rounded-full bg-obsidian text-alabaster font-sans text-xs font-semibold uppercase tracking-[0.16em] hover:bg-forest hover:-translate-y-0.5 active:scale-[0.98] transition-all duration-300 ease-out group">
+            <span>View Awards</span>
+            <i data-lucide="arrow-up-right" stroke-width="1.75" class="w-4 h-4 transition-transform duration-300 ease-out group-hover:translate-x-1"></i>
+          </button>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5 gsap-reveal">
+          <!-- Award 01 -->
+          <div class="p-8 rounded-2xl bg-obsidian text-alabaster border border-obsidian/15 flex flex-col justify-between min-h-[240px] hover:-translate-y-1 transition-transform duration-500">
+            <div class="flex items-center justify-between">
+              <span class="font-mono text-[10px] uppercase tracking-[0.22em] text-bronze">HONOR 01</span>
+              <span class="w-11 h-11 rounded-full bg-forest text-bronze-light flex items-center justify-center">
+                <i data-lucide="trophy" stroke-width="1.5" class="w-5 h-5"></i>
+              </span>
+            </div>
+            <div class="mt-8">
+              <h3 class="font-serif text-3xl leading-snug text-alabaster mb-2">
+                SC Master Builder Award Winner
+              </h3>
+              <p class="font-sans text-xs text-alabaster/60 leading-relaxed">
+                Awarded for structural integrity, precision execution, and architectural leadership.
+              </p>
+            </div>
+          </div>
+
+          <!-- Award 02 -->
+          <div class="p-8 rounded-2xl bg-alabaster text-obsidian border border-obsidian/15 flex flex-col justify-between min-h-[240px] hover:-translate-y-1 transition-transform duration-500">
+            <div class="flex items-center justify-between">
+              <span class="font-mono text-[10px] uppercase tracking-[0.22em] text-forest">HONOR 02</span>
+              <span class="w-11 h-11 rounded-full bg-obsidian text-bronze flex items-center justify-center">
+                <i data-lucide="home" stroke-width="1.5" class="w-5 h-5"></i>
+              </span>
+            </div>
+            <div class="mt-8">
+              <h3 class="font-serif text-3xl leading-snug text-obsidian mb-2">
+                Utah Valley Builder of the Year
+              </h3>
+              <p class="font-sans text-xs text-obsidian/65 leading-relaxed">
+                Honoring over a century of generational craftsmanship and community trust.
+              </p>
+            </div>
+          </div>
+
+          <!-- Award 03 -->
+          <div class="p-8 rounded-2xl bg-forest text-alabaster border border-obsidian/15 flex flex-col justify-between min-h-[240px] hover:-translate-y-1 transition-transform duration-500">
+            <div class="flex items-center justify-between">
+              <span class="font-mono text-[10px] uppercase tracking-[0.22em] text-bronze-light">HONOR 03</span>
+              <span class="w-11 h-11 rounded-full bg-alabaster/15 text-alabaster flex items-center justify-center">
+                <i data-lucide="award" stroke-width="1.5" class="w-5 h-5"></i>
+              </span>
+            </div>
+            <div class="mt-8">
+              <h3 class="font-serif text-3xl leading-snug text-alabaster mb-2">
+                UVHBA Parade of Homes Best of Show
+              </h3>
+              <p class="font-sans text-xs text-alabaster/75 leading-relaxed">
+                Top distinction for architectural finish, bespoke millwork, and residential livability.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- 6. STUDIO INQUIRY — "CONTACT JLR CONTRACTORS" (ALABASTER #F3F0E9)     -->
+    <!-- ===================================================================== -->
+    <section id="contact" class="relative bg-alabaster text-obsidian blueprint-grid-light py-24 sm:py-32 border-b border-obsidian/10">
+      <div class="max-w-[1440px] mx-auto px-5 sm:px-8 lg:px-12">
+
+        <!-- Section Header -->
+        <div class="max-w-3xl mb-14 lg:mb-20 gsap-reveal">
+          <p class="font-mono text-[11px] uppercase tracking-[0.24em] text-forest mb-4">STUDIO INQUIRY</p>
+          <h2 class="font-serif font-normal text-5xl sm:text-6xl lg:text-[74px] leading-[1.15] tracking-[-0.02em] text-obsidian pb-1">
+            Contact <span class="italic text-forest">JLR Contractors</span>
+          </h2>
+        </div>
+
+        <!-- 12-Column Editorial Split -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-stretch">
+
+          <!-- Left 5 Columns: Interior Feature Image with Floating Editorial Caption -->
+          <div class="lg:col-span-5 gsap-reveal">
+            <div class="relative h-full min-h-[440px] sm:min-h-[540px] rounded-2xl overflow-hidden border border-obsidian/15 bg-obsidian">
+              <img
+                src="https://static.wixstatic.com/media/bcc74e_01e8004f3c14425590432bae200e9e04~mv2.png/v1/fill/w_590,h_596,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/Screenshot%202026-05-18%20155607.png"
+                alt="Custom luxury living room crafted by JLR Contractors"
+                loading="lazy"
+                onerror="this.onerror=null;this.src='https://placehold.co/600x700/123B2B/F3F0E9?text=JLR+Interior';"
+                class="w-full h-full object-cover" />
+              <div class="absolute inset-0 bg-gradient-to-t from-obsidian/85 via-obsidian/20 to-transparent"></div>
+
+              <!-- Floating Architectural Caption Card -->
+              <div class="absolute bottom-5 left-5 right-5 p-6 rounded-xl bg-alabaster/95 backdrop-blur-md border border-obsidian/10 shadow-xl">
+                <p class="font-serif italic text-2xl text-obsidian mb-2">
+                  We'd Love to Hear About Your Project
+                </p>
+                <p class="font-sans text-xs sm:text-[13px] leading-relaxed text-obsidian/75">
+                  Whether you're planning a custom home, commercial build, or public works project, our team is ready to bring your vision to life.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right 7 Columns: Ultra-Clean Architectural Studio Form -->
+          <div class="lg:col-span-7 gsap-reveal flex flex-col justify-center">
+            <div class="bg-alabaster-pure rounded-2xl border border-obsidian/12 p-7 sm:p-10 lg:p-12 shadow-sm">
+
+              <form id="studio-contact-form" novalidate class="space-y-7">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-7">
+                  <!-- First Name -->
+                  <div>
+                    <label for="first-name" class="block font-mono text-[10px] uppercase tracking-[0.2em] text-obsidian/65 mb-2">
+                      First Name <span class="text-forest">*</span>
+                    </label>
+                    <input
+                      id="first-name"
+                      name="firstName"
+                      type="text"
+                      required
+                      autocomplete="given-name"
+                      placeholder="Jane"
+                      class="studio-input w-full py-3 text-sm text-obsidian placeholder:text-obsidian/35" />
+                    <p id="err-first-name" class="hidden mt-1.5 font-mono text-[11px] text-red-700"></p>
+                  </div>
+
+                  <!-- Last Name -->
+                  <div>
+                    <label for="last-name" class="block font-mono text-[10px] uppercase tracking-[0.2em] text-obsidian/65 mb-2">
+                      Last Name <span class="text-forest">*</span>
+                    </label>
+                    <input
+                      id="last-name"
+                      name="lastName"
+                      type="text"
+                      required
+                      autocomplete="family-name"
+                      placeholder="Roberts"
+                      class="studio-input w-full py-3 text-sm text-obsidian placeholder:text-obsidian/35" />
+                    <p id="err-last-name" class="hidden mt-1.5 font-mono text-[11px] text-red-700"></p>
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-7">
+                  <!-- Email Address -->
+                  <div>
+                    <label for="email" class="block font-mono text-[10px] uppercase tracking-[0.2em] text-obsidian/65 mb-2">
+                      Email Address <span class="text-forest">*</span>
+                    </label>
+                    <input
+                      id="email"
+                      name="email"
+                      type="email"
+                      required
+                      autocomplete="email"
+                      placeholder="jane@studio.com"
+                      class="studio-input w-full py-3 text-sm text-obsidian placeholder:text-obsidian/35" />
+                    <p id="err-email" class="hidden mt-1.5 font-mono text-[11px] text-red-700"></p>
+                  </div>
+
+                  <!-- Phone Number -->
+                  <div>
+                    <label for="phone" class="block font-mono text-[10px] uppercase tracking-[0.2em] text-obsidian/65 mb-2">
+                      Phone Number
+                    </label>
+                    <input
+                      id="phone"
+                      name="phone"
+                      type="tel"
+                      autocomplete="tel"
+                      placeholder="(801) 555-0192"
+                      class="studio-input w-full py-3 text-sm text-obsidian placeholder:text-obsidian/35" />
+                  </div>
+                </div>
+
+                <!-- Project Type -->
+                <div>
+                  <label for="project-type" class="block font-mono text-[10px] uppercase tracking-[0.2em] text-obsidian/65 mb-2">
+                    Project Type <span class="text-forest">*</span>
+                  </label>
+                  <div class="relative">
+                    <select
+                      id="project-type"
+                      name="projectType"
+                      required
+                      class="studio-input appearance-none w-full py-3 pr-10 text-sm text-obsidian cursor-pointer bg-transparent">
+                      <option value="" disabled selected>Select a discipline...</option>
+                      <option value="Residential">Residential</option>
+                      <option value="Commercial">Commercial</option>
+                      <option value="Public Works">Public Works</option>
+                      <option value="Woodworking">Woodworking</option>
+                    </select>
+                    <span class="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-obsidian/55">
+                      <i data-lucide="chevron-down" stroke-width="1.5" class="w-4 h-4"></i>
+                    </span>
+                  </div>
+                  <p id="err-project-type" class="hidden mt-1.5 font-mono text-[11px] text-red-700"></p>
+                </div>
+
+                <!-- Tell Us About Your Vision -->
+                <div>
+                  <label for="vision" class="block font-mono text-[10px] uppercase tracking-[0.2em] text-obsidian/65 mb-2">
+                    Tell Us About Your Vision
+                  </label>
+                  <textarea
+                    id="vision"
+                    name="vision"
+                    rows="4"
+                    placeholder="Share your site location, architectural goals, scope, and ideal timeline..."
+                    class="studio-input w-full py-3 text-sm text-obsidian placeholder:text-obsidian/35 resize-y"></textarea>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="pt-3 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                  <p class="font-mono text-[10px] uppercase tracking-[0.16em] text-obsidian/50">
+                    Response within 1 business day
+                  </p>
+                  <button
+                    type="submit"
+                    class="inline-flex items-center justify-center gap-3 px-8 py-4 rounded-full bg-forest text-alabaster font-sans text-xs font-semibold uppercase tracking-[0.18em] hover:bg-obsidian hover:-translate-y-0.5 active:scale-[0.98] transition-all duration-300 ease-out group">
+                    <span>Submit Inquiry</span>
+                    <i data-lucide="send" stroke-width="1.5" class="w-4 h-4 transition-transform duration-300 ease-out group-hover:translate-x-1"></i>
+                  </button>
+                </div>
+              </form>
+
+              <!-- Inline Confirmation State -->
+              <div id="form-success" class="hidden py-10 text-center">
+                <div class="w-16 h-16 rounded-full bg-forest text-alabaster flex items-center justify-center mx-auto mb-6">
+                  <i data-lucide="check" stroke-width="1.5" class="w-7 h-7"></i>
+                </div>
+                <p class="font-mono text-[11px] uppercase tracking-[0.24em] text-forest mb-2">INQUIRY LOGGED</p>
+                <h3 class="font-serif text-4xl sm:text-5xl leading-[1.15] text-obsidian mb-4">
+                  Thank You, <span id="success-name" class="italic text-forest">Client</span>.
+                </h3>
+                <p class="font-sans text-sm text-obsidian/70 max-w-md mx-auto leading-relaxed mb-8">
+                  Our team has received your <span id="success-type" class="font-semibold text-obsidian">project</span> brief. A JLR Contractors senior project manager will connect with you shortly.
+                </p>
+                <button
+                  id="reset-contact-btn"
+                  type="button"
+                  class="inline-flex items-center gap-2.5 px-6 py-3 rounded-full border border-obsidian/20 text-xs font-semibold uppercase tracking-[0.16em] text-obsidian hover:bg-obsidian hover:text-alabaster hover:-translate-y-0.5 active:scale-[0.98] transition-all duration-300 ease-out">
+                  <i data-lucide="rotate-ccw" stroke-width="1.5" class="w-3.5 h-3.5"></i>
+                  <span>New Inquiry</span>
+                </button>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- 7. JLR WOODWORK ATELIER FEATURE BANNER (FULL-BLEED DARK GLASS)        -->
+    <!-- ===================================================================== -->
+    <section id="woodwork" class="relative py-28 sm:py-36 overflow-hidden border-b border-alabaster/10 bg-obsidian">
+      <!-- Dimmed Parallax Backdrop using Woodworking Image -->
+      <div class="absolute inset-0 z-0 overflow-hidden">
+        <img
+          id="woodwork-parallax-img"
+          src="https://static.wixstatic.com/media/bcc74e_2b46ae3932c9457da925c439e159ca7c~mv2.webp/v1/fill/w_345,h_566,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/ai-generated-IMAGE.webp"
+          alt="JLR Woodwork architectural cabinetry and custom doors"
+          loading="lazy"
+          onerror="this.onerror=null;this.src='https://placehold.co/1400x700/0B0E0C/B08D66?text=JLR+Woodwork';"
+          class="w-full h-[120%] -top-[10%] relative object-cover opacity-40 will-change-transform" />
+        <div class="absolute inset-0 bg-gradient-to-b from-obsidian/85 via-obsidian/55 to-obsidian/90"></div>
+      </div>
+
+      <!-- Crisp Frosted Obsidian Architectural Card -->
+      <div class="relative z-10 max-w-4xl mx-auto px-5 sm:px-8 gsap-reveal">
+        <div class="rounded-2xl bg-obsidian/75 backdrop-blur-xl border border-alabaster/15 p-8 sm:p-12 lg:p-16 text-center shadow-2xl">
+          <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-bronze/40 bg-bronze/10 font-mono text-[10px] uppercase tracking-[0.24em] text-bronze mb-6">
+            <i data-lucide="hammer" stroke-width="1.5" class="w-3.5 h-3.5"></i>
+            IN-HOUSE MILLWORK ATELIER
+          </span>
+
+          <h2 class="font-serif font-normal text-5xl sm:text-6xl lg:text-7xl leading-[1.15] text-alabaster mb-10">
+            Contact <span class="italic text-bronze">JLR Woodwork</span>
+          </h2>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-2xl mx-auto">
+            <!-- Location Block with Copy & Directions -->
+            <div class="p-5 rounded-xl bg-alabaster/5 border border-alabaster/12 flex flex-col items-center justify-center gap-3">
+              <span class="w-10 h-10 rounded-full bg-bronze/15 border border-bronze/35 text-bronze flex items-center justify-center">
+                <i data-lucide="map-pin" stroke-width="1.5" class="w-4 h-4"></i>
+              </span>
+              <p class="font-mono text-[10px] uppercase tracking-[0.2em] text-alabaster/55">ATELIER LOCATION</p>
+              <p class="font-serif text-2xl leading-[1.2] text-alabaster">790 S 1350 East, Provo, UT 84606</p>
+              <div class="flex items-center gap-3 pt-1">
+                <button
+                  type="button"
+                  id="copy-address-btn"
+                  data-copy="790 S 1350 East, Provo, UT 84606"
+                  class="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.16em] text-bronze hover:text-alabaster transition-colors">
+                  <i data-lucide="copy" stroke-width="1.5" class="w-3.5 h-3.5"></i>
+                  <span>Copy Address</span>
+                </button>
+                <span class="text-alabaster/25">|</span>
+                <a
+                  href="https://maps.google.com/?q=790+S+1350+East,+Provo,+UT+84606"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.16em] text-alabaster/75 hover:text-bronze transition-colors">
+                  <span>Directions</span>
+                  <i data-lucide="external-link" stroke-width="1.5" class="w-3 h-3"></i>
+                </a>
+              </div>
+            </div>
+
+            <!-- Phone Block -->
+            <a href="tel:+18013736230" class="p-5 rounded-xl bg-alabaster/5 border border-alabaster/12 hover:border-bronze/50 hover:-translate-y-0.5 active:scale-[0.99] transition-all duration-300 ease-out flex flex-col items-center justify-center gap-3 group">
+              <span class="w-10 h-10 rounded-full bg-bronze/15 border border-bronze/35 text-bronze group-hover:bg-bronze group-hover:text-obsidian transition-colors flex items-center justify-center">
+                <i data-lucide="phone" stroke-width="1.5" class="w-4 h-4"></i>
+              </span>
+              <p class="font-mono text-[10px] uppercase tracking-[0.2em] text-alabaster/55">DIRECT WOODSHOP LINE</p>
+              <p class="font-serif text-2xl leading-[1.2] text-alabaster group-hover:text-bronze transition-colors">(801) 373-6230</p>
+              <span class="font-mono text-[10px] uppercase tracking-[0.16em] text-alabaster/60 pt-1">Mon &ndash; Fri, 8:00 AM &ndash; 5:00 PM</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===================================================================== -->
+  <!-- 8. MONUMENTAL ARCHITECTURAL FOOTER (DEEP OBSIDIAN #0B0E0C)            -->
+  <!-- ===================================================================== -->
+  <footer class="relative bg-obsidian text-alabaster pt-20 sm:pt-24 pb-8 overflow-hidden">
+    <div class="max-w-[1440px] mx-auto px-5 sm:px-8 lg:px-12">
+
+      <!-- Clean Editorial Top Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 pb-16 border-b border-alabaster/10">
+
+        <!-- Brand & Mission (5 cols) -->
+        <div class="lg:col-span-5 space-y-6">
+          <p class="font-serif italic text-xl leading-[1.25] text-bronze">
+            "Our Commitment Is Excellence."
+          </p>
+        </div>
+
+        <!-- Quick Navigation (3 cols) -->
+        <div class="lg:col-span-3">
+          <p class="font-mono text-[10px] uppercase tracking-[0.24em] text-bronze mb-5">Navigation</p>
+          <ul class="space-y-3 font-sans text-sm text-alabaster/75">
+            <li><a href="#hero" class="hover:text-bronze transition-colors">Home</a></li>
+            <li><a href="#story" class="hover:text-bronze transition-colors">Our Story</a></li>
+            <li><a href="#specialties" class="hover:text-bronze transition-colors">What We Do</a></li>
+            <li><button type="button" data-open-portfolio class="hover:text-bronze transition-colors">Portfolio</button></li>
+            <li><a href="#awards" class="hover:text-bronze transition-colors">Awards</a></li>
+            <li><a href="#contact" class="hover:text-bronze transition-colors">Contact Us</a></li>
+          </ul>
+        </div>
+
+        <!-- Contact & Socials (4 cols) -->
+        <div class="lg:col-span-4 flex flex-col justify-between gap-8">
+          <div>
+            <p class="font-mono text-[10px] uppercase tracking-[0.24em] text-bronze mb-5">Contact</p>
+            <div class="space-y-2.5 font-sans text-sm text-alabaster/80">
+              <p class="flex items-start gap-2.5">
+                <i data-lucide="map-pin" stroke-width="1.5" class="w-4 h-4 text-bronze mt-0.5 shrink-0"></i>
+                <span>790 S 1350 East, Provo, UT 84606</span>
+              </p>
+              <p class="flex items-center gap-2.5">
+                <i data-lucide="phone" stroke-width="1.5" class="w-4 h-4 text-bronze shrink-0"></i>
+                <a href="tel:+18013736230" class="hover:text-bronze transition-colors">(801) 373-6230</a>
+              </p>
+            </div>
+          </div>
+
+          <div class="flex flex-wrap items-center justify-between gap-4">
+            <!-- Social Icons -->
+            <div class="flex items-center gap-2.5">
+              <a href="#hero" aria-label="Instagram" class="w-10 h-10 rounded-full border border-alabaster/15 bg-obsidian-elevated text-alabaster/80 flex items-center justify-center hover:border-bronze hover:text-bronze hover:-translate-y-0.5 active:scale-[0.96] transition-all duration-300 ease-out">
+                <i data-lucide="instagram" stroke-width="1.5" class="w-4 h-4"></i>
+              </a>
+              <a href="#hero" aria-label="YouTube" class="w-10 h-10 rounded-full border border-alabaster/15 bg-obsidian-elevated text-alabaster/80 flex items-center justify-center hover:border-bronze hover:text-bronze hover:-translate-y-0.5 active:scale-[0.96] transition-all duration-300 ease-out">
+                <i data-lucide="youtube" stroke-width="1.5" class="w-4 h-4"></i>
+              </a>
+              <a href="#hero" aria-label="LinkedIn" class="w-10 h-10 rounded-full border border-alabaster/15 bg-obsidian-elevated text-alabaster/80 flex items-center justify-center hover:border-bronze hover:text-bronze hover:-translate-y-0.5 active:scale-[0.96] transition-all duration-300 ease-out">
+                <i data-lucide="linkedin" stroke-width="1.5" class="w-4 h-4"></i>
+              </a>
+              <a href="#hero" aria-label="Facebook" class="w-10 h-10 rounded-full border border-alabaster/15 bg-obsidian-elevated text-alabaster/80 flex items-center justify-center hover:border-bronze hover:text-bronze hover:-translate-y-0.5 active:scale-[0.96] transition-all duration-300 ease-out">
+                <i data-lucide="facebook" stroke-width="1.5" class="w-4 h-4"></i>
+              </a>
+            </div>
+
+            <!-- Back to Top -->
+            <button id="back-to-top" type="button" class="inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.2em] text-alabaster/70 hover:text-bronze transition-colors group">
+              <span>Back to Top</span>
+              <span class="w-9 h-9 rounded-full border border-alabaster/15 flex items-center justify-center group-hover:border-bronze group-hover:bg-bronze group-hover:text-obsidian group-hover:-translate-y-0.5 active:scale-[0.96] transition-all duration-300 ease-out">
+                <i data-lucide="arrow-up" stroke-width="1.5" class="w-4 h-4"></i>
+              </span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Copyright Strip -->
+      <div class="pt-7 flex flex-col sm:flex-row items-center justify-between gap-4 font-mono text-[10px] uppercase tracking-[0.2em] text-alabaster/45">
+        <p>&copy; 2026 JLR Contractors. All rights reserved.</p>
+        <p>UTAH VALLEY &bull; EST. 1912</p>
+      </div>
+
+      <!-- Oversized Subtle Watermark Typography (Generous line-height prevents bottom clipping) -->
+      <div class="mt-6 select-none pointer-events-none text-center overflow-x-clip" aria-hidden="true">
+        <p class="font-serif tracking-[-0.03em] leading-[1.15] py-2 text-[12vw] text-alabaster/[0.045] whitespace-nowrap">
+          JLR CONTRACTORS
+        </p>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- ===================================================================== -->
+  <!-- ARCHITECTURAL SLIDE-OVER DISCIPLINE SPECIFICATION DRAWER              -->
+  <!-- ===================================================================== -->
+  <div id="discipline-drawer-overlay" data-lenis-prevent data-lenis-prevent-wheel data-lenis-prevent-touch class="overlay-shell fixed inset-0 z-[80] bg-obsidian/70 backdrop-blur-md" role="dialog" aria-modal="true" aria-hidden="true">
+    <div data-lenis-prevent data-lenis-prevent-wheel data-lenis-prevent-touch class="slide-drawer absolute inset-y-0 right-0 w-full max-w-xl h-[100dvh] max-h-[100dvh] bg-obsidian text-alabaster border-l border-alabaster/15 flex flex-col overflow-hidden">
+      <div id="discipline-drawer-body" class="flex flex-col flex-1 min-h-0 overflow-hidden"></div>
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- PORTFOLIO LIGHTBOX / AWARDS MODAL                                     -->
+  <!-- ===================================================================== -->
+  <div id="modal-overlay" data-lenis-prevent data-lenis-prevent-wheel data-lenis-prevent-touch class="overlay-shell fixed inset-0 z-[80] bg-obsidian/80 backdrop-blur-md flex items-center justify-center p-4 sm:p-6" role="dialog" aria-modal="true" aria-hidden="true">
+    <div data-lenis-prevent data-lenis-prevent-wheel data-lenis-prevent-touch class="scale-modal relative w-full max-w-4xl max-h-[90dvh] flex flex-col overflow-hidden rounded-2xl bg-obsidian-elevated border border-alabaster/15 text-alabaster shadow-2xl">
+      <button id="modal-close-btn" type="button" aria-label="Close modal" class="absolute top-4 right-4 z-20 w-10 h-10 rounded-full bg-obsidian/85 border border-alabaster/20 text-alabaster flex items-center justify-center hover:border-bronze hover:text-bronze active:scale-[0.96] transition-all duration-300 ease-out">
+        <i data-lucide="x" stroke-width="1.5" class="w-4 h-4"></i>
+      </button>
+      <div id="modal-body" data-lenis-prevent data-lenis-prevent-wheel data-lenis-prevent-touch class="flex-1 min-h-0 overflow-y-auto custom-scroll"></div>
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- JAVASCRIPT: LENIS, GSAP + SCROLLTRIGGER, ACCORDION, DRAWER, FORM      -->
+  <!-- ===================================================================== -->
+  <script>
+    (function () {
+      'use strict';
+
+      /* -------------------------------------------------------------------
+       * 1. Data Definitions (Disciplines & Portfolio Gallery)
+       * ------------------------------------------------------------------- */
+      const DISCIPLINES = {
+        residential: {
+          code: 'PILLAR 01 / RESIDENTIAL',
+          title: 'Residential',
+          formValue: 'Residential',
+          image: 'https://static.wixstatic.com/media/bcc74e_e7bedcbef85644e180836b15e428b42c~mv2.jpg/v1/crop/x_27,y_268,w_1120,h_1825/fill/w_348,h_566,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/09%20J%20Lyne%20Roberts%20and%20Sons-1_JPG.jpg',
+          tagline: 'Custom homes, remodels, and timeless living spaces built to last.',
+          description: 'We partner closely with homeowners and leading architects to build heirloom custom residences across Utah Valley—combining structural precision with refined architectural finishes.',
+          specs: [
+            'Ground-up luxury custom residences & mountain estates',
+            'Comprehensive architectural remodels and structural additions',
+            'Dedicated project superintendents & open-book cost clarity',
+            'Seamless integration with our in-house JLR Woodwork atelier'
+          ]
+        },
+        commercial: {
+          code: 'PILLAR 02 / COMMERCIAL',
+          title: 'Commercial',
+          formValue: 'Commercial',
+          image: 'https://static.wixstatic.com/media/bcc74e_0e395fe755e048c487eec6ccd3e66ef1~mv2.webp/v1/fill/w_345,h_565,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/ai-generated-IMAGE.webp',
+          tagline: 'Ground-up builds, tenant improvements, and tailored business spaces.',
+          description: 'Engineered for performance, brand presence, and schedule certainty—we deliver commercial environments that elevate how organizations operate.',
+          specs: [
+            'Ground-up Class-A office, retail, and institutional buildings',
+            'High-spec tenant improvements and architectural build-outs',
+            'Pre-construction value engineering & critical-path scheduling',
+            'Rigorous jobsite safety and long-term envelope durability'
+          ]
+        },
+        'public-works': {
+          code: 'PILLAR 03 / PUBLIC WORKS',
+          title: 'Public Works',
+          formValue: 'Public Works',
+          image: 'https://static.wixstatic.com/media/bcc74e_9972d6583d844776b8c357b0372e57ac~mv2.jpg/v1/fill/w_344,h_565,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/tank-arial-5_JPG.jpg',
+          tagline: 'Municipal, water, and infrastructure projects serving our communities.',
+          description: 'Trusted by Utah municipalities for decades, our public works division constructs resilient civic infrastructure and essential water systems built for generational service.',
+          specs: [
+            'Municipal water storage tanks, treatment, and utility infrastructure',
+            'Civic, educational, and public community facilities',
+            'Heavy structural concrete and precision civil coordination',
+            'Full regulatory compliance and transparent public accountability'
+          ]
+        },
+        woodworking: {
+          code: 'PILLAR 04 / WOODWORKING',
+          title: 'Woodworking',
+          formValue: 'Woodworking',
+          image: 'https://static.wixstatic.com/media/bcc74e_2b46ae3932c9457da925c439e159ca7c~mv2.webp/v1/fill/w_345,h_566,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/ai-generated-IMAGE.webp',
+          tagline: 'Custom cabinetry, millwork, and architectural woodwork crafted in-house.',
+          description: 'Operating from our dedicated Provo woodshop, our master craftsmen fabricate bespoke cabinetry, architectural doors, beams, and millwork tailored to exact specifications.',
+          specs: [
+            'Bespoke kitchen, library, and estate built-in cabinetry',
+            'Custom architectural entry doors, paneling, and ceiling beams',
+            'Hand-selected domestic and exotic hardwoods',
+            'Artisan finishing and precision on-site installation'
+          ]
+        }
+      };
+
+      const PORTFOLIO_ITEMS = [
+        {
+          title: 'Wasatch Mountain Residence',
+          category: 'Residential',
+          year: 'Custom Build',
+          image: 'https://static.wixstatic.com/media/bcc74e_f9722c7247f849ce8135025271365a7c~mv2.jpg/v1/crop/x_964,y_94,w_2756,h_3854/fill/w_779,h_1094,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/J%20Lyne%20Roberts-1.jpg'
+        },
+        {
+          title: 'Vaulted Limestone Great Room',
+          category: 'Interior & Millwork',
+          year: 'Custom Build',
+          image: 'https://static.wixstatic.com/media/bcc74e_01e8004f3c14425590432bae200e9e04~mv2.png/v1/fill/w_590,h_596,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/Screenshot%202026-05-18%20155607.png'
+        },
+        {
+          title: 'Utah Valley Estate',
+          category: 'Residential',
+          year: 'Architecture',
+          image: 'https://static.wixstatic.com/media/bcc74e_e7bedcbef85644e180836b15e428b42c~mv2.jpg/v1/crop/x_27,y_268,w_1120,h_1825/fill/w_348,h_566,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/09%20J%20Lyne%20Roberts%20and%20Sons-1_JPG.jpg'
+        },
+        {
+          title: 'Provo Commercial Plaza',
+          category: 'Commercial',
+          year: 'Ground-Up',
+          image: 'https://static.wixstatic.com/media/bcc74e_0e395fe755e048c487eec6ccd3e66ef1~mv2.webp/v1/fill/w_345,h_565,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/ai-generated-IMAGE.webp'
+        },
+        {
+          title: 'Municipal Water Infrastructure',
+          category: 'Public Works',
+          year: 'Civic Engineering',
+          image: 'https://static.wixstatic.com/media/bcc74e_9972d6583d844776b8c357b0372e57ac~mv2.jpg/v1/fill/w_344,h_565,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/tank-arial-5_JPG.jpg'
+        },
+        {
+          title: 'Bespoke Architectural Doors',
+          category: 'Woodworking',
+          year: 'In-House Atelier',
+          image: 'https://static.wixstatic.com/media/bcc74e_2b46ae3932c9457da925c439e159ca7c~mv2.webp/v1/fill/w_345,h_566,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/ai-generated-IMAGE.webp'
+        }
+      ];
+
+      let lenisInstance = null;
+
+      /* -------------------------------------------------------------------
+       * 2. Scroll Lock Helpers (Cleanly pauses Lenis & locks viewport)
+       * ------------------------------------------------------------------- */
+      function lockPageScroll() {
+        if (lenisInstance) lenisInstance.stop();
+        document.documentElement.style.overflow = 'hidden';
+        document.body.style.overflow = 'hidden';
+      }
+
+      function unlockPageScroll() {
+        const anyOpen =
+          document.getElementById('discipline-drawer-overlay')?.classList.contains('open') ||
+          document.getElementById('modal-overlay')?.classList.contains('open') ||
+          document.getElementById('mobile-menu-overlay')?.classList.contains('open');
+        if (!anyOpen) {
+          document.documentElement.style.overflow = '';
+          document.body.style.overflow = '';
+          if (lenisInstance) lenisInstance.start();
+        }
+      }
+
+      /* -------------------------------------------------------------------
+       * 3. Safe Lucide Initialization
+       * ------------------------------------------------------------------- */
+      function renderIcons() {
+        try {
+          if (window.lucide && typeof window.lucide.createIcons === 'function') {
+            window.lucide.createIcons();
+          }
+        } catch (err) {
+          console.error('Lucide error:', err);
+        }
+      }
+
+      /* -------------------------------------------------------------------
+       * 3. Lenis Smooth Scrolling + GSAP ScrollTrigger Sync
+       * ------------------------------------------------------------------- */
+      function initSmoothScrollAndMotion() {
+        try {
+          const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+          if (window.Lenis && !prefersReduced) {
+            lenisInstance = new window.Lenis({
+              duration: 1.15,
+              easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+              smoothWheel: true,
+              touchMultiplier: 1.5
+            });
+
+            if (window.gsap && window.ScrollTrigger) {
+              lenisInstance.on('scroll', window.ScrollTrigger.update);
+              window.gsap.ticker.add((time) => {
+                lenisInstance.raf(time * 1000);
+              });
+              window.gsap.ticker.lagSmoothing(0);
+            } else {
+              function raf(time) {
+                lenisInstance.raf(time);
+                requestAnimationFrame(raf);
+              }
+              requestAnimationFrame(raf);
+            }
+          }
+
+          // Smooth anchor scrolling via Lenis when available
+          document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+            anchor.addEventListener('click', (e) => {
+              const targetId = anchor.getAttribute('href');
+              if (!targetId || targetId === '#') return;
+              const targetEl = document.querySelector(targetId);
+              if (!targetEl) return;
+              e.preventDefault();
+              if (lenisInstance) {
+                lenisInstance.scrollTo(targetEl, { offset: -40 });
+              } else {
+                targetEl.scrollIntoView({ behavior: 'smooth' });
+              }
+            });
+          });
+
+          // GSAP Hero Choreography & ScrollTrigger Reveals
+          if (window.gsap && !prefersReduced) {
+            if (window.ScrollTrigger) {
+              window.gsap.registerPlugin(window.ScrollTrigger);
+            }
+
+            // Hero Line Mask Reveal
+            window.gsap.from('.hero-line', {
+              yPercent: 110,
+              duration: 1.15,
+              stagger: 0.14,
+              ease: 'power4.out',
+              delay: 0.1
+            });
+
+            window.gsap.from('.hero-stagger', {
+              y: 26,
+              opacity: 0,
+              duration: 0.95,
+              stagger: 0.12,
+              ease: 'power3.out',
+              delay: 0.25
+            });
+
+            window.gsap.from('.hero-frame-wrap', {
+              y: 36,
+              opacity: 0,
+              scale: 0.97,
+              duration: 1.2,
+              ease: 'power3.out',
+              delay: 0.2
+            });
+
+            // Scroll-Triggered Section Reveals
+            if (window.ScrollTrigger) {
+              document.querySelectorAll('.gsap-reveal').forEach((el) => {
+                window.gsap.from(el, {
+                  y: 34,
+                  opacity: 0,
+                  duration: 0.95,
+                  ease: 'power3.out',
+                  scrollTrigger: {
+                    trigger: el,
+                    start: 'top 86%',
+                    once: true
+                  }
+                });
+              });
+
+              // Subtle Image Parallax Scrubbing
+              [
+                { id: '#hero-parallax-img', y: 40 },
+                { id: '#story-parallax-img', y: 50 },
+                { id: '#woodwork-parallax-img', y: 60 }
+              ].forEach(({ id, y }) => {
+                const img = document.querySelector(id);
+                if (!img) return;
+                window.gsap.to(img, {
+                  yPercent: 10,
+                  ease: 'none',
+                  scrollTrigger: {
+                    trigger: img.parentElement,
+                    start: 'top bottom',
+                    end: 'bottom top',
+                    scrub: true
+                  }
+                });
+              });
+            }
+          }
+        } catch (err) {
+          console.error('Motion initialization error:', err);
+        }
+      }
+
+      /* -------------------------------------------------------------------
+       * 4. Adaptive Floating Navbar Scroll Behavior
+       * ------------------------------------------------------------------- */
+      function initNavbar() {
+        const nav = document.getElementById('floating-nav');
+        if (!nav) return;
+        window.addEventListener('scroll', () => {
+          if (window.scrollY > 40) {
+            nav.classList.add('nav-scrolled');
+          } else {
+            nav.classList.remove('nav-scrolled');
+          }
+        }, { passive: true });
+      }
+
+      /* -------------------------------------------------------------------
+       * 5. Horizontal Expanding Architectural Accordion
+       * ------------------------------------------------------------------- */
+      function initSpecialtyAccordion() {
+        const panels = document.querySelectorAll('.specialty-panel');
+        if (!panels.length) return;
+
+        function activatePanel(index) {
+          panels.forEach((p, idx) => {
+            p.classList.toggle('is-expanded', idx === index);
+          });
+        }
+
+        panels.forEach((panel, idx) => {
+          panel.addEventListener('mouseenter', () => {
+            if (window.innerWidth >= 1024) activatePanel(idx);
+          });
+          panel.addEventListener('click', (e) => {
+            if (e.target.closest('[data-open-drawer]')) return;
+            activatePanel(idx);
+          });
+        });
+
+        // Hero quick anchor pills expand the matching specialty panel
+        document.querySelectorAll('[data-jump-pillar]').forEach((pill) => {
+          pill.addEventListener('click', () => {
+            const idx = parseInt(pill.getAttribute('data-jump-pillar'), 10);
+            if (!Number.isNaN(idx)) activatePanel(idx);
+          });
+        });
+      }
+
+      /* -------------------------------------------------------------------
+       * 7. Slide-Over Discipline Specification Drawer
+       * ------------------------------------------------------------------- */
+      const drawerOverlay = document.getElementById('discipline-drawer-overlay');
+      const drawerBody = document.getElementById('discipline-drawer-body');
+
+      function closeDisciplineDrawer() {
+        if (!drawerOverlay) return;
+        drawerOverlay.classList.remove('open');
+        drawerOverlay.setAttribute('aria-hidden', 'true');
+        unlockPageScroll();
+      }
+
+      function openDisciplineDrawer(key) {
+        const d = DISCIPLINES[key];
+        if (!d || !drawerOverlay || !drawerBody) return;
+
+        const specsHtml = d.specs
+          .map(
+            (spec) => `
+              <li class="flex items-start gap-3 py-3 border-b border-alabaster/10 text-sm text-alabaster/80">
+                <i data-lucide="check" stroke-width="1.5" class="w-4 h-4 text-bronze mt-0.5 shrink-0"></i>
+                <span>${spec}</span>
+              </li>`
+          )
+          .join('');
+
+        drawerBody.innerHTML = `
+          <!-- Sticky / Flex-Shrink-0 Header -->
+          <div class="shrink-0 relative h-56 sm:h-64 overflow-hidden bg-obsidian-elevated border-b border-alabaster/10">
+            <img src="${d.image}" alt="${d.title}" class="w-full h-full object-cover" />
+            <div class="absolute inset-0 bg-gradient-to-t from-obsidian via-obsidian/35 to-transparent"></div>
+            <button id="drawer-close-inner" type="button" aria-label="Close discipline drawer" class="absolute top-5 right-5 w-10 h-10 rounded-full bg-obsidian/85 border border-alabaster/20 text-alabaster flex items-center justify-center hover:border-bronze hover:text-bronze active:scale-[0.96] transition-all duration-300 ease-out">
+              <i data-lucide="x" stroke-width="1.5" class="w-4 h-4"></i>
+            </button>
+            <div class="absolute bottom-5 left-6 sm:left-8 right-6">
+              <p class="font-mono text-[10px] uppercase tracking-[0.22em] text-bronze mb-1">${d.code}</p>
+              <h3 class="font-serif italic text-4xl sm:text-5xl leading-[1.15] text-alabaster">${d.title}</h3>
+            </div>
+          </div>
+
+          <!-- Independently Scrollable Middle Content -->
+          <div data-lenis-prevent data-lenis-prevent-wheel data-lenis-prevent-touch class="flex-1 min-h-0 overflow-y-auto custom-scroll p-6 sm:p-8 space-y-6">
+            <p class="font-serif text-2xl leading-[1.25] text-alabaster/95">${d.tagline}</p>
+            <p class="font-sans text-sm leading-relaxed text-alabaster/70">${d.description}</p>
+            <div>
+              <p class="font-mono text-[10px] uppercase tracking-[0.22em] text-bronze mb-2">ARCHITECTURAL SPECIFICATIONS</p>
+              <ul>${specsHtml}</ul>
+            </div>
+          </div>
+
+          <!-- Fixed Flex-Shrink-0 Action Bar -->
+          <div class="shrink-0 p-6 sm:px-8 border-t border-alabaster/10 bg-obsidian">
+            <button
+              type="button"
+              id="drawer-start-project"
+              data-project-type="${d.formValue}"
+              class="w-full py-4 px-6 rounded-full bg-alabaster text-obsidian font-sans text-xs font-semibold uppercase tracking-[0.18em] hover:bg-bronze hover:-translate-y-0.5 active:scale-[0.98] transition-all duration-300 ease-out flex items-center justify-center gap-2.5 group">
+              <span>Start a ${d.title} Project</span>
+              <i data-lucide="arrow-up-right" stroke-width="1.75" class="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1"></i>
+            </button>
+          </div>
+        `;
+
+        drawerOverlay.classList.add('open');
+        drawerOverlay.setAttribute('aria-hidden', 'false');
+        lockPageScroll();
+        renderIcons();
+
+        document.getElementById('drawer-close-inner')?.addEventListener('click', closeDisciplineDrawer);
+        document.getElementById('drawer-start-project')?.addEventListener('click', (e) => {
+          const val = e.currentTarget.getAttribute('data-project-type');
+          const select = document.getElementById('project-type');
+          if (select && val) select.value = val;
+          closeDisciplineDrawer();
+          const contactEl = document.getElementById('contact');
+          if (contactEl) {
+            setTimeout(() => {
+              if (lenisInstance) lenisInstance.scrollTo(contactEl, { offset: -30 });
+              else contactEl.scrollIntoView({ behavior: 'smooth' });
+            }, 120);
+          }
+        });
+      }
+
+      /* -------------------------------------------------------------------
+       * 7. Portfolio Lightbox & Awards Modal
+       * ------------------------------------------------------------------- */
+      const modalOverlay = document.getElementById('modal-overlay');
+      const modalBody = document.getElementById('modal-body');
+      const modalCloseBtn = document.getElementById('modal-close-btn');
+      let currentSlide = 0;
+
+      function closeModal() {
+        if (!modalOverlay) return;
+        modalOverlay.classList.remove('open');
+        modalOverlay.setAttribute('aria-hidden', 'true');
+        unlockPageScroll();
+      }
+
+      function renderPortfolioLightbox() {
+        const item = PORTFOLIO_ITEMS[currentSlide];
+        const thumbs = PORTFOLIO_ITEMS.map(
+          (p, i) => `
+            <button type="button" data-slide-idx="${i}" class="relative h-16 rounded-lg overflow-hidden border ${i === currentSlide ? 'border-bronze ring-1 ring-bronze' : 'border-alabaster/15 opacity-60 hover:opacity-100'} transition-all duration-200">
+              <img src="${p.image}" alt="${p.title}" class="w-full h-full object-cover" />
+            </button>`
+        ).join('');
+
+        modalBody.innerHTML = `
+          <div class="p-6 sm:p-8">
+            <div class="flex flex-wrap items-center justify-between gap-4 pr-12 mb-5">
+              <div>
+                <p class="font-mono text-[10px] uppercase tracking-[0.22em] text-bronze">SELECTED WORKS &bull; 0${currentSlide + 1} / 0${PORTFOLIO_ITEMS.length}</p>
+                <h3 class="font-serif text-3xl sm:text-4xl leading-[1.15] text-alabaster mt-1">${item.title}</h3>
+              </div>
+              <span class="px-3.5 py-1.5 rounded-full border border-alabaster/15 font-mono text-[10px] uppercase tracking-[0.18em] text-alabaster/75">
+                ${item.category} &bull; ${item.year}
+              </span>
+            </div>
+
+            <div class="relative rounded-xl overflow-hidden bg-obsidian border border-alabaster/10 aspect-[16/10] mb-5">
+              <img src="${item.image}" alt="${item.title}" class="w-full h-full object-cover" />
+              <button type="button" id="lightbox-prev" aria-label="Previous project" class="absolute left-3 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-obsidian/75 backdrop-blur-md border border-alabaster/20 text-alabaster flex items-center justify-center hover:border-bronze hover:text-bronze active:scale-[0.96] transition-all duration-300 ease-out">
+                <i data-lucide="chevron-left" stroke-width="1.5" class="w-5 h-5"></i>
+              </button>
+              <button type="button" id="lightbox-next" aria-label="Next project" class="absolute right-3 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-obsidian/75 backdrop-blur-md border border-alabaster/20 text-alabaster flex items-center justify-center hover:border-bronze hover:text-bronze active:scale-[0.96] transition-all duration-300 ease-out">
+                <i data-lucide="chevron-right" stroke-width="1.5" class="w-5 h-5"></i>
+              </button>
+            </div>
+
+            <div class="grid grid-cols-3 sm:grid-cols-6 gap-2.5">${thumbs}</div>
+          </div>
+        `;
+
+        renderIcons();
+
+        document.getElementById('lightbox-prev')?.addEventListener('click', () => {
+          currentSlide = (currentSlide - 1 + PORTFOLIO_ITEMS.length) % PORTFOLIO_ITEMS.length;
+          renderPortfolioLightbox();
+        });
+        document.getElementById('lightbox-next')?.addEventListener('click', () => {
+          currentSlide = (currentSlide + 1) % PORTFOLIO_ITEMS.length;
+          renderPortfolioLightbox();
+        });
+        modalBody.querySelectorAll('[data-slide-idx]').forEach((btn) => {
+          btn.addEventListener('click', () => {
+            currentSlide = parseInt(btn.getAttribute('data-slide-idx'), 10);
+            renderPortfolioLightbox();
+          });
+        });
+      }
+
+      function openPortfolioModal() {
+        currentSlide = 0;
+        renderPortfolioLightbox();
+        modalOverlay.classList.add('open');
+        modalOverlay.setAttribute('aria-hidden', 'false');
+        lockPageScroll();
+      }
+
+      function openAwardsModal() {
+        modalBody.innerHTML = `
+          <div class="p-6 sm:p-10">
+            <p class="font-mono text-[10px] uppercase tracking-[0.24em] text-bronze mb-2">RECOGNITION &amp; HONORS &bull; EST. 1912</p>
+            <h3 class="font-serif text-4xl sm:text-5xl leading-[1.15] text-alabaster mb-8">Architectural <span class="italic text-bronze">Awards</span></h3>
+            <div class="space-y-4 mb-8">
+              <div class="p-5 rounded-xl bg-obsidian border border-alabaster/12 flex items-start gap-4">
+                <span class="w-11 h-11 rounded-full bg-forest text-bronze-light flex items-center justify-center shrink-0">
+                  <i data-lucide="trophy" stroke-width="1.5" class="w-5 h-5"></i>
+                </span>
+                <div>
+                  <h4 class="font-serif text-2xl leading-[1.2] text-alabaster">SC Master Builder Award Winner</h4>
+                  <p class="font-sans text-xs sm:text-sm text-alabaster/65 mt-1">Recognizing master-level execution, structural longevity, and architectural craftsmanship across complex builds.</p>
+                </div>
+              </div>
+              <div class="p-5 rounded-xl bg-obsidian border border-alabaster/12 flex items-start gap-4">
+                <span class="w-11 h-11 rounded-full bg-forest text-bronze-light flex items-center justify-center shrink-0">
+                  <i data-lucide="home" stroke-width="1.5" class="w-5 h-5"></i>
+                </span>
+                <div>
+                  <h4 class="font-serif text-2xl leading-[1.2] text-alabaster">Utah Valley Builder of the Year</h4>
+                  <p class="font-sans text-xs sm:text-sm text-alabaster/65 mt-1">Honoring over a century of integrity, client stewardship, and residential excellence throughout Utah Valley.</p>
+                </div>
+              </div>
+              <div class="p-5 rounded-xl bg-obsidian border border-alabaster/12 flex items-start gap-4">
+                <span class="w-11 h-11 rounded-full bg-forest text-bronze-light flex items-center justify-center shrink-0">
+                  <i data-lucide="award" stroke-width="1.5" class="w-5 h-5"></i>
+                </span>
+                <div>
+                  <h4 class="font-serif text-2xl leading-[1.2] text-alabaster">UVHBA Parade of Homes Best of Show</h4>
+                  <p class="font-sans text-xs sm:text-sm text-alabaster/65 mt-1">Highest distinction for custom architectural detailing, in-house millwork, and overall design harmony.</p>
+                </div>
+              </div>
+            </div>
+            <button type="button" id="awards-modal-cta" class="inline-flex items-center gap-2.5 px-7 py-3.5 rounded-full bg-alabaster text-obsidian font-sans text-xs font-semibold uppercase tracking-[0.16em] hover:bg-bronze hover:-translate-y-0.5 active:scale-[0.98] transition-all duration-300 ease-out group">
+              <span>Start Your Project</span>
+              <i data-lucide="arrow-up-right" stroke-width="1.75" class="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1"></i>
+            </button>
+          </div>
+        `;
+        modalOverlay.classList.add('open');
+        modalOverlay.setAttribute('aria-hidden', 'false');
+        lockPageScroll();
+        renderIcons();
+
+        document.getElementById('awards-modal-cta')?.addEventListener('click', () => {
+          closeModal();
+          const contactEl = document.getElementById('contact');
+          if (contactEl) {
+            if (lenisInstance) lenisInstance.scrollTo(contactEl, { offset: -30 });
+            else contactEl.scrollIntoView({ behavior: 'smooth' });
+          }
+        });
+      }
+
+      /* -------------------------------------------------------------------
+       * 8. Mobile Menu Drawer
+       * ------------------------------------------------------------------- */
+      function initMobileMenu() {
+        const overlay = document.getElementById('mobile-menu-overlay');
+        const openBtn = document.getElementById('mobile-menu-open');
+        const closeBtn = document.getElementById('mobile-menu-close');
+
+        function open() {
+          overlay?.classList.add('open');
+          overlay?.setAttribute('aria-hidden', 'false');
+          openBtn?.setAttribute('aria-expanded', 'true');
+          lockPageScroll();
+        }
+        function close() {
+          overlay?.classList.remove('open');
+          overlay?.setAttribute('aria-hidden', 'true');
+          openBtn?.setAttribute('aria-expanded', 'false');
+          unlockPageScroll();
+        }
+
+        openBtn?.addEventListener('click', open);
+        closeBtn?.addEventListener('click', close);
+        overlay?.addEventListener('click', (e) => {
+          if (e.target === overlay) close();
+        });
+        overlay?.querySelectorAll('.mobile-link').forEach((link) => {
+          link.addEventListener('click', close);
+        });
+      }
+
+      /* -------------------------------------------------------------------
+       * 10. Studio Contact Form Validation & Inline Confirmation
+       * ------------------------------------------------------------------- */
+      function initStudioForm() {
+        const form = document.getElementById('studio-contact-form');
+        const successBox = document.getElementById('form-success');
+        const resetBtn = document.getElementById('reset-contact-btn');
+        if (!form || !successBox) return;
+
+        function setError(inputId, errId, msg) {
+          const input = document.getElementById(inputId);
+          const err = document.getElementById(errId);
+          if (!input || !err) return;
+          if (msg) {
+            err.textContent = msg;
+            err.classList.remove('hidden');
+            input.classList.add('has-error');
+          } else {
+            err.textContent = '';
+            err.classList.add('hidden');
+            input.classList.remove('has-error');
+          }
+        }
+
+        ['first-name', 'last-name', 'email', 'project-type'].forEach((id) => {
+          const el = document.getElementById(id);
+          el?.addEventListener('input', () => setError(id, `err-${id}`, ''));
+          el?.addEventListener('change', () => setError(id, `err-${id}`, ''));
+        });
+
+        form.addEventListener('submit', (e) => {
+          e.preventDefault();
+          let valid = true;
+
+          const firstName = document.getElementById('first-name').value.trim();
+          const lastName = document.getElementById('last-name').value.trim();
+          const email = document.getElementById('email').value.trim();
+          const projectType = document.getElementById('project-type').value;
+
+          if (!firstName) {
+            setError('first-name', 'err-first-name', 'First name is required.');
+            valid = false;
+          }
+          if (!lastName) {
+            setError('last-name', 'err-last-name', 'Last name is required.');
+            valid = false;
+          }
+          if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            setError('email', 'err-email', 'Please enter a valid email address.');
+            valid = false;
+          }
+          if (!projectType) {
+            setError('project-type', 'err-project-type', 'Please select a project discipline.');
+            valid = false;
+          }
+
+          if (!valid) return;
+
+          document.getElementById('success-name').textContent = firstName;
+          document.getElementById('success-type').textContent = projectType.toLowerCase();
+          form.classList.add('hidden');
+          successBox.classList.remove('hidden');
+          renderIcons();
+        });
+
+        resetBtn?.addEventListener('click', () => {
+          form.reset();
+          successBox.classList.add('hidden');
+          form.classList.remove('hidden');
+        });
+      }
+
+      /* -------------------------------------------------------------------
+       * 11. Click-to-Copy Address (Safe execCommand Fallback) + Toast
+       * ------------------------------------------------------------------- */
+      function showToast(message) {
+        const toast = document.getElementById('toast-banner');
+        const toastText = document.getElementById('toast-text');
+        if (!toast || !toastText) return;
+        toastText.textContent = message;
+        toast.classList.remove('opacity-0', 'translate-y-4', 'pointer-events-none');
+        setTimeout(() => {
+          toast.classList.add('opacity-0', 'translate-y-4', 'pointer-events-none');
+        }, 2800);
+      }
+
+      function initCopyAddress() {
+        const btn = document.getElementById('copy-address-btn');
+        if (!btn) return;
+        btn.addEventListener('click', () => {
+          const text = btn.getAttribute('data-copy') || '790 S 1350 East, Provo, UT 84606';
+          try {
+            const tempInput = document.createElement('textarea');
+            tempInput.value = text;
+            tempInput.style.position = 'fixed';
+            tempInput.style.opacity = '0';
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+            showToast('Address copied: ' + text);
+          } catch (err) {
+            showToast('790 S 1350 East, Provo, UT 84606');
+          }
+        });
+      }
+
+      /* -------------------------------------------------------------------
+       * 11. Wire Triggers & Boot Application
+       * ------------------------------------------------------------------- */
+      document.addEventListener('DOMContentLoaded', () => {
+        renderIcons();
+        initSmoothScrollAndMotion();
+        initNavbar();
+        initSpecialtyAccordion();
+        initMobileMenu();
+        initStudioForm();
+        initCopyAddress();
+
+        // Discipline Drawer Triggers
+        document.querySelectorAll('[data-open-drawer]').forEach((btn) => {
+          btn.addEventListener('click', () => {
+            openDisciplineDrawer(btn.getAttribute('data-open-drawer'));
+          });
+        });
+        drawerOverlay?.addEventListener('click', (e) => {
+          if (e.target === drawerOverlay) closeDisciplineDrawer();
+        });
+
+        // Portfolio & Awards Modal Triggers
+        document.querySelectorAll('[data-open-portfolio]').forEach((el) => {
+          el.addEventListener('click', (e) => {
+            e.preventDefault();
+            openPortfolioModal();
+          });
+        });
+        document.querySelectorAll('[data-open-awards]').forEach((el) => {
+          el.addEventListener('click', (e) => {
+            e.preventDefault();
+            openAwardsModal();
+          });
+        });
+        modalCloseBtn?.addEventListener('click', closeModal);
+        modalOverlay?.addEventListener('click', (e) => {
+          if (e.target === modalOverlay) closeModal();
+        });
+
+        // Escape Key Closes All Overlays
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape') {
+            closeDisciplineDrawer();
+            closeModal();
+          }
+        });
+
+        // Back to Top
+        document.getElementById('back-to-top')?.addEventListener('click', () => {
+          if (lenisInstance) lenisInstance.scrollTo(0);
+          else window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
