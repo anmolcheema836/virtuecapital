@@ -1,0 +1,3456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JLR Contractors — Swiss Architectural Monograph | Est. 1912</title>
+  <meta name="description" content="JLR Contractors — Over 100 years of custom residential, commercial, public works, and in-house architectural woodworking in Utah Valley. Est. 1912." />
+
+  <!-- Google Fonts: Space Grotesk, Inter, IBM Plex Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- GSAP 3.12.5 & ScrollTrigger CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+  <!-- Lenis 1.1.18 Smooth Scrolling CDN -->
+  <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
+
+  <style>
+    /* =========================================================================
+       1. SWISS ARCHITECTURAL MONOGRAPH DESIGN TOKENS
+       ========================================================================= */
+    :root {
+      --bg-paper: #F7F5F0;
+      --bg-chalk: #FFFFFF;
+      --bg-charcoal: #181817;
+      --bg-charcoal-elev: #222220;
+
+      --ink-primary: #141413;
+      --ink-slate: #5A5955;
+      --ink-light: #F7F5F0;
+      --ink-light-muted: rgba(247, 245, 240, 0.68);
+
+      --accent-terracotta: #B84A2E;
+      --accent-terracotta-dark: #973B23;
+
+      --hairline: rgba(20, 20, 19, 0.14);
+      --hairline-strong: rgba(20, 20, 19, 0.28);
+      --hairline-dark: rgba(247, 245, 240, 0.16);
+
+      --font-display: 'Space Grotesk', system-ui, -apple-system, sans-serif;
+      --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+      --font-mono: 'IBM Plex Mono', monospace;
+
+      --ease-swiss: cubic-bezier(0.16, 1, 0.3, 1);
+      --container-max: 1440px;
+      --nav-height: 76px;
+    }
+
+    /* =========================================================================
+       2. BASE RESET & TYPOGRAPHIC FOUNDATION
+       ========================================================================= */
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    html {
+      background-color: var(--bg-paper);
+      color: var(--ink-primary);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      font-size: 16px;
+    }
+
+    html.lenis, html.lenis body {
+      height: auto;
+    }
+    .lenis.lenis-smooth {
+      scroll-behavior: auto !important;
+    }
+
+    body {
+      margin: 0;
+      font-family: var(--font-body);
+      background-color: var(--bg-paper);
+      color: var(--ink-primary);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    img {
+      display: block;
+      max-width: 100%;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      font-family: inherit;
+      cursor: pointer;
+      border: none;
+      background: none;
+      padding: 0;
+      color: inherit;
+    }
+
+    ::selection {
+      background-color: var(--accent-terracotta);
+      color: var(--bg-chalk);
+    }
+
+    /* Architectural Container */
+    .container {
+      width: 100%;
+      max-width: var(--container-max);
+      margin-inline: auto;
+      padding-inline: clamp(1.25rem, 3.2vw, 3rem);
+    }
+
+    /* Architectural Monograph Background Grid (Subtle) */
+    .swiss-grid-bg {
+      background-image:
+        linear-gradient(to right, rgba(20, 20, 19, 0.035) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(20, 20, 19, 0.035) 1px, transparent 1px);
+      background-size: 96px 96px;
+    }
+
+    /* Typography Utility Classes */
+    .mono-label {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      line-height: 1.4;
+    }
+
+    .display-title {
+      font-family: var(--font-display);
+      font-weight: 500;
+      letter-spacing: -0.035em;
+      line-height: 1.02;
+      margin: 0;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-weight: 500;
+      font-size: clamp(2.25rem, 4.6vw, 4.15rem);
+      letter-spacing: -0.035em;
+      line-height: 1.05;
+      margin: 0;
+    }
+
+    .line-mask {
+      overflow: hidden;
+      display: block;
+      padding-bottom: 0.08em;
+      margin-bottom: -0.08em;
+    }
+
+    /* Sharp Swiss Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.65rem;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding: 0.95rem 1.5rem;
+      border-radius: 2px;
+      transition: background-color 0.3s var(--ease-swiss), color 0.3s var(--ease-swiss), border-color 0.3s var(--ease-swiss), transform 0.25s var(--ease-swiss);
+      white-space: nowrap;
+    }
+
+    .btn:active {
+      transform: scale(0.98);
+    }
+
+    .btn-terracotta {
+      background-color: var(--accent-terracotta);
+      color: var(--bg-chalk);
+      border: 1px solid var(--accent-terracotta);
+    }
+    .btn-terracotta:hover {
+      background-color: var(--ink-primary);
+      border-color: var(--ink-primary);
+    }
+
+    .btn-ink {
+      background-color: var(--ink-primary);
+      color: var(--bg-chalk);
+      border: 1px solid var(--ink-primary);
+    }
+    .btn-ink:hover {
+      background-color: var(--accent-terracotta);
+      border-color: var(--accent-terracotta);
+    }
+
+    .btn-outline {
+      background-color: transparent;
+      color: var(--ink-primary);
+      border: 1px solid var(--hairline-strong);
+    }
+    .btn-outline:hover {
+      background-color: var(--ink-primary);
+      color: var(--bg-chalk);
+      border-color: var(--ink-primary);
+    }
+
+    .btn-outline-light {
+      background-color: transparent;
+      color: var(--ink-light);
+      border: 1px solid var(--hairline-dark);
+    }
+    .btn-outline-light:hover {
+      background-color: var(--accent-terracotta);
+      border-color: var(--accent-terracotta);
+      color: var(--bg-chalk);
+    }
+
+    .btn svg {
+      width: 15px;
+      height: 15px;
+      transition: transform 0.3s var(--ease-swiss);
+    }
+    .btn:hover svg.icon-shift {
+      transform: translate(2px, -2px);
+    }
+    .btn:hover svg.icon-right {
+      transform: translateX(3px);
+    }
+
+    /* Custom Scrollbars for Overlays */
+    .custom-scroll {
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior: contain;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(20, 20, 19, 0.3) transparent;
+    }
+    .custom-scroll::-webkit-scrollbar {
+      width: 6px;
+    }
+    .custom-scroll::-webkit-scrollbar-thumb {
+      background-color: rgba(20, 20, 19, 0.3);
+      border-radius: 2px;
+    }
+
+    /* =========================================================================
+       3. TOP ARCHITECTURAL UTILITY STRIP & STICKY HAIRLINE NAVIGATION
+       ========================================================================= */
+    .utility-strip {
+      background-color: var(--bg-charcoal);
+      color: var(--ink-light);
+      border-bottom: 1px solid var(--hairline-dark);
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .utility-strip-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      min-height: 36px;
+      padding-block: 0.45rem;
+    }
+
+    .utility-group {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      flex-wrap: wrap;
+    }
+
+    .utility-sep {
+      color: rgba(247, 245, 240, 0.25);
+    }
+
+    .utility-strip a {
+      transition: color 0.25s ease;
+    }
+    .utility-strip a:hover {
+      color: var(--accent-terracotta);
+    }
+
+    .utility-dot {
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      background-color: var(--accent-terracotta);
+      margin-right: 0.5rem;
+      vertical-align: middle;
+    }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background-color: rgba(247, 245, 240, 0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--hairline);
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .site-header.is-scrolled {
+      background-color: rgba(255, 255, 255, 0.96);
+      box-shadow: 0 8px 30px rgba(20, 20, 19, 0.05);
+    }
+
+    .nav-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: var(--nav-height);
+      gap: 1.5rem;
+    }
+
+    .brand-logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.85rem;
+      flex-shrink: 0;
+    }
+
+    .brand-logo img {
+      height: 34px;
+      width: auto;
+      object-fit: contain;
+    }
+
+    .primary-nav {
+      display: none;
+      align-items: center;
+      gap: 1.65rem;
+    }
+
+    .primary-nav a {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ink-slate);
+      position: relative;
+      padding-block: 0.35rem;
+      transition: color 0.25s ease;
+    }
+
+    .primary-nav a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 1.5px;
+      background-color: var(--accent-terracotta);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.35s var(--ease-swiss);
+    }
+
+    .primary-nav a:hover,
+    .primary-nav a.active {
+      color: var(--ink-primary);
+    }
+
+    .primary-nav a:hover::after,
+    .primary-nav a.active::after {
+      transform: scaleX(1);
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .nav-cta-desktop {
+      display: none;
+      padding: 0.78rem 1.25rem;
+    }
+
+    .menu-toggle {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      border: 1px solid var(--hairline-strong);
+      border-radius: 2px;
+      background-color: var(--bg-chalk);
+      color: var(--ink-primary);
+      transition: border-color 0.25s ease, color 0.25s ease;
+    }
+
+    .menu-toggle:hover {
+      border-color: var(--accent-terracotta);
+      color: var(--accent-terracotta);
+    }
+
+    @media (min-width: 640px) {
+      .nav-cta-desktop {
+        display: inline-flex;
+      }
+    }
+
+    @media (min-width: 1200px) {
+      .primary-nav {
+        display: flex;
+      }
+      .menu-toggle {
+        display: none;
+      }
+    }
+
+    @media (max-width: 767px) {
+      .hide-mobile {
+        display: none;
+      }
+    }
+
+    /* =========================================================================
+       4. SWISS GRID SPLIT HERO
+       ========================================================================= */
+    .hero-section {
+      border-bottom: 1px solid var(--hairline);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+    }
+
+    .hero-left {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding-top: clamp(2.5rem, 6vw, 5.5rem);
+      border-bottom: 1px solid var(--hairline);
+    }
+
+    .hero-left-content {
+      padding-bottom: clamp(2.5rem, 5vw, 4.5rem);
+      padding-right: clamp(0rem, 3vw, 2.5rem);
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1.75rem;
+      color: var(--ink-slate);
+    }
+
+    .hero-eyebrow-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.35rem 0.75rem;
+      background-color: var(--bg-chalk);
+      border: 1px solid var(--hairline);
+      color: var(--accent-terracotta);
+    }
+
+    .hero-headline {
+      font-size: clamp(3.1rem, 7vw, 6.2rem);
+      color: var(--ink-primary);
+      margin-bottom: 1.75rem;
+    }
+
+    .hero-headline .accent-word {
+      color: var(--accent-terracotta);
+    }
+
+    .hero-subcopy {
+      font-size: clamp(1rem, 1.35vw, 1.15rem);
+      color: var(--ink-slate);
+      max-width: 52ch;
+      line-height: 1.72;
+      margin: 0 0 2.25rem;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.85rem;
+    }
+
+    /* Bottom 4-Cell Hairline Anchor Bar */
+    .hero-anchor-bar {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      border-top: 1px solid var(--hairline);
+      margin-inline: calc(clamp(1.25rem, 3.2vw, 3rem) * -1);
+    }
+
+    .hero-anchor-cell {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      padding: 1.15rem 1.25rem;
+      border-right: 1px solid var(--hairline);
+      border-bottom: 1px solid var(--hairline);
+      background-color: rgba(255, 255, 255, 0.45);
+      transition: background-color 0.3s var(--ease-swiss), color 0.3s ease;
+    }
+
+    .hero-anchor-cell:nth-child(2n) {
+      border-right: none;
+    }
+
+    .hero-anchor-cell:hover {
+      background-color: var(--bg-chalk);
+    }
+
+    .hero-anchor-cell:hover .anchor-num {
+      color: var(--accent-terracotta);
+    }
+
+    .anchor-num {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.16em;
+      color: var(--ink-slate);
+      transition: color 0.25s ease;
+    }
+
+    .anchor-name {
+      font-family: var(--font-display);
+      font-size: 0.98rem;
+      font-weight: 500;
+      color: var(--ink-primary);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .anchor-name svg {
+      width: 14px;
+      height: 14px;
+      color: var(--ink-slate);
+      transition: transform 0.3s var(--ease-swiss), color 0.25s ease;
+    }
+
+    .hero-anchor-cell:hover .anchor-name svg {
+      transform: translate(2px, -2px);
+      color: var(--accent-terracotta);
+    }
+
+    /* Hero Right Column: Architectural Plate */
+    .hero-right {
+      padding-block: clamp(2rem, 4vw, 3.5rem);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .architectural-plate {
+      background-color: var(--bg-chalk);
+      border: 1px solid var(--hairline);
+      padding: 1rem;
+    }
+
+    .plate-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 0.75rem;
+      margin-bottom: 0.75rem;
+      border-bottom: 1px solid var(--hairline);
+      color: var(--ink-slate);
+    }
+
+    .plate-media {
+      position: relative;
+      overflow: hidden;
+      aspect-ratio: 4 / 4.8;
+      background-color: #E7E3DA;
+    }
+
+    .plate-media img {
+      width: 100%;
+      height: 114%;
+      object-fit: cover;
+      position: relative;
+      top: -7%;
+      will-change: transform;
+    }
+
+    .plate-caption {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding-top: 0.95rem;
+      margin-top: 0.95rem;
+      border-top: 1px solid var(--hairline);
+    }
+
+    .plate-caption-title {
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      font-weight: 500;
+      margin: 0.2rem 0 0;
+      color: var(--ink-primary);
+    }
+
+    .plate-compass {
+      width: 40px;
+      height: 40px;
+      border: 1px solid var(--hairline);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent-terracotta);
+      flex-shrink: 0;
+      background-color: var(--bg-paper);
+    }
+
+    @media (min-width: 1024px) {
+      .hero-grid {
+        grid-template-columns: 7fr 5fr;
+        min-height: calc(100vh - var(--nav-height) - 36px);
+      }
+
+      .hero-left {
+        border-bottom: none;
+        border-right: 1px solid var(--hairline);
+        padding-right: clamp(2rem, 3.5vw, 3.5rem);
+      }
+
+      .hero-anchor-bar {
+        grid-template-columns: repeat(4, 1fr);
+        margin-inline: 0;
+        margin-left: calc(clamp(1.25rem, 3.2vw, 3rem) * -1);
+        margin-right: calc(clamp(2rem, 3.5vw, 3.5rem) * -1);
+      }
+
+      .hero-anchor-cell {
+        border-bottom: none;
+        border-right: 1px solid var(--hairline);
+      }
+
+      .hero-anchor-cell:nth-child(2n) {
+        border-right: 1px solid var(--hairline);
+      }
+
+      .hero-anchor-cell:last-child {
+        border-right: none;
+      }
+
+      .hero-right {
+        padding-left: clamp(2rem, 3.5vw, 3.5rem);
+      }
+    }
+
+    /* =========================================================================
+       5. SECTION HEADERS (SHARED SWISS MONOGRAPH RHYTHM)
+       ========================================================================= */
+    .section-band {
+      padding-block: clamp(4.5rem, 8.5vw, 7.5rem);
+      border-bottom: 1px solid var(--hairline);
+    }
+
+    .section-head {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+      padding-bottom: 2.5rem;
+      margin-bottom: 3rem;
+      border-bottom: 1px solid var(--hairline);
+      align-items: end;
+    }
+
+    .section-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.65rem;
+      color: var(--accent-terracotta);
+      margin-bottom: 0.9rem;
+    }
+
+    .section-kicker-line {
+      width: 24px;
+      height: 1px;
+      background-color: var(--accent-terracotta);
+    }
+
+    .section-lead {
+      font-size: 0.98rem;
+      color: var(--ink-slate);
+      max-width: 44ch;
+      margin: 0;
+      line-height: 1.7;
+    }
+
+    @media (min-width: 1024px) {
+      .section-head {
+        grid-template-columns: 7fr 5fr;
+      }
+      .section-head-right {
+        justify-self: end;
+        text-align: right;
+      }
+    }
+
+    /* =========================================================================
+       6. THE FOUR SPECIALTIES — INTERACTIVE ARCHITECTURAL INDEX
+       ========================================================================= */
+    .specialties-section {
+      background-color: var(--bg-chalk);
+    }
+
+    .specialties-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+      align-items: start;
+    }
+
+    .specialty-list {
+      border-top: 1px solid var(--hairline);
+    }
+
+    .specialty-row {
+      position: relative;
+      display: grid;
+      grid-template-columns: 56px 1fr;
+      gap: 1rem;
+      padding: 2rem 1.25rem 2rem 1.5rem;
+      border-bottom: 1px solid var(--hairline);
+      cursor: pointer;
+      transition: background-color 0.35s var(--ease-swiss);
+    }
+
+    .specialty-row::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      background-color: var(--accent-terracotta);
+      transform: scaleY(0);
+      transform-origin: top;
+      transition: transform 0.4s var(--ease-swiss);
+    }
+
+    .specialty-row.is-active,
+    .specialty-row:hover {
+      background-color: var(--bg-paper);
+    }
+
+    .specialty-row.is-active::before {
+      transform: scaleY(1);
+    }
+
+    .specialty-num {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: var(--ink-slate);
+      padding-top: 0.45rem;
+      transition: color 0.25s ease;
+    }
+
+    .specialty-row.is-active .specialty-num {
+      color: var(--accent-terracotta);
+    }
+
+    .specialty-body-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 0.65rem;
+    }
+
+    .specialty-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.65rem, 2.8vw, 2.35rem);
+      font-weight: 500;
+      letter-spacing: -0.025em;
+      margin: 0;
+      color: var(--ink-primary);
+    }
+
+    .specialty-icon-box {
+      width: 38px;
+      height: 38px;
+      border: 1px solid var(--hairline);
+      background-color: var(--bg-chalk);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--ink-slate);
+      flex-shrink: 0;
+      transition: border-color 0.3s ease, color 0.3s ease, background-color 0.3s ease;
+    }
+
+    .specialty-row.is-active .specialty-icon-box {
+      background-color: var(--accent-terracotta);
+      border-color: var(--accent-terracotta);
+      color: var(--bg-chalk);
+    }
+
+    .specialty-desc {
+      font-size: 0.94rem;
+      color: var(--ink-slate);
+      margin: 0 0 1.25rem;
+      max-width: 48ch;
+      line-height: 1.65;
+    }
+
+    .dossier-trigger {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ink-primary);
+      padding: 0.6rem 1rem;
+      border: 1px solid var(--hairline-strong);
+      background-color: var(--bg-chalk);
+      border-radius: 2px;
+      transition: background-color 0.3s var(--ease-swiss), color 0.3s ease, border-color 0.3s ease;
+    }
+
+    .dossier-trigger:hover {
+      background-color: var(--ink-primary);
+      color: var(--bg-chalk);
+      border-color: var(--ink-primary);
+    }
+
+    .dossier-trigger svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    /* Sticky Right Architectural Plate Preview */
+    .plate-preview-wrap {
+      background-color: var(--bg-paper);
+      border: 1px solid var(--hairline);
+      padding: 1.25rem;
+    }
+
+    .plate-preview-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding-bottom: 0.85rem;
+      margin-bottom: 0.85rem;
+      border-bottom: 1px solid var(--hairline);
+      color: var(--ink-slate);
+    }
+
+    .plate-preview-stage {
+      position: relative;
+      aspect-ratio: 4 / 3.9;
+      overflow: hidden;
+      background-color: #E5E0D5;
+      border: 1px solid var(--hairline);
+    }
+
+    .plate-preview-img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      transform: scale(1.04);
+      transition: opacity 0.6s var(--ease-swiss), transform 0.8s var(--ease-swiss);
+    }
+
+    .plate-preview-img.is-visible {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .plate-preview-footer {
+      padding-top: 1.25rem;
+    }
+
+    .plate-preview-title {
+      font-family: var(--font-display);
+      font-size: 1.65rem;
+      font-weight: 500;
+      letter-spacing: -0.025em;
+      margin: 0 0 0.45rem;
+    }
+
+    .plate-preview-tagline {
+      font-size: 0.9rem;
+      color: var(--ink-slate);
+      margin: 0 0 1rem;
+      line-height: 1.6;
+    }
+
+    .plate-preview-specs {
+      list-style: none;
+      margin: 0 0 1.25rem;
+      padding: 0.85rem 0 0;
+      border-top: 1px solid var(--hairline);
+      display: grid;
+      gap: 0.5rem;
+    }
+
+    .plate-preview-specs li {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.6rem;
+      font-size: 0.84rem;
+      color: var(--ink-primary);
+    }
+
+    .plate-preview-specs li svg {
+      width: 14px;
+      height: 14px;
+      color: var(--accent-terracotta);
+      flex-shrink: 0;
+      margin-top: 3px;
+    }
+
+    @media (min-width: 1024px) {
+      .specialties-grid {
+        grid-template-columns: 7fr 5fr;
+        gap: 3rem;
+      }
+      .plate-preview-wrap {
+        position: sticky;
+        top: calc(var(--nav-height) + 1.5rem);
+      }
+    }
+
+    /* =========================================================================
+       7. OUR STORY — MONOGRAPH SPREAD
+       ========================================================================= */
+    .story-section {
+      background-color: var(--bg-paper);
+    }
+
+    .story-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 3rem;
+      align-items: start;
+    }
+
+    .story-quote {
+      font-family: var(--font-display);
+      font-size: clamp(1.5rem, 2.5vw, 2.1rem);
+      font-weight: 500;
+      letter-spacing: -0.02em;
+      line-height: 1.22;
+      color: var(--ink-primary);
+      padding-left: 1.25rem;
+      border-left: 3px solid var(--accent-terracotta);
+      margin: 2rem 0 1.5rem;
+    }
+
+    .story-copy {
+      font-size: 1rem;
+      color: var(--ink-slate);
+      line-height: 1.8;
+      margin: 0 0 2.25rem;
+      max-width: 50ch;
+    }
+
+    /* 3-Column Architectural Metric Ledger */
+    .metric-ledger {
+      display: grid;
+      grid-template-columns: 1fr;
+      border: 1px solid var(--hairline);
+      background-color: var(--bg-chalk);
+      margin-top: 2.5rem;
+    }
+
+    .metric-cell {
+      padding: 1.5rem;
+      border-bottom: 1px solid var(--hairline);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 1.25rem;
+    }
+
+    .metric-cell:last-child {
+      border-bottom: none;
+    }
+
+    .metric-cell-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: var(--ink-slate);
+    }
+
+    .metric-cell-top svg {
+      width: 16px;
+      height: 16px;
+      color: var(--accent-terracotta);
+    }
+
+    .metric-value {
+      font-family: var(--font-display);
+      font-size: clamp(2.4rem, 3.8vw, 3.25rem);
+      font-weight: 600;
+      letter-spacing: -0.04em;
+      line-height: 1;
+      margin: 0 0 0.35rem;
+      color: var(--ink-primary);
+    }
+
+    .metric-label {
+      font-size: 0.85rem;
+      color: var(--ink-slate);
+      margin: 0;
+    }
+
+    .metric-cell.is-contrast {
+      background-color: var(--bg-charcoal);
+      color: var(--ink-light);
+    }
+    .metric-cell.is-contrast .metric-cell-top,
+    .metric-cell.is-contrast .metric-label {
+      color: var(--ink-light-muted);
+    }
+    .metric-cell.is-contrast .metric-value {
+      color: var(--ink-light);
+    }
+
+    .story-frame {
+      background-color: var(--bg-chalk);
+      border: 1px solid var(--hairline);
+      padding: 1rem;
+    }
+
+    .story-media {
+      position: relative;
+      overflow: hidden;
+      aspect-ratio: 4 / 4.4;
+      background-color: #E5E0D5;
+    }
+
+    .story-media img {
+      width: 100%;
+      height: 116%;
+      object-fit: cover;
+      position: relative;
+      top: -8%;
+      will-change: transform;
+    }
+
+    .story-frame-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding-top: 0.9rem;
+      margin-top: 0.9rem;
+      border-top: 1px solid var(--hairline);
+    }
+
+    .expand-icon-btn {
+      width: 42px;
+      height: 42px;
+      border: 1px solid var(--hairline-strong);
+      background-color: var(--bg-paper);
+      color: var(--ink-primary);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 2px;
+      transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+    }
+
+    .expand-icon-btn:hover {
+      background-color: var(--accent-terracotta);
+      border-color: var(--accent-terracotta);
+      color: var(--bg-chalk);
+    }
+
+    @media (min-width: 640px) {
+      .metric-ledger {
+        grid-template-columns: repeat(3, 1fr);
+      }
+      .metric-cell {
+        border-bottom: none;
+        border-right: 1px solid var(--hairline);
+      }
+      .metric-cell:last-child {
+        border-right: none;
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .story-grid {
+        grid-template-columns: 5fr 7fr;
+        gap: 4rem;
+      }
+      .story-sticky {
+        position: sticky;
+        top: calc(var(--nav-height) + 2rem);
+      }
+    }
+
+    /* =========================================================================
+       8. RECOGNITION & AWARDS SPECIFICATION LEDGER
+       ========================================================================= */
+    .awards-section {
+      background-color: var(--bg-chalk);
+    }
+
+    .awards-ledger {
+      border-top: 1px solid var(--hairline);
+    }
+
+    .award-row {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+      padding: 2rem 1.25rem;
+      border-bottom: 1px solid var(--hairline);
+      align-items: center;
+      transition: background-color 0.35s var(--ease-swiss), padding-left 0.35s var(--ease-swiss);
+      cursor: pointer;
+    }
+
+    .award-row:hover {
+      background-color: var(--bg-paper);
+    }
+
+    .award-index {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      color: var(--accent-terracotta);
+    }
+
+    .award-icon {
+      width: 40px;
+      height: 40px;
+      border: 1px solid var(--hairline);
+      background-color: var(--bg-paper);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--ink-primary);
+      transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    }
+
+    .award-row:hover .award-icon {
+      background-color: var(--accent-terracotta);
+      border-color: var(--accent-terracotta);
+      color: var(--bg-chalk);
+    }
+
+    .award-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.45rem, 2.4vw, 2rem);
+      font-weight: 500;
+      letter-spacing: -0.025em;
+      margin: 0;
+      color: var(--ink-primary);
+    }
+
+    .award-desc {
+      font-size: 0.92rem;
+      color: var(--ink-slate);
+      margin: 0;
+      line-height: 1.6;
+    }
+
+    .award-arrow {
+      display: inline-flex;
+      align-items: center;
+      justify-content: flex-end;
+      color: var(--ink-slate);
+      transition: transform 0.3s var(--ease-swiss), color 0.25s ease;
+    }
+
+    .award-row:hover .award-arrow {
+      color: var(--accent-terracotta);
+      transform: translate(3px, -3px);
+    }
+
+    @media (min-width: 900px) {
+      .award-row {
+        grid-template-columns: 140px 4.5fr 4.5fr 56px;
+        gap: 2rem;
+        padding: 2.25rem 1.5rem;
+      }
+      .award-row:hover {
+        padding-left: 2rem;
+      }
+    }
+
+    /* =========================================================================
+       9. STUDIO INQUIRY — CONTACT JLR CONTRACTORS
+       ========================================================================= */
+    .contact-section {
+      background-color: var(--bg-paper);
+    }
+
+    .contact-split {
+      display: grid;
+      grid-template-columns: 1fr;
+      border: 1px solid var(--hairline);
+      background-color: var(--bg-chalk);
+    }
+
+    .contact-media-col {
+      position: relative;
+      min-height: 440px;
+      border-bottom: 1px solid var(--hairline);
+      overflow: hidden;
+      background-color: var(--bg-charcoal);
+    }
+
+    .contact-media-col img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      position: absolute;
+      inset: 0;
+    }
+
+    .contact-media-scrim {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(20, 20, 19, 0.72) 0%, rgba(20, 20, 19, 0.1) 60%, transparent 100%);
+    }
+
+    .contact-caption-box {
+      position: absolute;
+      left: 1.25rem;
+      right: 1.25rem;
+      bottom: 1.25rem;
+      background-color: rgba(255, 255, 255, 0.96);
+      border: 1px solid var(--hairline);
+      padding: 1.35rem 1.5rem;
+    }
+
+    .contact-caption-box h3 {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      font-weight: 500;
+      letter-spacing: -0.02em;
+      margin: 0.35rem 0 0.5rem;
+      color: var(--ink-primary);
+    }
+
+    .contact-caption-box p {
+      font-size: 0.88rem;
+      color: var(--ink-slate);
+      margin: 0;
+      line-height: 1.6;
+    }
+
+    .contact-form-col {
+      padding: clamp(1.75rem, 4vw, 3.25rem);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .studio-form {
+      display: grid;
+      gap: 1.5rem;
+    }
+
+    .form-row-2 {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
+    @media (min-width: 640px) {
+      .form-row-2 {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .contact-split {
+        grid-template-columns: 5fr 7fr;
+      }
+      .contact-media-col {
+        border-bottom: none;
+        border-right: 1px solid var(--hairline);
+        min-height: 580px;
+      }
+    }
+
+    .field-label {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--ink-slate);
+      margin-bottom: 0.45rem;
+    }
+
+    .field-label .req {
+      color: var(--accent-terracotta);
+    }
+
+    .swiss-input {
+      width: 100%;
+      font-family: var(--font-body);
+      font-size: 0.94rem;
+      color: var(--ink-primary);
+      background-color: var(--bg-paper);
+      border: 1px solid var(--hairline);
+      border-radius: 2px;
+      padding: 0.85rem 1rem;
+      transition: border-color 0.25s ease, background-color 0.25s ease;
+    }
+
+    .swiss-input::placeholder {
+      color: rgba(90, 89, 85, 0.55);
+    }
+
+    .swiss-input:focus {
+      outline: none;
+      border-color: var(--ink-primary);
+      background-color: var(--bg-chalk);
+    }
+
+    .swiss-input.has-error {
+      border-color: #B91C1C;
+      background-color: #FEF2F2;
+    }
+
+    .select-wrap {
+      position: relative;
+    }
+
+    .select-wrap select {
+      appearance: none;
+      padding-right: 2.5rem;
+      cursor: pointer;
+    }
+
+    .select-caret {
+      position: absolute;
+      right: 0.9rem;
+      top: 50%;
+      transform: translateY(-50%);
+      pointer-events: none;
+      color: var(--ink-slate);
+      display: flex;
+    }
+
+    .field-error {
+      display: none;
+      margin-top: 0.4rem;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: #B91C1C;
+    }
+
+    .field-error.is-visible {
+      display: block;
+    }
+
+    .form-footer-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding-top: 0.5rem;
+    }
+
+    .form-success-panel {
+      display: none;
+      text-align: center;
+      padding: 2.5rem 1rem;
+    }
+
+    .form-success-panel.is-visible {
+      display: block;
+    }
+
+    .success-badge {
+      width: 56px;
+      height: 56px;
+      margin: 0 auto 1.25rem;
+      background-color: var(--accent-terracotta);
+      color: var(--bg-chalk);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 2px;
+    }
+
+    /* =========================================================================
+       10. JLR WOODWORK ATELIER CONTRAST BAND (#181817)
+       ========================================================================= */
+    .woodwork-band {
+      position: relative;
+      background-color: var(--bg-charcoal);
+      color: var(--ink-light);
+      overflow: hidden;
+      padding-block: clamp(5rem, 9vw, 8rem);
+      border-bottom: 1px solid var(--hairline-dark);
+    }
+
+    .woodwork-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .woodwork-bg img {
+      width: 100%;
+      height: 120%;
+      position: relative;
+      top: -10%;
+      object-fit: cover;
+      opacity: 0.22;
+      filter: grayscale(25%);
+      will-change: transform;
+    }
+
+    .woodwork-bg::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(24, 24, 23, 0.88) 0%, rgba(24, 24, 23, 0.7) 50%, rgba(24, 24, 23, 0.94) 100%);
+    }
+
+    .woodwork-inner {
+      position: relative;
+      z-index: 1;
+    }
+
+    .woodwork-frame {
+      border: 1px solid var(--hairline-dark);
+      background-color: rgba(24, 24, 23, 0.78);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+    .woodwork-top {
+      padding: clamp(2rem, 4.5vw, 3.75rem);
+      border-bottom: 1px solid var(--hairline-dark);
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .woodwork-top h2 {
+      font-family: var(--font-display);
+      font-size: clamp(2.4rem, 5vw, 4.25rem);
+      font-weight: 500;
+      letter-spacing: -0.035em;
+      line-height: 1.05;
+      margin: 0;
+    }
+
+    .woodwork-top h2 span {
+      color: var(--accent-terracotta);
+    }
+
+    .woodwork-cells {
+      display: grid;
+      grid-template-columns: 1fr;
+    }
+
+    .woodwork-cell {
+      padding: clamp(1.75rem, 3.5vw, 2.75rem);
+      border-bottom: 1px solid var(--hairline-dark);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 1.25rem;
+    }
+
+    .woodwork-cell:last-child {
+      border-bottom: none;
+    }
+
+    .woodwork-cell-val {
+      font-family: var(--font-display);
+      font-size: clamp(1.35rem, 2.4vw, 1.85rem);
+      font-weight: 500;
+      color: var(--ink-light);
+      margin: 0;
+      line-height: 1.25;
+    }
+
+    .woodwork-actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .inline-mono-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ink-light);
+      padding: 0.55rem 0.9rem;
+      border: 1px solid var(--hairline-dark);
+      border-radius: 2px;
+      transition: border-color 0.25s ease, color 0.25s ease, background-color 0.25s ease;
+    }
+
+    .inline-mono-btn:hover {
+      border-color: var(--accent-terracotta);
+      background-color: var(--accent-terracotta);
+      color: var(--bg-chalk);
+    }
+
+    .inline-mono-btn svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    @media (min-width: 768px) {
+      .woodwork-cells {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .woodwork-cell {
+        border-bottom: none;
+        border-right: 1px solid var(--hairline-dark);
+      }
+      .woodwork-cell:last-child {
+        border-right: none;
+      }
+    }
+
+    /* =========================================================================
+       11. MONUMENTAL SWISS GRID FOOTER
+       ========================================================================= */
+    .site-footer {
+      background-color: var(--bg-paper);
+      color: var(--ink-primary);
+      padding-top: clamp(3.5rem, 6vw, 5.5rem);
+      overflow: hidden;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      border-top: 1px solid var(--hairline);
+      border-bottom: 1px solid var(--hairline);
+    }
+
+    .footer-col {
+      padding: 2rem 0;
+      border-bottom: 1px solid var(--hairline);
+    }
+
+    .footer-col:last-child {
+      border-bottom: none;
+    }
+
+    .footer-col-title {
+      color: var(--accent-terracotta);
+      margin: 0 0 1.25rem;
+    }
+
+    .footer-nav-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      gap: 0.7rem;
+    }
+
+    .footer-nav-list a,
+    .footer-nav-list button {
+      font-size: 0.92rem;
+      color: var(--ink-slate);
+      transition: color 0.25s ease;
+    }
+
+    .footer-nav-list a:hover,
+    .footer-nav-list button:hover {
+      color: var(--accent-terracotta);
+    }
+
+    .footer-contact-line {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.65rem;
+      font-size: 0.92rem;
+      color: var(--ink-slate);
+      margin: 0 0 0.75rem;
+    }
+
+    .footer-contact-line svg {
+      width: 16px;
+      height: 16px;
+      color: var(--accent-terracotta);
+      flex-shrink: 0;
+      margin-top: 3px;
+    }
+
+    .social-row {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .social-btn {
+      width: 40px;
+      height: 40px;
+      border: 1px solid var(--hairline-strong);
+      background-color: var(--bg-chalk);
+      color: var(--ink-primary);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 2px;
+      transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+    }
+
+    .social-btn:hover {
+      background-color: var(--accent-terracotta);
+      border-color: var(--accent-terracotta);
+      color: var(--bg-chalk);
+    }
+
+    .footer-meta-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding-block: 1.5rem;
+      color: var(--ink-slate);
+    }
+
+    .footer-wordmark {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: clamp(3rem, 11.4vw, 11.5rem);
+      letter-spacing: -0.045em;
+      line-height: 0.9;
+      text-align: center;
+      color: rgba(20, 20, 19, 0.06);
+      user-select: none;
+      pointer-events: none;
+      padding: 0.5rem 0 1.25rem;
+      white-space: nowrap;
+    }
+
+    @media (min-width: 1024px) {
+      .footer-grid {
+        grid-template-columns: 5fr 3fr 4fr;
+      }
+      .footer-col {
+        padding: 2.75rem 2.25rem;
+        border-bottom: none;
+        border-right: 1px solid var(--hairline);
+      }
+      .footer-col:first-child {
+        padding-left: 0;
+      }
+      .footer-col:last-child {
+        padding-right: 0;
+        border-right: none;
+      }
+    }
+
+    /* =========================================================================
+       12. OVERLAYS: SLIDE-OVER DRAWERS, MODALS & TOAST
+       ========================================================================= */
+    .overlay-shell {
+      position: fixed;
+      inset: 0;
+      z-index: 80;
+      background-color: rgba(20, 20, 19, 0.58);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.35s var(--ease-swiss);
+    }
+
+    .overlay-shell.is-open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .drawer-panel {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: 100%;
+      max-width: 560px;
+      height: 100dvh;
+      max-height: 100dvh;
+      background-color: var(--bg-chalk);
+      border-left: 1px solid var(--hairline-strong);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      transform: translateX(100%);
+      transition: transform 0.5s var(--ease-swiss);
+    }
+
+    .overlay-shell.is-open .drawer-panel {
+      transform: translateX(0);
+    }
+
+    .modal-shell {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+
+    .modal-card {
+      position: relative;
+      width: 100%;
+      max-width: 920px;
+      max-height: 90dvh;
+      background-color: var(--bg-chalk);
+      border: 1px solid var(--hairline-strong);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      transform: translateY(20px) scale(0.98);
+      opacity: 0;
+      transition: transform 0.45s var(--ease-swiss), opacity 0.35s ease;
+    }
+
+    .overlay-shell.is-open .modal-card {
+      transform: translateY(0) scale(1);
+      opacity: 1;
+    }
+
+    .overlay-close-btn {
+      width: 42px;
+      height: 42px;
+      border: 1px solid var(--hairline-strong);
+      background-color: var(--bg-chalk);
+      color: var(--ink-primary);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 2px;
+      transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+    }
+
+    .overlay-close-btn:hover {
+      background-color: var(--accent-terracotta);
+      border-color: var(--accent-terracotta);
+      color: var(--bg-chalk);
+    }
+
+    /* Mobile Drawer Nav Links */
+    .mobile-nav-list {
+      display: flex;
+      flex-direction: column;
+      padding: 1.5rem 2rem;
+      gap: 0.25rem;
+    }
+
+    .mobile-nav-link {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      font-weight: 500;
+      letter-spacing: -0.03em;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid var(--hairline);
+      color: var(--ink-primary);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: color 0.25s ease, padding-left 0.25s ease;
+    }
+
+    .mobile-nav-link:hover {
+      color: var(--accent-terracotta);
+      padding-left: 0.5rem;
+    }
+
+    /* Portfolio Lightbox Internal Layout */
+    .lightbox-stage {
+      position: relative;
+      aspect-ratio: 16 / 10;
+      background-color: var(--bg-charcoal);
+      border: 1px solid var(--hairline);
+      overflow: hidden;
+      margin-bottom: 1rem;
+    }
+
+    .lightbox-stage img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .lightbox-nav-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 44px;
+      height: 44px;
+      background-color: rgba(255, 255, 255, 0.92);
+      border: 1px solid var(--hairline-strong);
+      color: var(--ink-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background-color 0.25s ease, color 0.25s ease;
+    }
+
+    .lightbox-nav-btn:hover {
+      background-color: var(--accent-terracotta);
+      border-color: var(--accent-terracotta);
+      color: var(--bg-chalk);
+    }
+
+    .lightbox-thumbs {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.6rem;
+    }
+
+    @media (min-width: 640px) {
+      .lightbox-thumbs {
+        grid-template-columns: repeat(6, 1fr);
+      }
+    }
+
+    .thumb-btn {
+      height: 62px;
+      border: 1px solid var(--hairline);
+      overflow: hidden;
+      opacity: 0.55;
+      transition: opacity 0.25s ease, border-color 0.25s ease;
+    }
+
+    .thumb-btn img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .thumb-btn.is-active,
+    .thumb-btn:hover {
+      opacity: 1;
+      border-color: var(--accent-terracotta);
+    }
+
+    .thumb-btn.is-active {
+      outline: 2px solid var(--accent-terracotta);
+      outline-offset: -2px;
+    }
+
+    /* Toast Notification */
+    .toast-banner {
+      position: fixed;
+      bottom: 1.5rem;
+      left: 50%;
+      transform: translate(-50%, 16px);
+      z-index: 95;
+      background-color: var(--bg-charcoal);
+      color: var(--ink-light);
+      border: 1px solid var(--hairline-dark);
+      padding: 0.85rem 1.35rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.65rem;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.35s var(--ease-swiss), transform 0.35s var(--ease-swiss);
+      box-shadow: 0 16px 40px rgba(20, 20, 19, 0.24);
+    }
+
+    .toast-banner.is-visible {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Toast Feedback Banner -->
+  <div id="toast-banner" class="toast-banner" role="status" aria-live="polite">
+    <i data-lucide="check" stroke-width="1.75" style="width:15px;height:15px;color:#B84A2E;"></i>
+    <span id="toast-text">Copied to clipboard</span>
+  </div>
+
+  <!-- ======================================================================= -->
+  <!-- 1. TOP ARCHITECTURAL UTILITY STRIP + STICKY HAIRLINE NAVIGATION BAR     -->
+  <!-- ======================================================================= -->
+  <div class="utility-strip">
+    <div class="container utility-strip-inner">
+      <div class="utility-group">
+        <span><span class="utility-dot" aria-hidden="true"></span>EST. 1912 &mdash; UTAH VALLEY</span>
+        <span class="utility-sep hide-mobile">|</span>
+        <span class="hide-mobile">40.2146&deg; N, 111.6494&deg; W</span>
+      </div>
+      <div class="utility-group">
+        <a href="tel:+18013736230">(801) 373-6230</a>
+        <span class="utility-sep hide-mobile">|</span>
+        <span class="hide-mobile">PROVO, UTAH</span>
+      </div>
+    </div>
+  </div>
+
+  <header id="site-header" class="site-header">
+    <div class="container nav-bar">
+      <!-- Official JLR Logo -->
+      <a href="#hero" class="brand-logo" aria-label="JLR Contractors Home">
+        <img
+          src="https://static.wixstatic.com/media/bcc74e_ddc9dbf3dbfc466aa624a750fc4365ac~mv2.png"
+          alt="JLR Contractors Official Logo"
+          onerror="this.onerror=null;this.src='https://placehold.co/160x48/FFFFFF/141413?text=JLR+CONTRACTORS';" />
+      </a>
+
+      <!-- Desktop Hairline Navigation -->
+      <nav class="primary-nav" aria-label="Primary Navigation">
+        <a href="#hero" class="active">Home</a>
+        <a href="#story">Our Story</a>
+        <a href="#specialties">What We Do</a>
+        <a href="#story" data-open-portfolio>Portfolio</a>
+        <a href="#story">Our Team</a>
+        <a href="#awards">Awards</a>
+        <a href="#contact">Careers</a>
+      </nav>
+
+      <!-- Right Actions -->
+      <div class="nav-actions">
+        <a href="#contact" class="btn btn-terracotta nav-cta-desktop">
+          <span>Contact Us</span>
+          <i data-lucide="arrow-up-right" stroke-width="1.75" class="icon-shift"></i>
+        </a>
+        <button id="mobile-menu-open" type="button" class="menu-toggle" aria-label="Open menu" aria-expanded="false">
+          <i data-lucide="menu" stroke-width="1.5" style="width:20px;height:20px;"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Slide-Over Drawer -->
+  <div id="mobile-menu-overlay" class="overlay-shell" data-lenis-prevent data-lenis-prevent-wheel data-lenis-prevent-touch aria-hidden="true">
+    <div class="drawer-panel" data-lenis-prevent data-lenis-prevent-wheel data-lenis-prevent-touch>
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:1.25rem 1.75rem;border-bottom:1px solid var(--hairline);flex-shrink:0;">
+        <img
+          src="https://static.wixstatic.com/media/bcc74e_ddc9dbf3dbfc466aa624a750fc4365ac~mv2.png"
+          alt="JLR Contractors"
+          onerror="this.onerror=null;this.src='https://placehold.co/150x42/FFFFFF/141413?text=JLR';"
+          style="height:30px;width:auto;object-fit:contain;" />
+        <button id="mobile-menu-close" type="button" class="overlay-close-btn" aria-label="Close menu">
+          <i data-lucide="x" stroke-width="1.5" style="width:18px;height:18px;"></i>
+        </button>
+      </div>
+
+      <nav class="mobile-nav-list custom-scroll" style="flex:1;min-height:0;overflow-y:auto;" data-lenis-prevent>
+        <a href="#hero" class="mobile-nav-link"><span>Home</span><span class="mono-label" style="color:var(--ink-slate);">00</span></a>
+        <a href="#story" class="mobile-nav-link"><span>Our Story</span><span class="mono-label" style="color:var(--ink-slate);">01</span></a>
+        <a href="#specialties" class="mobile-nav-link"><span>What We Do</span><span class="mono-label" style="color:var(--ink-slate);">02</span></a>
+        <a href="#story" data-open-portfolio class="mobile-nav-link"><span>Portfolio</span><span class="mono-label" style="color:var(--ink-slate);">03</span></a>
+        <a href="#story" class="mobile-nav-link"><span>Our Team</span><span class="mono-label" style="color:var(--ink-slate);">04</span></a>
+        <a href="#awards" class="mobile-nav-link"><span>Awards</span><span class="mono-label" style="color:var(--ink-slate);">05</span></a>
+        <a href="#contact" class="mobile-nav-link"><span>Careers</span><span class="mono-label" style="color:var(--ink-slate);">06</span></a>
+      </nav>
+
+      <div style="padding:1.5rem 2rem;border-top:1px solid var(--hairline);background-color:var(--bg-paper);flex-shrink:0;">
+        <p class="mono-label" style="margin:0 0 0.35rem;color:var(--ink-slate);">790 S 1350 East, Provo, UT 84606</p>
+        <p class="mono-label" style="margin:0 0 1.15rem;"><a href="tel:+18013736230">(801) 373-6230</a></p>
+        <a href="#contact" class="btn btn-terracotta mobile-close-trigger" style="width:100%;">
+          <span>Contact Us</span>
+          <i data-lucide="arrow-up-right" stroke-width="1.75" class="icon-shift"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <main>
+    <!-- ===================================================================== -->
+    <!-- 2. SWISS GRID SPLIT HERO                                              -->
+    <!-- ===================================================================== -->
+    <section id="hero" class="hero-section swiss-grid-bg">
+      <div class="container">
+        <div class="hero-grid">
+
+          <!-- Left Column: Typography, Actions & Bottom 4-Cell Hairline Bar -->
+          <div class="hero-left">
+            <div class="hero-left-content">
+              <div class="hero-eyebrow hero-stagger">
+                <span class="hero-eyebrow-badge mono-label">[ 00 ] EST. 1912 / UTAH VALLEY</span>
+                <span class="mono-label hide-mobile">ARCHITECTURAL MONOGRAPH</span>
+              </div>
+
+              <h1 class="display-title hero-headline">
+                <span class="line-mask"><span class="hero-line">One Company,</span></span>
+                <span class="line-mask"><span class="hero-line accent-word">Four Specialties</span></span>
+              </h1>
+
+              <p class="hero-subcopy hero-stagger">
+                From custom luxury homes to community spaces, we bring precision, craft, and commitment to every project we build.
+              </p>
+
+              <div class="hero-actions hero-stagger">
+                <a href="#specialties" class="btn btn-ink">
+                  <span>Explore Disciplines</span>
+                  <i data-lucide="arrow-down-right" stroke-width="1.5" class="icon-shift"></i>
+                </a>
+                <button type="button" data-open-portfolio class="btn btn-outline">
+                  <i data-lucide="layers" stroke-width="1.5"></i>
+                  <span>Selected Works</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- 4-Cell Hairline Discipline Anchor Bar -->
+            <div class="hero-anchor-bar hero-stagger">
+              <a href="#specialties" data-jump-discipline="residential" class="hero-anchor-cell">
+                <span class="anchor-num">01 / PILLAR</span>
+                <span class="anchor-name">Residential <i data-lucide="arrow-up-right" stroke-width="1.5"></i></span>
+              </a>
+              <a href="#specialties" data-jump-discipline="commercial" class="hero-anchor-cell">
+                <span class="anchor-num">02 / PILLAR</span>
+                <span class="anchor-name">Commercial <i data-lucide="arrow-up-right" stroke-width="1.5"></i></span>
+              </a>
+              <a href="#specialties" data-jump-discipline="public-works" class="hero-anchor-cell">
+                <span class="anchor-num">03 / PILLAR</span>
+                <span class="anchor-name">Public Works <i data-lucide="arrow-up-right" stroke-width="1.5"></i></span>
+              </a>
+              <a href="#specialties" data-jump-discipline="woodworking" class="hero-anchor-cell">
+                <span class="anchor-num">04 / PILLAR</span>
+                <span class="anchor-name">Woodworking <i data-lucide="arrow-up-right" stroke-width="1.5"></i></span>
+              </a>
+            </div>
+          </div>
+
+          <!-- Right Column: Framed Architectural Photograph + Technical Plate -->
+          <div class="hero-right">
+            <div class="architectural-plate hero-plate-reveal">
+              <div class="plate-header mono-label">
+                <span>PLATE 01 &mdash; CUSTOM RESIDENCE</span>
+                <span>UTAH VALLEY</span>
+              </div>
+
+              <div class="plate-media">
+                <img
+                  id="hero-parallax-img"
+                  src="https://static.wixstatic.com/media/bcc74e_f9722c7247f849ce8135025271365a7c~mv2.jpg/v1/crop/x_964,y_94,w_2756,h_3854/fill/w_779,h_1094,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/J%20Lyne%20Roberts-1.jpg"
+                  alt="Architectural custom home built by JLR Contractors"
+                  loading="eager"
+                  onerror="this.onerror=null;this.src='https://placehold.co/800x1000/181817/F7F5F0?text=JLR+Architecture';" />
+              </div>
+
+              <div class="plate-caption">
+                <div>
+                  <span class="mono-label" style="color:var(--accent-terracotta);">OVER 100 YEARS OF EXPERIENCE &bull; EST. 1912</span>
+                  <p class="plate-caption-title">Architectural Craftsmanship Built for Generations.</p>
+                </div>
+                <span class="plate-compass" aria-hidden="true">
+                  <i data-lucide="compass" stroke-width="1.5" style="width:18px;height:18px;"></i>
+                </span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- 3. THE FOUR SPECIALTIES — INTERACTIVE ARCHITECTURAL INDEX             -->
+    <!-- ===================================================================== -->
+    <section id="specialties" class="section-band specialties-section">
+      <div class="container">
+
+        <div class="section-head gsap-reveal">
+          <div>
+            <div class="section-kicker mono-label">
+              <span class="section-kicker-line" aria-hidden="true"></span>
+              <span>INDEX 01 &mdash; 04 / CORE DISCIPLINES</span>
+            </div>
+            <h2 class="section-title">The Four Specialties</h2>
+          </div>
+          <div class="section-head-right">
+            <p class="section-lead">
+              Hover or select any discipline in the architectural ledger to update the reference plate, or inspect the complete technical specification dossier.
+            </p>
+          </div>
+        </div>
+
+        <div class="specialties-grid">
+
+          <!-- Left Column: 4 Hairline-Divided Interactive Rows -->
+          <div class="specialty-list gsap-reveal" id="specialty-list">
+
+            <!-- 01 Residential -->
+            <article class="specialty-row is-active" data-discipline="residential" tabindex="0">
+              <div class="specialty-num">01</div>
+              <div>
+                <div class="specialty-body-top">
+                  <h3 class="specialty-title">Residential</h3>
+                  <span class="specialty-icon-box"><i data-lucide="home" stroke-width="1.5" style="width:17px;height:17px;"></i></span>
+                </div>
+                <p class="specialty-desc">
+                  Custom homes, remodels, and timeless living spaces built to last.
+                </p>
+                <button type="button" class="dossier-trigger" data-open-drawer="residential">
+                  <span>Inspect Dossier</span>
+                  <i data-lucide="arrow-up-right" stroke-width="1.75"></i>
+                </button>
+              </div>
+            </article>
+
+            <!-- 02 Commercial -->
+            <article class="specialty-row" data-discipline="commercial" tabindex="0">
+              <div class="specialty-num">02</div>
+              <div>
+                <div class="specialty-body-top">
+                  <h3 class="specialty-title">Commercial</h3>
+                  <span class="specialty-icon-box"><i data-lucide="building-2" stroke-width="1.5" style="width:17px;height:17px;"></i></span>
+                </div>
+                <p class="specialty-desc">
+                  Ground-up builds, tenant improvements, and tailored business spaces.
+                </p>
+                <button type="button" class="dossier-trigger" data-open-drawer="commercial">
+                  <span>Inspect Dossier</span>
+                  <i data-lucide="arrow-up-right" stroke-width="1.75"></i>
+                </button>
+              </div>
+            </article>
+
+            <!-- 03 Public Works -->
+            <article class="specialty-row" data-discipline="public-works" tabindex="0">
+              <div class="specialty-num">03</div>
+              <div>
+                <div class="specialty-body-top">
+                  <h3 class="specialty-title">Public Works</h3>
+                  <span class="specialty-icon-box"><i data-lucide="landmark" stroke-width="1.5" style="width:17px;height:17px;"></i></span>
+                </div>
+                <p class="specialty-desc">
+                  Municipal, water, and infrastructure projects serving our communities.
+                </p>
+                <button type="button" class="dossier-trigger" data-open-drawer="public-works">
+                  <span>Inspect Dossier</span>
+                  <i data-lucide="arrow-up-right" stroke-width="1.75"></i>
+                </button>
+              </div>
+            </article>
+
+            <!-- 04 Woodworking -->
+            <article class="specialty-row" data-discipline="woodworking" tabindex="0">
+              <div class="specialty-num">04</div>
+              <div>
+                <div class="specialty-body-top">
+                  <h3 class="specialty-title">Woodworking</h3>
+                  <span class="specialty-icon-box"><i data-lucide="hammer" stroke-width="1.5" style="width:17px;height:17px;"></i></span>
+                </div>
+                <p class="specialty-desc">
+                  Custom cabinetry, millwork, and architectural woodwork crafted in-house.
+                </p>
+                <button type="button" class="dossier-trigger" data-open-drawer="woodworking">
+                  <span>Inspect Dossier</span>
+                  <i data-lucide="arrow-up-right" stroke-width="1.75"></i>
+                </button>
+              </div>
+            </article>
+
+          </div>
+
+          <!-- Right Column: Sticky Architectural Plate Preview -->
+          <aside class="plate-preview-wrap gsap-reveal" aria-live="polite">
+            <div class="plate-preview-meta mono-label">
+              <span id="preview-code">PILLAR 01 / RESIDENTIAL</span>
+              <span>REF. PLATE</span>
+            </div>
+
+            <div class="plate-preview-stage">
+              <img
+                data-preview-img="residential"
+                class="plate-preview-img is-visible"
+                src="https://static.wixstatic.com/media/bcc74e_e7bedcbef85644e180836b15e428b42c~mv2.jpg/v1/crop/x_27,y_268,w_1120,h_1825/fill/w_348,h_566,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/09%20J%20Lyne%20Roberts%20and%20Sons-1_JPG.jpg"
+                alt="Custom residential architecture by JLR Contractors"
+                onerror="this.onerror=null;this.src='https://placehold.co/600x700/181817/F7F5F0?text=Residential';" />
+              <img
+                data-preview-img="commercial"
+                class="plate-preview-img"
+                src="https://static.wixstatic.com/media/bcc74e_0e395fe755e048c487eec6ccd3e66ef1~mv2.webp/v1/fill/w_345,h_565,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/ai-generated-IMAGE.webp"
+                alt="Commercial building construction by JLR Contractors"
+                onerror="this.onerror=null;this.src='https://placehold.co/600x700/181817/F7F5F0?text=Commercial';" />
+              <img
+                data-preview-img="public-works"
+                class="plate-preview-img"
+                src="https://static.wixstatic.com/media/bcc74e_9972d6583d844776b8c357b0372e57ac~mv2.jpg/v1/fill/w_344,h_565,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/tank-arial-5_JPG.jpg"
+                alt="Public works infrastructure aerial view by JLR Contractors"
+                onerror="this.onerror=null;this.src='https://placehold.co/600x700/181817/F7F5F0?text=Public+Works';" />
+              <img
+                data-preview-img="woodworking"
+                class="plate-preview-img"
+                src="https://static.wixstatic.com/media/bcc74e_2b46ae3932c9457da925c439e159ca7c~mv2.webp/v1/fill/w_345,h_566,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/ai-generated-IMAGE.webp"
+                alt="Custom architectural millwork and cabinetry by JLR Woodwork"
+                onerror="this.onerror=null;this.src='https://placehold.co/600x700/181817/F7F5F0?text=Woodworking';" />
+            </div>
+
+            <div class="plate-preview-footer">
+              <h3 id="preview-title" class="plate-preview-title">Residential</h3>
+              <p id="preview-tagline" class="plate-preview-tagline">
+                Custom homes, remodels, and timeless living spaces built to last.
+              </p>
+              <ul id="preview-specs" class="plate-preview-specs">
+                <li><i data-lucide="check" stroke-width="1.75"></i><span>Ground-up luxury custom residences &amp; mountain estates</span></li>
+                <li><i data-lucide="check" stroke-width="1.75"></i><span>Comprehensive architectural remodels and structural additions</span></li>
+                <li><i data-lucide="check" stroke-width="1.75"></i><span>Seamless integration with our in-house JLR Woodwork atelier</span></li>
+              </ul>
+              <button type="button" id="preview-dossier-btn" data-open-drawer="residential" class="btn btn-ink" style="width:100%;">
+                <span>Open Specification Dossier</span>
+                <i data-lucide="arrow-up-right" stroke-width="1.75" class="icon-shift"></i>
+              </button>
+            </div>
+          </aside>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- 4. OUR STORY — MONOGRAPH SPREAD                                       -->
+    <!-- ===================================================================== -->
+    <section id="story" class="section-band story-section swiss-grid-bg">
+      <div class="container">
+        <div class="story-grid">
+
+          <!-- Left Sticky Editorial Column -->
+          <div class="story-sticky gsap-reveal">
+            <div class="section-kicker mono-label">
+              <span class="section-kicker-line" aria-hidden="true"></span>
+              <span>HERITAGE MONOGRAPH / EST. 1912</span>
+            </div>
+
+            <h2 class="section-title">Your Dream Home, Expertly Built.</h2>
+
+            <blockquote class="story-quote">
+              "Our Commitment Is Excellence."
+            </blockquote>
+
+            <p class="story-copy">
+              For over a century, JLR Contractors has been crafting quality homes that stand the test of time. Our team combines traditional craftsmanship with modern innovation to bring your vision to life.
+            </p>
+
+            <button type="button" data-open-portfolio class="btn btn-terracotta">
+              <span>View Our Work</span>
+              <i data-lucide="arrow-up-right" stroke-width="1.75" class="icon-shift"></i>
+            </button>
+          </div>
+
+          <!-- Right Column: Framed Photo + Structured 3-Column Metric Ledger -->
+          <div>
+            <div class="story-frame gsap-reveal">
+              <div class="plate-header mono-label">
+                <span>PLATE 02 &mdash; RESIDENTIAL CRAFT</span>
+                <span>PROVO / UTAH VALLEY</span>
+              </div>
+
+              <div class="story-media">
+                <img
+                  id="story-parallax-img"
+                  src="https://static.wixstatic.com/media/bcc74e_f9722c7247f849ce8135025271365a7c~mv2.jpg/v1/crop/x_964,y_94,w_2756,h_3854/fill/w_779,h_1094,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/J%20Lyne%20Roberts-1.jpg"
+                  alt="Luxury custom residence by JLR Contractors"
+                  loading="lazy"
+                  onerror="this.onerror=null;this.src='https://placehold.co/900x800/181817/F7F5F0?text=Dream+Home';" />
+              </div>
+
+              <div class="story-frame-bar">
+                <span class="mono-label" style="color:var(--ink-slate);">CUSTOM RESIDENTIAL &bull; SELECTED ARCHIVE</span>
+                <button type="button" data-open-portfolio class="expand-icon-btn" aria-label="Open portfolio gallery">
+                  <i data-lucide="maximize-2" stroke-width="1.5" style="width:17px;height:17px;"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- 3-Column Architectural Metric Ledger -->
+            <div class="metric-ledger gsap-reveal">
+              <div class="metric-cell">
+                <div class="metric-cell-top mono-label">
+                  <span>01 / LEGACY</span>
+                  <i data-lucide="clock" stroke-width="1.5"></i>
+                </div>
+                <div>
+                  <p class="metric-value">110+</p>
+                  <p class="metric-label">Years Heritage</p>
+                </div>
+              </div>
+
+              <div class="metric-cell">
+                <div class="metric-cell-top mono-label">
+                  <span>02 / SCOPE</span>
+                  <i data-lucide="grid" stroke-width="1.5"></i>
+                </div>
+                <div>
+                  <p class="metric-value">4</p>
+                  <p class="metric-label">Core Disciplines</p>
+                </div>
+              </div>
+
+              <div class="metric-cell is-contrast">
+                <div class="metric-cell-top mono-label">
+                  <span>03 / STANDARD</span>
+                  <i data-lucide="shield-check" stroke-width="1.5"></i>
+                </div>
+                <div>
+                  <p class="metric-value">100%</p>
+                  <p class="metric-label">Craftsmanship Focus</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- 5. RECOGNITION & AWARDS SPECIFICATION LEDGER                          -->
+    <!-- ===================================================================== -->
+    <section id="awards" class="section-band awards-section">
+      <div class="container">
+
+        <div class="section-head gsap-reveal">
+          <div>
+            <div class="section-kicker mono-label">
+              <span class="section-kicker-line" aria-hidden="true"></span>
+              <span>ACCOLADES &amp; HONORS / SPECIFICATION LEDGER</span>
+            </div>
+            <h2 class="section-title">Recognized for Enduring Excellence</h2>
+          </div>
+          <div class="section-head-right">
+            <button type="button" data-open-awards class="btn btn-ink">
+              <span>View Full Honors</span>
+              <i data-lucide="arrow-up-right" stroke-width="1.75" class="icon-shift"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="awards-ledger gsap-reveal">
+          <!-- Honor 01 -->
+          <div class="award-row" data-open-awards role="button" tabindex="0">
+            <div class="award-index">
+              <span class="award-icon"><i data-lucide="trophy" stroke-width="1.5" style="width:18px;height:18px;"></i></span>
+              <span class="mono-label">HONOR 01</span>
+            </div>
+            <h3 class="award-title">SC Master Builder Award Winner</h3>
+            <p class="award-desc">Awarded for structural integrity, precision execution, and architectural leadership across complex builds.</p>
+            <span class="award-arrow" aria-hidden="true"><i data-lucide="arrow-up-right" stroke-width="1.5" style="width:20px;height:20px;"></i></span>
+          </div>
+
+          <!-- Honor 02 -->
+          <div class="award-row" data-open-awards role="button" tabindex="0">
+            <div class="award-index">
+              <span class="award-icon"><i data-lucide="home" stroke-width="1.5" style="width:18px;height:18px;"></i></span>
+              <span class="mono-label">HONOR 02</span>
+            </div>
+            <h3 class="award-title">Utah Valley Builder of the Year</h3>
+            <p class="award-desc">Honoring over a century of generational craftsmanship, stewardship, and community trust in Utah Valley.</p>
+            <span class="award-arrow" aria-hidden="true"><i data-lucide="arrow-up-right" stroke-width="1.5" style="width:20px;height:20px;"></i></span>
+          </div>
+
+          <!-- Honor 03 -->
+          <div class="award-row" data-open-awards role="button" tabindex="0">
+            <div class="award-index">
+              <span class="award-icon"><i data-lucide="award" stroke-width="1.5" style="width:18px;height:18px;"></i></span>
+              <span class="mono-label">HONOR 03</span>
+            </div>
+            <h3 class="award-title">UVHBA Parade of Homes Best of Show</h3>
+            <p class="award-desc">Top distinction for architectural finish, bespoke in-house millwork, and timeless residential livability.</p>
+            <span class="award-arrow" aria-hidden="true"><i data-lucide="arrow-up-right" stroke-width="1.5" style="width:20px;height:20px;"></i></span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- 6. STUDIO INQUIRY — CONTACT JLR CONTRACTORS                           -->
+    <!-- ===================================================================== -->
+    <section id="contact" class="section-band contact-section swiss-grid-bg">
+      <div class="container">
+
+        <div class="section-head gsap-reveal">
+          <div>
+            <div class="section-kicker mono-label">
+              <span class="section-kicker-line" aria-hidden="true"></span>
+              <span>STUDIO INQUIRY / NEW COMMISSIONS</span>
+            </div>
+            <h2 class="section-title">Contact JLR Contractors</h2>
+          </div>
+          <div class="section-head-right">
+            <p class="section-lead">
+              Share your architectural drawings, site details, or project vision. Our senior estimating and project management team responds within one business day.
+            </p>
+          </div>
+        </div>
+
+        <div class="contact-split gsap-reveal">
+          <!-- Left: Interior Feature Photograph + Floating Technical Caption -->
+          <div class="contact-media-col">
+            <img
+              src="https://static.wixstatic.com/media/bcc74e_01e8004f3c14425590432bae200e9e04~mv2.png/v1/fill/w_590,h_596,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/Screenshot%202026-05-18%20155607.png"
+              alt="Custom luxury living room crafted by JLR Contractors"
+              loading="lazy"
+              onerror="this.onerror=null;this.src='https://placehold.co/600x700/181817/F7F5F0?text=JLR+Interior';" />
+            <div class="contact-media-scrim" aria-hidden="true"></div>
+            <div class="contact-caption-box">
+              <span class="mono-label" style="color:var(--accent-terracotta);">PLATE 03 &mdash; STUDIO BRIEF</span>
+              <h3>We'd Love to Hear About Your Project</h3>
+              <p>
+                Whether you're planning a custom home, commercial build, or public works project, our team is ready to bring your vision to life.
+              </p>
+            </div>
+          </div>
+
+          <!-- Right: Sharp Architectural Studio Form -->
+          <div class="contact-form-col">
+            <form id="studio-contact-form" class="studio-form" novalidate>
+              <div class="form-row-2">
+                <div>
+                  <label for="first-name" class="field-label">First Name <span class="req">*</span></label>
+                  <input id="first-name" name="firstName" type="text" required autocomplete="given-name" placeholder="Jane" class="swiss-input" />
+                  <p id="err-first-name" class="field-error"></p>
+                </div>
+                <div>
+                  <label for="last-name" class="field-label">Last Name <span class="req">*</span></label>
+                  <input id="last-name" name="lastName" type="text" required autocomplete="family-name" placeholder="Roberts" class="swiss-input" />
+                  <p id="err-last-name" class="field-error"></p>
+                </div>
+              </div>
+
+              <div class="form-row-2">
+                <div>
+                  <label for="email" class="field-label">Email Address <span class="req">*</span></label>
+                  <input id="email" name="email" type="email" required autocomplete="email" placeholder="jane@studio.com" class="swiss-input" />
+                  <p id="err-email" class="field-error"></p>
+                </div>
+                <div>
+                  <label for="phone" class="field-label">Phone Number</label>
+                  <input id="phone" name="phone" type="tel" autocomplete="tel" placeholder="(801) 555-0192" class="swiss-input" />
+                </div>
+              </div>
+
+              <div>
+                <label for="project-type" class="field-label">Project Type <span class="req">*</span></label>
+                <div class="select-wrap">
+                  <select id="project-type" name="projectType" required class="swiss-input">
+                    <option value="" disabled selected>Select a discipline...</option>
+                    <option value="Residential">Residential</option>
+                    <option value="Commercial">Commercial</option>
+                    <option value="Public Works">Public Works</option>
+                    <option value="Woodworking">Woodworking</option>
+                  </select>
+                  <span class="select-caret"><i data-lucide="chevron-down" stroke-width="1.5" style="width:16px;height:16px;"></i></span>
+                </div>
+                <p id="err-project-type" class="field-error"></p>
+              </div>
+
+              <div>
+                <label for="vision" class="field-label">Tell Us About Your Vision</label>
+                <textarea id="vision" name="vision" rows="4" placeholder="Share your site location, architectural goals, scope, and ideal timeline..." class="swiss-input" style="resize:vertical;"></textarea>
+              </div>
+
+              <div class="form-footer-bar">
+                <span class="mono-label" style="color:var(--ink-slate);">RESPONSE WITHIN 1 BUSINESS DAY</span>
+                <button type="submit" class="btn btn-terracotta">
+                  <span>Submit Inquiry</span>
+                  <i data-lucide="send" stroke-width="1.5" class="icon-right"></i>
+                </button>
+              </div>
+            </form>
+
+            <!-- Inline Confirmation Screen -->
+            <div id="form-success" class="form-success-panel" role="status" aria-live="polite">
+              <div class="success-badge">
+                <i data-lucide="check" stroke-width="1.75" style="width:26px;height:26px;"></i>
+              </div>
+              <p class="mono-label" style="color:var(--accent-terracotta);margin:0 0 0.45rem;">INQUIRY LOGGED</p>
+              <h3 style="font-family:var(--font-display);font-size:2.2rem;font-weight:500;letter-spacing:-0.03em;margin:0 0 0.75rem;">
+                Thank You, <span id="success-name">Client</span>.
+              </h3>
+              <p style="font-size:0.95rem;color:var(--ink-slate);max-width:42ch;margin:0 auto 1.75rem;line-height:1.7;">
+                Our team has received your <strong id="success-type" style="color:var(--ink-primary);">project</strong> brief. A JLR Contractors senior project manager will connect with you shortly.
+              </p>
+              <button id="reset-contact-btn" type="button" class="btn btn-outline">
+                <i data-lucide="rotate-ccw" stroke-width="1.5"></i>
+                <span>Submit Another Inquiry</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- 7. JLR WOODWORK ATELIER CONTRAST BAND (#181817)                       -->
+    <!-- ===================================================================== -->
+    <section id="woodwork" class="woodwork-band">
+      <div class="woodwork-bg" aria-hidden="true">
+        <img
+          id="woodwork-parallax-img"
+          src="https://static.wixstatic.com/media/bcc74e_2b46ae3932c9457da925c439e159ca7c~mv2.webp/v1/fill/w_345,h_566,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/ai-generated-IMAGE.webp"
+          alt=""
+          loading="lazy"
+          onerror="this.onerror=null;this.src='https://placehold.co/1400x700/181817/B84A2E?text=JLR+Woodwork';" />
+      </div>
+
+      <div class="container woodwork-inner gsap-reveal">
+        <div class="woodwork-frame">
+          <div class="woodwork-top">
+            <span class="mono-label" style="color:var(--accent-terracotta);display:inline-flex;align-items:center;gap:0.5rem;">
+              <i data-lucide="hammer" stroke-width="1.5" style="width:14px;height:14px;"></i>
+              IN-HOUSE MILLWORK ATELIER &mdash; PROVO, UT
+            </span>
+            <h2>Contact <span>JLR Woodwork</span></h2>
+          </div>
+
+          <div class="woodwork-cells">
+            <!-- Location Cell -->
+            <div class="woodwork-cell">
+              <div style="display:flex;align-items:center;justify-content:space-between;">
+                <span class="mono-label" style="color:var(--ink-light-muted);">ATELIER LOCATION</span>
+                <i data-lucide="map-pin" stroke-width="1.5" style="width:18px;height:18px;color:var(--accent-terracotta);"></i>
+              </div>
+              <p class="woodwork-cell-val">790 S 1350 East, Provo, UT 84606</p>
+              <div class="woodwork-actions">
+                <button type="button" id="copy-address-btn" data-copy="790 S 1350 East, Provo, UT 84606" class="inline-mono-btn">
+                  <i data-lucide="copy" stroke-width="1.5"></i>
+                  <span>Copy Address</span>
+                </button>
+                <a href="https://maps.google.com/?q=790+S+1350+East,+Provo,+UT+84606" target="_blank" rel="noopener noreferrer" class="inline-mono-btn">
+                  <span>Directions</span>
+                  <i data-lucide="external-link" stroke-width="1.5"></i>
+                </a>
+              </div>
+            </div>
+
+            <!-- Direct Phone Cell -->
+            <div class="woodwork-cell">
+              <div style="display:flex;align-items:center;justify-content:space-between;">
+                <span class="mono-label" style="color:var(--ink-light-muted);">DIRECT WOODSHOP LINE</span>
+                <i data-lucide="phone" stroke-width="1.5" style="width:18px;height:18px;color:var(--accent-terracotta);"></i>
+              </div>
+              <p class="woodwork-cell-val">
+                <a href="tel:+18013736230" style="transition:color 0.25s ease;" onmouseover="this.style.color='#B84A2E'" onmouseout="this.style.color='inherit'">(801) 373-6230</a>
+              </p>
+              <div class="woodwork-actions">
+                <span class="mono-label" style="color:var(--ink-light-muted);">MON &ndash; FRI, 8:00 AM &ndash; 5:00 PM MST</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ======================================================================= -->
+  <!-- 8. MONUMENTAL SWISS GRID FOOTER                                         -->
+  <!-- ======================================================================= -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+
+        <!-- Mission Column -->
+        <div class="footer-col">
+          <img
+            src="https://static.wixstatic.com/media/bcc74e_ddc9dbf3dbfc466aa624a750fc4365ac~mv2.png"
+            alt="JLR Contractors Official Logo"
+            onerror="this.onerror=null;this.src='https://placehold.co/160x48/F7F5F0/141413?text=JLR+CONTRACTORS';"
+            style="height:34px;width:auto;object-fit:contain;margin-bottom:1.5rem;" />
+          <p style="font-family:var(--font-display);font-size:1.35rem;font-weight:500;letter-spacing:-0.02em;margin:0 0 0.75rem;color:var(--ink-primary);">
+            "Our Commitment Is Excellence."
+          </p>
+          <p style="font-size:0.9rem;color:var(--ink-slate);max-width:38ch;margin:0;line-height:1.65;">
+            Over a century of custom residential, commercial, public works, and in-house architectural woodworking in Utah Valley.
+          </p>
+        </div>
+
+        <!-- Navigation Column -->
+        <div class="footer-col">
+          <p class="mono-label footer-col-title">Navigation</p>
+          <ul class="footer-nav-list">
+            <li><a href="#hero">Home</a></li>
+            <li><a href="#story">Our Story</a></li>
+            <li><a href="#specialties">What We Do</a></li>
+            <li><button type="button" data-open-portfolio>Portfolio</button></li>
+            <li><a href="#awards">Awards</a></li>
+            <li><a href="#contact">Contact Us</a></li>
+          </ul>
+        </div>
+
+        <!-- Contact & Social Column -->
+        <div class="footer-col" style="display:flex;flex-direction:column;justify-content:space-between;gap:1.75rem;">
+          <div>
+            <p class="mono-label footer-col-title">Contact</p>
+            <p class="footer-contact-line">
+              <i data-lucide="map-pin" stroke-width="1.5"></i>
+              <span>790 S 1350 East, Provo, UT 84606</span>
+            </p>
+            <p class="footer-contact-line">
+              <i data-lucide="phone" stroke-width="1.5"></i>
+              <a href="tel:+18013736230">(801) 373-6230</a>
+            </p>
+          </div>
+
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;">
+            <!-- Social SVG Icons -->
+            <div class="social-row">
+              <a href="#hero" class="social-btn" aria-label="Instagram">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line></svg>
+              </a>
+              <a href="#hero" class="social-btn" aria-label="YouTube">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;"><path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17"></path><path d="m10 15 5-3-5-3z"></path></svg>
+              </a>
+              <a href="#hero" class="social-btn" aria-label="LinkedIn">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect width="4" height="12" x="2" y="9"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+              </a>
+              <a href="#hero" class="social-btn" aria-label="Facebook">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+              </a>
+            </div>
+
+            <!-- Back to Top -->
+            <button id="back-to-top" type="button" class="btn btn-outline" style="padding:0.65rem 1rem;">
+              <span>Top</span>
+              <i data-lucide="arrow-up" stroke-width="1.5"></i>
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Copyright Meta Strip -->
+      <div class="footer-meta-bar mono-label">
+        <span>&copy; 2026 JLR Contractors. All rights reserved.</span>
+        <span>40.2146&deg; N, 111.6494&deg; W &bull; UTAH VALLEY &bull; EST. 1912</span>
+      </div>
+
+      <!-- Oversized Architectural Wordmark -->
+      <div class="footer-wordmark" aria-hidden="true">JLR CONTRACTORS</div>
+    </div>
+  </footer>
+
+  <!-- ======================================================================= -->
+  <!-- 9A. SLIDE-OVER DISCIPLINE SPECIFICATION DRAWER                          -->
+  <!-- ======================================================================= -->
+  <div id="discipline-drawer-overlay" class="overlay-shell" data-lenis-prevent data-lenis-prevent-wheel data-lenis-prevent-touch role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="drawer-panel" data-lenis-prevent data-lenis-prevent-wheel data-lenis-prevent-touch>
+      <div id="discipline-drawer-body" style="display:flex;flex-direction:column;flex:1;min-height:0;overflow:hidden;"></div>
+    </div>
+  </div>
+
+  <!-- ======================================================================= -->
+  <!-- 9B. PORTFOLIO LIGHTBOX & AWARDS MODAL                                   -->
+  <!-- ======================================================================= -->
+  <div id="modal-overlay" class="overlay-shell modal-shell" data-lenis-prevent data-lenis-prevent-wheel data-lenis-prevent-touch role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="modal-card" data-lenis-prevent data-lenis-prevent-wheel data-lenis-prevent-touch>
+      <button id="modal-close-btn" type="button" class="overlay-close-btn" aria-label="Close modal" style="position:absolute;top:1rem;right:1rem;z-index:10;">
+        <i data-lucide="x" stroke-width="1.5" style="width:18px;height:18px;"></i>
+      </button>
+      <div id="modal-body" class="custom-scroll" style="flex:1;min-height:0;overflow-y:auto;" data-lenis-prevent data-lenis-prevent-wheel data-lenis-prevent-touch></div>
+    </div>
+  </div>
+
+  <!-- ======================================================================= -->
+  <!-- JAVASCRIPT: LENIS, GSAP SCROLLTRIGGER, PLATE SWITCHER, DRAWER, MODALS   -->
+  <!-- ======================================================================= -->
+  <script>
+    (function () {
+      'use strict';
+
+      /* ---------------------------------------------------------------------
+       * 1. Architectural Content Data
+       * --------------------------------------------------------------------- */
+      const DISCIPLINES = {
+        residential: {
+          code: 'PILLAR 01 / RESIDENTIAL',
+          title: 'Residential',
+          formValue: 'Residential',
+          image: 'https://static.wixstatic.com/media/bcc74e_e7bedcbef85644e180836b15e428b42c~mv2.jpg/v1/crop/x_27,y_268,w_1120,h_1825/fill/w_348,h_566,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/09%20J%20Lyne%20Roberts%20and%20Sons-1_JPG.jpg',
+          tagline: 'Custom homes, remodels, and timeless living spaces built to last.',
+          description: 'We partner closely with homeowners and leading architects to build heirloom custom residences across Utah Valley—combining structural precision with refined architectural finishes.',
+          specs: [
+            'Ground-up luxury custom residences & mountain estates',
+            'Comprehensive architectural remodels and structural additions',
+            'Dedicated project superintendents & open-book cost clarity',
+            'Seamless integration with our in-house JLR Woodwork atelier'
+          ]
+        },
+        commercial: {
+          code: 'PILLAR 02 / COMMERCIAL',
+          title: 'Commercial',
+          formValue: 'Commercial',
+          image: 'https://static.wixstatic.com/media/bcc74e_0e395fe755e048c487eec6ccd3e66ef1~mv2.webp/v1/fill/w_345,h_565,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/ai-generated-IMAGE.webp',
+          tagline: 'Ground-up builds, tenant improvements, and tailored business spaces.',
+          description: 'Engineered for performance, brand presence, and schedule certainty—we deliver commercial environments that elevate how organizations operate.',
+          specs: [
+            'Ground-up Class-A office, retail, and institutional buildings',
+            'High-spec tenant improvements and architectural build-outs',
+            'Pre-construction value engineering & critical-path scheduling',
+            'Rigorous jobsite safety and long-term envelope durability'
+          ]
+        },
+        'public-works': {
+          code: 'PILLAR 03 / PUBLIC WORKS',
+          title: 'Public Works',
+          formValue: 'Public Works',
+          image: 'https://static.wixstatic.com/media/bcc74e_9972d6583d844776b8c357b0372e57ac~mv2.jpg/v1/fill/w_344,h_565,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/tank-arial-5_JPG.jpg',
+          tagline: 'Municipal, water, and infrastructure projects serving our communities.',
+          description: 'Trusted by Utah municipalities for decades, our public works division constructs resilient civic infrastructure and essential water systems built for generational service.',
+          specs: [
+            'Municipal water storage tanks, treatment, and utility infrastructure',
+            'Civic, educational, and public community facilities',
+            'Heavy structural concrete and precision civil coordination',
+            'Full regulatory compliance and transparent public accountability'
+          ]
+        },
+        woodworking: {
+          code: 'PILLAR 04 / WOODWORKING',
+          title: 'Woodworking',
+          formValue: 'Woodworking',
+          image: 'https://static.wixstatic.com/media/bcc74e_2b46ae3932c9457da925c439e159ca7c~mv2.webp/v1/fill/w_345,h_566,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/ai-generated-IMAGE.webp',
+          tagline: 'Custom cabinetry, millwork, and architectural woodwork crafted in-house.',
+          description: 'Operating from our dedicated Provo woodshop, our master craftsmen fabricate bespoke cabinetry, architectural doors, beams, and millwork tailored to exact specifications.',
+          specs: [
+            'Bespoke kitchen, library, and estate built-in cabinetry',
+            'Custom architectural entry doors, paneling, and ceiling beams',
+            'Hand-selected domestic and exotic hardwoods',
+            'Artisan finishing and precision on-site installation'
+          ]
+        }
+      };
+
+      const PORTFOLIO_ITEMS = [
+        {
+          title: 'Wasatch Mountain Residence',
+          category: 'Residential',
+          year: 'Custom Build',
+          image: 'https://static.wixstatic.com/media/bcc74e_f9722c7247f849ce8135025271365a7c~mv2.jpg/v1/crop/x_964,y_94,w_2756,h_3854/fill/w_779,h_1094,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/J%20Lyne%20Roberts-1.jpg'
+        },
+        {
+          title: 'Vaulted Limestone Great Room',
+          category: 'Interior & Millwork',
+          year: 'Custom Build',
+          image: 'https://static.wixstatic.com/media/bcc74e_01e8004f3c14425590432bae200e9e04~mv2.png/v1/fill/w_590,h_596,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/Screenshot%202026-05-18%20155607.png'
+        },
+        {
+          title: 'Utah Valley Estate',
+          category: 'Residential',
+          year: 'Architecture',
+          image: 'https://static.wixstatic.com/media/bcc74e_e7bedcbef85644e180836b15e428b42c~mv2.jpg/v1/crop/x_27,y_268,w_1120,h_1825/fill/w_348,h_566,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/09%20J%20Lyne%20Roberts%20and%20Sons-1_JPG.jpg'
+        },
+        {
+          title: 'Provo Commercial Plaza',
+          category: 'Commercial',
+          year: 'Ground-Up',
+          image: 'https://static.wixstatic.com/media/bcc74e_0e395fe755e048c487eec6ccd3e66ef1~mv2.webp/v1/fill/w_345,h_565,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/ai-generated-IMAGE.webp'
+        },
+        {
+          title: 'Municipal Water Infrastructure',
+          category: 'Public Works',
+          year: 'Civic Engineering',
+          image: 'https://static.wixstatic.com/media/bcc74e_9972d6583d844776b8c357b0372e57ac~mv2.jpg/v1/fill/w_344,h_565,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/tank-arial-5_JPG.jpg'
+        },
+        {
+          title: 'Bespoke Architectural Doors',
+          category: 'Woodworking',
+          year: 'In-House Atelier',
+          image: 'https://static.wixstatic.com/media/bcc74e_2b46ae3932c9457da925c439e159ca7c~mv2.webp/v1/fill/w_345,h_566,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/ai-generated-IMAGE.webp'
+        }
+      ];
+
+      let lenisInstance = null;
+      let currentModalMode = null; // 'portfolio' | 'awards' | null
+      let currentSlide = 0;
+
+      /* ---------------------------------------------------------------------
+       * 2. Safe Icon Renderer & Scroll Lock Helpers
+       * --------------------------------------------------------------------- */
+      function renderIcons() {
+        try {
+          if (window.lucide && typeof window.lucide.createIcons === 'function') {
+            window.lucide.createIcons();
+          }
+        } catch (err) {
+          console.error('Lucide icon render error:', err);
+        }
+      }
+
+      function lockPageScroll() {
+        if (lenisInstance) lenisInstance.stop();
+        document.documentElement.style.overflow = 'hidden';
+        document.body.style.overflow = 'hidden';
+      }
+
+      function unlockPageScroll() {
+        const anyOpen =
+          document.getElementById('discipline-drawer-overlay')?.classList.contains('is-open') ||
+          document.getElementById('modal-overlay')?.classList.contains('is-open') ||
+          document.getElementById('mobile-menu-overlay')?.classList.contains('is-open');
+        if (!anyOpen) {
+          document.documentElement.style.overflow = '';
+          document.body.style.overflow = '';
+          if (lenisInstance) lenisInstance.start();
+        }
+      }
+
+      function scrollToTarget(el) {
+        if (!el) return;
+        if (lenisInstance) {
+          lenisInstance.scrollTo(el, { offset: -76 });
+        } else {
+          el.scrollIntoView({ behavior: 'smooth' });
+        }
+      }
+
+      /* ---------------------------------------------------------------------
+       * 3. Lenis Smooth Scrolling + GSAP ScrollTrigger Choreography
+       * --------------------------------------------------------------------- */
+      function initSmoothScrollAndMotion() {
+        try {
+          const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+          if (window.Lenis && !prefersReduced) {
+            lenisInstance = new window.Lenis({
+              duration: 1.1,
+              easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+              smoothWheel: true,
+              touchMultiplier: 1.4
+            });
+
+            if (window.gsap && window.ScrollTrigger) {
+              lenisInstance.on('scroll', window.ScrollTrigger.update);
+              window.gsap.ticker.add((time) => lenisInstance.raf(time * 1000));
+              window.gsap.ticker.lagSmoothing(0);
+            } else {
+              function raf(time) {
+                lenisInstance.raf(time);
+                requestAnimationFrame(raf);
+              }
+              requestAnimationFrame(raf);
+            }
+          }
+
+          // Anchor Smooth Scrolling
+          document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+            anchor.addEventListener('click', (e) => {
+              const id = anchor.getAttribute('href');
+              if (!id || id === '#') return;
+              const target = document.querySelector(id);
+              if (!target) return;
+              e.preventDefault();
+              scrollToTarget(target);
+            });
+          });
+
+          if (window.gsap && !prefersReduced) {
+            if (window.ScrollTrigger) {
+              window.gsap.registerPlugin(window.ScrollTrigger);
+            }
+
+            // Hero Line Reveal
+            window.gsap.from('.hero-line', {
+              yPercent: 105,
+              duration: 1.05,
+              stagger: 0.12,
+              ease: 'power4.out',
+              delay: 0.08
+            });
+
+            window.gsap.from('.hero-stagger', {
+              y: 20,
+              opacity: 0,
+              duration: 0.85,
+              stagger: 0.1,
+              ease: 'power3.out',
+              delay: 0.2
+            });
+
+            window.gsap.from('.hero-plate-reveal', {
+              y: 28,
+              opacity: 0,
+              duration: 1.0,
+              ease: 'power3.out',
+              delay: 0.18
+            });
+
+            // Scroll Reveals & Parallax Scrubbing
+            if (window.ScrollTrigger) {
+              document.querySelectorAll('.gsap-reveal').forEach((el) => {
+                window.gsap.from(el, {
+                  y: 28,
+                  opacity: 0,
+                  duration: 0.85,
+                  ease: 'power3.out',
+                  scrollTrigger: {
+                    trigger: el,
+                    start: 'top 87%',
+                    once: true
+                  }
+                });
+              });
+
+              ['#hero-parallax-img', '#story-parallax-img', '#woodwork-parallax-img'].forEach((selector) => {
+                const img = document.querySelector(selector);
+                if (!img) return;
+                window.gsap.to(img, {
+                  yPercent: 10,
+                  ease: 'none',
+                  scrollTrigger: {
+                    trigger: img.parentElement,
+                    start: 'top bottom',
+                    end: 'bottom top',
+                    scrub: true
+                  }
+                });
+              });
+            }
+          }
+        } catch (err) {
+          console.error('Motion init error:', err);
+        }
+      }
+
+      /* ---------------------------------------------------------------------
+       * 4. Sticky Header Scroll State
+       * --------------------------------------------------------------------- */
+      function initHeader() {
+        const header = document.getElementById('site-header');
+        if (!header) return;
+        window.addEventListener('scroll', () => {
+          header.classList.toggle('is-scrolled', window.scrollY > 36);
+        }, { passive: true });
+      }
+
+      /* ---------------------------------------------------------------------
+       * 5. Interactive Architectural Index & Sticky Plate Switcher
+       * --------------------------------------------------------------------- */
+      function initSpecialtiesIndex() {
+        const rows = document.querySelectorAll('.specialty-row');
+        const previewImgs = document.querySelectorAll('[data-preview-img]');
+        const codeEl = document.getElementById('preview-code');
+        const titleEl = document.getElementById('preview-title');
+        const taglineEl = document.getElementById('preview-tagline');
+        const specsEl = document.getElementById('preview-specs');
+        const dossierBtn = document.getElementById('preview-dossier-btn');
+
+        function selectDiscipline(key) {
+          const data = DISCIPLINES[key];
+          if (!data) return;
+
+          rows.forEach((row) => {
+            row.classList.toggle('is-active', row.getAttribute('data-discipline') === key);
+          });
+
+          previewImgs.forEach((img) => {
+            img.classList.toggle('is-visible', img.getAttribute('data-preview-img') === key);
+          });
+
+          if (codeEl) codeEl.textContent = data.code;
+          if (titleEl) titleEl.textContent = data.title;
+          if (taglineEl) taglineEl.textContent = data.tagline;
+          if (dossierBtn) dossierBtn.setAttribute('data-open-drawer', key);
+
+          if (specsEl) {
+            specsEl.innerHTML = data.specs
+              .slice(0, 3)
+              .map((s) => `<li><i data-lucide="check" stroke-width="1.75"></i><span>${s}</span></li>`)
+              .join('');
+            renderIcons();
+          }
+        }
+
+        rows.forEach((row) => {
+          const key = row.getAttribute('data-discipline');
+          row.addEventListener('mouseenter', () => {
+            if (window.innerWidth >= 1024) selectDiscipline(key);
+          });
+          row.addEventListener('click', (e) => {
+            if (e.target.closest('[data-open-drawer]')) return;
+            selectDiscipline(key);
+          });
+          row.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              selectDiscipline(key);
+            }
+          });
+        });
+
+        // Hero 4-cell anchor bar links also activate the chosen discipline
+        document.querySelectorAll('[data-jump-discipline]').forEach((cell) => {
+          cell.addEventListener('click', () => {
+            const key = cell.getAttribute('data-jump-discipline');
+            if (key) selectDiscipline(key);
+          });
+        });
+      }
+
+      /* ---------------------------------------------------------------------
+       * 6. Slide-Over Specification Drawer
+       * --------------------------------------------------------------------- */
+      const drawerOverlay = document.getElementById('discipline-drawer-overlay');
+      const drawerBody = document.getElementById('discipline-drawer-body');
+
+      function closeDisciplineDrawer() {
+        if (!drawerOverlay) return;
+        drawerOverlay.classList.remove('is-open');
+        drawerOverlay.setAttribute('aria-hidden', 'true');
+        unlockPageScroll();
+      }
+
+      function openDisciplineDrawer(key) {
+        const d = DISCIPLINES[key];
+        if (!d || !drawerOverlay || !drawerBody) return;
+
+        const specsHtml = d.specs
+          .map(
+            (spec, i) => `
+              <li style="display:flex;align-items:flex-start;gap:0.85rem;padding:0.9rem 0;border-bottom:1px solid var(--hairline);font-size:0.92rem;color:var(--ink-primary);">
+                <span class="mono-label" style="color:var(--accent-terracotta);margin-top:2px;">0${i + 1}</span>
+                <span>${spec}</span>
+              </li>`
+          )
+          .join('');
+
+        drawerBody.innerHTML = `
+          <div style="flex-shrink:0;padding:1.25rem 1.75rem;border-bottom:1px solid var(--hairline);display:flex;align-items:center;justify-content:space-between;background-color:var(--bg-paper);">
+            <span class="mono-label" style="color:var(--accent-terracotta);">${d.code}</span>
+            <button id="drawer-close-inner" type="button" class="overlay-close-btn" aria-label="Close dossier">
+              <i data-lucide="x" stroke-width="1.5" style="width:18px;height:18px;"></i>
+            </button>
+          </div>
+
+          <div class="custom-scroll" data-lenis-prevent data-lenis-prevent-wheel data-lenis-prevent-touch style="flex:1;min-height:0;overflow-y:auto;padding:1.75rem;">
+            <div style="border:1px solid var(--hairline);padding:0.65rem;background-color:var(--bg-paper);margin-bottom:1.5rem;">
+              <img src="${d.image}" alt="${d.title}" style="width:100%;height:230px;object-fit:cover;" />
+            </div>
+
+            <h3 style="font-family:var(--font-display);font-size:2.35rem;font-weight:500;letter-spacing:-0.03em;margin:0 0 0.65rem;">${d.title}</h3>
+            <p style="font-family:var(--font-display);font-size:1.15rem;line-height:1.4;color:var(--ink-primary);margin:0 0 1rem;">${d.tagline}</p>
+            <p style="font-size:0.94rem;color:var(--ink-slate);line-height:1.75;margin:0 0 1.75rem;">${d.description}</p>
+
+            <p class="mono-label" style="color:var(--ink-slate);margin:0 0 0.5rem;">TECHNICAL SPECIFICATIONS</p>
+            <ul style="list-style:none;padding:0;margin:0;border-top:1px solid var(--hairline);">${specsHtml}</ul>
+          </div>
+
+          <div style="flex-shrink:0;padding:1.25rem 1.75rem;border-top:1px solid var(--hairline);background-color:var(--bg-paper);">
+            <button type="button" id="drawer-start-project" data-project-type="${d.formValue}" class="btn btn-terracotta" style="width:100%;">
+              <span>Start a ${d.title} Project</span>
+              <i data-lucide="arrow-up-right" stroke-width="1.75" class="icon-shift"></i>
+            </button>
+          </div>
+        `;
+
+        drawerOverlay.classList.add('is-open');
+        drawerOverlay.setAttribute('aria-hidden', 'false');
+        lockPageScroll();
+        renderIcons();
+
+        document.getElementById('drawer-close-inner')?.addEventListener('click', closeDisciplineDrawer);
+        document.getElementById('drawer-start-project')?.addEventListener('click', (e) => {
+          const val = e.currentTarget.getAttribute('data-project-type');
+          const select = document.getElementById('project-type');
+          if (select && val) select.value = val;
+          closeDisciplineDrawer();
+          setTimeout(() => scrollToTarget(document.getElementById('contact')), 140);
+        });
+      }
+
+      /* ---------------------------------------------------------------------
+       * 7. Portfolio Lightbox & Full Honors Awards Modal
+       * --------------------------------------------------------------------- */
+      const modalOverlay = document.getElementById('modal-overlay');
+      const modalBody = document.getElementById('modal-body');
+      const modalCloseBtn = document.getElementById('modal-close-btn');
+
+      function closeModal() {
+        if (!modalOverlay) return;
+        modalOverlay.classList.remove('is-open');
+        modalOverlay.setAttribute('aria-hidden', 'true');
+        currentModalMode = null;
+        unlockPageScroll();
+      }
+
+      function renderPortfolioLightbox() {
+        const item = PORTFOLIO_ITEMS[currentSlide];
+        const thumbsHtml = PORTFOLIO_ITEMS.map(
+          (p, i) => `
+            <button type="button" data-slide-idx="${i}" class="thumb-btn ${i === currentSlide ? 'is-active' : ''}" aria-label="View ${p.title}">
+              <img src="${p.image}" alt="${p.title}" />
+            </button>`
+        ).join('');
+
+        modalBody.innerHTML = `
+          <div style="padding:1.75rem;">
+            <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:1rem;padding-right:3.25rem;margin-bottom:1.25rem;padding-bottom:1rem;border-bottom:1px solid var(--hairline);">
+              <div>
+                <p class="mono-label" style="color:var(--accent-terracotta);margin:0 0 0.35rem;">SELECTED WORKS &bull; 0${currentSlide + 1} / 0${PORTFOLIO_ITEMS.length}</p>
+                <h3 style="font-family:var(--font-display);font-size:clamp(1.6rem,3vw,2.25rem);font-weight:500;letter-spacing:-0.03em;margin:0;">${item.title}</h3>
+              </div>
+              <span class="mono-label" style="padding:0.4rem 0.75rem;border:1px solid var(--hairline);background-color:var(--bg-paper);color:var(--ink-slate);">
+                ${item.category} &bull; ${item.year}
+              </span>
+            </div>
+
+            <div class="lightbox-stage">
+              <img src="${item.image}" alt="${item.title}" />
+              <button type="button" id="lightbox-prev" class="lightbox-nav-btn" style="left:0.85rem;" aria-label="Previous project">
+                <i data-lucide="chevron-left" stroke-width="1.5" style="width:20px;height:20px;"></i>
+              </button>
+              <button type="button" id="lightbox-next" class="lightbox-nav-btn" style="right:0.85rem;" aria-label="Next project">
+                <i data-lucide="chevron-right" stroke-width="1.5" style="width:20px;height:20px;"></i>
+              </button>
+            </div>
+
+            <div class="lightbox-thumbs">${thumbsHtml}</div>
+          </div>
+        `;
+
+        renderIcons();
+
+        document.getElementById('lightbox-prev')?.addEventListener('click', () => {
+          currentSlide = (currentSlide - 1 + PORTFOLIO_ITEMS.length) % PORTFOLIO_ITEMS.length;
+          renderPortfolioLightbox();
+        });
+        document.getElementById('lightbox-next')?.addEventListener('click', () => {
+          currentSlide = (currentSlide + 1) % PORTFOLIO_ITEMS.length;
+          renderPortfolioLightbox();
+        });
+        modalBody.querySelectorAll('[data-slide-idx]').forEach((btn) => {
+          btn.addEventListener('click', () => {
+            currentSlide = parseInt(btn.getAttribute('data-slide-idx'), 10);
+            renderPortfolioLightbox();
+          });
+        });
+      }
+
+      function openPortfolioModal() {
+        currentModalMode = 'portfolio';
+        currentSlide = 0;
+        renderPortfolioLightbox();
+        modalOverlay.classList.add('is-open');
+        modalOverlay.setAttribute('aria-hidden', 'false');
+        lockPageScroll();
+      }
+
+      function openAwardsModal() {
+        currentModalMode = 'awards';
+        modalBody.innerHTML = `
+          <div style="padding:2rem;">
+            <p class="mono-label" style="color:var(--accent-terracotta);margin:0 0 0.45rem;">RECOGNITION &amp; HONORS &bull; EST. 1912</p>
+            <h3 style="font-family:var(--font-display);font-size:clamp(1.85rem,3.4vw,2.65rem);font-weight:500;letter-spacing:-0.03em;margin:0 0 1.75rem;padding-bottom:1.25rem;border-bottom:1px solid var(--hairline);">
+              Architectural Awards Ledger
+            </h3>
+
+            <div style="display:grid;gap:1rem;margin-bottom:2rem;">
+              <div style="padding:1.25rem 1.5rem;border:1px solid var(--hairline);background-color:var(--bg-paper);display:flex;gap:1rem;align-items:flex-start;">
+                <span class="award-icon" style="flex-shrink:0;"><i data-lucide="trophy" stroke-width="1.5" style="width:18px;height:18px;"></i></span>
+                <div>
+                  <span class="mono-label" style="color:var(--accent-terracotta);">HONOR 01</span>
+                  <h4 style="font-family:var(--font-display);font-size:1.3rem;font-weight:500;margin:0.2rem 0 0.35rem;">SC Master Builder Award Winner</h4>
+                  <p style="font-size:0.9rem;color:var(--ink-slate);margin:0;line-height:1.6;">Recognizing master-level execution, structural longevity, and architectural craftsmanship across complex builds.</p>
+                </div>
+              </div>
+
+              <div style="padding:1.25rem 1.5rem;border:1px solid var(--hairline);background-color:var(--bg-paper);display:flex;gap:1rem;align-items:flex-start;">
+                <span class="award-icon" style="flex-shrink:0;"><i data-lucide="home" stroke-width="1.5" style="width:18px;height:18px;"></i></span>
+                <div>
+                  <span class="mono-label" style="color:var(--accent-terracotta);">HONOR 02</span>
+                  <h4 style="font-family:var(--font-display);font-size:1.3rem;font-weight:500;margin:0.2rem 0 0.35rem;">Utah Valley Builder of the Year</h4>
+                  <p style="font-size:0.9rem;color:var(--ink-slate);margin:0;line-height:1.6;">Honoring over a century of integrity, client stewardship, and residential excellence throughout Utah Valley.</p>
+                </div>
+              </div>
+
+              <div style="padding:1.25rem 1.5rem;border:1px solid var(--hairline);background-color:var(--bg-paper);display:flex;gap:1rem;align-items:flex-start;">
+                <span class="award-icon" style="flex-shrink:0;"><i data-lucide="award" stroke-width="1.5" style="width:18px;height:18px;"></i></span>
+                <div>
+                  <span class="mono-label" style="color:var(--accent-terracotta);">HONOR 03</span>
+                  <h4 style="font-family:var(--font-display);font-size:1.3rem;font-weight:500;margin:0.2rem 0 0.35rem;">UVHBA Parade of Homes Best of Show</h4>
+                  <p style="font-size:0.9rem;color:var(--ink-slate);margin:0;line-height:1.6;">Highest distinction for custom architectural detailing, in-house millwork, and overall design harmony.</p>
+                </div>
+              </div>
+            </div>
+
+            <button type="button" id="awards-modal-cta" class="btn btn-terracotta">
+              <span>Start Your Project</span>
+              <i data-lucide="arrow-up-right" stroke-width="1.75" class="icon-shift"></i>
+            </button>
+          </div>
+        `;
+        modalOverlay.classList.add('is-open');
+        modalOverlay.setAttribute('aria-hidden', 'false');
+        lockPageScroll();
+        renderIcons();
+
+        document.getElementById('awards-modal-cta')?.addEventListener('click', () => {
+          closeModal();
+          setTimeout(() => scrollToTarget(document.getElementById('contact')), 140);
+        });
+      }
+
+      /* ---------------------------------------------------------------------
+       * 8. Mobile Menu Drawer
+       * --------------------------------------------------------------------- */
+      function initMobileMenu() {
+        const overlay = document.getElementById('mobile-menu-overlay');
+        const openBtn = document.getElementById('mobile-menu-open');
+        const closeBtn = document.getElementById('mobile-menu-close');
+
+        function open() {
+          overlay?.classList.add('is-open');
+          overlay?.setAttribute('aria-hidden', 'false');
+          openBtn?.setAttribute('aria-expanded', 'true');
+          lockPageScroll();
+        }
+        function close() {
+          overlay?.classList.remove('is-open');
+          overlay?.setAttribute('aria-hidden', 'true');
+          openBtn?.setAttribute('aria-expanded', 'false');
+          unlockPageScroll();
+        }
+
+        openBtn?.addEventListener('click', open);
+        closeBtn?.addEventListener('click', close);
+        overlay?.addEventListener('click', (e) => {
+          if (e.target === overlay) close();
+        });
+        overlay?.querySelectorAll('.mobile-nav-link, .mobile-close-trigger').forEach((link) => {
+          link.addEventListener('click', close);
+        });
+      }
+
+      /* ---------------------------------------------------------------------
+       * 9. Studio Contact Form Validation & Inline Confirmation
+       * --------------------------------------------------------------------- */
+      function initStudioForm() {
+        const form = document.getElementById('studio-contact-form');
+        const successPanel = document.getElementById('form-success');
+        const resetBtn = document.getElementById('reset-contact-btn');
+        if (!form || !successPanel) return;
+
+        function setError(inputId, errId, msg) {
+          const input = document.getElementById(inputId);
+          const err = document.getElementById(errId);
+          if (!input || !err) return;
+          if (msg) {
+            err.textContent = msg;
+            err.classList.add('is-visible');
+            input.classList.add('has-error');
+          } else {
+            err.textContent = '';
+            err.classList.remove('is-visible');
+            input.classList.remove('has-error');
+          }
+        }
+
+        ['first-name', 'last-name', 'email', 'project-type'].forEach((id) => {
+          const el = document.getElementById(id);
+          el?.addEventListener('input', () => setError(id, `err-${id}`, ''));
+          el?.addEventListener('change', () => setError(id, `err-${id}`, ''));
+        });
+
+        form.addEventListener('submit', (e) => {
+          e.preventDefault();
+          let valid = true;
+
+          const firstName = document.getElementById('first-name').value.trim();
+          const lastName = document.getElementById('last-name').value.trim();
+          const email = document.getElementById('email').value.trim();
+          const projectType = document.getElementById('project-type').value;
+
+          if (!firstName) {
+            setError('first-name', 'err-first-name', 'First name is required.');
+            valid = false;
+          }
+          if (!lastName) {
+            setError('last-name', 'err-last-name', 'Last name is required.');
+            valid = false;
+          }
+          if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            setError('email', 'err-email', 'Please enter a valid email address.');
+            valid = false;
+          }
+          if (!projectType) {
+            setError('project-type', 'err-project-type', 'Please select a project discipline.');
+            valid = false;
+          }
+
+          if (!valid) return;
+
+          document.getElementById('success-name').textContent = firstName;
+          document.getElementById('success-type').textContent = projectType.toLowerCase();
+          form.style.display = 'none';
+          successPanel.classList.add('is-visible');
+          renderIcons();
+        });
+
+        resetBtn?.addEventListener('click', () => {
+          form.reset();
+          successPanel.classList.remove('is-visible');
+          form.style.display = 'grid';
+        });
+      }
+
+      /* ---------------------------------------------------------------------
+       * 10. Copy Address + Toast Notification
+       * --------------------------------------------------------------------- */
+      let toastTimer = null;
+
+      function showToast(message) {
+        const toast = document.getElementById('toast-banner');
+        const text = document.getElementById('toast-text');
+        if (!toast || !text) return;
+        text.textContent = message;
+        toast.classList.add('is-visible');
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => {
+          toast.classList.remove('is-visible');
+        }, 2800);
+      }
+
+      function initCopyAddress() {
+        const btn = document.getElementById('copy-address-btn');
+        if (!btn) return;
+        btn.addEventListener('click', () => {
+          const text = btn.getAttribute('data-copy') || '790 S 1350 East, Provo, UT 84606';
+          try {
+            const temp = document.createElement('textarea');
+            temp.value = text;
+            temp.style.position = 'fixed';
+            temp.style.opacity = '0';
+            document.body.appendChild(temp);
+            temp.select();
+            document.execCommand('copy');
+            document.body.removeChild(temp);
+            showToast('Address copied: ' + text);
+          } catch (err) {
+            showToast(text);
+          }
+        });
+      }
+
+      /* ---------------------------------------------------------------------
+       * 11. Boot Application & Global Event Listeners
+       * --------------------------------------------------------------------- */
+      document.addEventListener('DOMContentLoaded', () => {
+        renderIcons();
+        initSmoothScrollAndMotion();
+        initHeader();
+        initSpecialtiesIndex();
+        initMobileMenu();
+        initStudioForm();
+        initCopyAddress();
+
+        // Discipline Drawer Triggers
+        document.querySelectorAll('[data-open-drawer]').forEach((btn) => {
+          btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            openDisciplineDrawer(btn.getAttribute('data-open-drawer'));
+          });
+        });
+        drawerOverlay?.addEventListener('click', (e) => {
+          if (e.target === drawerOverlay) closeDisciplineDrawer();
+        });
+
+        // Portfolio Lightbox Triggers
+        document.querySelectorAll('[data-open-portfolio]').forEach((el) => {
+          el.addEventListener('click', (e) => {
+            e.preventDefault();
+            openPortfolioModal();
+          });
+        });
+
+        // Awards Modal Triggers
+        document.querySelectorAll('[data-open-awards]').forEach((el) => {
+          el.addEventListener('click', (e) => {
+            e.preventDefault();
+            openAwardsModal();
+          });
+          el.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              openAwardsModal();
+            }
+          });
+        });
+
+        modalCloseBtn?.addEventListener('click', closeModal);
+        modalOverlay?.addEventListener('click', (e) => {
+          if (e.target === modalOverlay) closeModal();
+        });
+
+        // Keyboard Support (Escape + Lightbox Left/Right Arrows)
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape') {
+            closeDisciplineDrawer();
+            closeModal();
+            const mob = document.getElementById('mobile-menu-overlay');
+            if (mob?.classList.contains('is-open')) {
+              mob.classList.remove('is-open');
+              mob.setAttribute('aria-hidden', 'true');
+              unlockPageScroll();
+            }
+          } else if (currentModalMode === 'portfolio') {
+            if (e.key === 'ArrowRight') {
+              currentSlide = (currentSlide + 1) % PORTFOLIO_ITEMS.length;
+              renderPortfolioLightbox();
+            } else if (e.key === 'ArrowLeft') {
+              currentSlide = (currentSlide - 1 + PORTFOLIO_ITEMS.length) % PORTFOLIO_ITEMS.length;
+              renderPortfolioLightbox();
+            }
+          }
+        });
+
+        // Back to Top
+        document.getElementById('back-to-top')?.addEventListener('click', () => {
+          if (lenisInstance) lenisInstance.scrollTo(0);
+          else window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,1915 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JLR Contractors — Modern Corporate &amp; Industrial Precision | Est. 1912</title>
+  <meta name="description" content="JLR Contractors — Est. 1912. Utah Valley's trusted general contractor for residential, commercial, public works, and in-house architectural millwork." />
+
+  <!-- Google Fonts: Barlow Condensed (Architectural Display), Inter (Corporate UI), JetBrains Mono (Technical Data) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Tailwind Corporate & Industrial Precision Design System -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            navy: {
+              DEFAULT: '#0B1F3A',
+              dark: '#071529',
+              light: '#142F54',
+            },
+            slateSurface: '#F1F5F9',
+            steel: '#334155',
+            amberBrand: {
+              DEFAULT: '#F59E0B',
+              hover: '#D97706',
+              light: '#FEF3C7',
+            },
+            borderCool: '#E2E8F0',
+          },
+          fontFamily: {
+            display: ['"Barlow Condensed"', 'system-ui', 'sans-serif'],
+            sans: ['"Inter"', 'system-ui', '-apple-system', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+        },
+      },
+    };
+  </script>
+
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- GSAP & ScrollTrigger CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+  <style>
+    /* =========================================================================
+       CORPORATE & INDUSTRIAL PRECISION CUSTOM STYLES
+       ========================================================================= */
+    :root {
+      --ease-industrial: cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    html {
+      background-color: #FFFFFF;
+      color: #0B1F3A;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* Subtle Technical Blueprint Grid Pattern for Dark Navy Sections */
+    .tech-grid-navy {
+      background-image:
+        linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+      background-size: 48px 48px;
+    }
+
+    /* Classic Corporate Nav Link Active Underline */
+    .corp-nav-link {
+      position: relative;
+      padding-block: 0.35rem;
+    }
+    .corp-nav-link::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 2px;
+      background-color: #F59E0B;
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.25s var(--ease-industrial);
+    }
+    .corp-nav-link:hover::after,
+    .corp-nav-link.is-active::after {
+      transform: scaleX(1);
+    }
+
+    /* Division Horizontal Tab States */
+    .division-tab {
+      transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+    }
+    .division-tab.is-active {
+      background-color: #0B1F3A;
+      color: #FFFFFF;
+      border-color: #0B1F3A;
+      box-shadow: inset 0 -4px 0 0 #F59E0B;
+    }
+    .division-tab.is-active .tab-code {
+      color: #F59E0B;
+    }
+
+    /* Portfolio Filter Button Active State */
+    .portfolio-filter-btn {
+      transition: all 0.2s ease;
+    }
+    .portfolio-filter-btn.is-active {
+      background-color: #0B1F3A;
+      color: #FFFFFF;
+      border-color: #0B1F3A;
+    }
+
+    /* Corporate Form Inputs */
+    .corp-input {
+      background-color: #FFFFFF;
+      border: 1px solid #CBD5E1;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .corp-input:focus {
+      outline: none;
+      border-color: #0B1F3A;
+      box-shadow: 0 0 0 3px rgba(11, 31, 58, 0.12);
+    }
+    .corp-input.has-error {
+      border-color: #DC2626;
+      background-color: #FEF2F2;
+    }
+
+    /* Overlay Transitions (Drawers & Modals) */
+    .overlay-shell {
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s var(--ease-industrial);
+    }
+    .overlay-shell.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .slide-drawer {
+      transform: translateX(100%);
+      transition: transform 0.4s var(--ease-industrial);
+    }
+    .overlay-shell.open .slide-drawer {
+      transform: translateX(0);
+    }
+    .modal-dialog {
+      transform: translateY(16px) scale(0.98);
+      opacity: 0;
+      transition: transform 0.35s var(--ease-industrial), opacity 0.3s ease;
+    }
+    .overlay-shell.open .modal-dialog {
+      transform: translateY(0) scale(1);
+      opacity: 1;
+    }
+
+    /* Clean Scrollbars for Overlays */
+    .custom-scroll {
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior: contain;
+      scrollbar-width: thin;
+      scrollbar-color: #94A3B8 #F1F5F9;
+    }
+    .custom-scroll::-webkit-scrollbar {
+      width: 6px;
+    }
+    .custom-scroll::-webkit-scrollbar-track {
+      background: #F1F5F9;
+    }
+    .custom-scroll::-webkit-scrollbar-thumb {
+      background-color: #94A3B8;
+    }
+
+    ::selection {
+      background-color: #F59E0B;
+      color: #0B1F3A;
+    }
+  </style>
+</head>
+
+<body class="bg-white text-navy antialiased">
+
+  <!-- Toast Notification Banner -->
+  <div id="toast-banner" role="status" aria-live="polite" class="fixed bottom-6 right-6 z-[95] px-5 py-3.5 bg-navy text-white border-l-4 border-amberBrand shadow-2xl flex items-center gap-3 text-xs font-mono uppercase tracking-wider opacity-0 pointer-events-none translate-y-4 transition-all duration-300">
+    <i data-lucide="check-square" stroke-width="2" class="w-4 h-4 text-amberBrand shrink-0"></i>
+    <span id="toast-text">Address copied to clipboard</span>
+  </div>
+
+  <!-- ======================================================================= -->
+  <!-- 1. TOP UTILITY BAR (DEEP NAVY #0B1F3A)                                  -->
+  <!-- ======================================================================= -->
+  <div class="bg-navy text-white border-b border-white/10">
+    <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 py-2.5 flex flex-col sm:flex-row items-center justify-between gap-2 text-[11px] font-mono tracking-wider uppercase">
+      <div class="flex items-center gap-2.5 text-slate-200">
+        <span class="w-2 h-2 bg-amberBrand inline-block shrink-0" aria-hidden="true"></span>
+        <span>EST. 1912 &bull; UTAH VALLEY'S TRUSTED GENERAL CONTRACTOR</span>
+      </div>
+      <div class="flex flex-wrap items-center justify-center sm:justify-end gap-x-5 gap-y-1 text-slate-300">
+        <span class="inline-flex items-center gap-1.5">
+          <i data-lucide="map-pin" stroke-width="1.75" class="w-3.5 h-3.5 text-amberBrand"></i>
+          <span>790 S 1350 East, Provo, UT 84606</span>
+        </span>
+        <span class="hidden sm:inline text-white/25">|</span>
+        <a href="tel:+18013736230" class="inline-flex items-center gap-1.5 text-white font-semibold hover:text-amberBrand transition-colors">
+          <i data-lucide="phone" stroke-width="1.75" class="w-3.5 h-3.5 text-amberBrand"></i>
+          <span>(801) 373-6230</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================================= -->
+  <!-- 2. SOLID CLASSIC STICKY CORPORATE NAVBAR (PURE WHITE #FFFFFF)           -->
+  <!-- ======================================================================= -->
+  <header id="corporate-header" class="sticky top-0 z-50 bg-white border-b border-borderCool transition-shadow duration-200">
+    <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 h-20 flex items-center justify-between gap-6">
+
+      <!-- Official JLR Logo -->
+      <a href="#hero" class="flex items-center shrink-0 focus:outline-none" aria-label="JLR Contractors Home">
+        <img
+          src="https://static.wixstatic.com/media/bcc74e_ddc9dbf3dbfc466aa624a750fc4365ac~mv2.png"
+          alt="JLR Contractors Official Logo"
+          onerror="this.onerror=null;this.src='https://placehold.co/180x48/0B1F3A/FFFFFF?text=JLR+CONTRACTORS';"
+          class="h-9 sm:h-10 w-auto object-contain" />
+      </a>
+
+      <!-- Horizontal Corporate Navigation Links -->
+      <nav aria-label="Primary Navigation" class="hidden lg:flex items-center gap-8">
+        <a href="#hero" class="corp-nav-link is-active text-xs font-bold uppercase tracking-[0.14em] text-navy hover:text-navy">Home</a>
+        <a href="#divisions" class="corp-nav-link text-xs font-bold uppercase tracking-[0.14em] text-steel hover:text-navy transition-colors">Divisions</a>
+        <a href="#portfolio" class="corp-nav-link text-xs font-bold uppercase tracking-[0.14em] text-steel hover:text-navy transition-colors">Portfolio</a>
+        <a href="#legacy" class="corp-nav-link text-xs font-bold uppercase tracking-[0.14em] text-steel hover:text-navy transition-colors">Legacy</a>
+        <a href="#awards" class="corp-nav-link text-xs font-bold uppercase tracking-[0.14em] text-steel hover:text-navy transition-colors">Awards</a>
+        <a href="#contact" class="corp-nav-link text-xs font-bold uppercase tracking-[0.14em] text-steel hover:text-navy transition-colors">Contact</a>
+      </nav>
+
+      <!-- Right CTA & Mobile Trigger -->
+      <div class="flex items-center gap-3">
+        <a href="#contact" class="hidden sm:inline-flex items-center gap-2 px-6 py-3 bg-amberBrand text-navy font-sans text-xs font-bold uppercase tracking-[0.12em] rounded-none hover:bg-amberBrand-hover active:scale-[0.99] transition-all">
+          <span>Request a Bid</span>
+          <i data-lucide="arrow-right" stroke-width="2" class="w-4 h-4"></i>
+        </a>
+
+        <button id="mobile-menu-open" type="button" aria-label="Open navigation menu" aria-expanded="false" class="lg:hidden w-11 h-11 border border-borderCool bg-slateSurface text-navy flex items-center justify-center hover:border-navy hover:bg-navy hover:text-white transition-colors">
+          <i data-lucide="menu" stroke-width="2" class="w-5 h-5"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Slide-Over Navigation Drawer -->
+  <div id="mobile-menu-overlay" class="overlay-shell fixed inset-0 z-[75] bg-navy/70 backdrop-blur-sm lg:hidden" aria-hidden="true">
+    <div class="slide-drawer absolute inset-y-0 right-0 w-full max-w-sm h-[100dvh] bg-navy text-white border-l border-white/15 flex flex-col overflow-hidden">
+      <div class="shrink-0 flex items-center justify-between px-6 py-5 border-b border-white/10">
+        <span class="bg-white px-3 py-1.5 inline-flex items-center">
+          <img
+            src="https://static.wixstatic.com/media/bcc74e_ddc9dbf3dbfc466aa624a750fc4365ac~mv2.png"
+            alt="JLR Contractors"
+            onerror="this.onerror=null;this.src='https://placehold.co/150x42/FFFFFF/0B1F3A?text=JLR';"
+            class="h-7 w-auto object-contain" />
+        </span>
+        <button id="mobile-menu-close" type="button" aria-label="Close navigation menu" class="w-10 h-10 border border-white/25 text-white flex items-center justify-center hover:bg-amberBrand hover:border-amberBrand hover:text-navy transition-colors">
+          <i data-lucide="x" stroke-width="2" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <nav class="flex-1 min-h-0 overflow-y-auto custom-scroll px-6 py-6 flex flex-col divide-y divide-white/10">
+        <a href="#hero" class="mobile-link py-4 font-display text-2xl font-bold uppercase tracking-wider text-white hover:text-amberBrand transition-colors flex items-center justify-between">
+          <span>Home</span><span class="font-mono text-xs text-amberBrand">01</span>
+        </a>
+        <a href="#divisions" class="mobile-link py-4 font-display text-2xl font-bold uppercase tracking-wider text-white hover:text-amberBrand transition-colors flex items-center justify-between">
+          <span>Divisions</span><span class="font-mono text-xs text-amberBrand">02</span>
+        </a>
+        <a href="#portfolio" class="mobile-link py-4 font-display text-2xl font-bold uppercase tracking-wider text-white hover:text-amberBrand transition-colors flex items-center justify-between">
+          <span>Portfolio</span><span class="font-mono text-xs text-amberBrand">03</span>
+        </a>
+        <a href="#legacy" class="mobile-link py-4 font-display text-2xl font-bold uppercase tracking-wider text-white hover:text-amberBrand transition-colors flex items-center justify-between">
+          <span>Legacy</span><span class="font-mono text-xs text-amberBrand">04</span>
+        </a>
+        <a href="#awards" class="mobile-link py-4 font-display text-2xl font-bold uppercase tracking-wider text-white hover:text-amberBrand transition-colors flex items-center justify-between">
+          <span>Awards</span><span class="font-mono text-xs text-amberBrand">05</span>
+        </a>
+        <a href="#contact" class="mobile-link py-4 font-display text-2xl font-bold uppercase tracking-wider text-white hover:text-amberBrand transition-colors flex items-center justify-between">
+          <span>Contact</span><span class="font-mono text-xs text-amberBrand">06</span>
+        </a>
+      </nav>
+
+      <div class="shrink-0 p-6 bg-navy-dark border-t border-white/10 space-y-4">
+        <div class="font-mono text-[11px] text-slate-300 space-y-1">
+          <p>790 S 1350 East, Provo, UT 84606</p>
+          <p><a href="tel:+18013736230" class="text-amberBrand font-semibold">(801) 373-6230</a></p>
+        </div>
+        <a href="#contact" class="mobile-link w-full inline-flex items-center justify-center gap-2 py-3.5 px-5 bg-amberBrand text-navy text-xs font-bold uppercase tracking-[0.14em] hover:bg-amberBrand-hover transition-colors">
+          <span>Request a Bid</span>
+          <i data-lucide="arrow-right" stroke-width="2" class="w-4 h-4"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <main>
+    <!-- ===================================================================== -->
+    <!-- 3. FULL-BLEED ARCHITECTURAL BANNER HERO                               -->
+    <!-- ===================================================================== -->
+    <section id="hero" class="relative bg-navy overflow-hidden">
+      <!-- Full-Bleed Background Architectural Photograph -->
+      <div class="absolute inset-0 z-0">
+        <img
+          src="https://static.wixstatic.com/media/bcc74e_f9722c7247f849ce8135025271365a7c~mv2.jpg/v1/crop/x_964,y_94,w_2756,h_3854/fill/w_779,h_1094,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/J%20Lyne%20Roberts-1.jpg"
+          alt="JLR Contractors architectural construction project in Utah Valley"
+          loading="eager"
+          onerror="this.onerror=null;this.src='https://placehold.co/1600x900/0B1F3A/FFFFFF?text=JLR+CONTRACTORS';"
+          class="w-full h-full object-cover object-center" />
+        <!-- Strong Left-to-Right Deep Navy Directional Gradient Overlay -->
+        <div class="absolute inset-0 bg-gradient-to-r from-navy via-navy/85 to-navy/30"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-navy/80 via-transparent to-navy/30"></div>
+      </div>
+
+      <!-- Hero Content Container -->
+      <div class="relative z-10 max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 pt-20 sm:pt-28 pb-32 sm:pb-40 lg:pb-44">
+        <div class="max-w-3xl">
+          <!-- Technical Monospace Tag -->
+          <div class="hero-anim inline-flex items-center gap-3 px-3.5 py-1.5 bg-white/10 border-l-4 border-amberBrand text-white font-mono text-[11px] uppercase tracking-[0.18em] mb-6 backdrop-blur-sm">
+            <span>LICENSED GENERAL CONTRACTOR &bull; UTAH VALLEY</span>
+          </div>
+
+          <!-- Bold Uppercase Barlow Condensed Headline -->
+          <h1 class="hero-anim font-display font-extrabold uppercase text-white text-6xl sm:text-7xl lg:text-[92px] leading-[0.94] tracking-tight mb-6">
+            ONE COMPANY.<br />
+            <span class="text-amberBrand">FOUR SPECIALTIES.</span>
+          </h1>
+
+          <!-- Crisp Corporate Subcopy -->
+          <p class="hero-anim font-sans text-base sm:text-lg lg:text-xl text-slate-200 leading-relaxed max-w-2xl mb-10">
+            From custom luxury homes to community spaces, we bring precision, craft, and commitment to every project we build.
+          </p>
+
+          <!-- Two Sharp Rectangular Action Buttons -->
+          <div class="hero-anim flex flex-wrap items-center gap-4">
+            <a href="#divisions" class="inline-flex items-center gap-2.5 px-8 py-4 bg-amberBrand text-navy font-sans text-xs font-bold uppercase tracking-[0.14em] hover:bg-amberBrand-hover active:scale-[0.99] transition-all">
+              <span>Explore Divisions</span>
+              <i data-lucide="arrow-down-right" stroke-width="2" class="w-4 h-4"></i>
+            </a>
+            <a href="#portfolio" class="inline-flex items-center gap-2.5 px-8 py-4 border-2 border-white text-white font-sans text-xs font-bold uppercase tracking-[0.14em] hover:bg-white hover:text-navy active:scale-[0.99] transition-all">
+              <i data-lucide="grid" stroke-width="2" class="w-4 h-4"></i>
+              <span>View Portfolio</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- 4. OVERLAPPING 4-COLUMN CORPORATE KPI BAR                             -->
+    <!-- ===================================================================== -->
+    <section aria-label="Company Key Performance Indicators" class="relative z-20 -mt-16 sm:-mt-20 px-4 sm:px-6 lg:px-10">
+      <div class="max-w-[1400px] mx-auto bg-white border border-borderCool border-t-4 border-t-amberBrand shadow-xl">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-borderCool">
+
+          <!-- KPI 1 -->
+          <div class="p-6 sm:p-8 flex items-start gap-4">
+            <div class="w-11 h-11 bg-slateSurface border border-borderCool text-navy flex items-center justify-center shrink-0">
+              <i data-lucide="calendar-clock" stroke-width="1.75" class="w-5 h-5 text-amberBrand-hover"></i>
+            </div>
+            <div>
+              <p class="font-display font-extrabold text-4xl text-navy leading-none tracking-tight">110+</p>
+              <p class="font-sans text-xs font-bold uppercase tracking-wider text-steel mt-1.5">Years in Utah Valley</p>
+            </div>
+          </div>
+
+          <!-- KPI 2 -->
+          <div class="p-6 sm:p-8 flex items-start gap-4">
+            <div class="w-11 h-11 bg-slateSurface border border-borderCool text-navy flex items-center justify-center shrink-0">
+              <i data-lucide="layers" stroke-width="1.75" class="w-5 h-5 text-amberBrand-hover"></i>
+            </div>
+            <div>
+              <p class="font-display font-extrabold text-4xl text-navy leading-none tracking-tight">4</p>
+              <p class="font-sans text-xs font-bold uppercase tracking-wider text-steel mt-1.5">Core Divisions</p>
+            </div>
+          </div>
+
+          <!-- KPI 3 -->
+          <div class="p-6 sm:p-8 flex items-start gap-4">
+            <div class="w-11 h-11 bg-slateSurface border border-borderCool text-navy flex items-center justify-center shrink-0">
+              <i data-lucide="hammer" stroke-width="1.75" class="w-5 h-5 text-amberBrand-hover"></i>
+            </div>
+            <div>
+              <p class="font-display font-extrabold text-4xl text-navy leading-none tracking-tight">100%</p>
+              <p class="font-sans text-xs font-bold uppercase tracking-wider text-steel mt-1.5">In-House Millwork</p>
+            </div>
+          </div>
+
+          <!-- KPI 4 -->
+          <div class="p-6 sm:p-8 flex items-start gap-4">
+            <div class="w-11 h-11 bg-slateSurface border border-borderCool text-navy flex items-center justify-center shrink-0">
+              <i data-lucide="map-pin" stroke-width="1.75" class="w-5 h-5 text-amberBrand-hover"></i>
+            </div>
+            <div>
+              <p class="font-display font-extrabold text-4xl text-navy leading-none tracking-tight">EST. 1912</p>
+              <p class="font-sans text-xs font-bold uppercase tracking-wider text-steel mt-1.5">Provo, UT Headquarters</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- 5. INTERACTIVE TABBED DIVISION SHOWCASE ("WHAT WE DO")                -->
+    <!-- ===================================================================== -->
+    <section id="divisions" class="py-20 sm:py-28 bg-white border-b border-borderCool">
+      <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10">
+
+        <!-- Section Header -->
+        <div class="gsap-reveal flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-12">
+          <div>
+            <p class="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-amberBrand-hover mb-2">
+              // WHAT WE DO
+            </p>
+            <h2 class="font-display font-extrabold uppercase text-4xl sm:text-5xl lg:text-6xl text-navy leading-none tracking-tight">
+              FOUR INTEGRATED CONSTRUCTION DIVISIONS
+            </h2>
+          </div>
+          <p class="font-sans text-sm sm:text-base text-steel max-w-lg leading-relaxed">
+            Select a division below to review technical capabilities, project scope, and full engineering specifications.
+          </p>
+        </div>
+
+        <!-- 4 Prominent Horizontal Tab Buttons -->
+        <div role="tablist" aria-label="JLR Contractors Core Divisions" class="gsap-reveal grid grid-cols-2 lg:grid-cols-4 border border-borderCool bg-slateSurface mb-0">
+          <button type="button" role="tab" aria-selected="true" data-division-tab="residential" class="division-tab is-active text-left p-5 sm:p-6 border-r border-b lg:border-b-0 border-borderCool flex items-center justify-between gap-3">
+            <div>
+              <span class="tab-code block font-mono text-[11px] font-semibold tracking-widest uppercase text-steel mb-1">01 / DIV</span>
+              <span class="font-display font-bold uppercase text-xl sm:text-2xl tracking-wide">Residential</span>
+            </div>
+            <i data-lucide="home" stroke-width="1.75" class="w-5 h-5 shrink-0 opacity-80"></i>
+          </button>
+
+          <button type="button" role="tab" aria-selected="false" data-division-tab="commercial" class="division-tab text-left p-5 sm:p-6 lg:border-r border-b lg:border-b-0 border-borderCool text-navy hover:bg-white flex items-center justify-between gap-3">
+            <div>
+              <span class="tab-code block font-mono text-[11px] font-semibold tracking-widest uppercase text-steel mb-1">02 / DIV</span>
+              <span class="font-display font-bold uppercase text-xl sm:text-2xl tracking-wide">Commercial</span>
+            </div>
+            <i data-lucide="building-2" stroke-width="1.75" class="w-5 h-5 shrink-0 opacity-80"></i>
+          </button>
+
+          <button type="button" role="tab" aria-selected="false" data-division-tab="public-works" class="division-tab text-left p-5 sm:p-6 border-r border-borderCool text-navy hover:bg-white flex items-center justify-between gap-3">
+            <div>
+              <span class="tab-code block font-mono text-[11px] font-semibold tracking-widest uppercase text-steel mb-1">03 / DIV</span>
+              <span class="font-display font-bold uppercase text-xl sm:text-2xl tracking-wide">Public Works</span>
+            </div>
+            <i data-lucide="landmark" stroke-width="1.75" class="w-5 h-5 shrink-0 opacity-80"></i>
+          </button>
+
+          <button type="button" role="tab" aria-selected="false" data-division-tab="woodworking" class="division-tab text-left p-5 sm:p-6 text-navy hover:bg-white flex items-center justify-between gap-3">
+            <div>
+              <span class="tab-code block font-mono text-[11px] font-semibold tracking-widest uppercase text-steel mb-1">04 / DIV</span>
+              <span class="font-display font-bold uppercase text-xl sm:text-2xl tracking-wide">Woodworking</span>
+            </div>
+            <i data-lucide="hammer" stroke-width="1.75" class="w-5 h-5 shrink-0 opacity-80"></i>
+          </button>
+        </div>
+
+        <!-- Structured 2-Column Active Division Panel -->
+        <div id="division-panel" role="tabpanel" class="gsap-reveal grid grid-cols-1 lg:grid-cols-12 border-x border-b border-borderCool bg-white">
+          <!-- Left Side: Specs, Description & CTAs -->
+          <div class="lg:col-span-7 p-7 sm:p-10 lg:p-12 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center gap-3 mb-4">
+                <span id="div-badge" class="px-3 py-1 bg-slateSurface border border-borderCool font-mono text-[11px] font-semibold uppercase tracking-widest text-navy">
+                  DIVISION 01 &bull; RESIDENTIAL
+                </span>
+                <span class="h-px flex-1 bg-borderCool" aria-hidden="true"></span>
+              </div>
+
+              <h3 id="div-title" class="font-display font-extrabold uppercase text-4xl sm:text-5xl text-navy tracking-tight mb-4">
+                Custom Residential Construction
+              </h3>
+
+              <p id="div-tagline" class="font-sans text-base font-semibold text-navy mb-3">
+                Custom homes, remodels, and timeless living spaces built to last.
+              </p>
+
+              <p id="div-desc" class="font-sans text-sm sm:text-base text-steel leading-relaxed mb-8">
+                We partner closely with homeowners and leading architects to build heirloom custom residences across Utah Valley—combining structural precision with refined architectural finishes.
+              </p>
+
+              <!-- 4 Checkmark Specification Items -->
+              <p class="font-mono text-[11px] font-semibold uppercase tracking-[0.18em] text-steel mb-4">
+                KEY CAPABILITIES &amp; SCOPE
+              </p>
+              <ul id="div-specs" class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 mb-10">
+                <!-- Populated by JS -->
+              </ul>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex flex-wrap items-center gap-4 pt-6 border-t border-borderCool">
+              <button type="button" id="div-start-btn" data-project-type="Residential" class="inline-flex items-center gap-2.5 px-7 py-3.5 bg-amberBrand text-navy font-sans text-xs font-bold uppercase tracking-[0.12em] hover:bg-amberBrand-hover active:scale-[0.99] transition-all">
+                <span id="div-start-label">Start a Residential Project</span>
+                <i data-lucide="arrow-right" stroke-width="2" class="w-4 h-4"></i>
+              </button>
+
+              <button type="button" id="div-spec-btn" data-open-drawer="residential" class="inline-flex items-center gap-2.5 px-7 py-3.5 border-2 border-navy text-navy font-sans text-xs font-bold uppercase tracking-[0.12em] hover:bg-navy hover:text-white active:scale-[0.99] transition-all">
+                <i data-lucide="file-text" stroke-width="2" class="w-4 h-4"></i>
+                <span>Open Full Spec Sheet</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Right Side: Framed Division Image + Technical Caption Badge -->
+          <div class="lg:col-span-5 bg-slateSurface p-5 sm:p-7 lg:border-l border-t lg:border-t-0 border-borderCool flex flex-col justify-between">
+            <div class="relative overflow-hidden border border-borderCool bg-navy aspect-[4/4.2] w-full">
+              <img
+                id="div-image"
+                src="https://static.wixstatic.com/media/bcc74e_e7bedcbef85644e180836b15e428b42c~mv2.jpg/v1/crop/x_27,y_268,w_1120,h_1825/fill/w_348,h_566,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/09%20J%20Lyne%20Roberts%20and%20Sons-1_JPG.jpg"
+                alt="Residential construction by JLR Contractors"
+                onerror="this.onerror=null;this.src='https://placehold.co/640x700/0B1F3A/FFFFFF?text=JLR+Division';"
+                class="w-full h-full object-cover transition-opacity duration-300" />
+              <!-- Technical Caption Badge -->
+              <div class="absolute bottom-0 inset-x-0 bg-navy/92 text-white px-4 py-3 border-t-2 border-amberBrand flex items-center justify-between gap-2">
+                <span id="div-caption" class="font-mono text-[11px] uppercase tracking-wider">SPEC REF // DIV-01 RESIDENTIAL</span>
+                <span class="font-mono text-[10px] uppercase tracking-widest text-amberBrand">UTAH VALLEY</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- 6. FILTERABLE ON-PAGE PORTFOLIO GRID ("FEATURED PROJECTS")            -->
+    <!-- ===================================================================== -->
+    <section id="portfolio" class="py-20 sm:py-28 bg-slateSurface border-b border-borderCool">
+      <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10">
+
+        <!-- Header & Filter Bar -->
+        <div class="gsap-reveal flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-12">
+          <div>
+            <p class="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-amberBrand-hover mb-2">
+              // FEATURED PROJECTS
+            </p>
+            <h2 class="font-display font-extrabold uppercase text-4xl sm:text-5xl lg:text-6xl text-navy leading-none tracking-tight">
+              PROVEN EXECUTION ACROSS UTAH
+            </h2>
+          </div>
+
+          <!-- Filter Buttons -->
+          <div id="portfolio-filter-bar" role="tablist" aria-label="Filter projects by division" class="flex flex-wrap items-center gap-2">
+            <button type="button" role="tab" aria-selected="true" data-filter="all" class="portfolio-filter-btn is-active px-4 py-2.5 bg-white border border-borderCool font-mono text-[11px] font-semibold uppercase tracking-wider text-navy hover:border-navy">
+              All (6)
+            </button>
+            <button type="button" role="tab" aria-selected="false" data-filter="Residential" class="portfolio-filter-btn px-4 py-2.5 bg-white border border-borderCool font-mono text-[11px] font-semibold uppercase tracking-wider text-navy hover:border-navy">
+              Residential
+            </button>
+            <button type="button" role="tab" aria-selected="false" data-filter="Commercial" class="portfolio-filter-btn px-4 py-2.5 bg-white border border-borderCool font-mono text-[11px] font-semibold uppercase tracking-wider text-navy hover:border-navy">
+              Commercial
+            </button>
+            <button type="button" role="tab" aria-selected="false" data-filter="Public Works" class="portfolio-filter-btn px-4 py-2.5 bg-white border border-borderCool font-mono text-[11px] font-semibold uppercase tracking-wider text-navy hover:border-navy">
+              Public Works
+            </button>
+            <button type="button" role="tab" aria-selected="false" data-filter="Woodworking" class="portfolio-filter-btn px-4 py-2.5 bg-white border border-borderCool font-mono text-[11px] font-semibold uppercase tracking-wider text-navy hover:border-navy">
+              Woodworking
+            </button>
+          </div>
+        </div>
+
+        <!-- 3-Column Portfolio Grid (Populated dynamically to stay in sync with Lightbox) -->
+        <div id="portfolio-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <!-- Rendered via JS -->
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- 7. DEEP NAVY HERITAGE & LEGACY BAND ("YOUR DREAM HOME, EXPERTLY BUILT")-->
+    <!-- ===================================================================== -->
+    <section id="legacy" class="py-20 sm:py-28 bg-navy text-white tech-grid-navy border-b border-white/10">
+      <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10">
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center mb-16">
+          <!-- Left 7 Cols: Heading, Quote & Story -->
+          <div class="lg:col-span-7 gsap-reveal">
+            <p class="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-amberBrand mb-3">
+              // EST. 1912 &bull; GENERATIONAL STEWARDSHIP
+            </p>
+            <h2 class="font-display font-extrabold uppercase text-4xl sm:text-5xl lg:text-6xl text-white leading-[0.98] tracking-tight mb-6">
+              YOUR DREAM HOME,<br />
+              <span class="text-amberBrand">EXPERTLY BUILT.</span>
+            </h2>
+
+            <blockquote class="border-l-4 border-amberBrand pl-5 py-1 my-7">
+              <p class="font-display font-bold uppercase text-2xl sm:text-3xl tracking-wide text-white">
+                "OUR COMMITMENT IS EXCELLENCE."
+              </p>
+            </blockquote>
+
+            <p class="font-sans text-base text-slate-300 leading-relaxed max-w-2xl mb-8">
+              For over a century, JLR Contractors has been crafting quality homes, commercial landmarks, and public infrastructure that stand the test of time. Our team combines time-honored craftsmanship with modern engineering precision to deliver every project on schedule and built to endure.
+            </p>
+
+            <div class="flex flex-wrap items-center gap-4">
+              <button type="button" data-open-lightbox="1" class="inline-flex items-center gap-2.5 px-7 py-3.5 bg-amberBrand text-navy font-sans text-xs font-bold uppercase tracking-[0.14em] hover:bg-amberBrand-hover transition-colors">
+                <span>Inspect Interior Craft</span>
+                <i data-lucide="maximize-2" stroke-width="2" class="w-4 h-4"></i>
+              </button>
+              <a href="#contact" class="inline-flex items-center gap-2.5 px-7 py-3.5 border border-white/30 text-white font-sans text-xs font-bold uppercase tracking-[0.14em] hover:border-amberBrand hover:text-amberBrand transition-colors">
+                <span>Discuss Your Build</span>
+                <i data-lucide="arrow-right" stroke-width="2" class="w-4 h-4"></i>
+              </a>
+            </div>
+          </div>
+
+          <!-- Right 5 Cols: Framed Interior Craftsmanship Photo -->
+          <div class="lg:col-span-5 gsap-reveal">
+            <div class="bg-navy-light border border-white/15 p-3 shadow-2xl">
+              <div class="relative overflow-hidden aspect-[4/3.8] bg-navy-dark">
+                <img
+                  src="https://static.wixstatic.com/media/bcc74e_01e8004f3c14425590432bae200e9e04~mv2.png/v1/fill/w_590,h_596,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/Screenshot%202026-05-18%20155607.png"
+                  alt="Vaulted limestone living room and architectural millwork by JLR Contractors"
+                  loading="lazy"
+                  onerror="this.onerror=null;this.src='https://placehold.co/640x600/142F54/FFFFFF?text=JLR+Interior+Craft';"
+                  class="w-full h-full object-cover" />
+              </div>
+              <div class="pt-3 px-1 flex items-center justify-between font-mono text-[11px] uppercase tracking-wider text-slate-300">
+                <span>FIG. 02 &mdash; ARCHITECTURAL MILLWORK</span>
+                <span class="text-amberBrand">PROVO, UT</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Horizontal 3-Step Legacy Timeline -->
+        <div class="gsap-reveal pt-10 border-t border-white/15">
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 relative">
+            <!-- Step 1 -->
+            <div class="bg-navy-light/80 border border-white/10 border-t-4 border-t-amberBrand p-6 sm:p-7">
+              <div class="flex items-center justify-between mb-4">
+                <span class="font-mono text-xs font-bold uppercase tracking-widest text-amberBrand">PHASE 01 // 1912</span>
+                <i data-lucide="flag" stroke-width="1.75" class="w-5 h-5 text-slate-300"></i>
+              </div>
+              <h3 class="font-display font-bold uppercase text-2xl text-white tracking-wide mb-2">
+                1912 Foundation
+              </h3>
+              <p class="font-sans text-sm text-slate-300 leading-relaxed">
+                Established in Utah Valley on principles of structural honesty, master carpentry, and enduring community relationships.
+              </p>
+            </div>
+
+            <!-- Step 2 -->
+            <div class="bg-navy-light/80 border border-white/10 border-t-4 border-t-amberBrand p-6 sm:p-7">
+              <div class="flex items-center justify-between mb-4">
+                <span class="font-mono text-xs font-bold uppercase tracking-widest text-amberBrand">PHASE 02 // HERITAGE</span>
+                <i data-lucide="users" stroke-width="1.75" class="w-5 h-5 text-slate-300"></i>
+              </div>
+              <h3 class="font-display font-bold uppercase text-2xl text-white tracking-wide mb-2">
+                Generational Craftsmanship
+              </h3>
+              <p class="font-sans text-sm text-slate-300 leading-relaxed">
+                Expanded across residential, commercial, municipal water infrastructure, and a dedicated in-house woodworking atelier.
+              </p>
+            </div>
+
+            <!-- Step 3 -->
+            <div class="bg-navy-light/80 border border-white/10 border-t-4 border-t-amberBrand p-6 sm:p-7">
+              <div class="flex items-center justify-between mb-4">
+                <span class="font-mono text-xs font-bold uppercase tracking-widest text-amberBrand">PHASE 03 // TODAY</span>
+                <i data-lucide="compass" stroke-width="1.75" class="w-5 h-5 text-slate-300"></i>
+              </div>
+              <h3 class="font-display font-bold uppercase text-2xl text-white tracking-wide mb-2">
+                Modern Precision
+              </h3>
+              <p class="font-sans text-sm text-slate-300 leading-relaxed">
+                Integrating critical-path scheduling, open-book estimating, and precision millwork for the next century of Utah builds.
+              </p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- 8. STRUCTURED AWARDS STRIP ("RECOGNITION & AWARDS")                   -->
+    <!-- ===================================================================== -->
+    <section id="awards" class="py-20 sm:py-24 bg-slateSurface border-b border-borderCool">
+      <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10">
+
+        <div class="gsap-reveal flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+          <div>
+            <p class="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-amberBrand-hover mb-2">
+              // RECOGNITION &amp; AWARDS
+            </p>
+            <h2 class="font-display font-extrabold uppercase text-4xl sm:text-5xl text-navy leading-none tracking-tight">
+              INDUSTRY-RECOGNIZED EXCELLENCE
+            </h2>
+          </div>
+
+          <button type="button" data-open-awards class="self-start md:self-auto inline-flex items-center gap-2.5 px-6 py-3.5 bg-navy text-white font-sans text-xs font-bold uppercase tracking-[0.14em] hover:bg-amberBrand hover:text-navy transition-colors">
+            <i data-lucide="award" stroke-width="2" class="w-4 h-4"></i>
+            <span>View Award Details</span>
+          </button>
+        </div>
+
+        <!-- 3-Column White Cards with Amber Left Accent Bars -->
+        <div class="gsap-reveal grid grid-cols-1 md:grid-cols-3 gap-6">
+
+          <!-- Award 1 -->
+          <div data-open-awards role="button" tabindex="0" class="group cursor-pointer bg-white border border-borderCool border-l-4 border-l-amberBrand p-7 shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
+            <div class="flex items-center justify-between mb-6">
+              <span class="font-mono text-[11px] font-semibold uppercase tracking-widest text-steel">HONOR // 01</span>
+              <div class="w-10 h-10 bg-slateSurface text-navy group-hover:bg-navy group-hover:text-amberBrand transition-colors flex items-center justify-center">
+                <i data-lucide="trophy" stroke-width="1.75" class="w-5 h-5"></i>
+              </div>
+            </div>
+            <div>
+              <h3 class="font-display font-bold uppercase text-2xl text-navy tracking-wide mb-2 group-hover:text-amberBrand-hover transition-colors">
+                SC Master Builder Award Winner
+              </h3>
+              <p class="font-sans text-sm text-steel leading-relaxed">
+                Recognizing structural integrity, field precision, and architectural leadership across complex builds.
+              </p>
+            </div>
+          </div>
+
+          <!-- Award 2 -->
+          <div data-open-awards role="button" tabindex="0" class="group cursor-pointer bg-white border border-borderCool border-l-4 border-l-amberBrand p-7 shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
+            <div class="flex items-center justify-between mb-6">
+              <span class="font-mono text-[11px] font-semibold uppercase tracking-widest text-steel">HONOR // 02</span>
+              <div class="w-10 h-10 bg-slateSurface text-navy group-hover:bg-navy group-hover:text-amberBrand transition-colors flex items-center justify-center">
+                <i data-lucide="home" stroke-width="1.75" class="w-5 h-5"></i>
+              </div>
+            </div>
+            <div>
+              <h3 class="font-display font-bold uppercase text-2xl text-navy tracking-wide mb-2 group-hover:text-amberBrand-hover transition-colors">
+                Utah Valley Builder of the Year
+              </h3>
+              <p class="font-sans text-sm text-steel leading-relaxed">
+                Honoring over a century of generational craftsmanship, stewardship, and trusted client delivery.
+              </p>
+            </div>
+          </div>
+
+          <!-- Award 3 -->
+          <div data-open-awards role="button" tabindex="0" class="group cursor-pointer bg-white border border-borderCool border-l-4 border-l-amberBrand p-7 shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
+            <div class="flex items-center justify-between mb-6">
+              <span class="font-mono text-[11px] font-semibold uppercase tracking-widest text-steel">HONOR // 03</span>
+              <div class="w-10 h-10 bg-slateSurface text-navy group-hover:bg-navy group-hover:text-amberBrand transition-colors flex items-center justify-center">
+                <i data-lucide="award" stroke-width="1.75" class="w-5 h-5"></i>
+              </div>
+            </div>
+            <div>
+              <h3 class="font-display font-bold uppercase text-2xl text-navy tracking-wide mb-2 group-hover:text-amberBrand-hover transition-colors">
+                UVHBA Parade of Homes Best of Show
+              </h3>
+              <p class="font-sans text-sm text-steel leading-relaxed">
+                Top distinction for custom architectural finish, bespoke in-house millwork, and residential livability.
+              </p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- 9. UNIFIED SPLIT CONTACT & JLR WOODWORK SECTION                       -->
+    <!-- ===================================================================== -->
+    <section id="contact" class="py-20 sm:py-28 bg-white">
+      <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10">
+
+        <div class="gsap-reveal mb-12">
+          <p class="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-amberBrand-hover mb-2">
+            // PROJECT INQUIRY &amp; BID DESK
+          </p>
+          <h2 class="font-display font-extrabold uppercase text-4xl sm:text-5xl lg:text-6xl text-navy leading-none tracking-tight">
+            CONTACT JLR CONTRACTORS
+          </h2>
+        </div>
+
+        <div class="gsap-reveal grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+
+          <!-- Left 7 Cols: Structured Corporate Inquiry Form -->
+          <div class="lg:col-span-7 bg-slateSurface border border-borderCool p-7 sm:p-10">
+            <div class="pb-6 mb-7 border-b border-borderCool flex flex-wrap items-center justify-between gap-2">
+              <h3 class="font-display font-bold uppercase text-2xl text-navy tracking-wide">
+                SUBMIT PROJECT SPECIFICATIONS
+              </h3>
+              <span class="font-mono text-[11px] uppercase tracking-wider text-steel">
+                RESPONSE WITHIN 1 BUSINESS DAY
+              </span>
+            </div>
+
+            <form id="corporate-contact-form" novalidate class="space-y-5">
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                <!-- First Name -->
+                <div>
+                  <label for="first-name" class="block font-mono text-[11px] font-semibold uppercase tracking-wider text-navy mb-2">
+                    First Name <span class="text-amberBrand-hover">*</span>
+                  </label>
+                  <input id="first-name" name="firstName" type="text" required autocomplete="given-name" placeholder="Jane" class="corp-input w-full px-4 py-3 text-sm text-navy placeholder:text-slate-400" />
+                  <p id="err-first-name" class="hidden mt-1.5 font-mono text-[11px] text-red-600"></p>
+                </div>
+
+                <!-- Last Name -->
+                <div>
+                  <label for="last-name" class="block font-mono text-[11px] font-semibold uppercase tracking-wider text-navy mb-2">
+                    Last Name <span class="text-amberBrand-hover">*</span>
+                  </label>
+                  <input id="last-name" name="lastName" type="text" required autocomplete="family-name" placeholder="Roberts" class="corp-input w-full px-4 py-3 text-sm text-navy placeholder:text-slate-400" />
+                  <p id="err-last-name" class="hidden mt-1.5 font-mono text-[11px] text-red-600"></p>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                <!-- Email -->
+                <div>
+                  <label for="email" class="block font-mono text-[11px] font-semibold uppercase tracking-wider text-navy mb-2">
+                    Email Address <span class="text-amberBrand-hover">*</span>
+                  </label>
+                  <input id="email" name="email" type="email" required autocomplete="email" placeholder="jane@company.com" class="corp-input w-full px-4 py-3 text-sm text-navy placeholder:text-slate-400" />
+                  <p id="err-email" class="hidden mt-1.5 font-mono text-[11px] text-red-600"></p>
+                </div>
+
+                <!-- Phone -->
+                <div>
+                  <label for="phone" class="block font-mono text-[11px] font-semibold uppercase tracking-wider text-navy mb-2">
+                    Phone Number
+                  </label>
+                  <input id="phone" name="phone" type="tel" autocomplete="tel" placeholder="(801) 555-0192" class="corp-input w-full px-4 py-3 text-sm text-navy placeholder:text-slate-400" />
+                </div>
+              </div>
+
+              <!-- Project Type -->
+              <div>
+                <label for="project-type" class="block font-mono text-[11px] font-semibold uppercase tracking-wider text-navy mb-2">
+                  Project Type / Division <span class="text-amberBrand-hover">*</span>
+                </label>
+                <div class="relative">
+                  <select id="project-type" name="projectType" required class="corp-input appearance-none w-full px-4 py-3 pr-10 text-sm text-navy cursor-pointer">
+                    <option value="" disabled selected>Select a division...</option>
+                    <option value="Residential">Residential</option>
+                    <option value="Commercial">Commercial</option>
+                    <option value="Public Works">Public Works</option>
+                    <option value="Woodworking">Woodworking</option>
+                  </select>
+                  <span class="pointer-events-none absolute right-3.5 top-1/2 -translate-y-1/2 text-steel">
+                    <i data-lucide="chevron-down" stroke-width="2" class="w-4 h-4"></i>
+                  </span>
+                </div>
+                <p id="err-project-type" class="hidden mt-1.5 font-mono text-[11px] text-red-600"></p>
+              </div>
+
+              <!-- Vision / Project Scope -->
+              <div>
+                <label for="vision" class="block font-mono text-[11px] font-semibold uppercase tracking-wider text-navy mb-2">
+                  Project Vision &amp; Scope
+                </label>
+                <textarea id="vision" name="vision" rows="4" placeholder="Describe site location, architectural plans, square footage, and target schedule..." class="corp-input w-full px-4 py-3 text-sm text-navy placeholder:text-slate-400 resize-y"></textarea>
+              </div>
+
+              <div class="pt-3">
+                <button type="submit" class="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-8 py-4 bg-navy text-white font-sans text-xs font-bold uppercase tracking-[0.14em] hover:bg-amberBrand hover:text-navy active:scale-[0.99] transition-all">
+                  <span>Submit Project Inquiry</span>
+                  <i data-lucide="send" stroke-width="2" class="w-4 h-4"></i>
+                </button>
+              </div>
+            </form>
+
+            <!-- Inline Confirmation View -->
+            <div id="form-success" class="hidden py-12 text-center bg-white border border-borderCool px-6" role="status" aria-live="polite">
+              <div class="w-14 h-14 bg-navy text-amberBrand flex items-center justify-center mx-auto mb-5">
+                <i data-lucide="check" stroke-width="2.5" class="w-7 h-7"></i>
+              </div>
+              <p class="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-amberBrand-hover mb-2">
+                INQUIRY LOGGED // CONFIRMED
+              </p>
+              <h3 class="font-display font-extrabold uppercase text-4xl text-navy mb-3">
+                THANK YOU, <span id="success-name">CLIENT</span>
+              </h3>
+              <p class="font-sans text-sm text-steel max-w-md mx-auto leading-relaxed mb-7">
+                Your <strong id="success-type" class="text-navy">project</strong> inquiry has been routed to our Provo estimating team. A senior project manager will respond within one business day.
+              </p>
+              <button id="reset-contact-btn" type="button" class="inline-flex items-center gap-2 px-6 py-3 border-2 border-navy text-navy font-sans text-xs font-bold uppercase tracking-[0.12em] hover:bg-navy hover:text-white transition-colors">
+                <i data-lucide="rotate-ccw" stroke-width="2" class="w-4 h-4"></i>
+                <span>Submit Another Inquiry</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Right 5 Cols: Deep Navy JLR Woodwork Info Card -->
+          <aside class="lg:col-span-5 bg-navy text-white border-t-4 border-t-amberBrand p-7 sm:p-10 flex flex-col justify-between tech-grid-navy">
+            <div>
+              <div class="inline-flex items-center gap-2 px-3 py-1 bg-white/10 text-amberBrand font-mono text-[11px] font-semibold uppercase tracking-widest mb-5">
+                <i data-lucide="hammer" stroke-width="2" class="w-3.5 h-3.5"></i>
+                <span>IN-HOUSE MILLWORK SHOP</span>
+              </div>
+
+              <h3 class="font-display font-extrabold uppercase text-4xl text-white leading-none tracking-tight mb-4">
+                JLR WOODWORK &mdash;<br />
+                <span class="text-amberBrand">IN-HOUSE MILLWORK SHOP</span>
+              </h3>
+
+              <p class="font-sans text-sm text-slate-300 leading-relaxed mb-7">
+                Our dedicated Provo woodworking facility crafts custom cabinetry, architectural doors, paneling, and precision millwork directly for our residential and commercial builds.
+              </p>
+
+              <!-- Woodshop Preview Image -->
+              <div class="border border-white/15 bg-navy-dark overflow-hidden h-44 mb-7">
+                <img
+                  src="https://static.wixstatic.com/media/bcc74e_2b46ae3932c9457da925c439e159ca7c~mv2.webp/v1/fill/w_345,h_566,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/ai-generated-IMAGE.webp"
+                  alt="JLR Woodwork custom millwork and architectural doors"
+                  loading="lazy"
+                  onerror="this.onerror=null;this.src='https://placehold.co/600x360/071529/F59E0B?text=JLR+Woodwork';"
+                  class="w-full h-full object-cover opacity-90" />
+              </div>
+            </div>
+
+            <!-- Structured Facility Contact Details -->
+            <div class="space-y-4 pt-6 border-t border-white/15">
+              <!-- Address + Copy & Maps -->
+              <div class="bg-navy-light/90 border border-white/10 p-4">
+                <p class="font-mono text-[10px] uppercase tracking-widest text-amberBrand mb-1">FACILITY ADDRESS</p>
+                <p class="font-sans text-sm font-semibold text-white mb-3">790 S 1350 East, Provo, UT 84606</p>
+                <div class="flex flex-wrap items-center gap-2.5">
+                  <button
+                    type="button"
+                    id="copy-address-btn"
+                    data-copy="790 S 1350 East, Provo, UT 84606"
+                    class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-amberBrand text-navy font-mono text-[11px] font-bold uppercase tracking-wider hover:bg-amberBrand-hover transition-colors">
+                    <i data-lucide="copy" stroke-width="2" class="w-3.5 h-3.5"></i>
+                    <span>Copy Address</span>
+                  </button>
+                  <a
+                    href="https://maps.google.com/?q=790+S+1350+East,+Provo,+UT+84606"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="inline-flex items-center gap-1.5 px-3 py-1.5 border border-white/25 text-white font-mono text-[11px] uppercase tracking-wider hover:border-amberBrand hover:text-amberBrand transition-colors">
+                    <span>Directions</span>
+                    <i data-lucide="external-link" stroke-width="2" class="w-3.5 h-3.5"></i>
+                  </a>
+                </div>
+              </div>
+
+              <!-- Phone & Shop Hours -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <a href="tel:+18013736230" class="bg-navy-light/90 border border-white/10 p-4 hover:border-amberBrand transition-colors group">
+                  <p class="font-mono text-[10px] uppercase tracking-widest text-amberBrand mb-1">DIRECT LINE</p>
+                  <p class="font-sans text-base font-bold text-white group-hover:text-amberBrand transition-colors">(801) 373-6230</p>
+                </a>
+                <div class="bg-navy-light/90 border border-white/10 p-4">
+                  <p class="font-mono text-[10px] uppercase tracking-widest text-amberBrand mb-1">SHOP HOURS</p>
+                  <p class="font-sans text-xs font-semibold text-white">Mon &ndash; Fri</p>
+                  <p class="font-mono text-[11px] text-slate-300">8:00 AM &ndash; 5:00 PM</p>
+                </div>
+              </div>
+            </div>
+          </aside>
+
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ======================================================================= -->
+  <!-- 10. CLASSIC 4-COLUMN CORPORATE FOOTER (DEEP NAVY #0B1F3A)               -->
+  <!-- ======================================================================= -->
+  <footer class="bg-navy text-white border-t-4 border-t-amberBrand">
+    <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 py-16">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 pb-12 border-b border-white/10">
+
+        <!-- Col 1: White Logo Pill & Summary -->
+        <div class="space-y-5">
+          <div class="inline-flex bg-white px-4 py-2.5">
+            <img
+              src="https://static.wixstatic.com/media/bcc74e_ddc9dbf3dbfc466aa624a750fc4365ac~mv2.png"
+              alt="JLR Contractors Official Logo"
+              onerror="this.onerror=null;this.src='https://placehold.co/160x48/FFFFFF/0B1F3A?text=JLR+CONTRACTORS';"
+              class="h-8 w-auto object-contain" />
+          </div>
+          <p class="font-sans text-sm text-slate-300 leading-relaxed">
+            Over 110 years of architectural construction, public works engineering, and in-house woodworking across Utah Valley.
+          </p>
+          <p class="font-mono text-[11px] uppercase tracking-widest text-amberBrand">
+            "OUR COMMITMENT IS EXCELLENCE."
+          </p>
+        </div>
+
+        <!-- Col 2: Quick Links -->
+        <div>
+          <h4 class="font-display font-bold uppercase text-lg tracking-wider text-white mb-5">Quick Links</h4>
+          <ul class="space-y-2.5 font-sans text-sm text-slate-300">
+            <li><a href="#hero" class="hover:text-amberBrand transition-colors">Home</a></li>
+            <li><a href="#divisions" class="hover:text-amberBrand transition-colors">What We Do</a></li>
+            <li><a href="#portfolio" class="hover:text-amberBrand transition-colors">Featured Projects</a></li>
+            <li><a href="#legacy" class="hover:text-amberBrand transition-colors">Our Legacy (Est. 1912)</a></li>
+            <li><a href="#awards" class="hover:text-amberBrand transition-colors">Recognition &amp; Awards</a></li>
+            <li><a href="#contact" class="hover:text-amberBrand transition-colors">Request a Bid</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 3: Divisions (Opens Spec Drawer) -->
+        <div>
+          <h4 class="font-display font-bold uppercase text-lg tracking-wider text-white mb-5">Divisions</h4>
+          <ul class="space-y-2.5 font-sans text-sm text-slate-300">
+            <li><button type="button" data-open-drawer="residential" class="hover:text-amberBrand transition-colors">01. Residential Construction</button></li>
+            <li><button type="button" data-open-drawer="commercial" class="hover:text-amberBrand transition-colors">02. Commercial Construction</button></li>
+            <li><button type="button" data-open-drawer="public-works" class="hover:text-amberBrand transition-colors">03. Public Works &amp; Water</button></li>
+            <li><button type="button" data-open-drawer="woodworking" class="hover:text-amberBrand transition-colors">04. JLR Woodwork Atelier</button></li>
+          </ul>
+        </div>
+
+        <!-- Col 4: Contact Info & Social Icons -->
+        <div class="space-y-5">
+          <h4 class="font-display font-bold uppercase text-lg tracking-wider text-white mb-5">Headquarters</h4>
+          <div class="space-y-3 font-sans text-sm text-slate-300">
+            <p class="flex items-start gap-2.5">
+              <i data-lucide="map-pin" stroke-width="1.75" class="w-4 h-4 text-amberBrand mt-0.5 shrink-0"></i>
+              <span>790 S 1350 East, Provo, UT 84606</span>
+            </p>
+            <p class="flex items-center gap-2.5">
+              <i data-lucide="phone" stroke-width="1.75" class="w-4 h-4 text-amberBrand shrink-0"></i>
+              <a href="tel:+18013736230" class="hover:text-amberBrand transition-colors">(801) 373-6230</a>
+            </p>
+          </div>
+
+          <!-- Inline SVG Social Icons -->
+          <div class="flex items-center gap-2 pt-2">
+            <a href="#hero" aria-label="Instagram" class="w-9 h-9 bg-navy-light border border-white/15 text-slate-200 flex items-center justify-center hover:bg-amberBrand hover:border-amberBrand hover:text-navy transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4" aria-hidden="true"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line></svg>
+            </a>
+            <a href="#hero" aria-label="YouTube" class="w-9 h-9 bg-navy-light border border-white/15 text-slate-200 flex items-center justify-center hover:bg-amberBrand hover:border-amberBrand hover:text-navy transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4" aria-hidden="true"><path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17"></path><path d="m10 15 5-3-5-3z"></path></svg>
+            </a>
+            <a href="#hero" aria-label="LinkedIn" class="w-9 h-9 bg-navy-light border border-white/15 text-slate-200 flex items-center justify-center hover:bg-amberBrand hover:border-amberBrand hover:text-navy transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect width="4" height="12" x="2" y="9"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+            </a>
+            <a href="#hero" aria-label="Facebook" class="w-9 h-9 bg-navy-light border border-white/15 text-slate-200 flex items-center justify-center hover:bg-amberBrand hover:border-amberBrand hover:text-navy transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+            </a>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Bottom Copyright & Back-to-Top Row -->
+      <div class="pt-7 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <p class="font-mono text-[11px] uppercase tracking-wider text-slate-400">
+          &copy; 2026 JLR Contractors. All rights reserved. &bull; Provo, Utah
+        </p>
+        <button id="back-to-top" type="button" class="inline-flex items-center gap-2 px-4 py-2 bg-navy-light border border-white/15 font-mono text-[11px] uppercase tracking-wider text-white hover:bg-amberBrand hover:border-amberBrand hover:text-navy transition-colors">
+          <span>Back to Top</span>
+          <i data-lucide="arrow-up" stroke-width="2" class="w-3.5 h-3.5"></i>
+        </button>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ======================================================================= -->
+  <!-- OVERLAY 1: SLIDE-OVER DIVISION SPEC SHEET DRAWER                        -->
+  <!-- ======================================================================= -->
+  <div id="spec-drawer-overlay" class="overlay-shell fixed inset-0 z-[80] bg-navy/70 backdrop-blur-sm" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="slide-drawer absolute inset-y-0 right-0 w-full max-w-xl h-[100dvh] bg-white text-navy border-l-4 border-l-amberBrand flex flex-col overflow-hidden shadow-2xl">
+      <div id="spec-drawer-body" class="flex flex-col flex-1 min-h-0 overflow-hidden"></div>
+    </div>
+  </div>
+
+  <!-- ======================================================================= -->
+  <!-- OVERLAY 2: PORTFOLIO LIGHTBOX & AWARDS MODAL                            -->
+  <!-- ======================================================================= -->
+  <div id="modal-overlay" class="overlay-shell fixed inset-0 z-[85] bg-navy/85 backdrop-blur-sm flex items-center justify-center p-4 sm:p-6" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="modal-dialog relative w-full max-w-4xl max-h-[90dvh] flex flex-col overflow-hidden bg-white border-t-4 border-t-amberBrand text-navy shadow-2xl">
+      <button id="modal-close-btn" type="button" aria-label="Close modal" class="absolute top-4 right-4 z-20 w-10 h-10 bg-navy text-white flex items-center justify-center hover:bg-amberBrand hover:text-navy transition-colors">
+        <i data-lucide="x" stroke-width="2" class="w-5 h-5"></i>
+      </button>
+      <div id="modal-body" class="flex-1 min-h-0 overflow-y-auto custom-scroll"></div>
+    </div>
+  </div>
+
+  <!-- ======================================================================= -->
+  <!-- JAVASCRIPT: TABS, PORTFOLIO FILTER, LIGHTBOX, DRAWER, FORM, GSAP        -->
+  <!-- ======================================================================= -->
+  <script>
+    (function () {
+      'use strict';
+
+      /* ---------------------------------------------------------------------
+       * 1. Core Division & Portfolio Data
+       * --------------------------------------------------------------------- */
+      const DIVISIONS = {
+        residential: {
+          code: 'DIVISION 01 • RESIDENTIAL',
+          caption: 'SPEC REF // DIV-01 RESIDENTIAL',
+          shortName: 'Residential',
+          title: 'Custom Residential Construction',
+          formValue: 'Residential',
+          image: 'https://static.wixstatic.com/media/bcc74e_e7bedcbef85644e180836b15e428b42c~mv2.jpg/v1/crop/x_27,y_268,w_1120,h_1825/fill/w_348,h_566,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/09%20J%20Lyne%20Roberts%20and%20Sons-1_JPG.jpg',
+          tagline: 'Custom homes, remodels, and timeless living spaces built to last.',
+          description: 'We partner closely with homeowners and leading architects to build heirloom custom residences across Utah Valley—combining structural precision with refined architectural finishes.',
+          specs: [
+            'Ground-up luxury custom residences & mountain estates',
+            'Comprehensive architectural remodels and structural additions',
+            'Dedicated project superintendents & open-book cost clarity',
+            'Seamless integration with our in-house JLR Woodwork shop'
+          ]
+        },
+        commercial: {
+          code: 'DIVISION 02 • COMMERCIAL',
+          caption: 'SPEC REF // DIV-02 COMMERCIAL',
+          shortName: 'Commercial',
+          title: 'Commercial Construction & TI',
+          formValue: 'Commercial',
+          image: 'https://static.wixstatic.com/media/bcc74e_0e395fe755e048c487eec6ccd3e66ef1~mv2.webp/v1/fill/w_345,h_565,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/ai-generated-IMAGE.webp',
+          tagline: 'Ground-up builds, tenant improvements, and tailored business spaces.',
+          description: 'Engineered for performance, brand presence, and schedule certainty—we deliver commercial environments that elevate how organizations operate.',
+          specs: [
+            'Ground-up Class-A office, retail, and institutional buildings',
+            'High-spec tenant improvements and architectural build-outs',
+            'Pre-construction value engineering & critical-path scheduling',
+            'Rigorous jobsite safety and long-term envelope durability'
+          ]
+        },
+        'public-works': {
+          code: 'DIVISION 03 • PUBLIC WORKS',
+          caption: 'SPEC REF // DIV-03 PUBLIC WORKS',
+          shortName: 'Public Works',
+          title: 'Public Works & Infrastructure',
+          formValue: 'Public Works',
+          image: 'https://static.wixstatic.com/media/bcc74e_9972d6583d844776b8c357b0372e57ac~mv2.jpg/v1/fill/w_344,h_565,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/tank-arial-5_JPG.jpg',
+          tagline: 'Municipal, water, and infrastructure projects serving our communities.',
+          description: 'Trusted by Utah municipalities for decades, our public works division constructs resilient civic infrastructure and essential water systems built for generational service.',
+          specs: [
+            'Municipal water storage tanks, treatment, and utility systems',
+            'Civic, educational, and public community facilities',
+            'Heavy structural concrete and precision civil coordination',
+            'Full regulatory compliance and transparent public accountability'
+          ]
+        },
+        woodworking: {
+          code: 'DIVISION 04 • WOODWORKING',
+          caption: 'SPEC REF // DIV-04 WOODWORKING',
+          shortName: 'Woodworking',
+          title: 'JLR Woodwork & Millwork',
+          formValue: 'Woodworking',
+          image: 'https://static.wixstatic.com/media/bcc74e_2b46ae3932c9457da925c439e159ca7c~mv2.webp/v1/fill/w_345,h_566,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/ai-generated-IMAGE.webp',
+          tagline: 'Custom cabinetry, millwork, and architectural woodwork crafted in-house.',
+          description: 'Operating from our dedicated Provo woodshop, our master craftsmen fabricate bespoke cabinetry, architectural doors, beams, and millwork tailored to exact specifications.',
+          specs: [
+            'Bespoke kitchen, library, and estate built-in cabinetry',
+            'Custom architectural entry doors, paneling, and ceiling beams',
+            'Hand-selected domestic and exotic hardwoods',
+            'Artisan finishing and precision on-site installation'
+          ]
+        }
+      };
+
+      const PROJECTS = [
+        {
+          id: 0,
+          title: 'Wasatch Mountain Residence',
+          category: 'Residential',
+          scope: 'Custom Ground-Up Estate',
+          location: 'Utah Valley, UT',
+          image: 'https://static.wixstatic.com/media/bcc74e_f9722c7247f849ce8135025271365a7c~mv2.jpg/v1/crop/x_964,y_94,w_2756,h_3854/fill/w_779,h_1094,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/J%20Lyne%20Roberts-1.jpg'
+        },
+        {
+          id: 1,
+          title: 'Vaulted Limestone Great Room',
+          category: 'Residential',
+          scope: 'Interior & Custom Millwork',
+          location: 'Provo, UT',
+          image: 'https://static.wixstatic.com/media/bcc74e_01e8004f3c14425590432bae200e9e04~mv2.png/v1/fill/w_590,h_596,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/Screenshot%202026-05-18%20155607.png'
+        },
+        {
+          id: 2,
+          title: 'Utah Valley Custom Estate',
+          category: 'Residential',
+          scope: 'Architectural Residence',
+          location: 'Utah County, UT',
+          image: 'https://static.wixstatic.com/media/bcc74e_e7bedcbef85644e180836b15e428b42c~mv2.jpg/v1/crop/x_27,y_268,w_1120,h_1825/fill/w_348,h_566,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/09%20J%20Lyne%20Roberts%20and%20Sons-1_JPG.jpg'
+        },
+        {
+          id: 3,
+          title: 'Provo Commercial Plaza',
+          category: 'Commercial',
+          scope: 'Ground-Up Commercial Build',
+          location: 'Provo, UT',
+          image: 'https://static.wixstatic.com/media/bcc74e_0e395fe755e048c487eec6ccd3e66ef1~mv2.webp/v1/fill/w_345,h_565,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/ai-generated-IMAGE.webp'
+        },
+        {
+          id: 4,
+          title: 'Municipal Water Storage Facility',
+          category: 'Public Works',
+          scope: 'Civil & Structural Concrete',
+          location: 'Utah Valley, UT',
+          image: 'https://static.wixstatic.com/media/bcc74e_9972d6583d844776b8c357b0372e57ac~mv2.jpg/v1/fill/w_344,h_565,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/tank-arial-5_JPG.jpg'
+        },
+        {
+          id: 5,
+          title: 'Bespoke Architectural Doors',
+          category: 'Woodworking',
+          scope: 'In-House Millwork Shop',
+          location: 'Provo, UT',
+          image: 'https://static.wixstatic.com/media/bcc74e_2b46ae3932c9457da925c439e159ca7c~mv2.webp/v1/fill/w_345,h_566,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/ai-generated-IMAGE.webp'
+        }
+      ];
+
+      let currentSlide = 0;
+      let currentModalMode = null; // 'portfolio' | 'awards' | null
+      let toastTimer = null;
+
+      /* ---------------------------------------------------------------------
+       * 2. Safe Icon Renderer & Body Scroll Lock
+       * --------------------------------------------------------------------- */
+      function renderIcons() {
+        try {
+          if (window.lucide && typeof window.lucide.createIcons === 'function') {
+            window.lucide.createIcons();
+          }
+        } catch (err) {
+          console.error('Lucide error:', err);
+        }
+      }
+
+      function lockScroll() {
+        document.documentElement.style.overflow = 'hidden';
+        document.body.style.overflow = 'hidden';
+      }
+
+      function unlockScroll() {
+        const anyOpen =
+          document.getElementById('spec-drawer-overlay')?.classList.contains('open') ||
+          document.getElementById('modal-overlay')?.classList.contains('open') ||
+          document.getElementById('mobile-menu-overlay')?.classList.contains('open');
+        if (!anyOpen) {
+          document.documentElement.style.overflow = '';
+          document.body.style.overflow = '';
+        }
+      }
+
+      function scrollToSection(id) {
+        const el = document.querySelector(id);
+        if (!el) return;
+        const headerOffset = 80;
+        const top = el.getBoundingClientRect().top + window.scrollY - headerOffset;
+        window.scrollTo({ top, behavior: 'smooth' });
+      }
+
+      /* ---------------------------------------------------------------------
+       * 3. GSAP ScrollTrigger Entrance Reveals (Respects Reduced Motion)
+       * --------------------------------------------------------------------- */
+      function initAnimations() {
+        try {
+          const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+          if (!window.gsap || prefersReduced) return;
+
+          if (window.ScrollTrigger) {
+            window.gsap.registerPlugin(window.ScrollTrigger);
+          }
+
+          window.gsap.from('.hero-anim', {
+            y: 24,
+            opacity: 0,
+            duration: 0.75,
+            stagger: 0.1,
+            ease: 'power3.out',
+            delay: 0.05
+          });
+
+          if (window.ScrollTrigger) {
+            document.querySelectorAll('.gsap-reveal').forEach((el) => {
+              window.gsap.from(el, {
+                y: 26,
+                opacity: 0,
+                duration: 0.75,
+                ease: 'power3.out',
+                scrollTrigger: {
+                  trigger: el,
+                  start: 'top 88%',
+                  once: true
+                }
+              });
+            });
+          }
+        } catch (err) {
+          console.error('GSAP init error:', err);
+        }
+      }
+
+      /* ---------------------------------------------------------------------
+       * 4. Sticky Header Shadow & Smooth Anchor Scrolling
+       * --------------------------------------------------------------------- */
+      function initHeaderAndAnchors() {
+        const header = document.getElementById('corporate-header');
+        window.addEventListener('scroll', () => {
+          header?.classList.toggle('shadow-md', window.scrollY > 24);
+        }, { passive: true });
+
+        document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+          anchor.addEventListener('click', (e) => {
+            const href = anchor.getAttribute('href');
+            if (!href || href === '#') return;
+            const target = document.querySelector(href);
+            if (!target) return;
+            e.preventDefault();
+            scrollToSection(href);
+          });
+        });
+      }
+
+      /* ---------------------------------------------------------------------
+       * 5. Interactive Tabbed Division Showcase
+       * --------------------------------------------------------------------- */
+      function initDivisionTabs() {
+        const tabs = document.querySelectorAll('[data-division-tab]');
+        const badgeEl = document.getElementById('div-badge');
+        const titleEl = document.getElementById('div-title');
+        const taglineEl = document.getElementById('div-tagline');
+        const descEl = document.getElementById('div-desc');
+        const specsEl = document.getElementById('div-specs');
+        const imgEl = document.getElementById('div-image');
+        const captionEl = document.getElementById('div-caption');
+        const startBtn = document.getElementById('div-start-btn');
+        const startLabel = document.getElementById('div-start-label');
+        const specBtn = document.getElementById('div-spec-btn');
+
+        function selectDivision(key) {
+          const data = DIVISIONS[key];
+          if (!data) return;
+
+          tabs.forEach((tab) => {
+            const active = tab.getAttribute('data-division-tab') === key;
+            tab.classList.toggle('is-active', active);
+            tab.setAttribute('aria-selected', active ? 'true' : 'false');
+          });
+
+          if (badgeEl) badgeEl.textContent = data.code;
+          if (titleEl) titleEl.textContent = data.title;
+          if (taglineEl) taglineEl.textContent = data.tagline;
+          if (descEl) descEl.textContent = data.description;
+          if (captionEl) captionEl.textContent = data.caption;
+          if (startLabel) startLabel.textContent = `Start a ${data.shortName} Project`;
+          if (startBtn) startBtn.setAttribute('data-project-type', data.formValue);
+          if (specBtn) specBtn.setAttribute('data-open-drawer', key);
+
+          if (imgEl) {
+            imgEl.src = data.image;
+            imgEl.alt = `${data.title} by JLR Contractors`;
+          }
+
+          if (specsEl) {
+            specsEl.innerHTML = data.specs
+              .map(
+                (item) => `
+                  <li class="flex items-start gap-2.5 p-3 bg-slateSurface border border-borderCool text-sm text-navy">
+                    <i data-lucide="check-square" stroke-width="2" class="w-4 h-4 text-amberBrand-hover mt-0.5 shrink-0"></i>
+                    <span>${item}</span>
+                  </li>`
+              )
+              .join('');
+            renderIcons();
+          }
+        }
+
+        tabs.forEach((tab) => {
+          tab.addEventListener('click', () => {
+            selectDivision(tab.getAttribute('data-division-tab'));
+          });
+        });
+
+        // "Start a [Division] Project" pre-selects form & scrolls to contact
+        startBtn?.addEventListener('click', () => {
+          const val = startBtn.getAttribute('data-project-type');
+          const select = document.getElementById('project-type');
+          if (select && val) select.value = val;
+          scrollToSection('#contact');
+        });
+
+        // Render initial default tab (Residential)
+        selectDivision('residential');
+      }
+
+      /* ---------------------------------------------------------------------
+       * 6. Filterable On-Page Portfolio Grid
+       * --------------------------------------------------------------------- */
+      function initPortfolioGrid() {
+        const grid = document.getElementById('portfolio-grid');
+        const filterBtns = document.querySelectorAll('#portfolio-filter-bar [data-filter]');
+        if (!grid) return;
+
+        function renderCards(filterCategory) {
+          const filtered = filterCategory === 'all'
+            ? PROJECTS
+            : PROJECTS.filter((p) => p.category === filterCategory);
+
+          grid.innerHTML = filtered
+            .map(
+              (p) => `
+                <article class="group bg-white border border-borderCool hover:border-navy transition-all flex flex-col shadow-sm hover:shadow-lg">
+                  <button type="button" data-open-lightbox="${p.id}" class="relative overflow-hidden aspect-[4/3.2] bg-navy w-full text-left focus:outline-none">
+                    <img
+                      src="${p.image}"
+                      alt="${p.title}"
+                      loading="lazy"
+                      onerror="this.onerror=null;this.src='https://placehold.co/640x500/0B1F3A/FFFFFF?text=${encodeURIComponent(p.title)}';"
+                      class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                    <span class="absolute top-3 left-3 px-2.5 py-1 bg-navy text-amberBrand font-mono text-[10px] font-semibold uppercase tracking-widest">
+                      ${p.category}
+                    </span>
+                    <span class="absolute bottom-3 right-3 w-9 h-9 bg-amberBrand text-navy flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                      <i data-lucide="maximize-2" stroke-width="2" class="w-4 h-4"></i>
+                    </span>
+                  </button>
+                  <div class="p-5 flex-1 flex flex-col justify-between">
+                    <div>
+                      <p class="font-mono text-[10px] uppercase tracking-wider text-steel mb-1">${p.location} // ${p.scope}</p>
+                      <h3 class="font-display font-bold uppercase text-2xl text-navy tracking-wide group-hover:text-amberBrand-hover transition-colors">
+                        ${p.title}
+                      </h3>
+                    </div>
+                    <div class="pt-4 mt-4 border-t border-borderCool flex items-center justify-between">
+                      <button type="button" data-open-lightbox="${p.id}" class="inline-flex items-center gap-1.5 font-mono text-[11px] font-semibold uppercase tracking-wider text-navy hover:text-amberBrand-hover transition-colors">
+                        <span>Inspect Project</span>
+                        <i data-lucide="arrow-up-right" stroke-width="2" class="w-3.5 h-3.5"></i>
+                      </button>
+                      <span class="font-mono text-[10px] text-slate-400">PRJ-0${p.id + 1}</span>
+                    </div>
+                  </div>
+                </article>`
+            )
+            .join('');
+
+          renderIcons();
+          bindLightboxTriggers();
+        }
+
+        filterBtns.forEach((btn) => {
+          btn.addEventListener('click', () => {
+            const cat = btn.getAttribute('data-filter');
+            filterBtns.forEach((b) => {
+              const active = b === btn;
+              b.classList.toggle('is-active', active);
+              b.setAttribute('aria-selected', active ? 'true' : 'false');
+            });
+            renderCards(cat);
+          });
+        });
+
+        renderCards('all');
+      }
+
+      /* ---------------------------------------------------------------------
+       * 7. Slide-Over Spec Sheet Drawer
+       * --------------------------------------------------------------------- */
+      const drawerOverlay = document.getElementById('spec-drawer-overlay');
+      const drawerBody = document.getElementById('spec-drawer-body');
+
+      function closeSpecDrawer() {
+        if (!drawerOverlay) return;
+        drawerOverlay.classList.remove('open');
+        drawerOverlay.setAttribute('aria-hidden', 'true');
+        unlockScroll();
+      }
+
+      function openSpecDrawer(key) {
+        const d = DIVISIONS[key];
+        if (!d || !drawerOverlay || !drawerBody) return;
+
+        const specsHtml = d.specs
+          .map(
+            (spec, i) => `
+              <li class="flex items-start gap-3.5 py-3.5 border-b border-borderCool text-sm text-navy">
+                <span class="font-mono text-xs font-bold text-amberBrand-hover shrink-0">0${i + 1}</span>
+                <span>${spec}</span>
+              </li>`
+          )
+          .join('');
+
+        drawerBody.innerHTML = `
+          <!-- Sticky Drawer Header -->
+          <div class="shrink-0 bg-navy text-white px-6 py-5 flex items-center justify-between">
+            <div>
+              <p class="font-mono text-[10px] uppercase tracking-widest text-amberBrand">${d.code}</p>
+              <h3 class="font-display font-extrabold uppercase text-2xl tracking-wide mt-0.5">${d.title}</h3>
+            </div>
+            <button id="drawer-close-inner" type="button" aria-label="Close specification sheet" class="w-10 h-10 bg-navy-light border border-white/20 text-white flex items-center justify-center hover:bg-amberBrand hover:border-amberBrand hover:text-navy transition-colors">
+              <i data-lucide="x" stroke-width="2" class="w-5 h-5"></i>
+            </button>
+          </div>
+
+          <!-- Scrollable Content -->
+          <div class="flex-1 min-h-0 overflow-y-auto custom-scroll p-6 sm:p-8 space-y-6">
+            <div class="border border-borderCool bg-slateSurface p-2">
+              <img src="${d.image}" alt="${d.title}" onerror="this.onerror=null;this.src='https://placehold.co/600x360/0B1F3A/FFFFFF?text=${encodeURIComponent(d.shortName)}';" class="w-full h-56 object-cover" />
+            </div>
+
+            <div>
+              <p class="font-sans text-base font-bold text-navy mb-2">${d.tagline}</p>
+              <p class="font-sans text-sm text-steel leading-relaxed">${d.description}</p>
+            </div>
+
+            <div>
+              <p class="font-mono text-[11px] font-semibold uppercase tracking-[0.18em] text-steel mb-2">
+                TECHNICAL SPECIFICATIONS &amp; DELIVERABLES
+              </p>
+              <ul class="border-t border-borderCool">${specsHtml}</ul>
+            </div>
+          </div>
+
+          <!-- Sticky Action Footer -->
+          <div class="shrink-0 px-6 sm:px-8 py-5 bg-slateSurface border-t border-borderCool">
+            <button type="button" id="drawer-start-project" data-project-type="${d.formValue}" class="w-full py-4 px-6 bg-amberBrand text-navy font-sans text-xs font-bold uppercase tracking-[0.14em] hover:bg-amberBrand-hover transition-colors flex items-center justify-center gap-2">
+              <span>Start a ${d.shortName} Project</span>
+              <i data-lucide="arrow-right" stroke-width="2" class="w-4 h-4"></i>
+            </button>
+          </div>
+        `;
+
+        drawerOverlay.classList.add('open');
+        drawerOverlay.setAttribute('aria-hidden', 'false');
+        lockScroll();
+        renderIcons();
+
+        document.getElementById('drawer-close-inner')?.addEventListener('click', closeSpecDrawer);
+        document.getElementById('drawer-start-project')?.addEventListener('click', (e) => {
+          const val = e.currentTarget.getAttribute('data-project-type');
+          const select = document.getElementById('project-type');
+          if (select && val) select.value = val;
+          closeSpecDrawer();
+          setTimeout(() => scrollToSection('#contact'), 120);
+        });
+      }
+
+      /* ---------------------------------------------------------------------
+       * 8. Portfolio Lightbox & Awards Modal
+       * --------------------------------------------------------------------- */
+      const modalOverlay = document.getElementById('modal-overlay');
+      const modalBody = document.getElementById('modal-body');
+      const modalCloseBtn = document.getElementById('modal-close-btn');
+
+      function closeModal() {
+        if (!modalOverlay) return;
+        modalOverlay.classList.remove('open');
+        modalOverlay.setAttribute('aria-hidden', 'true');
+        currentModalMode = null;
+        unlockScroll();
+      }
+
+      function renderLightbox() {
+        const item = PROJECTS[currentSlide];
+        const thumbs = PROJECTS.map(
+          (p, idx) => `
+            <button type="button" data-thumb-idx="${idx}" aria-label="View ${p.title}" class="h-16 overflow-hidden border-2 ${idx === currentSlide ? 'border-amberBrand opacity-100' : 'border-borderCool opacity-55 hover:opacity-100'} transition-all">
+              <img src="${p.image}" alt="${p.title}" class="w-full h-full object-cover" />
+            </button>`
+        ).join('');
+
+        modalBody.innerHTML = `
+          <div class="p-6 sm:p-8">
+            <div class="flex flex-wrap items-end justify-between gap-4 pr-12 pb-4 mb-5 border-b border-borderCool">
+              <div>
+                <p class="font-mono text-[11px] font-semibold uppercase tracking-widest text-amberBrand-hover">
+                  PROJECT 0${currentSlide + 1} / 0${PROJECTS.length} &bull; ${item.category}
+                </p>
+                <h3 class="font-display font-extrabold uppercase text-3xl sm:text-4xl text-navy tracking-tight mt-0.5">
+                  ${item.title}
+                </h3>
+              </div>
+              <span class="px-3 py-1 bg-slateSurface border border-borderCool font-mono text-[11px] uppercase tracking-wider text-steel">
+                ${item.location} &bull; ${item.scope}
+              </span>
+            </div>
+
+            <div class="relative bg-navy border border-borderCool aspect-[16/10] overflow-hidden mb-4">
+              <img src="${item.image}" alt="${item.title}" class="w-full h-full object-cover" />
+              <button type="button" id="lightbox-prev" aria-label="Previous project" class="absolute left-3 top-1/2 -translate-y-1/2 w-11 h-11 bg-navy/90 text-white border border-white/20 flex items-center justify-center hover:bg-amberBrand hover:border-amberBrand hover:text-navy transition-colors">
+                <i data-lucide="chevron-left" stroke-width="2" class="w-5 h-5"></i>
+              </button>
+              <button type="button" id="lightbox-next" aria-label="Next project" class="absolute right-3 top-1/2 -translate-y-1/2 w-11 h-11 bg-navy/90 text-white border border-white/20 flex items-center justify-center hover:bg-amberBrand hover:border-amberBrand hover:text-navy transition-colors">
+                <i data-lucide="chevron-right" stroke-width="2" class="w-5 h-5"></i>
+              </button>
+            </div>
+
+            <div class="grid grid-cols-3 sm:grid-cols-6 gap-2.5">${thumbs}</div>
+          </div>
+        `;
+
+        renderIcons();
+
+        document.getElementById('lightbox-prev')?.addEventListener('click', () => {
+          currentSlide = (currentSlide - 1 + PROJECTS.length) % PROJECTS.length;
+          renderLightbox();
+        });
+        document.getElementById('lightbox-next')?.addEventListener('click', () => {
+          currentSlide = (currentSlide + 1) % PROJECTS.length;
+          renderLightbox();
+        });
+        modalBody.querySelectorAll('[data-thumb-idx]').forEach((btn) => {
+          btn.addEventListener('click', () => {
+            currentSlide = parseInt(btn.getAttribute('data-thumb-idx'), 10);
+            renderLightbox();
+          });
+        });
+      }
+
+      function openLightbox(index = 0) {
+        currentModalMode = 'portfolio';
+        currentSlide = Number.isInteger(index) && index >= 0 && index < PROJECTS.length ? index : 0;
+        renderLightbox();
+        modalOverlay.classList.add('open');
+        modalOverlay.setAttribute('aria-hidden', 'false');
+        lockScroll();
+      }
+
+      function bindLightboxTriggers() {
+        document.querySelectorAll('[data-open-lightbox]').forEach((el) => {
+          el.onclick = (e) => {
+            e.preventDefault();
+            const idx = parseInt(el.getAttribute('data-open-lightbox'), 10);
+            openLightbox(Number.isNaN(idx) ? 0 : idx);
+          };
+        });
+      }
+
+      function openAwardsModal() {
+        currentModalMode = 'awards';
+        modalBody.innerHTML = `
+          <div class="p-6 sm:p-10">
+            <p class="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-amberBrand-hover mb-2">
+              // RECOGNITION &amp; HONORS &bull; EST. 1912
+            </p>
+            <h3 class="font-display font-extrabold uppercase text-4xl sm:text-5xl text-navy tracking-tight pb-5 mb-6 border-b border-borderCool">
+              JLR CONTRACTORS AWARDS RECORD
+            </h3>
+
+            <div class="space-y-4 mb-8">
+              <div class="p-5 bg-slateSurface border border-borderCool border-l-4 border-l-amberBrand flex items-start gap-4">
+                <div class="w-11 h-11 bg-navy text-amberBrand flex items-center justify-center shrink-0">
+                  <i data-lucide="trophy" stroke-width="1.75" class="w-5 h-5"></i>
+                </div>
+                <div>
+                  <p class="font-mono text-[10px] uppercase tracking-widest text-steel">HONOR 01</p>
+                  <h4 class="font-display font-bold uppercase text-2xl text-navy">SC Master Builder Award Winner</h4>
+                  <p class="font-sans text-sm text-steel mt-1 leading-relaxed">Recognizing master-level execution, structural longevity, and architectural leadership across complex builds.</p>
+                </div>
+              </div>
+
+              <div class="p-5 bg-slateSurface border border-borderCool border-l-4 border-l-amberBrand flex items-start gap-4">
+                <div class="w-11 h-11 bg-navy text-amberBrand flex items-center justify-center shrink-0">
+                  <i data-lucide="home" stroke-width="1.75" class="w-5 h-5"></i>
+                </div>
+                <div>
+                  <p class="font-mono text-[10px] uppercase tracking-widest text-steel">HONOR 02</p>
+                  <h4 class="font-display font-bold uppercase text-2xl text-navy">Utah Valley Builder of the Year</h4>
+                  <p class="font-sans text-sm text-steel mt-1 leading-relaxed">Honoring over a century of integrity, client stewardship, and residential excellence throughout Utah Valley.</p>
+                </div>
+              </div>
+
+              <div class="p-5 bg-slateSurface border border-borderCool border-l-4 border-l-amberBrand flex items-start gap-4">
+                <div class="w-11 h-11 bg-navy text-amberBrand flex items-center justify-center shrink-0">
+                  <i data-lucide="award" stroke-width="1.75" class="w-5 h-5"></i>
+                </div>
+                <div>
+                  <p class="font-mono text-[10px] uppercase tracking-widest text-steel">HONOR 03</p>
+                  <h4 class="font-display font-bold uppercase text-2xl text-navy">UVHBA Parade of Homes Best of Show</h4>
+                  <p class="font-sans text-sm text-steel mt-1 leading-relaxed">Highest distinction for custom architectural detailing, in-house millwork, and overall design harmony.</p>
+                </div>
+              </div>
+            </div>
+
+            <button type="button" id="awards-modal-cta" class="inline-flex items-center gap-2.5 px-7 py-3.5 bg-amberBrand text-navy font-sans text-xs font-bold uppercase tracking-[0.14em] hover:bg-amberBrand-hover transition-colors">
+              <span>Request a Bid</span>
+              <i data-lucide="arrow-right" stroke-width="2" class="w-4 h-4"></i>
+            </button>
+          </div>
+        `;
+        modalOverlay.classList.add('open');
+        modalOverlay.setAttribute('aria-hidden', 'false');
+        lockScroll();
+        renderIcons();
+
+        document.getElementById('awards-modal-cta')?.addEventListener('click', () => {
+          closeModal();
+          setTimeout(() => scrollToSection('#contact'), 120);
+        });
+      }
+
+      /* ---------------------------------------------------------------------
+       * 9. Mobile Slide-Over Menu
+       * --------------------------------------------------------------------- */
+      function initMobileMenu() {
+        const overlay = document.getElementById('mobile-menu-overlay');
+        const openBtn = document.getElementById('mobile-menu-open');
+        const closeBtn = document.getElementById('mobile-menu-close');
+
+        function open() {
+          overlay?.classList.add('open');
+          overlay?.setAttribute('aria-hidden', 'false');
+          openBtn?.setAttribute('aria-expanded', 'true');
+          lockScroll();
+        }
+        function close() {
+          overlay?.classList.remove('open');
+          overlay?.setAttribute('aria-hidden', 'true');
+          openBtn?.setAttribute('aria-expanded', 'false');
+          unlockScroll();
+        }
+
+        openBtn?.addEventListener('click', open);
+        closeBtn?.addEventListener('click', close);
+        overlay?.addEventListener('click', (e) => {
+          if (e.target === overlay) close();
+        });
+        overlay?.querySelectorAll('.mobile-link').forEach((link) => {
+          link.addEventListener('click', close);
+        });
+      }
+
+      /* ---------------------------------------------------------------------
+       * 10. Corporate Contact Form Validation & Inline Confirmation
+       * --------------------------------------------------------------------- */
+      function initContactForm() {
+        const form = document.getElementById('corporate-contact-form');
+        const successBox = document.getElementById('form-success');
+        const resetBtn = document.getElementById('reset-contact-btn');
+        if (!form || !successBox) return;
+
+        function setError(inputId, errId, msg) {
+          const input = document.getElementById(inputId);
+          const err = document.getElementById(errId);
+          if (!input || !err) return;
+          if (msg) {
+            err.textContent = msg;
+            err.classList.remove('hidden');
+            input.classList.add('has-error');
+          } else {
+            err.textContent = '';
+            err.classList.add('hidden');
+            input.classList.remove('has-error');
+          }
+        }
+
+        ['first-name', 'last-name', 'email', 'project-type'].forEach((id) => {
+          const el = document.getElementById(id);
+          el?.addEventListener('input', () => setError(id, `err-${id}`, ''));
+          el?.addEventListener('change', () => setError(id, `err-${id}`, ''));
+        });
+
+        form.addEventListener('submit', (e) => {
+          e.preventDefault();
+          let valid = true;
+
+          const firstName = document.getElementById('first-name').value.trim();
+          const lastName = document.getElementById('last-name').value.trim();
+          const email = document.getElementById('email').value.trim();
+          const projectType = document.getElementById('project-type').value;
+
+          if (!firstName) {
+            setError('first-name', 'err-first-name', 'First name is required.');
+            valid = false;
+          }
+          if (!lastName) {
+            setError('last-name', 'err-last-name', 'Last name is required.');
+            valid = false;
+          }
+          if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            setError('email', 'err-email', 'Please enter a valid email address.');
+            valid = false;
+          }
+          if (!projectType) {
+            setError('project-type', 'err-project-type', 'Please select a project division.');
+            valid = false;
+          }
+
+          if (!valid) return;
+
+          document.getElementById('success-name').textContent = firstName.toUpperCase();
+          document.getElementById('success-type').textContent = projectType;
+          form.classList.add('hidden');
+          successBox.classList.remove('hidden');
+          renderIcons();
+        });
+
+        resetBtn?.addEventListener('click', () => {
+          form.reset();
+          successBox.classList.add('hidden');
+          form.classList.remove('hidden');
+        });
+      }
+
+      /* ---------------------------------------------------------------------
+       * 11. Click-to-Copy Address (Safe execCommand Fallback) + Toast
+       * --------------------------------------------------------------------- */
+      function showToast(message) {
+        const toast = document.getElementById('toast-banner');
+        const text = document.getElementById('toast-text');
+        if (!toast || !text) return;
+        text.textContent = message;
+        toast.classList.remove('opacity-0', 'translate-y-4', 'pointer-events-none');
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => {
+          toast.classList.add('opacity-0', 'translate-y-4', 'pointer-events-none');
+        }, 2800);
+      }
+
+      function initCopyAddress() {
+        const btn = document.getElementById('copy-address-btn');
+        if (!btn) return;
+        btn.addEventListener('click', () => {
+          const text = btn.getAttribute('data-copy') || '790 S 1350 East, Provo, UT 84606';
+          try {
+            const temp = document.createElement('textarea');
+            temp.value = text;
+            temp.style.position = 'fixed';
+            temp.style.opacity = '0';
+            document.body.appendChild(temp);
+            temp.select();
+            document.execCommand('copy');
+            document.body.removeChild(temp);
+            showToast('Address copied: ' + text);
+          } catch (err) {
+            showToast(text);
+          }
+        });
+      }
+
+      /* ---------------------------------------------------------------------
+       * 12. Boot Application & Global Event Bindings
+       * --------------------------------------------------------------------- */
+      document.addEventListener('DOMContentLoaded', () => {
+        renderIcons();
+        initAnimations();
+        initHeaderAndAnchors();
+        initDivisionTabs();
+        initPortfolioGrid();
+        initMobileMenu();
+        initContactForm();
+        initCopyAddress();
+
+        // Spec Sheet Drawer Triggers
+        document.querySelectorAll('[data-open-drawer]').forEach((btn) => {
+          btn.addEventListener('click', () => {
+            openSpecDrawer(btn.getAttribute('data-open-drawer'));
+          });
+        });
+        drawerOverlay?.addEventListener('click', (e) => {
+          if (e.target === drawerOverlay) closeSpecDrawer();
+        });
+
+        // Awards Modal Triggers
+        document.querySelectorAll('[data-open-awards]').forEach((el) => {
+          el.addEventListener('click', (e) => {
+            e.preventDefault();
+            openAwardsModal();
+          });
+          el.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              openAwardsModal();
+            }
+          });
+        });
+
+        modalCloseBtn?.addEventListener('click', closeModal);
+        modalOverlay?.addEventListener('click', (e) => {
+          if (e.target === modalOverlay) closeModal();
+        });
+
+        // Keyboard Support (Escape closes overlays, Left/Right navigates Lightbox)
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape') {
+            closeSpecDrawer();
+            closeModal();
+            const mob = document.getElementById('mobile-menu-overlay');
+            if (mob?.classList.contains('open')) {
+              mob.classList.remove('open');
+              mob.setAttribute('aria-hidden', 'true');
+              unlockScroll();
+            }
+          } else if (currentModalMode === 'portfolio') {
+            if (e.key === 'ArrowRight') {
+              currentSlide = (currentSlide + 1) % PROJECTS.length;
+              renderLightbox();
+            } else if (e.key === 'ArrowLeft') {
+              currentSlide = (currentSlide - 1 + PROJECTS.length) % PROJECTS.length;
+              renderLightbox();
+            }
+          }
+        });
+
+        // Back to Top
+        document.getElementById('back-to-top')?.addEventListener('click', () => {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
